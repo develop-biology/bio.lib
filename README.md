@@ -1,16 +1,12 @@
 # Develop Biology
 __Programming Life__
 
-![build](https://github.com/develop-biology/lib_bio/actions/workflows/build_ebbs-cpp.yml/badge.svg)
+![build](https://github.com/develop-biology/lib_bio/actions/workflows/ebbs-pr.yml/badge.svg)
 
-Main documentation for this repo is provided in the [headers repo](https://github.com/develop-biology/part_headers_bio)
+** THIS CODE IS PRE-ALPHA **
+We'll be releasing the alpha version as soon as we can!
 
-## Organization
-This project uses [git-subrepo](https://github.com/ingydotnet/git-subrepo) to include the following repositories:
-
-* **headers**: inc/bio
-
-Because of this, make sure you `git subrepo push inc/bio` when updating header files. By default, this will push to the development branch, which must be manually merged into master.
+As a part of eons, we follow all [eons conventions](https://eons.llc/convention/).
 
 ### Namespaces
 Biology is broken into the following namespaces:
@@ -51,20 +47,14 @@ To recap, extendable types should follow these rules:
 * Corresponding namespace is defined in bio namespace.
 * Corresponding namespace is lower_snake_case.
 
-## Directories  
-Directories are broken down as follows:  
-**inc**: necessary header files for the bio library.  
-**src**: source files and implementations of the classes used in the bio library  
-
 ## Building
 
 This project depends on the [eons Basic Build System](https://github.com/eons-dev/bin_ebbs), which can be installed with `pip install ebbs`.  
 With that said, this is just c++ code. Build it however you want.
 
+Build using ebbs:
 ```
-mkdir build
-cd build
-ebbs -l cpp
+ebbs
 ```
 
-make install and windows instructions coming soon
+installation instructions coming soon (need package manager / repository semantics for module delivery)
