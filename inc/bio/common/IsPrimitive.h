@@ -23,153 +23,163 @@
 
 #include "Language.h"
 #include "Macros.h"
-#inclued "IsPointer.h"
+#include "IsPointer.h"
 
-#if BIO_CPP_VERSION >= 11
-
-	#include <type_traits>
-	#include <stdint.h>
-
-#else
+//@formatter:off
+#if BIO_CPP_VERSION < 11
 	#include <string>
+	#include <stdint.h>
+#else
+	#include <type_traits>
 	#include <cstdint>
 #endif
+//@formatter:on
 
 namespace bio {
+
+//@formatter:off
+#if BIO_CPP_VERSION < 11
+	template < typename T >
+	bool IsPrimitiveImplementation()
+	{
+		return false;
+	}
+
+	template < typename T >
+	bool IsPrimitiveStringImplementation()
+	{
+		return TypeName< T >().find("std::") != std::string::npos;
+	}
+#endif
+//@formatter:on
 
 /**
  * IsPrimitive is a bit more complex than it might need to be but the features, while slow, should be robust.
  * First, if T is a pointer, we'll dereference it and try again until it is not.
  * Second, if we're using C++98 and don't have an implementation for T, we'll try looking for std:: in its typename.
  * @tparam T
+ * @param t
  * @return whether or not T is a built-in type or a Biology class, which should, except for a few exceptions, always mean a child of physical::Wave; false by default.
  */
-template <typename T>
-inline bool IsPrimitive()
+template < typename T >
+inline bool IsPrimitive(const T t)
 {
-	BIO_SANITIZE_AT_LEVEL_2(!IsPointer<T>(), , return IsPrimitive<*T>());
-	#if BIO_CPP_VERSION >= 11
-	return std::is_fundamental<T>::value;
+	BIO_SANITIZE_AT_SAFETY_LEVEL_2(!IsPointer< T >(), ,
+		return IsPrimitive(*t));
+
+	//@formatter:off
+	#if BIO_CPP_VERSION < 11
+		bool ret;
+		BIO_SANITIZE_AT_SAFETY_LEVEL_2(IsPrimitiveImplementation< T >(&ret),
+			return ret,
+			return IsPrimitiveStringImplementation< T >());
 	#else
-	bool ret;
-	BIO_SANITIZE_AT_LEVEL_2(IsPrimitiveImplementation<T>(&ret),return ret, return IsPrimitiveStringImplementation<T>());
+		return std::is_fundamental<T>::value;
 	#endif
+	//@formatter:on
 }
 
 /**
- * Helper method for automatic type determination of expression.
- * @tparam T an auto-determined template type.
- * @param t an expression yielding a T.
- * @return Whether or not T is a built in type (i.e. the value of IsPrimitive<T>()).
+ * IsPrimitive without an arg is the same as that with, except no automatic pointer dereferencing can be done.
+ * If we're using C++98 and don't have an implementation for T, we'll try looking for std:: in its typename.
+ * @tparam T
+ * @return whether or not T is a built-in type or a Biology class, which should, except for a few exceptions, always mean a child of physical::Wave; false by default.
  */
-template <typename T>
-inline bool IsPrimitive(const T& t)
+template < typename T >
+inline bool IsPrimitive()
 {
-	return IsPrimitive<T>();
+	//@formatter:off
+	#if BIO_CPP_VERSION < 11
+	bool ret;
+	BIO_SANITIZE_AT_SAFETY_LEVEL_2(IsPrimitiveImplementation< T >(&ret),
+		return ret,
+		return IsPrimitiveStringImplementation< T >());
+	#else
+		return std::is_fundamental<T>::value;
+	#endif
+	//@formatter:on
 }
 
 #if BIO_CPP_VERSION < 11
+
 template <>
-	bool IsPrimitiveImplementation<bool>()
-	{
-		return true;
-	}
+bool IsPrimitiveImplementation< bool >()
+{
+	return true;
+}
 
-	template <>
-	bool IsPrimitiveImplementation<float>()
-	{
-		return true;
-	}
+template <>
+bool IsPrimitiveImplementation< float >()
+{
+	return true;
+}
 
-	tempate <>
-	bool IsPrimitiveImplementation<double>()
-	{
-		return true;
-	}
+template <>
+bool IsPrimitiveImplementation< double >()
+{
+	return true;
+}
 
-//	template <>
-//	bool IsPrimitiveImplementation<char>()
-//	{
-//		return true;
-//	}
+//This is int8_t & may cause compiler errors.
+//template <>
+//bool IsPrimitiveImplementation< char >()
+//{
+//	return true;
+//}
 
-	template <>
-	bool IsPrimitiveImplementation<std::string>()
-	{
-		return true;
-	}
+template <>
+bool IsPrimitiveImplementation< std::string >()
+{
+	return true;
+}
 
-	template <>
-	bool IsPrimitiveImplementation<int8_t>()
-	{
-		return true;
-	}
+template <>
+bool IsPrimitiveImplementation< int8_t >()
+{
+	return true;
+}
 
-	template <>
-	bool IsPrimitiveImplementation<int16_t>()
-	{
-		return true;
-	}
+template <>
+bool IsPrimitiveImplementation< int16_t >()
+{
+	return true;
+}
 
-	template <>
-	bool IsPrimitiveImplementation<int32_t>()
-	{
-		return true;
-	}
+template <>
+bool IsPrimitiveImplementation< int32_t >()
+{
+	return true;
+}
 
-	template <>
-	bool IsPrimitiveImplementation<int64_t>()
-	{
-		return true;
-	}
+template <>
+bool IsPrimitiveImplementation< int64_t >()
+{
+	return true;
+}
 
-	template <>
-	bool IsPrimitiveImplementation<uint8_t>()
-	{
-		return true;
-	}
+template <>
+bool IsPrimitiveImplementation< uint8_t >()
+{
+	return true;
+}
 
-	template <>
-	bool IsPrimitiveImplementation<uint16_t>()
-	{
-		return true;
-	}
+template <>
+bool IsPrimitiveImplementation< uint16_t >()
+{
+	return true;
+}
 
-	template <>
-	bool IsPrimitiveImplementation<uint32_t>()
-	{
-		return true;
-	}
+template <>
+bool IsPrimitiveImplementation< uint32_t >()
+{
+	return true;
+}
 
-	template <>
-	bool IsPrimitiveImplementation<uint64_t>()
-	{
-		return true;
-	}
-
-		template <>
-	bool IsPrimitiveImplementation<int8_t>()
-	{
-		return true;
-	}
-
-	template <>
-	bool IsPrimitiveImplementation<int16_t>()
-	{
-		return true;
-	}
-
-	template <>
-	bool IsPrimitiveImplementation<int32_t>()
-	{
-		return true;
-	}
-
-	template <typename T>
-	bool IsPrimitiveStringImplementation()
-	{
-		return TypeName<T>().find("std::") != std::string::npos;
-	}
+template <>
+bool IsPrimitiveImplementation< uint64_t >()
+{
+	return true;
+}
 
 #endif
 

@@ -24,6 +24,7 @@
 #include "bio/common/VirtualBase.h"
 #include "bio/physical/Filterable.h"
 #include "bio/physical/Filters.h"
+#include "Types.h"
 #include "Levels.h"
 #include "Macros.h"
 
@@ -39,9 +40,16 @@ class Engine;
  * The above is accomplished by passing log::Engine as a pointer to all LoggerObjects.
  */
 class Writer :
-	virtual public physical::Filterable, protected VirtualBase
+	virtual public physical::Filterable,
+	public physical::Class<Writer>
 {
 public:
+
+	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(physical, Writer)
+
 	/**
 	 *
 	 */
@@ -59,12 +67,6 @@ public:
 	 *
 	 */
 	virtual ~Writer();
-
-	/**
-	 * VirtualBase required method. See that class for details (in common/)
-	 * @param args
-	 */
-	virtual void InitializeImplementation(ByteStreams args);
 
 	/**
 	 * For static callers only.
@@ -105,16 +107,20 @@ public:
 	 */
 	bool HasLogEngine() const;
 
-	/**
-	 * From physicla::Wave.
-	 * Defining this here instead of deriving from physical::Class because there is not yet an appropriate Symmetry to provide to physical::Class.
-	 * @return a copy of the most derived object of *this.
-	 */
-	virtual Writer* Clone() const;
-
 protected:
 
-	//In case the above are too restrictive
+	/**
+	 * VirtualBase required method. See that class for details (in common/)
+	 * @param args
+	 */
+	virtual void InitializeImplementation(ByteStreams args);
+
+	/**
+	 * In case the above are too restrictive
+	 * @param level
+	 * @param format
+	 * @param ...
+	 */
 	void Log(
 		Level level,
 		const char* format,

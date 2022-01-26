@@ -19,8 +19,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
 #include "bio/chemical/PeriodicTable.h"
 #include "bio/chemical/Substance.h"
 
@@ -32,11 +30,17 @@ namespace chemical {
  * This is a Substance for ease of use but can be changed later.
  * NOTE, this is not chemical::Element<T>, which is used to define these Elements.
  */
-class Element : public Substance
+class Element :
+	public Substance
 {
 public:
-	Element() {}
-	virtual ~Element() {}
+	Element()
+	{
+	}
+
+	virtual ~Element()
+	{
+	}
 };
 
 PeriodicTableImplementation::PeriodicTableImplementation()
@@ -52,9 +56,10 @@ PeriodicTableImplementation::~PeriodicTableImplementation()
 const Properties PeriodicTableImplementation::GetPropertiesOf(AtomicNumber id) const
 {
 	Properties ret;
-	Element* element = Cast<Element*>(GetTypeFromId(id));
-	BIO_SANITIZE(element,,return ret);
-	ret = &element->GetAll<Property>();
+	Element* element = Cast< Element* >(GetTypeFromId(id));
+	BIO_SANITIZE(element, ,
+		return ret);
+	ret = &element->GetAll< Property >();
 	return ret;
 }
 
@@ -63,19 +68,34 @@ const Properties PeriodicTableImplementation::GetPropertiesOf(Name name) const
 	return GetPropertiesOf(GetIdFromName(name));
 }
 
-void PeriodicTableImplementation::RecordPropertyOf(AtomicNumber id, Property property)
+void PeriodicTableImplementation::RecordPropertyOf(
+	AtomicNumber id,
+	Property property
+)
 {
 	Properties properties;
 	properties.push_back(property);
-	RecordPropertiesOf(id, properties);
+	RecordPropertiesOf(
+		id,
+		properties
+	);
 }
 
-void PeriodicTableImplementation::RecordPropertyOf(Name name, Property property)
+void PeriodicTableImplementation::RecordPropertyOf(
+	Name name,
+	Property property
+)
 {
-	RecordPropertyOf(GetIdFromName(name), property);
+	RecordPropertyOf(
+		GetIdFromName(name),
+		property
+	);
 }
 
-void PeriodicTableImplementation::RecordPropertiesOf(AtomicNumber id, Properties properties)
+void PeriodicTableImplementation::RecordPropertiesOf(
+	AtomicNumber id,
+	Properties properties
+)
 {
 	typename Hadits::iterator hdt = Find(id);
 	if (hdt == this->m_hadits.end())
@@ -83,18 +103,24 @@ void PeriodicTableImplementation::RecordPropertiesOf(AtomicNumber id, Properties
 		return;
 	}
 
-	Element* element = Cast<Element*>(hdt->type);
+	Element* element = Cast< Element* >(hdt->type);
 	if (!element)
 	{
 		element = new Element();
 		hdt->type = element; //just to be sure Cast didn't pull a fast one on us.
 	}
-	element->Import<Property>(properties);
+	element->Import< Property >(properties);
 }
 
-void PeriodicTableImplementation::RecordPropertiesOf(Name name, Properties properties)
+void PeriodicTableImplementation::RecordPropertiesOf(
+	Name name,
+	Properties properties
+)
 {
-	RecordPropertiesOf(GetIdFromName(name), properties);
+	RecordPropertiesOf(
+		GetIdFromName(name),
+		properties
+	);
 }
 
 } //chemical namespace

@@ -25,11 +25,18 @@
 #include "bio/common/Macros.h"
 #include "bio/common/IsPrimitive.h"
 #include "bio/common/OS.h"
+#include "bio/physical/Quantum.h"
 #include "bio/physical/Class.h"
 #include "PeriodicTable.h"
+#include "BondTypes.h"
+#include "Bond.h"
 
 namespace bio {
 namespace chemical {
+
+class Symmetry;
+
+class Bond;
 
 /**
  * Atom MUST be virtually inherited!
@@ -41,9 +48,16 @@ namespace chemical {
  * NOTE: m_bonds[0] is always empty. This may change in a future release.
  */
 class Atom :
-	public physical::Class<Atom>
+	public physical::Class< Atom >
 {
 public:
+
+	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
+		Atom)
+
 	/**
 	 *
 	 */
@@ -65,27 +79,27 @@ public:
 	 * Required method from Wave. See that class for details.
 	 * @return a Symmetrical image of *this
 	 */
-	virtual Symmetry* Spin() const;
+	virtual physical::Symmetry* Spin() const;
 
 	/**
 	 * Required method from Wave. See that class for details.
 	 * Reconstruct *this from the given Symmetry.
 	 * @param symmetry
 	 */
-	virtual void Reify(Symmetry* symmetry);
+	virtual void Reify(physical::Symmetry* symmetry);
 
 	/**
 	 * Gets the bond to an bonded of type T from *this, then casts the Bond()ed Wave to T*.
 	 * @tparam T
 	 * @return a T* that is Bond()ed with *this; else NULL.
 	 */
-	template <typename T>
+	template < typename T >
 	T* AsBonded()
 	{
-		Valence position = GetBondPosition<T>();
+		Valence position = GetBondPosition< T >();
 		BIO_SANITIZE(position, ,
 			return NULL);
-		return Cast<T*>(m_bonds[position].m_bonded);
+		return Cast< T* >(m_bonds[position].GetBonded());
 	}
 
 	/**
@@ -93,13 +107,13 @@ public:
 	 * @tparam T
 	 * @return  a const T* that is Bond()ed with *this; else NULL.
 	 */
-	template <typename T>
+	template < typename T >
 	const T* AsBonded() const
 	{
-		Valence position = GetBondPosition<T>();
+		Valence position = GetBondPosition< T >();
 		BIO_SANITIZE(position, ,
 			return NULL);
-		return Cast<const T*>(m_bonds[position].m_bonded);
+		return Cast< const T* >(m_bonds[position].GetBonded());
 	}
 
 	/**
@@ -107,10 +121,10 @@ public:
 	 * @tparam T
 	 * @return *this as a T*, from a Bonded Quantum Wave, or NULL.
 	 */
-	template <typename T>
+	template < typename T >
 	T* AsBondedQuantum()
 	{
-		return AsBonded<Quantum<T>>();
+		return AsBonded< physical::Quantum< T > >();
 	}
 
 	/**
@@ -118,11 +132,10 @@ public:
 	 * @tparam T
 	 * @return *this as a const T*, from a Bonded Quantum Wave.
 	 */
-	template <typename T>
+	template < typename T >
 	const T* AsBondedQuantum() const
 	{
-		return AsBonded<Quantum < T>>
-		();
+		return AsBonded< physical::Quantum< T > >();
 	}
 
 	/**
@@ -130,16 +143,16 @@ public:
 	 * @tparam T
 	 * @return *this as a T* or NULL.
 	 */
-	template <typename T>
+	template < typename T >
 	T* As()
 	{
-		if (IsPrimitive<T>())
+		if (IsPrimitive< T >())
 		{
-			return AsBondedQuantum<T>();
+			return AsBondedQuantum< T >();
 		}
 		else
 		{
-			return AsBonded<T>();
+			return AsBonded< T >();
 		}
 	}
 
@@ -148,16 +161,16 @@ public:
 	 * @tparam T
 	 * @return *this as a const T* or NULL.
 	 */
-	template <typename T>
+	template < typename T >
 	const T* As() const
 	{
-		if (IsPrimitive<T>())
+		if (IsPrimitive< T >())
 		{
-			return AsBondedQuantum<T>();
+			return AsBondedQuantum< T >();
 		}
 		else
 		{
-			return AsBonded<T>();
+			return AsBonded< T >();
 		}
 	}
 
@@ -167,21 +180,10 @@ public:
 	 * @tparam T
 	 * @return *this as a T* or NULL.
 	 */
-	template <typename T>
-	T* operator T*()
+	template < typename T >
+	operator T*()
 	{
-		return As<T>();
-	}
-
-	/**
-	 * Const version of operator T*
-	 * @tparam T
-	 * @return *this as a T* or NULL.
-	 */
-	template <typename T>
-	const T* operator T*() const
-	{
-		return As<T>();
+		return As< T >();
 	}
 
 	/**
@@ -202,13 +204,13 @@ public:
 	 * Attenuates the other Wave.
 	 * @param other
 	 */
-	virtual void operator += (const Wave* other);
+	virtual void operator+=(const Wave* other);
 
 	/**
 	 * Disattenuates the other Wave
 	 * @param other
 	 */
-	virtual void operator -= (const Wave* other);
+	virtual void operator-=(const Wave* other);
 
 	/**
 	 * Adds a new Bond to *this or updates an Empty Bond for T.
@@ -219,16 +221,16 @@ public:
 	 * @param toBond what to Bond
 	 * @return true, if the Bond was created; false otherwise.
 	 */
-	template <typename T>
+	template < typename T >
 	bool FormBond(
 		T* toBond,
-		BondType type = Unknown())
+		BondType type = bond_type::Unknown())
 	{
-		BIO_SANITIZE(IsPrimitive<T>(), ,
+		BIO_SANITIZE(IsPrimitive< T >(), ,
 			return false);
-		BIO_SANITIZE(Cast<Wave*>(toBond), ,
+		BIO_SANITIZE(Cast< Wave* >(toBond), ,
 			return false);
-		AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType<T>();
+		AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< T >();
 		return FormBondImplementation(
 			toBond,
 			bondedId,
@@ -245,16 +247,16 @@ public:
 	 * @param type
 	 * @return true if the Bond was Broken; false otherwise.
 	 */
-	template <typename T>
+	template < typename T >
 	bool BreakBond(
 		T* toDisassociate,
-		BondType type = Unknown())
+		BondType type = bond_type::Unknown())
 	{
-		BIO_SANITIZE(IsPrimitive<T>(), ,
+		BIO_SANITIZE(IsPrimitive< T >(), ,
 			return false);
-		BIO_SANITIZE(Cast<Wave*>(toDisassociate), ,
+		BIO_SANITIZE(Cast< Wave* >(toDisassociate), ,
 			return false);
-		AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType<T>();
+		AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< T >();
 		return BreakBondImplementation(
 			toDisassociate,
 			bondedId,
@@ -284,10 +286,10 @@ public:
 	 * @tparam T
 	 * @return GetBondPosition() for the given type; else 0.
 	 */
-	template <typename T>
+	template < typename T >
 	Valence GetBondPosition() const
 	{
-		return GetBondPosition(PeriodicTable::Instance().GetIdFromType<T>());
+		return GetBondPosition(PeriodicTable::Instance().GetIdFromType< T >());
 	}
 
 	/**
@@ -302,10 +304,10 @@ public:
 	 * @tparam T
 	 * @return the BondType of the Bond for T or BondTypePerspective::InvalidId().
 	 */
-	template <typename T>
+	template < typename T >
 	BondType GetBondType() const
 	{
-		return GetBondType(GetBondPosition<T>());
+		return GetBondType(GetBondPosition< T >());
 	}
 
 protected:
@@ -321,7 +323,8 @@ protected:
 	virtual bool FormBondImplementation(
 		Wave* toBond,
 		AtomicNumber id,
-		BondType type);
+		BondType type
+	);
 
 	/**
 	 * Remove a Bond.
@@ -333,7 +336,8 @@ protected:
 	virtual bool BreakBondImplementation(
 		Wave* toDisassociate,
 		AtomicNumber id,
-		BondType type);
+		BondType type
+	);
 };
 
 } //chemical namespace

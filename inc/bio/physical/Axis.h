@@ -21,8 +21,14 @@
 
 #pragma once
 
+#include <string>
+
 namespace bio {
 namespace physical {
+
+class Wave;
+
+class Symmetry;
 
 class Axis
 {

@@ -27,28 +27,25 @@
 namespace bio {
 
 /**
- * Names are used in NameTracker<>s but are defined here for simplicity.
- */
-typedef const char* Name;
-typedef std::vector<Name> Names;
-
-/**
  * Id type used for all Ids until Named classes can be properly derived from. See physical::Identifiable.h for more info.
  * StandardDimension is NOT used when the type itself is the id, e.g. for Code, etc.
  */
-BIO_ID(StandardDimension, unint32_t)
+BIO_ID(StandardDimension,
+	uint32_t)
 
 /**
  * Value returned by many bio methods.
  * You may make your own Codes by using the macro defined in common/Codes.h
  */
-BIO_ID_WITH_PERSPECTIVE(Code, uint8_t)
+BIO_ID_WITH_PERSPECTIVE(Code,
+	uint8_t)
 
 /**
  * States determine the condition of an object (e.g. a chemical::Substance) at runtime.
  * The most common State is Enabled() (see "bio/chemical/States.h")
  */
-BIO_ID_WITH_PERSPECTIVE(State, uint8_t)
+BIO_ID_WITH_PERSPECTIVE(State,
+	uint8_t)
 
 /**
  * Properties are feature flags that give some hint of what a Wave can do (i.e. be cast as).
@@ -57,49 +54,28 @@ BIO_ID_WITH_PERSPECTIVE(State, uint8_t)
  *
  * While the State of an object might change often, the Properties should remain constant. However, that is not enforced. The properties of water change when its chemical state changes from liquid to solid, so the Properties of your objects could change in whatever way you'd like, though doing so is generally not recommended.
  */
-BIO_ID_WITH_PERSPECTIVE(Property, uint8_t)
+BIO_ID_WITH_PERSPECTIVE_WITH_PLURAL(Property,
+	Properties,
+	uint8_t)
 
 /**
  * SymmetryTypes determine what to do with a particular Symmetry.
  * They should contain the generic building blocks of all Axes (e.g. programming languages) such that Waves can be Spun around any Axis.
  */
-BIO_ID_WITH_PERSPECTIVE(SymmetryType, uint8_t)
+BIO_ID_WITH_PERSPECTIVE(SymmetryType,
+	uint8_t)
 
-class Symmetry;
-typedef std::vector<Symmetry*> Symmetries;
-BIO_PERSPECTIVE_SINGLETON(SymmetryPerspective,
-	StandardDimension)
-
-BIO_ID_WITH_PERSPECTIVE(Filter, uint8_t)
+BIO_ID_WITH_PERSPECTIVE(Filter,
+	uint8_t)
 } //bio namespace
 
 namespace bio {
 namespace physical {
 
-/**
- * milliseconds (ms for short)
- */
-typedef uint32_t Timestamp;
-typedef std::vector<Timestamp> Timestamps;
-
-/**
- * microseconds (us for short)
- */
-typedef uint32_t TimeUS;
-
-/**
- * milliseconds (ms for short)
- */
-typedef uint32_t TimeMS;
-
-/**
- * seconds (s or sec for short)
- */
-typedef uint32_t TimeSec;
-
-class Wave
-typedef std::vector<Wave*> Waves;
-typesdef std::vector<const Wave*> Waves;
+class Symmetry;
+//typedef std::vector<Symmetry*> Symmetries; //From Wave.h
+BIO_PERSPECTIVE_SINGLETON(SymmetryPerspective,
+	StandardDimension)
 
 } //physical namespace
 } //bio namespace

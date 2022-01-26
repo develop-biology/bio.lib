@@ -31,6 +31,59 @@
 #include "ByteStream.h"
 
 /**
+ * Used to remove fhe parentheses from around an expression.
+ * Should be invoked as: BIO_EXPAND_TUPLE tuple
+ * where tuple is (something, like, this)
+ * which expands to BIO_EXPAND_TUPLE (something, like, this) => something, like, this
+ */
+#define BIO_EXPAND_TUPLE(...) __VA_ARGS__
+
+/**
+ * Encapsulates an expression containing commas, allowing it to be safely passed as a single macro argument.
+ * Should be invoked as:
+ * 		SOME_OTHER_MACRO(
+ * 			BIO_SINGLE_ARG(
+ * 				something,
+ * 				that,
+ * 				would,
+ * 				normally,
+ * 				be,
+ * 				many,
+ * 				args
+ * 			), whatever, other, arguments, are, needed)
+ * While this is currently exactly the same as BIO_EXPAND_TUPLE, the use case is different, so duplicate code is maintained.
+ */
+#define BIO_SINGLE_ARG(...) __VA_ARGS__
+
+/**
+ * Implementation for BIO_GET_NUM_ARGS.
+ * You can ignore this.
+ */
+#define BIO_ELEVENTH_ARG(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, ...) a11
+
+/**
+ * @return the number of args given, up to 9.
+ */
+#define BIO_GET_NUM_ARGS(...)                                                  \
+	BIO_ELEVENTH_ARG(dummy, ## __VA_ARGS__, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
+
+#define BIO_GET_NUM_ARGS_OF_MACRO(macro)                                       \
+	BIO_GET_NUM_ARGS(macro)
+
+/**
+ * Calls a namespaced macro.
+ * NOTE: These deviate from the traditional naming scheme because namespaces are lowercase and, for ease of use, we will not require the namespace be written in both capitals and lower case.
+ */
+#define BIO_CALL_NS_MACRO(methodName, ns, ...)                                 \
+	methodName##_##ns(__VA_ARGS__)
+
+/**
+ * Call a macro-based loop. These are hard-coded with a certain iteration count.
+ */
+#define BIO_CALL_LOOP(loopName, iterations, ...)                               \
+    loopName##_##iterations(__VA_ARGS__)
+
+/**
  * Singleton implementation makes the constructor private so that there is only one instance ever created, which is by Instance()
  * we also override default copy constructor and assignment operator so that nobody can make a copy of the singleton  (otherwise it wouldn't be a singleton). We don't define them, so these methods will give a link error if used.
 */
@@ -61,12 +114,12 @@ typedef std::pair<keyType, valueType> mapName##Pair;
 
 
 #if BIO_CPP_VERSION < 11
-#define BIO_CACHE(expression)                                                  \
-bio::ByteStream RESULT;                                                        \
-RESULT.Set(expression);
+	#define BIO_CACHE(expression)                                              \
+    bio::ByteStream RESULT;                                                    \
+    RESULT.Set(expression);
 #else
-#define BIO_CACHE(expression)                                                  \
-auto RESULT = (expression);
+	#define BIO_CACHE(expression)                                              \
+	auto RESULT = (expression);
 #endif
 
 /**
@@ -108,11 +161,11 @@ else                                                                           \
 
 //@formatter:off
 #if defined(BIO_SAFETY_LEVEL) && BIO_SAFETY_LEVEL == 0
-	#define BIO_SANITIZE(test, success, failure)    BIO_SANITIZE_AT_SAFETY_LEVEL_0(test, success, failure)
+	#define BIO_SANITIZE(test, success, failure)    BIO_SANITIZE_AT_SAFETY_LEVEL_0(test, BIO_SINGLE_ARG(success), BIO_SINGLE_ARG(failure))
 #elif defined(BIO_SAFETY_LEVEL) && BIO_SAFETY_LEVEL == 1
-	#define BIO_SANITIZE(test, success, failure)    BIO_SANITIZE_AT_SAFETY_LEVEL_1(test, success, failure)
+	#define BIO_SANITIZE(test, success, failure)    BIO_SANITIZE_AT_SAFETY_LEVEL_1(test, BIO_SINGLE_ARG(success), BIO_SINGLE_ARG(failure))
 #else
-	#define BIO_SANITIZE(test, success, failure)    BIO_SANITIZE_AT_SAFETY_LEVEL_2(test, success, failure)
+	#define BIO_SANITIZE(test, success, failure)    BIO_SANITIZE_AT_SAFETY_LEVEL_2(test, BIO_SINGLE_ARG(success), BIO_SINGLE_ARG(failure))
 #endif
 //@formatter:on
 
@@ -138,24 +191,36 @@ else                                                                           \
  */
 #define BIO_SANITIZE_WITH_CACHE(test, success, failure)                        \
 {                                                                              \
-	BIO_CACHE(test)                                                            \
-	BIO_SANITIZE(RESULT, success, failure)                                     \
+    BIO_CACHE(test)                                                            \
+    BIO_SANITIZE(                                                              \
+        RESULT,                                                                \
+        BIO_SINGLE_ARG(success),                                                  \
+        BIO_SINGLE_ARG(failure))                                                  \
 }
 
 #define BIO_SANITIZE_WITH_CACHE_AT_SAFETY_LEVEL_0(test, success, failure)      \
 {                                                                              \
-	BIO_CACHE(test)                                                            \
-	BIO_SANITIZE_AT_SAFETY_LEVEL_0(RESULT, success, failure)                   \
+    BIO_CACHE(test)                                                            \
+    BIO_SANITIZE_AT_SAFETY_LEVEL_0(                                            \
+        RESULT,                                                                \
+        BIO_SINGLE_ARG(success),                                                  \
+        BIO_SINGLE_ARG(failure))                                                  \
 }
 
 #define BIO_SANITIZE_WITH_CACHE_AT_SAFETY_LEVEL_1(test, success, failure)      \
 {                                                                              \
-	BIO_CACHE(test)                                                            \
-	BIO_SANITIZE_AT_SAFETY_LEVEL_1(RESULT, success, failure)                   \
+    BIO_CACHE(test)                                                            \
+    BIO_SANITIZE_AT_SAFETY_LEVEL_1(                                            \
+        RESULT,                                                                \
+        BIO_SINGLE_ARG(success),                                                  \
+        BIO_SINGLE_ARG(failure))                                                  \
 }
 
 #define BIO_SANITIZE_WITH_CACHE_AT_SAFETY_LEVEL_2(test, success, failure)      \
 {                                                                              \
-	BIO_CACHE(test)                                                            \
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(RESULT, success, failure)                   \
+    BIO_CACHE(test)                                                            \
+    BIO_SANITIZE_AT_SAFETY_LEVEL_2(                                            \
+        RESULT,                                                                \
+        BIO_SINGLE_ARG(success),                                                  \
+        BIO_SINGLE_ARG(failure))                                                  \
 }

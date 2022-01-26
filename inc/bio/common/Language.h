@@ -25,43 +25,43 @@
 #define BIO_C_VERSION 0
 
 
-#ifdef(__cplusplus)
+#ifdef __cplusplus
 	#if __cplusplus == 199711L
-		#udef BIO_CPP_VERSION
+		#undef BIO_CPP_VERSION
 		#define BIO_CPP_VERSION 1
 	#elif __cplusplus == 201103L
-		#udef BIO_CPP_VERSION
+		#undef BIO_CPP_VERSION
 		#define BIO_CPP_VERSION 11
 	#elif __cplusplus == 201402L
-		#udef BIO_CPP_VERSION
+		#undef BIO_CPP_VERSION
 		#define BIO_CPP_VERSION 14
 	#elif __cplusplus == 201703L
-		#udef BIO_CPP_VERSION
+		#undef BIO_CPP_VERSION
 		#define BIO_CPP_VERSION 17
 	#elif __cplusplus == 202002L
-		#udef BIO_CPP_VERSION
+		#undef BIO_CPP_VERSION
 		#define BIO_CPP_VERSION 20
 	#else
-		#udef BIO_CPP_VERSION
+		#undef BIO_CPP_VERSION
 		#define BIO_CPP_VERSION 20
 	#endif
 #endif
 
-#ifdef(__STDC_VERSION__)
+#ifdef __STDC_VERSION__
 	#if __STDC_VERSION__ == 199409L
-		#udef BIO_C_VERSION
+		#undef BIO_C_VERSION
 		#define BIO_C_VERSION 1
 	#elif __STDC_VERSION__ == 199901L
-		#udef BIO_C_VERSION
+		#undef BIO_C_VERSION
 		#define BIO_C_VERSION 2
 	#elif __STDC_VERSION__ == 201112L
-		#udef BIO_C_VERSION
+		#undef BIO_C_VERSION
 		#define BIO_C_VERSION 11
 	#elif __STDC_VERSION__ == 201710L
-		#udef BIO_C_VERSION
+		#undef BIO_C_VERSION
 		#define BIO_C_VERSION 18
 	#else
-		#udef BIO_C_VERSION
+		#undef BIO_C_VERSION
 		#define BIO_C_VERSION 18
 	#endif
 #endif

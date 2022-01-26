@@ -19,9 +19,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
 #include "bio/common/Threaded.h"
+#include "bio/common/Cast.h"
 
 //@formatter:off
 #if BIO_CPP_VERSION < 11
@@ -56,7 +55,7 @@ Threaded::Threaded()
 
 Threaded::~Threaded()
 {
-	BIO_ASSERT(!m_runing);
+	BIO_ASSERT(!m_running);
 }
 
 bool Threaded::IsRunning()
@@ -74,15 +73,17 @@ void Threaded::RequestStop()
 	UnlockThread();
 }
 
-/*static*/ void Threaded::Worker(Threaded* threaded)
+/*static*/ void* Threaded::Worker(void* arg)
 {
-	BIO_SANITIZE(threaded,,return);
+	Threaded* threaded = Cast<Threaded*>(arg);
+	BIO_SANITIZE(threaded, ,
+		return NULL);
 
 	threaded->LockThread();
 	threaded->m_running = true;
 	threaded->UnlockThread();
 
-	again = true;
+	bool again = true;
 	while (again)
 	{
 		bool again = threaded->Work();
@@ -95,8 +96,10 @@ void Threaded::RequestStop()
 	threaded->m_running = false;
 	threaded->UnlockThread();
 
+	return NULL;
+}
 
-ThreadId GetId()
+Threaded::ThreadId Threaded::GetThreadId()
 {
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
@@ -121,7 +124,7 @@ bool Threaded::Start()
 	#if BIO_CPP_VERSION < 11
 		BIO_SANITIZE(m_running,,return false);
 		#ifdef BIO_OS_IS_LINUX
-			int result = pthread_create(&m_thread, NULL, Workr, this);
+			int result = pthread_create(&m_thread, NULL, Worker, this);
 		#endif
 		m_created = result == 0;
 	#else
@@ -140,16 +143,17 @@ bool Threaded::Stop()
 	UnlockThread();
 
 	BIO_SANITIZE(isStopped, ,
-	return true)
+		return true)
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
-		m_stopRequsted = true;
+		m_stopRequested = true;
 		#ifdef BIO_OS_IS_LINUX
-			int result = pthread_join(m_thread);
+            void** threadReturn;
+			int result = pthread_join(m_thread, threadReturn);
 		#endif
 		RequestStop();
 		m_created = false;
-		return result == 0
+		return result == 0;
 	#else
 		BIO_SANITIZE(m_thread,,return true)
 		RequestStop();
@@ -163,12 +167,12 @@ bool Threaded::Stop()
 
 }
 
-void Threaded::Sleep(physical::TimeUS us)
+void Threaded::Sleep(TimeUS us)
 {
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
 		#ifdef BIO_OS_IS_LINUX
-			usleep(ms);
+			usleep(us);
 		#endif
 	#else
 		std::this_thread::sleep_for (std::chrono::microseconds(ms));

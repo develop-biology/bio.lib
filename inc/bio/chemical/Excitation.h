@@ -22,6 +22,7 @@
 #pragma once
 
 #include "bio/physical/Class.h"
+#include "bio/physical/Macros.h"
 #include "Properties.h"
 
 namespace bio {
@@ -31,15 +32,20 @@ namespace chemical {
  * Base class for all Excitations; see below.
  * @tparam WAVE
  */
-template <class EXCITATION, class WAVE>
+template < class EXCITATION, class WAVE >
 class ExcitationBase :
-	public physical::Class<EXCITATION>
+	public physical::Class< EXCITATION >
 {
+public:
+	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
+		ExcitationBase)
+
 	/**
 	 *
 	 */
-public
-
 	ExcitationBase()
 	{
 
@@ -63,7 +69,7 @@ public
 	 */
 	virtual Properties GetProperties() const
 	{
-		Properties ret = PeriodicTable::Instance().GetPropertiesOf<WAVE>();
+		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
 		ret.push_back(property::Excitatory());
 		return ret;
 	}
@@ -71,8 +77,8 @@ public
 
 #if BIO_CPP_VERSION >= 17
 
-#include <tuple>
-#include <functional>
+	#include <tuple>
+	#include <functional>
 
 /**
  * An Excitation is a Wave that stores a function pointer, i.e. a functor.
@@ -82,17 +88,24 @@ public
  * @tparam RETURN
  * @tparam ARGUMENTS
  */
-template<class WAVE, typename RETURN, typename... ARGUMENTS>
+template< class WAVE, typename RETURN, typename... ARGUMENTS >
 class Excitation :
-	public ExcitationBase<Excitation<WAVE,RETURN,ARGUMENTS...>, WAVE>
+	public ExcitationBase< Excitation< WAVE,RETURN,ARGUMENTS...>, WAVE>,
+	public physical::Class< Excitation< WAVE,RETURN,ARGUMENTS...> >
 {
 public:
+
+	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(physical, Excitation<WAVE,RETURN,ARGUMENTS...>)
 
 	/**
 	 *
 	 */
 	Excitation(RETURN(WAVE::*function)(ARGUMENTS...), const ARGUMENTS&... args)
 		:
+		physical::Class< Excitation<WAVE,RETURN,ARGUMENTS...> >(this),
 		m_function(function),
 		m_args(args)
 	{
@@ -131,17 +144,25 @@ protected:
  * @tparam WAVE
  * @tparam RETURN
  */
-template <class WAVE, typename RETURN>
+template < class WAVE, typename RETURN >
 class Excitation :
-	public ExcitationBase<Excitation<WAVE, RETURN>, WAVE>
+	public ExcitationBase< Excitation< WAVE, RETURN >, WAVE >,
+	public physical::Class< Excitation< WAVE, RETURN > >
 {
 public:
+
+	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
+		Excitation< WAVE, RETURN >)
 
 	/**
 	 *
 	 */
 	Excitation(RETURN(WAVE::*function)())
 		:
+		physical::Class< Excitation< WAVE, RETURN > >(this),
 		m_function(function)
 	{
 	}
@@ -175,19 +196,29 @@ protected:
  * @tparam RETURN
  * @tparam ARGUMENT
  */
-template <class WAVE, typename RETURN, typename ARGUMENT>
+template < class WAVE, typename RETURN, typename ARGUMENT >
 class Excitation :
-	public ExcitationBase<Excitation<WAVE, RETURN, ARGUMENT>, WAVE>
+	public ExcitationBase< Excitation< WAVE, RETURN, ARGUMENT >, WAVE >,
+	public physical::Class< Excitation< WAVE, RETURN, ARGUMENT > >
 {
 public:
+
+	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
+		Excitation< WAVE, RETURN, ARGUMENT >)
+
 
 	/**
 	 *
 	 */
 	Excitation(
 		RETURN(WAVE::*function)(ARGUMENT),
-		ARGUMENT arg)
+		ARGUMENT arg
+	)
 		:
+		physical::Class< Excitation< WAVE, RETURN, ARGUMENT > >(this),
 		m_function(function),
 		m_arg(arg)
 	{

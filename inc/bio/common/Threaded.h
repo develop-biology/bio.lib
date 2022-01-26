@@ -23,7 +23,9 @@
 
 #include "ThreadSafe.h"
 #include "Language.h"
-#include "bio/physical/Types.h"
+#include "OS.h"
+#include "Types.h"
+#include "Macros.h"
 
 //@formatter:off
 #if BIO_CPP_VERSION < 11
@@ -62,8 +64,8 @@ public:
 	 */
 	static ThreadId InvalidThreadId()
 	{
-		return 0
-	};
+		return 0;
+	}
 
 	/**
 	 * YOU MUST CALL STOP BEFORE DESTROYING *this!!!!
@@ -87,6 +89,7 @@ public:
 	virtual bool Work()
 	{
 		//your code goes here!
+        return false;
 	}
 
 	/**
@@ -115,7 +118,7 @@ public:
 	 * Release thread processing for us microseconds.
 	 * @param us
 	 */
-	virtual void Sleep(physical::TimeUS us);
+	virtual void Sleep(TimeUS us);
 
 protected:
 
@@ -139,7 +142,11 @@ protected:
 	bool m_running; //written by spawn; read by parent.
 	bool m_stopRequested; //written by parent; read by spawn.
 
-	static void Worker(Threaded* threaded);
+	/**
+	 * @param arg a Threaded*
+	 * @return NULL
+	 */
+	static void* Worker(void* arg);
 };
 
 } //bio namespace

@@ -37,15 +37,28 @@ namespace physical {
  * Each Quantum<T> will store a pointer to a T which it will new on creation and delete on destruction.
  * @tparam T
  */
-template <typename T>
-class Quantum : public Class<Quantum<T>>
+template < typename T >
+class Quantum :
+	public Class< Quantum< T > >
 {
 public:
+
+	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
+		Quantum< T >)
+
 	/**
 	 *
 	 */
-	Quantum() :
-		Class(this, new Symmetry(TypeName(T), symmetry_type::DefineVariable())),
+	Quantum()
+		:
+		Class< Quantum< T > >(
+			this,
+			new Symmetry(
+				TypeName< T >(),
+				symmetry_type::DefineVariable())),
 		m_quantized(new T())
 	{
 
@@ -54,8 +67,13 @@ public:
 	/**
 	 * @param assignment
 	 */
-	Quantum(const T& assignment) :
-		Class(this, new Symmetry(TypeName(T), symmetry_type::DefineVariable())),
+	Quantum(const T& assignment)
+		:
+		Class< Quantum< T > >(
+			this,
+			new Symmetry(
+				TypeName< T >(),
+				symmetry_type::DefineVariable())),
 		m_quantized(new T(assignment))
 	{
 	}
@@ -63,9 +81,14 @@ public:
 	/**
 	 * @param other
 	 */
-	Quantum(const Quantum<T>& other) :
-		Class(this, new Symmetry(TypeName(T), symmetry_type::DefineVariable())),
-		m_quantized(new T(other)),
+	Quantum(const Quantum< T >& other)
+		:
+		Class< Quantum< T > >(
+			this,
+			new Symmetry(
+				TypeName< T >(),
+				symmetry_type::DefineVariable())),
+		m_quantized(new T(other))
 	{
 
 	}
@@ -75,24 +98,16 @@ public:
 	 */
 	virtual ~Quantum()
 	{
-		delete m_quantized;
+		delete this->m_quantized;
 	}
 
 	/**
 	 * *this can be treated as a T* directly.
 	 * @return *this as a T*.
 	 */
-	T* operator T*()
+	operator T*()
 	{
-		return m_quantized;
-	}
-
-	/**
-	 * @return *this as a const T*.
-	 */
-	const T* operator T*() const
-	{
-		return m_quantized;
+		return this->m_quantized;
 	}
 
 	/**
@@ -100,9 +115,11 @@ public:
 	 * For ease of use.
 	 * @return *this as a T.
 	 */
-	T operator T() const
+	operator T() const
 	{
-		BIO_SANITIZE(m_quantized, return *m_quantized, return T());
+		BIO_SANITIZE(m_quantized,
+			return *this->m_quantized,
+			return T());
 	}
 
 	/**
@@ -111,8 +128,8 @@ public:
 	 */
 	virtual Symmetry* Spin() const
 	{
-		m_symmetry->AccessValue()->Set(m_quantized);
-		return Wave::Spin();
+		this->m_symmetry->AccessValue()->Set(this->m_quantized);
+		return this->Wave::Spin();
 	}
 
 	/**
@@ -122,29 +139,32 @@ public:
 	 */
 	virtual void Reify(Symmetry* symmetry)
 	{
-		BIO_SANITIZE(symmetry,,return);
+		BIO_SANITIZE(symmetry, ,
+			return);
 		//Wave::Reify(symmetry); //this does nothing useful.
-		m_quantized = symmetry->GetValue();
+		this->m_quantized = symmetry->GetValue();
 	}
 
 	/**
 	 * Forwards += to m_quantized.
 	 * @param other
 	 */
-	virtual void operator += (const Quantum<T>* other)
+	virtual void operator+=(const Quantum< T >* other)
 	{
-		BIO_SANITIZE(other, , return NULL);
-		m_quantized += other->m_quantized;
+		BIO_SANITIZE(other, ,
+			return);
+		this->m_quantized += other->m_quantized;
 	}
 
 	/**
 	 * Forwards -= to m_quantized.
 	 * @param other
 	 */
-	virtual void operator -= (const Quantum<T>* other)
+	virtual void operator-=(const Quantum< T >* other)
 	{
-		BIO_SANITIZE(other, , return NULL);
-		m_quantized -= other->m_quantized;
+		BIO_SANITIZE(other, ,
+			return);
+		this->m_quantized -= other->m_quantized;
 	}
 
 protected:

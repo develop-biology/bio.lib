@@ -26,11 +26,14 @@
 namespace bio {
 namespace chemical {
 
+class Symmetry;
+
 /**
  * chemical::Axes simplify the Axis definition process by leveraging the nested nature of chemical::Symmetry.
  * All you need to do to make an Axis using chemical::Axis is define Encode(Symmetry*) and Rotate(std::string).
  */
-class Axis : public physical::Axis
+class Axis :
+	public physical::Axis
 {
 public:
 	/**

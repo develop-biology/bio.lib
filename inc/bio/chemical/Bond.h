@@ -21,7 +21,8 @@
 
 #pragma once
 
-#include "TYpes.h"
+#include "Types.h"
+#include "bio/chemical/BondTypes.h"
 
 namespace bio {
 
@@ -53,7 +54,7 @@ public:
 	 */
 	Bond(
 		AtomicNumber id,
-		Wave* bonded,
+		physical::Wave* bonded,
 		BondType type = bond_type::Unknown());
 
 	/**
@@ -66,7 +67,7 @@ public:
 	 */
 	bool Form(
 		AtomicNumber id,
-		Wave* bonded,
+		physical::Wave* bonded,
 		BondType type = bond_type::Unknown());
 
 	/**

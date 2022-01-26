@@ -22,24 +22,36 @@
 #include "bio/physical/Filterable.h"
 #include "bio/physical/Filters.h"
 #include "bio/physical/Macros.h"
+#include "bio/physical/Symmetry.h"
+#include "bio/physical/SymmetryTypes.h"
 
 namespace bio {
 namespace physical {
 
-Filterable::Filterable() :
-	Class(this, new Symmetry("m_filter", symmetry_type::DefineVariable())),
+Filterable::Filterable()
+	:
+	Class(
+		this,
+		new Symmetry(
+			"m_filter",
+			symmetry_type::DefineVariable())),
 	m_filter(filter::Default())
 {
 }
 
-Filterable::Filterable(Filter filter) :
-	Class(this, new Symmetry("m_filter", symmetry_type::DefineVariable())),
+Filterable::Filterable(Filter filter)
+	:
+	Class(
+		this,
+		new Symmetry(
+			"m_filter",
+			symmetry_type::DefineVariable())),
 	m_filter(filter)
 {
 
 }
 
-Filterable:: ~Filterable()
+Filterable::~Filterable()
 {
 }
 
@@ -61,13 +73,15 @@ Symmetry* Filterable::Spin() const
 
 void Filterable::Reify(Symmetry* symmetry)
 {
-	BIO_SANITIZE(symmetry,,return);
+	BIO_SANITIZE(symmetry, ,
+		return);
 	m_filter = symmetry->GetValue();
 }
 
 void Filterable::InitializeImplementation(ByteStreams args)
 {
-	BIO_SANITIZE(args.size() == 1 && args[0].Is(m_filter));
+	BIO_SANITIZE(args.size() == 1 && args[0].Is(m_filter), ,
+		return);
 	m_filter = args[0];
 }
 

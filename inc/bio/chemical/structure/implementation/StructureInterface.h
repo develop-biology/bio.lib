@@ -57,13 +57,13 @@ public:
 	 * @param t
 	 * @return a T* pointing to the contents of *this or NULL; NULL if T is invalid.
 	 */
-	template <typename T>
+	template < typename T >
 	T* Get(T t)
 	{
 		T* ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded < AbstractStructuralComponent < T >>,
-			ret = RESULT->GetImplementation(t),);
+		BIO_SANITIZE_WITH_CACHE(this->AsBonded < StructuralComponentImplementation< T > >,
+			ret = (Cast< StructuralComponentImplementation< T >* >(RESULT))->GetImplementation(t),);
 		UnlockThread();
 		return ret;
 	}
@@ -74,13 +74,13 @@ public:
 	 * @param t
 	 * @return a const T* pointing to the contents of *this or NULL; NULL if T is invalid.
 	 */
-	template <typename T>
+	template < typename T >
 	const T* Get(T t) const
 	{
 		const T* ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded < AbstractStructuralComponent < T >>,
-			ret = RESULT->GetImplementation(t),);
+		BIO_SANITIZE_WITH_CACHE(this->AsBonded < StructuralComponentImplementation< T > >,
+			ret = (Cast< StructuralComponentImplementation< T >* >(RESULT))->GetImplementation(t),);
 		UnlockThread();
 		return ret;
 	}
@@ -93,13 +93,13 @@ public:
 	 * @param t
 	 * @return the t inserted or NULL; NULL if T is invalid.
 	 */
-	template <typename T>
+	template < typename T >
 	T* Add(T t)
 	{
 		T* ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded < AbstractStructuralComponent < T >>,
-			ret = RESULT->AddImplementation(t),);
+		BIO_SANITIZE_WITH_CACHE(this->AsBonded < StructuralComponentImplementation< T > >,
+			ret = (Cast< StructuralComponentImplementation< T >* >(RESULT))->AddImplementation(t),);
 		UnlockThread();
 		return ret;
 	}
@@ -111,13 +111,13 @@ public:
 	 * @param t
 	 * @return the removed content or NULL; NULL if T is invalid.
 	 */
-	template <typename T>
+	template < typename T >
 	T* Remove(T t)
 	{
 		T* ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded < AbstractStructuralComponent < T >>,
-			ret = RESULT->RemoveImplementation(t),);
+		BIO_SANITIZE_WITH_CACHE(this->AsBonded < StructuralComponentImplementation< T > >,
+			ret = (Cast< StructuralComponentImplementation< T >* >(RESULT))->RemoveImplementation(t),);
 		UnlockThread();
 		return ret;
 	}
@@ -129,12 +129,12 @@ public:
 	 * @tparam T
 	 * @param other
 	 */
-	template <typename T>
+	template < typename T >
 	void Import(const StructuralComponentImplementation <T>* other)
 	{
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded < AbstractStructuralComponent < T >>,
-			RESULT->ImportImplementation(other),);
+		BIO_SANITIZE_WITH_CACHE(this->AsBonded < StructuralComponentImplementation< T > >,
+			(Cast< StructuralComponentImplementation< T >* >(RESULT))->ImportImplementation(other),);
 		UnlockThread();
 	}
 
@@ -143,13 +143,13 @@ public:
 	 * @tparam T
 	 * @return the size of contents; 0 if T is invalid.
 	 */
-	template <typename T>
+	template < typename T >
 	unsigned long GetCount() const
 	{
 		unsigned long ret = 0;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded < AbstractStructuralComponent < T >>,
-			ret = RESULT->GetCountImplementation(),);
+		BIO_SANITIZE_WITH_CACHE(this->AsBonded < StructuralComponentImplementation< T > >,
+			ret = (Cast< StructuralComponentImplementation< T >* >(RESULT))->GetCountImplementation(),);
 		UnlockThread();
 		return ret;
 	}
@@ -160,13 +160,13 @@ public:
 	 * @tparam T
 	 * @return A pointer to all contents in *this; NULL if T is invalid.
 	 */
-	template <typename T>
-	typename StructuralComponentImplementation<T>::Contents* GetAll()
+	template < typename T >
+	typename StructuralComponentImplementation< T >::Contents* GetAll()
 	{
-		typename StructuralComponentImplementation<T>::Contents* ret = NULL;
+		typename StructuralComponentImplementation< T >::Contents* ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded < AbstractStructuralComponent < T >>,
-			ret = RESULT->GetAllImplementation(),);
+		BIO_SANITIZE_WITH_CACHE((StructuralComponentImplementation< T >*)(this->AsBonded< StructuralComponentImplementation< T > >()),
+			ret = (Cast< StructuralComponentImplementation< T >* >(RESULT))->GetAllImplementation(),);
 		UnlockThread();
 		return ret;
 	}
@@ -177,13 +177,13 @@ public:
 	 * @tparam T
 	 * @return A pointer to all contents in *this; NULL if T is invalid.
 	 */
-	template <typename T>
-	typename const StructuralComponentImplementation<T>::Contents* GetAll() const
+	template < typename T >
+	const typename StructuralComponentImplementation< T >::Contents* GetAll() const
 	{
-		typename const StructuralComponentImplementation<T>::Contents* ret = NULL;
+		const typename StructuralComponentImplementation< T >::Contents* ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded < AbstractStructuralComponent < T >>,
-			ret = RESULT->GetAllImplementation(t),);
+		BIO_SANITIZE_WITH_CACHE(this->AsBonded < StructuralComponentImplementation< T > >,
+			ret = (Cast< StructuralComponentImplementation< T >* >(RESULT))->GetAllImplementation(),);
 		UnlockThread();
 		return ret;
 	}
@@ -195,13 +195,13 @@ public:
 	 * @param content
 	 * @return whether or not content exists in *this; false if T is invalid.
 	 */
-	template <typename T>
+	template < typename T >
 	bool Has(T t) const
 	{
 		bool ret = false;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded < AbstractStructuralComponent < T >>,
-			ret = RESULT->HasImplementation(t),);
+		BIO_SANITIZE_WITH_CACHE(this->AsBonded < StructuralComponentImplementation< T > >,
+			ret = (Cast< StructuralComponentImplementation< T >* >(RESULT))->HasImplementation(t),);
 		UnlockThread();
 		return ret;
 	}
@@ -211,13 +211,13 @@ public:
 	 * @param other
 	 * @return quantity overlap with other; 0 if T is invalid.
 	 */
-	template <typename T>
+	template < typename T >
 	unsigned int GetNumMatching(const StructuralComponentImplementation <T>& other) const
 	{
 		unsigned int ret = 0;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded < AbstractStructuralComponent < T >>,
-			ret = RESULT->GetNumMatchingImplementation(other),);
+		BIO_SANITIZE_WITH_CACHE(this->AsBonded < StructuralComponentImplementation< T > >,
+			ret = (Cast< StructuralComponentImplementation< T >* >(RESULT))->GetNumMatchingImplementation(other),);
 		UnlockThread();
 		return ret;
 	}
@@ -227,13 +227,13 @@ public:
 	 * @param content
 	 * @return whether or not the given contents exists in *this
 	 */
-	template <typename T>
-	bool HasAll(const StructuralComponentImplementation<T>::Contents& contents)
+	template < typename T >
+	bool HasAll(const typename StructuralComponentImplementation< T >::Contents& contents)
 	{
 		bool ret = false;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded < AbstractStructuralComponent < T >>,
-			ret = RESULT->HasAllImplementation(contents),);
+		BIO_SANITIZE_WITH_CACHE(this->AsBonded < StructuralComponentImplementation< T > >,
+			ret = (Cast< StructuralComponentImplementation< T >* >(RESULT))->HasAllImplementation(contents),);
 		UnlockThread();
 		return ret;
 	}
@@ -244,12 +244,12 @@ public:
 	 * Does nothing if T is invalid.
 	 * @tparam T
 	 */
-	template <typename T>
+	template < typename T >
 	void Clear()
 	{
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded < AbstractStructuralComponent < T >>,
-			return RESULT->ClearImplementation(),);
+		BIO_SANITIZE_WITH_CACHE(this->AsBonded < StructuralComponentImplementation< T > >,
+			return (Cast< StructuralComponentImplementation< T >* >(RESULT))->ClearImplementation(),);
 		UnlockThread();
 	}
 
@@ -258,13 +258,13 @@ public:
 	 * @param separator e.g. ", ", the default, or just " ".
 	 * @return the Contents of *this as a string; "" if T is invalid.
 	 */
-	template <typename T>
+	template < typename T >
 	std::string GetStringFrom(std::string separator = ", ")
 	{
 		std::string ret = "";
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded < AbstractStructuralComponent < T >>,
-			ret = RESULT->GetStringFromImplementation(separator),);
+		BIO_SANITIZE_WITH_CACHE(this->AsBonded < StructuralComponentImplementation< T > >,
+			ret = (Cast< StructuralComponentImplementation< T >* >(RESULT))->GetStringFromImplementation(separator),);
 		UnlockThread();
 		return ret;
 	}

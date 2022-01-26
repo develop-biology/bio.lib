@@ -25,20 +25,21 @@
 #include "bio/physical/Filters.h"
 #include "bio/log/Writer.h"
 #include "Atom.h"
+#include "SymmetryTypes.h"
 
 namespace bio {
 namespace chemical {
 
 /**
  * A chemical::Class is an Atom in addition to being a physical::Wave with logging capabilities.
- * This will FormBond(m_object).
+ * This will FormBond(physical::Class<T>::m_object).
  * Class in other namespaces will grow to include more complex, templated logic.
  * This pattern prevents you from having to define virtual methods each of your child classes, so long as you always derive from the appropriate Class<T>.
  * @tparam T
  */
-template <typename T>
+template < typename T >
 class Class :
-	public physical::Class<T>,
+	public physical::Class< T >,
 	virtual public log::Writer,
 	virtual public Atom
 {
@@ -47,22 +48,24 @@ public:
 	 * @param object
 	 * @param symmetry
 	 */
-	Class(T* object, Filter filter = filter::Default())
+	Class(
+		T* object,
+		Filter filter = filter::Default())
 		:
-		physical::Class<T>(
+		physical::Class< T >(
 			object,
 			new Symmetry(
-				TypeName<T>(),
-				symmetry_Type::Object()))
+				TypeName< T >(),
+				symmetry_type::Object()))
 	{
-		if (filter != filter::Default)
+		if (filter != filter::Default())
 		{
 			//Skip log::Writer::Initialize, since we don't have a log::Engine atm.
 			Filterable::Initialize(filter);
 		}
 		//Bond the class we're given, Virtually.
-		m_object->FormBond(
-			m_object,
+		physical::Class< T >::m_object->FormBond(
+			physical::Class< T >::m_object,
 			bond_type::Virtual());
 	}
 
@@ -71,8 +74,9 @@ public:
 	 * NOTE: You must still record the Properties of T elsewhere. See Element.h for an easy means of doing this.
 	 * @return the Properties of T that have been Registered with the PeriodicTable.
 	 */
-	virtual Properties GetProperties() const {
-		return PeriodicTable::Instance().GetPropertiesOf<T>();
+	virtual Properties GetProperties() const
+	{
+		return PeriodicTable::Instance().GetPropertiesOf< T >();
 	}
 
 	/**

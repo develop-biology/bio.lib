@@ -27,6 +27,7 @@
 #include "structure/LinearStructuralComponent.h"
 #include "bio/physical/Indentified.h"
 #include "bio/physical/Class.h"
+
 #inclued "bio/common/TypeName.h"
 
 namespace bio {
@@ -53,11 +54,17 @@ class Reactant;
  *
  */
 class Reaction :
-	virtual public physical::Identifiable<StandardDimension>,
-	public physical::Class<Reaction>,
-	public LinearStructuralComponent<Reactant*>
+	virtual public physical::Identifiable< StandardDimension >,
+	public physical::Class< Reaction >,
+	public LinearStructuralComponent< Reactant* >
 {
 public:
+
+	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
+		Reaction)
 
 	/**
 	 *
@@ -78,7 +85,10 @@ public:
 	 * @param name
 	 * @param reactants
 	 */
-	explicit Reaction(Name name, typename StructuralComponentImplementation<Reactant*>::Contents reactants);
+	explicit Reaction(
+		Name name,
+		typename StructuralComponentImplementation< Reactant* >::Contents reactants
+	);
 
 	/**
 	 * Add a required Reactant to *this.
@@ -94,7 +104,10 @@ public:
 	 * @param typeName
 	 * @param substance
 	 */
-	void Require(Name typeName, const Substance& substance);
+	void Require(
+		Name typeName,
+		const Substance& substance
+	);
 
 	/**
 	 * Wrapper around Require(Reactant*).
@@ -103,8 +116,11 @@ public:
 	 * @param properties
 	 * @param states
 	 */
-	void Require(Name typeName, typename const StructuralComponent<Property>::Contents& properties,
-		typename const StructuralComponent<State>::Contents& states);
+	void Require(
+		Name typeName,
+		typename const StructuralComponent< Property >::Contents& properties,
+		typename const StructuralComponent< State >::Contents& states
+	);
 
 	/**
 	 * Wrapper around Require(Reactant*).
@@ -112,13 +128,17 @@ public:
 	 * NOTE: T should not have pointer type (unless you're using **).
 	 * @tparam T the T* which will be used in the Reaction (without the *)
 	 */
-	template <typename T>
+	template < typename T >
 	void Require()
 	{
 		Properties empty;
 		States enabled;
 		enabled.push_back(Enabled());
-		Require(TypeName<T>(), empty, enabled);
+		Require(
+			TypeName< T >(),
+			empty,
+			enabled
+		);
 	}
 
 	/**
@@ -127,10 +147,13 @@ public:
 	 * @tparam T the T* which will be used in the Reaction (without the *)
 	 * @param substance
 	 */
-	template <typename T>
+	template < typename T >
 	void Require(const T& substance)
 	{
-		Require(TypeName<T>(), substance);
+		Require(
+			TypeName< T >(),
+			substance
+		);
 	}
 
 	/**
@@ -138,11 +161,16 @@ public:
 	 * Constructs Reactant from args
 	 * @tparam T the T* which will be used in the Reaction (without the *)
 	 */
-	template <typename T>
-	void Require(typename const StructuralComponent<Property>::Contents properties&,
-	typename const StructuralComponent<State>::Contents states&)
+	template < typename T > void Require(typename const StructuralComponent< Property >::Contents properties&,
+
+	typename const StructuralComponent< State >::Contents states
+	&)
 	{
-		Require(TypeName<T>(), properties, states);
+		Require(
+			TypeName< T >(),
+			properties,
+			states
+		);
 	}
 
 	/**
@@ -186,11 +214,13 @@ public:
 	 * @tparam T
 	 * @return
 	 */
-	template <typename T>
+	template < typename T >
 	static T* Initiate()
 	{
-		T* ret = ReactionPerspective::Instance().GetTypeFromNameAs<T>(TypeName(T));
-		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, return ret, return new T());
+		T* ret = ReactionPerspective::Instance().GetTypeFromNameAs< T >(TypeName(T));
+		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret,
+			return ret,
+			return new T());
 		//TODO: address memory leaks when T->GetName() != TypeName<T>().
 	}
 
@@ -200,10 +230,12 @@ public:
 	 * @param reactants the reactants to provide to T.
 	 * @return operator() of the given reaction; else reactants.
 	 */
-	template <typename T>
+	template < typename T >
 	static Products Attempt(Substances& reactants)
 	{
-		BIO_SANITIZE_WITH_CACHE(Iniate<T>(), return (*Cast<T*>(RESULT))(reactants), return reactants);
+		BIO_SANITIZE_WITH_CACHE(Iniate< T >(),
+			return (*Cast< T* >(RESULT))(reactants),
+			return reactants);
 	}
 
 	/**
@@ -215,14 +247,18 @@ public:
 	 * @param reactant3
 	 * @return Attempt<T> with the given reactants.
 	 */
-	template <typename T>
-	static Products Attempt(Substance* reactant1, Substance* reactant2 = NULL, Substance* reactant3 = NULL)
+	template < typename T >
+	static Products Attempt(
+		Substance* reactant1,
+		Substance* reactant2 = NULL,
+		Substance* reactant3 = NULL
+	)
 	{
 		Substances reactants;
 		reactants.push_back(reactant1);
 		reactants.push_back(reactant2);
 		reactants.push_back(reactant3);
-		return Attempt<T>(reactants);
+		return Attempt< T >(reactants);
 	}
 };
 

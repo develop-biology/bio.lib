@@ -28,12 +28,13 @@
 namespace bio {
 namespace chemical {
 
-SetLogEngine::SetLogEngine() :
+SetLogEngine::SetLogEngine()
+	:
 	Reaction(PeriodicTable::Instance().GetNameFromType(*this)),
 	Class(this)
 {
-	Require<log::Writer>();
-	Require<log::Writer>();
+	Require< log::Writer >();
+	Require< log::Writer >();
 }
 
 SetLogEngine::~SetLogEngine()

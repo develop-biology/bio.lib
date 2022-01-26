@@ -21,12 +21,31 @@
 
 #pragma once
 
-#include "Types.h"
+#include "bio/common/Types.h"
+
+//@formatter:off
+#if BIO_CPP_VERSION < 11
+	#include <stdint.h>
+#else
+	#include <cstdint>
+#endif
+//@formatter:on
 
 namespace bio {
+
+typedef uint8_t Property;
+typedef std::vector< Property > Properties;
+
 namespace physical {
 
 class Symmetry;
+
+typedef std::vector< Symmetry* > Symmetries;
+
+class Wave;
+
+typedef std::vector< Wave* > Waves;
+typedef std::vector< const Wave* > ConstWaves;
 
 /**
  * A Wave is a base class for all Biology objects.
@@ -75,7 +94,7 @@ public:
 	 * @param waves
 	 * @return the number of overlapping Properties between both waves given.
 	 */
-	static Properties GetResonanceBetween(Waves waves);
+	static Properties GetResonanceBetween(ConstWaves waves);
 
 	/**
 	 * Ease of use method for getting the Resonance between just 2 waves, rather than n.
@@ -83,7 +102,10 @@ public:
 	 * @param wave2
 	 * @return the number of overlapping Properties between both waves given.
 	 */
-	static Properties GetResonanceBetween(const Wave* wave1, const Wave* wave2);
+	static Properties GetResonanceBetween(
+		const Wave* wave1,
+		const Wave* wave2
+	);
 
 	/**
 	 * Spinning a Wave produces a Symmetry. Waves can be Rotated about any number of Axes.
@@ -129,7 +151,7 @@ public:
 	 * Treats *this as a carrier wave.
 	 * @return the signal carried by *this.
 	 */
-	virtual const Wave* Demodulate() const
+	virtual const Wave* Demodulate() const;
 
 	/**
 	 * Modulate operator (i.e. not "modulo")
@@ -142,13 +164,13 @@ public:
 	 * Demodulate operator (also not "modulo")
 	 * @return Demodulate()
 	 */
-	virtual Wave* operator%();
+	virtual Wave* operator~();
 
 	/**
 	 * Demodulate operator (also not "modulo")
 	 * @return Demodulate()
 	 */
-	virtual const Wave* operator%() const;
+	virtual const Wave* operator~() const;
 
 	/**
 	 * Add 2 Waves together and returns the result.
@@ -156,7 +178,7 @@ public:
 	 * @param other
 	 * @return a new Wave from *this with other added to it.
 	 */
-	virtual Wave* operator+ (const Wave* other);
+	virtual Wave* operator+(const Wave* other);
 
 	/**
 	 * Isolates & remove a Wave from *this.
@@ -164,21 +186,21 @@ public:
 	 * @param other
 	 * @return a new Wave from *this with other removed from it.
 	 */
-	virtual Wave* operator- (const Wave* other);
+	virtual Wave* operator-(const Wave* other);
 
 	/**
 	 * Makes other interfere with *this.
 	 * This is a nop unless implemented by children.
 	 * @param other
 	 */
-	virtual void operator += (const Wave* other);
+	virtual void operator+=(const Wave* other);
 
 	/**
 	 * Removes the interference of other from *this.
 	 * This is a nop unless implemented by children.
 	 * @param other
 	 */
-	virtual void operator -= (const Wave* other);
+	virtual void operator-=(const Wave* other);
 
 protected:
 	/**

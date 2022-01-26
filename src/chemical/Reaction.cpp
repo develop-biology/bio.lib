@@ -32,7 +32,7 @@ Reaction::Reaction()
 	physical::Class(
 		this,
 		new physical::Symmetry(
-			TypeName<T>(),
+			TypeName< T >(),
 			symmetry_Type::Operation()))
 {
 
@@ -44,7 +44,7 @@ Reaction::Reaction(Id id)
 	physical::Class(
 		this,
 		new physical::Symmetry(
-			TypeName<T>(),
+			TypeName< T >(),
 			symmetry_Type::Operation())),
 	Identifiable(
 		name,
@@ -59,7 +59,7 @@ Reaction::Reaction(Name name)
 	physical::Class(
 		this,
 		new physical::Symmetry(
-			TypeName<T>(),
+			TypeName< T >(),
 			symmetry_Type::Operation())),
 	Identifiable(
 		name,
@@ -70,14 +70,15 @@ Reaction::Reaction(Name name)
 
 Reaction::Reaction(
 	Name name,
-	typename StructuralComponentImplementation<Reactant*>::Contents reactants)
+	typename StructuralComponentImplementation< Reactant* >::Contents reactants
+)
 	:
 	physical::Class(
 		this,
 		new physical::Symmetry(
 			PeriodicTable::Instance().GetNameFromType(*this),
 			symmetry_Type::Operation())),
-	LinearStructuralComponent<Reactant*>(reactants),
+	LinearStructuralComponent< Reactant* >(reactants),
 	Identifiable(
 		name,
 		&ReactionPerspective::Instance())
@@ -86,12 +87,13 @@ Reaction::Reaction(
 
 void Reaction::Require(Reactant* reactant)
 {
-	Add<Reactant*>(reactant);
+	Add< Reactant* >(reactant);
 }
 
 void Reaction::Require(
 	Name typeName,
-	const Substance& substance)
+	const Substance& substance
+)
 {
 	Require(
 		new Reactant(
@@ -102,8 +104,9 @@ void Reaction::Require(
 
 void Reaction::Require(
 	Name typeName,
-	const StructuralComponent<Property>::Contents& properties,
-	const StructuralComponent<State>::Contents& states)
+	const StructuralComponent< Property >::Contents& properties,
+	const StructuralComponent< State >::Contents& states
+)
 {
 	Require(
 		new Reactant(
@@ -117,8 +120,8 @@ void Reaction::Require(
 bool Reaction::SubstancesCanReact(const Substances& toCheck) const
 {
 	for (
-		Reactants::const_iterator rct = GetAll<Reactant*>()->begin();
-		rct != GetAll<Reactant*>()->end();
+		Reactants::const_iterator rct = GetAll< Reactant* >()->begin();
+		rct != GetAll< Reactant* >()->end();
 		++rct
 		)
 	{
@@ -139,7 +142,7 @@ bool Reaction::SubstancesCanReact(const Substances& toCheck) const
 
 /*static*/ Reaction* Reaction::Initiate(StandardDimension id)
 {
-	return ReactionPerspective::Instance().GetTypeFromIdAs<Reaction*>(id);
+	return ReactionPerspective::Instance().GetTypeFromIdAs< Reaction* >(id);
 }
 
 Products Reaction::operator()(Substances& reactants) const
@@ -152,9 +155,10 @@ Products Reaction::operator()(Substances& reactants) const
 
 /*static*/ Products Reaction::Attempt(
 	StandardDimension id,
-	Substances& reactants)
+	Substances& reactants
+)
 {
-	BIO_SANITIZE_WITH_CACHE(ReactionPerspective::Instance().GetTypeFromIdAs<Reaction*>(id),
+	BIO_SANITIZE_WITH_CACHE(ReactionPerspective::Instance().GetTypeFromIdAs< Reaction* >(id),
 		return RESULT(reactants),
 		return code::FailedReaction());
 }

@@ -34,4 +34,9 @@ BIO_ID_FUNCTION_BODY(                                                          \
     bio::BondType)
 
 
-#define BIO_RECORD_PROPERTIES_OF(className, ...)
+/**
+ * Get all virtual methods defined by physical::Class.
+ */
+#define BIO_GET_CLASS_METHODS_FOR_chemical()                                   \
+    BIO_GET_CLASS_METHODS_FOR_physical(),                                      \
+    (Properties, GetProperties(), const)

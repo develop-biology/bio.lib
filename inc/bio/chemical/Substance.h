@@ -25,7 +25,8 @@
 #include "States.h"
 #include "Properties.h"
 #include "Class.h"
-#include "bio/chemical/arrangment/StructuralComponent.h"
+#include "Macros.h"
+#include "bio/chemical/structure/StructuralComponent.h"
 
 namespace bio {
 namespace chemical {
@@ -36,12 +37,18 @@ namespace chemical {
  * Substances start Enable()d.
  */
 class Substance :
-	virtual public physical::Identifiable<StandardDimension>,
-	public Class<Substance>,
-	public StructuralComponent<Property>,
-	public StructuralComponent<State>
+	virtual public physical::Identifiable< StandardDimension >,
+	public Class< Substance >,
+	public StructuralComponent< Property >,
+	public StructuralComponent< State >
 {
 public:
+	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(chemical,
+		Substance)
+
 	/**
 	 *
 	 */
@@ -51,21 +58,28 @@ public:
 	 * @param name
 	 * @param perspective
 	 */
-	Substance(Name name, physical::Perspective<StandardDimension>* perspective, Filter filter = filter::Chemical());
+	Substance(
+		Name name,
+		physical::Perspective< StandardDimension >* perspective,
+		Filter filter = filter::Chemical());
 
 	/**
 	 * @param id
 	 * @param perspective
 	 */
-	Substance(Id id, physical::Perspective<StandardDimension>* perspective, Filter filter = filter::Chemical());
+	Substance(
+		Id id,
+		physical::Perspective< StandardDimension >* perspective,
+		Filter filter = filter::Chemical());
 
 	/**
 	 * @param properties
 	 * @param states
 	 */
 	explicit Substance(
-		typename const StructuralComponent<Property>::Contents& properties,
-		typename const StructuralComponent<State>::Contents& states);
+		typename const StructuralComponent< Property >::Contents& properties,
+		typename const StructuralComponent< State >::Contents& states
+	);
 
 	/**
 	 *

@@ -67,10 +67,12 @@ typedef uint8_t Valence;
  */
 typedef uint16_t AtomicNumber;
 
-BIO_PERSPECTIVE_SINGLETON(ReactionPerspective, StandardDimension)
+BIO_PERSPECTIVE_SINGLETON(ReactionPerspective,
+	StandardDimension)
 
 class Substance;
-typedef std::vector<Substance*> Substances;
+
+typedef std::vector< Substance* > Substances;
 
 } //chemical namespace
 } //bio namespace

@@ -30,18 +30,21 @@ namespace log {
 
 Writer::Writer()
 	:
-	m_logEngine(NULL),
-	m_filter(filter::Default())
+	physical::Class< Writer >(this),
+	physical::Filterable(filter::Default()),
+	m_logEngine(NULL)
 {
 
 }
 
 Writer::Writer(
 	Engine* logEngine,
-	Filter filter)
+	Filter filter
+)
 	:
-	m_logEngine(logEngine),
-	m_filter(filter)
+	physical::Class< Writer >(this),
+	physical::Filterable(filter::Default()),
+	m_logEngine(logEngine)
 {
 
 }
@@ -71,15 +74,11 @@ bool Writer::HasLogEngine() const
 	return m_logEngine != NULL;
 }
 
-Writer* Writer::Clone() const
-{
-	return new Writer(*this);
-}
-
 void Writer::Log(
 	Level level,
 	const char* format,
-	...) const
+	...
+) const
 {
 
 	BIO_SANITIZE(m_logEngine, ,
@@ -108,7 +107,8 @@ void Writer::ExternalLog(
 	Filter filter,
 	Level level,
 	const char* format,
-	...) const
+	...
+) const
 {
 	BIO_SANITIZE(m_logEngine, ,
 		return);
@@ -129,13 +129,13 @@ void Writer::InitializeImplementation(ByteStreams args)
 {
 	if (args.size() == 2)
 	{
-		if (args[1].Is(m_engine))
+		if (args[1].Is(m_logEngine))
 		{
-			m_engine = args[1]
-;		}
+			m_logEngine = args[1];
+		}
 		args.pop_back();
 	}
-	if (args.size() == 1 && args[0].Is<Filter>())
+	if (args.size() == 1 && args[0].Is< Filter >())
 	{
 		Filterable::InitializeImplementation(args);
 	}

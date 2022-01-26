@@ -46,28 +46,34 @@ namespace physical {
  * For this reason, the default DIMENSION (StandardDimension, from Types.h) should be used in nearly all cases, unless you want to ensure either your class is not derived from or that it remains separated from other code.
  * An example of using a non-StandardDimension can be found in Codes. Codes have their own DIMENSION, as they should not be inherited from but may still be expanded upon through user-defined values (simply additional name <-> id definitions).
 */
-template <typename DIMENSION>
+template < typename DIMENSION >
 class Identifiable :
-	virtual public Observer<Perspective<DIMENSION>>,
-	public Class<Identifiable<DIMENSION>>,
-	protected VirtualBase
+	virtual public Observer< Perspective< DIMENSION > >, //includes VirtualBase, so no need to re-inherit.
+	public Class< Identifiable< DIMENSION > >
 {
 public:
 	typedef DIMENSION Id;
-	typedef std::vector<Id> Ids;
+	typedef std::vector< Id > Ids;
+
+	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
+		Identifiable< DIMENSION >)
+
 
 	/**
 	 * @param perspective
 	 */
-	explicit Identifiable(Perspective<DIMENSION>* perspective = NULL)
+	explicit Identifiable(Perspective< DIMENSION >* perspective = NULL)
 		:
-		Class(this),
-		m_id(Perspective<DIMENSION>::InvalidId())
+		Class< Identifiable< DIMENSION > >(this),
+		m_id(Perspective< DIMENSION >::InvalidId())
 	{
-		CloneIntoName(Perspective<DIMENSION>::InvalidName());
+		CloneIntoName(Perspective< DIMENSION >::InvalidName());
 		if (perspective)
 		{
-			Observer<Perspective<DIMENSION>>::Initialize(perspective);
+			Observer< Perspective< DIMENSION > >::Initialize(perspective);
 		}
 	}
 
@@ -77,18 +83,21 @@ public:
 	 */
 	explicit Identifiable(
 		Name name,
-		Perspective<DIMENSION>* perspective = NULL)
+		Perspective< DIMENSION >* perspective = NULL
+	)
+		:
+		Class< Identifiable< DIMENSION > >(this)
 	{
 		CloneIntoName(name);
 		if (perspective)
 		{
-			Observer<Perspective<DIMENSION>>::Initialize(perspective);
+			Observer< Perspective< DIMENSION > >::Initialize(perspective);
 			m_id = this->GetPerspective()->GetIdFromName(m_name);
 			this->MakeWave();
 		}
 		else
 		{
-			m_id = Perspective<DIMENSION>::InvalidId();
+			m_id = Perspective< DIMENSION >::InvalidId();
 		}
 	}
 
@@ -98,18 +107,21 @@ public:
 	 */
 	explicit Identifiable(
 		Id id,
-		Perspective<DIMENSION>* perspective = NULL)
+		Perspective< DIMENSION >* perspective = NULL
+	)
+		:
+		Class< Identifiable< DIMENSION > >(this)
 	{
 		if (perspective)
 		{
-			Observer<Perspective<DIMENSION>>::Initialize(perspective);
+			Observer< Perspective< DIMENSION > >::Initialize(perspective);
 			CloneIntoName(perspective->GetNameFromId(id));
 			this->MakeWave();
 		}
 		else
 		{
-			m_id = Perspective<DIMENSION>::InvalidId();
-			CloneIntoName(perspective<DIMENSION>::InvalidName());
+			m_id = Perspective< DIMENSION >::InvalidId();
+			CloneIntoName(Perspective< DIMENSION >::InvalidName());
 		}
 	}
 
@@ -118,9 +130,10 @@ public:
 	 */
 	Identifiable(const Identifiable& other)
 		:
+		Class< Identifiable< DIMENSION > >(this),
 		m_id(other.m_id)
 	{
-		Observer<Perspective<DIMENSION>>::Initialize(other.GetPerspective());
+		Observer< Perspective< DIMENSION > >::Initialize(other.GetPerspective());
 		CloneIntoName(other.GetName());
 	}
 
@@ -135,33 +148,9 @@ public:
 	}
 
 	/**
-	 * VirtualBase required method. See that class for details (in common/)
-	 * @param args
+	 * @return *this as its Id.
 	 */
-	virtual void InitializeImplementation(ByteStreams args)
-	{
-		if (args.size() == 2)
-		{
-			if (args[1].Is<Perspective<DIMENSION>*>())
-			{
-				Observer<Perspective<DIMENSION>>::Initialize(args[1]);
-			}
-			args.pop_back();
-		}
-		if (args.size() == 1)
-		{
-			if (args[0].Is(m_id))
-			{
-				m_id = args[0];
-			}
-			else if (args[0].Is(m_name))
-			{
-				CloneIntoName(args[0]);
-			}
-		}
-	}
-
-	virtual operator DIMENSION()
+	virtual operator DIMENSION() const
 	{
 		return m_id;
 	}
@@ -172,15 +161,15 @@ public:
 	 */
 	virtual bool operator==(const Id id) const
 	{
-		if (!GetId())
+		if (!this->GetId())
 		{
 			return false;
 		}
-		if (!GetId() == id)
+		if (!this->GetId() == id)
 		{
 			return false;
 		}
-		if (GetPerspective() && !IsNameInsensitive(GetPerspective()->GetNameFromId(id)))
+		if (this->GetPerspective() && !this->IsNameInsensitive(this->GetPerspective()->GetNameFromId(id)))
 		{
 			return false;
 		}
@@ -206,7 +195,7 @@ public:
 		{
 			return false;
 		}
-		if (GetPerspective() && !IsId(GetPerspective()->GetIdWithoutCreation(name)))
+		if (this->GetPerspective() && !this->IsId(this->GetPerspective()->GetIdWithoutCreation(name)))
 		{
 			return false;
 		}
@@ -217,9 +206,9 @@ public:
 	 * @param other
 	 * @return whether or not the Ids of other and *this match and were given by the same Perspective.
 	 */
-	virtual bool operator==(const Identifiable<DIMENSION>& other) const
+	virtual bool operator==(const Identifiable< DIMENSION >& other) const
 	{
-		return this->IsId(other.GetId()) && this->GetPerspective() == other.GetPerspective());
+		return this->IsId(other.GetId()) && this->GetPerspective() == other.GetPerspective();
 	}
 
 	/**
@@ -282,24 +271,22 @@ public:
 	 * @param name
 	 * @return a comparison operation on the given name with the name of *this.
 	 */
-	virtual bool IsName(Name name)
+	virtual bool IsName(Name name) const
 	{
 		return !strcmp(
 			name,
-			GetName()
-		);
+			this->GetName());
 	}
 
 	/**
 	 * @param name
 	 * @return whether or not the given name is offensive. JK, it's just a case insensitive version of IsName.
 	 */
-	virtual bool IsNameInsensitive(Name name)
+	virtual bool IsNameInsensitive(Name name) const
 	{
 		return !strcasecmp(
 			name,
-			GetName()
-		);
+			this->GetName());
 	}
 
 	/**
@@ -315,15 +302,15 @@ public:
 	 * Sets the perspective for *this.
 	 * @param perspective
 	 */
-	virtual void SetPerspective(Perspective<DIMENSION>* perspective)
+	virtual void SetPerspective(Perspective< DIMENSION >* perspective)
 	{
 		this->SetPerspective(perspective);
 
-		if (IsName(Perspective<DIMENSION>::InvalidName()) && !IsId(Perspective<DIMENSION>::InvalidId()))
+		if (IsName(Perspective< DIMENSION >::InvalidName()) && !IsId(Perspective< DIMENSION >::InvalidId()))
 		{
 			CloneIntoName(this->GetPerspective()->GetNameFromId(m_id));
 		}
-		else if (!IsName(Perspective<DIMENSION>::InvalidName()) && IsId(Perspective<DIMENSION>::InvalidId()))
+		else if (!IsName(Perspective< DIMENSION >::InvalidName()) && IsId(Perspective< DIMENSION >::InvalidId()))
 		{
 			m_id = this->GetPerspective()->GetIdFromName(GetName());
 		}
@@ -349,7 +336,7 @@ public:
 		);
 	}
 
-#if 0
+	#if 0
 	//No need to compile these nops.
 
 	/**
@@ -372,7 +359,35 @@ public:
 	{
 		//nop
 	}
-#endif
+	#endif
+
+protected:
+	/**
+	 * VirtualBase required method. See that class for details (in common/)
+	 * @param args
+	 */
+	virtual void InitializeImplementation(ByteStreams args)
+	{
+		if (args.size() == 2)
+		{
+			if (args[1].Is< Perspective< DIMENSION >* >())
+			{
+				Observer< Perspective< DIMENSION > >::Initialize(args[1]);
+			}
+			args.pop_back();
+		}
+		if (args.size() == 1)
+		{
+			if (args[0].Is(m_id))
+			{
+				m_id = args[0];
+			}
+			else if (args[0].Is(m_name))
+			{
+				CloneIntoName(args[0]);
+			}
+		}
+	}
 
 private:
 	#if BIO_MEMORY_OPTIMIZE_LEVEL == 0

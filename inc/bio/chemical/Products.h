@@ -56,7 +56,10 @@ public:
 	 * @param result
 	 * @param substances
 	 */
-	Products(Code result, const Substances& substances);
+	Products(
+		Code result,
+		const Substances& substances
+	);
 
 	/**
 	 *

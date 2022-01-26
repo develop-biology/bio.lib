@@ -24,7 +24,7 @@
 
 #if BIO_CPP_VERSION < 11
 #else
-#include <chrono> //C++11
+	#include <chrono> //C++11
 #endif
 
 namespace bio {
@@ -34,21 +34,21 @@ namespace physical {
 static Timestamp g_fakeTime = 0;
 void SetFakeTime(const Timestamp newTime)
 {
-    g_fakeTime = newTime;
+	g_fakeTime = newTime;
 }
 #endif
 
 Timestamp GetCurrentTimestamp()
 {
-#ifdef BIO_FAKE_SYSTEM_TIME
-    return g_fakeTime;
-#elif BIO_CPP_VERSION < 11
+	#ifdef BIO_FAKE_SYSTEM_TIME
+	return g_fakeTime;
+	#elif BIO_CPP_VERSION < 11
 	return 0; //FIXME!
-#else
-    using namespace std::chrono;
-    auto now = time_point_cast<milliseconds>(system_clock::now());
-    return now.time_since_epoch().count();
-#endif
+	#else
+	using namespace std::chrono;
+	auto now = time_point_cast<milliseconds>(system_clock::now());
+	return now.time_since_epoch().count();
+	#endif
 }
 
 } //physical namespace

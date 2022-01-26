@@ -1,14 +1,1 @@
-{
-  "clear_build_path" : true,
-  "ebbs_next" : [
-    {
-      "clear_build_path" : false,
-      "build" : "cpp",
-      "path": "..",
-      "build_in" : "build",
-      "config" : {
-        "cpp_version" : 98
-      }
-    }
-  ]
-}
+{"cpp_version": 98, "name": "bio", "type": "lib", "clear_build_path": true}

@@ -27,8 +27,8 @@ using namespace bio;
 
 bool string::ToBool(const char* s, bool* returned)
 {
-	returned = s == "true";
-	if (!returned & s != "false")
+	*returned = s == "true";
+	if (!returned && s != "false")
 	{
 		return false;
 	}
@@ -37,40 +37,40 @@ bool string::ToBool(const char* s, bool* returned)
 
 bool string::ToInt(const char* s, int32_t* value)
 {
-    if (s.length() == 0)
+    if (strlen(s) == 0)
     {
         return false; //FAIL: empty string
     }
 
     //FIXME: duplicate code
     char* endptr = NULL;
-    *value = strtol(s.c_str(), &endptr, 10);
+    *value = strtol(s, &endptr, 10);
     return ((*endptr) == '\0');
 }
 
 bool string::ToUInt(const char* s, uint32_t* value)
 {
-    if (s.length() == 0)
+    if (strlen(s) == 0)
     {
         return false; //FAIL: empty string
     }
 
     //FIXME: duplicate code
     char* endptr = NULL;
-    *value = strtoul(s.c_str(), &endptr, 10);
+    *value = strtoul(s, &endptr, 10);
     return ((*endptr) == '\0');
 }
 
 bool string::ToFloat(const char* s, float* value)
 {
-    if (s.length() == 0)
+    if (strlen(s) == 0)
     {
         return false; //FAIL: empty string
     }
 
     //FIXME: duplicate code
     char* endptr = NULL;
-    *value = strtof(s.c_str(), &endptr);
+    *value = strtof(s, &endptr);
     return ((*endptr) == '\0');
 }
 

@@ -19,31 +19,63 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/physical/Symmetry.h"
+#include "bio/chemical/Symmetry.h"
 
 namespace bio {
 namespace chemical {
 
-Symmetry::Symmetry(Name name, Name type) :
-physical::Symmetry(name, type)
+Symmetry::Symmetry(
+	Name name,
+	Name type
+)
+	:
+	Class< Symmetry >(this),
+	physical::Symmetry(
+		name,
+		type
+	)
 {
 
 }
 
-Symmetry::Symmetry(Name name, SymmetryType type) :
-physical::Symmetry(name, type)
+Symmetry::Symmetry(
+	Name name,
+	SymmetryType type
+)
+	:
+	Class< Symmetry >(this),
+	physical::Symmetry(
+		name,
+		type
+	)
 {
 
 }
 
-Symmetry::Symmetry(StandardDimension id, Name type) :
-	physical::Symmetry(id, type)
+Symmetry::Symmetry(
+	StandardDimension id,
+	Name type
+)
+	:
+	Class< Symmetry >(this),
+	physical::Symmetry(
+		id,
+		type
+	)
 {
 
 }
 
-Symmetry::Symmetry(StandardDimension id, SymmetryType type) :
-	physical::Symmetry(id, type)
+Symmetry::Symmetry(
+	StandardDimension id,
+	SymmetryType type
+)
+	:
+	Class< Symmetry >(this),
+	physical::Symmetry(
+		id,
+		type
+	)
 {
 
 }

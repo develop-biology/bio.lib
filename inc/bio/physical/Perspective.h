@@ -21,15 +21,22 @@
 
 #pragma once
 
-#include "Types.h"
 #include "Macros.h"
 #include "Wave.h"
+#include "bio/common/Types.h"
 #include "bio/common/String.h"
 #include "bio/common/ThreadSafe.h"
-
-#include <cstdint>
+#include "bio/common/Cast.h"
 #include <sstream>
 #include <cstring>
+
+//@formatter:off
+#if BIO_CPP_VERSION < 11
+	#include <stdint.h>
+#else
+	#include <cstdint>
+#endif
+//@formatter:on
 
 namespace bio {
 namespace physical {
@@ -47,12 +54,13 @@ namespace physical {
  * Therefore, you'd likely want multiple Perspectives and a much larger DIMENSION (uint32_t, for instance) in order to accommodate a more total objects.
  * See below for a macro for creating singleton of Perspectives.
  */
-template <typename DIMENSION>
-class Perspective : virtual public ThreadSafe
+template < typename DIMENSION >
+class Perspective :
+	virtual public ThreadSafe
 {
 public:
 	typedef DIMENSION Id;
-	typedef std::vector<Id> Ids;
+	typedef std::vector< Id > Ids;
 
 	/**
 	 * What a single point in space contains.
@@ -63,7 +71,8 @@ public:
 		Hadit(
 			Id i,
 			Name n,
-			Wave* t)
+			Wave* t
+		)
 			:
 			id(i),
 			name(n),
@@ -76,7 +85,7 @@ public:
 		Wave* type;
 	};
 
-	typedef std::vector<Hadit> Hadits;
+	typedef std::vector< Hadit > Hadits;
 
 	/**
 	 *
@@ -325,7 +334,8 @@ public:
 	 */
 	virtual bool AssociateType(
 		Id id,
-		Wave* type)
+		Wave* type
+	)
 	{
 		typename Hadits::iterator hdt = Find(id);
 		if (hdt == m_hadits.end() || hdt->type)
@@ -334,7 +344,9 @@ public:
 		}
 
 		LockThread();
-		BIO_SANITIZE(type, hdt->type = type->Clone(), hdt->type = type);
+		BIO_SANITIZE(type,
+			hdt->type = type->Clone(),
+			hdt->type = type);
 		UnlockThread();
 
 		return true;
@@ -354,7 +366,8 @@ public:
 		}
 
 		LockThread();
-		BIO_SANITIZE_AT_SAFETY_LEVEL_2(hdt->type, delete hdt->type, );
+		BIO_SANITIZE_AT_SAFETY_LEVEL_2(hdt->type,
+			delete hdt->type,);
 		hdt->type = NULL;
 		UnlockThread();
 
@@ -414,10 +427,12 @@ public:
 	 * @param id
 	 * @return a T* associated with the given name id NULL.
 	 */
-	template <typename T>
+	template < typename T >
 	T* GetTypeFromIdAs(Id id)
 	{
-		BIO_SANITIZE_WITH_CACHE(GetTypeFromId(id), return Cast<T*, Wave*>(RESULT), return NULL);
+		BIO_SANITIZE_WITH_CACHE(GetTypeFromId(id),
+			BIO_SINGLE_ARG(return Cast< T*, Wave* >(RESULT)),
+			return NULL);
 	}
 
 	/**
@@ -426,10 +441,12 @@ public:
 	 * @param id
 	 * @return a new T* from Clone()ing the type associated with the given id else NULL.
 	 */
-	template <typename T>
+	template < typename T >
 	T* GetNewObjectFromIdAs(Id id)
 	{
-		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromId(id), return Cast<T*, Wave*>(RESULT), return NULL);
+		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromId(id),
+			BIO_SINGLE_ARG(return Cast< T*, Wave* >(RESULT)),
+			return NULL);
 	}
 
 	/**
@@ -438,10 +455,12 @@ public:
 	 * @param name
 	 * @return a new T* from Clone()ing the type associated with the given name else NULL.
 	 */
-	template <typename T>
+	template < typename T >
 	T* GetNewObjectFromNameAs(Name name)
 	{
-		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromName(name), return Cast<T*, Wave*>(RESULT), return NULL);
+		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromName(name),
+			BIO_SINGLE_ARG(return Cast< T*, Wave* >(RESULT)),
+			return NULL);
 	}
 
 

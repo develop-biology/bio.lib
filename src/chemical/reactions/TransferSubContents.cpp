@@ -29,7 +29,8 @@
 namespace bio {
 namespace chemical {
 
-TransferSubContents::TransferSubContents() :
+TransferSubContents::TransferSubContents()
+	:
 	chemical::Reaction(PeriodicTable::Instance().GetNameFromType(*this)),
 	physical::Class(
 		this,
@@ -37,8 +38,8 @@ TransferSubContents::TransferSubContents() :
 			PeriodicTable::Instance().GetNameFromType(*this),
 			symmetry_Type::Operation())),
 {
-	Require<Substance>();
-	Require<Substance>();
+	Require< Substance >();
+	Require< Substance >();
 }
 
 TransferSubContents::~TransferSubContents()
@@ -47,7 +48,10 @@ TransferSubContents::~TransferSubContents()
 
 Products TransferSubContents::Process(Substances& reactants)
 {
-	reactants[0]->CallForAll(&AbstractStructure::ImportImplementation, reactants[1]);
+	reactants[0]->CallForAll(
+		&AbstractStructure::ImportImplementation,
+		reactants[1]
+	);
 }
 
 } //chemical namespace

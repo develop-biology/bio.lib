@@ -24,33 +24,57 @@
 namespace bio {
 namespace chemical {
 
-Substance::Substance() :
+Substance::Substance()
+	:
 	Class(this)
 {
 	CtorCommon();
 }
 
-Substance::Substance(Name name, physical::Perspective<StandardDimension>* perspective, Filter filter) :
-	Class(this, filter)
+Substance::Substance(
+	Name name,
+	physical::Perspective< StandardDimension >* perspective,
+	Filter filter
+)
+	:
+	Class(
+		this,
+		filter
+	)
 {
-	physical::Identifiable<StandardDimension>::Initialize(name, perspective);
-	CtorCommon();
-}
-
-Substance::Substance(Id id, physical::Perspective<StandardDimension>* perspective, Filter filter) :
-	Class(this, filter)
-{
-	physical::Identifiable<StandardDimension>::Initialize(id, perspective);
+	physical::Identifiable< StandardDimension >::Initialize(
+		name,
+		perspective
+	);
 	CtorCommon();
 }
 
 Substance::Substance(
-	typename const StructuralComponent<Property>::Contents& properties,
-	typename const StructuralComponent<State>::Contents& states)
+	Id id,
+	physical::Perspective< StandardDimension >* perspective,
+	Filter filter
+)
+	:
+	Class(
+		this,
+		filter
+	)
+{
+	physical::Identifiable< StandardDimension >::Initialize(
+		id,
+		perspective
+	);
+	CtorCommon();
+}
+
+Substance::Substance(
+	typename const StructuralComponent< Property >::Contents& properties,
+	typename const StructuralComponent< State >::Contents& states
+)
 	:
 	Class(this),
-	StructuralComponent<Property>(properties),
-	StructuralComponent<State>(states)
+	StructuralComponent< Property >(properties),
+	StructuralComponent< State >(states)
 {
 	CtorCommon();
 }
@@ -61,17 +85,17 @@ Substance::~Substance()
 
 void Substance::Enable()
 {
-	Add<State>(state::Enabled());
+	Add< State >(state::Enabled());
 }
 
 void Substance::Disable()
 {
-	Remove<State>(state::Enabled());
+	Remove< State >(state::Enabled());
 }
 
 bool Substance::IsEnabled() const
 {
-	return Has<State>(state::Enabled());
+	return Has< State >(state::Enabled());
 }
 
 void Substance::CtorCommon()
@@ -81,12 +105,12 @@ void Substance::CtorCommon()
 
 bool Substance::ProbeFor(Property property)
 {
-	return Has<Property>(property);
+	return Has< Property >(property);
 }
 
 bool Substance::ProbeFor(Properties properties)
 {
-	return HasAll<Property>(properties);
+	return HasAll< Property >(properties);
 }
 
 } //chemical namespace

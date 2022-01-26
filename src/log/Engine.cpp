@@ -20,15 +20,16 @@
  */
 
 #include "bio/log/Engine.h"
-
+#include "bio/log/Levels.h"
 #include "bio/common/Macros.h"
+#include "bio/common/OS.h"
 #include "bio/physical/Types.h"
 #include "bio/physical/Time.h"
-
 #include <cstring>
 #include <stdarg.h>
 #include <ios>
 #include <sstream>
+#include <cstdio>
 
 namespace bio {
 namespace log {

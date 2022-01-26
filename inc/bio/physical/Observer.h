@@ -23,6 +23,7 @@
 
 #include "Perspective.h"
 #include "bio/common/VirtualBase.h"
+#include "bio/common/Macros.h"
 
 namespace bio {
 namespace physical {
@@ -31,9 +32,9 @@ namespace physical {
  * An Observer class is one that has a PERSPECTIVE.
  * This is intended for Identifiable classes (see Identifiable.h) and any other classes that manage or work with Identifiable classes.
 */
-template <typename PERSPECTIVE>
+template < typename PERSPECTIVE >
 class Observer :
-	public VirtualBase
+	protected VirtualBase
 {
 public:
 	typedef PERSPECTIVE Perspective;
@@ -64,16 +65,6 @@ public:
 	}
 
 	/**
-	 * VirtualBase required method. See that class for details (in common/)
-	 * @param args
-	 */
-	virtual void InitializeImplementation(ByteStreams args)
-	{
-		BIO_SANITIZE(args.size() == 1 && args[0].Is(m_perspective));
-		m_perspective = args[0];
-	}
-
-	/**
 	 * Sets the perspective for *this.
 	 * @param perspective
 	 */
@@ -88,6 +79,18 @@ public:
 	Perspective* GetPerspective() const
 	{
 		return m_perspective;
+	}
+
+protected:
+	/**
+	 * VirtualBase required method. See that class for details (in common/)
+	 * @param args
+	 */
+	virtual void InitializeImplementation(ByteStreams args)
+	{
+		BIO_SANITIZE(args.size() == 1 && args[0].Is(m_perspective), ,
+			return);
+		m_perspective = args[0];
 	}
 
 private:

@@ -31,9 +31,18 @@ namespace chemical {
  * Reactants are intended to be used in Reactions.
  * In order to ensure the Substances provided to a Reaction are the proper types needed by the Reaction, the equality operator ensures that the compared value can be cast as the type recorded in *this.
  */
-class Reactant : public Substance
+class Reactant :
+	public Substance,
+	public Class< Reactant >
 {
 public:
+
+	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(chemical,
+		Reactant)
+
 	/**
 	 * @param typeName
 	 */
@@ -43,7 +52,10 @@ public:
 	 * @param typeName
 	 * @param substance
 	 */
-	Reactant(Name typeName, const Substance& substance);
+	Reactant(
+		Name typeName,
+		const Substance& substance
+	);
 
 	/**
 	 * @param typeName
@@ -52,8 +64,9 @@ public:
 	 */
 	Reactant(
 		Name typeName,
-		typename const StructuralComponent<Property>::Contents& properties,
-		typename const StructuralComponent<State>::Contents& states);
+		typename const StructuralComponent< Property >::Contents& properties,
+		typename const StructuralComponent< State >::Contents& states
+	);
 
 	/**
 	 *

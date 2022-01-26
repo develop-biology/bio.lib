@@ -40,18 +40,19 @@ BIO_ID_FUNCTION_BODY(                                                          \
 	#define BIO_LOG_DEBUG(format, ...)
 #else
 	#define BIO_LOG_DEBUG(format, ...)	log(log::Level::Debug(), format, __VA_ARGS__)
-
+#endif
 #ifdef BIO_LOG_DISABLE_INFO
 	#define BIO_LOG_INFO(format, ...)
 #else
 	#define BIO_LOG_INFO(format, ...)	log(log::Level::Info(), format, __VA_ARGS__)
-
+#endif
 #ifdef BIO_LOG_DISABLE_WARN
 	#define BIO_LOG_WARN(format, ...)
 #else
 	#define BIO_LOG_WARN(format, ...)	log(log::Level::Warn(), format, __VA_ARGS__)
-
+#endif
 #ifdef BIO_LOG_DISABLE_ERROR
 	#define BIO_LOG_ERROR(format, ...)
 #else
 	#define BIO_LOG_ERROR(format, ...)	log(log::Level::Error(), format, __VA_ARGS__)
+#endif

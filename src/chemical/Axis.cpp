@@ -20,6 +20,8 @@
  */
 
 #include "bio/chemical/Axis.h"
+#include "bio/chemical/Symmetry.h"
+#include "bio/chemical/structure/StructuralComponent.h"
 
 namespace bio {
 namespace chemical {
@@ -38,8 +40,12 @@ std::string Axis::Rotate(Symmetry* symmetry) const
 {
 	std::string ret = "";
 	ret += Encode(symmetry);
-
-	for(StructuralComponent<Symmetry*>::Contents::const_iterator sym = symmetry->StructuralComponent<Symmetry*>::m_contents.begin(); sym != symmetry->StructuralComponent<Symmetry*>::m_contents.end(); ++sym)
+	typename StructuralComponent< Symmetry* >::Contents* toRotate = symmetry->GetAll< Symmetry* >();
+	for (
+		typename StructuralComponent< Symmetry* >::Contents::const_iterator sym = toRotate->begin();
+		sym != toRotate->end();
+		++sym
+		)
 	{
 		ret += Rotate(*sym);
 	}

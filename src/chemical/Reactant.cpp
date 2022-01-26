@@ -35,6 +35,7 @@ void Reactant::CtorCommon(Name typeName)
 
 Reactant::Reactant(Name typeName)
 	:
+	Class< Reactant >(this),
 	Substance()
 {
 	CtorCommon(typeName);
@@ -42,9 +43,11 @@ Reactant::Reactant(Name typeName)
 
 Reactant::Reactant(
 	Name typeName,
-	typename const StructuralComponent<Property>::Contents& properties,
-	typename const StructuralComponent<State>::Contents& states)
+	typename const StructuralComponent< Property >::Contents& properties,
+	typename const StructuralComponent< State >::Contents& states
+)
 	:
+	Class< Reactant >(this),
 	Substance(
 		properties,
 		states
@@ -53,8 +56,12 @@ Reactant::Reactant(
 	CtorCommon(typeName);
 }
 
-Reactant::Reactant(Name typeName, const Substance& substance)
+Reactant::Reactant(
+	Name typeName,
+	const Substance& substance
+)
 	:
+	Class< Reactant >(this),
 	Substance(substance)
 {
 	CtorCommon(typeName);

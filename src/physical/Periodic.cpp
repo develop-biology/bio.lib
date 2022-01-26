@@ -22,6 +22,8 @@
 #include "bio/physical/Periodic.h"
 #include "bio/physical/Properties.h"
 #include "bio/physical/Symmetry.h"
+#include "bio/physical/SymmetryTypes.h"
+#include "bio/physical/Time.h"
 
 namespace bio {
 namespace physical {
@@ -34,15 +36,24 @@ namespace physical {
 Properties Periodic::GetClassProperties()
 {
 	Properties ret;
-	ret.push_back(property::Periodic())
+	ret.push_back(
+		property::Periodic());
 	return ret;
 }
 
 Periodic::Periodic(TimeUS interval)
 	:
-	Class(this, new Symmetry("m_interval", symmetry_type::DefineVariable())),
-	m_interval(interval),
-	m_lastPeakTimestamp(0)
+	Class(
+		this,
+		new Symmetry(
+			"m_interval",
+			symmetry_type::DefineVariable())),
+	m_interval(
+		interval
+	),
+	m_lastPeakTimestamp(
+		0
+	)
 {
 }
 
@@ -77,19 +88,25 @@ void Periodic::SetLastPeakTimestamp(Timestamp lastPeak)
 
 Symmetry* Periodic::Spin() const
 {
-	m_symmetry->AccessValue()->Set(m_interval);
+	m_symmetry->AccessValue()->Set(
+		m_interval
+	);
 	return Wave::Spin();
 }
 
 void Periodic::Reify(Symmetry* symmetry)
 {
-	BIO_SANITIZE(symmetry,,return);
+	BIO_SANITIZE(symmetry, ,
+		return);
 	m_interval = symmetry->GetValue();
 }
 
 void Periodic::InitializeImplementation(ByteStreams args)
 {
-	BIO_SANITIZE(args.size() == 1 && args[0].Is(m_interval));
+	BIO_SANITIZE(args.size() == 1 && args[0].Is(
+		m_interval
+	), ,
+		return);
 	m_interval = args[0];
 }
 
@@ -106,7 +123,9 @@ void Periodic::CheckIn()
 		return;
 	}
 	Peak();
-	SetLastPeakTimestamp(now);
+	SetLastPeakTimestamp(
+		now
+	);
 }
 
 } //physical namespace

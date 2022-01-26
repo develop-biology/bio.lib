@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/common/Typename.h"
+#include "bio/common/TypeName.h"
 #include "Types.h"
 #include "bio/physical/Perspective.h"
 
@@ -37,7 +37,8 @@ namespace chemical {
  * This is done because neither static nor virtual methods will allow for the inverted inheritance necessary to make inverted-inheritance methods like Atom::CallForAll work properly.
  * See Element.h for a more detailed description of this system.
  */
-class PeriodicTableImplementation : public physical::Perspective<AtomicNumber>
+class PeriodicTableImplementation :
+	public physical::Perspective< AtomicNumber >
 {
 public:
 	/**
@@ -54,10 +55,10 @@ public:
 	 * @tparam T
 	 * @return the Name associated with the given type.
 	 */
-	template <typename T>
+	template < typename T >
 	Name GetNameFromType() const
 	{
-		return TypeName<T>().c_str();
+		return TypeName< T >().c_str();
 	}
 
 	/**
@@ -66,20 +67,20 @@ public:
 	 * @param t
 	 * @return the Name associated with the given type.
 	 */
-	template <typename T>
+	template < typename T >
 	Name GetNameFromType(const T t) const
 	{
-		return GetNameFromType<T>()
+		return GetNameFromType< T >();
 	}
 
 	/**
 	 * @tparam T
 	 * @return the AtomicNumber associated with the given type.
 	 */
-	template <typename T>
-	AtomicNumber GetIdFromType() const
+	template < typename T >
+	AtomicNumber GetIdFromType()
 	{
-		return GetIdFromName(GetNameFromType<T>());
+		return GetIdFromName(GetNameFromType< T >());
 	}
 
 	/**
@@ -88,10 +89,10 @@ public:
 	 * @param t
 	 * @return the AtomicNumber associated with the given type.
 	 */
-	template <typename T>
-	AtomicNumber GetIdFromType(const T t) const
+	template < typename T >
+	AtomicNumber GetIdFromType(const T t)
 	{
-		return GetIdFromType<T>()
+		return GetIdFromType< T >();
 	}
 
 	/**
@@ -110,10 +111,10 @@ public:
 	 * @tparam T
 	 * @return whatever properties have been Recorded for the given type.
 	 */
-	template <typename T>
+	template < typename T >
 	const Properties GetPropertiesOf() const
 	{
-		return GetPropertiesOf(TypeName<T>().c_str());
+		return GetPropertiesOf(TypeName< T >().c_str());
 	}
 
 	/**
@@ -121,24 +122,33 @@ public:
 	 * @param id
 	 * @param property
 	 */
-	void RecordPropertyOf(AtomicNumber id, Property property);
+	void RecordPropertyOf(
+		AtomicNumber id,
+		Property property
+	);
 
 	/**
 	 * Add a Property to the given type's record in *this.
 	 * @param name
 	 * @param property
 	 */
-	void RecordPropertyOf(Name name, Property property);
+	void RecordPropertyOf(
+		Name name,
+		Property property
+	);
 
 	/**
 	 * Add a Property to the given type's record in *this.
 	 * @tparam T
 	 * @param property
 	 */
-	template <typename T>
+	template < typename T >
 	void RecordPropertyOf(Property property)
 	{
-		RecordPropertyOf(TypeName<T>().c_str(), property);
+		RecordPropertyOf(
+			TypeName< T >().c_str(),
+			property
+		);
 	}
 
 	/**
@@ -146,28 +156,38 @@ public:
 	 * @param id
 	 * @param properties
 	 */
-	void RecordPropertiesOf(AtomicNumber id, Properties properties);
+	void RecordPropertiesOf(
+		AtomicNumber id,
+		Properties properties
+	);
 
 	/**
 	 * Add Properties to the given type's record in *this.
 	 * @param name
 	 * @param properties
 	 */
-	void RecordPropertiesOf(Name name, Properties properties);
+	void RecordPropertiesOf(
+		Name name,
+		Properties properties
+	);
 
 	/**
 	 * Add Properties to the given type's record in *this.
 	 * @tparam T
 	 * @param properties
 	 */
-	template <typename T>
+	template < typename T >
 	void RecordPropertiesOf(Properties properties)
 	{
-		RecordPropertiesOf(TypeName<T>().c_str(), properties);
+		RecordPropertiesOf(
+			TypeName< T >().c_str(),
+			properties
+		);
 	}
 };
 
-BIO_SINGLETON(PeriodicTable, PeriodicTableImplementation)
+BIO_SINGLETON(PeriodicTable,
+	PeriodicTableImplementation)
 
 } //chemical namespace
 } //bio namespace

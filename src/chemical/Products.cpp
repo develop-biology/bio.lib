@@ -39,7 +39,8 @@ Products::Products(Code result)
 
 }
 
-Products::Products(const Substances& substances) :
+Products::Products(const Substances& substances)
+	:
 	m_result(code::Success()),
 	m_substances(substances)
 {
@@ -48,7 +49,8 @@ Products::Products(const Substances& substances) :
 
 Products::Products(
 	Code result,
-	const Substances& substances)
+	const Substances& substances
+)
 	:
 	m_result(result),
 	m_substances(substances)

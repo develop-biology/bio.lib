@@ -20,6 +20,8 @@
  */
 
 #include "bio/physical/Axis.h"
+#include "bio/physical/Wave.h"
+#include "bio/physical/Symmetry.h"
 
 namespace bio {
 namespace physical {
@@ -51,7 +53,8 @@ Symmetry* Axis::Rotate(std::string) const
 
 std::string Axis::operator|(Wave* particle) const
 {
-	BIO_SANITIZE(particle,,return Failed());
+	BIO_SANITIZE(particle, ,
+		return Failed());
 	return Rotate(particle->Spin());
 }
 
@@ -60,7 +63,7 @@ Symmetry* Axis::operator()(std::string encoded) const
 	return Rotate(encoded);
 }
 
-std::string Encode(Symmetry* symmetry) const
+std::string Axis::Encode(Symmetry* symmetry) const
 {
 	return Failed();
 }

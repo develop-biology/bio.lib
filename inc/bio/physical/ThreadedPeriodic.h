@@ -31,9 +31,19 @@ namespace physical {
  * A ThreadedPeriodic is simply an Periodic that vibrates in its own thread.
  * See Periodic.h & Threaded.h for more info.
  */
-class ThreadedPeriodic : virtual public Periodic, virtual public Threaded
+class ThreadedPeriodic :
+	virtual public Periodic,
+	virtual public Threaded,
+	Class< ThreadedPeriodic >
 {
 public:
+
+	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
+		ThreadedPeriodic)
+
 	/**
 	 *
 	 */
@@ -47,7 +57,7 @@ public:
 	/**
 	 * Calls Peak() then sleeps.
 	 */
-	virtual void Work();
+	virtual bool Work();
 };
 
 } //physical namespace

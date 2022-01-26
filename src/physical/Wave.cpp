@@ -20,25 +20,40 @@
  */
 
 #include "bio/physical/Wave.h"
+#include "bio/physical/Types.h"
+#include "bio/physical/Symmetry.h"
 #include "bio/common/Macros.h"
+
+#include <algorithm>
 
 namespace bio {
 namespace physical {
 
-Wave::Wave(Symmetry* symmetry) :
-	m_symmetry(symmetry),
-	m_signal(NULL)
+Wave::Wave(
+	Symmetry* symmetry
+)
+	:
+	m_symmetry(
+		symmetry
+	),
+	m_signal(
+		NULL
+	)
 {
 }
 
 Wave::~Wave()
 {
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(m_symmetry, delete m_symmetry; m_symmetry=NULL,);
+	BIO_SANITIZE_AT_SAFETY_LEVEL_2(m_symmetry,
+		delete m_symmetry;
+		m_symmetry = NULL,);
 }
 
 Wave* Wave::Clone() const
 {
-	return new Wave(*this);
+	return new Wave(
+		*this
+	);
 }
 
 Symmetry* Wave::Spin() const
@@ -46,19 +61,28 @@ Symmetry* Wave::Spin() const
 	return m_symmetry;
 }
 
-void Wave::Reify(Symmetry* symmetry)
+void Wave::Reify(
+	Symmetry* symmetry
+)
 {
 	(*m_symmetry) = *symmetry;
 }
 
-void Wave::operator|(Symmetry* symmetry)
+void Wave::operator|(
+	Symmetry* symmetry
+)
 {
-	Reify(symmetry);
+	Reify(
+		symmetry
+	);
 }
 
-Wave* Wave::Modulate(Wave* signal)
+Wave* Wave::Modulate(
+	Wave* signal
+)
 {
 	m_signal = signal;
+	return this;
 }
 
 Wave* Wave::Demodulate()
@@ -71,37 +95,53 @@ const Wave* Wave::Demodulate() const
 	return m_signal;
 }
 
-Wave* Wave::operator%(Wave* signal)
+Wave* Wave::operator%(
+	Wave* signal
+)
 {
-	return Modulate(signal);
+	return Modulate(
+		signal
+	);
 }
 
-Wave* Wave::operator%()
+Wave* Wave::operator~()
 {
 	return Demodulate();
 }
 
-const Wave* Wave::operator%() const
+const Wave* Wave::operator~() const
 {
 	return Demodulate();
 }
 
-Wave* Wave::operator+(const Wave* other)
+Wave* Wave::operator+(
+	const Wave* other
+)
 {
-	return *this->Clone() += other;
+	Wave* ret = this->Clone();
+	*ret += other;
+	return ret;
 }
 
-Wave* Wave::operator-(const Wave* other)
+Wave* Wave::operator-(
+	const Wave* other
+)
 {
-	return *this->Clone() -= other;
+	Wave* ret = this->Clone();
+	*ret -= other;
+	return ret;
 }
 
-void Wave::operator+=(const Wave* other)
+void Wave::operator+=(
+	const Wave* other
+)
 {
 	//nop
 }
 
-void Wave::operator-=(const Wave* other)
+void Wave::operator-=(
+	const Wave* other
+)
 {
 	//nop
 }
@@ -114,45 +154,74 @@ Properties Wave::GetProperties() const
 
 /*static*/ Properties Wave::GetResonanceBetween(
 	const Wave* wave1,
-	const Wave* wave2)
+	const Wave* wave2
+)
 {
-	Waves waves;
-	waves.push_back(wave1);
-	waves.push_back(wave2);
-	return GetResonanceBetween(waves);
+	ConstWaves waves;
+	waves.push_back(
+		wave1
+	);
+	waves.push_back(
+		wave2
+	);
+	return GetResonanceBetween(
+		waves
+	);
 }
 
-/*static*/ Properties Wave::GetResonanceBetween(Waves waves)
+/*static*/ Properties Wave::GetResonanceBetween(
+	ConstWaves waves
+)
 {
 	Properties overlap;
-	BIO_SANITIZE(waves.size() && waves[0],,return overlap);
+	BIO_SANITIZE(waves.size() && waves[0], ,
+		return overlap);
 	overlap = waves[0]->GetProperties();
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(waves.size()>1,,return overlap);
-	std::vector<Property::iterator> remBuffer;
+	BIO_SANITIZE_AT_SAFETY_LEVEL_2(waves.size() > 1, ,
+		return overlap);
+	std::vector< Properties::iterator > remBuffer;
+
 	for (
-		Waves::const_iterator wav = waves.begin()++;
+		ConstWaves::const_iterator wav = waves.begin()++;
 		wav != waves.end();
-		++wav)
+		++wav
+		)
 	{
-		BIO_SANITIZE(*wav,,continue);
+		BIO_SANITIZE(*wav, ,
+			continue);
+
 		Properties wavProperties = (*wav)->GetProperties();
 		remBuffer.clear();
-		for (Properties::iterator prp = overlap.begin(); prp != overlap.end(); ++prp)
+		for (
+			Properties::iterator prp = overlap.begin();
+			prp != overlap.end();
+			++prp
+			)
 		{
-			if (std::find(wavProperties.begin(), wavProperties.end(), *prp) == wavProperties.end())
+			if (std::find(
+				wavProperties.begin(),
+				wavProperties.end(),
+				*prp
+			) == wavProperties.end())
 			{
-				remBuffer.push_back(prp)
+				remBuffer.push_back(
+					prp
+				);
 			}
 		}
-		for (std::vector<Property::iterator>::iterator rem = remBuffer.begin(); rem != remBuffer.end(); ++rem)
+		for (
+			std::vector< Properties::iterator >::iterator rem = remBuffer.begin();
+			rem != remBuffer.end();
+			++rem
+			)
 		{
-			overlap.erase(rem);
+			overlap.erase(
+				*rem
+			);
 		}
 	}
 	return overlap;
 }
-
-};
 
 } //physical namespace
 } //bio namespace

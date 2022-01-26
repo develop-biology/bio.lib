@@ -33,7 +33,7 @@ namespace chemical {
  */
 class TransferSubContents :
 	virtual public Reaction,
-	public Class<TransferSubContents>
+	public Class< TransferSubContents >
 {
 public:
 	/**

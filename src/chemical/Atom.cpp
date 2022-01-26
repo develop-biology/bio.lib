@@ -19,17 +19,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
 #include "bio/chemical/Atom.h"
-#include "bio/chemical/Bond.h"
 #include "bio/chemical/PeriodicTable.h"
+#include "bio/chemical/Symmetry.h"
 
 namespace bio {
 namespace chemical {
 
 Atom::Atom()
 	:
+	physical::Class< Atom >(this),
 	m_valence(1)
 {
 	m_bonds = new Bond[m_valence];
@@ -37,6 +36,7 @@ Atom::Atom()
 
 Atom::Atom(const Atom& other)
 	:
+	physical::Class< Atom >(this),
 	m_valence(1)
 {
 	m_bonds = new Bond[m_valence];
@@ -44,8 +44,7 @@ Atom::Atom(const Atom& other)
 
 Atom::~Atom()
 {
-	//TODO: Make sure contents are always deleted.
-	delete m_bonds[];
+	delete[] m_bonds;
 }
 
 void Atom::Attenuate(const physical::Wave* other)
@@ -63,12 +62,11 @@ void Atom::Attenuate(const physical::Wave* other)
 		if (Wave::GetResonanceBetween(
 			m_bonds[val].GetBonded(),
 			other
-		))
+		).size())
 		{
 			*(m_bonds[val].GetBonded()) += other;
 		}
 	}
-	return val;
 }
 
 void Atom::Disattenuate(const physical::Wave* other)
@@ -86,12 +84,11 @@ void Atom::Disattenuate(const physical::Wave* other)
 		if (Wave::GetResonanceBetween(
 			m_bonds[val].GetBonded(),
 			other
-		))
+		).size())
 		{
 			*(m_bonds[val].GetBonded()) -= other;
 		}
 	}
-	return val;
 }
 
 void Atom::operator+=(const Wave* other)
@@ -104,16 +101,11 @@ void Atom::operator-=(const Wave* other)
 	Disattenuate(other);
 }
 
-Atom* Atom::Clone() const
-{
-	return new Atom(*this);
-}
-
-
 bool Atom::FormBondImplementation(
 	Wave* toBond,
 	AtomicNumber id,
-	BondType type)
+	BondType type
+)
 {
 	Valence position = GetBondPosition(id);
 
@@ -132,7 +124,7 @@ bool Atom::FormBondImplementation(
 		}
 		else
 		{
-			return m_bonds[position].Make(
+			return m_bonds[position].Form(
 				id,
 				toBond,
 				type
@@ -161,7 +153,8 @@ bool Atom::FormBondImplementation(
 bool Atom::BreakBondImplementation(
 	Wave* toBreak,
 	AtomicNumber id,
-	BondType type)
+	BondType type
+)
 {
 	Valence position = GetBondPosition(id);
 
@@ -170,7 +163,7 @@ bool Atom::BreakBondImplementation(
 	BIO_SANITIZE(position < m_valence, ,
 		return false);
 
-	m_bonds[position].Empty();
+	m_bonds[position].Break();
 	//Let dtor cleanup.
 
 	return true;
@@ -197,7 +190,7 @@ Valence Atom::GetBondPosition(AtomicNumber bondedId) const
 
 Valence Atom::GetBondPosition(Name typeName) const
 {
-	return GetBondPosition(PeriodicTable::Instance().IdFromName(typeName));
+	return GetBondPosition(PeriodicTable::Instance().GetIdWithoutCreation(typeName));
 }
 
 BondType Atom::GetBondType(Valence position) const
@@ -205,6 +198,16 @@ BondType Atom::GetBondType(Valence position) const
 	BIO_SANITIZE(position < m_valence, ,
 		return BondTypePerspective::InvalidId());
 	return m_bonds[position].GetId();
+}
+
+physical::Symmetry* Atom::Spin() const
+{
+	return Wave::Spin();
+}
+
+void Atom::Reify(physical::Symmetry* symmetry)
+{
+	Wave::Reify(symmetry);
 }
 
 

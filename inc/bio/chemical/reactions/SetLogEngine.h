@@ -35,7 +35,7 @@ namespace chemical {
  */
 class SetLogEngine :
 	virtual public Reaction,
-	public Class<SetLogEngine>
+	public Class< SetLogEngine >
 {
 public:
 	/**

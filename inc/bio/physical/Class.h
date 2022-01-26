@@ -32,8 +32,9 @@ namespace physical {
  * This pattern prevents you from having to define virtual methods each of your child classes, so long as you always derive from the appropriate Class<T>.
  * @tparam T
  */
-template <typename T>
-class Class : public Wave
+template < typename T >
+class Class :
+	public Wave
 {
 public:
 	/**
@@ -41,7 +42,11 @@ public:
 	 * @param object
 	 * @param symmetry
 	 */
-	Class(T* object, Symmetry* symmetry=NULL) :
+	Class(
+		T* object,
+		Symmetry* symmetry = NULL
+	)
+		:
 		Wave(symmetry),
 		m_object(object)
 	{
@@ -56,13 +61,23 @@ public:
 
 	}
 
+	virtual /**
+	 * Make it so we can treat *this as the calling T.
+	 * @return the m_object *this was created for.
+	 */
+	operator T*()
+	{
+		return m_object;
+	}
+
 	/**
 	 * Template override for Clone so we don't have to define it everywhere.
 	 * @return a new T (and a new *this).
 	 */
-	virtual T* Clone() const
+	virtual Wave* Clone() const
 	{
-		return new T(*m_object);
+		T* ret = new T(*m_object);
+		return Cast< Class< T >* >(ret);
 	}
 
 protected:

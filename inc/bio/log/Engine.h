@@ -23,7 +23,9 @@
 
 #include "bio/physical/Filters.h"
 #include "Macros.h"
+#include "Types.h"
 #include <sstream>
+#include <stdarg.h>
 
 namespace bio {
 namespace log {

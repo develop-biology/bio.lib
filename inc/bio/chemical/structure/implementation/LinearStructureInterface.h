@@ -38,7 +38,8 @@ public:
 	/**
 	 *
 	 */
-	LinearStructureInterface() :
+	LinearStructureInterface()
+		:
 	{
 	}
 
@@ -59,17 +60,18 @@ public:
 	 * @param optionalPositionArg If a position is specified, the optionalPositionArg is the id of the Content referenced (e.g. BEFORE, MyContentId()).
 	 * @param transferSubContents allows all of the Contents within a Content that conflicts with toadd to be copied into toAdd, before the conflicting Content is deleted (similar to renaming an upper directory while preserving it's contents).
 	 */
-	template <typename T>
+	template < typename T >
 	Code Insert(
 		T* toAdd,
-		const typename LinearStructuralComponentImplementation<T>::Dimensions& insertionPoint,
+		const typename LinearStructuralComponentImplementation< T >::Dimensions& insertionPoint,
 		const Position position = BOTTOM,
-		const typename LinearStructuralComponentImplementation<T>::Dimension optionalPositionArg = 0,
-		const bool transferSubContents = false)
+		const typename LinearStructuralComponentImplementation< T >::Dimension optionalPositionArg = 0,
+		const bool transferSubContents = false
+	)
 	{
 		Code ret = code::GeneralFailure();
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded<LinearStructuralComponentImplementation<T>>(),
+		BIO_SANITIZE_WITH_CACHE(this->AsBonded< LinearStructuralComponentImplementation< T>>(),
 			ret = RESULT->InsertImplementation(
 				toAdd,
 				insertionPoint,
@@ -88,14 +90,15 @@ public:
 	 * @param recurse whether or not to search the Contents of Contents, traversing the tree of all T in *this.
 	 * @return a T of the given id or NULL; NULL if T is invalid.
 	 */
-	template <typename T>
+	template < typename T >
 	T* GetById(
-		typename LinearStructuralComponentImplementation<T>::Dimension id,
-		const bool recurse = false)
+		typename LinearStructuralComponentImplementation< T >::Dimension id,
+		const bool recurse = false
+	)
 	{
 		T* ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded<LinearStructuralComponentImplementation<T>>(),
+		BIO_SANITIZE_WITH_CACHE(this->AsBonded< LinearStructuralComponentImplementation< T>>(),
 			ret = RESULT->GetByIdImplementation(
 				id,
 				recurse
@@ -111,14 +114,15 @@ public:
 	 * @param recurse whether or not to search the Contents of Contents, traversing the tree of all T in *this.
 	 * @return a T of the given id or NULL; NULL if T is invalid.
 	 */
-	template <typename T>
+	template < typename T >
 	const T* GetById(
-		typename LinearStructuralComponentImplementation<T>::Dimension id,
-		const bool recurse = false) const
+		typename LinearStructuralComponentImplementation< T >::Dimension id,
+		const bool recurse = false
+	) const
 	{
 		const T* ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded<LinearStructuralComponentImplementation<T>>(),
+		BIO_SANITIZE_WITH_CACHE(this->AsBonded< LinearStructuralComponentImplementation< T>>(),
 			ret = RESULT->GetByIdImplementation(
 				id,
 				recurse
@@ -134,14 +138,15 @@ public:
 	 * @param recurse whether or not to search the Contents of Contents, traversing the tree of all T in *this.
 	 * @return a T of the given id or NULL; NULL if T is invalid.
 	 */
-	template <typename T>
+	template < typename T >
 	T* GetByName(
 		Name name,
-		bool recurse = false)
+		bool recurse = false
+	)
 	{
 		T* ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded<LinearStructuralComponentImplementation<T>>(),
+		BIO_SANITIZE_WITH_CACHE(this->AsBonded< LinearStructuralComponentImplementation< T>>(),
 			ret = RESULT->GetByNameImplementation(
 				name,
 				recurse
@@ -157,14 +162,15 @@ public:
 	 * @param recurse whether or not to search the Contents of Contents, traversing the tree of all T in *this.
 	 * @return a T of the given id or NULL; NULL if T is invalid.
 	 */
-	template <typename T>
+	template < typename T >
 	const T* GetByName(
 		Name name,
-		const bool recurse = false) const
+		const bool recurse = false
+	) const
 	{
 		const T* ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded<LinearStructuralComponentImplementation<T>>(),
+		BIO_SANITIZE_WITH_CACHE(this->AsBonded< LinearStructuralComponentImplementation< T>>(),
 			ret = RESULT->GetByNameImplementation(
 				name,
 				recurse
@@ -181,14 +187,15 @@ public:
 	 * @param recurse
 	 * @return A T* of the given id; NULL if T is invalid.
 	 */
-	template <typename T>
+	template < typename T >
 	T* GetOrCreateById(
-		LinearStructuralComponentImplementation<T>::Dimension id,
-		const bool recurse = false)
+		LinearStructuralComponentImplementation< T >::Dimension id,
+		const bool recurse = false
+	)
 	{
 		T* ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded<LinearStructuralComponentImplementation<T>>(),
+		BIO_SANITIZE_WITH_CACHE(this->AsBonded< LinearStructuralComponentImplementation< T>>(),
 			ret = RESULT->GetOrCreateByIdImplementation(
 				id,
 				recurse
@@ -205,14 +212,15 @@ public:
 	 * @param recurse
 	 * @return A T* of the given id; NULL if T is invalid.
 	 */
-	template <typename T>
+	template < typename T >
 	T* GetOrCreateByName(
 		Name name,
-		const bool recurse = false)
+		const bool recurse = false
+	)
 	{
 		T* ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded<LinearStructuralComponentImplementation<T>>(),
+		BIO_SANITIZE_WITH_CACHE(this->AsBonded< LinearStructuralComponentImplementation< T>>(),
 			ret = RESULT->GetOrCreateByNameImplementation(
 				id,
 				recurse
@@ -227,13 +235,14 @@ public:
 	 * @param reaction
 	 * @param self a pointer to *this, if *this is a chemical::Substance.
 	 */
-	template <typename T>
+	template < typename T >
 	void ForEach(
 		Reaction* reaction,
-		Substance* self = NULL)
+		Substance* self = NULL
+	)
 	{
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded<LinearStructuralComponentImplementation<T>>(),
+		BIO_SANITIZE_WITH_CACHE(this->AsBonded< LinearStructuralComponentImplementation< T>>(),
 			RESULT->ForEachImplementation(
 				reaction,
 				self

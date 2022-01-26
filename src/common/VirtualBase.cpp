@@ -30,7 +30,7 @@ VirtualBase::VirtualBase() :
 
 }
 
-virtual VirtualBase::~VirtualBase()
+VirtualBase::~VirtualBase()
 {
 
 }

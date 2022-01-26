@@ -42,14 +42,20 @@ namespace chemical {
  *
  * @tparam CONTENT_TYPE a pointer type to a child of chemical::Substance
  */
-template <typename CONTENT_TYPE>
+template < typename CONTENT_TYPE >
 class LinearStructuralComponent :
 	virtual public LinearStructureInterface,
-	public Element<LinearStructuralComponent<CONTENT_TYPE>>,
-	public Class<LinearStructuralComponent<CONTENT_TYPE>>,
-	public LinearStructuralComponentImplementation<CONTENT_TYPE>
+	public Element< LinearStructuralComponent< CONTENT_TYPE > >,
+	public Class< LinearStructuralComponent< CONTENT_TYPE > >,
+	public LinearStructuralComponentImplementation< CONTENT_TYPE >
 {
 public:
+
+	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(chemical,
+		LinearStructuralComponent< CONTENT_TYPE >)
 
 	/**
 	 * Each LinearStructuralComponent may use a different Perspective for identifying its contents.
@@ -79,7 +85,7 @@ public:
 	 */
 	explicit LinearStructuralComponent(Perspective <StandardDimension>* perspective = NULL)
 		:
-		Element<LinearStructuralComponent<CONTENT_TYPE>>(AbstractStructure::GetClassProperties()),
+		Element< LinearStructuralComponent< CONTENT_TYPE>>(AbstractStructure::GetClassProperties()),
 		Class(this),
 		m_perspective(perspective)
 	//NOTE: Writer not initialized here!
@@ -93,12 +99,13 @@ public:
 	 * @param perspective
 	 */
 	explicit LinearStructuralComponent(
-		typename const StructuralComponentImplementation<CONTENT_TYPE>::Contents& contents,
-		Perspective <StandardDimension>* perspective = NULL)
+		typename const StructuralComponentImplementation< CONTENT_TYPE >::Contents& contents,
+		Perspective <StandardDimension>* perspective = NULL
+	)
 		:
-		Element<LinearStructuralComponent<CONTENT_TYPE>>(AbstractStructure::GetClassProperties()),
+		Element< LinearStructuralComponent< CONTENT_TYPE>>(AbstractStructure::GetClassProperties()),
 		Class(this),
-		StructuralComponent<CONTENT_TYPE>(contents),
+		StructuralComponent< CONTENT_TYPE >(contents),
 		m_perspective(perspective)
 	{
 		CtorCommon();
@@ -109,14 +116,14 @@ public:
 	 * Keep in mind that dtor will delete the contents of *this.
 	 * @param toCopy
 	 */
-	LinearStructuralComponent(const LinearStructuralComponent<CONTENT_TYPE>& toCopy)
+	LinearStructuralComponent(const LinearStructuralComponent< CONTENT_TYPE >& toCopy)
 		:
 		Class(this)
 	{
 		CtorCommon();
 		m_perspective = toCopy.m_perspective;
 		for (
-			typename StructuralComponentImplementation<CONTENT_TYPE>::Contents::iterator cnt = toCopy.m_contents.begin();
+			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::iterator cnt = toCopy.m_contents.begin();
 			cnt != toCopy.m_contents.end();
 			++cnt
 			)
@@ -149,12 +156,13 @@ public:
 	 */
 	virtual Code InsertImplementation(
 		CONTENT_TYPE toAdd,
-		const typename LinearStructuralComponentImplementation<CONTENT_TYPE>::Dimensions& insertionPoint,
+		const typename LinearStructuralComponentImplementation< CONTENT_TYPE >::Dimensions& insertionPoint,
 		const Position position = BOTTOM,
 		const StandardDimension optionalPositionArg = CONTENT_TYPE::Perspective::InvalidId(),
-		const bool transferSubContents = false)
+		const bool transferSubContents = false
+	)
 	{
-		return LinearStructuralComponentImplementation<CONTENT_TYPE>::Insert(
+		return LinearStructuralComponentImplementation< CONTENT_TYPE >::Insert(
 			this->GetPerspective(),
 			toAdd,
 			this->GetAllImplementation(),
@@ -173,9 +181,10 @@ public:
 	 */
 	virtual CONTENT_TYPE GetByNameImplementation(
 		Name name,
-		const bool recurse = false)
+		const bool recurse = false
+	)
 	{
-		return AbstractLinearStructuralComponent<CONTENT_TYPE>::FindByNameIn(
+		return AbstractLinearStructuralComponent< CONTENT_TYPE >::FindByNameIn(
 			this->GetPerspective(),
 			this->GetAllImplementation(),
 			name,
@@ -191,9 +200,10 @@ public:
 	 */
 	virtual const CONTENT_TYPE GetByNameImplementation(
 		Name name,
-		const bool recurse = false) const
+		const bool recurse = false
+	) const
 	{
-		return AbstractLinearStructuralComponent<CONTENT_TYPE>::FindByNameIn(
+		return AbstractLinearStructuralComponent< CONTENT_TYPE >::FindByNameIn(
 			this->GetPerspective(),
 			this->GetAllImplementation(),
 			name,
@@ -209,12 +219,13 @@ public:
 	 * @return a newly created CONTENT_TYPE else NULL.
 	 */
 	virtual CONTENT_TYPE CreateImplementation(
-		StandardDimension id)
+		StandardDimension id
+	)
 	{
 		BIO_SANITIZE(this->GetPerspective(), ,
 			return NULL);
 		return this->AddImplementation(
-			this->GetPerspective()->GetNewObjectFromIdAs<CONTENT_TYPE>(id));
+			this->GetPerspective()->GetNewObjectFromIdAs< CONTENT_TYPE >(id));
 	}
 
 	/**
@@ -226,7 +237,8 @@ public:
 	 */
 	virtual CONTENT_TYPE GetOrCreateByIdImplementation(
 		StandardDimension id,
-		const bool recurse = false)
+		const bool recurse = false
+	)
 	{
 		CONTENT_TYPE ret = this->GetImplementation(
 			id,
@@ -248,7 +260,8 @@ public:
 	 */
 	virtual CONTENT_TYPE GetOrCreateByNameImplementation(
 		Name name,
-		const bool recurse = false)
+		const bool recurse = false
+	)
 	{
 		BIO_SANITIZE(this->GetPerspective(), ,
 			return NULL);
@@ -271,7 +284,7 @@ private:
 	 */
 	void CtorCommon()
 	{
-		BIO_SANITIZE_AT_SAFETY_LEVEL_1(Cast<Substance*>(CONTENT_TYPE), ,)
+		BIO_SANITIZE_AT_SAFETY_LEVEL_1(Cast< Substance* >(CONTENT_TYPE), ,)
 	}
 
 };

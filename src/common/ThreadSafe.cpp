@@ -19,16 +19,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
 #include "bio/common/ThreadSafe.h"
 
 namespace bio {
 
-ThreadSafe::ThreadSafe() :
+ThreadSafe::ThreadSafe()
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
-	#else
+    #else
+        :
 		m_mutex(),
 		m_lock(m_mutex, std::defer_lock)
 	#endif
@@ -47,10 +46,11 @@ ThreadSafe::ThreadSafe() :
 	//@formatter:on
 }
 
-ThreadSafe::ThreadSafe(const ThreadSafe& toCopy) :
+ThreadSafe::ThreadSafe(const ThreadSafe& toCopy)
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
-	#else
+    #else
+        :
 		m_mutex(),
 		m_lock(m_mutex, std::defer_lock)
 	#endif
