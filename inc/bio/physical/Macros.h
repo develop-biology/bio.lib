@@ -21,6 +21,10 @@
 
 #pragma once
 
+
+//@formatter:off
+
+
 #include "bio/common/Macros.h"
 #include "Perspective.h"
 
@@ -133,7 +137,7 @@ BIO_ID_FUNCTION_BODY(                                                          \
 #define BIO_CLASS_METHOD(ns, caller, returnVal, function, qualifiers)          \
 virtual returnVal function qualifiers                                          \
 {                                                                              \
-    return ns::Class<caller>::function;                                        \
+    return this->ns::Class<caller>::function;                                  \
 }
 
 #define BIO_CLASS_METHOD_WITH_MACRO(ns, caller, macro)                         \
@@ -206,13 +210,13 @@ t1, t2, t3, t4, t5, t6, t7, t8, t9)                                            \
     BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t8)               \
     BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t9)
 
-#define BIO_CALL_CLASS_METHOD_LOOP_WITH_MACRO(\
-        loopName, \
-        iterationsMacro, \
-        ns, \
-        caller, \
+#define BIO_CALL_CLASS_METHOD_LOOP_WITH_MACRO(                                 \
+        loopName,                                                              \
+        iterationsMacro,                                                       \
+        ns,                                                                    \
+        caller,                                                                \
         argsMacro                                                              \
-)                                                                          \
+	)                                                                          \
     BIO_CALL_LOOP(loopName, iterationsMacro, ns, caller, argsMacro)
 
 /**
@@ -222,8 +226,8 @@ t1, t2, t3, t4, t5, t6, t7, t8, t9)                                            \
 #define BIO_DISAMBIGUATE_CLASS_METHODS(ns, caller)                             \
     BIO_CALL_CLASS_METHOD_LOOP_WITH_MACRO(                                     \
         BIO_DEFINE_CLASS_METHODS_LOOP,                                         \
-        BIO_GET_NUM_ARGS(                                                      \
-            BIO_GET_CLASS_METHODS_FOR##_##ns()                                 \
+        BIO_GET_NUM_ARGS_OF_MACRO(                                             \
+			BIO_GET_CLASS_METHODS_FOR##_##ns()                                 \
         ),                                                                     \
         ns,                                                                    \
         caller,                                                                \
@@ -238,4 +242,8 @@ t1, t2, t3, t4, t5, t6, t7, t8, t9)                                            \
  * Get all virtual methods defined by physical::Class.
  */
 #define BIO_GET_CLASS_METHODS_FOR_physical()                                   \
-    (Wave*, Clone(), const)
+    (bio::physical::Wave*, Clone(), const),                                    \
+    (bio::physical::Wave*, AsWave(), ),                                        \
+    (const bio::physical::Wave*, AsWave(), const),                             \
+	(,operator bio::physical::Wave*(),)
+

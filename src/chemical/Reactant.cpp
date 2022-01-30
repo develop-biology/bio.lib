@@ -43,8 +43,8 @@ Reactant::Reactant(Name typeName)
 
 Reactant::Reactant(
 	Name typeName,
-	typename const StructuralComponent< Property >::Contents& properties,
-	typename const StructuralComponent< State >::Contents& states
+	const typename StructuralComponent< Property >::Contents& properties,
+	const typename StructuralComponent< State >::Contents& states
 )
 	:
 	Class< Reactant >(this),

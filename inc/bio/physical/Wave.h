@@ -202,6 +202,23 @@ public:
 	 */
 	virtual void operator-=(const Wave* other);
 
+	/**
+	 * Used for resolving ambiguous inheritance without the need to explicitly derive from Wave.
+	 * @return this
+	 */
+	virtual Wave* AsWave()
+	{
+		return this;
+	}
+
+	/**
+	 * Used for resolving ambiguous inheritance without the need to explicitly derive from Wave.
+	 * @return this
+	 */
+	virtual const Wave* AsWave() const
+	{
+		return this;
+	}
 protected:
 	/**
 	 * We cache our Symmetry here to avoid excessive new & deletes when Spinning & Reifying *this.

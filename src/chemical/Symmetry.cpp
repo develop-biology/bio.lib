@@ -29,7 +29,7 @@ Symmetry::Symmetry(
 	Name type
 )
 	:
-	Class< Symmetry >(this),
+	physical::Class< Symmetry >(this),
 	physical::Symmetry(
 		name,
 		type
@@ -43,7 +43,7 @@ Symmetry::Symmetry(
 	SymmetryType type
 )
 	:
-	Class< Symmetry >(this),
+	physical::Class< Symmetry >(this),
 	physical::Symmetry(
 		name,
 		type
@@ -57,7 +57,7 @@ Symmetry::Symmetry(
 	Name type
 )
 	:
-	Class< Symmetry >(this),
+	physical::Class< Symmetry >(this),
 	physical::Symmetry(
 		id,
 		type
@@ -71,7 +71,7 @@ Symmetry::Symmetry(
 	SymmetryType type
 )
 	:
-	Class< Symmetry >(this),
+	physical::Class< Symmetry >(this),
 	physical::Symmetry(
 		id,
 		type

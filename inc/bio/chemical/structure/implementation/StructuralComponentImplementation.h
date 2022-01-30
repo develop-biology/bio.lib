@@ -281,8 +281,8 @@ public:
 
 		this->m_contents.insert(
 			this->m_contents.end(),
-			other.m_contents.begin(),
-			other.m_contents.end());
+			other->m_contents.begin(),
+			other->m_contents.end());
 	}
 
 	/**

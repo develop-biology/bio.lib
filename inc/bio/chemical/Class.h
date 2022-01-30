@@ -45,6 +45,13 @@ class Class :
 {
 public:
 	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
+		 T)
+
+
+	/**
 	 * @param object
 	 * @param symmetry
 	 */
@@ -54,8 +61,8 @@ public:
 		:
 		physical::Class< T >(
 			object,
-			new Symmetry(
-				TypeName< T >(),
+			new physical::Symmetry(
+				TypeName< T >().c_str(),
 				symmetry_type::Object()))
 	{
 		if (filter != filter::Default())

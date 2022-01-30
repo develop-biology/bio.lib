@@ -26,10 +26,58 @@
 #include "Properties.h"
 #include "Class.h"
 #include "Macros.h"
+#include "Filters.h"
 #include "bio/chemical/structure/StructuralComponent.h"
 
 namespace bio {
 namespace chemical {
+
+
+/**
+ * Apparently, C++ forbids direct inheritance of the same base class, even when using different templates.
+ * i.e. public StructuralComponent< Property >, public StructuralComponent< State > is not valid because Property & State are the same type / size.
+ * To work around this, we create 2 distinct ____Structure base classes for Substance to derive from.
+ */
+class PropertyStructure: public StructuralComponent< Property >
+{
+public:
+	/**
+	 *
+	 */
+	PropertyStructure();
+
+	/**
+	 * @param properties
+	 */
+	explicit PropertyStructure(
+		const typename StructuralComponent< Property >::Contents& properties
+	);
+
+	virtual ~PropertyStructure();
+};
+
+/**
+ * Apparently, C++ forbids direct inheritance of the same base class, even when using different templates.
+ * i.e. public StructuralComponent< Property >, public StructuralComponent< State > is not valid because Property & State are the same type / size.
+ * To work around this, we create 2 distinct ____Structure base classes for Substance to derive from.
+ */
+class StateStructure: public StructuralComponent< State >
+{
+public:
+	/**
+	 *
+	 */
+	StateStructure();
+
+	/**
+	 * @param properties
+	 */
+	explicit StateStructure(
+		const typename StructuralComponent< State >::Contents& states
+	);
+
+	virtual ~StateStructure();
+};
 
 /**
  * A chemical::Substance is just about everything.
@@ -38,9 +86,9 @@ namespace chemical {
  */
 class Substance :
 	virtual public physical::Identifiable< StandardDimension >,
-	public Class< Substance >,
-	public StructuralComponent< Property >,
-	public StructuralComponent< State >
+	public chemical::Class< Substance >,
+	public PropertyStructure,
+	public StateStructure
 {
 public:
 	/**
@@ -77,8 +125,8 @@ public:
 	 * @param states
 	 */
 	explicit Substance(
-		typename const StructuralComponent< Property >::Contents& properties,
-		typename const StructuralComponent< State >::Contents& states
+		const typename StructuralComponent< Property >::Contents& properties,
+		const typename StructuralComponent< State >::Contents& states
 	);
 
 	/**

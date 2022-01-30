@@ -23,7 +23,6 @@
 
 #include "LinearStructuralComponentImplementation.h"
 #include "StructureInterface.h"
-#include "bio/common/Funtions.h"
 
 namespace bio {
 namespace chemical {
@@ -71,8 +70,8 @@ public:
 	{
 		Code ret = code::GeneralFailure();
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded< LinearStructuralComponentImplementation< T>>(),
-			ret = RESULT->InsertImplementation(
+		BIO_SANITIZE_WITH_CACHE((Cast< LinearStructuralComponentImplementation< T >* >(this->AsBonded< LinearStructuralComponentImplementation< T > >())),
+			ret = (Cast< LinearStructuralComponentImplementation< T >* >(RESULT))->InsertImplementation(
 				toAdd,
 				insertionPoint,
 				position,
@@ -98,8 +97,8 @@ public:
 	{
 		T* ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded< LinearStructuralComponentImplementation< T>>(),
-			ret = RESULT->GetByIdImplementation(
+		BIO_SANITIZE_WITH_CACHE((Cast< LinearStructuralComponentImplementation< T >* >(this->AsBonded< LinearStructuralComponentImplementation< T > >())),
+			ret = (Cast< LinearStructuralComponentImplementation< T >* >(RESULT))->GetByIdImplementation(
 				id,
 				recurse
 			),);
@@ -122,8 +121,8 @@ public:
 	{
 		const T* ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded< LinearStructuralComponentImplementation< T>>(),
-			ret = RESULT->GetByIdImplementation(
+		BIO_SANITIZE_WITH_CACHE((Cast< LinearStructuralComponentImplementation< T >* >(this->AsBonded< LinearStructuralComponentImplementation< T > >())),
+			ret = (Cast< LinearStructuralComponentImplementation< T >* >(RESULT))->GetByIdImplementation(
 				id,
 				recurse
 			),);
@@ -146,8 +145,8 @@ public:
 	{
 		T* ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded< LinearStructuralComponentImplementation< T>>(),
-			ret = RESULT->GetByNameImplementation(
+		BIO_SANITIZE_WITH_CACHE((Cast< LinearStructuralComponentImplementation< T >* >(this->AsBonded< LinearStructuralComponentImplementation< T > >())),
+			ret = (Cast< LinearStructuralComponentImplementation< T >* >(RESULT))->GetByNameImplementation(
 				name,
 				recurse
 			),);
@@ -170,8 +169,8 @@ public:
 	{
 		const T* ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded< LinearStructuralComponentImplementation< T>>(),
-			ret = RESULT->GetByNameImplementation(
+		BIO_SANITIZE_WITH_CACHE((Cast< LinearStructuralComponentImplementation< T >* >(this->AsBonded< LinearStructuralComponentImplementation< T > >())),
+			ret = (Cast< LinearStructuralComponentImplementation< T >* >(RESULT))->GetByNameImplementation(
 				name,
 				recurse
 			),);
@@ -195,8 +194,8 @@ public:
 	{
 		T* ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded< LinearStructuralComponentImplementation< T>>(),
-			ret = RESULT->GetOrCreateByIdImplementation(
+		BIO_SANITIZE_WITH_CACHE((Cast< LinearStructuralComponentImplementation< T >* >(this->AsBonded< LinearStructuralComponentImplementation< T > >())),
+			ret = (Cast< LinearStructuralComponentImplementation< T >* >(RESULT))->GetOrCreateByIdImplementation(
 				id,
 				recurse
 			),);
@@ -220,8 +219,8 @@ public:
 	{
 		T* ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded< LinearStructuralComponentImplementation< T>>(),
-			ret = RESULT->GetOrCreateByNameImplementation(
+		BIO_SANITIZE_WITH_CACHE((Cast< LinearStructuralComponentImplementation< T >* >(this->AsBonded< LinearStructuralComponentImplementation< T > >())),
+			ret = (Cast< LinearStructuralComponentImplementation< T >* >(RESULT))->GetOrCreateByNameImplementation(
 				id,
 				recurse
 			),);
@@ -242,8 +241,8 @@ public:
 	)
 	{
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(this->AsBonded< LinearStructuralComponentImplementation< T>>(),
-			RESULT->ForEachImplementation(
+		BIO_SANITIZE_WITH_CACHE((Cast< LinearStructuralComponentImplementation< T >* >(this->AsBonded< LinearStructuralComponentImplementation< T > >())),
+			(Cast< LinearStructuralComponentImplementation< T >* >(RESULT))->ForEachImplementation(
 				reaction,
 				self
 			),);

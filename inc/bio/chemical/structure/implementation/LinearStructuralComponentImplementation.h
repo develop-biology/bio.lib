@@ -33,6 +33,8 @@
 namespace bio {
 namespace chemical {
 
+class Reaction;
+
 /**
  * Basic implementation of methods for a LinearStructuralComponent
  * NOTE: we should support Dimensions other than the StandardDimension. However, the limitations of Atom::Bonds prevent us from indexing more than 1 template variable from the ____Interface.
@@ -43,7 +45,7 @@ namespace chemical {
  */
 template < typename CONTENT_TYPE >
 class LinearStructuralComponentImplementation :
-	public StructuralComponent< CONTENT_TYPE >,
+	public StructuralComponent< CONTENT_TYPE >
 {
 public:
 	typedef StandardDimension Dimension;
@@ -149,7 +151,7 @@ public:
 	 * @return a pointer to a CONTENT_TYPE of id if one is found within searchIn, NULL if one is not found.
 	 */
 	static const CONTENT_TYPE FindByIdIn(
-		typename const StructuralComponentImplementation< CONTENT_TYPE >::Contents* searchIn,
+		const typename StructuralComponentImplementation< CONTENT_TYPE >::Contents* searchIn,
 		const StandardDimension contentId,
 		const bool recurse = false
 	)
@@ -177,7 +179,7 @@ public:
 	 * @return a pointer to a CONTENT_TYPE of id if one is found within searchIn, NULL if one is not found.
 	 */
 	static CONTENT_TYPE FindByNameIn(
-		const Perspective <StandardDimension>* perspective,
+		const physical::Perspective< StandardDimension >* perspective,
 		typename StructuralComponentImplementation< CONTENT_TYPE >::Contents* searchIn,
 		Name contentName,
 		const bool recurse = false
@@ -201,8 +203,8 @@ public:
 	 * @return a pointer to a CONTENT_TYPE of id if one is found within searchIn, NULL if one is not found.
 	 */
 	static const CONTENT_TYPE FindByNameIn(
-		const Perspective <StandardDimension>* perspective,
-		typename const StructuralComponentImplementation< CONTENT_TYPE >::Contents* searchIn,
+		const physical::Perspective< StandardDimension >* perspective,
+		const typename StructuralComponentImplementation< CONTENT_TYPE >::Contents* searchIn,
 		Name contentName,
 		const bool recurse = false
 	)
@@ -281,7 +283,7 @@ public:
 	 * @return iterator of searchIn matching contentId.
 	 */
 	static typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::const_iterator GetIteratorFrom(
-		typename const StructuralComponentImplementation< CONTENT_TYPE >::Contents* searchIn,
+		const typename StructuralComponentImplementation< CONTENT_TYPE >::Contents* searchIn,
 		const StandardDimension contentId,
 		const bool recurse = false
 	)
@@ -444,7 +446,7 @@ public:
 	 * @return Status of addition (e.g. success or failure).
 	 */
 	static Code AddAt(
-		Perspective <StandardDimension>* perspective,
+		physical::Perspective< StandardDimension >* perspective,
 		CONTENT_TYPE content,
 		typename StructuralComponentImplementation< CONTENT_TYPE >::Contents* destination,
 		const Position position = BOTTOM,
@@ -668,12 +670,12 @@ public:
 	static Code
 
 	Insert(
-		Perspective <StandardDimension>* perspective,
+		physical::Perspective< StandardDimension >* perspective,
 		void* contentPtr,
 		typename StructuralComponentImplementation< CONTENT_TYPE >::Contents* destination,
 		const Dimensions& insertionPoint,
 		const Position position = BOTTOM,
-		const const StandardDimension optionalPositionArg = CONTENT_TYPE::Perspective::InvalidId(),
+		const StandardDimension optionalPositionArg = CONTENT_TYPE::Perspective::InvalidId(),
 		const bool transferSubContents = false,
 		log::Engine* logger = NULL
 	)
@@ -931,7 +933,7 @@ public:
 	 * Clone()s each element.
 	 * @param other
 	 */
-	virtual void ImportImplementation(const LinearStructuralComponentImplementation< T >* other)
+	virtual void ImportImplementation(const LinearStructuralComponentImplementation< CONTENT_TYPE >* other)
 	{
 		BIO_SANITIZE_AT_SAFETY_LEVEL_2(other, ,
 			return);

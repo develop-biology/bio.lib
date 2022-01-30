@@ -69,9 +69,8 @@ inline bool IsPrimitive(const T t)
 
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
-		bool ret;
-		BIO_SANITIZE_AT_SAFETY_LEVEL_2(IsPrimitiveImplementation< T >(&ret),
-			return ret,
+		BIO_SANITIZE_AT_SAFETY_LEVEL_2(IsPrimitiveImplementation< T >(),
+			return true,
 			return IsPrimitiveStringImplementation< T >());
 	#else
 		return std::is_fundamental<T>::value;
@@ -90,9 +89,8 @@ inline bool IsPrimitive()
 {
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
-	bool ret;
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(IsPrimitiveImplementation< T >(&ret),
-		return ret,
+	BIO_SANITIZE_AT_SAFETY_LEVEL_2(IsPrimitiveImplementation< T >(),
+		return true,
 		return IsPrimitiveStringImplementation< T >());
 	#else
 		return std::is_fundamental<T>::value;

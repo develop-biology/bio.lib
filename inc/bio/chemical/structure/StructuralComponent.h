@@ -25,6 +25,7 @@
 #include "bio/chemical/structure/implementation/StructureInterface.h"
 #include "bio/chemical/Class.h"
 #include "bio/chemical/Macros.h"
+#include "bio/physical/Filters.h"
 
 namespace bio {
 namespace chemical {
@@ -36,7 +37,7 @@ namespace chemical {
 template < typename CONTENT_TYPE >
 class StructuralComponent :
 	virtual public StructureInterface,
-	public Class< StructuralComponent< CONTENT_TYPE > >,
+	public chemical::Class< StructuralComponent< CONTENT_TYPE > >,
 	public StructuralComponentImplementation< CONTENT_TYPE >
 {
 public:
@@ -51,7 +52,7 @@ public:
 	 */
 	StructuralComponent()
 		:
-		Class< StructuralComponent< CONTENT_TYPE > >(this)
+		chemical::Class< StructuralComponent< CONTENT_TYPE > >(this, filter::Default())
 	{
 	}
 
@@ -60,31 +61,27 @@ public:
 	 */
 	explicit StructuralComponent(typename StructuralComponentImplementation< CONTENT_TYPE >::Contents contents)
 		:
-		Class< StructuralComponent< CONTENT_TYPE > >(this),
+		chemical::Class< StructuralComponent< CONTENT_TYPE > >(this),
 		StructuralComponentImplementation< CONTENT_TYPE >(contents)
 	{
 	}
+
+
+	/**
+	 * @param toCopy
+	 */
+	StructuralComponent(const StructuralComponent< CONTENT_TYPE >& toCopy) :
+		chemical::Class< StructuralComponent< CONTENT_TYPE > >(this)
+	{
+		this->m_contents.insert(this->m_contents.begin(), toCopy.m_contents.begin(), toCopy.m_contents.end());
+	}
+
 
 	/**
 	 *
 	 */
 	virtual ~StructuralComponent()
 	{
-	}
-
-	/**
-	 * @param toCopy
-	 */
-	StructuralComponent(const StructuralComponent< CONTENT_TYPE >& toCopy)
-	{
-		for (
-			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::const_iterator cnt = toCopy.m_contents.begin();
-			cnt != toCopy.m_contents.end();
-			++cnt
-			)
-		{
-			this->m_contents.push_back(new CONTENT_TYPE(**cnt));
-		}
 	}
 
 	#if 0

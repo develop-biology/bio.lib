@@ -39,4 +39,4 @@ BIO_ID_FUNCTION_BODY(                                                          \
  */
 #define BIO_GET_CLASS_METHODS_FOR_chemical()                                   \
     BIO_GET_CLASS_METHODS_FOR_physical(),                                      \
-    (Properties, GetProperties(), const)
+    (bio::Properties, GetProperties(), const)

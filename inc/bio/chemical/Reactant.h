@@ -64,8 +64,8 @@ public:
 	 */
 	Reactant(
 		Name typeName,
-		typename const StructuralComponent< Property >::Contents& properties,
-		typename const StructuralComponent< State >::Contents& states
+		const typename StructuralComponent< Property >::Contents& properties,
+		const typename StructuralComponent< State >::Contents& states
 	);
 
 	/**
@@ -81,6 +81,11 @@ public:
 
 protected:
 	Name m_typeName;
+
+	/**
+	 * @param typeName
+	 */
+	void CtorCommon(Name typeName);
 };
 
 } //chemical namespace

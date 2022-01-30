@@ -228,11 +228,9 @@ public:
 	{
 		BIO_SANITIZE(IsPrimitive< T >(), ,
 			return false);
-		BIO_SANITIZE(Cast< Wave* >(toBond), ,
-			return false);
 		AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< T >();
 		return FormBondImplementation(
-			toBond,
+			toBond->AsWave(),
 			bondedId,
 			type
 		);

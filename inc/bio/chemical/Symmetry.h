@@ -22,6 +22,7 @@
 #pragma once
 
 #include "bio/physical/Symmetry.h"
+#include "bio/physical/Class.h"
 #include "structure/StructuralComponent.h"
 #include "Class.h"
 
@@ -35,14 +36,14 @@ namespace chemical {
 class Symmetry :
 	public physical::Symmetry,
 	public StructuralComponent< Symmetry* >,
-	public Class< Symmetry >
+	public physical::Class< Symmetry >
 {
 public:
 
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(chemical,
+	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
 		Symmetry)
 
 	/**

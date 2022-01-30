@@ -99,7 +99,7 @@ public:
 	 * @param perspective
 	 */
 	explicit LinearStructuralComponent(
-		typename const StructuralComponentImplementation< CONTENT_TYPE >::Contents& contents,
+		const typename StructuralComponentImplementation< CONTENT_TYPE >::Contents& contents,
 		Perspective <StandardDimension>* perspective = NULL
 	)
 		:

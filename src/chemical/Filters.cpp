@@ -19,59 +19,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/chemical/Products.h"
-#include "bio/physical/Codes.h"
+#include "bio/chemical/Filters.h"
+#include "bio/physical/Macros.h"
 
-namespace bio {
-namespace chemical {
+namespace bio{
+namespace filter {
 
-Products::Products()
-	:
-	m_result(CodePerspective::InvalidId())
-{
+BIO_FILTER_FUNCTION_BODY(Chemical)
 
-}
-
-Products::Products(Code result)
-	:
-	m_result(result)
-{
-
-}
-
-Products::Products(const Substances& substances)
-	:
-	m_result(code::Success()),
-	m_substances(substances)
-{
-
-}
-
-Products::Products(
-	Code result,
-	const Substances& substances
-)
-	:
-	m_result(result),
-	m_substances(substances)
-{
-
-}
-
-Products::~Products()
-{
-
-}
-
-Products::operator Code&()
-{
-	return m_result;
-}
-
-Products::operator Substances&()
-{
-	return m_substances;
-}
-
-} //chemical namespace
+} //filter namespace
 } //bio namespace

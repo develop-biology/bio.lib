@@ -31,6 +31,11 @@
 #include "ByteStream.h"
 
 /**
+ * Wrapping macros is used to evaluate them within other macros, rather than being passed as a string.
+ */
+#define BIO_WRAP_MACRO(macro) macro
+
+/**
  * Used to remove fhe parentheses from around an expression.
  * Should be invoked as: BIO_EXPAND_TUPLE tuple
  * where tuple is (something, like, this)
@@ -67,8 +72,11 @@
 #define BIO_GET_NUM_ARGS(...)                                                  \
 	BIO_ELEVENTH_ARG(dummy, ## __VA_ARGS__, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
 
+/**
+ * Calls BIO_GET_NUM_ARGS after evaluating the provided macro.
+ */
 #define BIO_GET_NUM_ARGS_OF_MACRO(macro)                                       \
-	BIO_GET_NUM_ARGS(macro)
+    BIO_ELEVENTH_ARG(dummy, macro, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
 
 /**
  * Calls a namespaced macro.

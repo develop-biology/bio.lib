@@ -25,10 +25,10 @@
 #include "Substance.h"
 #include "Products.h"
 #include "structure/LinearStructuralComponent.h"
-#include "bio/physical/Indentified.h"
+#include "bio/physical/Identifiable.h"
 #include "bio/physical/Class.h"
 
-#inclued "bio/common/TypeName.h"
+#include "bio/common/TypeName.h"
 
 namespace bio {
 namespace chemical {
@@ -46,7 +46,7 @@ class Reactant;
  *
  * To invoke a Reaction, use the operator(), providing reactants.
  * For example: MyReaction r; r(MyReactants);
- * Doing so will do all necessary input checking and then call Process(), if all is good. Otherwise no Products are returned and you will get a code::code::FailedReaction().
+ * Doing so will do all necessary input checking and then call Process(), if all is good. Otherwise no Products are returned and you will get a code::FailedReaction().
  *
  * Other ways to invoke a reaction include:
  * Reaction::Attempt<MyReaction>(MyReactants)
@@ -118,8 +118,8 @@ public:
 	 */
 	void Require(
 		Name typeName,
-		typename const StructuralComponent< Property >::Contents& properties,
-		typename const StructuralComponent< State >::Contents& states
+		const typename StructuralComponent< Property >::Contents& properties,
+		const typename StructuralComponent< State >::Contents& states
 	);
 
 	/**
@@ -161,9 +161,9 @@ public:
 	 * Constructs Reactant from args
 	 * @tparam T the T* which will be used in the Reaction (without the *)
 	 */
-	template < typename T > void Require(typename const StructuralComponent< Property >::Contents properties&,
+	template < typename T > void Require(const typename StructuralComponent< Property >::Contents properties&,
 
-	typename const StructuralComponent< State >::Contents states
+	const typename StructuralComponent< State >::Contents states
 	&)
 	{
 		Require(

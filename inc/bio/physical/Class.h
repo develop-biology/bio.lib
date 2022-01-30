@@ -61,14 +61,15 @@ public:
 
 	}
 
-	virtual /**
-	 * Make it so we can treat *this as the calling T.
-	 * @return the m_object *this was created for.
-	 */
-	operator T*()
+	/**
+	* Make it so we can treat *this as the calling T.
+	* @return the m_object *this was created for.
+	*/
+	virtual operator T*()
 	{
 		return m_object;
 	}
+
 
 	/**
 	 * Template override for Clone so we don't have to define it everywhere.
@@ -77,7 +78,35 @@ public:
 	virtual Wave* Clone() const
 	{
 		T* ret = new T(*m_object);
-		return Cast< Class< T >* >(ret);
+		return Cast< Class< T >* >(ret); //2-step cast: 1st explicitly cast to *this; 2nd implicitly cast to Wave.
+	}
+
+	/**
+	 * Used for resolving ambiguous inheritance without the need to explicitly derive from Wave.
+	 * @return this
+	 */
+	virtual Wave* AsWave()
+	{
+		return this;
+	}
+
+	/**
+	 * Used for resolving ambiguous inheritance without the need to explicitly derive from Wave.
+	 * @return this
+	 */
+	virtual const Wave* AsWave() const
+	{
+		return this;
+	}
+
+	/**
+	 * Wave conversion.
+	 * When treating an object as a Wave*, always use the nearest Class, as that will allow you to access all other Waves in the object.
+	 * @return this.
+	 */
+	virtual operator Wave*()
+	{
+		return this;
 	}
 
 protected:

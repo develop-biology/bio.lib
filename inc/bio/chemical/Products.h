@@ -69,12 +69,12 @@ public:
 	/**
 	 * @return *this as a Code.
 	 */
-	Code& operator Code&();
+	operator Code&();
 
 	/**
 	 * @return *this as Substances.
 	 */
-	Substances& operator Substances&();
+	operator Substances&();
 
 protected:
 	Substances m_substances;

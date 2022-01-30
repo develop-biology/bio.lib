@@ -26,7 +26,7 @@ namespace chemical {
 
 Substance::Substance()
 	:
-	Class(this)
+	chemical::Class<Substance>(this)
 {
 	CtorCommon();
 }
@@ -37,7 +37,7 @@ Substance::Substance(
 	Filter filter
 )
 	:
-	Class(
+	chemical::Class<Substance>(
 		this,
 		filter
 	)
@@ -55,7 +55,7 @@ Substance::Substance(
 	Filter filter
 )
 	:
-	Class(
+	chemical::Class<Substance>(
 		this,
 		filter
 	)
@@ -68,13 +68,13 @@ Substance::Substance(
 }
 
 Substance::Substance(
-	typename const StructuralComponent< Property >::Contents& properties,
-	typename const StructuralComponent< State >::Contents& states
+	const typename StructuralComponent< Property >::Contents& properties,
+	const typename StructuralComponent< State >::Contents& states
 )
 	:
-	Class(this),
-	StructuralComponent< Property >(properties),
-	StructuralComponent< State >(states)
+	chemical::Class<Substance>(this),
+	PropertyStructure(properties),
+	StateStructure(states)
 {
 	CtorCommon();
 }
@@ -113,5 +113,37 @@ bool Substance::ProbeFor(Properties properties)
 	return HasAll< Property >(properties);
 }
 
+PropertyStructure::PropertyStructure()
+{
+
+}
+
+PropertyStructure::PropertyStructure(const StructuralComponentImplementation< Property >::Contents& properties)
+	:
+	StructuralComponent<Property>(properties)
+{
+
+}
+
+PropertyStructure::~PropertyStructure()
+{
+
+}
+
+StateStructure::StateStructure()
+{
+
+}
+
+StateStructure::StateStructure(const StructuralComponentImplementation< State >::Contents& states) :
+	StructuralComponent< State >(states)
+{
+
+}
+
+StateStructure::~StateStructure()
+{
+
+}
 } //chemical namespace
 } //bio namespace
