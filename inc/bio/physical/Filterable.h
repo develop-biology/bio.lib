@@ -36,7 +36,7 @@ namespace physical {
  * See log::Writer for example usage.
  */
 class Filterable :
-	public Class< Filterable >,
+	public physical::Class< Filterable >,
 	protected VirtualBase
 {
 public:

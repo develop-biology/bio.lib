@@ -31,8 +31,8 @@ namespace bio {
 namespace chemical {
 
 /**
- * A chemical::Class is an Atom in addition to being a physical::Wave with logging capabilities.
- * This will FormBond(physical::Class<T>::m_object).
+ * A chemical::Class is an Identifiable Atom with logging capabilities.
+ * This will FormBond() with the provided T.
  * Class in other namespaces will grow to include more complex, templated logic.
  * This pattern prevents you from having to define virtual methods each of your child classes, so long as you always derive from the appropriate Class<T>.
  * @tparam T
@@ -40,6 +40,7 @@ namespace chemical {
 template < typename T >
 class Class :
 	public physical::Class< T >,
+	virtual public physical::Identifiable< StandardDimension >,
 	virtual public log::Writer,
 	virtual public Atom
 {
@@ -50,30 +51,104 @@ public:
 	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
 		 T)
 
+	Class(T* object)
+		:
+		physical::Class< T >(
+			object,
+			NULL)
+	{
+		CtorCommon();
+	}
 
 	/**
+	 * For when we know the Perspective but not ourselves.
 	 * @param object
-	 * @param symmetry
+	 * @param perspective
+	 * @param filter
+	 * @param symmetryType
 	 */
 	Class(
 		T* object,
-		Filter filter = filter::Default())
+		Perspective <StandardDimension>* perspective = NULL,
+		Filter filter = filter::Default(),
+		SymmetryType symmetryType = symmetry_type::Object())
 		:
 		physical::Class< T >(
 			object,
 			new physical::Symmetry(
 				TypeName< T >().c_str(),
-				symmetry_type::Object()))
+				symmetryType)
 	{
-		if (filter != filter::Default())
+		CtorCommon(filter);
+	}
+
+
+	/**
+	 * @param object
+	 * @param name
+	 * @param perspective
+	 * @param filter
+	 */
+	Class(
+		T* object,
+		Name name,
+		Perspective <StandardDimension>* perspective = NULL,
+		Filter filter = filter::Default(),
+		SymmetryType symmetryType = symmetry_type::Object())
+		:
+		physical::Class< T >(
+			object,
+			new physical::Symmetry(
+				TypeName< T >().c_str(),
+				symmetryType)
+	{
+		CtorCommon(filter);
+
+		if (perspective)
 		{
-			//Skip log::Writer::Initialize, since we don't have a log::Engine atm.
-			Filterable::Initialize(filter);
+			physical::Identifiable<StandardDimension>::Initialize(
+				name,
+				perspective
+			);
 		}
-		//Bond the class we're given, Virtually.
-		physical::Class< T >::m_object->FormBond(
-			physical::Class< T >::m_object,
-			bond_type::Virtual());
+		else
+		{
+			SetName(name);
+		}
+	}
+
+	/**
+	 * @param object
+	 * @param id
+	 * @param perspective
+	 * @param filter
+	 */
+	Class(
+		T* object,
+		StandardDimension id,
+		Perspective <StandardDimension>* perspective = NULL,
+		Filter filter = filter::Default(),
+		SymmetryType symmetryType = symmetry_type::Object())
+		:
+		physical::Class< T >(
+			object,
+			new physical::Symmetry(
+				TypeName< T >().c_str(),
+				symmetryType)
+	{
+		CtorCommon(filter);
+
+		if (perspective)
+		{
+			physical::Identifiable<StandardDimension>::Initialize(
+				id,
+				perspective
+			);
+		}
+		else
+		{
+			SetId(id);
+		}
 	}
 
 	/**
@@ -92,6 +167,20 @@ public:
 	virtual ~Class()
 	{
 
+	}
+
+private:
+	void CtorCommon(Filter filter = filter::Default())
+	{
+		if (filter != filter::Default())
+		{
+			//Skip log::Writer::Initialize, since we don't have a log::Engine atm.
+			Filterable::Initialize(filter);
+		}
+		//Bond the class we're given, Virtually.
+		physical::Class< T >::m_object->FormBond(
+			physical::Class< T >::m_object,
+			bond_type::Virtual());
 	}
 };
 

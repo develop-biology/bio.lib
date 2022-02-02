@@ -21,71 +21,28 @@
 
 #include "bio/chemical/Reaction.h"
 #include "bio/chemical/Codes.h"
+#include "bio/chemical/Fitlers.h"
 
 namespace bio {
 namespace chemical {
 
-Reaction::Reaction()
-	:
-	physical::Class(
-		this,
-		new physical::Symmetry(
-			TypeName< T >(),
-			symmetry_Type::Operation()))
-{
-
-}
-
-
-Reaction::Reaction(Id id)
-	:
-	physical::Class(
-		this,
-		new physical::Symmetry(
-			TypeName< T >(),
-			symmetry_Type::Operation())),
-	Identifiable(
-		name,
-		&ReactionPerspective::Instance())
-{
-
-}
-
-
-Reaction::Reaction(Name name)
-	:
-	physical::Class(
-		this,
-		new physical::Symmetry(
-			TypeName< T >(),
-			symmetry_Type::Operation())),
-	Identifiable(
-		name,
-		&ReactionPerspective::Instance())
-{
-}
-
-
 Reaction::Reaction(
 	Name name,
-	typename StructuralComponentImplementation< Reactant* >::Contents reactants
+	const Reactants& reactants
 )
 	:
-	physical::Class(
+	chemical::Class(
 		this,
-		new physical::Symmetry(
-			PeriodicTable::Instance().GetNameFromType(*this),
-			symmetry_Type::Operation())),
-	LinearStructuralComponent< Reactant* >(reactants),
-	Identifiable(
 		name,
-		&ReactionPerspective::Instance())
+		&ReactionPerspective::Instance(),
+		symmetry_Type::Operation()),
+	m_requiredReactants(reactants)
 {
 }
 
 void Reaction::Require(Reactant* reactant)
 {
-	Add< Reactant* >(reactant);
+	m_requiredReactants.Add< Substance* >(reactant);
 }
 
 void Reaction::Require(
@@ -115,27 +72,9 @@ void Reaction::Require(
 }
 
 
-bool Reaction::SubstancesCanReact(const Substances& toCheck) const
+bool Reaction::ReactantsMeetRequirements(const Reactants* toCheck) const
 {
-	for (
-		Reactants::const_iterator rct = GetAll< Reactant* >()->begin();
-		rct != GetAll< Reactant* >()->end();
-		++rct
-		)
-	{
-		for (
-			Substances::iterator sbt = toCheck.begin();
-			sbt != toCheck.end();
-			++toCheck
-			)
-		{
-			if (**rct != **sbt)
-			{
-				return false;
-			}
-		}
-	}
-	return true;
+	return toCheck->HasAll<Substance*>(m_requiredReactants.GetAll<Substance*>());
 }
 
 /*static*/ Reaction* Reaction::Initiate(StandardDimension id)
@@ -143,10 +82,10 @@ bool Reaction::SubstancesCanReact(const Substances& toCheck) const
 	return ReactionPerspective::Instance().GetTypeFromIdAs< Reaction* >(id);
 }
 
-Products Reaction::operator()(Substances& reactants) const
+Products Reaction::operator()(Reactants* reactants) const
 {
 	//Always level 2, even if the user wants more (i.e. never less).
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(SubstancesCanReact(reactants),
+	BIO_SANITIZE_AT_SAFETY_LEVEL_2(ReactantsMeetRequirements(reactants),
 		return Process(),
 		return code::FailedReaction());
 }

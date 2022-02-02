@@ -31,6 +31,9 @@ namespace physical {
 /**
  * An Observer class is one that has a PERSPECTIVE.
  * This is intended for Identifiable classes (see Identifiable.h) and any other classes that manage or work with Identifiable classes.
+ *
+ * NOTE: At this time we do not currently support viewing objects from multiple Perspectives. This is because if you can get the object's Id, you should also be able to get it's Perspective (i.e observer->GetPerspective).
+ * By not allowing objects to be duplicated across perspectives, we reduce our overall memory footprint.
 */
 template < typename PERSPECTIVE >
 class Observer :
@@ -73,7 +76,7 @@ public:
 		m_perspective = perspective;
 	}
 
-	/**
+	virtual /**
 	 * @return the perspective held by *this.
 	 */
 	Perspective* GetPerspective() const

@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,33 +19,36 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include "bio/chemical/reactions/SetLogEngine.h"
-#include "bio/chemical/PeriodicTable.h"
-#include "bio/chemical/SymmetryTypes.h"
+#include "bio/chemical/Reactants.h"
 
 namespace bio {
 namespace chemical {
 
-SetLogEngine::SetLogEngine()
+Reactants::Reactants()
 	:
-	Reaction(PeriodicTable::Instance().GetNameFromType(*this)),
-	Class(this)
+	physical::Class< Reactants >(
+		this,
+		NULL
+	)
 {
-	Require< log::Writer >();
-	Require< log::Writer >();
+
 }
 
-SetLogEngine::~SetLogEngine()
+Reactants::Reactants(Substances& substances) :
+	physical::Class< Reactants >(
+		this,
+		NULL
+	)
 {
+	for (Substances::const_iterator sub = substances.begin(); sub != substances.end(); ++sub)
+	{
+		Add<Substance*>(*sub);
+	}
 }
 
-Products SetLogEngine::Process(Substances& reactants)
+Reactants::~Reactants()
 {
-	log::Writer* target = reactants[0];
-	log::Writer* source = reactants[1];
-	target->SetLogEngine(source->GetLogEngine());
+
 }
 
 } //chemical namespace

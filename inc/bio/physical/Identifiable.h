@@ -49,7 +49,7 @@ namespace physical {
 template < typename DIMENSION >
 class Identifiable :
 	virtual public Observer< Perspective< DIMENSION > >, //includes VirtualBase, so no need to re-inherit.
-	public Class< Identifiable< DIMENSION > >
+	public physical::Class< Identifiable< DIMENSION > >
 {
 public:
 	typedef DIMENSION Id;
@@ -67,7 +67,10 @@ public:
 	 */
 	explicit Identifiable(Perspective< DIMENSION >* perspective = NULL)
 		:
-		Class< Identifiable< DIMENSION > >(this),
+		physical::Class< Identifiable< DIMENSION > >(this),
+		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
+		m_name(NULL),
+		#endif
 		m_id(Perspective< DIMENSION >::InvalidId())
 	{
 		CloneIntoName(Perspective< DIMENSION >::InvalidName());
@@ -86,7 +89,11 @@ public:
 		Perspective< DIMENSION >* perspective = NULL
 	)
 		:
-		Class< Identifiable< DIMENSION > >(this)
+		physical::Class< Identifiable< DIMENSION > >(this),
+		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
+		m_name(NULL),
+		#endif
+		m_id(Perspective< DIMENSION >::InvalidId())
 	{
 		CloneIntoName(name);
 		if (perspective)
@@ -110,7 +117,11 @@ public:
 		Perspective< DIMENSION >* perspective = NULL
 	)
 		:
-		Class< Identifiable< DIMENSION > >(this)
+		physical::Class< Identifiable< DIMENSION > >(this),
+		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
+		m_name(NULL),
+		#endif
+		m_id(Perspective< DIMENSION >::InvalidId())
 	{
 		if (perspective)
 		{
@@ -130,7 +141,10 @@ public:
 	 */
 	Identifiable(const Identifiable& other)
 		:
-		Class< Identifiable< DIMENSION > >(this),
+		physical::Class< Identifiable< DIMENSION > >(this),
+		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
+		m_name(NULL),
+		#endif
 		m_id(other.m_id)
 	{
 		Observer< Perspective< DIMENSION > >::Initialize(other.GetPerspective());

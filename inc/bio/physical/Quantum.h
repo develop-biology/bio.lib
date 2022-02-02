@@ -39,7 +39,7 @@ namespace physical {
  */
 template < typename T >
 class Quantum :
-	public Class< Quantum< T > >
+	public physical::Class< Quantum< T > >
 {
 public:
 
@@ -54,7 +54,7 @@ public:
 	 */
 	Quantum()
 		:
-		Class< Quantum< T > >(
+		physical::Class< Quantum< T > >(
 			this,
 			new Symmetry(
 				TypeName< T >(),
@@ -69,7 +69,7 @@ public:
 	 */
 	Quantum(const T& assignment)
 		:
-		Class< Quantum< T > >(
+		physical::Class< Quantum< T > >(
 			this,
 			new Symmetry(
 				TypeName< T >(),
@@ -83,7 +83,7 @@ public:
 	 */
 	Quantum(const Quantum< T >& other)
 		:
-		Class< Quantum< T > >(
+		physical::Class< Quantum< T > >(
 			this,
 			new Symmetry(
 				TypeName< T >(),

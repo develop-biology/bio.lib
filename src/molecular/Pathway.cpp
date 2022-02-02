@@ -49,7 +49,7 @@ chemical::Products Pathway::Process(chemical::Substances& reactants)
 	return products;
 }
 
-bool Pathway::SubstancesCanReact(const Substances& toCheck) const
+bool Pathway::ReactantsMeetRequirements(const Substances& toCheck) const
 {
 
 }

@@ -30,6 +30,15 @@ namespace chemical {
 
 /**
  * Base class for all Excitations; see below.
+ *
+ * Main documentation for all Excitation classes will be provided here.
+ *
+ * For the difference between Excitation and Reaction, see Reaction.h
+ * The main thing Excitations can do which Reactions can't is be used in LinearStructureInterface::ForEach<>().
+ *
+ * An Excitation is a Wave that stores a function pointer, i.e. a functor.
+ * Excitations allow you to directly invoke a Wave's methods.
+ * Excitations can be useful in propagating operations through Wave networks (e.g. an Atom's Bonds). Doing so will likely involve Modulating an Excitation onto a carrier Wave that dictates what the function applies to.
  * @tparam WAVE
  */
 template < class EXCITATION, class WAVE >
@@ -51,15 +60,20 @@ public:
 
 	}
 
-	/**
-	 *
-	 */
-	virtual
-public
-
-	ExcitationBase()
+	virtual ~ExcitationBase()
 	{
 
+	}
+
+	/**
+	 * All Excitations share the "Excitatory" Property.
+	 * @return {property::Excitatory()}
+	 */
+	static Properties GetClassProperties()
+	{
+		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
+		ret.push_back(property::Excitatory());
+		return ret;
 	}
 
 	/**
@@ -69,9 +83,18 @@ public
 	 */
 	virtual Properties GetProperties() const
 	{
-		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
-		ret.push_back(property::Excitatory());
-		return ret;
+		return GetClassProperties();
+	}
+
+	/**
+	 * Invoke an Excitation, regardless of what the template parameters are.
+	 * Since we have no idea what the return value will be, we simply place it in ret as a void*.
+	 * @param wave
+	 * @param ret
+	 */
+	virtual void CallDown(physical::Wave* wave, void* ret)
+	{
+		//nop
 	}
 };
 
@@ -81,9 +104,7 @@ public
 	#include <functional>
 
 /**
- * An Excitation is a Wave that stores a function pointer, i.e. a functor.
- * Excitations allow you to directly invoke a Wave's methods.
- * WaveFunctions can be useful in propagating operations through Wave networks (e.g. an Atom's Bonds). Doing so will likely involve Modulating an Excitation onto a carrier Wave that dictates what the function applies to, though the implementation of such a design is not dictated here, at the physical level.
+ * See ExcitationBase for docs.
  * @tparam WAVE
  * @tparam RETURN
  * @tparam ARGUMENTS
@@ -98,7 +119,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(physical, Excitation<WAVE,RETURN,ARGUMENTS...>)
+	BIO_DISAMBIGUATE_CLASS_METHODS(physical, BIO_SINGLE_ARG(Excitation<WAVE,RETURN,ARGUMENTS...>))
 
 	/**
 	 *
@@ -130,6 +151,14 @@ public:
 		return std::apply(m_function, allArgs);
 	}
 
+	/**
+	 * Override of ExcitationBase; see above.
+	 */
+	virtual void CallDown(physical::Wave* wave, void* ret)
+	{
+		ret = &((*this)(Cast<WAVE*>(wave)));
+	}
+
 protected:
 	RETURN (WAVE::*m_function)(ARGUMENTS...)
 	std::tuple m_args;
@@ -138,9 +167,7 @@ protected:
 #else
 
 /**
- * An Excitation is a Wave that stores a function pointer, i.e. a functor.
- * Excitations allow you to directly invoke a Wave's methods.
- * WaveFunctions can be useful in propagating operations through Wave networks (e.g. an Atom's Bonds). Doing so will likely involve Modulating an Excitation onto a carrier Wave that dictates what the function applies to, though the implementation of such a design is not dictated here, at the physical level.
+ *See ExcitationBase for docs.
  * @tparam WAVE
  * @tparam RETURN
  */
@@ -155,7 +182,7 @@ public:
 	 * Ensure virtual methods point to Class implementations.
 	 */
 	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
-		Excitation< WAVE, RETURN >)
+		BIO_SINGLE_ARG(Excitation< WAVE, RETURN >))
 
 	/**
 	 *
@@ -184,14 +211,20 @@ public:
 		return wave->m_function();
 	}
 
+	/**
+	 * Override of ExcitationBase; see above.
+	 */
+	virtual void CallDown(physical::Wave* wave, void* ret)
+	{
+		ret = &((*this)(Cast<WAVE*>(wave)));
+	}
+
 protected:
 	RETURN (WAVE::*m_function)()
 };
 
 /**
- * An Excitation is a Wave that stores a function pointer, i.e. a functor.
- * Excitations allow you to directly invoke a Wave's methods.
- * WaveFunctions can be useful in propagating operations through Wave networks (e.g. an Atom's Bonds). Doing so will likely involve Modulating an Excitation onto a carrier Wave that dictates what the function applies to, though the implementation of such a design is not dictated here, at the physical level.
+ * See ExcitationBase for docs
  * @tparam WAVE
  * @tparam RETURN
  * @tparam ARGUMENT
@@ -207,7 +240,7 @@ public:
 	 * Ensure virtual methods point to Class implementations.
 	 */
 	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
-		Excitation< WAVE, RETURN, ARGUMENT >)
+		BIO_SINGLE_ARG(Excitation< WAVE, RETURN, ARGUMENT >))
 
 
 	/**
@@ -239,6 +272,14 @@ public:
 	RETURN operator()(WAVE* wave)
 	{
 		return wave->m_function(m_arg);
+	}
+
+	/**
+	 * Override of ExcitationBase; see above.
+	 */
+	virtual void CallDown(physical::Wave* wave, void* ret)
+	{
+		ret = &((*this)(Cast<WAVE*>(wave)));
 	}
 
 protected:

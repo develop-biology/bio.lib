@@ -34,7 +34,7 @@ namespace physical {
 class ThreadedPeriodic :
 	virtual public Periodic,
 	virtual public Threaded,
-	Class< ThreadedPeriodic >
+	physical::Class< ThreadedPeriodic >
 {
 public:
 

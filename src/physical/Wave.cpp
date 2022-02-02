@@ -136,14 +136,14 @@ void Wave::operator+=(
 	const Wave* other
 )
 {
-	//nop
+	Attenuate(other);
 }
 
 void Wave::operator-=(
 	const Wave* other
 )
 {
-	//nop
+	Disattenuate(other);
 }
 
 Properties Wave::GetProperties() const

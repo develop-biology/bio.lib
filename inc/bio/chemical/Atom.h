@@ -187,30 +187,18 @@ public:
 	}
 
 	/**
-	 * If the given Wave Resonates with any Bonded Wave in *this, the given Wave will be added to (+=) the Bonded Wave.
+	 * If the given Wave Resonates with any Bonded Wave in *this, the given Wave will be Demodulated and Attenuated by the Bonded Wave.
 	 * Attenuation here operates slightly differently from the real world concept. Because we have a continuous flow of electrons providing the power to run this code, doing work is essentially free (or at least abstracted and we don't HAVE to worry about it), Attenuation is more like amplification, where flux, in terms of work, is generated, rather than dispersed. However, if we treat some desired state as flux and any deviation from that state as offering resistance, "information flux" is lost as the desired state is approached, making Attenuation technically correct.
 	 * @param other
 	 */
 	virtual void Attenuate(const Wave* other);
 
 	/**
-	 * If the given Wave Resonates with any Bonded Wave in *this, the given Wave will be removed from (-=) the Bonded Wave.
+	 * If the given Wave Resonates with any Bonded Wave in *this, the given Wave will be Demodulated and Disattenuated by the Bonded Wave.
 	 * This is the opposite of Attenuation (above).
 	 * @param other
 	 */
 	virtual void Disattenuate(const Wave* other);
-
-	/**
-	 * Attenuates the other Wave.
-	 * @param other
-	 */
-	virtual void operator+=(const Wave* other);
-
-	/**
-	 * Disattenuates the other Wave
-	 * @param other
-	 */
-	virtual void operator-=(const Wave* other);
 
 	/**
 	 * Adds a new Bond to *this or updates an Empty Bond for T.

@@ -32,7 +32,7 @@ namespace physical {
  * Periodic objects do work at regular intervals.
  */
 class Periodic :
-	public Class< Periodic >,
+	public physical::Class< Periodic >,
 	protected VirtualBase
 {
 public:

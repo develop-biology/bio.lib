@@ -29,11 +29,10 @@
 #include "bio/log/Engine.h"
 #include "bio/log/Levels.h"
 #include "bio/chemical/Types.h"
+#include "bio/chemical/Excitation.h"
 
 namespace bio {
 namespace chemical {
-
-class Reaction;
 
 /**
  * Basic implementation of methods for a LinearStructuralComponent
@@ -528,9 +527,9 @@ public:
 
 		if (transferSubContents)
 		{
-			Reaction::Attempt< TransferSubContents >(
-				addition,
-				toReplace
+			addition->ImportAll(
+				toReplace,
+				true
 			);
 
 			#if 0
@@ -949,23 +948,65 @@ public:
 	}
 
 	/**
-	 * Performs the given Reaction on all contents.
-	 * @param reaction
+	 * Override of Wave method. See that class for details.
+	 * If other is an Excitation, call ForEach instead.
+	 * @param other
+	 */
+	virtual void Attenuate(const physical::Wave* other)
+	{
+		if (physical::Wave::GetResonnanceBetween(
+			other,
+			ExcitationBase::GetClassProperties()).size())
+		{
+			ForEachImplementation(Cast<ExcitationBase*>(other));
+			return;
+		}
+
+		for (
+			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::iterator cnt = this->m_contents.begin();
+			cnt != this->m_contents.end();
+			++cnt
+			)
+		{
+			(*cnt)->Attenuate(other);
+		}
+	}
+
+	/**
+	 * Override of Wave method. See that class for details.
+	 */
+	virtual void Disattenuate(const physical::Wave* other)
+	{
+		for (
+			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::iterator cnt = this->m_contents.begin();
+			cnt != this->m_contents.end();
+			++cnt
+			)
+		{
+			(*cnt)->Disattenuate(other);
+		}
+	}
+
+
+	/**
+	 * Performs the given Excitation on all contents.
+	 * @param excitation
 	 * @param self a pointer to *this, if *this is a chemical::Substance.
 	 */
-	virtual void ForEachImplementation(
-		Reaction* reaction,
-		Substance* self = NULL
+	virtual ExcitationReturns ForEachImplementation(
+		ExcitationBase* excitation
 	)
 	{
-		for (typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::const_iterator cnt = this->m_contents.begin(), cnt != this->m_contents.end();
-		++cnt)
+		ExcitationReturns ret;
+		for (
+			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::const_iterator cnt = this->m_contents.begin();
+			cnt != this->m_contents.end();
+			++cnt
+			)
 		{
-			(*reaction)(
-				*cnt,
-				self
-			);
+			ret.push_back(excitation->CallDown(*cnt));
 		}
+		return ret;
 	}
 
 	/**

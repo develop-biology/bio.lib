@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -21,38 +21,40 @@
 
 #pragma once
 
-#include "bio/chemical/Class.h"
-#include "bio/chemical/Reaction.h"
+#include "structure/LinearStructuralComponent.h"
+#include "bio/physical/Class.h"
 
 namespace bio {
 namespace chemical {
 
+class Reactant; //unused here but anything including Reactants will likely use Reactant*.
+
 /**
- * TransferSubContents uses the ImportAll method from StructuralComponent to copy the contents of the 2nd Reactant into the 1st (i.e. 1->ImportAll(2)).
- * Both Reactants must have be state::Enabled.
+ * Reactants are a multitude of Substances, all combined into a single Wave.
+ * NOTE that a Reactant is a Substance, so Reactants may (but do not have to) contain Reactant*s.
+ * Reactants is intended to be the single input to a Reaction. In this way, a Reactants represents all the Reacting Substances coming together, making the job of Reaction then to pull them apart into the appropriate Products.
  */
-class TransferSubContents :
-	virtual public Reaction,
-	public Class< TransferSubContents >
+class Reactants :
+	public physical::Class< Reactants >,
+	public LinearStructuralComponent< Substance* >,
 {
 public:
-	/**
-	 *
-	 */
-	TransferSubContents();
 
 	/**
 	 *
 	 */
-	virtual ~TransferSubContents();
+	Reactants();
 
 	/**
-	 * Do the actual work.
-	 * See Reaction.h (in bio/chemical/) for more info and the class description for what *this does.
-	 * @param reactants
-	 * @return reactants
+	 * @param substances
 	 */
-	virtual Products Process(Substances& reactants);
+	Reactants(Substances& substances);
+
+	/**
+	 *
+	 */
+	virtual ~Reactants();
+};
 
 } //chemical namespace
 } //bio namespace

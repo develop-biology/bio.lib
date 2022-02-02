@@ -22,22 +22,38 @@
 #pragma once
 
 #include "Types.h"
-#include "Substance.h"
+#include "Reactants.h"
 #include "Products.h"
+#include "Class.h"
 #include "structure/LinearStructuralComponent.h"
 #include "bio/physical/Identifiable.h"
-#include "bio/physical/Class.h"
-
 #include "bio/common/TypeName.h"
 
 namespace bio {
 namespace chemical {
 
-class Reactant;
-
 /**
  * A chemical::Reaction takes in Reactants and produces Products, performing some work in between.
+ * For more info, see Reactants.h, Reactant.h (singular), Products.h, and Substance.h
  * This is basically a fancy functor that takes advantage of Atom::Bonds and Substance Properties and States to do argument validation.
+ *
+ * Reactions, like those in real life, will often deal with the changing of chemical Bonds and Properties.
+ * Reactions are for turning iron into gold. All lesser magicks can be performed with Excitation!
+ * In a more real sense, Excitations should not make or break Bonds (except in rare circumstances) whereas Reactions, when fully Processed, should change the Reactants in some significant way, hence their return as Products.
+ * Another difference between Reactants and Excitations is that Excitations act ON a Wave (i.e. wave->someMethod()) while Reactions act WITH Substances.
+ * Additionally, Excitations store their arguments as members, requiring each kind of Excitation function call to be a new object (e.g. to call firstObject->method(firstArg) and secondObject->method(firstArg) is 1 Excitation while firstObject->method(secondArg) would require a new Excitation).
+ * Reactions, on the other hand, are more traditional functors and do not (by default) maintain any state between calls, meaning the same Reaction object can be used for all invokations.
+ * Both Excitation and Reaction are functors but the behavior and minimum requirements for using each are different.
+ *
+ * A real life corollary:
+ * Imagine a sound wave hitting a wall. This could be modeled as an Excitation: the energy from the air molecules excite those in the wall, passing energy between them. We might write this as `soundEnergyTransferExcitation = EnergyTransferExcitation(sound); soundEnergyTransferExcitation(wall)`, which could produce code like `wall->ExchangeEnergy(sound)` and could be used on anything the sound wave hit (e.g. `soundEnergyTransferExcitation(floor)`).
+ * A similar, but inappropriate Reaction could be `EnergyTransferReaction(wall, sound)` which might produce code like `wall->ExchangeEnergy(sound); return {wall, sound}`, saying that a sound wave hitting a wall creates a new wall and sound wave. The same Reaction would have to be called again for each object the sound wave impacted.
+ * A more appropriate Reaction would be something like `Burn(fuel, air)`, which might return `{flame, ash, smoke, air}`, where you could then  check the flame->GetColor(), smoke->GetSmell(), reactantAir->GetQuantity("Oxygen") - productAir->GetQuantity("Oxygen"), and so on.
+ * The inappropriate Excitation analog, `airBurnExcitation = BurnExcitation(air); airBurnExcitation(fuel)`, would call `fuel->burn(air)`, which could work but would require that anything capable of being burned implement the burn method.
+ *
+ * While the semantic difference between the implementations of Excitation and Reaction is subtle and possibly pedantic, the use case of calling a class method vs calling a function with a class should be clear cut.
+ * In reality, you'll probably want to use Excitations in your Reactions and vice-versa. For instance, hitting a wall with a nuclear blast would be far more complex than modeling a sound wave.
+ * See Excitation.h for more info.
  *
  * To make a Reaction, you must overload Process (virtual chemical::Products Process(chemical::Substances& reactants) = 0;)
  * Then, preferably in your ctor, state the Require()ments.
@@ -49,37 +65,25 @@ class Reactant;
  * Doing so will do all necessary input checking and then call Process(), if all is good. Otherwise no Products are returned and you will get a code::FailedReaction().
  *
  * Other ways to invoke a reaction include:
- * Reaction::Attempt<MyReaction>(MyReactants)
- * ForEach<MyReactant>(Reaction::Initiate<MyReaction>()) (see LinearStructuralComponent.h)
+ * Reaction::Attempt<MyReaction>(myReactants);
+ * myReaction = Reaction::Initiate<MyReaction>(); myReaction(myReactants);
  *
  */
 class Reaction :
-	virtual public physical::Identifiable< StandardDimension >,
-	public physical::Class< Reaction >,
-	public LinearStructuralComponent< Reactant* >
+	public chemical::Class< Reaction >
 {
 public:
 
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
+	BIO_DISAMBIGUATE_CLASS_METHODS(chemical,
 		Reaction)
 
 	/**
-	 *
+	 * Standard ctors.
 	 */
-	Reaction();
-
-	/**
-	 * @param id
-	 */
-	explicit Reaction(Id id);
-
-	/**
-	 * @param name
-	 */
-	explicit Reaction(Name name);
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(chemical, Reaction, &ReactionPerspective::Instance(), filter::Chemical(), symmetry_Type::Operation())
 
 	/**
 	 * @param name
@@ -87,7 +91,7 @@ public:
 	 */
 	explicit Reaction(
 		Name name,
-		typename StructuralComponentImplementation< Reactant* >::Contents reactants
+		const Reactants& reactants
 	);
 
 	/**
@@ -179,24 +183,24 @@ public:
 	 * @param reactants
 	 * @return Products containing a Code and some set of new Substances or just the reactants. Up to you!
 	 */
-	virtual Products Process(Substances& reactants) = 0;
+	virtual Products Process(Reactants* reactants) = 0;
 
 	/**
 	 * Checks if the given Substances match the Reactants in *this.
 	 * ORDER MATTERS!
-	 * NOTE: toCheck may have MORE substances than just the reactants needed for this->Process but must have AT LEAST the required reactants.
+	 * NOTE: toCheck may have MORE substances than just the reactants needed for this->Process but must have AT LEAST the required Reactants.
 	 * @param toCheck
 	 * @return true if all Substances match; false otherwise.
 	 */
-	virtual bool SubstancesCanReact(const Substances& toCheck) const;
+	virtual bool ReactantsMeetRequirements(const Reactants* toCheck) const;
 
 	/**
-	 * A Reaction takes in some Substances and checks if they match the Reactants for *this.
+	 * A Reaction takes in some Reactants and checks if they match the Reactants for *this.
 	 * If the inputs check out, the Reaction occurs and the products are returned.
 	 * @param reactants
 	 * @return Products of this->Process(...) or empty Products with a code::FailedReaction() Code.
 	 */
-	virtual Products operator()(Substances& reactants) const;
+	virtual Products operator()(Reactants* reactants) const;
 
 	/**
 	 * Get a Reaction!
@@ -231,10 +235,19 @@ public:
 	 * @return operator() of the given reaction; else reactants.
 	 */
 	template < typename T >
-	static Products Attempt(Substances& reactants)
+	static Products Attempt(Reactants* reactants)
 	{
 		BIO_SANITIZE_WITH_CACHE(Iniate< T >(),
 			return (*Cast< T* >(RESULT))(reactants),
+			return reactants);
+	}
+
+	template < typename T >
+	static Products Attempt(Substances& substances)
+	{
+		Reactants reactants(substances);
+		BIO_SANITIZE_WITH_CACHE(Iniate< T >(),
+			return (*Cast< T* >(RESULT))(&reactants),
 			return reactants);
 	}
 
@@ -254,12 +267,16 @@ public:
 		Substance* reactant3 = NULL
 	)
 	{
-		Substances reactants;
-		reactants.push_back(reactant1);
-		reactants.push_back(reactant2);
-		reactants.push_back(reactant3);
-		return Attempt< T >(reactants);
+		Substances substances;
+		substances.push_back(reactant1);
+		substances.push_back(reactant2);
+		substances.push_back(reactant3);
+		Reactants reactants(substances);
+		return Attempt< T >(&reactants);
 	}
+
+protected:
+	Reactants m_requiredReactants;
 };
 
 } //chemical namespace

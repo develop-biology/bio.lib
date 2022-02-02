@@ -32,7 +32,8 @@ using namespace cellular;
 using namespace genetic;
 
 Plasmid::Plasmid(Name name, PlasmidVersion version, log::Engine* logEngine) :
-    Identifiable(name, &PlasmidPerspective::Instance()), Writer(logEngine, filter::Genetic()), m_version(version)
+	genetic::Class<Plasmid>(this, filter::Genetic(), logEngine),
+	m_version(version)
 {
     BIO_LOG_DEBUG("Created %s v%u", GetName(), m_version);
 }
@@ -41,17 +42,6 @@ Plasmid::~Plasmid()
 {
 
 }
-
-virtual Plasmid* Clone() const
-{
-	return new Plasmid(*this);
-}
-
-virtual bool operator==(const Plasmid& other) const
-{
-	return chemical::Substance::operator==(other) && chemical::LinearStructuralComponent<Gene*>::operator==(other);
-}
-
 
 virtual void ImportAll(const Plasmid& other)
 {

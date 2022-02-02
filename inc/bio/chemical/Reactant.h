@@ -82,6 +82,7 @@ public:
 protected:
 	Name m_typeName;
 
+private:
 	/**
 	 * @param typeName
 	 */

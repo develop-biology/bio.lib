@@ -103,14 +103,12 @@ void Substance::CtorCommon()
 	Enable();
 }
 
-bool Substance::ProbeFor(Property property)
+void Substance::ImportAll(
+	const Substance* other,
+	bool ShouldCreateNonExisting
+)
 {
-	return Has< Property >(property);
-}
-
-bool Substance::ProbeFor(Properties properties)
-{
-	return HasAll< Property >(properties);
+	//TODO
 }
 
 PropertyStructure::PropertyStructure()

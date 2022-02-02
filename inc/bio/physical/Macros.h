@@ -141,74 +141,74 @@ virtual returnVal function qualifiers                                          \
 }
 
 #define BIO_CLASS_METHOD_WITH_MACRO(ns, caller, macro)                         \
-    BIO_CLASS_METHOD(ns, caller, macro)
+    BIO_CLASS_METHOD(ns, BIO_SINGLE_ARG(caller), macro)
 
 #define BIO_DEFINE_CLASS_METHODS_LOOP_1(ns, caller, t1)                        \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t1)
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t1)
 
 #define BIO_DEFINE_CLASS_METHODS_LOOP_2(ns, caller, t1, t2)                    \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t1)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t2)
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t1)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t2)
 
 #define BIO_DEFINE_CLASS_METHODS_LOOP_3(ns, caller, t1, t2, t3)                \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t1)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t2)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t3)
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t1)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t2)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t3)
 
 #define BIO_DEFINE_CLASS_METHODS_LOOP_4(ns, caller, t1, t2, t3, t4)            \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t1)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t2)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t3)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t4)
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t1)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t2)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t3)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t4)
 
 #define BIO_DEFINE_CLASS_METHODS_LOOP_5(ns, caller, t1, t2, t3, t4, t5)        \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t1)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t2)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t3)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t4)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t5)
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t1)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t2)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t3)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t4)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t5)
 
-#define BIO_DEFINE_CLASS_METHODS_LOOP_6(ns, caller, \
+#define BIO_DEFINE_CLASS_METHODS_LOOP_6(ns, caller,                            \
 t1, t2, t3, t4, t5, t6)                                                        \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t1)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t2)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t3)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t4)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t5)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t6)
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t1)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t2)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t3)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t4)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t5)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t6)
 
-#define BIO_DEFINE_CLASS_METHODS_LOOP_7(ns, caller, \
+#define BIO_DEFINE_CLASS_METHODS_LOOP_7(ns, caller,                            \
 t1, t2, t3, t4, t5, t6, t7)                                                    \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t1)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t2)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t3)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t4)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t5)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t6)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t7)
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t1)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t2)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t3)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t4)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t5)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t6)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t7)
 
-#define BIO_DEFINE_CLASS_METHODS_LOOP_8(ns, caller, \
+#define BIO_DEFINE_CLASS_METHODS_LOOP_8(ns, caller,                            \
 t1, t2, t3, t4, t5, t6, t7, t8)                                                \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t1)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t2)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t3)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t4)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t5)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t6)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t7)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t8)
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t1)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t2)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t3)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t4)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t5)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t6)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t7)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t8)
 
-#define BIO_DEFINE_CLASS_METHODS_LOOP_9(ns, caller, \
+#define BIO_DEFINE_CLASS_METHODS_LOOP_9(ns, caller,                            \
 t1, t2, t3, t4, t5, t6, t7, t8, t9)                                            \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t1)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t2)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t3)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t4)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t5)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t6)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t7)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t8)               \
-    BIO_CLASS_METHOD_WITH_MACRO(ns, caller, BIO_EXPAND_TUPLE t9)
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t1)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t2)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t3)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t4)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t5)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t6)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t7)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t8)\
+    BIO_CLASS_METHOD_WITH_MACRO(ns, BIO_SINGLE_ARG(caller), BIO_EXPAND_TUPLE t9)
 
 #define BIO_CALL_CLASS_METHOD_LOOP_WITH_MACRO(                                 \
         loopName,                                                              \
@@ -217,7 +217,12 @@ t1, t2, t3, t4, t5, t6, t7, t8, t9)                                            \
         caller,                                                                \
         argsMacro                                                              \
 	)                                                                          \
-    BIO_CALL_LOOP(loopName, iterationsMacro, ns, caller, argsMacro)
+    BIO_CALL_LOOP(                                                             \
+		loopName,                                                              \
+		iterationsMacro,                                                       \
+		ns,                                                                    \
+		BIO_SINGLE_ARG(caller),                                                \
+		argsMacro)
 
 /**
  * Calls the appropriate loop to define up to 9 class methods from BIO_GET_CLASS_METHODS_FOR_...
@@ -230,7 +235,7 @@ t1, t2, t3, t4, t5, t6, t7, t8, t9)                                            \
 			BIO_GET_CLASS_METHODS_FOR##_##ns()                                 \
         ),                                                                     \
         ns,                                                                    \
-        caller,                                                                \
+        BIO_SINGLE_ARG(caller),                                                \
         BIO_CALL_NS_MACRO(                                                     \
             BIO_GET_CLASS_METHODS_FOR,                                         \
             ns                                                                 \

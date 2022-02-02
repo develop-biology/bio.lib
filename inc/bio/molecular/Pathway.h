@@ -71,7 +71,7 @@ public:
 	 * @param toCheck
 	 * @return whether or not the first Reaction in *this can use the given Substances.
 	 */
-	virtual bool SubstancesCanReact(const chemical::Substances& toCheck) const;
+	virtual bool ReactantsMeetRequirements(const chemical::Substances& toCheck) const;
 };
 
 } //molecular namespace

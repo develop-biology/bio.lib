@@ -25,6 +25,7 @@
 #include "bio/chemical/structure/LinearStructuralComponent.h"
 #include "Gene.h"
 #include "Types.h"
+#include "Class.h"
 
 namespace bio {
 namespace genetic {
@@ -44,7 +45,7 @@ namespace genetic {
  *
  */
 class Plasmid :
-	public log::Writer,
+	public genetic::Class<Plasmid>,
 	public chemical::LinearStructuralComponent<Gene*>,
 	public molecular::DNA
 {
@@ -67,12 +68,6 @@ public:
 
 	/**
 	 * Required method from Wave. See that class for details.
-	 * @return a new copy of *this.
-	 */
-	virtual Plasmid* Clone() const;
-
-	/**
-	 * Required method from Wave. See that class for details.
 	 * @return a Symmetrical image of *this
 	 */
 	virtual Symmetry* Spin() const;
@@ -84,22 +79,9 @@ public:
 	 */
 	virtual void Reify(Symmetry* symmetry);
 
-	/**
-	 * 2 Plasmid are equal if they have the same Gene*s, Properties, and States
-	 * @param other
-	 * @return whether or not other is equivalent to *this.
-	 */
-	virtual bool operator==(const Plasmid& other) const;
 
 	/**
-	 * Calls Import<>() with all Bonded StructuralComponents.
-	 * @param other
-	 */
-	virtual void ImportAll(const Plasmid& other);
-
-
-	/**
-	 * RNA polymerase is responsible for transcribing DNA into mRNA that is then Translated into protein.
+	 * RNA polymerase is responsible for transcribing DNA into mRNA that is then translated into protein.
 	 * Similarly, here, RNAPolymerase is responsible for Transcribing Genes.
 	 * If you would like your own custom unpacking system for your Plasmid, override this method.
 	 * If you don't need anything fancy, leave this as is.

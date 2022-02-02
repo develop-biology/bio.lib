@@ -27,6 +27,8 @@
 namespace bio {
 namespace chemical {
 
+class ExcitationBase;
+
 /**
  * Interface methods for all LinearStructuralComponent classes.
  */
@@ -235,18 +237,16 @@ public:
 	 * @param self a pointer to *this, if *this is a chemical::Substance.
 	 */
 	template < typename T >
-	void ForEach(
-		Reaction* reaction,
-		Substance* self = NULL
+	ExcitationReturns ForEach(
+		ExcitationBase* excitation
 	)
 	{
+		ExcitationReturns ret;
 		LockThread();
 		BIO_SANITIZE_WITH_CACHE((Cast< LinearStructuralComponentImplementation< T >* >(this->AsBonded< LinearStructuralComponentImplementation< T > >())),
-			(Cast< LinearStructuralComponentImplementation< T >* >(RESULT))->ForEachImplementation(
-				reaction,
-				self
-			),);
+			ret = (Cast< LinearStructuralComponentImplementation< T >* >(RESULT))->ForEachImplementation(excitation),);
 		UnlockThread();
+		return ret;
 	}
 };
 

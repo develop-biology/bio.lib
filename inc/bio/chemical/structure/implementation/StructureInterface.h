@@ -223,7 +223,8 @@ public:
 	}
 
 	/**
-	 * Check for all contents
+	 * Check if *this contains all of the given contents
+	 * Should NOT check if the given contents contain all those of *this.
 	 * @param content
 	 * @return whether or not the given contents exists in *this
 	 */

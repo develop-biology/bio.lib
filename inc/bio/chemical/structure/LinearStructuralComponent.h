@@ -46,7 +46,7 @@ template < typename CONTENT_TYPE >
 class LinearStructuralComponent :
 	virtual public LinearStructureInterface,
 	public Element< LinearStructuralComponent< CONTENT_TYPE > >,
-	public Class< LinearStructuralComponent< CONTENT_TYPE > >,
+	public chemical::Class< LinearStructuralComponent< CONTENT_TYPE > >,
 	public LinearStructuralComponentImplementation< CONTENT_TYPE >
 {
 public:
@@ -86,9 +86,8 @@ public:
 	explicit LinearStructuralComponent(Perspective <StandardDimension>* perspective = NULL)
 		:
 		Element< LinearStructuralComponent< CONTENT_TYPE>>(AbstractStructure::GetClassProperties()),
-		Class(this),
+		chemical::Class< LinearStructuralComponent< CONTENT_TYPE > >(this),
 		m_perspective(perspective)
-	//NOTE: Writer not initialized here!
 	{
 		CtorCommon();
 	}
@@ -104,7 +103,7 @@ public:
 	)
 		:
 		Element< LinearStructuralComponent< CONTENT_TYPE>>(AbstractStructure::GetClassProperties()),
-		Class(this),
+		chemical::Class< LinearStructuralComponent< CONTENT_TYPE > >(this),
 		StructuralComponent< CONTENT_TYPE >(contents),
 		m_perspective(perspective)
 	{
@@ -118,7 +117,7 @@ public:
 	 */
 	LinearStructuralComponent(const LinearStructuralComponent< CONTENT_TYPE >& toCopy)
 		:
-		Class(this)
+		chemical::Class< LinearStructuralComponent< CONTENT_TYPE > >(this)
 	{
 		CtorCommon();
 		m_perspective = toCopy.m_perspective;
@@ -137,9 +136,7 @@ public:
 	 * NOTE: this uses delete, not delete[].
 	 * The only way to avoid this is by Clear()ing *this yourself first.
 	 */
-	virtual ~
-
-	LinearStructuralComponent()
+	virtual ~LinearStructuralComponent()
 	{
 		ClearImplementation();
 	}

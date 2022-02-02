@@ -139,8 +139,9 @@ public:
 	 * Here, we take advantage of some of the Biology features that are starting to form. Primarily, we leverage physical::Properties, Bonds (per Atom), and Reactions to search through the pseudo-vtable of Atom, find all StructuralComponents in *this and attempt to Import the corresponding StructuralComponents of other.
 	 * This method side-steps the typical inheritance encapsulation in order to prevent child classes from having to override this method and account for each new StructuralComponent they add. In other words, complexity here removes repeated code downstream.
 	 * @param other
+	 * @param ShouldCreateNonExisting if true, will copy StructuralComponents from other which are not already in *this.
 	 */
-	virtual void ImportAll(const Substance* other);
+	virtual void ImportAll(const Substance* other, bool ShouldCreateNonExisting=false);
 
 	/**
 	 * Helper method for setting the Enabled() State.
@@ -160,22 +161,6 @@ public:
 	 * @return whether or not *this has the Enabled() State.
 	 */
 	virtual bool IsEnabled() const;
-
-	/**
-	 * Checks if *this has the given Property.
-	 * See physical/Types.h for more on Property.
-	 * @param property
-	 * @return if this->Has<Property>(property).
-	 */
-	virtual bool ProbeFor(Property property);
-
-	/**
-	 * Checks if *this has all the given Properties.
-	 * See ProbeFor(Property).
-	 * @param properties
-	 * @return if this->HasAll<Property>(properties).
-	 */
-	virtual bool ProbeFor(Properties properties);
 
 private:
 	void CtorCommon();

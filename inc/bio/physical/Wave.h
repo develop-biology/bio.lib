@@ -129,16 +129,9 @@ public:
 	virtual void Reify(Symmetry* symmetry);
 
 	/**
-	 * Reifies *this.
-	 * (*myParticle) | jsonAxis("...");
-	 * @param symmetry
-	 */
-	virtual void operator|(Symmetry* symmetry);
-
-	/**
-	 * This will overwrite any signal currently carried by *this.
-	 * @return the signal Modulated.
-	 */
+ * This will overwrite any signal currently carried by *this.
+ * @return the signal Modulated.
+ */
 	virtual Wave* Modulate(Wave* signal);
 
 	/**
@@ -152,6 +145,58 @@ public:
 	 * @return the signal carried by *this.
 	 */
 	virtual const Wave* Demodulate() const;
+
+	/**
+	 * Moves other through *this, taking something from it.
+	 * Used for += operator
+	 * This is a nop unless implemented by children.
+	 * @param other
+	 */
+	virtual void Attenuate(const Wave* other)
+	{
+		//nop
+	}
+
+	/**
+	 * Pulls other out of *this, maybe giving something back?
+	 * The opposite of Attenuation.
+	 * Used for -= operator.
+	 * This is a nop unless implemented by children.
+	 * @param other
+	 */
+	virtual void Disattenuate(const Wave* other)
+	{
+		//nop
+	}
+
+	/**
+	 * Used for resolving ambiguous inheritance without the need to explicitly derive from Wave.
+	 * NOTE: operator Wave*() and various perturbations fail to resolve ambiguous implicit upcasting.
+	 * @return this
+	 */
+	virtual Wave* AsWave()
+	{
+		return this;
+	}
+
+	/**
+	 * Used for resolving ambiguous inheritance without the need to explicitly derive from Wave.
+	 * NOTE: operator Wave*() and various perturbations fail to resolve ambiguous implicit upcasting.
+	 * @return this
+	 */
+	virtual const Wave* AsWave() const
+	{
+		return this;
+	}
+
+	//HERE THERE BE OPERATORS
+
+	/**
+	 * Reifies *this.
+	 * (*myParticle) | jsonAxis("...");
+	 * @param symmetry
+	 */
+	virtual void operator|(Symmetry* symmetry);
 
 	/**
 	 * Modulate operator (i.e. not "modulo")
@@ -190,35 +235,18 @@ public:
 
 	/**
 	 * Makes other interfere with *this.
-	 * This is a nop unless implemented by children.
+	 * Attenuates other.
 	 * @param other
 	 */
 	virtual void operator+=(const Wave* other);
 
 	/**
 	 * Removes the interference of other from *this.
-	 * This is a nop unless implemented by children.
+	 * Disattenuates other.
 	 * @param other
 	 */
 	virtual void operator-=(const Wave* other);
 
-	/**
-	 * Used for resolving ambiguous inheritance without the need to explicitly derive from Wave.
-	 * @return this
-	 */
-	virtual Wave* AsWave()
-	{
-		return this;
-	}
-
-	/**
-	 * Used for resolving ambiguous inheritance without the need to explicitly derive from Wave.
-	 * @return this
-	 */
-	virtual const Wave* AsWave() const
-	{
-		return this;
-	}
 protected:
 	/**
 	 * We cache our Symmetry here to avoid excessive new & deletes when Spinning & Reifying *this.

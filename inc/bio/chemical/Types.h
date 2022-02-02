@@ -74,5 +74,7 @@ class Substance;
 
 typedef std::vector< Substance* > Substances;
 
+typedef std::vector<void*> ExcitationReturns;
+
 } //chemical namespace
 } //bio namespace

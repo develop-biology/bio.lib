@@ -49,6 +49,8 @@ Atom::~Atom()
 
 void Atom::Attenuate(const physical::Wave* other)
 {
+	const physical::Wave* demodulated = other->Demodulate();
+
 	for (
 		Valence val = 0;
 		val < m_valence;
@@ -59,18 +61,20 @@ void Atom::Attenuate(const physical::Wave* other)
 		{
 			continue;
 		}
-		if (Wave::GetResonanceBetween(
+		if (physical::Wave::GetResonanceBetween(
 			m_bonds[val].GetBonded(),
 			other
 		).size())
 		{
-			*(m_bonds[val].GetBonded()) += other;
+			m_bonds[val].GetBonded()->Attenuate(demodulated);
 		}
 	}
 }
 
 void Atom::Disattenuate(const physical::Wave* other)
 {
+	const physical::Wave* demodulated = other->Demodulate();
+
 	for (
 		Valence val = 0;
 		val < m_valence;
@@ -81,12 +85,12 @@ void Atom::Disattenuate(const physical::Wave* other)
 		{
 			continue;
 		}
-		if (Wave::GetResonanceBetween(
+		if (physical::Wave::GetResonanceBetween(
 			m_bonds[val].GetBonded(),
 			other
 		).size())
 		{
-			*(m_bonds[val].GetBonded()) -= other;
+			m_bonds[val].GetBonded()->Disattenuate(demodulated);
 		}
 	}
 }

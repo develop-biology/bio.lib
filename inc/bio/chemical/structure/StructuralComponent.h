@@ -23,8 +23,8 @@
 
 #include "bio/chemical/structure/implementation/StructuralComponentImplementation.h"
 #include "bio/chemical/structure/implementation/StructureInterface.h"
-#include "bio/chemical/Class.h"
 #include "bio/chemical/Macros.h"
+#include "bio/chemical/Class.h"
 #include "bio/physical/Filters.h"
 
 namespace bio {
@@ -52,7 +52,7 @@ public:
 	 */
 	StructuralComponent()
 		:
-		chemical::Class< StructuralComponent< CONTENT_TYPE > >(this, filter::Default())
+		chemical::Class< StructuralComponent< CONTENT_TYPE > >(this) //TODO: Define Symmetry.
 	{
 	}
 
@@ -61,7 +61,7 @@ public:
 	 */
 	explicit StructuralComponent(typename StructuralComponentImplementation< CONTENT_TYPE >::Contents contents)
 		:
-		chemical::Class< StructuralComponent< CONTENT_TYPE > >(this),
+		chemical::Class< StructuralComponent< CONTENT_TYPE > >(this), //TODO: Define Symmetry.
 		StructuralComponentImplementation< CONTENT_TYPE >(contents)
 	{
 	}
@@ -71,7 +71,7 @@ public:
 	 * @param toCopy
 	 */
 	StructuralComponent(const StructuralComponent< CONTENT_TYPE >& toCopy) :
-		chemical::Class< StructuralComponent< CONTENT_TYPE > >(this)
+		chemical::Class< StructuralComponent< CONTENT_TYPE > >(this) //TODO: Define Symmetry.
 	{
 		this->m_contents.insert(this->m_contents.begin(), toCopy.m_contents.begin(), toCopy.m_contents.end());
 	}
