@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "Codes.h"
 #include "Wave.h"
 
 namespace bio {

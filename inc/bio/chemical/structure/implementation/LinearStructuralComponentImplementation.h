@@ -23,11 +23,13 @@
 
 #include <vector>
 #include "StructuralComponentImplementation.h"
+#include "StructureInterface.h"
 #include "bio/physical/Codes.h"
 #include "bio/physical/Filters.h"
 #include "bio/physical/Identifiable.h"
 #include "bio/log/Engine.h"
 #include "bio/log/Levels.h"
+#include "bio/chemical/Codes.h"
 #include "bio/chemical/Types.h"
 #include "bio/chemical/Excitation.h"
 
@@ -122,7 +124,7 @@ public:
 	 * @param recurse whether or not to search through contents in searchIn.
 	 * @return a pointer to a CONTENT_TYPE of id if one is found within searchIn, NULL if one is not found.
 	 */
-	static CONTENT_TYPE FindByIdIn(
+	static CONTENT_TYPE* FindByIdIn(
 		typename StructuralComponentImplementation< CONTENT_TYPE >::Contents* searchIn,
 		const StandardDimension contentId,
 		const bool recurse = false
@@ -136,7 +138,7 @@ public:
 		if (itt != searchIn->end())
 		{
 			//BIO_LOG_DEBUG("Found %s in %s", name, ConvertContentsToString(*searchIn).c_str());
-			return (*itt);
+			return &*itt;
 		}
 		//BIO_LOG_DEBUG("Could not find %s in %s", name, ConvertContentsToString(*searchIn).c_str());
 		return NULL;
@@ -149,7 +151,7 @@ public:
 	 * @param recurse whether or not to search through contents in searchIn.
 	 * @return a pointer to a CONTENT_TYPE of id if one is found within searchIn, NULL if one is not found.
 	 */
-	static const CONTENT_TYPE FindByIdIn(
+	static const CONTENT_TYPE* FindByIdIn(
 		const typename StructuralComponentImplementation< CONTENT_TYPE >::Contents* searchIn,
 		const StandardDimension contentId,
 		const bool recurse = false
@@ -163,7 +165,7 @@ public:
 		if (itt != searchIn->end())
 		{
 			//BIO_LOG_DEBUG("Found %s in %s", name, ConvertContentsToString(*searchIn).c_str());
-			return (*itt);
+			return &*itt;
 		}
 		//BIO_LOG_DEBUG("Could not find %s in %s", name, ConvertContentsToString(*searchIn).c_str());
 		return NULL;
@@ -177,7 +179,7 @@ public:
 	 * @param recurse whether or not to search through contents in searchIn.
 	 * @return a pointer to a CONTENT_TYPE of id if one is found within searchIn, NULL if one is not found.
 	 */
-	static CONTENT_TYPE FindByNameIn(
+	static CONTENT_TYPE* FindByNameIn(
 		const physical::Perspective< StandardDimension >* perspective,
 		typename StructuralComponentImplementation< CONTENT_TYPE >::Contents* searchIn,
 		Name contentName,
@@ -201,7 +203,7 @@ public:
 	 * @param recurse whether or not to search through contents in searchIn.
 	 * @return a pointer to a CONTENT_TYPE of id if one is found within searchIn, NULL if one is not found.
 	 */
-	static const CONTENT_TYPE FindByNameIn(
+	static const CONTENT_TYPE* FindByNameIn(
 		const physical::Perspective< StandardDimension >* perspective,
 		const typename StructuralComponentImplementation< CONTENT_TYPE >::Contents* searchIn,
 		Name contentName,
@@ -254,11 +256,11 @@ public:
 			}
 			else if (recurse)
 			{
-				recur = (*cnt)->GetContentIteratorFrom((*cnt)->GetAll< CONTENT_TYPE >(),
+				recur = (*cnt)->FindByIdIn((Cast< StructureInterface* >(*cnt))->template GetAll< CONTENT_TYPE >(),
 					contentId,
 					recurse
 				);
-				if (recur != (*cnt)->GetAll< CONTENT_TYPE >()->end())
+				if (recur != (*cnt)->template GetAll< CONTENT_TYPE >()->end())
 				{
 					#if 0
 					if (ret != searchIn->end())
@@ -310,11 +312,11 @@ public:
 			}
 			else if (recurse)
 			{
-				recur = (*cnt)->GetContentIteratorFrom((*cnt)->GetAll< CONTENT_TYPE >(),
+				recur = (*cnt)->FindByIdIn((*cnt)->template GetAll< CONTENT_TYPE >(),
 					contentId,
 					recurse
 				);
-				if (recur != (*cnt)->GetAll< CONTENT_TYPE >()->end())
+				if (recur != (*cnt)->template GetAll< CONTENT_TYPE >()->end())
 				{
 					#if 0
 					if (ret != searchIn->end())
@@ -354,9 +356,6 @@ public:
 			++insert
 			)
 		{
-			//Skip over invalid values.
-			//It is up to Cell or other, non-generic, methods of CONTENT_TYPE to respect these.
-			//TODO make an array of these items and document each one.
 			if (*insert == CONTENT_TYPE::Perspective::InvalidId())
 			{
 				if (insert == searchPath.end() - 1)
@@ -379,11 +378,11 @@ public:
 				{
 					if (insert == searchPath.end() - 1)
 					{
-						return (*cnt)->GetAll< CONTENT_TYPE >();
+						return (*cnt)->template GetAll< CONTENT_TYPE >();
 					}
-					else if ((*cnt)->GetCount< CONTENT_TYPE >())
+					else if ((*cnt)->template GetCount< CONTENT_TYPE >())
 					{
-						searchTree = (*cnt)->GetAll< CONTENT_TYPE >();
+						searchTree = (*cnt)->template GetAll< CONTENT_TYPE >();
 						cnt = searchTree->begin();
 					}
 					else
@@ -487,7 +486,7 @@ public:
 
 		Code ret = code::Success();
 
-		typename StructuralComponentImplementation< CONTENT_TYPE >* toReplace = NULL;
+		StructuralComponentImplementation< CONTENT_TYPE >* toReplace = NULL;
 
 		#if 0
 		if (logger)
@@ -508,7 +507,7 @@ public:
 				#if 0
 				if (logger)
 				{
-					logger->Log(filter::Default(), log::level::Debug(), "%s (%p) has %u contents", (*cnt)->GetName(), *cnt, (*cnt)->GetAll<CONTENT_TYPE>()->size());
+					logger->Log(filter::Default(), log::level::Debug(), "%s (%p) has %u contents", (*cnt)->GetName(), *cnt, (*cnt)->template GetAll<CONTENT_TYPE>()->size());
 				}
 				#endif
 
@@ -647,8 +646,6 @@ public:
 			}
 		} //switch
 
-		//TODO: support setting the log engine of addition?
-
 		return ret;
 	}
 
@@ -666,9 +663,7 @@ public:
 	 * @param logger what to use to print messages (since this is static).
 	 * @return Status of insertion (e.g. success or failure).
 	 */
-	static Code
-
-	Insert(
+	static Code Insert(
 		physical::Perspective< StandardDimension >* perspective,
 		void* contentPtr,
 		typename StructuralComponentImplementation< CONTENT_TYPE >::Contents* destination,
@@ -806,13 +801,13 @@ public:
 	 * @param recurse
 	 * @return a Content of the given id or NULL.
 	 */
-	virtual CONTENT_TYPE GetByIdImplementation(
+	virtual CONTENT_TYPE* GetByIdImplementation(
 		StandardDimension id,
 		const bool recurse = false
 	)
 	{
 		return LinearStructuralComponentImplementation< CONTENT_TYPE >::FindByIdIn(
-			&m_contents,
+			&this->m_contents,
 			id,
 			recurse
 		);
@@ -824,13 +819,13 @@ public:
 	* @param recurse
 	* @return a Content of the given id or NULL.
 	*/
-	virtual const CONTENT_TYPE GetByIdImplementation(
+	virtual const CONTENT_TYPE* GetByIdImplementation(
 		StandardDimension id,
 		const bool recurse = false
 	) const
 	{
 		return LinearStructuralComponentImplementation< CONTENT_TYPE >::FindByIdIn(
-			&m_contents,
+			&this->m_contents,
 			id,
 			recurse
 		);
@@ -842,7 +837,7 @@ public:
 	 * @param recurse
 	 * @return a Content of the given name or NULL.
 	 */
-	virtual CONTENT_TYPE GetByNameImplementation(
+	virtual CONTENT_TYPE* GetByNameImplementation(
 		Name name,
 		const bool recurse = false
 	)
@@ -856,7 +851,7 @@ public:
 	* @param recurse
 	* @return a Content of the given name or NULL.
 	*/
-	virtual const CONTENT_TYPE GetByNameImplementation(
+	virtual const CONTENT_TYPE* GetByNameImplementation(
 		Name name,
 		const bool recurse = false
 	) const
@@ -870,7 +865,7 @@ public:
 	 * @param id
 	 * @return
 	 */
-	virtual CONTENT_TYPE CreateImplementation(StandardDimension id)
+	virtual CONTENT_TYPE* CreateImplementation(StandardDimension id)
 	{
 		return NULL;
 	}
@@ -882,7 +877,7 @@ public:
 	 * @param recurse
 	 * @return A Content of the given id.
 	 */
-	virtual CONTENT_TYPE GetOrCreateByIdImplementation(
+	virtual CONTENT_TYPE* GetOrCreateByIdImplementation(
 		StandardDimension id,
 		const bool recurse = false
 	)
@@ -897,7 +892,7 @@ public:
 	* @param recurse
 	* @return A Content of the given id.
 	*/
-	virtual CONTENT_TYPE GetOrCreateByNameImplementation(
+	virtual CONTENT_TYPE* GetOrCreateByNameImplementation(
 		Name name,
 		const bool recurse = false
 	)
@@ -952,30 +947,35 @@ public:
 	 * If other is an Excitation, call ForEach instead.
 	 * @param other
 	 */
-	virtual void Attenuate(const physical::Wave* other)
+	virtual Code Attenuate(const physical::Wave* other)
 	{
-		if (physical::Wave::GetResonnanceBetween(
+		if (physical::Wave::GetResonanceBetween(
 			other,
 			ExcitationBase::GetClassProperties()).size())
 		{
-			ForEachImplementation(Cast<ExcitationBase*>(other));
-			return;
+			ForEachImplementation(Cast< ExcitationBase* >(other));
+			return code::Success();
 		}
 
+		Code ret = code::Success();
 		for (
 			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::iterator cnt = this->m_contents.begin();
 			cnt != this->m_contents.end();
 			++cnt
 			)
 		{
-			(*cnt)->Attenuate(other);
+			if ((*cnt)->Attenuate(other) != code::Success())
+			{
+				ret = code::UnknownError();
+			}
 		}
+		return ret;
 	}
 
 	/**
 	 * Override of Wave method. See that class for details.
 	 */
-	virtual void Disattenuate(const physical::Wave* other)
+	virtual Code Disattenuate(const physical::Wave* other)
 	{
 		for (
 			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::iterator cnt = this->m_contents.begin();
@@ -1017,11 +1017,14 @@ public:
 	virtual std::string GetStringFromImplementation(std::string separator = ", ")
 	{
 		std::string ret = "";
-		for (typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::const_iterator cnt = m_contents.begin(), cnt != m_contents.end();
-		++cnt)
+		for (
+			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::const_iterator cnt = this->m_contents.begin();
+			cnt != this->m_contents.end();
+			++cnt
+			)
 		{
 			ret += (*cnt)->GetName();
-			if (cnt != m_contents.end() - 1)
+			if (cnt != this->m_contents.end() - 1)
 			{
 				ret += separator;
 			}
@@ -1045,7 +1048,7 @@ public:
 				delete (*cnt),);
 			(*cnt) = NULL;
 		}
-		m_contents.clear();
+		this->m_contents.clear();
 	}
 
 };

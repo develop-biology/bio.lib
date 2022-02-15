@@ -94,11 +94,12 @@ Symmetry* Periodic::Spin() const
 	return Wave::Spin();
 }
 
-void Periodic::Reify(Symmetry* symmetry)
+Code Periodic::Reify(Symmetry* symmetry)
 {
 	BIO_SANITIZE(symmetry, ,
-		return);
+		return code::BadArgument1());
 	m_interval = symmetry->GetValue();
+	return code::Success();
 }
 
 void Periodic::InitializeImplementation(ByteStreams args)

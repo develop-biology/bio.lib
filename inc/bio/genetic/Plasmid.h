@@ -67,20 +67,6 @@ public:
 	virtual ~Plasmid();
 
 	/**
-	 * Required method from Wave. See that class for details.
-	 * @return a Symmetrical image of *this
-	 */
-	virtual Symmetry* Spin() const;
-
-	/**
-	 * Required method from Wave. See that class for details.
-	 * Reconstruct *this from the given Symmetry.
-	 * @param symmetry
-	 */
-	virtual void Reify(Symmetry* symmetry);
-
-
-	/**
 	 * RNA polymerase is responsible for transcribing DNA into mRNA that is then translated into protein.
 	 * Similarly, here, RNAPolymerase is responsible for Transcribing Genes.
 	 * If you would like your own custom unpacking system for your Plasmid, override this method.

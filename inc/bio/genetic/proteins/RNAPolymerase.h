@@ -48,25 +48,6 @@ public:
 	 * @return result of all Transcription & Translation.
 	 */
 	virtual Code operator()();
-
-	/**
-	 * Required method from Wave. See that class for details.
-	 * @return a new copy of *this.
-	 */
-	virtual RNAPolymerase* Clone() const;
-
-	/**
-	 * Required method from Wave. See that class for details.
-	 * @return a Symmetrical image of *this
-	 */
-	virtual Symmetry* Spin() const;
-
-	/**
-	 * Required method from Wave. See that class for details.
-	 * Reconstruct *this from the given Symmetry.
-	 * @param symmetry
-	 */
-	virtual void Reify(Symmetry* symmetry);
 };
 
 } //genetic namespace

@@ -34,7 +34,7 @@ namespace physical {
  * Both Symmetry and SymmetryTypes are intended to grow with each namespace, as the complexity of what is being Rotated grows.
  */
 class Symmetry :
-	public Identifiable< StandardDimension >,
+	virtual public Identifiable< StandardDimension >,
 	Class< Symmetry >
 {
 public:
@@ -45,6 +45,10 @@ public:
 	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
 		Symmetry)
 
+	/**
+	 *
+	 */
+	Symmetry();
 
 	/**
 	 * @param name
@@ -92,6 +96,18 @@ public:
 	 * @return The Type of *this, aka Identifiable<SymmetryType>::GetName().
 	 */
 	const Identifiable< SymmetryType >& GetType() const;
+
+	/**
+	 * Set the type of *this.
+	 * @param type
+	 */
+	void SetType(SymmetryType type);
+
+	/**
+	 * Set the type of *this.
+	 * @param type
+	 */
+	void SetType(Name type);
 
 	/**
 	 * Set the m_value of *this.

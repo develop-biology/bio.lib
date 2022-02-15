@@ -27,5 +27,7 @@ namespace code {
 
 BIO_CODE_FUNCTION_BODY(FailedReaction)
 
+BIO_CODE_FUNCTION_BODY(InsertionPointMissing)
+
 } //code namespace
 } //bio namespace

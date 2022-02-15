@@ -47,9 +47,12 @@ Atom::~Atom()
 	delete[] m_bonds;
 }
 
-void Atom::Attenuate(const physical::Wave* other)
+Code Atom::Attenuate(const physical::Wave* other)
 {
+	BIO_SANITIZE(other, , return code::BadArgument1());
+
 	const physical::Wave* demodulated = other->Demodulate();
+	Code ret = code::Success();
 
 	for (
 		Valence val = 0;
@@ -66,14 +69,21 @@ void Atom::Attenuate(const physical::Wave* other)
 			other
 		).size())
 		{
-			m_bonds[val].GetBonded()->Attenuate(demodulated);
+			if (m_bonds[val].GetBonded()->Attenuate(demodulated) != code::Success())
+			{
+				ret = code::UnknownError(); //user can debug from logs for now.
+			}
 		}
 	}
+	return ret;
 }
 
 void Atom::Disattenuate(const physical::Wave* other)
 {
+	BIO_SANITIZE(other, , return code::BadArgument1());
+
 	const physical::Wave* demodulated = other->Demodulate();
+	Code ret = code::Success();
 
 	for (
 		Valence val = 0;
@@ -90,19 +100,13 @@ void Atom::Disattenuate(const physical::Wave* other)
 			other
 		).size())
 		{
-			m_bonds[val].GetBonded()->Disattenuate(demodulated);
+			if (m_bonds[val].GetBonded()->Disattenuate(demodulated) != code::Success())
+			{
+				ret = code::UnknownError(); //user can debug from logs for now.
+			}
 		}
 	}
-}
-
-void Atom::operator+=(const Wave* other)
-{
-	Attenuate(other);
-}
-
-void Atom::operator-=(const Wave* other)
-{
-	Disattenuate(other);
+	return ret;
 }
 
 bool Atom::FormBondImplementation(
@@ -211,7 +215,7 @@ physical::Symmetry* Atom::Spin() const
 
 void Atom::Reify(physical::Symmetry* symmetry)
 {
-	Wave::Reify(symmetry);
+	return Wave::Reify(symmetry);
 }
 
 

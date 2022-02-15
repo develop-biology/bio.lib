@@ -78,7 +78,7 @@ public:
 	 * Reconstruct *this from the given Symmetry.
 	 * @param symmetry
 	 */
-	virtual void Reify(Symmetry* symmetry);
+	virtual Code Reify(Symmetry* symmetry);
 
 	/**
 	 * 2 Surfaces are equal if they contain the same Molecules, States, and Properties.

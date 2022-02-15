@@ -71,11 +71,12 @@ Symmetry* Filterable::Spin() const
 	return Wave::Spin();
 }
 
-void Filterable::Reify(Symmetry* symmetry)
+Code Filterable::Reify(Symmetry* symmetry)
 {
 	BIO_SANITIZE(symmetry, ,
-		return);
+		return code::BadArgument1());
 	m_filter = symmetry->GetValue();
+	return code::Success();
 }
 
 void Filterable::InitializeImplementation(ByteStreams args)

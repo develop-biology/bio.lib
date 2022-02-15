@@ -33,8 +33,16 @@
 
 namespace bio {
 
+typedef uint8_t Code; //redefinition from Types.
+
 typedef uint8_t Property;
 typedef std::vector< Property > Properties;
+
+//the easy way out...
+//see AsAtom()
+namespace chemical {
+class Atom;
+}
 
 namespace physical {
 
@@ -108,6 +116,17 @@ public:
 	);
 
 	/**
+	 * Ease of use method for getting the Resonance between a Wave and a set of Properties
+	 * @param wave
+	 * @param properties
+	 * @return the number of overlapping Properties between the Wave and Properties given.
+	 */
+	static Properties GetResonanceBetween(
+		const Wave* wave,
+		const Properties& properties
+	);
+
+	/**
 	 * Spinning a Wave produces a Symmetry. Waves can be Rotated about any number of Axes.
 	 * Spinning a Wave along one dimension (one Axis) would be the equivalent of reflecting that Wave or, possibly, refracting, dispersing, or otherwise altering the wave (e.g. if the Axis acted like a prism, rather than a mirror). When a Wave is Spun around multiple dimensions, the resulting Symmetry and effected transformations may not fall under any single property characteristic of real waves. Thus we treat Waves more like particles with a discrete spin.
 	 *
@@ -126,7 +145,7 @@ public:
 	 * See Quantum.h for an example implementation.
 	 * @param symmetry
 	 */
-	virtual void Reify(Symmetry* symmetry);
+	virtual Code Reify(Symmetry* symmetry);
 
 	/**
  * This will overwrite any signal currently carried by *this.
@@ -152,10 +171,7 @@ public:
 	 * This is a nop unless implemented by children.
 	 * @param other
 	 */
-	virtual void Attenuate(const Wave* other)
-	{
-		//nop
-	}
+	virtual Code Attenuate(const Wave* other);
 
 	/**
 	 * Pulls other out of *this, maybe giving something back?
@@ -164,12 +180,10 @@ public:
 	 * This is a nop unless implemented by children.
 	 * @param other
 	 */
-	virtual void Disattenuate(const Wave* other)
-	{
-		//nop
-	}
+	virtual Code Disattenuate(const Wave* other);
 
 	/**
+	 * For Upcasting.
 	 * Used for resolving ambiguous inheritance without the need to explicitly derive from Wave.
 	 * NOTE: operator Wave*() and various perturbations fail to resolve ambiguous implicit upcasting.
 	 * @return this
@@ -180,6 +194,7 @@ public:
 	}
 
 	/**
+	 * For Upcasting.
 	 * Used for resolving ambiguous inheritance without the need to explicitly derive from Wave.
 	 * NOTE: operator Wave*() and various perturbations fail to resolve ambiguous implicit upcasting.
 	 * @return this
@@ -187,6 +202,30 @@ public:
 	virtual const Wave* AsWave() const
 	{
 		return this;
+	}
+
+	/**
+	 * For Downcasting.
+	 * Because Wave cannot be virtually inherited and will likely become an ambiguous base, we commit a sin and provide a cheat.
+	 * This method can be used to resolve any downcasting.
+	 * For example: this->AsAtom()->As<Whatever>().
+	 * @return this as an Atom, if possible.
+	 */
+	virtual chemical::Atom* AsAtom()
+	{
+		return NULL;
+	}
+
+	/**
+	 * For Downcasting.
+	 * Because Wave cannot be virtually inherited and will likely become an ambiguous base, we commit a sin and provide a cheat.
+	 * This method can be used to resolve any downcasting.
+	 * For example: this->AsAtom()->As<Whatever>().
+	 * @return this as an Atom, if possible.
+	 */
+	virtual const chemical::Atom* AsAtom() const
+	{
+		return NULL;
 	}
 
 	//HERE THERE BE OPERATORS

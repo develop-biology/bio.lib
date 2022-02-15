@@ -40,7 +40,6 @@ public:
 	 *
 	 */
 	LinearStructureInterface()
-		:
 	{
 	}
 
@@ -190,7 +189,7 @@ public:
 	 */
 	template < typename T >
 	T* GetOrCreateById(
-		LinearStructuralComponentImplementation< T >::Dimension id,
+		typename LinearStructuralComponentImplementation< T >::Dimension id,
 		const bool recurse = false
 	)
 	{
@@ -223,7 +222,7 @@ public:
 		LockThread();
 		BIO_SANITIZE_WITH_CACHE((Cast< LinearStructuralComponentImplementation< T >* >(this->AsBonded< LinearStructuralComponentImplementation< T > >())),
 			ret = (Cast< LinearStructuralComponentImplementation< T >* >(RESULT))->GetOrCreateByNameImplementation(
-				id,
+				name,
 				recurse
 			),);
 		UnlockThread();

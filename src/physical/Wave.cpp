@@ -22,6 +22,7 @@
 #include "bio/physical/Wave.h"
 #include "bio/physical/Types.h"
 #include "bio/physical/Symmetry.h"
+#include "bio/physical/Codes.h"
 #include "bio/common/Macros.h"
 
 #include <algorithm>
@@ -61,11 +62,12 @@ Symmetry* Wave::Spin() const
 	return m_symmetry;
 }
 
-void Wave::Reify(
+Code Wave::Reify(
 	Symmetry* symmetry
 )
 {
 	(*m_symmetry) = *symmetry;
+	return code::Success();
 }
 
 void Wave::operator|(
@@ -75,6 +77,16 @@ void Wave::operator|(
 	Reify(
 		symmetry
 	);
+}
+
+Code Wave::Attenuate(const Wave* other)
+{
+	return code::NotImplemented();
+}
+
+Code Wave::Disattenuate(const Wave* other)
+{
+	return code::NotImplemented();
 }
 
 Wave* Wave::Modulate(
@@ -149,6 +161,50 @@ void Wave::operator-=(
 Properties Wave::GetProperties() const
 {
 	Properties ret;
+	return ret;
+}
+
+/*static*/ Properties Wave::GetResonanceBetween(
+	const Wave* wave,
+	const Properties& properties
+)
+{
+	class TempWave :
+		public Wave
+	{
+	public:
+		TempWave(Properties p)
+			:
+			m_properties(p)
+		{
+		}
+
+		~TempWave()
+		{
+		}
+
+		virtual Properties GetProperties() const
+		{
+			return m_properties;
+		}
+
+		Properties m_properties;
+	};
+
+	ConstWaves waves;
+	waves.push_back(
+		wave
+	);
+	TempWave* twave = new TempWave(properties);
+	waves.push_back(
+		twave
+	);
+
+	Properties ret = GetResonanceBetween(
+		waves
+	);
+
+	delete twave;
 	return ret;
 }
 

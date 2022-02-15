@@ -33,6 +33,9 @@
  * e.g. BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(my_namespace, MyClass, &MyClassPerspective::Instance())
  *
  * NOTE: if your class has multiple template args or otherwise uses commas in its name, you must enclose it in BIO_SINGLE_ARG() so as to not have it be considered part of the __VA_ARGS__.
+ * @param ns the namespace of the class
+ * @param class the name of the class
+ * @param ... all arguments to the ns::Class<class>(...) constructor.
  */
 #define BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(ns, class, ...)                  \
 class() :                                                                      \
@@ -56,6 +59,10 @@ explicit class(StandardDimension id) :                                         \
  * e.g. BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(my_namespace, MyClass, &MyClassPerspective::Instance())
  *
  * NOTE: if your class has multiple template args or otherwise uses commas in its name, you must enclose it in BIO_SINGLE_ARG() so as to not have it be considered part of the __VA_ARGS__.
+ *
+ * @param ns the namespace of the class
+ * @param class the name of the class
+ * @param ... all arguments to the ns::Class<class>(...) constructor.
  */
 #define BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(ns, class, ...) \
 class() :                                                                      \
@@ -87,8 +94,43 @@ BIO_ID_FUNCTION_BODY(                                                          \
 
 
 /**
- * Get all virtual methods defined by physical::Class.
+ * Get all virtual methods defined by chemical::Class.
+ * @return function signatures for use in BIO_DISAMBIGUATE_CLASS_METHODS
  */
 #define BIO_GET_CLASS_METHODS_FOR_chemical()                                   \
     BIO_GET_CLASS_METHODS_FOR_physical(),                                      \
-    (bio::Properties, GetProperties(), const)
+    (bio::Properties GetProperties() const, GetProperties()),                  \
+	(bio::chemical::Atom* AsAtom(), AsAtom()),                                 \
+	(const bio::chemical::Atom* AsAtom() const, AsAtom()),                     \
+	(Code Attenuate(const bio::physical::Wave* other), Attenuate(other)),      \
+    (Code Disattenuate(const bio::physical::Wave* other), Disattenuate(other))
+
+#define BIO_EXCITATION_0(wave, ret, ...)                                       \
+	ExcitationWithoutArgument< wave, ret >
+
+#define BIO_EXCITATION_1(wave, ret, ...)                                       \
+	ExcitationWithArgument< wave, ret, __VA_ARGS__ >
+
+#define BIO_CREATE_EXCITATION_WITH_NUM(wave, ret, num, ...)                    \
+	BIO_EXCITATION_##num(wave, ret, __VA_ARGS__)
+
+/**
+ * Work around for C++ < 17, where variadic macros are supported but variadic template parameters are not.
+ * This will work with all versions of C++ (see undef below).
+ * NOTE: only 1 argument is currently supported with C++ < 17. For 2 or more arguments, you must either extend this macro by creating your own Excitation and defining BIO_EXCITATION_2, etc. or use at least C++17.
+ */
+#define BIO_EXCITATION(wave, ret, ...)                                         \
+	BIO_CREATE_EXCITATION_WITH_NUM(                                            \
+		wave,                                                                  \
+		ret,                                                                   \
+		GET_NUM_ARGS(__VA_ARGS__),                                             \
+		__VA_ARGS__                                                            \
+	)
+
+//@formatter:off
+#if BIO_CPP_VERSION >= 17
+	#undef BIO_EXCITATION
+	#define BIO_EXCITATION(wave, ret ...)                                      \
+		Excitation< wave, ret, ... >
+#endif
+//@formatter:on

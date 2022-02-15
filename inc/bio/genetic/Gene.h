@@ -84,25 +84,6 @@ public:
 	 * Copy existing sub proteins when disabling and removing a conflicting protein.
 	 */
 	bool m_transferSubProteins;
-
-	/**
-	 * Required method from Wave. See that class for details.
-	 * @return a new copy of *this.
-	 */
-	virtual Substance* Clone() const;
-
-	/**
-	 * Required method from Wave. See that class for details.
-	 * @return a Symmetrical image of *this
-	 */
-	virtual Symmetry* Spin() const;
-
-	/**
-	 * Required method from Wave. See that class for details.
-	 * Reconstruct *this from the given Symmetry.
-	 * @param symmetry
-	 */
-	virtual void Reify(Symmetry* symmetry);
 };
 
 } //cellular namespace

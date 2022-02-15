@@ -49,16 +49,7 @@ public:
 	 * Ensure virtual methods point to Class implementations.
 	 */
 	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
-		 T)
-
-	Class(T* object)
-		:
-		physical::Class< T >(
-			object,
-			NULL)
-	{
-		CtorCommon();
-	}
+		T)
 
 	/**
 	 * For when we know the Perspective but not ourselves.
@@ -69,7 +60,7 @@ public:
 	 */
 	Class(
 		T* object,
-		Perspective <StandardDimension>* perspective = NULL,
+		physical::Perspective< StandardDimension >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
@@ -77,7 +68,9 @@ public:
 			object,
 			new physical::Symmetry(
 				TypeName< T >().c_str(),
-				symmetryType)
+				symmetryType
+			)
+		)
 	{
 		CtorCommon(filter);
 	}
@@ -92,7 +85,7 @@ public:
 	Class(
 		T* object,
 		Name name,
-		Perspective <StandardDimension>* perspective = NULL,
+		physical::Perspective< StandardDimension >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
@@ -100,13 +93,15 @@ public:
 			object,
 			new physical::Symmetry(
 				TypeName< T >().c_str(),
-				symmetryType)
+				symmetryType
+			)
+		)
 	{
 		CtorCommon(filter);
 
 		if (perspective)
 		{
-			physical::Identifiable<StandardDimension>::Initialize(
+			physical::Identifiable< StandardDimension >::Initialize(
 				name,
 				perspective
 			);
@@ -126,7 +121,7 @@ public:
 	Class(
 		T* object,
 		StandardDimension id,
-		Perspective <StandardDimension>* perspective = NULL,
+		physical::Perspective< StandardDimension >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
@@ -134,13 +129,15 @@ public:
 			object,
 			new physical::Symmetry(
 				TypeName< T >().c_str(),
-				symmetryType)
+				symmetryType
+			)
+		)
 	{
 		CtorCommon(filter);
 
 		if (perspective)
 		{
-			physical::Identifiable<StandardDimension>::Initialize(
+			physical::Identifiable< StandardDimension >::Initialize(
 				id,
 				perspective
 			);
@@ -167,6 +164,24 @@ public:
 	virtual ~Class()
 	{
 
+	}
+
+	/**
+	 * From Wave. See that class for details.
+	 * @return this as an Atom.
+	 */
+	virtual Atom* AsAtom()
+	{
+		return this;
+	}
+
+	/**
+	 * From Wave. See that class for details.
+	 * @return this as an Atom.
+	 */
+	virtual const Atom* AsAtom() const
+	{
+		return this;
 	}
 
 private:

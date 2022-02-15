@@ -137,12 +137,13 @@ public:
 	 * Reconstruct *this from the given Symmetry.
 	 * @param symmetry
 	 */
-	virtual void Reify(Symmetry* symmetry)
+	virtual Code Reify(Symmetry* symmetry)
 	{
 		BIO_SANITIZE(symmetry, ,
-			return);
+			return code::BadArgument1());
 		//Wave::Reify(symmetry); //this does nothing useful.
 		this->m_quantized = symmetry->GetValue();
+		return code::Success();
 	}
 
 	/**

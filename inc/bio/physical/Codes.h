@@ -44,6 +44,8 @@ Code AlreadyExists();
 
 Code Skip();
 
+Code NotImplemented();
+
 //Arguments
 Code MissingArgument1();
 

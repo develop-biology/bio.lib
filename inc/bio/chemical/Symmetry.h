@@ -23,7 +23,7 @@
 
 #include "bio/physical/Symmetry.h"
 #include "bio/physical/Class.h"
-#include "structure/StructuralComponent.h"
+#include "structure/LinearStructuralComponent.h"
 #include "Class.h"
 
 namespace bio {
@@ -35,16 +35,18 @@ namespace chemical {
  */
 class Symmetry :
 	public physical::Symmetry,
-	public StructuralComponent< Symmetry* >,
-	public physical::Class< Symmetry >
+	public LinearStructuralComponent< Symmetry* >,
+	public chemical::Class< Symmetry >
 {
 public:
 
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
+	BIO_DISAMBIGUATE_CLASS_METHODS(chemical,
 		Symmetry)
+
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(chemical, Symmetry, &physical::SymmetryPerspective::Instance())
 
 	/**
 	 * @param name

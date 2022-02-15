@@ -369,7 +369,7 @@ public:
 	 * Because Symmetry is Identifiable, it cannot be #included here. We rely on children of Identifiable (primarily chemical:: objects to implement Reify()).
 	 * @param symmetry
 	 */
-	virtual void Reify(Symmetry* symmetry)
+	virtual Code Reify(Symmetry* symmetry)
 	{
 		//nop
 	}

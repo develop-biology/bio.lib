@@ -39,11 +39,9 @@ namespace chemical {
  * An Excitation is a Wave that stores a function pointer, i.e. a functor.
  * Excitations allow you to directly invoke a Wave's methods.
  * Excitations can be useful in propagating operations through Wave networks (e.g. an Atom's Bonds). Doing so will likely involve Modulating an Excitation onto a carrier Wave that dictates what the function applies to.
- * @tparam WAVE
  */
-template < class EXCITATION, class WAVE >
 class ExcitationBase :
-	public physical::Class< EXCITATION >
+	public physical::Class< ExcitationBase >
 {
 public:
 	/**
@@ -55,7 +53,8 @@ public:
 	/**
 	 *
 	 */
-	ExcitationBase()
+	ExcitationBase() :
+		physical::Class< ExcitationBase >(this)
 	{
 
 	}
@@ -71,14 +70,14 @@ public:
 	 */
 	static Properties GetClassProperties()
 	{
-		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
+		Properties ret;
 		ret.push_back(property::Excitatory());
 		return ret;
 	}
 
 	/**
 	 * Override of Wave method. See that class for details.
-	 * Ensures *this will Resonate with WAVEs by stealing their Properties from the PeriodicTable.
+	 * NOTE: this should be overloaded to ensure *this will Resonate with WAVEs by stealing their Properties from the PeriodicTable.
 	 * @return {property::Excitatory()}
 	 */
 	virtual Properties GetProperties() const
@@ -111,7 +110,7 @@ public:
  */
 template< class WAVE, typename RETURN, typename... ARGUMENTS >
 class Excitation :
-	public ExcitationBase< Excitation< WAVE,RETURN,ARGUMENTS...>, WAVE>,
+	public ExcitationBase,
 	public physical::Class< Excitation< WAVE,RETURN,ARGUMENTS...> >
 {
 public:
@@ -135,9 +134,21 @@ public:
 	/**
 	 *
 	 */
-	virtual ~Excitation()
+	virtual Excitation()
 	{
 
+	}
+
+	/**
+	 * Override of Wave method. See that class for details.
+	 * Ensures *this will Resonate with WAVEs by stealing their Properties from the PeriodicTable.
+	 * @return {whatever Properties WAVE has, property::Excitatory()}
+	 */
+	virtual Properties GetProperties() const
+	{
+		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
+		ret.insert(ret.end(), ExcitationBase::GetClassProperties().begin(), ExcitationBase::GetClassProperties().end());
+		return ret;
 	}
 
 	/**
@@ -167,14 +178,14 @@ protected:
 #else
 
 /**
- *See ExcitationBase for docs.
+ * See ExcitationBase for docs.
  * @tparam WAVE
  * @tparam RETURN
  */
 template < class WAVE, typename RETURN >
-class Excitation :
-	public ExcitationBase< Excitation< WAVE, RETURN >, WAVE >,
-	public physical::Class< Excitation< WAVE, RETURN > >
+class ExcitationWithoutArgument :
+	public ExcitationBase,
+	public physical::Class< ExcitationWithoutArgument< WAVE, RETURN > >
 {
 public:
 
@@ -182,14 +193,14 @@ public:
 	 * Ensure virtual methods point to Class implementations.
 	 */
 	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
-		BIO_SINGLE_ARG(Excitation< WAVE, RETURN >))
+		BIO_SINGLE_ARG(ExcitationWithoutArgument< WAVE, RETURN >))
 
 	/**
 	 *
 	 */
-	Excitation(RETURN(WAVE::*function)())
+	ExcitationWithoutArgument(RETURN(WAVE::*function)())
 		:
-		physical::Class< Excitation< WAVE, RETURN > >(this),
+		physical::Class< ExcitationWithoutArgument< WAVE, RETURN > >(this),
 		m_function(function)
 	{
 	}
@@ -197,10 +208,23 @@ public:
 	/**
 	 *
 	 */
-	virtual ~Excitation()
+	virtual ~ExcitationWithoutArgument()
 	{
 
 	}
+
+	/**
+	 * Override of Wave method. See that class for details.
+	 * Ensures *this will Resonate with WAVEs by stealing their Properties from the PeriodicTable.
+	 * @return {whatever Properties WAVE has, property::Excitatory()}
+	 */
+	virtual Properties GetProperties() const
+	{
+		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
+		ret.insert(ret.end(), ExcitationBase::GetClassProperties().begin(), ExcitationBase::GetClassProperties().end());
+		return ret;
+	}
+
 
 	/**
 	 * @param wave the caller of m_function.
@@ -220,7 +244,7 @@ public:
 	}
 
 protected:
-	RETURN (WAVE::*m_function)()
+	RETURN (WAVE::*m_function)();
 };
 
 /**
@@ -230,9 +254,9 @@ protected:
  * @tparam ARGUMENT
  */
 template < class WAVE, typename RETURN, typename ARGUMENT >
-class Excitation :
-	public ExcitationBase< Excitation< WAVE, RETURN, ARGUMENT >, WAVE >,
-	public physical::Class< Excitation< WAVE, RETURN, ARGUMENT > >
+class ExcitationWithArgument :
+	public ExcitationBase,
+	public physical::Class< ExcitationWithArgument< WAVE, RETURN, ARGUMENT > >
 {
 public:
 
@@ -240,18 +264,18 @@ public:
 	 * Ensure virtual methods point to Class implementations.
 	 */
 	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
-		BIO_SINGLE_ARG(Excitation< WAVE, RETURN, ARGUMENT >))
+		BIO_SINGLE_ARG(ExcitationWithArgument< WAVE, RETURN, ARGUMENT >))
 
 
 	/**
 	 *
 	 */
-	Excitation(
+	ExcitationWithArgument(
 		RETURN(WAVE::*function)(ARGUMENT),
 		ARGUMENT arg
 	)
 		:
-		physical::Class< Excitation< WAVE, RETURN, ARGUMENT > >(this),
+		physical::Class< ExcitationWithArgument< WAVE, RETURN, ARGUMENT > >(this),
 		m_function(function),
 		m_arg(arg)
 	{
@@ -260,9 +284,21 @@ public:
 	/**
 	 *
 	 */
-	virtual ~Excitation()
+	virtual ~ExcitationWithArgument()
 	{
 
+	}
+
+	/**
+	 * Override of Wave method. See that class for details.
+	 * Ensures *this will Resonate with WAVEs by stealing their Properties from the PeriodicTable.
+	 * @return {whatever Properties WAVE has, property::Excitatory()}
+	 */
+	virtual Properties GetProperties() const
+	{
+		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
+		ret.insert(ret.end(), ExcitationBase::GetClassProperties().begin(), ExcitationBase::GetClassProperties().end());
+		return ret;
 	}
 
 	/**

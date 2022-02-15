@@ -45,4 +45,40 @@ TO Cast(FROM toCast)
 	#endif
 }
 
+/**
+ * DANGEROUS!!!
+ *
+ * DO NOT USE THIS UNLESS YOU KNOW WHAT YOU ARE DOING!
+ *
+ * THIS DOES NO ERROR CHECKING AND WILL BREAK YOUR CODE IF MISUSED!
+ *
+ * Example use case:
+ * void* toCast = new MyClass(); //void* might be an ambiguous base class but MyClass is the same for toCast and casted.
+ * MyClass* casted = ForceCast<MyClass*>(toCast);
+ * @tparam TO
+ * @tparam FROM Dynamically determined template type.
+ * @param toCast a FROM.
+ * @return toCast as a TO, regardless of what it was before.
+ */
+template <typename TO, typename FROM>
+TO ForceCast(FROM toCast)
+{
+	return (TO)(void*)(toCast);
+}
+
+/**
+ * DANGEROUS!!!
+ * Same as ForceCast, except uses a dummy parameter to automatically determine an intermediate type.
+ * @tparam TO Dynamically determined by autoTo dummy parameter.
+ * @tparam FROM Dynamically determined template type.
+ * @param toCast a FROM.
+ * @param, autoTo dummy.
+ * @return toCast as a TO, regardless of what it was before.
+ */
+template <typename TO_FINAL, typename TO_1, typename FROM>
+TO_FINAL DoubleForceCast(FROM toCast, TO_1* autoTo)
+{
+	return (TO_FINAL)(TO_1)(void*)(toCast);
+}
+
 } //bio namespace

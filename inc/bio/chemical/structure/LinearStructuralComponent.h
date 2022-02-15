@@ -21,11 +21,16 @@
 
 #pragma once
 
+#include "bio/chemical/Cast.h"
 #include "bio/chemical/Class.h"
 #include "bio/chemical/Element.h"
 #include "bio/chemical/structure/StructuralComponent.h"
 #include "bio/chemical/structure/implementation/LinearStructuralComponentImplementation.h"
 #include "bio/chemical/structure/implementation/LinearStructureInterface.h"
+
+#if BIO_CPP_VERSION >= 11
+	#include <type_traits>
+#endif
 
 namespace bio {
 namespace chemical {
@@ -62,12 +67,12 @@ public:
 	 * This Perspective will be used for Name <-> Id matching, Wave->Clone()ing, etc.
 	 * See bio/physical/Perspective.h for more details.
 	 */
-	Perspective <StandardDimension>* m_perspective;
+	physical::Perspective< StandardDimension >* m_perspective;
 
 	/**
 	 * @return the m_perspective used by *this.
 	 */
-	Perspective <StandardDimension>* GetPerspective()
+	physical::Perspective< StandardDimension >* GetStructuralPerspective()
 	{
 		return m_perspective;
 	}
@@ -75,7 +80,7 @@ public:
 	/**
 	 * @return the m_perspective used by *this.
 	 */
-	const Perspective <StandardDimension>* GetPerspective() const
+	const physical::Perspective< StandardDimension >* GetStructuralPerspective() const
 	{
 		return m_perspective;
 	}
@@ -83,9 +88,9 @@ public:
 	/**
 	 * @param perspective
 	 */
-	explicit LinearStructuralComponent(Perspective <StandardDimension>* perspective = NULL)
+	explicit LinearStructuralComponent(physical::Perspective< StandardDimension >* perspective = NULL)
 		:
-		Element< LinearStructuralComponent< CONTENT_TYPE>>(AbstractStructure::GetClassProperties()),
+		Element< LinearStructuralComponent< CONTENT_TYPE > >(AbstractStructure::GetClassProperties()),
 		chemical::Class< LinearStructuralComponent< CONTENT_TYPE > >(this),
 		m_perspective(perspective)
 	{
@@ -99,10 +104,10 @@ public:
 	 */
 	explicit LinearStructuralComponent(
 		const typename StructuralComponentImplementation< CONTENT_TYPE >::Contents& contents,
-		Perspective <StandardDimension>* perspective = NULL
+		physical::Perspective< StandardDimension >* perspective = NULL
 	)
 		:
-		Element< LinearStructuralComponent< CONTENT_TYPE>>(AbstractStructure::GetClassProperties()),
+		Element< LinearStructuralComponent< CONTENT_TYPE > >(AbstractStructure::GetClassProperties()),
 		chemical::Class< LinearStructuralComponent< CONTENT_TYPE > >(this),
 		StructuralComponent< CONTENT_TYPE >(contents),
 		m_perspective(perspective)
@@ -122,12 +127,12 @@ public:
 		CtorCommon();
 		m_perspective = toCopy.m_perspective;
 		for (
-			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::iterator cnt = toCopy.m_contents.begin();
+			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::const_iterator cnt = toCopy.m_contents.begin();
 			cnt != toCopy.m_contents.end();
 			++cnt
 			)
 		{
-			AddImplementation((*cnt)->Clone());
+			BIO_SANITIZE_WITH_CACHE(ChemicalCast<CONTENT_TYPE>((*cnt)->Clone()), this->AddImplementation(*Cast<CONTENT_TYPE*>(RESULT)), continue);
 		}
 	}
 
@@ -138,7 +143,7 @@ public:
 	 */
 	virtual ~LinearStructuralComponent()
 	{
-		ClearImplementation();
+		LinearStructuralComponentImplementation< CONTENT_TYPE >::ClearImplementation();
 	}
 
 
@@ -160,7 +165,7 @@ public:
 	)
 	{
 		return LinearStructuralComponentImplementation< CONTENT_TYPE >::Insert(
-			this->GetPerspective(),
+			this->GetStructuralPerspective(),
 			toAdd,
 			this->GetAllImplementation(),
 			insertionPoint,
@@ -176,13 +181,13 @@ public:
 	 * @param recurse
 	 * @return a CONTENT_TYPE of the given name or NULL.
 	 */
-	virtual CONTENT_TYPE GetByNameImplementation(
+	virtual CONTENT_TYPE* GetByNameImplementation(
 		Name name,
 		const bool recurse = false
 	)
 	{
-		return AbstractLinearStructuralComponent< CONTENT_TYPE >::FindByNameIn(
-			this->GetPerspective(),
+		return LinearStructuralComponentImplementation< CONTENT_TYPE >::FindByNameIn(
+			this->GetStructuralPerspective(),
 			this->GetAllImplementation(),
 			name,
 			recurse
@@ -195,13 +200,13 @@ public:
 	 * @param recurse
 	 * @return a CONTENT_TYPE of the given name or NULL.
 	 */
-	virtual const CONTENT_TYPE GetByNameImplementation(
+	virtual const CONTENT_TYPE* GetByNameImplementation(
 		Name name,
 		const bool recurse = false
 	) const
 	{
-		return AbstractLinearStructuralComponent< CONTENT_TYPE >::FindByNameIn(
-			this->GetPerspective(),
+		return LinearStructuralComponentImplementation< CONTENT_TYPE >::FindByNameIn(
+			this->GetStructuralPerspective(),
 			this->GetAllImplementation(),
 			name,
 			recurse
@@ -215,14 +220,14 @@ public:
 	 * @param id
 	 * @return a newly created CONTENT_TYPE else NULL.
 	 */
-	virtual CONTENT_TYPE CreateImplementation(
+	virtual CONTENT_TYPE* CreateImplementation(
 		StandardDimension id
 	)
 	{
-		BIO_SANITIZE(this->GetPerspective(), ,
+		BIO_SANITIZE(this->GetStructuralPerspective(), ,
 			return NULL);
 		return this->AddImplementation(
-			this->GetPerspective()->GetNewObjectFromIdAs< CONTENT_TYPE >(id));
+			*(this->GetStructuralPerspective()->template GetNewObjectFromIdAs< CONTENT_TYPE >(id)));
 	}
 
 	/**
@@ -232,12 +237,12 @@ public:
 	 * @param recurse
 	 * @return A CONTENT_TYPE of the given id.
 	 */
-	virtual CONTENT_TYPE GetOrCreateByIdImplementation(
+	virtual CONTENT_TYPE* GetOrCreateByIdImplementation(
 		StandardDimension id,
 		const bool recurse = false
 	)
 	{
-		CONTENT_TYPE ret = this->GetImplementation(
+		CONTENT_TYPE* ret = this->GetByIdImplementation(
 			id,
 			recurse
 		);
@@ -255,16 +260,16 @@ public:
 	 * @param recurse
 	 * @return A CONTENT_TYPE of the given id.
 	 */
-	virtual CONTENT_TYPE GetOrCreateByNameImplementation(
+	virtual CONTENT_TYPE* GetOrCreateByNameImplementation(
 		Name name,
 		const bool recurse = false
 	)
 	{
-		BIO_SANITIZE(this->GetPerspective(), ,
+		BIO_SANITIZE(this->GetStructuralPerspective(), ,
 			return NULL);
-		StandardDimension id = this->GetPerspective()->GetIdFromName(name);
-		CONTENT_TYPE ret = this->GetImplementation(
-			id,
+		StandardDimension id = this->GetStructuralPerspective()->GetIdFromName(name);
+		CONTENT_TYPE* ret = this->GetByNameImplementation(
+			name,
 			recurse
 		);
 		if (ret)
@@ -281,7 +286,12 @@ private:
 	 */
 	void CtorCommon()
 	{
-		BIO_SANITIZE_AT_SAFETY_LEVEL_1(Cast< Substance* >(CONTENT_TYPE), ,)
+		#if BIO_CPP_VERSION >= 11
+		BIO_ASSERT(std::is_base_of<Substance, CONTENT_TYPE>::value);
+		#else
+		CONTENT_TYPE ct;
+		BIO_ASSERT(Cast<Substance*>(&ct) != NULL);
+		#endif
 	}
 
 };
