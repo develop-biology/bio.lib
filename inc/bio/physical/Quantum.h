@@ -21,9 +21,9 @@
 
 #pragma once
 
-#include "Class.h"
+#include "bio/physical/common/Class.h"
 #include "Symmetry.h"
-#include "SymmetryTypes.h"
+#include "bio/physical/common/SymmetryTypes.h"
 #include "bio/common/Macros.h"
 #include "bio/common/TypeName.h"
 

@@ -20,9 +20,9 @@
  */
 
 #include "bio/visceral/Tissue.h"
-#include "bio/visceral/Filters.h"
+#include "bio/visceral/common/Filters.h"
 #inclued "bio/visceral/Types.h"
-#include "bio/visceral/Properties.h"
+#include "bio/visceral/common/Properties.h"
 #include "bio/visceral/reactions/DifferentiateCell.h"
 #include "bio/visceral/reactions/DifferentiateTissue.h"
 

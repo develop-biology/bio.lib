@@ -21,8 +21,8 @@
 
 #pragma once
 
-#include "Types.h"
-#include "bio/chemical/BondTypes.h"
+#include "bio/chemical/common/Types.h"
+#include "bio/chemical/common/BondTypes.h"
 
 namespace bio {
 

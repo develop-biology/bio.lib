@@ -21,7 +21,7 @@
  */
 
 #include "bio/genetic/Gene.h"
-#include "bio/genetic/Properties.h"
+#include "bio/genetic/common/Properties.h"
 
 namespace bio {
 namespace genetic {

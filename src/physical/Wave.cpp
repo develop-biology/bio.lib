@@ -20,9 +20,9 @@
  */
 
 #include "bio/physical/Wave.h"
-#include "bio/physical/Types.h"
+#include "bio/physical/common/Types.h"
 #include "bio/physical/Symmetry.h"
-#include "bio/physical/Codes.h"
+#include "bio/physical/common/Codes.h"
 #include "bio/common/Macros.h"
 
 #include <algorithm>

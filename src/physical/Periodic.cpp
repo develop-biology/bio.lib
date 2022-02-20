@@ -22,7 +22,7 @@
 #include "bio/physical/Periodic.h"
 #include "bio/physical/Properties.h"
 #include "bio/physical/Symmetry.h"
-#include "bio/physical/SymmetryTypes.h"
+#include "bio/physical/common/SymmetryTypes.h"
 #include "bio/physical/Time.h"
 
 namespace bio {

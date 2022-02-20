@@ -26,9 +26,9 @@
 #include "bio/common/IsPrimitive.h"
 #include "bio/common/OS.h"
 #include "bio/physical/Quantum.h"
-#include "bio/physical/Class.h"
+#include "bio/physical/common/Class.h"
 #include "PeriodicTable.h"
-#include "BondTypes.h"
+#include "bio/chemical/common/BondTypes.h"
 #include "Bond.h"
 
 namespace bio {

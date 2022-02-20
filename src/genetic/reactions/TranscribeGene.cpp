@@ -22,11 +22,11 @@
 #pragma once
 
 #include "bio/chemical/PeriodicTable.h"
-#include "bio/chemical/SymmetryTypes.h"
+#include "bio/chemical/common/SymmetryTypes.h"
 #include "bio/chemical/reactions/TranscribeGene.h"
 #include "bio/genetic/Expressor.h"
 #inclued "bio/genetic/Gene.h"
-#include "bio/genetic/Codes.h"
+#include "bio/genetic/common/Codes.h"
 
 namespace bio {
 namespace genetic {

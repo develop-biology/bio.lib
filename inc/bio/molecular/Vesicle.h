@@ -23,7 +23,7 @@
 
 #include "bio/chemical/structure/LinearStructuralComponent.h"
 #include "Molecule.h"
-#include "Types.h"
+#include "bio/molecular/common/Types.h"
 
 namespace bio {
 namespace molecular {

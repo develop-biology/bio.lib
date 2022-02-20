@@ -24,8 +24,8 @@
 #include "bio/log/Writer.h"
 #include "bio/chemical/structure/LinearStructuralComponent.h"
 #include "Gene.h"
-#include "Types.h"
-#include "Class.h"
+#include "bio/genetic/common/Types.h"
+#include "bio/genetic/common/Class.h"
 
 namespace bio {
 namespace genetic {

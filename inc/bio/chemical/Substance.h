@@ -21,12 +21,12 @@
 
 #pragma once
 
-#include "Types.h"
-#include "States.h"
-#include "Properties.h"
-#include "Class.h"
-#include "Macros.h"
-#include "Filters.h"
+#include "bio/chemical/common/Types.h"
+#include "bio/chemical/common/States.h"
+#include "bio/chemical/common/Properties.h"
+#include "bio/chemical/common/Class.h"
+#include "bio/chemical/macros/Macros.h"
+#include "bio/chemical/common/Filters.h"
 #include "bio/chemical/structure/StructuralComponent.h"
 
 namespace bio {

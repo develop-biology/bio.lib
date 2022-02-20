@@ -20,7 +20,7 @@
  */
 
 #include "bio/molecular/Vesicle.h"
-#include "bio/molecular/Filters.h"
+#include "bio/molecular/common/Filters.h"
 
 namespace bio {
 namespace molecular {

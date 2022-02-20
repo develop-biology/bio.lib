@@ -23,7 +23,7 @@
 
 #include "bio/physical/ThreadedPeriodic.h"
 #include "bio/chemical/structure/LinearStructuralComponent.h"
-#include "bio/visceral/Class.h"
+#include "bio/visceral/common/Class.h"
 
 namespace bio {
 

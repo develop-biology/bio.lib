@@ -22,7 +22,7 @@
 #pragma once
 
 #include "bio/chemical/PeriodicTable.h"
-#include "bio/chemical/SymmetryTypes.h"
+#include "bio/chemical/common/SymmetryTypes.h"
 #include "bio/molecular/reactions/RecruitChaperonesForProtein.h"
 #include "bio/molecular/Vesicle.h"
 

@@ -21,8 +21,8 @@
 
 #pragma once
 
-#include "Types.h"
-#include "bio/cellular/Types.h"
+#include "bio/genetic/common/Types.h"
+#include "bio/cellular/common/Types.h"
 #include "bio/molecular/DNA.h"
 
 namespace bio {

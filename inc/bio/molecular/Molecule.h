@@ -21,9 +21,9 @@
 
 #pragma once
 
-#include "Types.h"
+#include "bio/molecular/common/Types.h"
 #include "Surface.h"
-#include "Class.h"
+#include "bio/molecular/common/Class.h"
 #include "bio/chemical/structure/LinearStructuralComponent.h"
 
 namespace bio {

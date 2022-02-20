@@ -22,7 +22,7 @@
 #pragma once
 
 #include "bio/molecular/Pathway.h"
-#include "bio/physical/Class.h"
+#include "bio/physical/common/Class.h"
 
 namespace bio {
 namespace genetic {

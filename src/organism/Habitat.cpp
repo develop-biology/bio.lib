@@ -20,7 +20,7 @@
  */
 
 #include "bio/organism/Habitat.h"
-#include "bio/organism/Filters.h"
+#include "bio/organism/common/Filters.h"
 #include "bio/organism/reactions/Morphogenesis.h"
 
 namespace bio {

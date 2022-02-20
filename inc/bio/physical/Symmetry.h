@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "Types.h"
+#include "bio/physical/common/Types.h"
 #include "Identifiable.h"
 #include "bio/common/ByteStream.h"
 

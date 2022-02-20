@@ -22,9 +22,9 @@
 #pragma once
 
 #include "bio/molecular/Molecule.h"
-#include "bio/molecular/BondTypes.h"
-#include "bio/molecular/Filters.h"
-#include "bio/chemical/BondTypes.h"
+#include "bio/molecular/common/BondTypes.h"
+#include "bio/molecular/common/Filters.h"
+#include "bio/chemical/common/BondTypes.h"
 
 namespace bio {
 namespace molecular {

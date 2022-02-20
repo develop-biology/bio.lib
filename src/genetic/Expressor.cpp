@@ -20,7 +20,7 @@
  */
 
 #include "bio/genetic/Expressor.h"
-#include "bio/genetic/Properties.h"
+#include "bio/genetic/common/Properties.h"
 #include "bio/genetic/reactions/ExpressPlasmid.h"
 
 namespace bio {

@@ -24,7 +24,7 @@
 #include "bio/common/Macros.h"
 #include "bio/common/String.h"
 #include "bio/common/Cast.h"
-#include "bio/physical/Codes.h"
+#include "bio/physical/common/Codes.h"
 #include "AbstractStructure.h"
 #include <vector>
 #include <algorithm>

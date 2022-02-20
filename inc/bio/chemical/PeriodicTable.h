@@ -23,7 +23,7 @@
 #pragma once
 
 #include "bio/common/TypeName.h"
-#include "Types.h"
+#include "bio/chemical/common/Types.h"
 #include "bio/physical/Perspective.h"
 
 

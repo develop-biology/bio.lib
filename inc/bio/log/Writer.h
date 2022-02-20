@@ -23,10 +23,10 @@
 
 #include "bio/common/VirtualBase.h"
 #include "bio/physical/Filterable.h"
-#include "bio/physical/Filters.h"
-#include "Types.h"
-#include "Levels.h"
-#include "Macros.h"
+#include "bio/physical/common/Filters.h"
+#include "bio/log/common/Types.h"
+#include "bio/log/common/Levels.h"
+#include "bio/log/macros/Macros.h"
 
 namespace bio {
 namespace log {

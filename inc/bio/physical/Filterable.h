@@ -23,8 +23,8 @@
 
 //Filterable is a base class for all classes that need to use logs.
 
-#include "Types.h"
-#include "Class.h"
+#include "bio/physical/common/Types.h"
+#include "bio/physical/common/Class.h"
 #include "bio/common/VirtualBase.h"
 
 namespace bio {

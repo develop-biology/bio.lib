@@ -21,8 +21,8 @@
 
 #pragma once
 
-#include "bio/chemical/Cast.h"
-#include "bio/chemical/Class.h"
+#include "bio/chemical/common/Cast.h"
+#include "bio/chemical/common/Class.h"
 #include "bio/chemical/Element.h"
 #include "bio/chemical/structure/StructuralComponent.h"
 #include "bio/chemical/structure/implementation/LinearStructuralComponentImplementation.h"

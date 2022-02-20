@@ -24,9 +24,9 @@
 #include "bio/organism/reactions/GrowOrgan.h"
 #include "bio/visceral/Organ.h"
 #include "bio/visceral/OrganSystem.h"
-#include "bio/visceral/Properties.h"
+#include "bio/visceral/common/Properties.h"
 #include "bio/chemical/PeriodicTable.h"
-#include "bio/chemical/SymmetryTypes.h"
+#include "bio/chemical/common/SymmetryTypes.h"
 
 namespace bio {
 namespace visceral {

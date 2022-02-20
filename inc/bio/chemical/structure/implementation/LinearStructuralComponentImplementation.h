@@ -24,14 +24,14 @@
 #include <vector>
 #include "StructuralComponentImplementation.h"
 #include "StructureInterface.h"
-#include "bio/physical/Codes.h"
-#include "bio/physical/Filters.h"
+#include "bio/physical/common/Codes.h"
+#include "bio/physical/common/Filters.h"
 #include "bio/physical/Identifiable.h"
 #include "bio/log/Engine.h"
-#include "bio/log/Levels.h"
-#include "bio/chemical/Codes.h"
-#include "bio/chemical/Types.h"
-#include "bio/chemical/Excitation.h"
+#include "bio/log/common/Levels.h"
+#include "bio/chemical/common/Codes.h"
+#include "bio/chemical/common/Types.h"
+#include "bio/chemical/reaction/Excitation.h"
 
 namespace bio {
 namespace chemical {

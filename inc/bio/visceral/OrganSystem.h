@@ -21,7 +21,7 @@
 
 #pagma once
 
-#include "Class.h"
+#include "bio/visceral/common/Class.h"
 #include "bio/chemical/structure/LinearStructuralComponent.h"
 #include "bio/molecular/EnvironmentDependent.h"
 

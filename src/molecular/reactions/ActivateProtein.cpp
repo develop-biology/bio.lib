@@ -22,8 +22,8 @@
 #pragma once
 
 #include "bio/chemical/PeriodicTable.h"
-#include "bio/chemical/SymmetryTypes.h"
-#include "bio/physical/Codes.h"
+#include "bio/chemical/common/SymmetryTypes.h"
+#include "bio/physical/common/Codes.h"
 #include "bio/molecular/reactions/ActivateProtein.h"
 
 namespace bio {

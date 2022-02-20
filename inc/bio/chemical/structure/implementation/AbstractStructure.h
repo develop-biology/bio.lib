@@ -20,7 +20,7 @@
  */
 #pragma once
 
-#include "bio/chemical/Types.h"
+#include "bio/chemical/common/Types.h"
 
 namespace bio {
 namespace chemical {

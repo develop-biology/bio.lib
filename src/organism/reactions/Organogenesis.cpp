@@ -22,11 +22,11 @@
 #pragma once
 
 #include "bio/organism/reactions/Organogenesis.h"
-#include "bio/organism/Properties.h"
+#include "bio/organism/common/Properties.h"
 #include "bio/visceral/Organ.h"
 #include "bio/visceral/OrganSystem.h"
 #include "bio/chemical/PeriodicTable.h"
-#include "bio/chemical/SymmetryTypes.h"
+#include "bio/chemical/common/SymmetryTypes.h"
 
 namespace bio {
 

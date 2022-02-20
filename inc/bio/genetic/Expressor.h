@@ -24,7 +24,7 @@
 #include "bio/chemical/structure/StructuralComponent.h"
 #include "bio/molecular/Vesicle.h"
 #include "bio/molecular/Protein.h"
-#include "Types.h"
+#include "bio/genetic/common/Types.h"
 
 namespace bio {
 namespace genetic {

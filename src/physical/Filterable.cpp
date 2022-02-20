@@ -20,10 +20,10 @@
  */
 
 #include "bio/physical/Filterable.h"
-#include "bio/physical/Filters.h"
-#include "bio/physical/Macros.h"
+#include "bio/physical/common/Filters.h"
+#include "bio/physical/macros/Macros.h"
 #include "bio/physical/Symmetry.h"
-#include "bio/physical/SymmetryTypes.h"
+#include "bio/physical/common/SymmetryTypes.h"
 
 namespace bio {
 namespace physical {

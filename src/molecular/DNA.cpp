@@ -20,9 +20,9 @@
  */
 
 #include "bio/genetic/DNA.h"
-#include "bio/genetic/Filters.h"
-#include "bio/physical/Codes.h"
-#include "bio/physical/Types.h"
+#include "bio/genetic/common/Filters.h"
+#include "bio/physical/common/Codes.h"
+#include "bio/physical/common/Types.h"
 #include "bio/cellular/Cell.h"
 #include "bio/molecular/Protein.h"
 #include <cstring>

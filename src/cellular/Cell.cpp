@@ -21,8 +21,8 @@
 
 #include "bio/cellular/Cell.h"
 #include "bio/molecular/Protein.h"
-#include "bio/cellular/Filters.h"
-#include "bio/cellular/Properties.h"
+#include "bio/cellular/common/Filters.h"
+#include "bio/cellular/common/Properties.h"
 #include "bio/log/Engine.h"
 #include <string.h>
 #include <algorithm>

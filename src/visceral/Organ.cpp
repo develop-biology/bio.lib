@@ -20,9 +20,9 @@
  */
 
 #include "bio/visceral/Organ.h"
-#include "bio/visceral/Properties.h"
-#include "bio/visceral/Filters.h"
-#include "bio/visceral/Types.h"
+#include "bio/visceral/common/Properties.h"
+#include "bio/visceral/common/Filters.h"
+#include "bio/visceral/common/Types.h"
 #include "bio/visceral/reactions/DifferentiateTissue.h"
 
 namespace bio {

@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "Types.h"
+#include "bio/physical/common/Types.h"
 
 namespace bio {
 namespace property {

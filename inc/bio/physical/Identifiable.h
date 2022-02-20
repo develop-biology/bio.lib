@@ -27,7 +27,7 @@
 #include "Perspective.h"
 #include "Observer.h"
 #include "Wave.h"
-#include "Class.h"
+#include "bio/physical/common/Class.h"
 #include <cstring>
 
 namespace bio {

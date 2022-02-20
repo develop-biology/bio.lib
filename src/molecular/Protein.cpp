@@ -20,11 +20,11 @@
  */
 
 #include "bio/molecular/Protein.h"
-#include "bio/molecular/Filters.h"
+#include "bio/molecular/common/Filters.h"
 #include "bio/molecular/reactions/ActivateProtein.h"
 #include "bio/molecular/reactions/FoldProtein.h"
 #include "bio/molecular/reactions/RecruitChaperonesForProtein.h"
-#include "bio/physical/Codes.h"
+#include "bio/physical/common/Codes.h"
 #include "bio/chemical/reactions/SetLogEngine.h"
 
 namespace bio {

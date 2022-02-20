@@ -23,9 +23,9 @@
 
 #include "bio/chemical/structure/implementation/StructuralComponentImplementation.h"
 #include "bio/chemical/structure/implementation/StructureInterface.h"
-#include "bio/chemical/Macros.h"
-#include "bio/chemical/Class.h"
-#include "bio/physical/Filters.h"
+#include "bio/chemical/macros/Macros.h"
+#include "bio/chemical/common/Class.h"
+#include "bio/physical/common/Filters.h"
 
 namespace bio {
 namespace chemical {

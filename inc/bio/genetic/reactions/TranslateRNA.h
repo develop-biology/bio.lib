@@ -21,8 +21,8 @@
 
 #pragma once
 
-#include "bio/chemical/Reaction.h"
-#include "bio/physical/Class.h"
+#include "bio/chemical/reaction/Reaction.h"
+#include "bio/physical/common/Class.h"
 
 namespace bio {
 namespace genetic {

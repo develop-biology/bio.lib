@@ -21,9 +21,9 @@
 
 #pragma once
 
-#include "bio/physical/Filters.h"
-#include "Macros.h"
-#include "Types.h"
+#include "bio/physical/common/Filters.h"
+#include "bio/log/macros/Macros.h"
+#include "bio/log/common/Types.h"
 #include <sstream>
 #include <stdarg.h>
 

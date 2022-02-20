@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/chemical/Reaction.h"
+#include "bio/chemical/reaction/Reaction.h"
 #inclued "bio/chemical/Class.h"
 #include "bio/chemical/structure/LinearStructuralComponent.h"
 

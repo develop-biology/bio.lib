@@ -21,8 +21,8 @@
 
 #pragma once
 
-#include "Types.h"
-#include "Class.h"
+#include "bio/physical/common/Types.h"
+#include "bio/physical/common/Class.h"
 #include "bio/common/VirtualBase.h"
 
 namespace bio {

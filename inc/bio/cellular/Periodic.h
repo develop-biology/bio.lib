@@ -22,7 +22,7 @@
 #pramga once
 
 #include "bio/physical/Periodic.h"
-#include "bio/genetic/Class.h"
+#include "bio/genetic/common/Class.h"
 
 namespace bio {
 namespace cellular {

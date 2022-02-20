@@ -20,7 +20,7 @@
  */
 
 #include "bio/chemical/structure/implementation/AbstractStructure.h"
-#include "bio/chemical/Properties.h"
+#include "bio/chemical/common/Properties.h"
 
 namespace bio {
 namespace chemical {
