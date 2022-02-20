@@ -66,6 +66,7 @@ public:
 		if (!hasRegistered)
 		{
 			PeriodicTable::Instance().RecordPropertiesOf< T >(properties);
+
 		}
 	}
 

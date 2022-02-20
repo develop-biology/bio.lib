@@ -66,23 +66,24 @@ public:
 	 * What a single point in space contains.
 	 * Dimensions are Nuit ∴ ∴
 	 */
-	struct Hadit
+	class Hadit
 	{
+	public:
 		Hadit(
-			Id i,
-			Name n,
-			Wave* t
+			Id id,
+			Name name,
+			Wave* type
 		)
 			:
-			id(i),
-			name(n),
-			type(t)
+			m_id(id),
+			m_name(name),
+			m_type(type)
 		{
 		}
 
-		Id id;
-		Name name;
-		Wave* type;
+		Id m_id;
+		Name m_name;
+		Wave* m_type;
 	};
 
 	typedef std::vector< Hadit > Hadits;
@@ -108,15 +109,15 @@ public:
 			++itt
 			)
 		{
-			if (itt->name)
+			if (itt->m_name)
 			{
-				delete[] itt->name;
-				itt->name = NULL;
+				delete[] itt->m_name;
+				itt->m_name = NULL;
 			}
-			if (itt->type)
+			if (itt->m_type)
 			{
-				delete itt->type;
-				itt->type = NULL;
+				delete itt->m_type;
+				itt->m_type = NULL;
 			}
 		}
 		m_hadits.clear();
@@ -148,17 +149,21 @@ public:
 	 */
 	typename Hadits::iterator Find(Id id)
 	{
+
+		LockThread();
 		typename Hadits::iterator hdt = m_hadits.begin();
 		for (
 			; hdt != m_hadits.end();
 			++hdt
 			)
 		{
-			if (hdt->id == id)
+			if (hdt->m_id == id)
 			{
+				UnlockThread();
 				return hdt;
 			}
 		}
+		UnlockThread();
 		return hdt;
 	}
 
@@ -169,17 +174,20 @@ public:
 	 */
 	typename Hadits::const_iterator Find(Id id) const
 	{
+		LockThread();
 		typename Hadits::const_iterator hdt = m_hadits.begin();
 		for (
 			; hdt != m_hadits.end();
 			++hdt
 			)
 		{
-			if (hdt->id == id)
+			if (hdt->m_id == id)
 			{
+				UnlockThread();
 				return hdt;
 			}
 		}
+		UnlockThread();
 		return hdt;
 	}
 
@@ -242,7 +250,7 @@ public:
 		{
 			return InvalidName();
 		}
-		return result->name;
+		return result->m_name;
 	}
 
 
@@ -304,11 +312,11 @@ public:
 			)
 		{
 			if (!strcmp(
-				itt->name,
+				itt->m_name,
 				name
 			))
 			{
-				return itt->id;
+				return itt->m_id;
 			}
 		}
 		return InvalidId();
@@ -319,7 +327,6 @@ public:
 	 */
 	virtual Id GetNumUsedIds() const
 	{
-		//TODO: is this faster than m_hadits.size()?
 		return m_nextId - 1;
 	}
 
@@ -338,15 +345,15 @@ public:
 	)
 	{
 		typename Hadits::iterator hdt = Find(id);
-		if (hdt == m_hadits.end() || hdt->type)
+		if (hdt == m_hadits.end() || hdt->m_type)
 		{
 			return false;
 		}
 
 		LockThread();
 		BIO_SANITIZE(type,
-			hdt->type = type->Clone(),
-			hdt->type = type);
+			hdt->m_type = type->Clone(),
+			hdt->m_type = type);
 		UnlockThread();
 
 		return true;
@@ -366,9 +373,9 @@ public:
 		}
 
 		LockThread();
-		BIO_SANITIZE_AT_SAFETY_LEVEL_2(hdt->type,
-			delete hdt->type,);
-		hdt->type = NULL;
+		BIO_SANITIZE_AT_SAFETY_LEVEL_2(hdt->m_type,
+			delete hdt->m_type,);
+		hdt->m_type = NULL;
 		UnlockThread();
 
 		return true;
@@ -382,17 +389,14 @@ public:
 	 */
 	virtual const Wave* GetTypeFromId(Id id) const
 	{
-		if (id == InvalidId())
-		{
-			return NULL;
-		}
+		BIO_SANITIZE(id == InvalidId(), , return NULL);
 
 		typename Hadits::const_iterator result = Find(id);
 		if (result == m_hadits.end())
 		{
 			return NULL;
 		}
-		return result->type;
+		return result->m_type;
 	}
 
 	/**

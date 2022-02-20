@@ -62,7 +62,7 @@ public:
 	{
 		T* ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(Cast< StructuralComponentImplementation< T >* >(this->AsBonded < StructuralComponentImplementation< T > >()),
+		BIO_SANITIZE_WITH_CACHE(Cast< StructuralComponentImplementation< T >* >(this->AsBonded< StructuralComponentImplementation< T > >()),
 			ret = (Cast< StructuralComponentImplementation< T >* >(RESULT))->GetImplementation(t),);
 		UnlockThread();
 		return ret;
@@ -79,7 +79,7 @@ public:
 	{
 		const T* ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(Cast< StructuralComponentImplementation< T >* >(this->AsBonded < StructuralComponentImplementation< T > >()),
+		BIO_SANITIZE_WITH_CACHE(Cast< StructuralComponentImplementation< T >* >(this->AsBonded< StructuralComponentImplementation< T > >()),
 			ret = (Cast< StructuralComponentImplementation< T >* >(RESULT))->GetImplementation(t),);
 		UnlockThread();
 		return ret;
@@ -98,7 +98,7 @@ public:
 	{
 		T* ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(Cast< StructuralComponentImplementation< T >* >(this->AsBonded < StructuralComponentImplementation< T > >()),
+		BIO_SANITIZE_WITH_CACHE(Cast< StructuralComponentImplementation< T >* >(this->AsBonded< StructuralComponentImplementation< T > >()),
 			ret = (Cast< StructuralComponentImplementation< T >* >(RESULT))->AddImplementation(t),);
 		UnlockThread();
 		return ret;
@@ -116,7 +116,7 @@ public:
 	{
 		T* ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(Cast< StructuralComponentImplementation< T >* >(this->AsBonded < StructuralComponentImplementation< T > >()),
+		BIO_SANITIZE_WITH_CACHE(Cast< StructuralComponentImplementation< T >* >(this->AsBonded< StructuralComponentImplementation< T > >()),
 			ret = (Cast< StructuralComponentImplementation< T >* >(RESULT))->RemoveImplementation(t),);
 		UnlockThread();
 		return ret;
@@ -133,9 +133,46 @@ public:
 	void Import(const StructuralComponentImplementation <T>* other)
 	{
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(Cast< StructuralComponentImplementation< T >* >(this->AsBonded < StructuralComponentImplementation< T > >()),
+		BIO_SANITIZE_WITH_CACHE(Cast< StructuralComponentImplementation< T >* >(this->AsBonded< StructuralComponentImplementation< T > >()),
 			(Cast< StructuralComponentImplementation< T >* >(RESULT))->ImportImplementation(other),);
 		UnlockThread();
+	}
+
+	/**
+	 * This method does way more than it should reasonably be able to.
+	 * Here, we take advantage of some of the Biology features that are starting to form. Primarily, we leverage physical::Properties and Bonds (per Atom) to search through the pseudo-vtable of Atom, find all StructuralComponents in *this and attempt to Import the corresponding StructuralComponents of other.
+	 * This method side-steps the typical inheritance encapsulation in order to prevent child classes from having to override this method and account for each new StructuralComponent they add. In other words, complexity here removes repeated code downstream.
+	 * @param other
+	 */
+	Code ImportAll(const StructureInterface* other)
+	{
+		BIO_SANITIZE(other,,return code::BadArgument1());
+
+		Code ret = code::Success();
+
+		LockThread(); // in case m_valence changes.
+		for (
+			Valence val = 0;
+			val < m_valence; //per Atom
+			++val
+			)
+		{
+			if (m_bonds[val].IsEmpty())
+			{
+				continue;
+			}
+			if (physical::Wave::GetResonanceBetween(
+				m_bonds[val].GetBonded(),
+				AbstractStructure::GetClassProperties()).size() == 0)
+			{
+				continue;
+			}
+			const physical::Wave* otherBond = other->GetBonded(other->GetBondPosition(m_bonds[val].GetId()));
+			(Cast< AbstractStructure* >(m_bonds[val].GetBonded()))->ImportImplementation(otherBond); //actual work
+		}
+		UnlockThread();
+
+		return ret;
 	}
 
 	/**
@@ -148,7 +185,7 @@ public:
 	{
 		unsigned long ret = 0;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(Cast< StructuralComponentImplementation< T >* >(this->AsBonded < StructuralComponentImplementation< T > >()),
+		BIO_SANITIZE_WITH_CACHE(Cast< StructuralComponentImplementation< T >* >(this->AsBonded< StructuralComponentImplementation< T > >()),
 			ret = (Cast< StructuralComponentImplementation< T >* >(RESULT))->GetCountImplementation(),);
 		UnlockThread();
 		return ret;
@@ -182,7 +219,7 @@ public:
 	{
 		const typename StructuralComponentImplementation< T >::Contents* ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(Cast< StructuralComponentImplementation< T >* >(this->AsBonded < StructuralComponentImplementation< T > >()),
+		BIO_SANITIZE_WITH_CACHE(Cast< StructuralComponentImplementation< T >* >(this->AsBonded< StructuralComponentImplementation< T > >()),
 			ret = (Cast< StructuralComponentImplementation< T >* >(RESULT))->GetAllImplementation(),);
 		UnlockThread();
 		return ret;
@@ -200,7 +237,7 @@ public:
 	{
 		bool ret = false;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(Cast< StructuralComponentImplementation< T >* >(this->AsBonded < StructuralComponentImplementation< T > >()),
+		BIO_SANITIZE_WITH_CACHE(Cast< StructuralComponentImplementation< T >* >(this->AsBonded< StructuralComponentImplementation< T > >()),
 			ret = (Cast< StructuralComponentImplementation< T >* >(RESULT))->HasImplementation(t),);
 		UnlockThread();
 		return ret;
@@ -216,7 +253,7 @@ public:
 	{
 		unsigned int ret = 0;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(Cast< StructuralComponentImplementation< T >* >(this->AsBonded < StructuralComponentImplementation< T > >()),
+		BIO_SANITIZE_WITH_CACHE(Cast< StructuralComponentImplementation< T >* >(this->AsBonded< StructuralComponentImplementation< T > >()),
 			ret = (Cast< StructuralComponentImplementation< T >* >(RESULT))->GetNumMatchingImplementation(other),);
 		UnlockThread();
 		return ret;
@@ -233,7 +270,7 @@ public:
 	{
 		bool ret = false;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(Cast< StructuralComponentImplementation< T >* >(this->AsBonded < StructuralComponentImplementation< T > >()),
+		BIO_SANITIZE_WITH_CACHE(Cast< StructuralComponentImplementation< T >* >(this->AsBonded< StructuralComponentImplementation< T > >()),
 			ret = (Cast< StructuralComponentImplementation< T >* >(RESULT))->HasAllImplementation(contents),);
 		UnlockThread();
 		return ret;
@@ -249,7 +286,7 @@ public:
 	void Clear()
 	{
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(Cast< StructuralComponentImplementation< T >* >(this->AsBonded < StructuralComponentImplementation< T > >()),
+		BIO_SANITIZE_WITH_CACHE(Cast< StructuralComponentImplementation< T >* >(this->AsBonded< StructuralComponentImplementation< T > >()),
 			return (Cast< StructuralComponentImplementation< T >* >(RESULT))->ClearImplementation(),);
 		UnlockThread();
 	}
@@ -264,7 +301,7 @@ public:
 	{
 		std::string ret = "";
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE(Cast< StructuralComponentImplementation< T >* >(this->AsBonded < StructuralComponentImplementation< T > >()),
+		BIO_SANITIZE_WITH_CACHE(Cast< StructuralComponentImplementation< T >* >(this->AsBonded< StructuralComponentImplementation< T > >()),
 			ret = (Cast< StructuralComponentImplementation< T >* >(RESULT))->GetStringFromImplementation(separator),);
 		UnlockThread();
 		return ret;

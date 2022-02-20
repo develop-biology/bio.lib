@@ -117,7 +117,7 @@ bool Atom::FormBondImplementation(
 {
 	Valence position = GetBondPosition(id);
 
-	BIO_SANITIZE(toBond && id && position, ,
+	BIO_SANITIZE(!toBond || !id || !position, ,
 		return false);
 
 	//position will == m_valence if the id for the given bonded was not found.
@@ -216,6 +216,18 @@ physical::Symmetry* Atom::Spin() const
 void Atom::Reify(physical::Symmetry* symmetry)
 {
 	return Wave::Reify(symmetry);
+}
+
+physical::Wave* Atom::GetBonded(Valence position)
+{
+	BIO_SANITIZE(posicion < m_valence,,return NULL)
+	return m_bonds[position].GetBonded();
+}
+
+const physical::Wave* Atom::GetBonded(Valence position) const
+{
+	BIO_SANITIZE(posicion < m_valence,,return NULL)
+	return m_bonds[position].GetBonded();
 }
 
 

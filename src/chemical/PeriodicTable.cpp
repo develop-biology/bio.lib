@@ -28,19 +28,27 @@ namespace chemical {
 /**
  * Elements track the Properties of items in the PeriodicTable.
  * This is a Substance for ease of use but can be changed later.
+ * We also want to use Element as a Substance here as we can store the Properties of classes which are not Substances (e.g. Symmetry)
  * NOTE, this is not chemical::Element<T>, which is used to define these Elements.
  */
 class Element :
 	public Substance
 {
 public:
-	Element()
+	Element() :
+		m_type(NULL)
 	{
 	}
 
 	virtual ~Element()
 	{
 	}
+
+	/**
+	 * Optional type association.
+	 * This can be used for casting, etc.
+	 */
+	physical::Wave* m_type;
 };
 
 PeriodicTableImplementation::PeriodicTableImplementation()
@@ -56,10 +64,12 @@ PeriodicTableImplementation::~PeriodicTableImplementation()
 const Properties PeriodicTableImplementation::GetPropertiesOf(AtomicNumber id) const
 {
 	Properties ret;
-	Element* element = Cast< Element* >(GetTypeFromId(id));
+	Element* element = Cast< Element* >(Perspective::GetTypeFromId(id));
 	BIO_SANITIZE(element, ,
 		return ret);
+	LockThread();
 	ret = &element->GetAll< Property >();
+	UnlockThread();
 	return ret;
 }
 
@@ -68,59 +78,92 @@ const Properties PeriodicTableImplementation::GetPropertiesOf(Name name) const
 	return GetPropertiesOf(GetIdFromName(name));
 }
 
-void PeriodicTableImplementation::RecordPropertyOf(
+AtomicNumber PeriodicTableImplementation::RecordPropertyOf(
 	AtomicNumber id,
 	Property property
 )
 {
 	Properties properties;
 	properties.push_back(property);
-	RecordPropertiesOf(
+	return RecordPropertiesOf(
 		id,
 		properties
 	);
 }
 
-void PeriodicTableImplementation::RecordPropertyOf(
+AtomicNumber PeriodicTableImplementation::RecordPropertyOf(
 	Name name,
 	Property property
 )
 {
-	RecordPropertyOf(
+	return RecordPropertyOf(
 		GetIdFromName(name),
 		property
 	);
 }
 
-void PeriodicTableImplementation::RecordPropertiesOf(
+AtomicNumber PeriodicTableImplementation::RecordPropertiesOf(
 	AtomicNumber id,
 	Properties properties
 )
 {
 	typename Hadits::iterator hdt = Find(id);
-	if (hdt == this->m_hadits.end())
-	{
-		return;
-	}
+	BIO_SANITIZE_AT_SAFETY_LEVEL_2(hdt == this->m_hadits.end(),,return InvalidId());
 
+	LockThread();
 	Element* element = Cast< Element* >(hdt->type);
 	if (!element)
 	{
 		element = new Element();
-		hdt->type = element; //just to be sure Cast didn't pull a fast one on us.
+		hdt->m_type = element;
 	}
 	element->Import< Property >(properties);
+	UnlockThread();
+	return id;
 }
 
-void PeriodicTableImplementation::RecordPropertiesOf(
+AtomicNumber PeriodicTableImplementation::RecordPropertiesOf(
 	Name name,
 	Properties properties
 )
 {
-	RecordPropertiesOf(
+	return RecordPropertiesOf(
 		GetIdFromName(name),
 		properties
 	);
+}
+
+const Wave* PeriodicTableImplementation::GetTypeFromId(AtomicNumber id) const
+{
+	Element* element = Cast< Element* >(Perspective::GetTypeFromId(id));
+	BIO_SANITIZE(element, ,
+		return NULL);
+	return element->m_type;
+}
+
+bool PeriodicTableImplementation::AssociateType(
+	AtomicNumber id,
+	Wave* type
+)
+{
+	Element* element = Cast< Element* >(Perspective::GetTypeFromId(id));
+	BIO_SANITIZE(element, ,
+		return false);
+	LockThread();
+	element->m_type = type;
+	UnlockThread();
+	return true;
+}
+
+bool PeriodicTableImplementation::DisassociateType(AtomicNumber id)
+{
+	Element* element = Cast< Element* >(Perspective::GetTypeFromId(id));
+	BIO_SANITIZE(element, ,
+		return false);
+	LockThread();
+	element->m_type = NULL;
+	UnlockThread();
+	return true;
 }
 
 } //chemical namespace

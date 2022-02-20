@@ -30,6 +30,8 @@
 namespace bio {
 namespace chemical {
 
+class Substance;
+
 /**
  * A chemical::Class is an Identifiable Atom with logging capabilities.
  * This will FormBond() with the provided T.
@@ -44,6 +46,20 @@ class Class :
 	virtual public log::Writer,
 	virtual public Atom
 {
+private:
+	void CtorCommon(Filter filter = filter::Default())
+	{
+		if (filter != filter::Default())
+		{
+			//Skip log::Writer::Initialize, since we don't have a log::Engine atm.
+			Filterable::Initialize(filter);
+		}
+		//Bond the class we're given, Virtually.
+		physical::Class< T >::m_object->FormBond(
+			physical::Class< T >::m_object,
+			bond_type::Virtual());
+	}
+
 public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
@@ -184,18 +200,24 @@ public:
 		return this;
 	}
 
-private:
-	void CtorCommon(Filter filter = filter::Default())
+	/**
+	 * Disambiguate Wave method. See that class for details.
+	 * @param other
+	 * @return result of Wave::Attenuation.
+	 */
+	virtual Code Attenuate(const physical::Wave* other)
 	{
-		if (filter != filter::Default())
-		{
-			//Skip log::Writer::Initialize, since we don't have a log::Engine atm.
-			Filterable::Initialize(filter);
-		}
-		//Bond the class we're given, Virtually.
-		physical::Class< T >::m_object->FormBond(
-			physical::Class< T >::m_object,
-			bond_type::Virtual());
+		return physical::Class< T >::Attenuate(other);
+	}
+
+	/**
+	 * Disambiguate Wave method. See that class for details.
+	 * @param other
+	 * @return result of Wave::Disattenuation.
+	 */
+	virtual Code Disattenuate(const physical::Wave* other)
+	{
+		return physical::Class< T >::Disattenuate(other);
 	}
 };
 

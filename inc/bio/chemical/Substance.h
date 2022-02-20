@@ -85,7 +85,6 @@ public:
  * Substances start Enable()d.
  */
 class Substance :
-	virtual public physical::Identifiable< StandardDimension >,
 	public chemical::Class< Substance >,
 	public PropertyStructure,
 	public StateStructure
@@ -133,15 +132,6 @@ public:
 	 *
 	 */
 	virtual ~Substance();
-
-	/**
-	 * This method does way more than it should reasonably be able to.
-	 * Here, we take advantage of some of the Biology features that are starting to form. Primarily, we leverage physical::Properties, Bonds (per Atom), and Reactions to search through the pseudo-vtable of Atom, find all StructuralComponents in *this and attempt to Import the corresponding StructuralComponents of other.
-	 * This method side-steps the typical inheritance encapsulation in order to prevent child classes from having to override this method and account for each new StructuralComponent they add. In other words, complexity here removes repeated code downstream.
-	 * @param other
-	 * @param ShouldCreateNonExisting if true, will copy StructuralComponents from other which are not already in *this.
-	 */
-	virtual void ImportAll(const Substance* other, bool ShouldCreateNonExisting=false);
 
 	/**
 	 * Helper method for setting the Enabled() State.

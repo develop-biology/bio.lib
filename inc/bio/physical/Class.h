@@ -71,6 +71,16 @@ public:
 		return m_object;
 	}
 
+	/**
+	 * If you have a Class object and need to convert from Wave to the furthest derived Class, use Convert.
+	 * @param wave
+	 * @return the
+	 */
+	T* Convert(Wave* wave)
+	{
+		return Cast< T* >(wave);
+	}
+
 
 	/**
 	 * Template override for Clone so we don't have to define it everywhere.

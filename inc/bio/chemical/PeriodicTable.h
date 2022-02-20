@@ -1,3 +1,4 @@
+
 /*
  * This file is a part of the Biology project by eons LLC.
  * Biology (aka Develop Biology) is a framework for approaching software
@@ -121,8 +122,9 @@ public:
 	 * Add a Property to the given type's record in *this.
 	 * @param id
 	 * @param property
+	 * @return the id given.
 	 */
-	void RecordPropertyOf(
+	AtomicNumber RecordPropertyOf(
 		AtomicNumber id,
 		Property property
 	);
@@ -131,8 +133,9 @@ public:
 	 * Add a Property to the given type's record in *this.
 	 * @param name
 	 * @param property
+	 * @return the id of the given name.
 	 */
-	void RecordPropertyOf(
+	AtomicNumber RecordPropertyOf(
 		Name name,
 		Property property
 	);
@@ -141,11 +144,12 @@ public:
 	 * Add a Property to the given type's record in *this.
 	 * @tparam T
 	 * @param property
+	 * @return the id of the given typo.
 	 */
 	template < typename T >
-	void RecordPropertyOf(Property property)
+	AtomicNumber RecordPropertyOf(Property property)
 	{
-		RecordPropertyOf(
+		return RecordPropertyOf(
 			TypeName< T >().c_str(),
 			property
 		);
@@ -155,8 +159,9 @@ public:
 	 * Add Properties to the given type's record in *this.
 	 * @param id
 	 * @param properties
+	 * @return the given id.
 	 */
-	void RecordPropertiesOf(
+	AtomicNumber RecordPropertiesOf(
 		AtomicNumber id,
 		Properties properties
 	);
@@ -165,8 +170,9 @@ public:
 	 * Add Properties to the given type's record in *this.
 	 * @param name
 	 * @param properties
+	 * @return the id of the given name.
 	 */
-	void RecordPropertiesOf(
+	AtomicNumber RecordPropertiesOf(
 		Name name,
 		Properties properties
 	);
@@ -175,15 +181,41 @@ public:
 	 * Add Properties to the given type's record in *this.
 	 * @tparam T
 	 * @param properties
+	 * @return the id of the given type.
 	 */
 	template < typename T >
-	void RecordPropertiesOf(Properties properties)
+	AtomicNumber RecordPropertiesOf(Properties properties)
 	{
-		RecordPropertiesOf(
+		return RecordPropertiesOf(
 			TypeName< T >().c_str(),
 			properties
 		);
 	}
+
+	/**
+	 * Only works if AssociateType has been called with the given id.
+	 * @param id
+	 * @return the pointer to the Wave type associated with the given id else NULL.
+	 */
+	virtual const physical::Wave* GetTypeFromId(AtomicNumber id) const;
+
+	/**
+	 * Associates the given Wave type with the given id.
+	 * This is only necessary if you want to use GetTypeFromId later on.
+	 * Associating a type with an id has no effect on the Recorded Properties.
+	 * @param id
+	 * @param type
+	 * @return true if the association completed successfully else false
+	 */
+	virtual bool AssociateType(AtomicNumber id, physical::Wave* type);
+
+	/**
+	 * Removes the type association created by AssociateType().
+	 * Disassociating a type has no effect on the Recorded Properties.
+	 * @param id
+	 * @return true if the association was removed else false.
+	 */
+	virtual bool DisassociateType(AtomicNumber id);
 };
 
 BIO_SINGLETON(PeriodicTable,

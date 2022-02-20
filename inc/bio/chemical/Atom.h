@@ -89,6 +89,34 @@ public:
 	virtual Code Reify(physical::Symmetry* symmetry);
 
 	/**
+	 * If the given Wave Resonates with any Bonded Wave in *this, the given Wave will be Demodulated and Attenuated by the Bonded Wave.
+	 * Attenuation here operates slightly differently from the real world concept. Because we have a continuous flow of electrons providing the power to run this code, doing work is essentially free (or at least abstracted and we don't HAVE to worry about it), Attenuation is more like amplification, where flux, in terms of work, is generated, rather than dispersed. However, if we treat some desired state as flux and any deviation from that state as offering resistance, "information flux" is lost as the desired state is approached, making Attenuation technically correct.
+	 * @param other
+	 */
+	virtual Code Attenuate(const Wave* other);
+
+	/**
+	 * If the given Wave Resonates with any Bonded Wave in *this, the given Wave will be Demodulated and Disattenuated by the Bonded Wave.
+	 * This is the opposite of Attenuation (above).
+	 * @param other
+	 */
+	virtual Code Disattenuate(const Wave* other);
+
+	/**
+	 * Simply get a bond.
+	 * @param position
+	 * @return the Bonded Wave*
+	 */
+	Wave* GetBonded(Valence position);
+
+	/**
+	 * Simply get a bond.
+	 * @param position
+	 * @return the Bonded Wave*
+	 */
+	const Wave* GetBonded(Valence position) const;
+
+	/**
 	 * Gets the bond to an bonded of type T from *this, then casts the Bond()ed Wave to T*.
 	 * @tparam T
 	 * @return a T* that is Bond()ed with *this; else NULL.
@@ -185,20 +213,6 @@ public:
 	{
 		return As< T >();
 	}
-
-	/**
-	 * If the given Wave Resonates with any Bonded Wave in *this, the given Wave will be Demodulated and Attenuated by the Bonded Wave.
-	 * Attenuation here operates slightly differently from the real world concept. Because we have a continuous flow of electrons providing the power to run this code, doing work is essentially free (or at least abstracted and we don't HAVE to worry about it), Attenuation is more like amplification, where flux, in terms of work, is generated, rather than dispersed. However, if we treat some desired state as flux and any deviation from that state as offering resistance, "information flux" is lost as the desired state is approached, making Attenuation technically correct.
-	 * @param other
-	 */
-	virtual Code Attenuate(const Wave* other);
-
-	/**
-	 * If the given Wave Resonates with any Bonded Wave in *this, the given Wave will be Demodulated and Disattenuated by the Bonded Wave.
-	 * This is the opposite of Attenuation (above).
-	 * @param other
-	 */
-	virtual Code Disattenuate(const Wave* other);
 
 	/**
 	 * Adds a new Bond to *this or updates an Empty Bond for T.

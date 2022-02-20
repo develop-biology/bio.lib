@@ -137,10 +137,10 @@ public:
 		);
 		if (itt != searchIn->end())
 		{
-			//BIO_LOG_DEBUG("Found %s in %s", name, ConvertContentsToString(*searchIn).c_str());
+			//BIO_LOG_DEBUG("Found %s", name);
 			return &*itt;
 		}
-		//BIO_LOG_DEBUG("Could not find %s in %s", name, ConvertContentsToString(*searchIn).c_str());
+		//BIO_LOG_DEBUG("Could not find %s", name);
 		return NULL;
 	}
 
@@ -164,10 +164,10 @@ public:
 		);
 		if (itt != searchIn->end())
 		{
-			//BIO_LOG_DEBUG("Found %s in %s", name, ConvertContentsToString(*searchIn).c_str());
+			//BIO_LOG_DEBUG("Found %s", name);
 			return &*itt;
 		}
-		//BIO_LOG_DEBUG("Could not find %s in %s", name, ConvertContentsToString(*searchIn).c_str());
+		//BIO_LOG_DEBUG("Could not find %s", name);
 		return NULL;
 	}
 
@@ -256,7 +256,7 @@ public:
 			}
 			else if (recurse)
 			{
-				recur = (*cnt)->FindByIdIn((Cast< StructureInterface* >(*cnt))->template GetAll< CONTENT_TYPE >(),
+				recur = (*cnt)->GetIteratorFrom((Cast< StructureInterface* >(*cnt))->template GetAll< CONTENT_TYPE >(),
 					contentId,
 					recurse
 				);
@@ -312,7 +312,7 @@ public:
 			}
 			else if (recurse)
 			{
-				recur = (*cnt)->FindByIdIn((*cnt)->template GetAll< CONTENT_TYPE >(),
+				recur = (*cnt)->GetIteratorFrom((*cnt)->template GetAll< CONTENT_TYPE >(),
 					contentId,
 					recurse
 				);
@@ -356,7 +356,7 @@ public:
 			++insert
 			)
 		{
-			if (*insert == CONTENT_TYPE::Perspective::InvalidId())
+			if (*insert == 0) //Can't use CONTENT_TYPE::Perspective here. Just hack in 0 as the InvalidId().
 			{
 				if (insert == searchPath.end() - 1)
 				{
@@ -486,14 +486,7 @@ public:
 
 		Code ret = code::Success();
 
-		StructuralComponentImplementation< CONTENT_TYPE >* toReplace = NULL;
-
-		#if 0
-		if (logger)
-		{
-			logger->Log(filter::Default(), log::level::Debug(), "Adding %s (%p) to %s (%p)", content->GetName(), content, ConvertContentsToString(*destination).c_str(), destination);
-		}
-		#endif
+		CONTENT_TYPE toReplace = NULL;
 
 		//Remove conflicts
 		for (
@@ -502,7 +495,7 @@ public:
 			++cnt
 			)
 		{
-			if (*(*cnt) == content->GetId())
+			if (**cnt == content->GetId())
 			{
 				#if 0
 				if (logger)
@@ -520,27 +513,28 @@ public:
 			}
 		}
 
-		CONTENT_TYPE addition = content->Clone();
-		BIO_SANITIZE(addition, ,
+
+		CONTENT_TYPE* addBuf = ChemicalCast<CONTENT_TYPE>(content->Clone());
+		BIO_SANITIZE(addBuf, ,
 			return code::GeneralFailure());
-
-		if (transferSubContents)
-		{
-			addition->ImportAll(
-				toReplace,
-				true
-			);
-
-			#if 0
-			if (logger)
-			{
-				 logger->Log(filter::Default(), log::level::Debug(), "%s (%p) will replace %s", content->GetName(), content, toReplace->GetName());
-			 }
-			#endif
-		}
+		CONTENT_TYPE addition = *addBuf;
 
 		if (toReplace)
 		{
+			if (transferSubContents)
+			{
+				//NOTE: THIS REMOVES ANY STRUCTURAL COMPONENTS NOT EXPLICITLY IN addition
+
+				addition->ImportAll(toReplace);
+
+				#if 0
+				if (logger)
+				{
+					 logger->Log(filter::Default(), log::level::Debug(), "%s (%p) will replace %s", content->GetName(), content, toReplace->GetName());
+				}
+				#endif
+			}
+
 			delete toReplace;
 			toReplace = NULL;
 		}
@@ -548,7 +542,7 @@ public:
 		#if 0
 		if (logger)
 		{
-			logger->Log(filter::Default(), log::level::Debug(), "Adding new content, %s (%p), to %s", addition->GetName(), (void*)addition, ConvertContentsToString(*destination).c_str());
+			logger->Log(filter::Default(), log::level::Debug(), "Adding new content, %s (%p)", addition->GetName(), (void*)addition);
 		}
 		#endif
 
@@ -563,7 +557,7 @@ public:
 				#if 0
 				if (logger)
 				{
-					logger->Log(filter::Default(), log::level::Debug(), "Confirming: %s (%p) in %s", addition->GetName(), (void*)addition, ConvertContentsToString(*destination).c_str());
+					logger->Log(filter::Default(), log::level::Debug(), "Confirming: %s (%p)", addition->GetName(), (void*)addition);
 				}
 				#endif
 				break;
@@ -592,9 +586,8 @@ public:
 							logger->Log(
 								filter::Default(),
 								log::level::Warn(),
-								"Could not find content %s in %s",
-								perspective->GetNameFromId(optionalPositionArg),
-								ConvertContentsToString(*destination).c_str());
+								"Could not find content %s",
+								perspective->GetNameFromId(optionalPositionArg));
 						}
 						#endif
 					}
@@ -625,9 +618,8 @@ public:
 							logger->Log(
 								filter::Default(),
 								log::level::Warn(),
-								"Could not find content %s in %s",
-								perspective->GetNameFromId(optionalPositionArg),
-								ConvertContentsToString(*destination).c_str());
+								"Could not find content %s",
+								perspective->GetNameFromId(optionalPositionArg));
 						}
 						#endif
 					}
@@ -665,7 +657,7 @@ public:
 	 */
 	static Code Insert(
 		physical::Perspective< StandardDimension >* perspective,
-		void* contentPtr,
+		CONTENT_TYPE contentPtr,
 		typename StructuralComponentImplementation< CONTENT_TYPE >::Contents* destination,
 		const Dimensions& insertionPoint,
 		const Position position = BOTTOM,
@@ -700,26 +692,11 @@ public:
 			code::BadArgument2());
 
 		if (std::find(
-			insertionPoint.
-
-				begin(),
-			insertionPoint
-
-				.
-
-					end(),
-			CONTENT_TYPE::Perspective::InvalidId()
-
-		) != insertionPoint.
-
-			end()
-
-			)
+			insertionPoint.begin(),
+			insertionPoint.end(),
+			perspective->InvalidId()) != insertionPoint.end())
 		{
-			return
-
-				code::NoErrorNoSuccess();
-
+			return code::NoErrorNoSuccess();
 		}
 
 		std::string insertionPointStr = "";
@@ -909,7 +886,7 @@ public:
 	virtual bool HasImplementation(CONTENT_TYPE content) const
 	{
 		for (
-			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::iterator cnt = this->m_contents.begin();
+			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::const_iterator cnt = this->m_contents.begin();
 			cnt != this->m_contents.end();
 			++cnt
 			)
@@ -933,12 +910,14 @@ public:
 			return);
 
 		for (
-			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::const_iterator cnt = other.m_contents.begin();
-			cnt != other.m_contents.end();
+			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::const_iterator cnt = other->m_contents.begin();
+			cnt != other->m_contents.end();
 			++cnt
 			)
 		{
-			AddImplementation((*cnt)->Clone());
+			BIO_SANITIZE_WITH_CACHE(ChemicalCast< CONTENT_TYPE >((*cnt)->Clone()),
+				this->AddImplementation(*Cast< CONTENT_TYPE* >(RESULT)),
+				continue);
 		}
 	}
 
@@ -977,14 +956,19 @@ public:
 	 */
 	virtual Code Disattenuate(const physical::Wave* other)
 	{
+		Code ret = code::Success();
 		for (
 			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::iterator cnt = this->m_contents.begin();
 			cnt != this->m_contents.end();
 			++cnt
 			)
 		{
-			(*cnt)->Disattenuate(other);
+			if ((*cnt)->Disattenuate(other) != code::Success())
+			{
+				ret = code::UnknownError();
+			}
 		}
+		return ret;
 	}
 
 
@@ -1004,7 +988,11 @@ public:
 			++cnt
 			)
 		{
-			ret.push_back(excitation->CallDown(*cnt));
+			void* result;
+			excitation->CallDown((*cnt)->AsWave(),
+				result
+			);
+			ret.push_back(result);
 		}
 		return ret;
 	}
