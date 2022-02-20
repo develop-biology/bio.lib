@@ -139,6 +139,20 @@ public:
 	}
 
 	/**
+	 * Copy the contents of a vector into *this.
+	 * Will only work if *this contains a StructuralComponent of the given type.
+	 * Does nothing if T is invalid.
+	 * @tparam T
+	 * @param other
+	 */
+	template < typename T >
+	void Import(const std::vector< T >& other)
+	{
+		StructuralComponentImplementation<T> buffer(other);
+		this->Import<T>(&buffer);
+	}
+
+	/**
 	 * This method does way more than it should reasonably be able to.
 	 * Here, we take advantage of some of the Biology features that are starting to form. Primarily, we leverage physical::Properties and Bonds (per Atom) to search through the pseudo-vtable of Atom, find all StructuralComponents in *this and attempt to Import the corresponding StructuralComponents of other.
 	 * This method side-steps the typical inheritance encapsulation in order to prevent child classes from having to override this method and account for each new StructuralComponent they add. In other words, complexity here removes repeated code downstream.
@@ -266,7 +280,7 @@ public:
 	 * @return whether or not the given contents exists in *this
 	 */
 	template < typename T >
-	bool HasAll(const typename StructuralComponentImplementation< T >::Contents& contents)
+	bool HasAll(const typename StructuralComponentImplementation< T >::Contents& contents) const
 	{
 		bool ret = false;
 		LockThread();

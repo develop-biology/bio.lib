@@ -400,6 +400,16 @@ public:
 	}
 
 	/**
+	 * Only works if AssociateType has been called with the given id.
+	 * @param id
+	 * @return the pointer to the Wave type associated with the given id else NULL.
+	 */
+	virtual const Wave* GetTypeFromName(Name name) const
+	{
+		return GetTypeFromId(GetIdWithoutCreation(name));
+	}
+
+	/**
 	 * Creates a new object by Clone()ing the associated type.
 	 * @param id
 	 * @return a Clone() of the Wave* associated with the given id else NULL.
@@ -421,7 +431,6 @@ public:
 	 */
 	virtual Wave* GetNewObjectFromName(Name name)
 	{
-		//TODO: Does this need to be faster or is this okay? It should be inline anyway...
 		return this->GetNewObjectFromId(this->GetIdFromName(name));
 	}
 
@@ -432,15 +441,29 @@ public:
 	 * @return a T* associated with the given name id NULL.
 	 */
 	template < typename T >
-	T* GetTypeFromIdAs(Id id)
+	const T* GetTypeFromIdAs(Id id) const
 	{
 		BIO_SANITIZE_WITH_CACHE(GetTypeFromId(id),
-			BIO_SINGLE_ARG(return Cast< T*, Wave* >(RESULT)),
+			BIO_SINGLE_ARG(return Cast< T*, const Wave* >(RESULT)),
 			return NULL);
 	}
 
 	/**
-	 * c
+	 * Ease of access method for casting the result of GetTypeFromId().
+	 * @tparam T
+	 * @param id
+	 * @return a T* associated with the given name id NULL.
+	 */
+	template < typename T >
+	const T* GetTypeFromNameAs(Name name) const
+	{
+		BIO_SANITIZE_WITH_CACHE(GetTypeFromName(name),
+			BIO_SINGLE_ARG(return Cast< T*, const Wave* >(RESULT)),
+			return NULL);
+	}
+
+	/**
+	 * Ease of use method for casting the result of GetNewObjectFromId()
 	 * @tparam T
 	 * @param id
 	 * @return a new T* from Clone()ing the type associated with the given id else NULL.

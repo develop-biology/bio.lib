@@ -20,8 +20,9 @@
  */
 
 #include "bio/chemical/Reaction.h"
+#include "bio/chemical/Reactant.h"
 #include "bio/chemical/Codes.h"
-#include "bio/chemical/Fitlers.h"
+#include "bio/chemical/Filters.h"
 
 namespace bio {
 namespace chemical {
@@ -31,11 +32,11 @@ Reaction::Reaction(
 	const Reactants& reactants
 )
 	:
-	chemical::Class(
+	chemical::Class< Reaction >(
 		this,
 		name,
 		&ReactionPerspective::Instance(),
-		symmetry_Type::Operation()),
+		symmetry_type::Operation()),
 	m_requiredReactants(reactants)
 {
 }
@@ -74,29 +75,19 @@ void Reaction::Require(
 
 bool Reaction::ReactantsMeetRequirements(const Reactants* toCheck) const
 {
-	return toCheck->HasAll<Substance*>(m_requiredReactants.GetAll<Substance*>());
+	return toCheck->HasAll< Substance* >(*(m_requiredReactants.GetAll< Substance* >()));
 }
 
-/*static*/ Reaction* Reaction::Initiate(StandardDimension id)
+/*static*/ const Reaction* Reaction::Initiate(StandardDimension id)
 {
-	return ReactionPerspective::Instance().GetTypeFromIdAs< Reaction* >(id);
+	BIO_SANITIZE_WITH_CACHE(ReactionPerspective::Instance().GetTypeFromIdAs< Reaction* >(id), return *(Cast< const Reaction**>(RESULT)), return NULL);
 }
 
 Products Reaction::operator()(Reactants* reactants) const
 {
 	//Always level 2, even if the user wants more (i.e. never less).
 	BIO_SANITIZE_AT_SAFETY_LEVEL_2(ReactantsMeetRequirements(reactants),
-		return Process(),
-		return code::FailedReaction());
-}
-
-/*static*/ Products Reaction::Attempt(
-	StandardDimension id,
-	Substances& reactants
-)
-{
-	BIO_SANITIZE_WITH_CACHE(ReactionPerspective::Instance().GetTypeFromIdAs< Reaction* >(id),
-		return RESULT(reactants),
+		return Process(reactants),
 		return code::FailedReaction());
 }
 

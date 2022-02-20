@@ -51,5 +51,10 @@ Reactants::~Reactants()
 
 }
 
+Reactants::operator Substances()
+{
+	return *GetAll< Substance* >();
+}
+
 } //chemical namespace
 } //bio namespace

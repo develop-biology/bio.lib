@@ -134,7 +134,7 @@ typedef std::pair<keyType, valueType> mapName##Pair;
 
 #if BIO_CPP_VERSION < 11
 	#define BIO_CACHE(expression)                                              \
-    bio::ByteStream RESULT;                                                    \
+    ::bio::ByteStream RESULT;                                                    \
     RESULT.Set(expression);
 #else
 	#define BIO_CACHE(expression)                                              \

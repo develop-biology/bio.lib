@@ -25,6 +25,8 @@
 #include "Reactants.h"
 #include "Products.h"
 #include "Class.h"
+#include "Filters.h"
+#include "States.h"
 #include "structure/LinearStructuralComponent.h"
 #include "bio/physical/Identifiable.h"
 #include "bio/common/TypeName.h"
@@ -83,7 +85,11 @@ public:
 	/**
 	 * Standard ctors.
 	 */
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(chemical, Reaction, &ReactionPerspective::Instance(), filter::Chemical(), symmetry_Type::Operation())
+	 BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(chemical,
+		Reaction,
+		&ReactionPerspective::Instance(),
+		filter::Chemical(),
+		symmetry_type::Operation())
 
 	/**
 	 * @param name
@@ -137,7 +143,7 @@ public:
 	{
 		Properties empty;
 		States enabled;
-		enabled.push_back(Enabled());
+		enabled.push_back(state::Enabled());
 		Require(
 			TypeName< T >(),
 			empty,
@@ -165,10 +171,11 @@ public:
 	 * Constructs Reactant from args
 	 * @tparam T the T* which will be used in the Reaction (without the *)
 	 */
-	template < typename T > void Require(const typename StructuralComponent< Property >::Contents properties&,
-
-	const typename StructuralComponent< State >::Contents states
-	&)
+	template < typename T >
+	void Require(
+		const typename StructuralComponent< Property >::Contents& properties,
+		const typename StructuralComponent< State >::Contents& states
+	)
 	{
 		Require(
 			TypeName< T >(),
@@ -183,7 +190,13 @@ public:
 	 * @param reactants
 	 * @return Products containing a Code and some set of new Substances or just the reactants. Up to you!
 	 */
-	virtual Products Process(Reactants* reactants) = 0;
+	virtual Products Process(Reactants* reactants) const
+	{
+
+		//        YOUR CODE GOES HERE
+
+		return Products(code::NotImplemented());
+	}
 
 	/**
 	 * Checks if the given Substances match the Reactants in *this.
@@ -209,23 +222,22 @@ public:
 	 * @param id
 	 * @return a Reaction* with the given id or NULL.
 	 */
-	static Reaction* Initiate(StandardDimension id);
+	static const Reaction* Initiate(StandardDimension id);
 
 	/**
 	 * Get a Reaction!
 	 * This should be used to avoid unnecessary new and deletes.
 	 * This only works for Reactions that have a name matching their type (i.e. were constructed with name=PeriodicTable::Instance().GetNameFromType(*this)), which is true for all Reactions in the core Biology framework.
 	 * @tparam T
-	 * @return
+	 * @return a Reaction* of the given type or NULL, if no Reaction exists matching the TypeName of the given T.
 	 */
 	template < typename T >
-	static T* Initiate()
+	static const T* Initiate()
 	{
-		T* ret = ReactionPerspective::Instance().GetTypeFromNameAs< T >(TypeName(T));
+		const T* ret = ReactionPerspective::Instance().template GetTypeFromNameAs< T >(TypeName< T >());
 		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret,
 			return ret,
-			return new T());
-		//TODO: address memory leaks when T->GetName() != TypeName<T>().
+			return NULL);
 	}
 
 	/**
@@ -237,18 +249,18 @@ public:
 	template < typename T >
 	static Products Attempt(Reactants* reactants)
 	{
-		BIO_SANITIZE_WITH_CACHE(Iniate< T >(),
-			return (*Cast< T* >(RESULT))(reactants),
-			return reactants);
+		BIO_SANITIZE_WITH_CACHE(Initiate< T >(),
+			return (*Cast< const T* >(RESULT))(reactants),
+			return Products(code::NotImplemented(), reactants));
 	}
 
 	template < typename T >
 	static Products Attempt(Substances& substances)
 	{
 		Reactants reactants(substances);
-		BIO_SANITIZE_WITH_CACHE(Iniate< T >(),
-			return (*Cast< T* >(RESULT))(&reactants),
-			return reactants);
+		BIO_SANITIZE_WITH_CACHE(Initiate< T >(),
+			return (*Cast< const T* >(RESULT))(&reactants),
+			return Products(code::NotImplemented(), reactants));
 	}
 
 	/**

@@ -256,7 +256,7 @@ public:
 			}
 			else if (recurse)
 			{
-				recur = (*cnt)->GetIteratorFrom((Cast< StructureInterface* >(*cnt))->template GetAll< CONTENT_TYPE >(),
+				recur = Cast< LinearStructuralComponentImplementation< CONTENT_TYPE >* >(*cnt)->GetIteratorFrom((Cast< StructureInterface* >(*cnt))->template GetAll< CONTENT_TYPE >(),
 					contentId,
 					recurse
 				);
@@ -312,7 +312,7 @@ public:
 			}
 			else if (recurse)
 			{
-				recur = (*cnt)->GetIteratorFrom((*cnt)->template GetAll< CONTENT_TYPE >(),
+				recur = Cast< LinearStructuralComponentImplementation< CONTENT_TYPE >* >(*cnt)->GetIteratorFrom((*cnt)->template GetAll< CONTENT_TYPE >(),
 					contentId,
 					recurse
 				);
@@ -1033,8 +1033,9 @@ public:
 			)
 		{
 			BIO_SANITIZE(*cnt,
-				delete (*cnt),);
-			(*cnt) = NULL;
+				delete *cnt,
+				continue);
+			*cnt = NULL;
 		}
 		this->m_contents.clear();
 	}

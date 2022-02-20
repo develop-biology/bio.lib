@@ -22,6 +22,7 @@
 #pragma once
 
 #include "structure/LinearStructuralComponent.h"
+#include "Substance.h"
 #include "bio/physical/Class.h"
 
 namespace bio {
@@ -36,7 +37,7 @@ class Reactant; //unused here but anything including Reactants will likely use R
  */
 class Reactants :
 	public physical::Class< Reactants >,
-	public LinearStructuralComponent< Substance* >,
+	public LinearStructuralComponent< Substance* >
 {
 public:
 
@@ -54,6 +55,8 @@ public:
 	 *
 	 */
 	virtual ~Reactants();
+
+	operator Substances();
 };
 
 } //chemical namespace

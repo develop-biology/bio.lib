@@ -64,18 +64,18 @@ PeriodicTableImplementation::~PeriodicTableImplementation()
 const Properties PeriodicTableImplementation::GetPropertiesOf(AtomicNumber id) const
 {
 	Properties ret;
-	Element* element = Cast< Element* >(Perspective::GetTypeFromId(id));
+	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id));
 	BIO_SANITIZE(element, ,
 		return ret);
 	LockThread();
-	ret = &element->GetAll< Property >();
+	ret = *(element->GetAll< Property >());
 	UnlockThread();
 	return ret;
 }
 
 const Properties PeriodicTableImplementation::GetPropertiesOf(Name name) const
 {
-	return GetPropertiesOf(GetIdFromName(name));
+	return GetPropertiesOf(GetIdWithoutCreation(name));
 }
 
 AtomicNumber PeriodicTableImplementation::RecordPropertyOf(
@@ -111,11 +111,11 @@ AtomicNumber PeriodicTableImplementation::RecordPropertiesOf(
 	BIO_SANITIZE_AT_SAFETY_LEVEL_2(hdt == this->m_hadits.end(),,return InvalidId());
 
 	LockThread();
-	Element* element = Cast< Element* >(hdt->type);
+	Element* element = ForceCast< Element* >(hdt->m_type);
 	if (!element)
 	{
 		element = new Element();
-		hdt->m_type = element;
+		hdt->m_type = element->AsWave();
 	}
 	element->Import< Property >(properties);
 	UnlockThread();
@@ -133,9 +133,9 @@ AtomicNumber PeriodicTableImplementation::RecordPropertiesOf(
 	);
 }
 
-const Wave* PeriodicTableImplementation::GetTypeFromId(AtomicNumber id) const
+const physical::Wave* PeriodicTableImplementation::GetTypeFromId(AtomicNumber id) const
 {
-	Element* element = Cast< Element* >(Perspective::GetTypeFromId(id));
+	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id));
 	BIO_SANITIZE(element, ,
 		return NULL);
 	return element->m_type;
@@ -143,10 +143,10 @@ const Wave* PeriodicTableImplementation::GetTypeFromId(AtomicNumber id) const
 
 bool PeriodicTableImplementation::AssociateType(
 	AtomicNumber id,
-	Wave* type
+	physical::Wave* type
 )
 {
-	Element* element = Cast< Element* >(Perspective::GetTypeFromId(id));
+	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id));
 	BIO_SANITIZE(element, ,
 		return false);
 	LockThread();
@@ -157,7 +157,7 @@ bool PeriodicTableImplementation::AssociateType(
 
 bool PeriodicTableImplementation::DisassociateType(AtomicNumber id)
 {
-	Element* element = Cast< Element* >(Perspective::GetTypeFromId(id));
+	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id));
 	BIO_SANITIZE(element, ,
 		return false);
 	LockThread();

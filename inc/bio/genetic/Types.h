@@ -48,8 +48,8 @@ Macro for defining TranscriptionFactors.
 #define BIO_TRANSCRIPTION_FACTOR_FUNCTION_BODY(functionName)                   \
 BIO_ID_FUNCTION_BODY(                                                          \
     functionName,                                                              \
-    bio::genetic::TranscriptionFactorPerspective::Instance(),                  \
-    bio::genetic::TranscriptionFactor)
+    ::bio::genetic::TranscriptionFactorPerspective::Instance(),                  \
+    ::bio::genetic::TranscriptionFactor)
 
 } //genetic namespace
 } //bio namespace

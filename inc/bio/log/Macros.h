@@ -31,8 +31,8 @@
 #define BIO_LOG_LEVEL_FUNCTION_BODY(functionName)                              \
 BIO_ID_FUNCTION_BODY(                                                          \
     functionName,                                                              \
-    bio::log::LevelPerspective::Instance(),                                    \
-    bio::log::Level)
+    ::bio::log::LevelPerspective::Instance(),                                    \
+    ::bio::log::Level)
 
 //@formatter:off
 

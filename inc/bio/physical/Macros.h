@@ -33,7 +33,7 @@
  * For ease of use for defining Singleton Perspectives.
  */
 #define BIO_PERSPECTIVE_SINGLETON(className, dimension)                        \
-BIO_SINGLETON(className, bio::physical::Perspective<dimension>)
+BIO_SINGLETON(className, ::bio::physical::Perspective<dimension>)
 
 /**
  * Ease of use for defining Ids.
@@ -78,58 +78,58 @@ BIO_PERSPECTIVE_SINGLETON(className##Perspective, className);
 /**
  * To make defining return codes easier, use this macro to define the function body of your Code Function().
  * This will assign a value to a string that is identical to your FunctionName e.g. CodePerspective::Instance().GetNameFromId(Success()) would give "Success"
- * REMINDER: Your Code Function()s should be in the bio::code namespace.
+ * REMINDER: Your Code Function()s should be in the ::bio::code namespace.
 */
 #define BIO_CODE_FUNCTION_BODY(functionName)                                   \
 BIO_ID_FUNCTION_BODY(                                                          \
     functionName,                                                              \
-    bio::CodePerspective::Instance(),                                          \
-    bio::Code)
+    ::bio::CodePerspective::Instance(),                                          \
+    ::bio::Code)
 
 /**
  * To make defining States easier, use this macro to define the function body of your State Function().
  * This will assign a value to a string that is identical to your FunctionName e.g. StatePerspective::Instance().GetNameFromId(Value()) would give "Value".
- * REMINDER: Your State Function()s should be in the bio::state namespace.
+ * REMINDER: Your State Function()s should be in the ::bio::state namespace.
  */
 #define BIO_STATE_FUNCTION_BODY(functionName)                                  \
 BIO_ID_FUNCTION_BODY(                                                          \
     functionName,                                                              \
-    bio::StatePerspective::Instance(),                                         \
-    bio::State)
+    ::bio::StatePerspective::Instance(),                                         \
+    ::bio::State)
 
 
 /**
  * To make defining Properties easier, use this macro to define the function body of your Property Function().
  * This will assign a value to a string that is identical to your FunctionName e.g. PropertyPerspective::Instance().GetNameFromId(Value()) would give "Value".
- * REMINDER: Your Property Function()s should be in the bio::property namespace.
+ * REMINDER: Your Property Function()s should be in the ::bio::property namespace.
  */
 #define BIO_PROPERTY_FUNCTION_BODY(functionName)                               \
 BIO_ID_FUNCTION_BODY(                                                          \
     functionName,                                                              \
-    bio::PropertyPerspective::Instance(),                                      \
-    bio::Property)
+    ::bio::PropertyPerspective::Instance(),                                      \
+    ::bio::Property)
 
 /**
  * To make defining SymmetryTypes easier, use this macro to define the function body of your SymmetryType Function().
  * This will assign a value to a string that is identical to your FunctionName e.g. SymmetryTypePerspective::Instance().GetNameFromId(Value()) would give "Value".
- * REMINDER: Your SymmetryType Function()s should be in the bio::symmetry_type namespace.
+ * REMINDER: Your SymmetryType Function()s should be in the ::bio::symmetry_type namespace.
  */
 #define BIO_SYMMETRY_TYPE_FUNCTION_BODY(functionName)                          \
 BIO_ID_FUNCTION_BODY(                                                          \
     functionName,                                                              \
-    bio::SymmetryTypePerspective::Instance(),                                  \
-    bio::SymmetryType)
+    ::bio::SymmetryTypePerspective::Instance(),                                  \
+    ::bio::SymmetryType)
 
 /**
  * To make defining Filters easier, use this macro to define the function body of your Filter Function().
  * This will assign a value to a string that is identical to your FunctionName e.g. FilterPerspective::Instance().GetNameFromId(Value()) would give "Value".
- * REMINDER: Your Filter Function()s should be in the bio::filter namespace.
+ * REMINDER: Your Filter Function()s should be in the ::bio::filter namespace.
  */
 #define BIO_FILTER_FUNCTION_BODY(functionName)                                 \
 BIO_ID_FUNCTION_BODY(                                                          \
     functionName,                                                              \
-    bio::FilterPerspective::Instance(),                                        \
-    bio::Filter)
+    ::bio::FilterPerspective::Instance(),                                        \
+    ::bio::Filter)
 
 /**
  * Define a virtual function that forwards to a Class.
@@ -197,11 +197,11 @@ virtual functionSignature                                                      \
  * @return function signatures for use in BIO_DISAMBIGUATE_CLASS_METHODS
  */
 #define BIO_GET_CLASS_METHODS_FOR_physical()                                   \
-    (bio::physical::Wave* Clone() const, Clone()),                             \
-    (bio::physical::Wave* AsWave(), AsWave()),                                 \
-    (const bio::physical::Wave* AsWave() const, AsWave()),                     \
-	(operator bio::physical::Wave*(), operator bio::physical::Wave*()),        \
-	(bio::physical::Wave* Modulate(Wave* signal), Modulate(signal)),           \
-	(bio::physical::Wave* Demodulate(), Demodulate()),                         \
-	(const bio::physical::Wave* Demodulate() const, Demodulate())
+    (::bio::physical::Wave* Clone() const, Clone()),                             \
+    (::bio::physical::Wave* AsWave(), AsWave()),                                 \
+    (const ::bio::physical::Wave* AsWave() const, AsWave()),                     \
+	(operator ::bio::physical::Wave*(), operator ::bio::physical::Wave*()),        \
+	(::bio::physical::Wave* Modulate(Wave* signal), Modulate(signal)),           \
+	(::bio::physical::Wave* Demodulate(), Demodulate()),                         \
+	(const ::bio::physical::Wave* Demodulate() const, Demodulate())
 

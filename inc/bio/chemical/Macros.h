@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "bio/chemical/BondTypes.h"
 #include "bio/physical/Macros.h"
 
 /**
@@ -89,8 +90,8 @@ This will assign a value to a string that is identical to your FunctionName e.g.
 #define BIO_CHEMICAL_BOND_TYPE_FUNCTION_BODY(functionName)                     \
 BIO_ID_FUNCTION_BODY(                                                          \
     functionName,                                                              \
-    bio::chemical::BondTypePerspective::Instance(),                            \
-    bio::BondType)
+    ::bio::BondTypePerspective::Instance(),                                      \
+    ::bio::BondType)
 
 
 /**
@@ -99,11 +100,11 @@ BIO_ID_FUNCTION_BODY(                                                          \
  */
 #define BIO_GET_CLASS_METHODS_FOR_chemical()                                   \
     BIO_GET_CLASS_METHODS_FOR_physical(),                                      \
-    (bio::Properties GetProperties() const, GetProperties()),                  \
-	(bio::chemical::Atom* AsAtom(), AsAtom()),                                 \
-	(const bio::chemical::Atom* AsAtom() const, AsAtom()),                     \
-	(Code Attenuate(const bio::physical::Wave* other), Attenuate(other)),      \
-    (Code Disattenuate(const bio::physical::Wave* other), Disattenuate(other))
+    (::bio::Properties GetProperties() const, GetProperties()),                  \
+	(::bio::chemical::Atom* AsAtom(), AsAtom()),                                 \
+	(const ::bio::chemical::Atom* AsAtom() const, AsAtom()),                     \
+	(Code Attenuate(const ::bio::physical::Wave* other), Attenuate(other)),      \
+    (Code Disattenuate(const ::bio::physical::Wave* other), Disattenuate(other))
 
 #define BIO_EXCITATION_0(wave, ret, ...)                                       \
 	ExcitationWithoutArgument< wave, ret >

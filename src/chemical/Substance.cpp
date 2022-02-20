@@ -103,14 +103,6 @@ void Substance::CtorCommon()
 	Enable();
 }
 
-void Substance::ImportAll(
-	const Substance* other,
-	bool ShouldCreateNonExisting
-)
-{
-	//TODO
-}
-
 PropertyStructure::PropertyStructure()
 {
 

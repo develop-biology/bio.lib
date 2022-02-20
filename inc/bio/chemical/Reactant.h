@@ -29,7 +29,7 @@ namespace chemical {
 /**
  * A Reactant is a Substance that has a type.
  * Reactants are intended to be used in Reactions.
- * In order to ensure the Substances provided to a Reaction are the proper types needed by the Reaction, the equality operator ensures that the compared value can be cast as the type recorded in *this.
+ * In order to ensure the Substances provided to a Reaction are the proper types, we override the equality operator. This ensures that the compared value can be cast as the type recorded in *this.
  */
 class Reactant :
 	public Substance,

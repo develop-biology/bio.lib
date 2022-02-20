@@ -78,7 +78,7 @@ Code Atom::Attenuate(const physical::Wave* other)
 	return ret;
 }
 
-void Atom::Disattenuate(const physical::Wave* other)
+Code Atom::Disattenuate(const physical::Wave* other)
 {
 	BIO_SANITIZE(other, , return code::BadArgument1());
 
@@ -210,23 +210,25 @@ BondType Atom::GetBondType(Valence position) const
 
 physical::Symmetry* Atom::Spin() const
 {
+	//TODO...
 	return Wave::Spin();
 }
 
-void Atom::Reify(physical::Symmetry* symmetry)
+Code Atom::Reify(physical::Symmetry* symmetry)
 {
+	//TODO...
 	return Wave::Reify(symmetry);
 }
 
 physical::Wave* Atom::GetBonded(Valence position)
 {
-	BIO_SANITIZE(posicion < m_valence,,return NULL)
+	BIO_SANITIZE(position < m_valence,,return NULL)
 	return m_bonds[position].GetBonded();
 }
 
 const physical::Wave* Atom::GetBonded(Valence position) const
 {
-	BIO_SANITIZE(posicion < m_valence,,return NULL)
+	BIO_SANITIZE(position < m_valence,,return NULL)
 	return m_bonds[position].GetBonded();
 }
 

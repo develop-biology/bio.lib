@@ -25,20 +25,20 @@ In order to facilitate cross-namespace type extension, some special rules should
 
 When defining extendable types, primarily through the use of `physical::Perspectives`, it is customary to define the type with a capital (i.e. Type) in the main bio namespace, ignoring any other namespaces the type would otherwise belong to.
 The definitions of type-returning functions or raw types should then be placed in a lowercase namespace; again, this namespace should be directly under the main bio namespace and not in whatever sub-namespace the type would otherwise belong to.
-For example, States are defined in the physical folder but not in the physical namespace. They are then defined in the `bio::state` namespace.
+For example, States are defined in the physical folder but not in the physical namespace. They are then defined in the `::bio::state` namespace.
 This snippet is from "bio/chemical/States.h"
 ```c++
 namespace bio {
 namespace state { //<- lowercase "state", the namespace
 
-State Enabled(); //<- Capitalized "State", the type (bio::State, not bio::state::State).
+State Enabled(); //<- Capitalized "State", the type (::bio::State, not ::bio::state::State).
 
 } //state namespace
 } //bio namespace
 ```
 So, you can say
 ```c++
-bio::State myState = bio::state::Enabled();
+::bio::State myState = ::bio::state::Enabled();
 ```
 
 To recap, extendable types should follow these rules:
