@@ -91,23 +91,6 @@ Surface::~Surface()
 	}
 }
 
-Surface* Surface::Clone() const
-{
-	return new Surface(*this);
-}
-
-bool Surface::operator==(const Surface& other) const
-{
-	return chemical::Substance::operator==(other) && chemical::LinearStructuralComponent<Molecule*>::operator==(other);
-}
-
-void Surface::ImportAll(const Surface& other)
-{
-	chemical::Substance::ImportAll(other);
-	Import<Molecule*>(other);
-}
-
-
 bool Surface::FormBondImplementation(
 	Wave* toBond,
 	AtomicNumber id,

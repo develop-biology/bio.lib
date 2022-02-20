@@ -62,12 +62,6 @@ public:
 	virtual ~Surface();
 
 	/**
-	 * Required override of Wave::Clone()
-	 * @return a new copy of *this.
-	 */
-	virtual Surface* Clone() const;
-
-	/**
 	 * Required method from Wave. See that class for details.
 	 * @return a Symmetrical image of *this
 	 */
