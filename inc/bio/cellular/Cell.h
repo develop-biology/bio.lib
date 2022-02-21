@@ -51,7 +51,7 @@ namespace cellular {
  */
 class Cell :
 	virtual public genetic::Expressor,
-	public chemical::LinearStructuralComponent<Organelle*>,
+	public chemical::LinearStructuralComponent< Organelle >,
 	public molecular::EnvironmentDependent<Tissue>,
 {
 public:

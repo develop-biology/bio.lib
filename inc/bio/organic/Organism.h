@@ -49,7 +49,7 @@ class Habitat;
  */
 class Organism :
 	public visceral::Class<Organism>,
-	public chemical::LinearStructuralComponent<visceral::OrganSystem*>,
+	public chemical::LinearStructuralComponent< visceral::OrganSystem >,
 	public molecular::EnvironmentDependent<Habitat>,
 {
 public:

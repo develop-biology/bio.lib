@@ -35,7 +35,7 @@ namespace chemical {
  */
 class Symmetry :
 	public physical::Symmetry,
-	public LinearStructuralComponent< Symmetry* >,
+	public LinearStructuralComponent< Symmetry >,
 	public chemical::Class< Symmetry >
 {
 public:

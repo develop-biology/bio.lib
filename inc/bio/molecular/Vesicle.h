@@ -36,7 +36,7 @@ namespace molecular {
 class Vesicle :
 	virtual public Molecule,
 	public Class<Vesicle>,
-	public chemical::LinearStructuralComponent<Molecule*>,
+	public chemical::LinearStructuralComponent< Molecule >,
 {
 public:
 

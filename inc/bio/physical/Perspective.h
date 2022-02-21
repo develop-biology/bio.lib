@@ -444,7 +444,7 @@ public:
 	const T* GetTypeFromIdAs(Id id) const
 	{
 		BIO_SANITIZE_WITH_CACHE(GetTypeFromId(id),
-			BIO_SINGLE_ARG(return Cast< T*, const Wave* >(RESULT)),
+			BIO_SINGLE_ARG(return ForceCast< T*, const Wave* >(RESULT)),
 			return NULL);
 	}
 
@@ -458,7 +458,7 @@ public:
 	const T* GetTypeFromNameAs(Name name) const
 	{
 		BIO_SANITIZE_WITH_CACHE(GetTypeFromName(name),
-			BIO_SINGLE_ARG(return Cast< T*, const Wave* >(RESULT)),
+			BIO_SINGLE_ARG(return ForceCast< T*, const Wave* >(RESULT)),
 			return NULL);
 	}
 
@@ -472,7 +472,7 @@ public:
 	T* GetNewObjectFromIdAs(Id id)
 	{
 		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromId(id),
-			BIO_SINGLE_ARG(return Cast< T*, Wave* >(RESULT)),
+			BIO_SINGLE_ARG(return ForceCast< T*, Wave* >(RESULT)),
 			return NULL);
 	}
 
@@ -486,7 +486,7 @@ public:
 	T* GetNewObjectFromNameAs(Name name)
 	{
 		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromName(name),
-			BIO_SINGLE_ARG(return Cast< T*, Wave* >(RESULT)),
+			BIO_SINGLE_ARG(return ForceCast< T*, Wave* >(RESULT)),
 			return NULL);
 	}
 

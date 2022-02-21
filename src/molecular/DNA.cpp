@@ -61,7 +61,7 @@ StandardDimension GetProteinId() const
 
 virtual bool operator==(const DNA& other) const
 {
-	return chemical::Substance::operator==(other) && chemical::LinearStructuralComponent<Gene*>::operator==(other);
+	return chemical::Substance::operator==(other) && chemical::LinearStructuralComponent< Gene >::operator==(other);
 }
 
 

@@ -28,7 +28,7 @@ namespace bio {
 Organism::Organism()
 	:
 	visceral::Class(this),
-	chemical::LinearStructuralComponent<OrganSystem*>(&visceral::OrganSystemPerspective::Instance()),
+	chemical::LinearStructuralComponent< OrganSystem >(&visceral::OrganSystemPerspective::Instance()),
 	molecular::EnvironmentDependent<Habitat>()
 {
 
@@ -37,7 +37,7 @@ Organism::Organism()
 Organism::Organism(StandardDimension id)
 	:
 	visceral::Class(this, id &OrganismPerspective::Instance(), filter::Organism()),
-	chemical::LinearStructuralComponent<OrganSystem*>(&visceral::OrganSystemPerspective::Instance()),
+	chemical::LinearStructuralComponent< OrganSystem >(&visceral::OrganSystemPerspective::Instance()),
 	molecular::EnvironmentDependent<Habitat>()
 {
 
@@ -47,7 +47,7 @@ Organism::Organism(StandardDimension id)
 Organism::Organism(Name name)
 	:
 	visceral::Class(this, name &OrganismPerspective::Instance(), filter::Organism()),
-	chemical::LinearStructuralComponent<OrganSystem*>(&visceral::OrganSystemPerspective::Instance()),
+	chemical::LinearStructuralComponent< OrganSystem >(&visceral::OrganSystemPerspective::Instance()),
 	molecular::EnvironmentDependent<Habitat>()
 {
 
@@ -55,7 +55,7 @@ Organism::Organism(Name name)
 
 Organism::Organism(const Organism& toCopy) :
 	visceral::Class(this, toCopy.GetId(), toCopy.GetPerspective(), toCopy.GetFilter()),
-	chemical::LinearStructuralComponent<visceral::OrganSystem*>(toCopy),
+	chemical::LinearStructuralComponent< visceral::OrganSystem >(toCopy),
 	molecular::EnvironmentDependent<Habitat>(toCopy)
 {
 

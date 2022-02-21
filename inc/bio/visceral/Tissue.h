@@ -42,9 +42,9 @@ Tissues are a container for storing and manipulating many cells at once
 */
 class Tissue :
 	public Class<Tissue>,
-	public chemical::LinearStructuralComponent<const genetic::Plasmid*>,
-	public chemical::LinearStructuralComponent<cellular::Cell*>,
-	public chemical::LinearStructuralComponent<Tissue*>,
+	public chemical::LinearStructuralComponent< const genetic::Plasmid >,
+	public chemical::LinearStructuralComponent< cellular::Cell >,
+	public chemical::LinearStructuralComponent< Tissue >,
 	public molecular::EnvironmentDependent<Tissue> //Not Organ because of LinearStructuralComponent.
 {
 public:

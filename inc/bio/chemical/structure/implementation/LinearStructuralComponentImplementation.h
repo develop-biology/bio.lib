@@ -42,11 +42,15 @@ namespace chemical {
  * Plus, not supporting other Dimensions makes for cleaner inheritance / downstream code.
  * Support for other Dimensions may be added in a future release.
  * see LinearStructuralComponent.h for more info.
- * @tparam CONTENT_TYPE
+ * 
+ * Using LinearStructuralComponents requires the storage of chemical::Class*, so CONTENT_TYPE must derive from chemical::Class
+ * For an example, see chemical::Symmetry.
+ * 
+ * @tparam CONTENT_TYPE the base type you want to store pointers of.
  */
 template < typename CONTENT_TYPE >
 class LinearStructuralComponentImplementation :
-	public StructuralComponent< CONTENT_TYPE >
+	public StructuralComponent< CONTENT_TYPE* >
 {
 public:
 	typedef StandardDimension Dimension;
@@ -72,12 +76,12 @@ public:
 	 * @param contents
 	 * @return Contents::iterator
 	 */
-	static typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::iterator GetIteratorById(
+	static typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::iterator GetIteratorById(
 		StandardDimension id,
-		typename StructuralComponentImplementation< CONTENT_TYPE >::Contents* contents
+		typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents* contents
 	)
 	{
-		typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::iterator ret = contents.begin();
+		typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::iterator ret = contents.begin();
 		for (
 			; ret != contents.end();
 			++ret
@@ -97,12 +101,12 @@ public:
 	 * @param contents
 	 * @return Contents::const_iterator
 	 */
-	static typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::const_iterator GetIteratorById(
+	static typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::const_iterator GetIteratorById(
 		StandardDimension id,
-		const typename StructuralComponentImplementation< CONTENT_TYPE >::Contents* contents
+		const typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents* contents
 	)
 	{
-		typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::const_iterator ret = contents.begin();
+		typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::const_iterator ret = contents.begin();
 		for (
 			; ret != contents.end();
 			++ret
@@ -125,12 +129,12 @@ public:
 	 * @return a pointer to a CONTENT_TYPE of id if one is found within searchIn, NULL if one is not found.
 	 */
 	static CONTENT_TYPE* FindByIdIn(
-		typename StructuralComponentImplementation< CONTENT_TYPE >::Contents* searchIn,
+		typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents* searchIn,
 		const StandardDimension contentId,
 		const bool recurse = false
 	)
 	{
-		typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::iterator itt = GetIteratorFrom(
+		typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::iterator itt = GetIteratorFrom(
 			searchIn,
 			contentId,
 			recurse
@@ -138,7 +142,7 @@ public:
 		if (itt != searchIn->end())
 		{
 			//BIO_LOG_DEBUG("Found %s", name);
-			return &*itt;
+			return *itt;
 		}
 		//BIO_LOG_DEBUG("Could not find %s", name);
 		return NULL;
@@ -152,12 +156,12 @@ public:
 	 * @return a pointer to a CONTENT_TYPE of id if one is found within searchIn, NULL if one is not found.
 	 */
 	static const CONTENT_TYPE* FindByIdIn(
-		const typename StructuralComponentImplementation< CONTENT_TYPE >::Contents* searchIn,
+		const typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents* searchIn,
 		const StandardDimension contentId,
 		const bool recurse = false
 	)
 	{
-		typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::const_iterator itt = GetIteratorFrom(
+		typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::const_iterator itt = GetIteratorFrom(
 			searchIn,
 			contentId,
 			recurse
@@ -165,7 +169,7 @@ public:
 		if (itt != searchIn->end())
 		{
 			//BIO_LOG_DEBUG("Found %s", name);
-			return &*itt;
+			return *itt;
 		}
 		//BIO_LOG_DEBUG("Could not find %s", name);
 		return NULL;
@@ -181,7 +185,7 @@ public:
 	 */
 	static CONTENT_TYPE* FindByNameIn(
 		const physical::Perspective< StandardDimension >* perspective,
-		typename StructuralComponentImplementation< CONTENT_TYPE >::Contents* searchIn,
+		typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents* searchIn,
 		Name contentName,
 		const bool recurse = false
 	)
@@ -205,7 +209,7 @@ public:
 	 */
 	static const CONTENT_TYPE* FindByNameIn(
 		const physical::Perspective< StandardDimension >* perspective,
-		const typename StructuralComponentImplementation< CONTENT_TYPE >::Contents* searchIn,
+		const typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents* searchIn,
 		Name contentName,
 		const bool recurse = false
 	)
@@ -227,8 +231,8 @@ public:
 	 * @param recurse whether or not to search through contents in searchIn.
 	 * @return iterator of searchIn matching contentId.
 	 */
-	static typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::iterator GetIteratorFrom(
-		typename StructuralComponentImplementation< CONTENT_TYPE >::Contents* searchIn,
+	static typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::iterator GetIteratorFrom(
+		typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents* searchIn,
 		const StandardDimension contentId,
 		const bool recurse = false
 	)
@@ -236,10 +240,10 @@ public:
 		BIO_SANITIZE(searchIn, ,
 			return searchIn->end());
 
-		typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::iterator ret = searchIn->end();
-		typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::iterator recur;
+		typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::iterator ret = searchIn->end();
+		typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::iterator recur;
 		for (
-			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::iterator cnt = searchIn->begin();
+			typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::iterator cnt = searchIn->begin();
 			cnt != searchIn->end();
 			++cnt
 			)
@@ -256,11 +260,11 @@ public:
 			}
 			else if (recurse)
 			{
-				recur = Cast< LinearStructuralComponentImplementation< CONTENT_TYPE >* >(*cnt)->GetIteratorFrom((Cast< StructureInterface* >(*cnt))->template GetAll< CONTENT_TYPE >(),
+				recur = Cast< LinearStructuralComponentImplementation< CONTENT_TYPE >* >(*cnt)->GetIteratorFrom((Cast< StructureInterface* >(*cnt))->template GetAll< CONTENT_TYPE* >(),
 					contentId,
 					recurse
 				);
-				if (recur != (*cnt)->template GetAll< CONTENT_TYPE >()->end())
+				if (recur != (*cnt)->template GetAll< CONTENT_TYPE* >()->end())
 				{
 					#if 0
 					if (ret != searchIn->end())
@@ -283,8 +287,8 @@ public:
 	 * @param recurse whether or not to search through contents in searchIn.
 	 * @return iterator of searchIn matching contentId.
 	 */
-	static typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::const_iterator GetIteratorFrom(
-		const typename StructuralComponentImplementation< CONTENT_TYPE >::Contents* searchIn,
+	static typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::const_iterator GetIteratorFrom(
+		const typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents* searchIn,
 		const StandardDimension contentId,
 		const bool recurse = false
 	)
@@ -292,10 +296,10 @@ public:
 		BIO_SANITIZE(searchIn, ,
 			return searchIn->end());
 
-		typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::const_iterator ret = searchIn->end();
-		typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::const_iterator recur;
+		typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::const_iterator ret = searchIn->end();
+		typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::const_iterator recur;
 		for (
-			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::const_iterator cnt = searchIn->begin();
+			typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::const_iterator cnt = searchIn->begin();
 			cnt != searchIn->end();
 			++cnt
 			)
@@ -312,11 +316,11 @@ public:
 			}
 			else if (recurse)
 			{
-				recur = Cast< LinearStructuralComponentImplementation< CONTENT_TYPE >* >(*cnt)->GetIteratorFrom((*cnt)->template GetAll< CONTENT_TYPE >(),
+				recur = Cast< LinearStructuralComponentImplementation< CONTENT_TYPE >* >(*cnt)->GetIteratorFrom((*cnt)->template GetAll< CONTENT_TYPE* >(),
 					contentId,
 					recurse
 				);
-				if (recur != (*cnt)->template GetAll< CONTENT_TYPE >()->end())
+				if (recur != (*cnt)->template GetAll< CONTENT_TYPE* >()->end())
 				{
 					#if 0
 					if (ret != searchIn->end())
@@ -338,8 +342,8 @@ public:
 	 * @param searchPath where to search; similar to a file path if contents are directories; meaning that the first entry is a CONTENT_TYPE within startingPoint, the second entry is a CONTENT_TYPE within that Content's Contents, and so on.
 	 * @return the Contents of a specified point within startingPoint.
 	 */
-	static typename StructuralComponentImplementation< CONTENT_TYPE >::Contents* FollowTreeOf(
-		typename StructuralComponentImplementation< CONTENT_TYPE >::Contents* startingPoint,
+	static typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents* FollowTreeOf(
+		typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents* startingPoint,
 		const Dimensions& searchPath
 	)
 	{
@@ -348,7 +352,7 @@ public:
 		BIO_SANITIZE(searchPath.size(), ,
 			return startingPoint);
 
-		typename StructuralComponentImplementation< CONTENT_TYPE >::Contents* searchTree = startingPoint;
+		typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents* searchTree = startingPoint;
 
 		for (
 			typename Dimensions::const_iterator insert = searchPath.begin();
@@ -369,7 +373,7 @@ public:
 			}
 
 			for (
-				typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::iterator cnt = searchTree->begin();
+				typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::iterator cnt = searchTree->begin();
 				cnt != searchTree->end();
 				++cnt
 				)
@@ -378,11 +382,11 @@ public:
 				{
 					if (insert == searchPath.end() - 1)
 					{
-						return (*cnt)->template GetAll< CONTENT_TYPE >();
+						return (*cnt)->template GetAll< CONTENT_TYPE* >();
 					}
-					else if ((*cnt)->template GetCount< CONTENT_TYPE >())
+					else if ((*cnt)->template GetCount< CONTENT_TYPE* >())
 					{
-						searchTree = (*cnt)->template GetAll< CONTENT_TYPE >();
+						searchTree = (*cnt)->template GetAll< CONTENT_TYPE* >();
 						cnt = searchTree->begin();
 					}
 					else
@@ -407,11 +411,11 @@ public:
 	 * @param contents
 	 * @return a string of content names, each separated by a comma
 	 */
-	static std::string ConvertToString(const typename StructuralComponentImplementation< CONTENT_TYPE >::Contents& contents)
+	static std::string ConvertToString(const typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents& contents)
 	{
 		std::string ret = "";
 		for (
-			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::const_iterator cnt = contents.begin();
+			typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::const_iterator cnt = contents.begin();
 			cnt != contents.end();
 			++cnt
 			)
@@ -445,8 +449,8 @@ public:
 	 */
 	static Code AddAt(
 		physical::Perspective< StandardDimension >* perspective,
-		CONTENT_TYPE content,
-		typename StructuralComponentImplementation< CONTENT_TYPE >::Contents* destination,
+		CONTENT_TYPE* content,
+		typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents* destination,
 		const Position position = BOTTOM,
 		const StandardDimension optionalPositionArg = CONTENT_TYPE::Perspective::InvalidId(),
 		const bool transferSubContents = false,
@@ -486,11 +490,11 @@ public:
 
 		Code ret = code::Success();
 
-		CONTENT_TYPE toReplace = NULL;
+		CONTENT_TYPE* toReplace = NULL;
 
 		//Remove conflicts
 		for (
-			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::iterator cnt = destination->begin();
+			typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::iterator cnt = destination->begin();
 			cnt != destination->end();
 			++cnt
 			)
@@ -513,11 +517,9 @@ public:
 			}
 		}
 
-
-		CONTENT_TYPE* addBuf = ChemicalCast<CONTENT_TYPE>(content->Clone());
-		BIO_SANITIZE(addBuf, ,
+		CONTENT_TYPE* addition = CloneAndCast< CONTENT_TYPE >(content);
+		BIO_SANITIZE(addition, ,
 			return code::GeneralFailure());
-		CONTENT_TYPE addition = *addBuf;
 
 		if (toReplace)
 		{
@@ -565,7 +567,7 @@ public:
 			case BEFORE:
 			{
 				for (
-					typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::iterator cnt = destination->begin();
+					typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::iterator cnt = destination->begin();
 					cnt != destination->end();
 					++cnt
 					)
@@ -597,7 +599,7 @@ public:
 			case AFTER:
 			{
 				for (
-					typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::iterator cnt = destination->begin();
+					typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::iterator cnt = destination->begin();
 					cnt != destination->end();
 					++cnt
 					)
@@ -657,8 +659,8 @@ public:
 	 */
 	static Code Insert(
 		physical::Perspective< StandardDimension >* perspective,
-		CONTENT_TYPE contentPtr,
-		typename StructuralComponentImplementation< CONTENT_TYPE >::Contents* destination,
+		CONTENT_TYPE* contentPtr,
+		typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents* destination,
 		const Dimensions& insertionPoint,
 		const Position position = BOTTOM,
 		const StandardDimension optionalPositionArg = CONTENT_TYPE::Perspective::InvalidId(),
@@ -687,7 +689,7 @@ public:
 			//TODO add a check here for improper configuration
 		}
 
-		CONTENT_TYPE content = Cast< CONTENT_TYPE >(contentPtr);
+		CONTENT_TYPE* content = contentPtr; //This is unnecessary and can be removed.
 		BIO_SANITIZE(content, ,
 			code::BadArgument2());
 
@@ -700,7 +702,7 @@ public:
 		}
 
 		std::string insertionPointStr = "";
-		typename StructuralComponentImplementation< CONTENT_TYPE >::Contents* searchTree = FollowTreeOf(
+		typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents* searchTree = FollowTreeOf(
 			destination,
 			insertionPoint
 		);
@@ -765,7 +767,7 @@ public:
 	 * @return status of insertion
 	 */
 	virtual Code InsertImplementation(
-		CONTENT_TYPE toAdd,
+		CONTENT_TYPE* toAdd,
 		const Dimensions& insertionPoint,
 		const Position position = BOTTOM,
 		const StandardDimension optionalPositionArg = CONTENT_TYPE::Perspective::InvalidId(),
@@ -883,15 +885,15 @@ public:
 	 * @param content
 	 * @return whether or not the given content exists in *this
 	 */
-	virtual bool HasImplementation(CONTENT_TYPE content) const
+	virtual bool HasImplementation(const CONTENT_TYPE& content) const
 	{
 		for (
-			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::const_iterator cnt = this->m_contents.begin();
+			typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::const_iterator cnt = this->m_contents.begin();
 			cnt != this->m_contents.end();
 			++cnt
 			)
 		{
-			if ((**cnt) == *content)
+			if ((**cnt) == content)
 			{
 				return true;
 			}
@@ -910,7 +912,7 @@ public:
 			return);
 
 		for (
-			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::const_iterator cnt = other->m_contents.begin();
+			typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::const_iterator cnt = other->m_contents.begin();
 			cnt != other->m_contents.end();
 			++cnt
 			)
@@ -938,7 +940,7 @@ public:
 
 		Code ret = code::Success();
 		for (
-			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::iterator cnt = this->m_contents.begin();
+			typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::iterator cnt = this->m_contents.begin();
 			cnt != this->m_contents.end();
 			++cnt
 			)
@@ -958,7 +960,7 @@ public:
 	{
 		Code ret = code::Success();
 		for (
-			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::iterator cnt = this->m_contents.begin();
+			typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::iterator cnt = this->m_contents.begin();
 			cnt != this->m_contents.end();
 			++cnt
 			)
@@ -983,7 +985,7 @@ public:
 	{
 		ExcitationReturns ret;
 		for (
-			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::const_iterator cnt = this->m_contents.begin();
+			typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::const_iterator cnt = this->m_contents.begin();
 			cnt != this->m_contents.end();
 			++cnt
 			)
@@ -1006,7 +1008,7 @@ public:
 	{
 		std::string ret = "";
 		for (
-			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::const_iterator cnt = this->m_contents.begin();
+			typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::const_iterator cnt = this->m_contents.begin();
 			cnt != this->m_contents.end();
 			++cnt
 			)
@@ -1027,7 +1029,7 @@ public:
 	virtual void ClearImplementation()
 	{
 		for (
-			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::iterator cnt = this->m_contents.begin();
+			typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::iterator cnt = this->m_contents.begin();
 			cnt != this->m_contents.end();
 			++cnt
 			)

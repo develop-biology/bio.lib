@@ -23,10 +23,27 @@
 
 namespace bio {
 
+namespace physical {
+	class Wave;
+}
+
 template < typename TO, typename FROM >
 TO* ChemicalCast(FROM toCast)
 {
-	return toCast->AsAtom()->template As<TO>();
+	return toCast->AsAtom()->template As< TO >();
 }
+
+/**
+ * Ease of use method for Cloning.
+ * @tparam T
+ * @return a Clone of T casted to back to T.
+ */
+template< typename T >
+T* CloneAndCast(const T* toClone)
+{
+	//Dereference here might be dangerous & need sanitization.
+	return ChemicalCast< T, ::bio::physical::Wave* >(toClone->Clone()->AsWave());
+}
+
 
 } //bio namespace

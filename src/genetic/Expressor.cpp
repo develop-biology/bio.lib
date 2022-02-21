@@ -28,16 +28,16 @@ namespace genetic {
 
 Expressor::Expressor() :
 	chemical::StructuralComponent<TranscriptionFactor>(),
-	chemical::LinearStructuralComponent<const Plasmid*>(),
-	chemical::LinearStructuralComponent<Protein*>(),
+	chemical::LinearStructuralComponent< const Plasmid >(),
+	chemical::LinearStructuralComponent< Protein >(),
 	molecular::Vesicle()
 {
 }
 
 Expressor::Expressor(Name name) :
 	chemical::StructuralComponent<TranscriptionFactor>(),
-	chemical::LinearStructuralComponent<const Plasmid*>(),
-	chemical::LinearStructuralComponent<Protein*>(),
+	chemical::LinearStructuralComponent< const Plasmid >(),
+	chemical::LinearStructuralComponent< Protein >(),
 	molecular::Vesicle(),
 	physical::Identifiable<StandardDimension>(name, &molecular::VesiclePerspective::Instance())
 {
@@ -45,8 +45,8 @@ Expressor::Expressor(Name name) :
 
 Expressor::Expressor(const Expressor& other) :
 	chemical::StructuralComponent<TranscriptionFactor>(other),
-	chemical::LinearStructuralComponent<const Plasmid*>(other),
-	chemical::LinearStructuralComponent<Protein*>(other),
+	chemical::LinearStructuralComponent< const Plasmid >(other),
+	chemical::LinearStructuralComponent< Protein >(other),
 	molecular::Vesicle(other)
 {
 

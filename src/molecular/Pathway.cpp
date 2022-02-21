@@ -35,7 +35,7 @@ Pathway::~Pathway();
 chemical::Products Pathway::Process(chemical::Substances& reactants)
 {
 	chemical::Products products = reactants;
-	for (LinearStructuralComponent<Reaction*>::Contents::iterator rct = GetAll<Reaction*>()->Begin(); rct != GetAll<Reaction*>()->end(); ++rct)
+	for (LinearStructuralComponent< Reaction >::Contents::iterator rct = GetAll<Reaction*>()->Begin(); rct != GetAll<Reaction*>()->end(); ++rct)
 	{
 		if (products == code::Success() && products != code::NoErrorNoSuccess())
 		{

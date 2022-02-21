@@ -37,7 +37,7 @@ class Reactant; //unused here but anything including Reactants will likely use R
  */
 class Reactants :
 	public physical::Class< Reactants >,
-	public LinearStructuralComponent< Substance* >
+	public LinearStructuralComponent< Substance >
 {
 public:
 

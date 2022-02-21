@@ -19,52 +19,47 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
 #include "bio/molecular/Surface.h"
 #include "bio/molecular/Molecule.h"
+#include "bio/molecular/common/Filters.h"
+#include "bio/molecular/common/SymmetryTypes.h"
 
 namespace bio {
 namespace molecular {
 
-void Surface::CtorCommon()
-{
-	//Required chemical::Atom method
-	//Ensures *this can be accessed from the <template> interface.
-	Bond(
-		this,
-		bond_type::Virtual());
-}
-
 Surface::Surface(
 	Name name,
-	Molecule* environment)
-	:
-	chemical::Substance(),
-	chemical::LinearStructuralComponent<Molecule*>(&MoleculePerspective::Instance()),
-	EnvironmentDependent<Molecule>(environment),
-	physical::Identifiable<StandardDimension>(
+	Molecule* environment
+) :
+	molecular::Class< Surface >(
+		this,
 		name,
-		environment
-	)
+		environment,
+		filter::Molecular(),
+		symmetry_type::Variable()),
+	EnvironmentDependent< Molecule > (environment)
 {
-	CtorCommon();
+
 }
 
 Surface::Surface(const Surface& toCopy)
 	:
-	chemical::Substance(toCopy),
-	chemical::LinearStructuralComponent<Molecule*>(toCopy),
-	EnvironmentDependent<Molecule>(toCopy)
+	molecular::Class< Surface >(
+		this,
+		toCopy.GetName(),
+		toCopy.GetPerspective(),
+		toCopy.GetFilter(),
+		symmetry_type::Variable()),
+	chemical::LinearStructuralComponent< Molecule >(toCopy),
+	EnvironmentDependent< Molecule >(toCopy)
 {
-	CtorCommon();
 	for (
 		chemical::Valence val = 0;
 		val < toCopy.m_valence;
 		++val
 		)
 	{
-		if (toCopy.m_bonds[val].GetType() == Manage())
+		if (toCopy.m_bonds[val].GetType() == bond_type::Manage())
 		{
 			//Calling FormBondImplementation directly saves us some work and should be safer than trying to do auto-template type determination from Clone().
 			FormBondImplementation(
@@ -83,7 +78,7 @@ Surface::~Surface()
 		++val
 		)
 	{
-		if (m_bonds[val].GetType() == Manage())
+		if (m_bonds[val].GetType() == bond_type::Manage())
 		{
 			delete m_bonds[val].GetBonded();
 			m_bonds[val].Break();
@@ -91,41 +86,28 @@ Surface::~Surface()
 	}
 }
 
-bool Surface::FormBondImplementation(
-	Wave* toBond,
-	AtomicNumber id,
-	BondType type)
-{
-	return Atom::FormBondImplementation(
-		toBond,
-		id,
-		type
-	)
-}
-
-bool Surface::BreakBondImplementation(
-	Wave* toDisassociate,
-	AtomicNumber id,
-	BondType type)
-{
-	return Atom::BreakBondImplementation(
-		toBond,
-		id,
-		type
-	);
-}
-
-
 void Surface::SetEnvironment(Molecule* environment)
 {
 	m_environment = environment;
-	m_id = 0;
-	Identifiable<StandardDimension>::SetPerspective(environment);
+	SetId(0); //0 should always be invalid.
+	Identifiable< StandardDimension >::SetPerspective(environment);
 }
 
 void Surface::SetPerspective(Molecule* perspective)
 {
 	SetEnvironment(perspective);
+}
+
+Code Surface::Reify(physical::Symmetry* symmetry)
+{
+	//TODO...
+	return code::NotImplemented();
+}
+
+physical::Symmetry* Surface::Spin() const
+{
+	//TODO...
+	return NULL;
 }
 
 } //molecular namespace

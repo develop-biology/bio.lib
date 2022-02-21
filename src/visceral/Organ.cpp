@@ -30,8 +30,8 @@ namespace visceral {
 
 Organ::Organ() :
 	Class(this),
-	chemical::LinearStructuralComponent<genetic::Plasmid*>(&genetic::PlasmidPerspective::Instance()),
-	chemical::LinearStructuralComponent<Tissue*>(&TissuePerspective::Instance()),
+	chemical::LinearStructuralComponent< genetic::Plasmid >(&genetic::PlasmidPerspective::Instance()),
+	chemical::LinearStructuralComponent< Tissue >(&TissuePerspective::Instance()),
 	molecular::EnvironmentDependent<OrganSystem>()
 {
 
@@ -39,8 +39,8 @@ Organ::Organ() :
 
 Organ::Organ(StandardDimension id) :
 	Class(this, id, &OrganPerspective::Instance(), filter::Visceral()),
-	chemical::LinearStructuralComponent<genetic::Plasmid*>(&genetic::PlasmidPerspective::Instance()),
-	chemical::LinearStructuralComponent<Tissue*>(&TissuePerspective::Instance()),
+	chemical::LinearStructuralComponent< genetic::Plasmid >(&genetic::PlasmidPerspective::Instance()),
+	chemical::LinearStructuralComponent< Tissue >(&TissuePerspective::Instance()),
 	molecular::EnvironmentDependent<OrganSystem>()
 {
 
@@ -48,8 +48,8 @@ Organ::Organ(StandardDimension id) :
 
 Organ::Organ(Name name) :
 	Class(this, name, &OrganPerspective::Instance(), filter::Visceral()),
-	chemical::LinearStructuralComponent<genetic::Plasmid*>(&genetic::PlasmidPerspective::Instance()),
-	chemical::LinearStructuralComponent<Tissue*>(&TissuePerspective::Instance()),
+	chemical::LinearStructuralComponent< genetic::Plasmid >(&genetic::PlasmidPerspective::Instance()),
+	chemical::LinearStructuralComponent< Tissue >(&TissuePerspective::Instance()),
 	molecular::EnvironmentDependent<OrganSystem>()
 {
 
@@ -57,8 +57,8 @@ Organ::Organ(Name name) :
 
 Organ::Organ(const Organ& toCopy) :
 	Class(this, toCopy.GetId(), toCopy.GetPerspective(), toCopy.GetFilter()),
-	chemical::LinearStructuralComponent<genetic::Plasmid*>(toCopy),
-	chemical::LinearStructuralComponent<Tissue*>(toCopy),
+	chemical::LinearStructuralComponent< genetic::Plasmid >(toCopy),
+	chemical::LinearStructuralComponent< Tissue >(toCopy),
 	molecular::EnvironmentDependent<OrganSystem>(toCopy)
 {
 

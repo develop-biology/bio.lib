@@ -38,12 +38,13 @@ namespace chemical {
 /**
  * LinearStructuralComponent objects contain pointers to Substances.
  *
- * IMPORTANT: CONTENT_TYPE MUST BE A Substance* in the StandardDimension.
- * YOU CANNOT USE LinearStructuralComponent WITH TYPES THAT ARE NOT chemical::Substance*
+ * IMPORTANT: CONTENT_TYPE MUST BE A NON-POINTER chemical::Class in the StandardDimension.
+ * This will be translated to CONTENT_TYPE* to store pointers to CONTENT_TYPEs.
+ * YOU CANNOT USE LinearStructuralComponent WITH TYPES THAT ARE NOT chemical::Class<>es
  *
  * Other Dimensions may be supported in a future release (see note in LinearStructuralComponentImplementation.h for why).
  *
- * The "linear" comes from the idea that instead of a 1 dimensional pile of types, as are StructuralComponents, *this can be ordered along some higher dimension (i.e. the StandardDimension). In other words, LinearStructuralComponents contain logic for handling their CONTENT_TYPE by Id, Name, and other aspects innate to the physical::Identifiable<StandardDimension>.
+ * The "linear" comes from the idea that instead of a 0 dimensional pile of types, as are StructuralComponents, *this can be ordered along at least 1 dimension (i.e. the StandardDimension). In other words, LinearStructuralComponents contain logic for handling their CONTENT_TYPE by Id, Name, and other aspects innate to the physical::Identifiable<StandardDimension>.
  *
  * @tparam CONTENT_TYPE a pointer type to a child of chemical::Substance
  */
@@ -103,7 +104,7 @@ public:
 	 * @param perspective
 	 */
 	explicit LinearStructuralComponent(
-		const typename StructuralComponentImplementation< CONTENT_TYPE >::Contents& contents,
+		const typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents& contents,
 		physical::Perspective< StandardDimension >* perspective = NULL
 	)
 		:
@@ -127,12 +128,12 @@ public:
 		CtorCommon();
 		m_perspective = toCopy.m_perspective;
 		for (
-			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::const_iterator cnt = toCopy.m_contents.begin();
+			typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::const_iterator cnt = toCopy.m_contents.begin();
 			cnt != toCopy.m_contents.end();
 			++cnt
 			)
 		{
-			BIO_SANITIZE_WITH_CACHE(ChemicalCast<CONTENT_TYPE>((*cnt)->Clone()), this->AddImplementation(*Cast<CONTENT_TYPE*>(RESULT)), continue);
+			this->AddImplementation(CloneAndCast<CONTENT_TYPE>(*cnt));
 		}
 	}
 
@@ -157,7 +158,7 @@ public:
 	 * @return status of insertion
 	 */
 	virtual Code InsertImplementation(
-		CONTENT_TYPE toAdd,
+		CONTENT_TYPE* toAdd,
 		const typename LinearStructuralComponentImplementation< CONTENT_TYPE >::Dimensions& insertionPoint,
 		const Position position = BOTTOM,
 		const StandardDimension optionalPositionArg = CONTENT_TYPE::Perspective::InvalidId(),
@@ -226,8 +227,8 @@ public:
 	{
 		BIO_SANITIZE(this->GetStructuralPerspective(), ,
 			return NULL);
-		return this->AddImplementation(
-			*(this->GetStructuralPerspective()->template GetNewObjectFromIdAs< CONTENT_TYPE >(id)));
+		return *this->AddImplementation(
+			(this->GetStructuralPerspective()->template GetNewObjectFromIdAs< CONTENT_TYPE >(id)));
 	}
 
 	/**

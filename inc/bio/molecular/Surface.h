@@ -24,6 +24,8 @@
 #include "bio/molecular/common/BondTypes.h"
 #include "bio/molecular/common/Types.h"
 #include "bio/molecular/common/Class.h"
+#include "bio/molecular/macros/Macros.h"
+#include "EnvironmentDependent.h"
 #include "bio/chemical/structure/LinearStructuralComponent.h"
 
 namespace bio {
@@ -37,16 +39,25 @@ class Molecule;
  * See Molecule.h for a more detailed explanation.
  */
 class Surface :
-	public Class<Surface>,
-	public chemical::LinearStructuralComponent<Molecule*>,
-	public EnvironmentDependent<Molecule>
+	public Class< Surface >,
+	public chemical::LinearStructuralComponent< Molecule >,
+	public EnvironmentDependent< Molecule >
 {
 public:
 
 	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(molecular,
+		Surface)
+
+	/**
 	 * @param name
 	 */
-	Surface(Name name, Molecule* environment=NULL);
+	Surface(
+		Name name,
+		Molecule* environment = NULL
+	);
 
 	/**
 	 * Copying a Surface generates a new set of Molecules and will Clone any Manage()d Waves from toCopy into *this.
@@ -65,21 +76,14 @@ public:
 	 * Required method from Wave. See that class for details.
 	 * @return a Symmetrical image of *this
 	 */
-	virtual Symmetry* Spin() const;
+	virtual physical::Symmetry* Spin() const;
 
 	/**
 	 * Required method from Wave. See that class for details.
 	 * Reconstruct *this from the given Symmetry.
 	 * @param symmetry
 	 */
-	virtual Code Reify(Symmetry* symmetry);
-
-	/**
-	 * 2 Surfaces are equal if they contain the same Molecules, States, and Properties.
-	 * @param other
-	 * @return whether or not other is equivalent to *this.
-	 */
-	virtual bool operator==(const Surface& other) const;
+	virtual Code Reify(physical::Symmetry* symmetry);
 
 	/**
 	 * Create a Manage()d Bond with the given var.
@@ -89,10 +93,12 @@ public:
 	 * @param varPtr
 	 * @return
 	 */
-	template <typename T>
+	template < typename T >
 	T* Manage(T* varPtr)
 	{
-		FormBond(varPtr, bond_type::Manage());
+		FormBond(
+			varPtr,
+			bond_type::Manage());
 	}
 
 	/**
@@ -103,10 +109,12 @@ public:
 	 * @param varPtr
 	 * @return
 	 */
-	template <typename T>
+	template < typename T >
 	T* Use(T* varPtr)
 	{
-		FormBond(varPtr, bond_type::Use());
+		FormBond(
+			varPtr,
+			bond_type::Use());
 	}
 
 	/**
@@ -120,36 +128,6 @@ public:
 	 * @param perspective a Molecule.
 	 */
 	virtual void SetPerspective(Molecule* perspective);
-
-protected:
-
-	/**
-	 * Adds handler for Mange() Bonds.
-	 * Otherwise passes to Atom::FormBondImplementation.
-	 * Currently a nop & just passes to Atom; this is here so children can call this method in case we need to add to it in the future.
-	 * @param toBond
-	 * @param id
-	 * @param position
-	 * @return whether or not the Bond was Formed.
-	 */
-	virtual bool FormBondImplementation(Wave* toBond, AtomicNumber id, BondType type);
-
-	/**
-	 * Adds handler for Manage() Bonds.
-	 * Otherwise passes to Atom::BreakBondImplementation.
-	 * Currently a nop & just passes to Atom; this is here so children can call this method in case we need to add to it in the future.
-	 * @param toDisassociate
-	 * @param id
-	 * @param type
-	 * @return whether or not the Bond was Broken.
-	 */
-	virtual bool BreakBondImplementation(Wave* toDisassociate, AtomicNumber id, BondType type);
-
-private:
-	/**
-	 * Common constructor code.
-	 */
-	void CtorCommon();
 };
 
 } //molecular namespace

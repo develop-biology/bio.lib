@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -40,14 +40,23 @@ class Class :
 {
 public:
 
+	BIO_DISAMBIGUATE_CLASS_METHODS(chemical, T)
+
 	/**
 	 * Providing just the object should not Initialize anything.
 	 * For default constructors of virtually inherited classes.
 	 * @param object
+	 * @param perspective
+	 * @param filter
+	 * @param symmetryType
 	 */
-	Class(T* object)
+	Class(
+		T* object,
+		physical::Perspective< StandardDimension >* perspective = NULL,
+		Filter filter = filter::Default(),
+		SymmetryType symmetryType = symmetry_type::Object())
 		:
-		chemical::Class<T>(object)
+		chemical::Class<T>(object, perspective, filter, symmetryType)
 	{
 
 	}
@@ -57,26 +66,18 @@ public:
 	 * @param name
 	 * @param perspective
 	 * @param filter
+	 * @param symmetryType
 	 */
 	Class(
 		T* object,
 		Name name,
-		Perspective <StandardDimension>* perspective = NULL,
-		Filter filter = filter::Default())
+		physical::Perspective <StandardDimension>* perspective = NULL,
+		Filter filter = filter::Default(),
+		SymmetryType symmetryType = symmetry_type::Object())
 		:
-		chemical::Class<T>(object, filter)
+		chemical::Class<T>(object, name, perspective, filter, symmetryType)
 	{
-		if (perspective)
-		{
-			physical::Identifiable<StandardDimension>::Initialize(
-				name,
-				perspective
-			);
-		}
-		else
-		{
-			SetName(name);
-		}
+
 	}
 
 	/**
@@ -84,26 +85,18 @@ public:
 	 * @param id
 	 * @param perspective
 	 * @param filter
+	 * @param symmetryType
 	 */
 	Class(
 		T* object,
 		StandardDimension id,
-		Perspective <StandardDimension>* perspective = NULL,
-		Filter filter = filter::Default())
+		physical::Perspective <StandardDimension>* perspective = NULL,
+		Filter filter = filter::Default(),
+		SymmetryType symmetryType = symmetry_type::Object())
 		:
-		chemical::Class<T>(object, filter)
+		chemical::Class<T>(object, id, perspective, filter, symmetryType)
 	{
-		if (perspective)
-		{
-			physical::Identifiable<StandardDimension>::Initialize(
-				id,
-				perspective
-			);
-		}
-		else
-		{
-			SetId(id);
-		}
+
 	}
 
 	/**
@@ -115,5 +108,5 @@ public:
 	}
 };
 
-} //chemical namespace
+} //molecular namespace
 } //bio namespace

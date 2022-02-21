@@ -45,7 +45,7 @@ namespace molecular {
  */
 class Pathway :
 	public chemical::Reaction,
-	public chemical::LinearStructuralComponent<Reaction*>
+	public chemical::LinearStructuralComponent< Reaction >
 {
 public:
 	/**

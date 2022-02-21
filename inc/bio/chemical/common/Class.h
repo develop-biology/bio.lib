@@ -23,6 +23,7 @@
 
 #include "bio/physical/common/Class.h"
 #include "bio/physical/common/Filters.h"
+#include "bio/chemical/common/Cast.h"
 #include "bio/log/Writer.h"
 #include "bio/chemical/Atom.h"
 #include "SymmetryTypes.h"

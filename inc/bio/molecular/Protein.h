@@ -43,7 +43,7 @@ class DNA;
 class Protein :
 	virtual public Molecule,
 	public Class<Protein>,
-	public chemical::LinearStructuralComponent<Protein*>,
+	public chemical::LinearStructuralComponent< Protein >,
 	public EnvironmentDependent<Vesicle>
 {
 public:
