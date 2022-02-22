@@ -43,8 +43,8 @@ class OrganSystem;
  */
 class Organ :
 	public Class<Organ>,
-	public chemical::LinearStructuralComponent< genetic::Plasmid >,
-	public chemical::LinearStructuralComponent< Tissue >,
+	public chemical::LinearStructuralComponent< genetic::Plasmid* >,
+	public chemical::LinearStructuralComponent< Tissue* >,
 	public molecular::EnvironmentDependent<OrganSystem>
 {
 public:

@@ -36,24 +36,23 @@ namespace molecular {
 class Vesicle :
 	virtual public Molecule,
 	public Class<Vesicle>,
-	public chemical::LinearStructuralComponent< Molecule >,
+	public chemical::LinearStructuralComponent< Molecule* >
 {
 public:
 
 	/**
-	 *
+	 * Ensure virtual methods point to Class implementations.
 	 */
-	Vesicle();
+	BIO_DISAMBIGUATE_CLASS_METHODS(molecular,
+		Vesicle)
 
 	/**
-	 * @param name
+	 * Standard ctors.
 	 */
-	explicit Vesicle(Name name);
-
-	/**
-	 * @param id
-	 */
-	explicit Vesicle(StandardDimension id);
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(molecular,
+		Vesicle,
+		&VesiclePerspective::Instance(),
+		filter::Molecular())
 
 	/**
 	 * @param toCopy

@@ -28,18 +28,26 @@
 namespace bio {
 namespace molecular {
 
-Pathway::Pathway(Name name);
-
-Pathway::~Pathway();
-
-chemical::Products Pathway::Process(chemical::Substances& reactants)
+Pathway::~Pathway()
 {
-	chemical::Products products = reactants;
-	for (LinearStructuralComponent< Reaction >::Contents::iterator rct = GetAll<Reaction*>()->Begin(); rct != GetAll<Reaction*>()->end(); ++rct)
+
+}
+
+chemical::Products Pathway::Process(chemical::Reactants* reactants)
+{
+	BIO_SANITIZE(reactants,,return code::BadArgument1());
+
+	chemical::Products products(*reactants);
+	for (
+		StructuralComponentImplementation< Reaction* >::Contents::iterator rct = GetAll< Reaction* >()->begin();
+		rct != GetAll< Reaction* >()->end();
+		++rct
+		)
 	{
 		if (products == code::Success() && products != code::NoErrorNoSuccess())
 		{
-			products = (**rct)(products);
+			chemical::Reactants nextReactants(products);
+			products = (**rct)(&nextReactants);
 		}
 		else
 		{
@@ -49,9 +57,10 @@ chemical::Products Pathway::Process(chemical::Substances& reactants)
 	return products;
 }
 
-bool Pathway::ReactantsMeetRequirements(const Substances& toCheck) const
+bool Pathway::ReactantsMeetRequirements(const chemical::Reactants* toCheck) const
 {
-
+	BIO_SANITIZE(GetCount< chemical::Reaction* >(),,return false);
+	return (*GetAll< chemical::Reaction* >())[0]->ReactantsMeetRequirements(toCheck);
 }
 
 } //molecular namespace

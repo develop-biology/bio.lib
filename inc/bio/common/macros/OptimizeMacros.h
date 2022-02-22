@@ -46,11 +46,12 @@
  * The symmetry system is somewhat costly, especially on memory.
  * If you do not need any of the features offered by Symmetry,
  * #define BIO_ENABLE_REFLECTION 0.
- * Please do not #udef this. Just set it to 0.
+ * Please do not #undef this. Just set it to 0.
  * See the following for more info (all in bio/physical):
  * Symmetry.h
- * Symmetrical.h
- * Orientation.h
+ * Axis.h
+ * Wave.h
+ * and all the classes in bio/molecular.
  */
 #ifndef BIO_ENABLE_REFLECTION
 #define BIO_ENABLE_REFLECTION 1

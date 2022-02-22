@@ -36,8 +36,8 @@ namespace genetic {
 class Expressor :
 	virtual public molecular::Vesicle,
 	public chemical::StructuralComponent<TranscriptionFactor>,
-	public chemical::LinearStructuralComponent< const Plasmid >,
-	public chemical::LinearStructuralComponent< molecular::Protein >
+	public chemical::LinearStructuralComponent< const Plasmid* >,
+	public chemical::LinearStructuralComponent< molecular::Protein* >
 {
 public:
 	/**

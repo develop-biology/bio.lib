@@ -72,7 +72,7 @@ namespace molecular {
 class Molecule :
 	public Class< Molecule >,
 	public physical::Perspective< StandardDimension >,
-	public chemical::LinearStructuralComponent< Surface >
+	public chemical::LinearStructuralComponent< Surface* >
 {
 public:
 

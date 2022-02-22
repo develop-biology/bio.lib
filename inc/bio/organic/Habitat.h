@@ -39,7 +39,7 @@ class Organism
 
 class Habitat :
 	public visceral::Class<Habitat>,
-	public chemical::LinearStructuralComponent< Organism >,
+	public chemical::LinearStructuralComponent< Organism* >,
 	public physical::ThreadedPeriodic,
 {
 public:

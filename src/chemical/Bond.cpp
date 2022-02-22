@@ -22,7 +22,7 @@
 #include "bio/chemical/Bond.h"
 #include "bio/chemical/PeriodicTable.h"
 #include "bio/physical/Wave.h"
-#include "bio/common/Macros.h"
+#include "bio/common/macros/Macros.h"
 
 namespace bio {
 namespace chemical {

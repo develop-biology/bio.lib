@@ -35,9 +35,9 @@ Molecule::Molecule(const Molecule& toCopy)
 		toCopy.GetPerspective(),
 		toCopy.GetFilter()),
 	physical::Perspective< StandardDimension >(toCopy),
-	chemical::LinearStructuralComponent< Surface >(toCopy)
+	chemical::LinearStructuralComponent< Surface* >(toCopy)
 {
-	chemical::LinearStructuralComponent< Surface >::m_perspective = this;
+	chemical::LinearStructuralComponent< Surface* >::m_perspective = this;
 }
 
 Molecule::~Molecule()
@@ -122,7 +122,7 @@ bool Molecule::TransferFrom(
 		toTransfer = RESULT,
 		return false);
 
-	(*Add< Surface* >(toTransfer))->SetEnvironment(this);
+	Add< Surface* >(toTransfer)->SetEnvironment(this);
 	source->Remove< Surface* >(toTransfer);
 	return true;
 }
@@ -152,7 +152,7 @@ Molecule* Molecule::operator<<(Surface* source)
 	BIO_SANITIZE(source, ,
 		return this);
 
-	(*(Add< Surface* >(*(ChemicalCast< Surface* >(source->Clone())))))->SetEnvironment(this);
+	Add< Surface* >(CloneAndCast<Surface*>(source))->SetEnvironment(this);
 	return this;
 }
 
@@ -168,7 +168,7 @@ Molecule* Molecule::operator<<=(Surface* source)
 {
 	BIO_SANITIZE(source, ,
 		return this);
-	Add< Surface* >(souce)->SetEnvironment(this);
+	Add< Surface* >(source)->SetEnvironment(this);
 	return this;
 }
 
@@ -201,11 +201,13 @@ Molecule* Molecule::operator<<=(Molecule* source)
 	BIO_SANITIZE(source, ,
 		return this);
 	LockThread();
-	AbstractStructuralComponent< Surface* >::m_contents.insert(
-		AbstractStructuralComponent< Surface* >::m_contents.end(),
-		source::AbstractStructuralComponent< Surface* >::m_contents.begin(),
-		source::AbstractStructuralComponent< Surface* >::m_contents.end());
-	source::AbstractStructuralComponent< Surface* >::m_contents.clear();
+	StructuralComponentImplementation< Surface* >::Contents* contents = GetAll< Surface* >();
+	StructuralComponentImplementation< Surface* >::Contents* insert = source->GetAll< Surface* >();
+	contents->insert(
+		contents->end(),
+		insert->begin(),
+		insert->end());
+	insert->clear();
 	UnlockThread();
 	return this;
 }
@@ -214,7 +216,7 @@ Molecule* Molecule::operator>>=(Molecule* target)
 {
 	BIO_SANITIZE(target, ,
 		return target);
-	target <<= this;
+	*target <<= this;
 	return target;
 }
 

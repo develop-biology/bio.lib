@@ -20,7 +20,7 @@ Biology is broken into the following namespaces:
 8. visceral (context) - groups related cells into tissues and provides context for the work done.
 9. organism (wrapper) - discretizes tissues and provides a functional, whole object.
 
-### Extension
+#### Extension
 In order to facilitate cross-namespace type extension, some special rules should be followed in order to create consistency between domains.
 
 When defining extendable types, primarily through the use of `physical::Perspectives`, it is customary to define the type with a capital (i.e. Type) in the main bio namespace, ignoring any other namespaces the type would otherwise belong to.
@@ -46,6 +46,10 @@ To recap, extendable types should follow these rules:
 * Type is UpperCamelCase.
 * Corresponding namespace is defined in bio namespace.
 * Corresponding namespace is lower_snake_case.
+
+### Templates
+
+Templates are handled in a WYSIWYG manner where `T` (or the appropriate `typename`) is never modified. This means if you call `Add < T >` you will get a `T` returned, not a `T*` or anything else.
 
 ## Building
 

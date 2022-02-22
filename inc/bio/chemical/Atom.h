@@ -22,9 +22,9 @@
 #pragma once
 
 #include "bio/common/Cast.h"
-#include "bio/common/Macros.h"
+#include "bio/common/macros/Macros.h"
 #include "bio/common/IsPrimitive.h"
-#include "bio/common/OS.h"
+#include "bio/common/macros/OSMacros.h"
 #include "bio/physical/Quantum.h"
 #include "bio/physical/common/Class.h"
 #include "PeriodicTable.h"
@@ -122,12 +122,12 @@ public:
 	 * @return a T* that is Bond()ed with *this; else NULL.
 	 */
 	template < typename T >
-	T* AsBonded()
+	T AsBonded()
 	{
 		Valence position = GetBondPosition< T >();
 		BIO_SANITIZE(position, ,
 			return NULL);
-		return ForceCast< T* >(m_bonds[position].GetBonded());
+		return ForceCast< T >(m_bonds[position].GetBonded());
 	}
 
 	/**
@@ -136,12 +136,12 @@ public:
 	 * @return  a const T* that is Bond()ed with *this; else NULL.
 	 */
 	template < typename T >
-	const T* AsBonded() const
+	const T AsBonded() const
 	{
 		Valence position = GetBondPosition< T >();
 		BIO_SANITIZE(position, ,
 			return NULL);
-		return ForceCast< const T* >(m_bonds[position].GetBonded());
+		return ForceCast< const T >(m_bonds[position].GetBonded());
 	}
 
 	/**
@@ -150,9 +150,9 @@ public:
 	 * @return *this as a T*, from a Bonded Quantum Wave, or NULL.
 	 */
 	template < typename T >
-	T* AsBondedQuantum()
+	T AsBondedQuantum()
 	{
-		return Cast< T* >(AsBonded< physical::Quantum< T > >());
+		return Cast< T >(AsBonded< physical::Quantum< T > >());
 	}
 
 	/**
@@ -161,45 +161,32 @@ public:
 	 * @return *this as a const T*, from a Bonded Quantum Wave.
 	 */
 	template < typename T >
-	const T* AsBondedQuantum() const
+	const T AsBondedQuantum() const
 	{
 		return AsBonded< physical::Quantum< T > >();
 	}
 
 	/**
-	 * Checks if T is a primitive type, which would require a Quantum<T> Bond or if T should be a Wave and can be Bonded regularly.
+	 * This method is here so that we can add different As____ methods without changing the downstream interfaces.
 	 * @tparam T
 	 * @return *this as a T* or NULL.
 	 */
 	template < typename T >
-	T* As()
+	T As()
 	{
-		if (IsPrimitive< T >())
-		{
-			return AsBondedQuantum< T >();
-		}
-		else
-		{
-			return AsBonded< T >();
-		}
+		return AsBonded< T >();
 	}
 
 	/**
 	 * Const version of As().
+	 * This method is here so that we can add different As____ methods without changing the downstream interfaces.
 	 * @tparam T
 	 * @return *this as a const T* or NULL.
 	 */
 	template < typename T >
-	const T* As() const
+	const T As() const
 	{
-		if (IsPrimitive< T >())
-		{
-			return AsBondedQuantum< T >();
-		}
-		else
-		{
-			return AsBonded< T >();
-		}
+		return AsBonded< T >();
 	}
 
 
@@ -211,7 +198,7 @@ public:
 	template < typename T >
 	operator T*()
 	{
-		return As< T >();
+		return As< T* >();
 	}
 
 	/**
@@ -219,13 +206,13 @@ public:
 	 * Updating a Bond requires both Breaking and Forming steps to be done manually.
 	 * You CANNOT bond the same T twice (without Breaking the initial Bond).
 	 * See Molecule.h if you would like to Bond multiple Ts.
-	 * @tparam T A class deriving from Wave which is not already Bonded.
+	 * @tparam T A pointer to an instance of a class deriving from Wave and which is not already Bonded.
 	 * @param toBond what to Bond
 	 * @return true, if the Bond was created; false otherwise.
 	 */
 	template < typename T >
 	bool FormBond(
-		T* toBond,
+		T toBond,
 		BondType type = bond_type::Unknown())
 	{
 		BIO_SANITIZE(IsPrimitive< T >(), ,
@@ -249,7 +236,7 @@ public:
 	 */
 	template < typename T >
 	bool BreakBond(
-		T* toDisassociate,
+		T toDisassociate,
 		BondType type = bond_type::Unknown())
 	{
 		BIO_SANITIZE(IsPrimitive< T >(), ,

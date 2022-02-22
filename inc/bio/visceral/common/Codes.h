@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -21,38 +21,13 @@
 
 #pragma once
 
-#include "bio/chemical/reaction/Reaction.h"
-#include "bio/physical/common/Class.h"
+#include "bio/cellular/common/Codes.h"
+#include "Types.h"
 
 namespace bio {
-namespace molecular {
+namespace code {
 
-/**
- * ActivateProtein is a chemical::Reaction that takes a Protein [0] and activates it (operator()).
- */
-class ActivateProtein :
-	public chemical::Reaction,
-	public physical::Class<ActivateProtein>
-{
-public:
-	/**
-	 *
-	 */
-	ActivateProtein();
 
-	/**
-	 *
-	 */
-	virtual ~ActivateProtein();
 
-	/**
-	 * Do the actual work.
-	 * See Reaction.h (in bio/chemical/) for more info and the class description for what *this does.
-	 * @param reactants [0] = Protein
-	 * @return reactants
-	 */
-	virtual chemical::Products Process(chemical::Substances& reactants);
-};
-
-} //molecular namespace
+} //code namespace
 } //bio namespace

@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "Assert.h"
+#include "bio/common/macros/AssertMacros.h"
 #include "TypeName.h"
 #include <cstddef>
 

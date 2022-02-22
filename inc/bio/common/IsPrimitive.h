@@ -21,8 +21,8 @@
 
 #pragma once
 
-#include "Language.h"
-#include "Macros.h"
+#include "bio/common/macros/LanguageMacros.h"
+#include "bio/common/macros/Macros.h"
 #include "IsPointer.h"
 
 //@formatter:off

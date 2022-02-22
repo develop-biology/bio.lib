@@ -21,86 +21,63 @@
 
 #include "bio/molecular/Protein.h"
 #include "bio/molecular/common/Filters.h"
-#include "bio/molecular/reactions/ActivateProtein.h"
-#include "bio/molecular/reactions/FoldProtein.h"
-#include "bio/molecular/reactions/RecruitChaperonesForProtein.h"
-#include "bio/physical/common/Codes.h"
-#include "bio/chemical/reactions/SetLogEngine.h"
+#include "bio/molecular/common/Codes.h"
+#include "bio/chemical/reaction/Excitation.h"
 
 namespace bio {
 namespace molecular {
 
-Protein::Protein(
-	Name name,
-	DNA* source)
-	:
-	chemical::LinearStructuralComponent<Protein, StandardDimension>(
-		name,
-		&ProteinPerspective::Instance()),
-	Writer(
-		NULL,
-		filter::Molecular()),
-	m_source(source),
-	m_environment(NULL)
+void Protein::CtorCommon()
 {
+	m_source = NULL;
 }
 
 Protein::~Protein()
 {
 }
 
-Protein* Protein::Clone() const
-{
-	return new Protein(*this);
-}
-
-bool Protein::operator==(const Protein& other)
-{
-	return GetSource() == other.GetSource() && Molecule::operator==(other)
-}
-
-bool operator==(const StandardDimension& id) const
-{
-	return Identifiable<StandardDimension>::operator==(id);
-}
-
-const DNA* GetSource() const
-{
-	return m_source;
-}
-
 Code Protein::Fold()
 {
 	Code ret = code::Success();
-	ForEach<Protein*>(chemical::Reaction::Initiate<FoldProtein>());
-	return ret; //TODO: Get Code from children?
+	BIO_EXCITATION_CLASS(Protein, Code) fold(&Protein::Fold);
+	chemical::Emission result = ForEach<Protein*>(fold);
+	//We don't care about result right now.
+	return ret;
 }
 
 Code Protein::RecruitChaperones(Vesicle* environment)
 {
 	SetEnvironment(environment);
-	ForEach<Protein*>(
-		chemical::Reaction::Initiate<RecruitChaperonesForProtein>(),
-		environment
-	);
-	return code::Success();//TODO: Get Code from children?
+	BIO_EXCITATION_CLASS(Protein, Code, Vesicle*) recruitChaperones(&Protein::RecruitChaperones, environment);
+	chemical::Emission result = ForEach<Protein*>(&recruitChaperones);
+	//We don't care about result right now.
+	return code::Success();
 }
 
+
+Code Protein::Activate()
+{
+	Code ret = code::Success();
+	BIO_EXCITATION_CLASS(Protein, Code) activate(&Protein::Activate);
+	chemical::Emission result = ForEach<Protein*>(activate);
+	//We don't care about result right now.
+	return ret;
+}
 
 Code Protein::operator()()
 {
-	Code ret = code::Success();
-	ForEach<Protein*>(chemical::Reaction::Initiate<ActivateProtein>());
-	return ret; //TODO: Get Code from children?
+	return Activate();
 }
 
-void Protein::SetLogEngine(log::Engine* logEngine)
+Code Protein::SetSource(const DNA* source)
 {
-	log::Writer::SetLogEngine(logEngine);
-	ForEach<Protein*>(
-		chemical::Reaction::Iniate<SetLogEngine>,
-		this
-	);
+	m_source = source;
+	return code::Success();
+}
+
+const DNA* Protein::GetSource() const
+{
+	return m_source;
 }
 
 } //molecular namespace

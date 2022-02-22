@@ -24,7 +24,7 @@
 #include "bio/physical/common/Class.h"
 #include "Symmetry.h"
 #include "bio/physical/common/SymmetryTypes.h"
-#include "bio/common/Macros.h"
+#include "bio/common/macros/Macros.h"
 #include "bio/common/TypeName.h"
 
 namespace bio {

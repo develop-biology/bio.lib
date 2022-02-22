@@ -34,7 +34,7 @@ namespace chemical {
  * Main documentation for all Excitation classes will be provided here.
  *
  * For the difference between Excitation and Reaction, see Reaction.h
- * The main thing Excitations can do which Reactions can't is be used in LinearStructureInterface::ForEach<>().
+ * The main thing Excitations can do, which Reactions can't, is be used in LinearStructureInterface::ForEach<>().
  *
  * An Excitation is a Wave that stores a function pointer, i.e. a functor.
  * Excitations allow you to directly invoke a Wave's methods.
@@ -91,7 +91,7 @@ public:
 	 * @param wave
 	 * @param ret
 	 */
-	virtual void CallDown(physical::Wave* wave, void* ret)
+	virtual void CallDown(physical::Wave* wave, ByteStream* ret)
 	{
 		//nop
 	}
@@ -159,15 +159,15 @@ public:
 	RETURN operator()(WAVE* wave)
 	{
 		std::tuple allArgs = std::tuple_cat(std::make_tuple(wave), m_args);
-		return std::apply(m_function, allArgs);
+		return std::apply(*m_function, allArgs);
 	}
 
 	/**
 	 * Override of ExcitationBase; see above.
 	 */
-	virtual void CallDown(physical::Wave* wave, void* ret)
+	virtual void CallDown(physical::Wave* wave, ByteStream* ret)
 	{
-		ret = &((*this)(Cast<WAVE*>(wave)));
+		ret->Set(this->operator()(ForceCast<WAVE*>(wave)));
 	}
 
 protected:
@@ -232,15 +232,15 @@ public:
 	 */
 	RETURN operator()(WAVE* wave)
 	{
-		return wave->m_function();
+		return (wave->*m_function)();
 	}
 
 	/**
 	 * Override of ExcitationBase; see above.
 	 */
-	virtual void CallDown(physical::Wave* wave, void* ret)
+	virtual void CallDown(physical::Wave* wave, ByteStream* ret)
 	{
-		ret = &((*this)(Cast<WAVE*>(wave)));
+		ret->Set(this->operator()(ForceCast<WAVE*>(wave)));
 	}
 
 protected:
@@ -307,15 +307,15 @@ public:
 	 */
 	RETURN operator()(WAVE* wave)
 	{
-		return wave->m_function(m_arg);
+		return (wave->*m_function)(m_arg);
 	}
 
 	/**
 	 * Override of ExcitationBase; see above.
 	 */
-	virtual void CallDown(physical::Wave* wave, void* ret)
+	virtual void CallDown(physical::Wave* wave, ByteStream* ret)
 	{
-		ret = &((*this)(Cast<WAVE*>(wave)));
+		ret->Set(this->operator()(ForceCast<WAVE*>(wave)));
 	}
 
 protected:

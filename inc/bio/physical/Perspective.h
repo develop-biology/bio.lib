@@ -441,10 +441,10 @@ public:
 	 * @return a T* associated with the given name id NULL.
 	 */
 	template < typename T >
-	const T* GetTypeFromIdAs(Id id) const
+	const T GetTypeFromIdAs(Id id) const
 	{
 		BIO_SANITIZE_WITH_CACHE(GetTypeFromId(id),
-			BIO_SINGLE_ARG(return ForceCast< T*, const Wave* >(RESULT)),
+			BIO_SINGLE_ARG(return ForceCast< T, const Wave* >(RESULT)),
 			return NULL);
 	}
 
@@ -455,10 +455,10 @@ public:
 	 * @return a T* associated with the given name id NULL.
 	 */
 	template < typename T >
-	const T* GetTypeFromNameAs(Name name) const
+	const T GetTypeFromNameAs(Name name) const
 	{
 		BIO_SANITIZE_WITH_CACHE(GetTypeFromName(name),
-			BIO_SINGLE_ARG(return ForceCast< T*, const Wave* >(RESULT)),
+			BIO_SINGLE_ARG(return ForceCast< T, const Wave* >(RESULT)),
 			return NULL);
 	}
 
@@ -469,10 +469,10 @@ public:
 	 * @return a new T* from Clone()ing the type associated with the given id else NULL.
 	 */
 	template < typename T >
-	T* GetNewObjectFromIdAs(Id id)
+	T GetNewObjectFromIdAs(Id id)
 	{
 		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromId(id),
-			BIO_SINGLE_ARG(return ForceCast< T*, Wave* >(RESULT)),
+			BIO_SINGLE_ARG(return ForceCast< T, Wave* >(RESULT)),
 			return NULL);
 	}
 
@@ -483,10 +483,10 @@ public:
 	 * @return a new T* from Clone()ing the type associated with the given name else NULL.
 	 */
 	template < typename T >
-	T* GetNewObjectFromNameAs(Name name)
+	T GetNewObjectFromNameAs(Name name)
 	{
 		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromName(name),
-			BIO_SINGLE_ARG(return ForceCast< T*, Wave* >(RESULT)),
+			BIO_SINGLE_ARG(return ForceCast< T, Wave* >(RESULT)),
 			return NULL);
 	}
 

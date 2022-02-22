@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "bio/physical/common/Codes.h"
 #include "Types.h"
 
 namespace bio {

@@ -50,7 +50,7 @@ Surface::Surface(const Surface& toCopy)
 		toCopy.GetPerspective(),
 		toCopy.GetFilter(),
 		symmetry_type::Variable()),
-	chemical::LinearStructuralComponent< Molecule >(toCopy),
+	chemical::LinearStructuralComponent< Molecule* >(toCopy),
 	EnvironmentDependent< Molecule >(toCopy)
 {
 	for (

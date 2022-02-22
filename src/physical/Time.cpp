@@ -20,7 +20,7 @@
  */
 
 #include "bio/physical/Time.h"
-#include "bio/common/Language.h"
+#include "bio/common/macros/LanguageMacros.h"
 
 #if BIO_CPP_VERSION < 11
 #else

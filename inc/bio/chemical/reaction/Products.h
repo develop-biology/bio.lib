@@ -22,6 +22,7 @@
 #pragma once
 
 #include "bio/chemical/common/Types.h"
+#include "Reactants.h"
 
 namespace bio {
 namespace chemical {
@@ -53,6 +54,12 @@ public:
 	Products(const Substances& substances);
 
 	/**
+	 * Assume m_result Success(), since we're given a value and no error to report.
+	 * @param reactants
+	 */
+	Products(const Reactants& reactants);
+
+	/**
 	 * @param result
 	 * @param substances
 	 */
@@ -69,12 +76,18 @@ public:
 	/**
 	 * @return *this as a Code.
 	 */
-	operator Code&();
+	operator Code();
 
 	/**
 	 * @return *this as Substances.
 	 */
-	operator Substances&();
+	operator Substances();
+
+	/**
+	 * see molecular::Pathway for use.
+	 * @return *this as Reactants
+	 */
+	operator Reactants();
 
 protected:
 	Substances m_substances;

@@ -28,7 +28,7 @@ namespace bio {
 Habitat::Habitat()
 	:
 	visceral::Class(this),
-	chemical::LinearStructuralComponent< Organism >(&OrganismPerspective::Instance()),
+	chemical::LinearStructuralComponent< Organism** >(&OrganismPerspective::Instance()),
 	physical::ThreadedPeriodic()
 {
 
@@ -37,7 +37,7 @@ Habitat::Habitat()
 Habitat::Habitat(StandardDimension id)
 	:
 	visceral::Class(this, id, &HabitatPerspective::Instance(), filter::Habitat()),
-	chemical::LinearStructuralComponent< Organism >(&OrganismPerspective::Instance()),
+	chemical::LinearStructuralComponent< Organism* >(&OrganismPerspective::Instance()),
 	physical::ThreadedPeriodic()
 {
 
@@ -46,7 +46,7 @@ Habitat::Habitat(StandardDimension id)
 Habitat::Habitat(Name name)
 	:
 	visceral::Class(this, name, &HabitatPerspective::Instance(), filter::Habitat()),
-	chemical::LinearStructuralComponent< Organism >(&OrganismPerspective::Instance()),
+	chemical::LinearStructuralComponent< Organism* >(&OrganismPerspective::Instance()),
 	physical::ThreadedPeriodic()
 {
 
@@ -55,7 +55,7 @@ Habitat::Habitat(Name name)
 Habitat::Habitat(const Habitat& toCopy)
 	:
 	visceral::Class(this, toCopy.GetId(), toCopy.GetPerspective(), toCopy.GetFilter()),
-	chemical::LinearStructuralComponent< Organism >(toCopy),
+	chemical::LinearStructuralComponent< Organism* >(toCopy),
 	physical::ThreadedPeriodic(toCopy)
 {
 

@@ -28,6 +28,8 @@
 namespace bio {
 namespace molecular {
 
+class Protein;
+
 /**
  * DNA allows Proteins to be stored as variables and be Transcribed and Translated later.
  * In order to improve debugging, Proteins store a pointer to their encoding DNA (similar to how a RISC-like mechanism might identify similar mRNA to that with produced the Protein in order to down-regulate its production; for more info, look into RNA Interference).
@@ -39,21 +41,27 @@ namespace molecular {
  */
 class DNA :
 	virtual public Molecule,
-	public Class<DNA>
+	public Class< DNA >
 {
 public:
 
 	/**
-	 * @param name
-	 * @param version
+	 * Ensure virtual methods point to Class implementations.
 	 */
-	DNA(Name name, Version version = 0);
+	BIO_DISAMBIGUATE_CLASS_METHODS(molecular,
+		DNA)
 
 	/**
-	 * @param id
-	 * @param version
+	 * Standard ctors.
+	 * These are easy to use but require setting the Version after instantiation.
+	 * For example:
+	 * 		DNA myAllele = DNA("MyGene");
+	 * 		myAllele.SetVersion(1.0);
 	 */
-	DNA(StandardDimension id, Version version = 0);
+	 BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(molecular,
+		DNA,
+		&DNAPerspective::Instance(),
+		filter::Molecular())
 
 	/**
 	 *
@@ -84,6 +92,12 @@ public:
 protected:
 	Protein* m_protein;
 	Version m_version;
+
+private:
+	/**
+	 * common constructor code.
+	 */
+	void CtorCommon();
 };
 
 } //cellular namespace

@@ -31,9 +31,9 @@ namespace visceral {
 
 Tissue::Tissue() :
 	Class(this),
-	chemical::LinearStructuralComponent< const genetic::Plasmid >(&genetic::PlasmidPerspective::Instance()),
-	chemical::LinearStructuralComponent< cellular::Cell >(&cellular::CellPerspective::Instance()),
-	chemical::LinearStructuralComponent< Tissue >(&TissuePerspective::Instance()),
+	chemical::LinearStructuralComponent< const genetic::Plasmid* >(&genetic::PlasmidPerspective::Instance()),
+	chemical::LinearStructuralComponent< cellular::Cell* >(&cellular::CellPerspective::Instance()),
+	chemical::LinearStructuralComponent< Tissue* >(&TissuePerspective::Instance()),
 	molecular::EnvironmentDependent<Tissue>()
 {
 
@@ -42,9 +42,9 @@ Tissue::Tissue() :
 Tissue::Tissue(StandardDimension id)
 	:
 	Class(this, id, &TissuePerspective::Instance(), filter::Visceral())
-	chemical::LinearStructuralComponent< const genetic::Plasmid >(&genetic::PlasmidPerspective::Instance()),
-	chemical::LinearStructuralComponent< cellular::Cell >(&cellular::CellPerspective::Instance()),
-	chemical::LinearStructuralComponent< Tissue >(&TissuePerspective::Instance()),
+	chemical::LinearStructuralComponent< const genetic::Plasmid* >(&genetic::PlasmidPerspective::Instance()),
+	chemical::LinearStructuralComponent< cellular::Cell* >(&cellular::CellPerspective::Instance()),
+	chemical::LinearStructuralComponent< Tissue* >(&TissuePerspective::Instance()),
 	molecular::EnvironmentDependent<Tissue>()
 {
 
@@ -54,9 +54,9 @@ Tissue::Tissue(StandardDimension id)
 Tissue::Tissue(Name name)
 	:
 	Class(this, name, &TissuePerspective::Instance(), filter::Visceral())
-	chemical::LinearStructuralComponent< const genetic::Plasmid >(&genetic::PlasmidPerspective::Instance()),
-	chemical::LinearStructuralComponent< cellular::Cell >(&cellular::CellPerspective::Instance()),
-	chemical::LinearStructuralComponent< Tissue >(&TissuePerspective::Instance()),
+	chemical::LinearStructuralComponent< const genetic::Plasmid* >(&genetic::PlasmidPerspective::Instance()),
+	chemical::LinearStructuralComponent< cellular::Cell* >(&cellular::CellPerspective::Instance()),
+	chemical::LinearStructuralComponent< Tissue* >(&TissuePerspective::Instance()),
 	molecular::EnvironmentDependent<Tissue>()
 {
 
@@ -64,9 +64,9 @@ Tissue::Tissue(Name name)
 
 Tissue::Tissue(const Tissue& toCopy) :
 	Class(this, toCopy.GetId(), toCopy.GetPerspective(), toCopy.GetFilter()),
-	chemical::LinearStructuralComponent< const genetic::Plasmid >(toCopy),
-	chemical::LinearStructuralComponent< cellular::Cell >(toCopy),
-	chemical::LinearStructuralComponent< Tissue >(toCopy),
+	chemical::LinearStructuralComponent< const genetic::Plasmid* >(toCopy),
+	chemical::LinearStructuralComponent< cellular::Cell* >(toCopy),
+	chemical::LinearStructuralComponent< Tissue* >(toCopy),
 	molecular::EnvironmentDependent<Tissue>(toCopy)
 {
 

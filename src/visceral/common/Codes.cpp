@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,33 +19,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include "bio/chemical/PeriodicTable.h"
-#include "bio/chemical/common/SymmetryTypes.h"
-#include "bio/molecular/reactions/RecruitChaperonesForProtein.h"
-#include "bio/molecular/Vesicle.h"
+#include "bio/visceral/common/Codes.h"
+#include "bio/physical/macros/Macros.h"
 
 namespace bio {
-namespace molecular {
+namespace code {
 
-RecruitChaperonesForProtein::RecruitChaperonesForProtein() :
-	chemical::Reaction(PeriodicTable::Instance().GetNameFromType(*this)),
-	physical::Class(this, new physical::Symmetry(PeriodicTable::Instance().GetNameFromType(*this),symmetry_type::Operation()))
-{
-	Require<Protein>();
-	Require<Vesicle>();
-}
 
-RecruitChaperonesForProtein::~RecruitChaperonesForProtein()
-{
-}
-
-Products RecruitChaperonesForProtein::Process(chemical::Substances& reactants)
-{
-	Protein* protein = reactants[0];
-	return Products(protein->RecruitChaperones(reactants[1]), reactants);
-}
-
-} //molecular namespace
+} //code namespace
 } //bio namespace

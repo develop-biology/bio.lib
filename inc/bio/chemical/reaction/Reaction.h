@@ -72,7 +72,8 @@ namespace chemical {
  *
  */
 class Reaction :
-	public chemical::Class< Reaction >
+	public chemical::Class< Reaction >,
+	virtual public StructureInterface //for use in LinearStructuralComponents downstream, we must have interface methods available, even though Reaction does not directly contain anything.
 {
 public:
 

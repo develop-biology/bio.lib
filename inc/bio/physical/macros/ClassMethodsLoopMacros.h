@@ -19,6 +19,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#pragma once
 
 #define BIO_DEFINE_CLASS_METHODS_LOOP_1(ns, caller, \
 t1)\

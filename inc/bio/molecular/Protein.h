@@ -31,6 +31,7 @@ namespace bio {
 namespace molecular {
 
 class Vesicle;
+
 class DNA;
 
 /**
@@ -42,17 +43,29 @@ class DNA;
  */
 class Protein :
 	virtual public Molecule,
-	public Class<Protein>,
-	public chemical::LinearStructuralComponent< Protein >,
-	public EnvironmentDependent<Vesicle>
+	public Class< Protein >,
+	public chemical::LinearStructuralComponent< Protein* >,
+	public EnvironmentDependent< Vesicle >
 {
 public:
 
 	/**
-	 * @param name
-	 * @param source
+	 * Ensure virtual methods point to Class implementations.
 	 */
-	explicit Protein(Name name = ProteinPerspective::InvalidName(), DNA* source = NULL);
+	BIO_DISAMBIGUATE_CLASS_METHODS(molecular,
+		Protein)
+
+	/**
+	 * These are easy to use but require setting the Source after instantiation.
+	 * For example:
+	 * 		Protein myProtein = Protein("MyProtein");
+	 * 		myProtein.SetSource(myDNA); //myDNA created sometime earlier.
+	 */
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(molecular,
+		Protein,
+		&ProteinPerspective::Instance(),
+		filter::Molecular())
+
 
 	/**
 	 *
@@ -96,12 +109,17 @@ public:
 
 
 	/**
-	 * The () operator is the primary function that will be called when accessing *this.
-	 * Calling Protein::operator() is referred to as "activating" the Protein.
 	 * This should be overwritten to add whatever functionality is desired.
-	 * It is likely desirable, though not enforced to call Protein::operator() at the end of any overwritten functions. This will cause all sub-Proteins to be activated.
-	 * @return result of activation.
+	 * It is likely desirable, though not enforced to call Protein::Activate() at the end of any overwritten functions. This will cause all sub-Proteins to be Activated.
+	 * @return result of Activation.
 	*/
+	virtual Code Activate();
+
+	/**
+	 * The () operator is the primary function that will be called when accessing *this.
+	 * Calling Protein::operator() just forwards to Activate.
+	 * @return Activate()
+	 */
 	virtual Code operator()();
 
 	/**
@@ -112,8 +130,21 @@ public:
 	 */
 	virtual const DNA* GetSource() const;
 
+	/**
+	 * Set the m_source of *this
+	 * @param source
+	 * @return the result of setting (e.g. code::Success()).
+	 */
+	virtual Code SetSource(const DNA* source);
+
 protected:
 	const DNA* m_source;
+
+private:
+	/**
+	 *
+	 */
+	void CtorCommon();
 };
 
 } //molecular namespace

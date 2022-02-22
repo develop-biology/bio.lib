@@ -46,7 +46,7 @@ namespace genetic {
  */
 class Plasmid :
 	public genetic::Class<Plasmid>,
-	public chemical::LinearStructuralComponent< Gene >,
+	public chemical::LinearStructuralComponent< Gene* >,
 	public molecular::DNA
 {
 public:

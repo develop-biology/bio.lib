@@ -62,7 +62,7 @@ public:
 	 */
 	template < typename T >
 	Code Insert(
-		T* toAdd,
+		T toAdd,
 		const typename LinearStructuralComponentImplementation< T >::Dimensions& insertionPoint,
 		const Position position = BOTTOM,
 		const typename LinearStructuralComponentImplementation< T >::Dimension optionalPositionArg = 0,
@@ -71,14 +71,17 @@ public:
 	{
 		Code ret = code::GeneralFailure();
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE((Cast< LinearStructuralComponentImplementation< T >* >(this->AsBonded< LinearStructuralComponentImplementation< T > >())),
-			ret = (Cast< LinearStructuralComponentImplementation< T >* >(RESULT))->InsertImplementation(
+		LinearStructuralComponentImplementation< T >* implementer = this->AsBonded< LinearStructuralComponentImplementation< T >* >();
+		if (implementer)
+		{
+			ret = implementer->InsertImplementation(
 				toAdd,
 				insertionPoint,
 				position,
 				optionalPositionArg,
 				transferSubContents
-			),);
+			);
+		}
 		UnlockThread();
 		return ret;
 	}
@@ -91,18 +94,21 @@ public:
 	 * @return a T of the given id or NULL; NULL if T is invalid.
 	 */
 	template < typename T >
-	T* GetById(
+	T GetById(
 		typename LinearStructuralComponentImplementation< T >::Dimension id,
 		const bool recurse = false
 	)
 	{
-		T* ret = NULL;
+		T ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE((Cast< LinearStructuralComponentImplementation< T >* >(this->AsBonded< LinearStructuralComponentImplementation< T > >())),
-			ret = (Cast< LinearStructuralComponentImplementation< T >* >(RESULT))->GetByIdImplementation(
+		LinearStructuralComponentImplementation< T >* implementer = this->AsBonded< LinearStructuralComponentImplementation< T >* >();
+		if (implementer)
+		{
+			ret = implementer->GetByIdImplementation(
 				id,
 				recurse
-			),);
+			);
+		}
 		UnlockThread();
 		return ret;
 	}
@@ -115,18 +121,21 @@ public:
 	 * @return a T of the given id or NULL; NULL if T is invalid.
 	 */
 	template < typename T >
-	const T* GetById(
+	const T GetById(
 		typename LinearStructuralComponentImplementation< T >::Dimension id,
 		const bool recurse = false
 	) const
 	{
-		const T* ret = NULL;
+		T ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE((Cast< LinearStructuralComponentImplementation< T >* >(this->AsBonded< LinearStructuralComponentImplementation< T > >())),
-			ret = (Cast< LinearStructuralComponentImplementation< T >* >(RESULT))->GetByIdImplementation(
+		LinearStructuralComponentImplementation< T >* implementer = this->AsBonded< LinearStructuralComponentImplementation< T >* >();
+		if (implementer)
+		{
+			ret = implementer->GetByIdImplementation(
 				id,
 				recurse
-			),);
+			);
+		}
 		UnlockThread();
 		return ret;
 	}
@@ -139,18 +148,21 @@ public:
 	 * @return a T of the given id or NULL; NULL if T is invalid.
 	 */
 	template < typename T >
-	T* GetByName(
+	T GetByName(
 		Name name,
 		bool recurse = false
 	)
 	{
-		T* ret = NULL;
+		T ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE((Cast< LinearStructuralComponentImplementation< T >* >(this->AsBonded< LinearStructuralComponentImplementation< T > >())),
-			ret = (Cast< LinearStructuralComponentImplementation< T >* >(RESULT))->GetByNameImplementation(
+		LinearStructuralComponentImplementation< T >* implementer = this->AsBonded< LinearStructuralComponentImplementation< T >* >();
+		if (implementer)
+		{
+			ret = implementer->GetByNameImplementation(
 				name,
 				recurse
-			),);
+			);
+		}
 		UnlockThread();
 		return ret;
 	}
@@ -163,18 +175,21 @@ public:
 	 * @return a T of the given id or NULL; NULL if T is invalid.
 	 */
 	template < typename T >
-	const T* GetByName(
+	const T GetByName(
 		Name name,
 		const bool recurse = false
 	) const
 	{
-		const T* ret = NULL;
+		T ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE((Cast< LinearStructuralComponentImplementation< T >* >(this->AsBonded< LinearStructuralComponentImplementation< T > >())),
-			ret = (Cast< LinearStructuralComponentImplementation< T >* >(RESULT))->GetByNameImplementation(
+		LinearStructuralComponentImplementation< T >* implementer = this->AsBonded< LinearStructuralComponentImplementation< T >* >();
+		if (implementer)
+		{
+			ret = implementer->GetByNameImplementation(
 				name,
 				recurse
-			),);
+			);
+		}
 		UnlockThread();
 		return ret;
 	}
@@ -188,18 +203,21 @@ public:
 	 * @return A T* of the given id; NULL if T is invalid.
 	 */
 	template < typename T >
-	T* GetOrCreateById(
+	T GetOrCreateById(
 		typename LinearStructuralComponentImplementation< T >::Dimension id,
 		const bool recurse = false
 	)
 	{
-		T* ret = NULL;
+		T ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE((Cast< LinearStructuralComponentImplementation< T >* >(this->AsBonded< LinearStructuralComponentImplementation< T > >())),
-			ret = (Cast< LinearStructuralComponentImplementation< T >* >(RESULT))->GetOrCreateByIdImplementation(
+		LinearStructuralComponentImplementation< T >* implementer = this->AsBonded< LinearStructuralComponentImplementation< T >* >();
+		if (implementer)
+		{
+			ret = implementer->GetOrCreateByIdImplementation(
 				id,
 				recurse
-			),);
+			);
+		}
 		UnlockThread();
 		return ret;
 	}
@@ -213,18 +231,21 @@ public:
 	 * @return A T* of the given id; NULL if T is invalid.
 	 */
 	template < typename T >
-	T* GetOrCreateByName(
+	T GetOrCreateByName(
 		Name name,
 		const bool recurse = false
 	)
 	{
-		T* ret = NULL;
+		T ret = NULL;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE((Cast< LinearStructuralComponentImplementation< T >* >(this->AsBonded< LinearStructuralComponentImplementation< T > >())),
-			ret = (Cast< LinearStructuralComponentImplementation< T >* >(RESULT))->GetOrCreateByNameImplementation(
+		LinearStructuralComponentImplementation< T >* implementer = this->AsBonded< LinearStructuralComponentImplementation< T >* >();
+		if (implementer)
+		{
+			ret = implementer->GetOrCreateByNameImplementation(
 				name,
 				recurse
-			),);
+			);
+		}
 		UnlockThread();
 		return ret;
 	}
@@ -236,14 +257,17 @@ public:
 	 * @param self a pointer to *this, if *this is a chemical::Substance.
 	 */
 	template < typename T >
-	ExcitationReturns ForEach(
+	Emission ForEach(
 		ExcitationBase* excitation
 	)
 	{
-		ExcitationReturns ret;
+		Emission ret;
 		LockThread();
-		BIO_SANITIZE_WITH_CACHE((Cast< LinearStructuralComponentImplementation< T >* >(this->AsBonded< LinearStructuralComponentImplementation< T > >())),
-			ret = (Cast< LinearStructuralComponentImplementation< T >* >(RESULT))->ForEachImplementation(excitation),);
+		LinearStructuralComponentImplementation< T >* implementer = this->AsBonded< LinearStructuralComponentImplementation< T >* >();
+		if (implementer)
+		{
+			ret = implementer->ForEachImplementation(excitation);
+		}
 		UnlockThread();
 		return ret;
 	}

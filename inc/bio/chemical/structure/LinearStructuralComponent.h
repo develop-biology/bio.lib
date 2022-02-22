@@ -38,9 +38,8 @@ namespace chemical {
 /**
  * LinearStructuralComponent objects contain pointers to Substances.
  *
- * IMPORTANT: CONTENT_TYPE MUST BE A NON-POINTER chemical::Class in the StandardDimension.
- * This will be translated to CONTENT_TYPE* to store pointers to CONTENT_TYPEs.
- * YOU CANNOT USE LinearStructuralComponent WITH TYPES THAT ARE NOT chemical::Class<>es
+ * IMPORTANT: CONTENT_TYPE MUST BE A chemical::Class* (which is in the StandardDimension).
+ * YOU CANNOT USE LinearStructuralComponent WITH TYPES THAT ARE NOT POINTERS TO CHILDREN OF chemical::Class
  *
  * Other Dimensions may be supported in a future release (see note in LinearStructuralComponentImplementation.h for why).
  *
@@ -104,7 +103,7 @@ public:
 	 * @param perspective
 	 */
 	explicit LinearStructuralComponent(
-		const typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents& contents,
+		const typename StructuralComponentImplementation< CONTENT_TYPE >::Contents& contents,
 		physical::Perspective< StandardDimension >* perspective = NULL
 	)
 		:
@@ -128,7 +127,7 @@ public:
 		CtorCommon();
 		m_perspective = toCopy.m_perspective;
 		for (
-			typename StructuralComponentImplementation< CONTENT_TYPE* >::Contents::const_iterator cnt = toCopy.m_contents.begin();
+			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::const_iterator cnt = toCopy.m_contents.begin();
 			cnt != toCopy.m_contents.end();
 			++cnt
 			)
@@ -158,7 +157,7 @@ public:
 	 * @return status of insertion
 	 */
 	virtual Code InsertImplementation(
-		CONTENT_TYPE* toAdd,
+		CONTENT_TYPE toAdd,
 		const typename LinearStructuralComponentImplementation< CONTENT_TYPE >::Dimensions& insertionPoint,
 		const Position position = BOTTOM,
 		const StandardDimension optionalPositionArg = CONTENT_TYPE::Perspective::InvalidId(),
@@ -182,7 +181,7 @@ public:
 	 * @param recurse
 	 * @return a CONTENT_TYPE of the given name or NULL.
 	 */
-	virtual CONTENT_TYPE* GetByNameImplementation(
+	virtual CONTENT_TYPE GetByNameImplementation(
 		Name name,
 		const bool recurse = false
 	)
@@ -201,7 +200,7 @@ public:
 	 * @param recurse
 	 * @return a CONTENT_TYPE of the given name or NULL.
 	 */
-	virtual const CONTENT_TYPE* GetByNameImplementation(
+	virtual const CONTENT_TYPE GetByNameImplementation(
 		Name name,
 		const bool recurse = false
 	) const
@@ -221,7 +220,7 @@ public:
 	 * @param id
 	 * @return a newly created CONTENT_TYPE else NULL.
 	 */
-	virtual CONTENT_TYPE* CreateImplementation(
+	virtual CONTENT_TYPE CreateImplementation(
 		StandardDimension id
 	)
 	{
@@ -238,12 +237,12 @@ public:
 	 * @param recurse
 	 * @return A CONTENT_TYPE of the given id.
 	 */
-	virtual CONTENT_TYPE* GetOrCreateByIdImplementation(
+	virtual CONTENT_TYPE GetOrCreateByIdImplementation(
 		StandardDimension id,
 		const bool recurse = false
 	)
 	{
-		CONTENT_TYPE* ret = this->GetByIdImplementation(
+		CONTENT_TYPE ret = this->GetByIdImplementation(
 			id,
 			recurse
 		);
@@ -261,7 +260,7 @@ public:
 	 * @param recurse
 	 * @return A CONTENT_TYPE of the given id.
 	 */
-	virtual CONTENT_TYPE* GetOrCreateByNameImplementation(
+	virtual CONTENT_TYPE GetOrCreateByNameImplementation(
 		Name name,
 		const bool recurse = false
 	)
@@ -269,7 +268,7 @@ public:
 		BIO_SANITIZE(this->GetStructuralPerspective(), ,
 			return NULL);
 		StandardDimension id = this->GetStructuralPerspective()->GetIdFromName(name);
-		CONTENT_TYPE* ret = this->GetByNameImplementation(
+		CONTENT_TYPE ret = this->GetByNameImplementation(
 			name,
 			recurse
 		);

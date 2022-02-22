@@ -25,28 +25,16 @@
 namespace bio {
 namespace molecular {
 
-Vesicle::Vesicle() :
-	Class(this),
-	LinearStructuralComponent< Molecule >(this)
-{
-
-}
-
-Vesicle::Vesicle(Name name) :
-	Class(this, name, &VesiclePerspective::Instance(), filter::Molecular()),
-	LinearStructuralComponent< Molecule >(this)
-{
-}
-
 Vesicle::Vesicle(const Vesicle& toCopy) :
-	Class(this, toCopy.GetId(), &VesiclePerspective::Instance(), filter::Molecular()),
-	LinearStructuralComponent< Molecule >(toCopy)
+	molecular::Class<Vesicle>(this, toCopy.GetId(), toCopy.GetPerspective(), toCopy.GetFilter()),
+	LinearStructuralComponent< Molecule* >(toCopy)
 {
-	LinearStructuralComponent< Molecule >::m_perspective = this;
+	LinearStructuralComponent< Molecule* >::m_perspective = this;
 }
 
 Vesicle::~Vesicle()
 {
 }
+
 } //molecular namespace
 } //bio namespace

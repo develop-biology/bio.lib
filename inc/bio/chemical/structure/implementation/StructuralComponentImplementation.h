@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/common/Macros.h"
+#include "bio/common/macros/Macros.h"
 #include "bio/common/String.h"
 #include "bio/common/Cast.h"
 #include "bio/physical/common/Codes.h"
@@ -121,9 +121,9 @@ public:
 	 * Adds content to the destination iff it does not already exist.
 	 * @param content
 	 * @param destination
-	 * @return a pointer to the added content or NULL.
+	 * @return a pointer to the added content or 0.
 	 */
-	static CONTENT_TYPE* AddTo(
+	static CONTENT_TYPE AddTo(
 		CONTENT_TYPE content,
 		Contents* destination
 	)
@@ -132,24 +132,24 @@ public:
 			content,
 			destination
 		), ,
-			return NULL);
+			return 0);
 		destination->push_back(content);
-		return &*(destination->end() - 1);
+		return *(destination->end() - 1);
 	}
 
 	/**
 	 * Removes toRemove from removeFrom.
 	 * @param toRemove what to remove.
 	 * @param removeFrom where to remove toRemove from.
-	 * @return a pointer to the removed content or NULL.
+	 * @return a pointer to the removed content or 0.
 	 */
-	static CONTENT_TYPE* RemoveFrom(
+	static CONTENT_TYPE RemoveFrom(
 		CONTENT_TYPE toRemove,
 		Contents* removeFrom
 	)
 	{
 		BIO_SANITIZE(removeFrom, ,
-			return NULL);
+			return 0);
 
 		typename Contents::iterator cnt = std::find(
 			removeFrom->begin(),
@@ -157,8 +157,8 @@ public:
 			toRemove
 		);
 		BIO_SANITIZE_AT_SAFETY_LEVEL_2(cnt != removeFrom->end(), ,
-			return NULL);
-		CONTENT_TYPE* ret = &*cnt;
+			return 0);
+		CONTENT_TYPE ret = *cnt;
 		removeFrom->erase(cnt);
 		return ret;
 	}
@@ -202,42 +202,42 @@ public:
 	/**
 	 * Get a pointer to the content in *this
 	 * @param content
-	 * @return a pointer to the given content matching that within *this; NULL if no match found.
+	 * @return a pointer to the given content matching that within *this; 0 if no match found.
 	 */
-	virtual CONTENT_TYPE* GetImplementation(CONTENT_TYPE content)
+	virtual CONTENT_TYPE GetImplementation(CONTENT_TYPE content)
 	{
 		typename Contents::iterator ret = Find(
 			content,
 			&this->m_contents
 		);
 		BIO_SANITIZE(ret != this->m_contents.end(), ,
-			return NULL);
-		return &*ret;
+			return 0);
+		return *ret;
 	}
 
 
 	/**
 	 * Get a pointer to the content in *this
 	 * @param content
-	 * @return a pointer to the given content matching that within *this; NULL if no match found.
+	 * @return a pointer to the given content matching that within *this; 0 if no match found.
 	 */
-	virtual const CONTENT_TYPE* GetImplementation(CONTENT_TYPE content) const
+	virtual const CONTENT_TYPE GetImplementation(CONTENT_TYPE content) const
 	{
 		typename Contents::const_iterator ret = Find(
 			content,
 			&this->m_contents
 		);
 		BIO_SANITIZE(ret != this->m_contents.end(), ,
-			return NULL);
-		return &*ret;
+			return 0);
+		return *ret;
 	}
 
 	/**
 	 * Adds content to *this.
 	 * @param content
-	 * @return t or NULL.
+	 * @return t or 0.
 	 */
-	virtual CONTENT_TYPE* AddImplementation(CONTENT_TYPE content)
+	virtual CONTENT_TYPE AddImplementation(CONTENT_TYPE content)
 	{
 		return this->AddTo(
 			content,
@@ -249,7 +249,7 @@ public:
 	 * Removes content from *this and deletes it.
 	 * @param content
 	 */
-	virtual CONTENT_TYPE* RemoveImplementation(CONTENT_TYPE content)
+	virtual CONTENT_TYPE RemoveImplementation(CONTENT_TYPE content)
 	{
 		return this->RemoveFrom(
 			content,

@@ -40,7 +40,7 @@ class Molecule;
  */
 class Surface :
 	public Class< Surface >,
-	public chemical::LinearStructuralComponent< Molecule >,
+	public chemical::LinearStructuralComponent< Molecule* >,
 	public EnvironmentDependent< Molecule >
 {
 public:

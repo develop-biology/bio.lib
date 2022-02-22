@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -21,30 +21,11 @@
 
 #pragma once
 
-#include "bio/chemical/PeriodicTable.h"
-#include "bio/chemical/common/SymmetryTypes.h"
-#include "bio/molecular/reactions/FoldProtein.h"
-#include "bio/molecular/Protein.h"
-
-namespace bio {
-namespace molecular {
-
-FoldProtein::FoldProtein() :
-	chemical::Reaction(PeriodicTable::Instance().GetNameFromType(*this)),
-	physical::Class(this, new physical::Symmetry(PeriodicTable::Instance().GetNameFromType(*this),symmetry_type::Operation()))
-{
-	Require<Protein>();
-}
-
-FoldProtein::~FoldProtein()
-{
-}
-
-Products FoldProtein::Process(chemical::Substances& reactants)
-{
-	Protein* protein = reactants[0];
-	return Products(protein->Fold(), reactants);
-}
-
-} //molecular namespace
-} //bio namespace
+#if BIO_CPP_VERSION < 11
+	#define BIO_CACHE(expression)                                              \
+    ::bio::ByteStream RESULT;                                                  \
+    RESULT.Set(expression);
+#else
+#define BIO_CACHE(expression)                                                  \
+	auto RESULT = (expression);
+#endif
