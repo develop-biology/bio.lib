@@ -28,7 +28,7 @@ namespace bio {
 namespace genetic {
 
 /**
- * TranslateRNA is a chemical::Reaction that takes a Gene (aka mRNA) [0] & a genetic::Expressor [1] and Translates the encoded Protein. (see Expressor::Translate for more).
+ * TranslateRNA is a chemical::Reaction that takes a Gene (aka mRNA) [0] & a genetic::Expressor [1] and Translates the encoded Protein. (see Expressor::Express for more).
  */
 class TranslateRNA :
 	public chemical::Reaction,

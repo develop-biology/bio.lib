@@ -44,12 +44,6 @@ namespace bio {
 	{
 		return false;
 	}
-
-	template < typename T >
-	bool IsPrimitiveStringImplementation()
-	{
-		return TypeName< T >().find("std::") != std::string::npos;
-	}
 #endif
 //@formatter:on
 
@@ -62,16 +56,14 @@ namespace bio {
  * @return whether or not T is a built-in type or a Biology class, which should, except for a few exceptions, always mean a child of physical::Wave; false by default.
  */
 template < typename T >
-inline bool IsPrimitive(const T t)
+bool IsPrimitive(const T t)
 {
 	BIO_SANITIZE_AT_SAFETY_LEVEL_2(!IsPointer< T >(), ,
 		return IsPrimitive(*t));
 
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
-		BIO_SANITIZE_AT_SAFETY_LEVEL_2(IsPrimitiveImplementation< T >(),
-			return true,
-			return IsPrimitiveStringImplementation< T >());
+		return IsPrimitiveImplementation< T >();
 	#else
 		return std::is_fundamental<T>::value;
 	#endif
@@ -85,13 +77,11 @@ inline bool IsPrimitive(const T t)
  * @return whether or not T is a built-in type or a Biology class, which should, except for a few exceptions, always mean a child of physical::Wave; false by default.
  */
 template < typename T >
-inline bool IsPrimitive()
+bool IsPrimitive()
 {
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(IsPrimitiveImplementation< T >(),
-		return true,
-		return IsPrimitiveStringImplementation< T >());
+		return IsPrimitiveImplementation< T >();
 	#else
 		return std::is_fundamental<T>::value;
 	#endif
@@ -180,6 +170,5 @@ bool IsPrimitiveImplementation< uint64_t >()
 }
 
 #endif
-
 
 } //bio namespace

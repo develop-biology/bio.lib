@@ -166,7 +166,7 @@ bool Atom::BreakBondImplementation(
 {
 	Valence position = GetBondPosition(id);
 
-	BIO_SANITIZE(toBreak && id && position, ,
+	BIO_SANITIZE(id && position, ,
 		return false);
 	BIO_SANITIZE(position < m_valence, ,
 		return false);

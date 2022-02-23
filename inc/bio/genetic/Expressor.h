@@ -25,6 +25,9 @@
 #include "bio/molecular/Vesicle.h"
 #include "bio/molecular/Protein.h"
 #include "bio/genetic/common/Types.h"
+#include "bio/genetic/common/Filters.h"
+#include "bio/genetic/macros/Macros.h"
+#include "RNA.h"
 
 namespace bio {
 namespace genetic {
@@ -40,17 +43,27 @@ class Expressor :
 	public chemical::LinearStructuralComponent< molecular::Protein* >
 {
 public:
+
 	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(genetic,
+		Expressor)
+
+	/**
+	 * Standard ctors.
+	 */
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(genetic,
+		Expressor,
+		&molecular::VesiclePerspective::Instance(),
+		filter::Genetic())
+
+
+	/**
+	 * NOTE: Protein*s and m_transcriptome are not copied!
 	 *
-	 */
-	Expressor();
-
-	/**
-	 * @param name
-	 */
-	Expressor(Name name);
-
-	/**
+	 * In order to make sure Proteins' life cycles are properly managed, *this will need to ExpressGenes() once copied. Because copying implies a change in context, which can potentially alter Gene Expression, we leave this method to be called manually.
+	 *
 	 * @param other
 	 */
 	Expressor(const Expressor& other);
@@ -61,35 +74,11 @@ public:
 	 */
 	virtual ~Expressor();
 
-
 	/**
-	 * Required method from Wave. See that class for details.
-	 * @return a new copy of *this.
-	 */
-	virtual Expressor* Clone() const;
-
-
-	/**
-	 * 2 Expressor are equal if they have the same TranscriptionFactors, Molecules, Vesicles, Properties, and States
-	 * Neither Plasmids nor Proteins are considered in Expressor equality.
-	 * @param other
-	 * @return whether or not other is equivalent to *this.
-	 */
-	virtual bool operator==(const Expressor& other) const;
-
-
-	/**
-	 * Calls Import<>() with all Bonded StructuralComponents.
-	 * @param other
-	 */
-	virtual void ImportAll(const Expressor& other);
-
-
-	/**
-	 * Calls molecular::Protein::operator() for a molecular::Protein of the given id.
+	 * Calls molecular::Protein::Activate() for a molecular::Protein of the given id.
 	 * If your Proteins are called often (e.g. on a clock), you may consider caching a pointer to the molecular::Protein and invoking that directly, rather than through this method.
 	 * For example, mc_myFavoriteProtein = GetByName<molecular::Protein*>("MyFavoriteProteinName")
-	 * If you feel like going through the extra work, you can also wrap those cached calls with #if BIO_MEMORY_OPTIMIZE_LEVEL >= 1 ... #endif so that the downstream user of your code can prefer cache to processing (see Optimize.h for details).
+	 * If you feel like going through the extra work, you can also wrap those cached calls with #if BIO_MEMORY_OPTIMIZE_LEVEL >= 1 ... #endif so that the downstream user of your code can prefer cache to processing (see common/macros/OptimizeMacros.h for details).
 	 * @param proteinId
 	 * @return the result of activation or code::BadArgument1 if no such molecular::Protein exists within *this.
 	 */
@@ -120,23 +109,28 @@ public:
 	 * Inserts the molecular::Protein encoded by the mRNA into *this at the correct location.
 	 * This essentially encapsulates the Translation and localization process into a single function.
 	 * Post-translational modifications can be made by changing the chemical::Properties and/or chemical::States (e.g. Enabled()) of a Transcribed molecular::Protein; additionally, you may create your own system of modifying the Proteins in yourPlasmids.
-	 * Multiple Translations of the same gene will cause the previously Translated molecular::Protein to be removed.
-	 * @param mRNA (aka a Gene, no need for DNA->RNA semantics, we just change the word and keep the type the same).
-	 * @return status of Protein Translation (e.g. code::Success()).
+	 * Multiple Translations of the same mRNA will cause the previously Translated Protein to be removed.
+	 * @param mRNA encoded Gene* to be expressed.
+	 * @return status of DNA::Translation + localization within *this.
 	 */
-	virtual Code Translate(const Gene* mRNA) = 0;
+	virtual Code Translate(const RNA* mRNA);
 
 	/**
-	 * Transcribes all Genes from all Plasmids in *this, iff *this has the necessary TranscriptionFactors for each Gene.
-	 * @return status of total expression.
+	 * Transcribes all Genes from all Plasmids in *this, iff *this has the necessary TranscriptionFactors for each Gene, populating m_transcriptome.
+	 * Then, Translates all mRNA from the m_transcriptome into Proteins.
+	 * @return whether or not *this should be functional.
 	 */
-	virtual Code BeginExpressing();
+	virtual Code ExpressGenes();
 
-private:
 	/**
-	 * Common constructor code.
+	 * Adding RNA to the m_transcriptome will cause the encoded Genes to be Expressed in *this, yielding a Translated Protein.
+	 * @param toExpress
+	 * @return Whether or not the Gene was added successfully.
 	 */
-	void CtorCommon();
+	virtual Code AddToTranscriptome(const RNA* toExpress);
+
+protected:
+	Transcriptome m_transcriptome;
 };
 
 } //molecular namespace

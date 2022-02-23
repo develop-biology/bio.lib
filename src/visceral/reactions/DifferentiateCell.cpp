@@ -52,7 +52,7 @@ Products DifferentiateCell::Process(chemical::Substances& reactants)
 	Tissue* tissue = reactants[1];
 	cell->SetEnvironment(tissue);
 	cell->Import<Plasmid*>(tissue);
-	return Products(cell->BeginExpressing(), reactants);
+	return Products(cell->ExpressGenes(), reactants);
 }
 
 } //visceral namespace

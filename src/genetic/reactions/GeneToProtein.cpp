@@ -26,7 +26,7 @@
 #include "bio/molecular/reactions/RecruitChaperonesForProtein.h"
 #include "bio/molecular/reactions/FoldProtein.h"
 #include "bio/genetic/reactions/GeneToProtein.h"
-#include "bio/genetic/reactions/TranscribeGene.h"
+#include "bio/genetic/reactions/Transcription.h"
 #include "bio/genetic/reactions/TranslateRNA.h"
 
 
@@ -34,14 +34,14 @@ namespace bio {
 namespace genetic {
 
 GeneToProtein::GeneToProtein() :
-	molecular::Pathway(PeriodicTable::Instance().GetNameFromType(*this)),
+	molecular::Pathway(chemical::PeriodicTable::Instance().GetNameFromType(*this)),
 	physical::Class(
 		this,
 		new physical::Symmetry(
 			PeriodicTable::Instance().GetNameFromType(*this),
 			symmetry_Type::Operation())),
 {
-	Add<chemical::Reaction*>(chemical::Reaction::Initiate<TranscribeGene>());
+	Add<chemical::Reaction*>(chemical::Reaction::Initiate<Transcription>());
 	Add<chemical::Reaction*>(chemical::Reaction::Initiate<TranslateRNA>());
 	Add<chemical::Reaction*>(chemical::Reaction::Initiate<molecular::RecruitChaperonesForProtein>());
 	Add<chemical::Reaction*>(chemical::Reaction::Initiate<molecular::FoldProtein>());

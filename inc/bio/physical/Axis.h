@@ -50,14 +50,14 @@ public:
 	static std::string Failed();
 
 	/**
-	 * Translate the given Symmetry into something intelligible by another system.
+	 * Express the given Symmetry into something intelligible by another system.
 	 * @param symmetry
 	 * @return text, possibly a command (like mysql), structured values (like json), an entire program (like python), etc. or Failed().
 	 */
 	virtual std::string Rotate(Symmetry* symmetry) const;
 
 	/**
-	 * Translate the given text into something intelligible by this system.
+	 * Express the given text into something intelligible by this system.
 	 * @return Symmetry* which can be Reified or NULL.
 	 */
 	virtual Symmetry* Rotate(std::string) const;

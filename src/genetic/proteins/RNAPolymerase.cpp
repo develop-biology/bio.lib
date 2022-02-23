@@ -20,19 +20,19 @@
  */
 
 #include "bio/genetic/proteins/RNAPolymerase.h"
+#include "bio/genetic/Plasmid.h"
+#include "bio/genetic/RNA.h"
 #include "bio/common/TypeName.h"
 
 namespace bio {
 namespace genetic {
 
-RNAPolymerase::RNAPolymerase(Plasmid* toTranscribe)
+RNAPolymerase::RNAPolymerase(molecular::Plasmid* toTranscribe)
 	:
-	molecular::Protein(
-		PeriodicTable::Instance().GetNameFromType(*this),
-		toTranscribe
-	)
+	molecular::Protein(chemical::PeriodicTable::Instance().GetNameFromType(*this))
 {
-
+	SetSource(toTranscribe);
+	mc_rna = Define("RNA Binding Site");
 }
 
 RNAPolymerase::~RNAPolymerase()
@@ -40,16 +40,39 @@ RNAPolymerase::~RNAPolymerase()
 
 }
 
-Code RNAPolymerase::operator()()
+Code RNAPolymerase::Activate()
 {
-	Expressor* environment = GetEnvironment();
-	BIO_SANITIZE(environment,, return code::BadArgument1());
-	m_source->ForEach<Gene*>(chemical::Reaction::Initiate<GeneToProtein>(), environment);
+	Expressor* expressor = GetEnvironment();
+	BIO_SANITIZE(environment, ,
+		return code::BadArgument1());
+	RNA* boundRNA = RotateTo<RNA*>(mc_rna);
+	BIO_SANITIZE(m_rna, ,
+		return code::BadArgument2());
+
+	bool shouldTranscribe = false;
+	for (
+		chemical::StructuralComponentImplementation< Gene* >::Contents::const_iterator gen = m_source->GetAll< Gene* >()->begin();
+		gen != m_source->GetAll< Gene* >()->end();
+		++gen
+		)
+	{
+		shouldTranscribe = expressor->GetNumMatching< TranscriptionFactor >(gene->m_requiredTranscriptionFactors) == gene->m_requiredTranscriptionFactors.size();
+		if (!shouldTranscribe)
+		{
+			continue;
+		}
+		boundRNA->Add< Gene* >(gen);
+	}
 }
 
-RNAPolymerase* RNAPolymerase::Clone() const
+void RNAPolymerase::FeedRNA(RNA* toTranscribeOnto)
 {
-	return new RNAPolymerase(*this);
+	m_rna = toTranscribeOnto;
+}
+
+RNA* RNAPolymerase::GetTranscribedRNA()
+{
+	return m_rna;
 }
 
 } //genetic namespace

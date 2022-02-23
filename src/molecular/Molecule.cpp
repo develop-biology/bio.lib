@@ -20,6 +20,7 @@
  */
 
 #include "bio/molecular/Molecule.h"
+#include "bio/molecular/Protein.h"
 #include "bio/molecular/common/BondTypes.h"
 #include "bio/molecular/common/Filters.h"
 #include "bio/chemical/common/BondTypes.h"
@@ -127,22 +128,22 @@ bool Molecule::TransferFrom(
 	return true;
 }
 
-Surface* Molecule::operator[](StandardDimension surfaceId)
+Surface* Molecule::operator()(StandardDimension surfaceId)
 {
 	return RotateTo(surfaceId);
 }
 
-const Surface* Molecule::operator[](StandardDimension surfaceId) const
+const Surface* Molecule::operator()(StandardDimension surfaceId) const
 {
 	return RotateTo(surfaceId);
 }
 
-Surface* Molecule::operator[](Name name)
+Surface* Molecule::operator()(Name name)
 {
 	return RotateTo(name);
 }
 
-const Surface* Molecule::operator[](Name name) const
+const Surface* Molecule::operator()(Name name) const
 {
 	return RotateTo(name);
 }
@@ -151,28 +152,11 @@ Molecule* Molecule::operator<<(Surface* source)
 {
 	BIO_SANITIZE(source, ,
 		return this);
-
-	Add< Surface* >(CloneAndCast<Surface*>(source))->SetEnvironment(this);
-	return this;
-}
-
-Surface* Molecule::operator>>(Surface* target)
-{
-	BIO_SANITIZE(target, ,
-		return target);
-	target->Add< Molecule* >(CloneAndCast< Molecule* >(this));
-	return target;
-}
-
-Molecule* Molecule::operator<<=(Surface* source)
-{
-	BIO_SANITIZE(source, ,
-		return this);
 	Add< Surface* >(source)->SetEnvironment(this);
 	return this;
 }
 
-Surface* Molecule::operator>>=(Surface* target)
+Surface* Molecule::operator>>(Surface* target)
 {
 	BIO_SANITIZE(target, ,
 		return target);
@@ -193,31 +177,20 @@ Molecule* Molecule::operator>>(Molecule* target)
 	BIO_SANITIZE(target, ,
 		return target);
 	target->Import< Surface* >(this);
+	Clear< Surface* >();
 	return target;
 }
 
-Molecule* Molecule::operator<<=(Molecule* source)
+physical::Symmetry* Molecule::Spin() const
 {
-	BIO_SANITIZE(source, ,
-		return this);
-	LockThread();
-	StructuralComponentImplementation< Surface* >::Contents* contents = GetAll< Surface* >();
-	StructuralComponentImplementation< Surface* >::Contents* insert = source->GetAll< Surface* >();
-	contents->insert(
-		contents->end(),
-		insert->begin(),
-		insert->end());
-	insert->clear();
-	UnlockThread();
-	return this;
+	//TODO...
+	return NULL;
 }
 
-Molecule* Molecule::operator>>=(Molecule* target)
+Code Molecule::Reify(physical::Symmetry* symmetry)
 {
-	BIO_SANITIZE(target, ,
-		return target);
-	*target <<= this;
-	return target;
+	//TODO...
+	return code::NotImplemented();
 }
 
 } //molecular namespace

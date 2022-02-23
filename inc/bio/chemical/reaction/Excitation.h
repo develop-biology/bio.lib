@@ -24,6 +24,7 @@
 #include "bio/physical/common/Class.h"
 #include "bio/physical/macros/Macros.h"
 #include "bio/chemical/common/Properties.h"
+#include "bio/chemical/PeriodicTable.h"
 
 namespace bio {
 namespace chemical {
@@ -53,7 +54,8 @@ public:
 	/**
 	 *
 	 */
-	ExcitationBase() :
+	ExcitationBase()
+		:
 		physical::Class< ExcitationBase >(this)
 	{
 
@@ -86,12 +88,28 @@ public:
 	}
 
 	/**
+	 * Creating a new and proper Excitation is preferred to Editing Arguments; however, we support the latter nonetheless.
+	 * @param position
+	 * @param newVal
+	 */
+	virtual void EditArg(
+		uint8_t position,
+		ByteStream& newVal
+	)
+	{
+		//nop
+	}
+
+	/**
 	 * Invoke an Excitation, regardless of what the template parameters are.
 	 * Since we have no idea what the return value will be, we simply place it in ret as a void*.
 	 * @param wave
 	 * @param ret
 	 */
-	virtual void CallDown(physical::Wave* wave, ByteStream* ret)
+	virtual void CallDown(
+		physical::Wave* wave,
+		ByteStream* ret
+	) const
 	{
 		//nop
 	}
@@ -152,11 +170,21 @@ public:
 	}
 
 	/**
+	 * Creating a new and proper Excitation is preferred to Editing Arguments; however, we support the latter nonetheless.
+	 * @param position
+	 * @param newVal
+	 */
+	virtual void EditArg(uint8_t position, ByteStream& newVal)
+	{
+		//TODO...
+	}
+
+	/**
 	 * @param wave the caller of m_function.
 	 * @param args any arguments given to m_function. Only applicable for C++11 and onward.
 	 * @return RETURN, whatever that is for *this; the result of calling m_function from wave.
 	 */
-	RETURN operator()(WAVE* wave)
+	RETURN operator()(WAVE* wave) const
 	{
 		std::tuple allArgs = std::tuple_cat(std::make_tuple(wave), m_args);
 		return std::apply(*m_function, allArgs);
@@ -165,7 +193,7 @@ public:
 	/**
 	 * Override of ExcitationBase; see above.
 	 */
-	virtual void CallDown(physical::Wave* wave, ByteStream* ret)
+	virtual void CallDown(physical::Wave* wave, ByteStream* ret) const
 	{
 		ret->Set(this->operator()(ForceCast<WAVE*>(wave)));
 	}
@@ -221,7 +249,10 @@ public:
 	virtual Properties GetProperties() const
 	{
 		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
-		ret.insert(ret.end(), ExcitationBase::GetClassProperties().begin(), ExcitationBase::GetClassProperties().end());
+		ret.insert(
+			ret.end(),
+			ExcitationBase::GetClassProperties().begin(),
+			ExcitationBase::GetClassProperties().end());
 		return ret;
 	}
 
@@ -230,7 +261,7 @@ public:
 	 * @param wave the caller of m_function.
 	 * @return RETURN, whatever that is for *this; the result of calling m_function from wave.
 	 */
-	RETURN operator()(WAVE* wave)
+	RETURN operator()(WAVE* wave) const
 	{
 		return (wave->*m_function)();
 	}
@@ -238,9 +269,12 @@ public:
 	/**
 	 * Override of ExcitationBase; see above.
 	 */
-	virtual void CallDown(physical::Wave* wave, ByteStream* ret)
+	virtual void CallDown(
+		physical::Wave* wave,
+		ByteStream* ret
+	) const
 	{
-		ret->Set(this->operator()(ForceCast<WAVE*>(wave)));
+		ret->Set(this->operator()(ForceCast< WAVE* >(wave)));
 	}
 
 protected:
@@ -297,15 +331,33 @@ public:
 	virtual Properties GetProperties() const
 	{
 		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
-		ret.insert(ret.end(), ExcitationBase::GetClassProperties().begin(), ExcitationBase::GetClassProperties().end());
+		ret.insert(
+			ret.end(),
+			ExcitationBase::GetClassProperties().begin(),
+			ExcitationBase::GetClassProperties().end());
 		return ret;
+	}
+
+	/**
+	 * Creating a new and proper Excitation is preferred to Editing Arguments; however, we support the latter nonetheless.
+	 * @param position
+	 * @param newVal
+	 */
+	virtual void EditArg(
+		uint8_t position,
+		ByteStream& newVal
+	)
+	{
+		BIO_SANITIZE(position,
+			return,);
+		m_arg = newVal;
 	}
 
 	/**
 	 * @param wave the caller of m_function.
 	 * @return RETURN, whatever that is for *this; the result of calling m_function from wave.
 	 */
-	RETURN operator()(WAVE* wave)
+	RETURN operator()(WAVE* wave) const
 	{
 		return (wave->*m_function)(m_arg);
 	}
@@ -313,9 +365,12 @@ public:
 	/**
 	 * Override of ExcitationBase; see above.
 	 */
-	virtual void CallDown(physical::Wave* wave, ByteStream* ret)
+	virtual void CallDown(
+		physical::Wave* wave,
+		ByteStream* ret
+	) const
 	{
-		ret->Set(this->operator()(ForceCast<WAVE*>(wave)));
+		ret->Set(this->operator()(ForceCast< WAVE* >(wave)));
 	}
 
 protected:

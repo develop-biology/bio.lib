@@ -33,14 +33,15 @@ namespace molecular {
  * This pattern prevents you from having to define virtual methods each of your child classes, so long as you always derive from the appropriate Class<T>.
  * @tparam T
  */
-template <typename T>
+template < typename T >
 class Class :
-	public chemical::Class<T>,
+	public chemical::Class< T >,
 	virtual public chemical::Substance
 {
 public:
 
-	BIO_DISAMBIGUATE_CLASS_METHODS(chemical, T)
+	BIO_DISAMBIGUATE_CLASS_METHODS(chemical,
+		T)
 
 	/**
 	 * Providing just the object should not Initialize anything.
@@ -56,7 +57,12 @@ public:
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
-		chemical::Class<T>(object, perspective, filter, symmetryType)
+		chemical::Class< T >(
+			object,
+			perspective,
+			filter,
+			symmetryType
+		)
 	{
 
 	}
@@ -71,11 +77,17 @@ public:
 	Class(
 		T* object,
 		Name name,
-		physical::Perspective <StandardDimension>* perspective = NULL,
+		physical::Perspective< StandardDimension >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
-		chemical::Class<T>(object, name, perspective, filter, symmetryType)
+		chemical::Class< T >(
+			object,
+			name,
+			perspective,
+			filter,
+			symmetryType
+		)
 	{
 
 	}
@@ -90,11 +102,17 @@ public:
 	Class(
 		T* object,
 		StandardDimension id,
-		physical::Perspective <StandardDimension>* perspective = NULL,
+		physical::Perspective< StandardDimension >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
-		chemical::Class<T>(object, id, perspective, filter, symmetryType)
+		chemical::Class< T >(
+			object,
+			id,
+			perspective,
+			filter,
+			symmetryType
+		)
 	{
 
 	}

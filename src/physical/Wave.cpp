@@ -126,32 +126,14 @@ const Wave* Wave::operator~() const
 	return Demodulate();
 }
 
-Wave* Wave::operator+(
-	const Wave* other
-)
-{
-	Wave* ret = this->Clone();
-	*ret += other;
-	return ret;
-}
-
-Wave* Wave::operator-(
-	const Wave* other
-)
-{
-	Wave* ret = this->Clone();
-	*ret -= other;
-	return ret;
-}
-
-void Wave::operator+=(
+void Wave::operator+(
 	const Wave* other
 )
 {
 	Attenuate(other);
 }
 
-void Wave::operator-=(
+void Wave::operator-(
 	const Wave* other
 )
 {

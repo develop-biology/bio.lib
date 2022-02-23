@@ -29,7 +29,7 @@ namespace bio {
 namespace molecular {
 
 /**
- * Vesicles define an inside / outside dichotomy between the Surfaces on the "outside" of *this and the Molecules on the inside of *this.
+ * Vesicles define an inside / outside dichotomy between the Molecules on the "outside" of *this and the Molecules on the inside of *this.
  * NOTE: The Molecules inside *this can, themselves, be Vesicles (thought they don't have to be).
  * Another way to think of Vesicles is as a "vacuum" whereby Molecules can exist in an isolated context (which is probably not true of any real system). For example think of 1 Molecules on one side of a room and another on the other side; the Vesicle would be the Room and what is ultimately responsible for defining the scale by which the Molecule's separation can be measured.
  */
@@ -63,6 +63,50 @@ public:
 	 *
 	 */
 	virtual ~Vesicle();
+
+	/**
+	 * operator wrappers around GetBy____< Molecule* >
+	 * @param moleculeId
+	 * @return Extract(...)
+	 * @{
+	 */
+	virtual Molecule* operator[](StandardDimension moleculeId);
+
+	virtual const Molecule* operator[](StandardDimension moleculeId) const;
+
+	template < typename T >
+	Molecule* operator[](StandardDimension moleculeId)
+	{
+		return ChemicalCast< T >(GetById< Molecule* >(moleculeId));
+	}
+
+	virtual Molecule* operator[](Name moleculeName);
+
+	virtual const Molecule* operator[](Name moleculeName) const;
+
+	template < typename T >
+	Molecule* operator[](Name moleculeName)
+	{
+		return ChemicalCast< T >(GetByName< Molecule* >(moleculeName));
+	}
+	/**@}*/
+
+	/**
+	 * Vesicle copy operation.
+	 * Copies all Molecules in the source Vesicle into *this.
+	 * @param source
+	 * @return this
+	 */
+	virtual Vesicle* operator<<=(Vesicle* source);
+
+	/**
+	 * Vesicle move operation.
+	 * Moves all Molecules in *this into the target Vesicle.
+	 * This REMOVES all Molecules from *this.
+	 * @param target
+	 * @return target
+	 */
+	virtual Vesicle* operator>>=(Vesicle* target);
 };
 
 } //molecular namespace

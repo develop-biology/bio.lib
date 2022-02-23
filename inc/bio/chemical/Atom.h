@@ -152,7 +152,7 @@ public:
 	template < typename T >
 	T AsBondedQuantum()
 	{
-		return Cast< T >(AsBonded< physical::Quantum< T > >());
+		return Cast< T >(AsBonded< physical::Quantum< T >* >());
 	}
 
 	/**
@@ -163,7 +163,7 @@ public:
 	template < typename T >
 	const T AsBondedQuantum() const
 	{
-		return AsBonded< physical::Quantum< T > >();
+		return AsBonded< physical::Quantum< T >* >();
 	}
 
 	/**
@@ -174,7 +174,14 @@ public:
 	template < typename T >
 	T As()
 	{
-		return AsBonded< T >();
+		if (IsPrimitive< T >())
+		{
+			return AsBondedQuantum< T >();
+		}
+		else
+		{
+			return AsBonded< T >();
+		}
 	}
 
 	/**
@@ -186,7 +193,14 @@ public:
 	template < typename T >
 	const T As() const
 	{
-		return AsBonded< T >();
+		if (IsPrimitive< T >())
+		{
+			return AsBondedQuantum< T >();
+		}
+		else
+		{
+			return AsBonded< T >();
+		}
 	}
 
 
@@ -196,9 +210,9 @@ public:
 	 * @return *this as a T* or NULL.
 	 */
 	template < typename T >
-	operator T*()
+	operator T()
 	{
-		return As< T* >();
+		return As< T >();
 	}
 
 	/**
@@ -215,14 +229,24 @@ public:
 		T toBond,
 		BondType type = bond_type::Unknown())
 	{
-		BIO_SANITIZE(IsPrimitive< T >(), ,
-			return false);
-		AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< T >();
-		return FormBondImplementation(
-			toBond->AsWave(),
-			bondedId,
-			type
-		);
+		if (IsPrimitive< T >())
+		{
+			AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >();
+			return FormBondImplementation(
+				(new physical::Quantum< T >(toBond))->AsWave(),
+				bondedId,
+				type
+			);
+		}
+		else
+		{
+			AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< T >();
+			return FormBondImplementation(
+				toBond->AsWave(),
+				bondedId,
+				type
+			);
+		}
 	}
 
 	/**
@@ -239,10 +263,11 @@ public:
 		T toDisassociate,
 		BondType type = bond_type::Unknown())
 	{
-		BIO_SANITIZE(IsPrimitive< T >(), ,
-			return false);
-		BIO_SANITIZE(Cast< Wave* >(toDisassociate), ,
-			return false);
+		if (IsPrimitive< T >())
+		{
+			return BreakBond< physical::Quantum< T >* >(NULL, type); //T matters, toDisassociate does not.
+		}
+
 		AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< T >();
 		return BreakBondImplementation(
 			toDisassociate,
@@ -276,6 +301,10 @@ public:
 	template < typename T >
 	Valence GetBondPosition() const
 	{
+		if (IsPrimitive< T >())
+		{
+			return GetBondPosition(PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >());
+		}
 		return GetBondPosition(PeriodicTable::Instance().GetIdFromType< T >());
 	}
 
@@ -294,6 +323,10 @@ public:
 	template < typename T >
 	BondType GetBondType() const
 	{
+		if (IsPrimitive< T >())
+		{
+			return GetBondType(GetBondPosition< physical::Quantum< T > >());
+		}
 		return GetBondType(GetBondPosition< T >());
 	}
 

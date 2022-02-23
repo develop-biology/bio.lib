@@ -40,8 +40,8 @@ class Protein;
  * In other words if you want 1 DNA Molecule to produce several Proteins, you must Add<Protein*>() those to the Protein in *this.
  */
 class DNA :
-	virtual public Molecule,
-	public Class< DNA >
+	public Class< DNA >,
+	virtual public Molecule
 {
 public:
 
@@ -69,25 +69,38 @@ public:
 	virtual ~DNA();
 
 	/**
-	 * @return a new Protein from what *this encodes or NULL (e.g. if m_protein is NULL or Clone() somehow fails).
+	 * See classes in the genetic namespace for proper Translation of Protein.
+	 * @return the Protein in *this.
 	 */
-	Protein* Translate() const;
+	virtual Protein* GetProtein();
+
+	/**
+	 * See classes in the genetic namespace for proper Translation of Protein.
+	 * @return the Protein in *this.
+	 */
+	virtual const Protein* GetProtein() const;
+
+	/**
+	 * Change what *this encodes.
+	 * @param protein
+	 */
+	virtual void SetProtein(Protein* protein);
 
 	/**
 	 * @return the Id of the Protein *this encodes.
 	 */
-	StandardDimension GetProteinId() const;
+	virtual StandardDimension GetProteinId() const;
 
 	/**
 	 * @return the m_version of *this.
 	 */
-	Version GetVersion();
+	virtual Version GetVersion();
 
 	/**
 	 * Set the Version of *this.
 	 * @param newVersion
 	 */
-	void SetVersion(Version newVersion);
+	virtual void SetVersion(Version newVersion);
 
 protected:
 	Protein* m_protein;
@@ -100,5 +113,5 @@ private:
 	void CtorCommon();
 };
 
-} //cellular namespace
+} //molecular namespace
 } //bio namespace

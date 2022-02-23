@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -24,7 +24,26 @@
 #include "bio/molecular/common/Types.h"
 
 namespace bio {
+
+	/**
+	 * LocalizationSites are types of places.
+	 * The place itself should be specified by Name or Id.
+	 * Because places can be anything, we rely on Perspective::AssociateType and chemical::Excitation in order to turn a LocalizationSite into an actionable function.
+	 * See Localization.h for more info.
+	 */
+	BIO_ID_WITH_PERSPECTIVE(LocalizationSite, uint8_t)
+
+}
+
+namespace bio {
 namespace genetic {
+
+class RNA;
+
+typedef std::vector<const RNA*> Transcriptome;
+
+BIO_PERSPECTIVE_SINGLETON(RNAPerspective, StandardDimension
+)
 
 BIO_PERSPECTIVE_SINGLETON(PlasmidPerspective, StandardDimension
 )
@@ -41,15 +60,3 @@ typedef std::vector<TranscriptionFactor> TranscriptionFactors;
 
 BIO_ID_WITH_PERSPECTIVE(TranscriptionFactor, TranscriptionFactor
 )
-
-/**
-Macro for defining TranscriptionFactors.
-*/
-#define BIO_TRANSCRIPTION_FACTOR_FUNCTION_BODY(functionName)                   \
-BIO_ID_FUNCTION_BODY(                                                          \
-    functionName,                                                              \
-    ::bio::genetic::TranscriptionFactorPerspective::Instance(),                  \
-    ::bio::genetic::TranscriptionFactor)
-
-} //genetic namespace
-} //bio namespace

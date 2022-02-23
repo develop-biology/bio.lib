@@ -96,6 +96,7 @@ public:
 	template < typename T >
 	T* Manage(T* varPtr)
 	{
+		//TODO: handle T being primitive.
 		FormBond(
 			varPtr,
 			bond_type::Manage());
@@ -112,10 +113,48 @@ public:
 	template < typename T >
 	T* Use(T* varPtr)
 	{
+		//TODO: handle T being primitive.
 		FormBond(
 			varPtr,
 			bond_type::Use());
 	}
+
+	/**
+	 * Binding, as opposed to permanent Bonding, forms a temporary association with the given Substance.
+	 * Binding forms a Temporary Bond, allowing *this to be treated as the Bound Substance.
+	 * @param toBind
+	 * @return the Bound Substance.
+	 */
+	virtual chemical::Substance* Bind(chemical::Substance* toBind, BondType bondType = bond_type::Temporary());
+
+	/**
+	 * Breaks the Temporary Bond formed by Bind.
+	 * @param toRelease
+	 * @return the previously bound Substance or NULL.
+	 */
+	virtual chemical::Substance* Release(chemical::Substance* toRelease, BondType bondType = bond_type::Temporary());
+
+	/**
+	 * Breaks the Temporary Bond formed by Bind.
+	 * NOTE: the given Substance could be Identifiable through some unknown Perspective, so this does actual string comparison. Unless a Perspective is given, in which case numeric comparison is done on the given Name.
+	 * @param toRelease
+	 * @return the previously bound Substance or NULL.
+	 */
+	virtual chemical::Substance* Release(Name toRelease, physical::Perspective<StandardDimension>* perspective = NULL, BondType bondType = bond_type::Temporary());
+
+	/**
+	 * Breaks the Temporary Bond formed by Bind.
+	 * NOTE: the given Substance could be Identifiable through some unknown Perspective, so this does an unreliable numeric comparison. However, if a Perspective is given, we can be certain if the id we find is correct or not.
+	 * @param toRelease
+	 * @return the previously bound Substance or NULL.
+	 */
+	virtual chemical::Substance* Release(StandardDimension toRelease, physical::Perspective<StandardDimension>* perspective = NULL, BondType bondType = bond_type::Temporary());
+
+	/**
+	 * Releases all Temporarily Bound Substances
+	 * @return all Temporarily Bound Substances
+	 */
+	virtual chemical::Substances ReleaseAll(BondType bondType = bond_type::Temporary());
 
 	/**
 	 * Sets both the m_environment and m_perspective and updates m_id.
@@ -128,6 +167,40 @@ public:
 	 * @param perspective a Molecule.
 	 */
 	virtual void SetPerspective(Molecule* perspective);
+
+	/**
+	 * Wrapper around Bind
+	 * @param toBind
+	 * @return result of Bind(...)
+	 */
+	virtual chemical::Substance* operator+=(chemical::Substance* toBind);
+
+	/**
+	 * Wrapper around Release
+	 * @param toRelease
+	 * @return result of Release
+	 */
+	virtual chemical::Substance* operator-=(chemical::Substance* toRelease);
+
+	/**
+	 * Wrapper around Release
+	 * @param toRelease
+	 * @return result of Release
+	 */
+	virtual chemical::Substance* operator-=(Name toRelease);
+
+	/**
+	 * Wrapper around Release
+	 * @param toRelease
+	 * @return result of Release
+	 */
+	virtual chemical::Substance* operator-=(StandardDimension toRelease);
+
+	/**
+	 * Wrapper around ReleaseAll
+	 * @return all Temporarily Bound Substances.
+	 */
+	virtual chemical::Substances operator--();
 };
 
 } //molecular namespace

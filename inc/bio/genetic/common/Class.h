@@ -21,7 +21,9 @@
 
 #pragma once
 
+#include "bio/genetic/macros/Macros.h"
 #include "bio/molecular/common/Class.h"
+#include "bio/molecular/Molecule.h"
 
 namespace bio {
 namespace genetic {
@@ -33,18 +35,28 @@ namespace genetic {
  * This pattern prevents you from having to define virtual methods each of your child classes, so long as you always derive from the appropriate Class<T>.
  * @tparam T
  */
-template <typename T>
-class Class : public molecular::Class<T>, virtual public molecular::Molecule
+template < typename T >
+class Class :
+	public molecular::Class< T >,
+	virtual public molecular::Molecule
 {
 public:
+
+	BIO_DISAMBIGUATE_CLASS_METHODS(molecular,
+		T)
+
 	/**
 	 * Providing just the object should not Initialize anything.
 	 * For default constructors of virtually inherited classes.
 	 * @param object
 	 */
-	Class(T* object)
+	Class(
+		T* object,
+		physical::Perspective< StandardDimension >* perspective = NULL,
+		Filter filter = filter::Default(),
+	)
 		:
-		molecular::Class<T>(object)
+		molecular::Class< T >(object, perspective, filter)
 	{
 
 	}
@@ -61,7 +73,12 @@ public:
 		Perspective <StandardDimension>* perspective = NULL,
 		Filter filter = filter::Default())
 		:
-		molecular::Class<T>(object, name, perspective, filter)
+		molecular::Class< T >(
+			object,
+			name,
+			perspective,
+			filter
+		)
 	{
 
 	}
@@ -78,7 +95,12 @@ public:
 		Perspective <StandardDimension>* perspective = NULL,
 		Filter filter = filter::Default())
 		:
-		molecular::Class<T>(object, name, perspective, filter)
+		molecular::Class< T >(
+			object,
+			id,
+			perspective,
+			filter
+		)
 	{
 
 	}

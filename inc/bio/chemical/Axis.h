@@ -47,7 +47,7 @@ public:
 	virtual ~Axis();
 
 	/**
-	 * Translate the given Symmetry into something intelligible by another system.
+	 * Express the given Symmetry into something intelligible by another system.
 	 * Takes advantage of Encode and chemical::Symmetry to make defining Axes easier.
 	 * You shouldn't have to override this from here on out.
 	 * NOTE: this does not apply to Rotate(std::string); you'll still need to override that one.

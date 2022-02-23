@@ -21,14 +21,18 @@
 
 #pragma once
 
-#include "bio/molecular/common/Codes.h"
+#include "Localization.h"
 
 namespace bio {
-namespace code {
+namespace localization_site {
 
-Code TranscriptionError();
+LocalizationSite InSurface();
 
-Code TranslationError();
+LocalizationSite OnMolecule();
 
-} //code namespace
+LocalizationSite OnVesicle();
+
+LocalizationSite InVesicle();
+
+} //localization_site namespace
 } //bio namespace

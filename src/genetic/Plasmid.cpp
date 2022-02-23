@@ -20,42 +20,40 @@
  */
 
 #include "bio/genetic/Plasmid.h"
-#include "bio/genetic/common/Filters.h"
-#include "bio/physical/common/Codes.h"
-#include "bio/physical/common/Types.h"
-#include "bio/cellular/Cell.h"
-#include "bio/molecular/Protein.h"
-#include <cstring>
+#include "bio/genetic/proteins/RNAPolymerase.h"
 
-using namespace bio;
-using namespace cellular;
-using namespace genetic;
-
-Plasmid::Plasmid(Name name, PlasmidVersion version, log::Engine* logEngine) :
-	genetic::Class<Plasmid>(this, filter::Genetic(), logEngine),
-	m_version(version)
-{
-    BIO_LOG_DEBUG("Created %s v%u", GetName(), m_version);
-}
+namespace bio {
+namespace genetic {
 
 Plasmid::~Plasmid()
 {
 
 }
 
-virtual void ImportAll(const Plasmid& other)
+molecular::Protein* Plasmid::GetRNAPolymerase()
 {
-	chemical::Substance::ImportAll(other);
-	Import<Gene*>(other);
+	return GetProtein();
 }
 
-
-PlasmidVersion GetVersion()
+void Plasmid::CtorCommon()
 {
-	return m_version;
+	m_protein = new RNAPolymerase();
 }
 
-void Plasmid::SetVersion(PlasmidVersion newVersion)
+RNA* Plasmid::TranscribeFor(const Expressor* expressor) const
 {
-    m_version = newVersion;
+	std::string rnaName = "mRNA_" + GetName();
+	RNA* ret = new RNA(rnaName.c_str());
+	RNAPolymerase* polymerase = CloneAndCast<RNAPolymerase*>(GetRNAPolymerase());
+	StandardDimension bindingSite = polymerase->GetIdFromName("RNA Binding Site");
+	polymerase->RecruitChaperones(expressor);
+	polymerase->Fold();
+	polymerase->RotateTo(bindingSite)->Bind(ret);
+	polymerase->Activate();
+	polymerase->RotateTo(bindingSite)->Release(ret);
+	delete polymerase;
+	return ret;
 }
+
+} //genetic namespace
+} //bio namespace

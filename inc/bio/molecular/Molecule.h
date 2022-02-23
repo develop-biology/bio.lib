@@ -128,6 +128,25 @@ public:
 
 	/**
 	 * Create a new variable within *this, the Biology way.
+	 * The created variable will have no type set upon creation.
+	 * Will fail if varName already exists within *this.
+	 * @param varName
+	 * @return the Id of the Surface created or InvalidId().
+	 */
+	StandardDimension Define(Name varName)
+	{
+		BIO_SANITIZE(!RotateTo(varName), ,
+			return InvalidId());
+		Surface* toAdd = new Surface(
+			varName,
+			this
+		);
+		Add< Surface* >(toAdd);
+		return toAdd->GetId();
+	}
+
+	/**
+	 * Create a new variable within *this, the Biology way.
 	 * Will fail if varName already exists within *this.
 	 * @tparam T
 	 * @param varName
@@ -190,6 +209,17 @@ public:
 	virtual const Surface* RotateTo(StandardDimension surfaceId) const;
 
 	/**
+	 * Ease of use methods for getting variables as the desired type.
+	 * @tparam T
+	 * @return a Surface from *this casted to T.
+	 */
+	template < typename T >
+	T RotateTo(StandardDimension surfaceId) const
+	{
+		return ChemicalCast< T >(RotateTo(surfaceId));
+	}
+
+	/**
  	* Get a variable from within *this.
 	 * Use for getting and/or setting.
 	 * @param surfaceName
@@ -203,6 +233,17 @@ public:
 	 * @return a const Surface with the given Name from *this.
 	 */
 	virtual const Surface* RotateTo(Name surfaceName) const;
+
+	/**
+	 * Ease of use methods for getting variables as the desired type.
+	 * @tparam T
+	 * @return a Surface from *this casted to T.
+	 */
+	template < typename T >
+	T RotateTo(Name surfaceName) const
+	{
+		return ChemicalCast< T >(RotateTo(surfaceName));
+	}
 
 	/**
 	 * Copy a Surface from another Molecule into *this.
@@ -245,89 +286,61 @@ public:
 	 * @return RotateTo(...)
 	 * @{
 	 */
-	virtual Surface* operator[](StandardDimension surfaceId);
+	virtual Surface* operator()(StandardDimension surfaceId);
 
-	virtual const Surface* operator[](StandardDimension surfaceId) const;
+	virtual const Surface* operator()(StandardDimension surfaceId) const;
 
-	virtual Surface* operator[](Name name);
+	template < typename T >
+	Surface* operator()(StandardDimension surfaceId)
+	{
+		return ChemicalCast< T >(RotateTo(surfaceId));
+	}
 
-	virtual const Surface* operator[](Name name) const;
+	virtual Surface* operator()(Name name);
+
+	virtual const Surface* operator()(Name name) const;
+
+	template < typename T >
+	Surface* operator()(Name surfaceName)
+	{
+		return ChemicalCast< T >(RotateTo(surfaceName));
+	}
 	/**@}*/
 
 	/**
-	 * ease-of-use operators for Rotating to a Protein and Activating it (i.e. a Biology-style function call).
-	 * @param ProteinId
-	 * @return RotateTo(...)
-	 * @{
-	 */
-	virtual Code operator()(StandardDimension ProteinId);
-
-	virtual Code operator()(Name name);
-	/**@}*/
-
-	/**
-	 * Surface copy operation
-	 * Copies a Surface onto *this.
+	 * Surface move operation.
+	 * Moves a Surface onto *this.
 	 * @param source
 	 * @return this
 	 */
 	virtual Molecule* operator<<(Surface* source);
 
 	/**
-	 * Surface copy operation
-	 * Copies *this into a Surface
+	 * Surface move operation.
+	 * Places *this in a Surface.
+	 * NOTE: There is no check that *this is not in multiple Surfaces.
 	 * @param target
 	 * @return target
+	 *
 	 */
 	virtual Surface* operator>>(Surface* target);
 
 	/**
-	 * Surface move operation
-	 * Adds a Surface onto *this directly, does not Clone() the source.
-	 * @param source
-	 * @return this
-	 */
-	virtual Molecule* operator<<=(Surface* source);
-
-	/**
-	 * Surface move operation
-	 * Adds *this into a Surface, does not Clone() *this.
-	 * @param target
-	 * @return target
-	 */
-	virtual Surface* operator>>=(Surface* target);
-
-	/**
-	 * Molecule copy operation
-	 * Duplicates all Surfaces on the source Molecule onto *this.
+	 * Molecule copy operation.
+	 * Copies all Surfaces on the source Molecule onto *this.
 	 * @param source
 	 * @return this
 	 */
 	virtual Molecule* operator<<(Molecule* source);
 
 	/**
-	 * Molecule copy operation
-	 * Duplicates all Surfaces on *this onto the target Molecule.
+	 * Molecule move operation.
+	 * Moves all Surfaces on *this onto the target Molecule.
+	 * This REMOVES all Surfaces from *this.
 	 * @param target
 	 * @return target
 	 */
 	virtual Molecule* operator>>(Molecule* target);
-
-	/**
-	 * Molecule move operation
-	 * Transfers all Surfaces on the source Molecule onto *this.
-	 * @param source
-	 * @return this
-	 */
-	virtual Molecule* operator<<=(Molecule* source);
-
-	/**
-	 * Molecule move operation
-	 * Transfers all Surfaces on *this onto the target Molecule.
-	 * @param source
-	 * @return target
-	 */
-	virtual Molecule* operator>>=(Molecule* target);
 };
 
 

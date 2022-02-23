@@ -57,7 +57,7 @@ public:
 		physical::Class< Quantum< T > >(
 			this,
 			new Symmetry(
-				TypeName< T >(),
+				TypeName< T >().c_str(),
 				symmetry_type::DefineVariable())),
 		m_quantized(new T())
 	{
@@ -72,7 +72,7 @@ public:
 		physical::Class< Quantum< T > >(
 			this,
 			new Symmetry(
-				TypeName< T >(),
+				TypeName< T >().c_str(),
 				symmetry_type::DefineVariable())),
 		m_quantized(new T(assignment))
 	{
@@ -86,7 +86,7 @@ public:
 		physical::Class< Quantum< T > >(
 			this,
 			new Symmetry(
-				TypeName< T >(),
+				TypeName< T >().c_str(),
 				symmetry_type::DefineVariable())),
 		m_quantized(new T(other))
 	{
@@ -128,7 +128,7 @@ public:
 	 */
 	virtual Symmetry* Spin() const
 	{
-		this->m_symmetry->AccessValue()->Set(this->m_quantized);
+		this->m_symmetry->AccessValue()->Set(*this->m_quantized);
 		return this->Wave::Spin();
 	}
 
@@ -142,30 +142,8 @@ public:
 		BIO_SANITIZE(symmetry, ,
 			return code::BadArgument1());
 		//Wave::Reify(symmetry); //this does nothing useful.
-		this->m_quantized = symmetry->GetValue();
+		*this->m_quantized = symmetry->GetValue();
 		return code::Success();
-	}
-
-	/**
-	 * Forwards += to m_quantized.
-	 * @param other
-	 */
-	virtual void operator+=(const Quantum< T >* other)
-	{
-		BIO_SANITIZE(other, ,
-			return);
-		this->m_quantized += other->m_quantized;
-	}
-
-	/**
-	 * Forwards -= to m_quantized.
-	 * @param other
-	 */
-	virtual void operator-=(const Quantum< T >* other)
-	{
-		BIO_SANITIZE(other, ,
-			return);
-		this->m_quantized -= other->m_quantized;
 	}
 
 protected:

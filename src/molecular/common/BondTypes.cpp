@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,8 +19,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/chemical/common/BondTypes.h"
-#include "bio/chemical/macros/Macros.h"
+#include "bio/molecular/common/BondTypes.h"
+#include "bio/molecular/macros/Macros.h"
 
 namespace bio {
 namespace bond_type {
@@ -28,6 +28,8 @@ namespace bond_type {
 BIO_CHEMICAL_BOND_TYPE_FUNCTION_BODY(Manage)
 
 BIO_CHEMICAL_BOND_TYPE_FUNCTION_BODY(Use)
+
+BIO_CHEMICAL_BOND_TYPE_FUNCTION_BODY(Temporary)
 
 } //bond_type namespace
 } //bio namespace

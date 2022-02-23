@@ -20,34 +20,19 @@
  */
 
 #include "bio/genetic/Expressor.h"
-#include "bio/genetic/common/Properties.h"
+#include "bio/genetic/common/Codes.h"
 #include "bio/genetic/reactions/ExpressPlasmid.h"
 
 namespace bio {
 namespace genetic {
 
-Expressor::Expressor() :
-	chemical::StructuralComponent<TranscriptionFactor>(),
-	chemical::LinearStructuralComponent< const Plasmid* >(),
-	chemical::LinearStructuralComponent< Protein* >(),
-	molecular::Vesicle()
-{
-}
-
-Expressor::Expressor(Name name) :
-	chemical::StructuralComponent<TranscriptionFactor>(),
-	chemical::LinearStructuralComponent< const Plasmid* >(),
-	chemical::LinearStructuralComponent< Protein* >(),
-	molecular::Vesicle(),
-	physical::Identifiable<StandardDimension>(name, &molecular::VesiclePerspective::Instance())
-{
-}
-
-Expressor::Expressor(const Expressor& other) :
-	chemical::StructuralComponent<TranscriptionFactor>(other),
+Expressor::Expressor(const Expressor& other)
+	:
+	chemical::StructuralComponent< TranscriptionFactor >(other),
 	chemical::LinearStructuralComponent< const Plasmid* >(other),
-	chemical::LinearStructuralComponent< Protein* >(other),
-	molecular::Vesicle(other)
+	chemical::LinearStructuralComponent< Protein* >(),
+	molecular::Vesicle(other),
+	m_transcriptome()
 {
 
 }
@@ -57,40 +42,80 @@ Expressor::~Expressor()
 
 }
 
-Expressor* Expressor::Clone() const
-{
-	return new Expressor(*this);
-}
-
-
-bool Expressor::operator==(const Expressor& other) const
-{
-	return chemical::StructuralComponent<TranscriptionFactor>::operator==(other) && molecular::Molecule::operator==(other);
-}
-
-
-void Expressor::ImportAll(const Expressor& other)
-{
-	chemical::Substance::ImportAll(other);
-	Import<TranscriptionFactor>(other);
-	Import<Plasmid*>(other);
-}
-
 Code Expressor::Activate(StandardDimension proteinId)
 {
 	ret = code::Success();
-	chemical::Reaction::Attempt<ActivateProtein>(GetById<Protein*>(proteinId, false));
-	return ret; //TODO: Get Code from children?
+	Protein* toActivate = GetById< Protein* >(
+		proteinId,
+		false
+	);
+	BIO_SANITIZE(toActivate, ,
+		return false);
+	return toActivate->Activate();
 }
 
 Code Expressor::Activate(Name proteinName)
 {
-	return Activate(ProteinPerspective::Instance().IdFromName(proteinName));
+	return Activate(molecular::ProteinPerspective::Instance().IdFromName(proteinName));
 }
 
-Code Expressor::BeginExpressing()
+Code Expressor::ExpressGenes()
 {
-	ForEach<Plasmid*>(chemical::Reaction::Initiate<ExpressPlasmid>(), this);
+	Code ret = code::Success();
+	for (
+		chemical::StructuralComponentImplementation< const Plasmid* >::Contents::const_iterator dna = GetAll< const Plasmid* >()->begin();
+		dna != GetAll< const Plasmid* >()->end();
+		++dna
+		)
+	{
+		if (AddToTranscriptome((*dna)->TranscribeFor(this)) != code::Success() && ret == code::Success())
+		{
+			ret = code::TranscriptionError();
+		}
+	}
+	for (
+		chemical::StructuralComponentImplementation< Gene* >::Contents::const_iterator rna = m_transcriptome.GetAll< Gene* >()->begin();
+		rna != m_transcriptome.GetAll< Gene* >()->end();
+		++rna
+		)
+	{
+		if (Translate(*rna) != code::Success() && ret == code::Success())
+		{
+			ret = code::TranslationError();
+		}
+	}
+	return ret;
+}
+
+Code Expressor::AddToTranscriptome(const RNA* toExpress)
+{
+	BIO_SANITIZE(toExpress, ,
+		return code::BadArgument1());
+	m_transcriptome.push_back(toExpress);
+	return code::Success();
+}
+
+Code Expressor::Translate(const RNA* mRNA)
+{
+	BIO_SANITIZE(mRNA, ,
+		code::BadArgument1());
+
+
+	for (
+		chemical::StructuralComponentImplementation< Gene* >::Contents::const_iterator rna = mRNA->GetAll< Gene* >()->begin();
+		rna != m_transcriptome.GetAll< Gene* >()->end();
+		++rna
+		)
+	{
+		for (
+			Names::const_iterator nam = (*rna)->m_localization.begin();
+			nam != m_localization.end();
+			++nam
+			)
+		{
+			Surface*
+		}
+	}
 }
 
 } //molecular namespace

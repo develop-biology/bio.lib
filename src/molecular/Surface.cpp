@@ -30,14 +30,15 @@ namespace molecular {
 Surface::Surface(
 	Name name,
 	Molecule* environment
-) :
+)
+	:
 	molecular::Class< Surface >(
 		this,
 		name,
 		environment,
 		filter::Molecular(),
 		symmetry_type::Variable()),
-	EnvironmentDependent< Molecule > (environment)
+	EnvironmentDependent< Molecule >(environment)
 {
 
 }
@@ -109,6 +110,144 @@ physical::Symmetry* Surface::Spin() const
 	//TODO...
 	return NULL;
 }
+
+chemical::Substance* Surface::Bind(
+	chemical::Substance* toBind,
+	BondType bondType
+)
+{
+	FormBond(
+		toBind,
+		bondType
+	);
+	return toBind;
+}
+
+chemical::Substance* Surface::Release(
+	chemical::Substance* toRelease,
+	BondType bondType
+)
+{
+	chemical::Substance* ret = NULL;
+	for (
+		chemical::Valence val = 0;
+		val < m_valence;
+		++val
+		)
+	{
+		if (m_bonds[val].GetType() == bondType)
+		{
+			ret = ChemicalCast< chemical::Substance* >(m_bonds[val].GetBonded());
+			BIO_SANITIZE_AT_SAFETY_LEVEL_2(!ret || ret != toRelease,
+				continue,);
+			m_bonds[val].Break();
+			break;
+		}
+	}
+	return ret;
+}
+
+chemical::Substance* Surface::Release(
+	Name toRelease,
+	physical::Perspective<StandardDimension>* perspective,
+	BondType bondType
+)
+{
+	chemical::Substance* ret = NULL;
+	for (
+		chemical::Valence val = 0;
+		val < m_valence;
+		++val
+		)
+	{
+		if (m_bonds[val].GetType() == bondType)
+		{
+			ret = ChemicalCast< chemical::Substance* >(m_bonds[val].GetBonded());
+			BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
+				continue);
+			BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret->IsName(toRelease), ,
+				continue);
+			BIO_SANITIZE_AT_SAFETY_LEVEL_2(perspective && ret->GetPerspective() != perspective,
+				continue,);
+			m_bonds[val].Break();
+			break;
+		}
+	}
+	return ret;
+}
+
+chemical::Substance* Surface::Release(
+	StandardDimension toRelease,
+	physical::Perspective<StandardDimension>* perspective,
+	BondType bondType
+)
+{
+	chemical::Substance* ret = NULL;
+	for (
+		chemical::Valence val = 0;
+		val < m_valence;
+		++val
+		)
+	{
+		if (m_bonds[val].GetType() == bondType)
+		{
+			ret = ChemicalCast< chemical::Substance* >(m_bonds[val].GetBonded());
+			BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
+				continue);
+			BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret->IsId(toRelease), ,
+				continue);
+			BIO_SANITIZE_AT_SAFETY_LEVEL_2(perspective && ret->GetPerspective() != perspective,
+				continue,);
+			m_bonds[val].Break();
+			break;
+		}
+	}
+	return ret;
+}
+
+chemical::Substances Surface::ReleaseAll(BondType bondType)
+{
+	chemical::Substances ret;
+	for (
+		chemical::Valence val = 0;
+		val < m_valence;
+		++val
+		)
+	{
+		if (m_bonds[val].GetType() == bondType)
+		{
+			ret.push_back(ChemicalCast< chemical::Substance* >(m_bonds[val].GetBonded()));
+			m_bonds[val].Break();
+		}
+	}
+	return ret;
+}
+
+chemical::Substance* Surface::operator+=(chemical::Substance* toBind)
+{
+	return Bind(toBind);
+}
+
+chemical::Substance* Surface::operator-=(chemical::Substance* toRelease)
+{
+	return Release(toRelease);
+}
+
+chemical::Substance* Surface::operator-=(Name toRelease)
+{
+	return Release(toRelease);
+}
+
+chemical::Substance* Surface::operator-=(StandardDimension toRelease)
+{
+	return Release(toRelease);
+}
+
+chemical::Substances Surface::operator--()
+{
+	return ReleaseAll();
+}
+
 
 } //molecular namespace
 } //bio namespace

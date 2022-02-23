@@ -26,19 +26,13 @@ namespace chemical {
 
 Reactants::Reactants()
 	:
-	physical::Class< Reactants >(
-		this,
-		NULL
-	)
+	chemical::Class< Reactants >(this)
 {
 
 }
 
 Reactants::Reactants(Substances& substances) :
-	physical::Class< Reactants >(
-		this,
-		NULL
-	)
+	chemical::Class< Reactants >(this)
 {
 	for (Substances::const_iterator sub = substances.begin(); sub != substances.end(); ++sub)
 	{

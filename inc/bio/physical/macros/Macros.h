@@ -34,13 +34,13 @@
  * @return function signatures for use in BIO_DISAMBIGUATE_CLASS_METHODS
  */
 #define BIO_GET_CLASS_METHODS_FOR_physical()                                   \
-    (::bio::physical::Wave* Clone() const, Clone()),                           \
-    (::bio::physical::Wave* AsWave(), AsWave()),                               \
-    (const ::bio::physical::Wave* AsWave() const, AsWave()),                   \
-	(operator ::bio::physical::Wave*(), operator ::bio::physical::Wave*()),    \
-	(::bio::physical::Wave* Modulate(Wave* signal), Modulate(signal)),         \
-	(::bio::physical::Wave* Demodulate(), Demodulate()),                       \
-	(const ::bio::physical::Wave* Demodulate() const, Demodulate())
+    (virtual ::bio::physical::Wave* Clone() const, Clone()),\
+    (virtual ::bio::physical::Wave* AsWave(), AsWave()),\
+    (virtual const ::bio::physical::Wave* AsWave() const, AsWave()),\
+	(virtual operator ::bio::physical::Wave*(), operator ::bio::physical::Wave*()),\
+	(virtual ::bio::physical::Wave* Modulate(Wave* signal), Modulate(signal)),\
+	(virtual ::bio::physical::Wave* Demodulate(), Demodulate()),\
+	(virtual const ::bio::physical::Wave* Demodulate() const, Demodulate())
 
 
 /**

@@ -21,14 +21,19 @@
 
 #pragma once
 
-#include "bio/molecular/common/Codes.h"
+#include "bio/genetic/common/LocalizationSites.h"
+#include "bio/genetic/macros/Macros.h"
 
 namespace bio {
-namespace code {
+namespace localization_site {
 
-Code TranscriptionError();
+BIO_LOCALIZATION_SITE_FUNCTION_BODY(InSurface, molecular::Surface, molecular::Molecule*)
 
-Code TranslationError();
+BIO_LOCALIZATION_SITE_FUNCTION_BODY(OnMolecule, molecular::Molecule, molecular::Surface*)
 
-} //code namespace
+BIO_LOCALIZATION_SITE_FUNCTION_BODY(OnVesicle, molecular::Vesicle, molecular::Surface*)
+
+BIO_LOCALIZATION_SITE_FUNCTION_BODY(InVesicle, molecular::Vesicle, molecular::Molecule*)
+
+} //localization_site namespace
 } //bio namespace

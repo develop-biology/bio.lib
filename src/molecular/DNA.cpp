@@ -30,6 +30,7 @@ namespace molecular {
 
 void DNA::CtorCommon()
 {
+	m_protein = NULL;
 	m_version = 0.0f;
 }
 
@@ -38,11 +39,14 @@ DNA::~DNA()
 
 }
 
-Protein* DNA::Translate() const
+Protein* DNA::GetProtein()
 {
-	BIO_SANITIZE(m_protein, ,
-		return NULL);
-	return CloneAndCast< Protein* >(m_protein);
+	return m_protein;
+}
+
+const Protein* DNA::GetProtein() const
+{
+	return m_protein;
 }
 
 StandardDimension DNA::GetProteinId() const
@@ -60,6 +64,11 @@ Version DNA::GetVersion()
 void DNA::SetVersion(Version newVersion)
 {
 	m_version = newVersion;
+}
+
+void DNA::SetProtein(Protein* protein)
+{
+	m_protein = protein;
 }
 
 } //molecular namespace

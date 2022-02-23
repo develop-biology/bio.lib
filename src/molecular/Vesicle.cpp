@@ -36,5 +36,41 @@ Vesicle::~Vesicle()
 {
 }
 
+Molecule* Vesicle::operator[](StandardDimension moleculeId)
+{
+	return GetById< Molecule* >(moleculeId);
+}
+
+const Molecule* Vesicle::operator[](StandardDimension moleculeId) const
+{
+	return GetById< Molecule* >(moleculeId);
+}
+
+Molecule* Vesicle::operator[](Name moleculeName)
+{
+	return GetByName< Molecule* >(moleculeName);
+}
+
+const Molecule* Vesicle::operator[](Name moleculeName) const
+{
+	return GetByName< Molecule* >(moleculeName);
+}
+
+Vesicle* Vesicle::operator<<=(Vesicle* source)
+{
+	BIO_SANITIZE(source,,return NULL);
+	Import< Molecule* >(source);
+	return this;
+}
+
+Vesicle* Vesicle::operator>>=(Vesicle* target)
+{
+	BIO_SANITIZE(target,,return NULL);
+	target->Import< Molecule* >(this);
+	this->Clear< Molecule* >();
+	return target;
+}
+
+
 } //molecular namespace
 } //bio namespace

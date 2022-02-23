@@ -31,20 +31,20 @@ namespace genetic {
  * TranscribeGene is a chemical::Reaction that takes a Gene [0] & a genetic::Expressor [1].
  * It checks that the Expressor contains the necessary TranscriptionFactors and, if it does, returns the Reactants to be Translated (e.g. by TranslateRNA).
  */
-class TranscribeGene :
+class Transcription :
 	public chemical::Reaction,
-	public physical::Class<TranscribeGene>
+	public chemical::Class<Transcription>
 {
 public:
 	/**
 	 *
 	 */
-	TranscribeGene();
+	Transcription();
 
 	/**
 	 *
 	 */
-	virtual ~TranscribeGene();
+	virtual ~Transcription();
 
 	/**
 	 * Do the actual work.
@@ -52,7 +52,7 @@ public:
 	 * @param reactants [0] = Gene, [1] = Expressor
 	 * @return reactants
 	 */
-	virtual chemical::Products Process(chemical::Substances& reactants);
+	virtual chemical::Products Process(chemical::Reactants* reactants);
 };
 
 } //genetic namespace

@@ -27,6 +27,20 @@
 #include "bio/physical/macros/Macros.h"
 
 /**
+ * Get all virtual methods defined by chemical::Class.
+ * @return function signatures for use in BIO_DISAMBIGUATE_CLASS_METHODS
+ */
+#define BIO_GET_CLASS_METHODS_FOR_chemical()                                   \
+    BIO_GET_CLASS_METHODS_FOR_physical(),\
+    (virtual ::bio::Properties GetProperties() const, GetProperties()),\
+    (virtual ::bio::chemical::Atom* AsAtom(), AsAtom()),\
+    (template< typename AS > operator AS(), template As< AS >()),\
+    (virtual const ::bio::chemical::Atom* AsAtom() const, AsAtom()),\
+    (virtual Code Attenuate(const ::bio::physical::Wave* other), Attenuate(other)),\
+    (virtual Code Disattenuate(const ::bio::physical::Wave* other), Disattenuate(other))
+
+
+/**
 To make defining BondTypes easier, use this macro to define the function body of your BondType Function().
 This will assign a value to a string that is identical to your FunctionName e.g. BondTypePerspective::Instance().GetNameFromId(Value()) would give "Value".
 */
@@ -35,16 +49,3 @@ BIO_ID_FUNCTION_BODY(                                                          \
     functionName,                                                              \
     ::bio::BondTypePerspective::Instance(),                                    \
     ::bio::BondType)
-
-
-/**
- * Get all virtual methods defined by chemical::Class.
- * @return function signatures for use in BIO_DISAMBIGUATE_CLASS_METHODS
- */
-#define BIO_GET_CLASS_METHODS_FOR_chemical()                                   \
-    BIO_GET_CLASS_METHODS_FOR_physical(),                                      \
-    (::bio::Properties GetProperties() const, GetProperties()),                \
-	(::bio::chemical::Atom* AsAtom(), AsAtom()),                               \
-	(const ::bio::chemical::Atom* AsAtom() const, AsAtom()),                   \
-	(Code Attenuate(const ::bio::physical::Wave* other), Attenuate(other)),    \
-    (Code Disattenuate(const ::bio::physical::Wave* other), Disattenuate(other))

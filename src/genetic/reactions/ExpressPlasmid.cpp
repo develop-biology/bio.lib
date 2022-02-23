@@ -44,7 +44,7 @@ Products ExpressPlasmid::Process(chemical::Substances& reactants)
 {
 	Plasmid* plasmid = reactants[0];
 	Expressor* expressor = reactants[1];
-	RNAPolymerase* polymerase = plasmid->Translate();
+	RNAPolymerase* polymerase = plasmid->Express();
 	polymerase->RecruitChaperones(expressor);
 	polymerase->Fold();
 	Code ret = (*polymerase)();

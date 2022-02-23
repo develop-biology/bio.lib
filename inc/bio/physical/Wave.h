@@ -257,34 +257,18 @@ public:
 	virtual const Wave* operator~() const;
 
 	/**
-	 * Add 2 Waves together and returns the result.
-	 * Actually returns *this->Clone() += other, so implementing Clone() and += will make + work.
-	 * @param other
-	 * @return a new Wave from *this with other added to it.
-	 */
-	virtual Wave* operator+(const Wave* other);
-
-	/**
-	 * Isolates & remove a Wave from *this.
-	 * Actually returns *this->Clone() -= other, so implementing Clone() and -= will make - work.
-	 * @param other
-	 * @return a new Wave from *this with other removed from it.
-	 */
-	virtual Wave* operator-(const Wave* other);
-
-	/**
 	 * Makes other interfere with *this.
 	 * Attenuates other.
 	 * @param other
 	 */
-	virtual void operator+=(const Wave* other);
+	virtual void operator+(const Wave* other);
 
 	/**
 	 * Removes the interference of other from *this.
 	 * Disattenuates other.
 	 * @param other
 	 */
-	virtual void operator-=(const Wave* other);
+	virtual void operator-(const Wave* other);
 
 protected:
 	/**

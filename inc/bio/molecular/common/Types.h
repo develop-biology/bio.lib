@@ -34,16 +34,13 @@ namespace molecular {
 typedef float Version;
 
 BIO_PERSPECTIVE_SINGLETON(VesiclePerspective,
-	StandardDimension
-)
+	StandardDimension)
 
 BIO_PERSPECTIVE_SINGLETON(MoleculePerspective,
-	StandardDimension
-)
+	StandardDimension)
 
 BIO_PERSPECTIVE_SINGLETON(DNAPerspective,
-	StandardDimension
-)
+	StandardDimension)
 
 BIO_PERSPECTIVE_SINGLETON(ProteinPerspective,
 	StandardDimension)

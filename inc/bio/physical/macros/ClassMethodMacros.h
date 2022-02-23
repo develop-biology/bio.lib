@@ -32,7 +32,7 @@
 	caller,                                                                    \
 	functionSignature,                                                         \
     functionCall)                                                              \
-virtual functionSignature                                                      \
+functionSignature                                                              \
 {                                                                              \
     return this->ns::Class< caller >::functionCall;                            \
 }

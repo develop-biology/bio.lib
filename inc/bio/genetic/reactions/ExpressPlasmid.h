@@ -30,7 +30,7 @@ namespace genetic {
 /**
  * ExpressPlasmid is a chemical::Reaction that takes a Plasmid [0] & an Expressor [1].
  * All Genes in the Plasmid are Transcribed (using a TranscribeGene Reaction), which directly leads to Translation.
- * This is used in Expressor::BeginExpressing().
+ * This is used in Expressor::ExpressGenes().
  */
 class ExpressPlasmid :
 public chemical::Reaction,

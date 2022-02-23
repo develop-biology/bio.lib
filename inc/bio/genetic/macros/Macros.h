@@ -21,11 +21,38 @@
 
 #pragma once
 
-#include "bio/chemical/macros/Macros.h"
+#include "bio/molecular/macros/Macros.h"
 
 /**
  * Get all virtual methods defined by genetic::Class.
  * @return function signatures for use in BIO_DISAMBIGUATE_CLASS_METHODS
  */
-#define BIO_GET_CLASS_METHODS_FOR_genetic()                                  \
+#define BIO_GET_CLASS_METHODS_FOR_genetic()                                    \
     BIO_GET_CLASS_METHODS_FOR_molecular()
+
+/**
+Macro for defining TranscriptionFactors.
+*/
+#define BIO_TRANSCRIPTION_FACTOR_FUNCTION_BODY(functionName)                   \
+BIO_ID_FUNCTION_BODY(                                                          \
+    functionName,                                                              \
+    ::bio::genetic::TranscriptionFactorPerspective::Instance(),                \
+    ::bio::genetic::TranscriptionFactor)
+
+} //genetic namespace
+} //bio namespace
+
+
+/**
+ * To make defining LocalizationSites easier, use this macro to define the function body of your LocalizationSite Function().
+ * This will assign a value to a string that is identical to your FunctionName e.g. LocalizationSitePerspective::Instance().GetNameFromId(Value()) would give "Value".
+ * This will also help you define the required extraction method (chemical::Excitation*) required for accessing your LocalizationSite.
+ * REMINDER: Your LocalizationSite Function()s should be in the ::bio::localization_site namespace.
+ */
+#define BIO_LOCALIZATION_SITE_FUNCTION_BODY(functionName, source, extract)     \
+	BIO_ID_FUNCTION_BODY(                                                      \
+		functionName,                                                          \
+		::bio::LocalizationSitePerspective::Instance(),                        \
+		::bio::LocalizationSite)                                               \
+	::bio::LocalizationSitePerspective::Instance().AssociateType(g_##functionName, new BIO_EXCITATION_CLASS(source, extract, Name)(&source::GetByName< extract >, NULL))
+

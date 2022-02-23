@@ -47,7 +47,7 @@ Products TranslateRNA::Process(chemical::Substances& reactants)
 {
 	Gene* mRNA = reactants[0];
 	Expressor* expressor = reactants[1];
-	Code retCode = expressor->Translate(mRNA);
+	Code retCode = expressor->Express(mRNA);
 	Protein* product = NULL;
 	if (retCode == Success())
 	{

@@ -64,7 +64,7 @@ public:
 	/**
 	 * Copies all TranscriptionFactors & DNA in *this, giving a copy to the progeny.
 	 * THIS DOES NOT PRODUCE A FUNCTIONAL CELL!
-	 * The Progeny must Transcribe then Translate all Genes & Fold the resulting Proteins.
+	 * The Progeny must Transcribe then Express all Genes & Fold the resulting Proteins.
 	 * Proteins are not copied nor produced here in order to accommodate novel differentiation between the time of copying and the time of becoming functional.
 	 * For example, you could copy a Cell, then add or remove TranscriptionFactors in order to change the behavior of the Cell.
 	 * This DOES copy the m_environment by assuming the new Cell exists in the same Tissue as its progenitor. If this is not the case, you can always set the new Tissue with MoveTo().

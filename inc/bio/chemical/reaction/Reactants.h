@@ -36,10 +36,16 @@ class Reactant; //unused here but anything including Reactants will likely use R
  * Reactants is intended to be the single input to a Reaction. In this way, a Reactants represents all the Reacting Substances coming together, making the job of Reaction then to pull them apart into the appropriate Products.
  */
 class Reactants :
-	public physical::Class< Reactants >,
+	public chemical::Class< Reactants >,
 	public LinearStructuralComponent< Substance* >
 {
 public:
+
+	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(chemical,
+		Reactants)
 
 	/**
 	 *
@@ -56,6 +62,9 @@ public:
 	 */
 	virtual ~Reactants();
 
+	/**
+	 * @return the Substances in *this.
+	 */
 	operator Substances();
 };
 
