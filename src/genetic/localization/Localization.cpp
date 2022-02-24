@@ -21,7 +21,6 @@
 
 #include "bio/genetic/localization/Localization.h"
 #include "bio/genetic/macros/Macros.h"
-#include "bio/chemical/reaction/Excitation.h"
 #include "bio/chemical/Substance.h"
 #include "bio/common/ByteStream.h"
 
@@ -33,42 +32,92 @@ Localization::Localization(
 	Name name
 )
 	:
-	m_site(site),
-	m_name(name),
-	m_previous(NULL)
+	physical::Class< Localization > (this),
+	m_name(NULL),
+	mc_method(NULL)
 {
-
+	SetNameOfSite(name);
+	SetSite(site);
 }
 
 Localization::~Localization()
 {
-
+	if (m_name)
+	{
+		delete[] m_name;
+		m_name = NULL;
+	}
+	if (mc_method)
+	{
+		delete mc_method;
+		mc_method = NULL;
+	}
 }
 
-chemical::Substance* Localization::Seek(chemical::Substance* seekIn)
+chemical::Substance* Localization::ResolvePrevious(chemical::Substance* seekIn)
 {
 	BIO_SANITIZE(seekIn, ,
 		return seekIn);
 
-	if (m_previous)
+	//TODO: What if *this has been Modulated with something other than a Localization?
+	Localization* previous = ForceCast<Localization*>(Demodulate());
+
+	if (previous)
 	{
-		seekIn = m_previous->Seek(seekIn);
+		seekIn = previous->Seek(seekIn);
 	}
+	return seekIn;
+}
+
+chemical::Substance* Localization::Seek(chemical::Substance* seekIn)
+{
+	seekIn = ResolvePrevious(seekIn);
+
+	BIO_SANITIZE(seekIn, ,
+		return seekIn);
 
 	if (m_site == LocalizationSitePerspective::InvalidId())
 	{
 		return seekIn;
 	}
 
-	chemical::ExcitationBase* extractionMethod = LocalizationSitePerspective::Instance().GetNewObjectFromIdAs< chemical::ExcitationBase* >(m_site);
-	BIO_SANITIZE(extractionMethod,, return NULL);
+	BIO_SANITIZE(mc_method,, return NULL);
 	ByteStream newName(m_name);
-	extractionMethod->EditArg(0, newName);
+	mc_method->EditArg(0, newName);
 	ByteStream result;
-	extractionMethod->CallDown(seekIn->AsWave(), result);
+	mc_method->CallDown(seekIn->AsWave(), result);
 	chemical::Substance* extract = ChemicalCast<chemical::Substance*>(Cast<physical::Wave*>(result.IKnowWhatImDoing())); //This is about as safe as we can get right now.
 	BIO_SANITIZE(extract,,return NULL);
 	return extract;
+}
+
+void Localization::SetNameOfSite(Name name)
+{
+	if (m_name)
+	{
+		delete[] m_name;
+	}
+	string::CloneInto(name, m_name);
+}
+
+Name Localization::GetNameOfSite() const
+{
+	return m_name;
+}
+
+void Localization::SetSite(LocalizationSite site)
+{
+	m_site = site;
+	if (mc_method)
+	{
+		delete mc_method;
+	}
+	mc_method = LocalizationSitePerspective::Instance().GetNewObjectFromIdAs< chemical::ExcitationBase* >(m_site);
+}
+
+LocalizationSite Localization::GetSite() const
+{
+	return m_site;
 }
 
 } //genetic namespace
