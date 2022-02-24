@@ -46,36 +46,37 @@ Localization::~Localization()
 }
 
 /*static*/ chemical::Substance* Localization::Seek(
-	const Localization& locale,
+	const Localization* locale,
 	chemical::Substance* seekIn,
 	bool* donePtr
 )
 {
-	BIO_SANITIZE(seekIn, ,
-		return NULL);
+	BIO_SANITIZE(locale && seekIn, ,
+		return seekIn);
 
-	//	if (locale.m_site == LocalizationSitePerspective::InvalidId())
-	//	{
-	//		if(donePtr)
-	//		{
-	//			*donePtr = true;
-	//		}
-	//		return seekIn;
-	//	}
-	//
-	//	chemical::ExcitationBase* extractionMethod = LocalizationSitePerspective::Instance().GetNewObjectFromIdAs< const chemical::ExcitationBase* >(locale.m_site);
-	//	BIO_SANITIZE(extractionMethod,, return NULL);
-	//	extractionMethod.EditArg(0, locale.m_name);
-	//	ByteStream result;
-	//	extractionMethod->CallDown(seekIn, result);
-	//	chemical::Substance* extract = ChemicalCast<chemical::Substance*>(Cast<physical::Wave*>(result->IKnowWhatImDoing())); //This is about as safe as we can get right now.
-	//	BIO_SANITIZE(extract,,return NULL);
-	//
-	//	if (donePtr)
-	//	{
-	//		return Seek(locale.m_next, extract, donePtr);
-	//	}
-	//	return extract;
+	if (locale->m_site == LocalizationSitePerspective::InvalidId())
+	{
+		if(donePtr)
+		{
+			*donePtr = true;
+		}
+		return seekIn;
+	}
+
+	chemical::ExcitationBase* extractionMethod = LocalizationSitePerspective::Instance().GetNewObjectFromIdAs< chemical::ExcitationBase* >(locale->m_site);
+	BIO_SANITIZE(extractionMethod,, return NULL);
+	ByteStream newName(locale->m_name);
+	extractionMethod->EditArg(0, newName);
+	ByteStream result;
+	extractionMethod->CallDown(seekIn->AsWave(), result);
+	chemical::Substance* extract = ChemicalCast<chemical::Substance*>(Cast<physical::Wave*>(result.IKnowWhatImDoing())); //This is about as safe as we can get right now.
+	BIO_SANITIZE(extract,,return NULL);
+
+	if (donePtr)
+	{
+		return Seek(locale->m_next, extract, donePtr);
+	}
+	return extract;
 }
 
 } //genetic namespace

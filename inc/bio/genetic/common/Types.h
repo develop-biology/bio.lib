@@ -33,20 +33,20 @@ namespace bio {
 	 */
 	BIO_ID_WITH_PERSPECTIVE(LocalizationSite, uint8_t)
 
-}
+} //bio namespace
 
 namespace bio {
 namespace genetic {
 
 class RNA;
 
-typedef std::vector<const RNA*> Transcriptome;
+typedef std::vector< const RNA* > Transcriptome;
 
-BIO_PERSPECTIVE_SINGLETON(RNAPerspective, StandardDimension
-)
+BIO_PERSPECTIVE_SINGLETON(RNAPerspective,
+	StandardDimension)
 
-BIO_PERSPECTIVE_SINGLETON(PlasmidPerspective, StandardDimension
-)
+BIO_PERSPECTIVE_SINGLETON(PlasmidPerspective,
+	StandardDimension)
 
 /**
  * TranscriptionFactors determine which Proteins are expressed in which Cells.
@@ -56,7 +56,10 @@ BIO_PERSPECTIVE_SINGLETON(PlasmidPerspective, StandardDimension
  * In practice, you'll likely be using other people's Plasmids, so TranscriptionFactors give you a level of control over how you want to consume external libraries in your networks.
 */
 typedef uint8_t TranscriptionFactor;
-typedef std::vector<TranscriptionFactor> TranscriptionFactors;
+typedef std::vector< TranscriptionFactor > TranscriptionFactors;
 
-BIO_ID_WITH_PERSPECTIVE(TranscriptionFactor, TranscriptionFactor
-)
+BIO_ID_WITH_PERSPECTIVE(TranscriptionFactor,
+	TranscriptionFactor)
+
+} //genetic namespace
+} //bio namespace

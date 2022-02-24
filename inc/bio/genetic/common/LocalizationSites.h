@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "Localization.h"
+#include "Types.h"
 
 namespace bio {
 namespace localization_site {

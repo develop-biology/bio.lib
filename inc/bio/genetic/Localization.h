@@ -74,7 +74,7 @@ public:
 	 * @return a place specified by locale or NULL.
 	 */
 	static chemical::Substance* Seek(
-		const Localization& locale,
+		const Localization* locale,
 		chemical::Substance* seekIn,
 		bool* donePtr = NULL
 	);

@@ -27,6 +27,9 @@
 #define BIO_EXCITATION_CLASS_1(wave, ret, ...)                                 \
 	::bio::chemical::ExcitationWithArgument< wave, ret, __VA_ARGS__ >
 
+#define BIO_EXCITATION_CLASS_2(wave, ret, ...)                                 \
+	::bio::chemical::ExcitationWithTwoArguments< wave, ret, __VA_ARGS__ >
+
 #define BIO_CREATE_EXCITATION_CLASS(wave, ret, num, ...)                       \
 	BIO_EXCITATION_CLASS_##num(wave, ret, __VA_ARGS__)
 

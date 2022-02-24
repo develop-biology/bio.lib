@@ -379,6 +379,121 @@ protected:
 	ARGUMENT m_arg;
 };
 
+/**
+ * See ExcitationBase for docs
+ * @tparam WAVE
+ * @tparam RETURN
+ * @tparam ARGUMENT1
+ * @tparam ARGUMENT2
+ */
+template < class WAVE, typename RETURN, typename ARGUMENT1, typename ARGUMENT2 >
+class ExcitationWithTwoArguments :
+	public ExcitationBase,
+	public physical::Class< ExcitationWithTwoArguments< WAVE, RETURN, ARGUMENT1, ARGUMENT2 > >
+{
+public:
+
+	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
+		BIO_SINGLE_ARG(ExcitationWithTwoArguments< WAVE, RETURN, ARGUMENT1, ARGUMENT2 >))
+
+
+	/**
+	 *
+	 */
+	ExcitationWithTwoArguments(
+		RETURN(WAVE::*function)(ARGUMENT1, ARGUMENT2),
+		ARGUMENT1 arg1,
+		ARGUMENT2 arg2
+	)
+		:
+		physical::Class< ExcitationWithTwoArguments< WAVE, RETURN, ARGUMENT1, ARGUMENT2 > >(this),
+		m_function(function),
+		m_arg1(arg1),
+		m_arg2(arg2)
+	{
+	}
+
+	/**
+	 *
+	 */
+	virtual ~ExcitationWithTwoArguments()
+	{
+
+	}
+
+	/**
+	 * Override of Wave method. See that class for details.
+	 * Ensures *this will Resonate with WAVEs by stealing their Properties from the PeriodicTable.
+	 * @return {whatever Properties WAVE has, property::Excitatory()}
+	 */
+	virtual Properties GetProperties() const
+	{
+		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
+		ret.insert(
+			ret.end(),
+			ExcitationBase::GetClassProperties().begin(),
+			ExcitationBase::GetClassProperties().end());
+		return ret;
+	}
+
+	/**
+	 * Creating a new and proper Excitation is preferred to Editing Arguments; however, we support the latter nonetheless.
+	 * @param position
+	 * @param newVal
+	 */
+	virtual void EditArg(
+		uint8_t position,
+		ByteStream& newVal
+	)
+	{
+		switch (position)
+		{
+			case 0:
+				m_arg1 = newVal;
+				break;
+			case 1:
+				m_arg2 = newVal;
+				break;
+		}
+	}
+
+	/**
+	 * @param wave the caller of m_function.
+	 * @return RETURN, whatever that is for *this; the result of calling m_function from wave.
+	 */
+	RETURN operator()(WAVE* wave) const
+	{
+		return (wave->*m_function)(
+			m_arg1,
+			m_arg2
+		);
+	}
+
+	/**
+	 * Override of ExcitationBase; see above.
+	 */
+	virtual void CallDown(
+		physical::Wave* wave,
+		ByteStream* ret
+	) const
+	{
+		ret->Set(this->operator()(ForceCast< WAVE* >(wave)));
+	}
+
+protected:
+	RETURN (WAVE::*m_function)(
+		ARGUMENT1,
+		ARGUMENT2
+	);
+
+	ARGUMENT1 m_arg1;
+	ARGUMENT2 m_arg2;
+};
+
+
 #endif
 } //chemical namespace
 } //bio namespace

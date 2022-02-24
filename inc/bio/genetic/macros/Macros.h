@@ -22,6 +22,8 @@
 #pragma once
 
 #include "bio/molecular/macros/Macros.h"
+#include "bio/genetic/common/Types.h"
+
 
 /**
  * Get all virtual methods defined by genetic::Class.
@@ -39,9 +41,6 @@ BIO_ID_FUNCTION_BODY(                                                          \
     ::bio::genetic::TranscriptionFactorPerspective::Instance(),                \
     ::bio::genetic::TranscriptionFactor)
 
-} //genetic namespace
-} //bio namespace
-
 
 /**
  * To make defining LocalizationSites easier, use this macro to define the function body of your LocalizationSite Function().
@@ -49,10 +48,9 @@ BIO_ID_FUNCTION_BODY(                                                          \
  * This will also help you define the required extraction method (chemical::Excitation*) required for accessing your LocalizationSite.
  * REMINDER: Your LocalizationSite Function()s should be in the ::bio::localization_site namespace.
  */
-#define BIO_LOCALIZATION_SITE_FUNCTION_BODY(functionName, source, extract)     \
+#define BIO_LOCALIZATION_SITE_FUNCTION_BODY(functionName, toExtract)           \
 	BIO_ID_FUNCTION_BODY(                                                      \
 		functionName,                                                          \
 		::bio::LocalizationSitePerspective::Instance(),                        \
 		::bio::LocalizationSite)                                               \
-	::bio::LocalizationSitePerspective::Instance().AssociateType(g_##functionName, new BIO_EXCITATION_CLASS(source, extract, Name)(&source::GetByName< extract >, NULL))
-
+        bool g_##functionName##Registered = ::bio::LocalizationSitePerspective::Instance().AssociateType(g_##functionName, (new BIO_EXCITATION_CLASS(::bio::chemical::LinearStructuralComponent< toExtract >, toExtract, Name, bool)(&::bio::chemical::LinearStructuralComponent< toExtract >::GetByNameImplementation, NULL, false))->AsWave());
