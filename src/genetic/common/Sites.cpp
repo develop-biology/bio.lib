@@ -19,20 +19,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include "Types.h"
+#include "bio/genetic/common/Sites.h"
+#include "bio/genetic/macros/Macros.h"
+#include "bio/molecular/Surface.h"
+#include "bio/molecular/Molecule.h"
+#include "bio/molecular/Vesicle.h"
+#include "bio/chemical/reaction/Excitation.h"
+#include "bio/chemical/structure/LinearStructuralComponent.h"
+#include "bio/physical/Periodic.h"
 
 namespace bio {
-namespace localization_site {
 
-LocalizationSite InSurface();
+BIO_SITE_FUNCTION_BODY(InSurface, molecular::Molecule*)
 
-LocalizationSite OnMolecule();
+BIO_SITE_FUNCTION_BODY(OnMolecule, molecular::Surface*)
 
-LocalizationSite OnVesicle();
+BIO_SITE_FUNCTION_BODY(InVesicle, molecular::Vesicle*)
 
-LocalizationSite InVesicle();
-
-} //localization_site namespace
 } //bio namespace

@@ -25,7 +25,7 @@
 #include "bio/genetic/common/Class.h"
 #include "bio/genetic/macros/Macros.h"
 #include "bio/molecular/DNA.h"
-#include "Localization.h"
+#include "bio/genetic/localization/Localization.h"
 
 namespace bio {
 namespace genetic {

@@ -33,6 +33,11 @@ namespace bio {
 	 */
 	BIO_ID_WITH_PERSPECTIVE(LocalizationSite, uint8_t)
 
+	/**
+	 * InsertionSites are identical to LocalizationSites except they have an insertion method, rather than an extraction method.
+	 */
+	BIO_ID_WITH_PERSPECTIVE(InsertionSite, uint8_t)
+
 } //bio namespace
 
 namespace bio {

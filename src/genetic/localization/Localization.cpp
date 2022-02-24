@@ -19,7 +19,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/genetic/Localization.h"
+#include "bio/genetic/localization/Localization.h"
 #include "bio/genetic/macros/Macros.h"
 #include "bio/chemical/reaction/Excitation.h"
 #include "bio/chemical/Substance.h"
@@ -35,7 +35,7 @@ Localization::Localization(
 	:
 	m_site(site),
 	m_name(name),
-	m_next(NULL)
+	m_previous(NULL)
 {
 
 }
@@ -45,37 +45,29 @@ Localization::~Localization()
 
 }
 
-/*static*/ chemical::Substance* Localization::Seek(
-	const Localization* locale,
-	chemical::Substance* seekIn,
-	bool* donePtr
-)
+chemical::Substance* Localization::Seek(chemical::Substance* seekIn)
 {
-	BIO_SANITIZE(locale && seekIn, ,
+	BIO_SANITIZE(seekIn, ,
 		return seekIn);
 
-	if (locale->m_site == LocalizationSitePerspective::InvalidId())
+	if (m_previous)
 	{
-		if(donePtr)
-		{
-			*donePtr = true;
-		}
+		seekIn = m_previous->Seek(seekIn);
+	}
+
+	if (m_site == LocalizationSitePerspective::InvalidId())
+	{
 		return seekIn;
 	}
 
-	chemical::ExcitationBase* extractionMethod = LocalizationSitePerspective::Instance().GetNewObjectFromIdAs< chemical::ExcitationBase* >(locale->m_site);
+	chemical::ExcitationBase* extractionMethod = LocalizationSitePerspective::Instance().GetNewObjectFromIdAs< chemical::ExcitationBase* >(m_site);
 	BIO_SANITIZE(extractionMethod,, return NULL);
-	ByteStream newName(locale->m_name);
+	ByteStream newName(m_name);
 	extractionMethod->EditArg(0, newName);
 	ByteStream result;
 	extractionMethod->CallDown(seekIn->AsWave(), result);
 	chemical::Substance* extract = ChemicalCast<chemical::Substance*>(Cast<physical::Wave*>(result.IKnowWhatImDoing())); //This is about as safe as we can get right now.
 	BIO_SANITIZE(extract,,return NULL);
-
-	if (donePtr)
-	{
-		return Seek(locale->m_next, extract, donePtr);
-	}
 	return extract;
 }
 

@@ -41,6 +41,22 @@ BIO_ID_FUNCTION_BODY(                                                          \
     ::bio::genetic::TranscriptionFactorPerspective::Instance(),                \
     ::bio::genetic::TranscriptionFactor)
 
+/**
+ * This is not for you.
+ */
+#define BIO_SITE_FUNCTION(site, type, function, typeTuple, argTuple)           \
+	bool g_##site##Registered =                                                \
+		::bio::LocalizationSitePerspective::Instance().AssociateType(          \
+			g_##site,                                                          \
+			(new BIO_EXCITATION_CLASS(                                         \
+				::bio::chemical::LinearStructuralComponent< type >,            \
+				type,                                                          \
+				BIO_EXPAND_TUPLE typeTuple                                     \
+			)(                                                                 \
+				&::bio::chemical::LinearStructuralComponent< type >::function, \
+				BIO_EXPAND_TUPLE argTuple )                                    \
+			)->AsWave()                                                        \
+		);
 
 /**
  * To make defining LocalizationSites easier, use this macro to define the function body of your LocalizationSite Function().
@@ -50,7 +66,38 @@ BIO_ID_FUNCTION_BODY(                                                          \
  */
 #define BIO_LOCALIZATION_SITE_FUNCTION_BODY(functionName, toExtract)           \
 	BIO_ID_FUNCTION_BODY(                                                      \
-		functionName,                                                          \
+		functionName##LocalizationSite,                                        \
 		::bio::LocalizationSitePerspective::Instance(),                        \
 		::bio::LocalizationSite)                                               \
-        bool g_##functionName##Registered = ::bio::LocalizationSitePerspective::Instance().AssociateType(g_##functionName, (new BIO_EXCITATION_CLASS(::bio::chemical::LinearStructuralComponent< toExtract >, toExtract, Name, bool)(&::bio::chemical::LinearStructuralComponent< toExtract >::GetByNameImplementation, NULL, false))->AsWave());
+	BIO_SITE_FUNCTION(functionName##LocalizationSite, toExtract, GetByNameImplementation, (Name, bool), (NULL, false))
+
+/**
+ * To make defining InsertionSites easier, use this macro to define the function body of your InsertionSite Function().
+ * This will assign a value to a string that is identical to your FunctionName e.g. InsertionSitePerspective::Instance().GetNameFromId(Value()) would give "Value".
+ * This will also help you define the required insertion method (chemical::Excitation*) required for using your InsertionSite.
+ * REMINDER: Your InsertionSite Function()s should be in the ::bio::insertion_site namespace.
+ */
+#define BIO_INSERTION_SITE_FUNCTION_BODY(functionName, toInsert)               \
+	BIO_ID_FUNCTION_BODY(                                                      \
+		functionName##InsertionSite,                                           \
+		::bio::InsertionSitePerspective::Instance(),                           \
+		::bio::InsertionSite)                                                  \
+	BIO_SITE_FUNCTION(functionName##InsertionSite, toInsert, AddImplementation, (toInsert), (NULL))
+
+/**
+ * Ease of use method for declaring all kinds of sites at once.
+ */
+#define BIO_SITE(functionName)                                                 \
+	namespace localization_site {LocalizationSite functionName();}             \
+	namespace insertion_site {InsertionSite functionName();}
+
+/**
+ * Ease of use method of defining all kinds of sites at once.
+ */
+#define BIO_SITE_FUNCTION_BODY(functionName, type)                             \
+	namespace localization_site {                                              \
+		BIO_LOCALIZATION_SITE_FUNCTION_BODY(functionName, type)                \
+	}                                                                          \
+	namespace insertion_site {                                                 \
+		BIO_INSERTION_SITE_FUNCTION_BODY(functionName, type)                   \
+	}

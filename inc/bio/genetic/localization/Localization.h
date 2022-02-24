@@ -35,17 +35,17 @@ class Localization;
 
 /**
  * Localizations are a chain of named places.
- * Each place is a different Localization, which has more places (Localizations) within it.
+ * Each place is a different Localization, which has more places (Localizations) around it.
  * This system allows us to traverse arbitrarily complex spaces with ease.
  *
- * In order to use a standard interface with arbitrarily complex containers, we rely on physical::Perspective::AssociateType(), chemical::Excitation, and the chemical/structure system to provide us with a means of translating a LocalizationType (AssociateType) into a class method (Excitation) that is used to query a container by Name (structure).
+ * In order to use a standard interface with arbitrarily complex containers, we rely on physical::Perspective::AssociateType(), chemical::Excitation, and the chemical/structure system to provide us with a means of translating a LocalizationSite (AssociateType) into a class method (Excitation) that is used to query a container by Name (structure).
  * See genetic/Macros.h for an easy way to define all that (its not nearly as hard to use as it is to implement).
  *
  * To create a localization, first select the kind of place you want from the available LocalizationTypes (in the localization_type namespace).
  * Next, note the Name of the desired place.
  * And, lastly, instantiate a Localization.
- * If you would like to identify a place within that place, simple repeat and set the further Localization as the m_next of the first.
- * For example, if you want to identify where the bathroom is within a restaurant, we would start with a Localization along the lines of {localization_type::StreetAddress(), "MyFavoriteRestaurant"}. In this case, StreetAddress would tell us to use a navigation app and maybe a car or taxi service to "extract" the restaurant form the world. Then, we would set the m_next of this Localization to something like {localization_type::Room(), "Bathroom"}, which might cause us to ask the nearest person for "Bathroom", thereby "extracting" the "Bathroom" from "MyFavoriteRestaurant". What you do in the Bathroom is up to you.
+ * If you would like to identify a place within another place, simple repeat and set the containing Localization as the m_previous of the first.
+ * For example, if you want to identify where the bathroom is within a restaurant, we would start with a Localization like {localization_site::Room(), "Bathroom"}, which might cause us to ask the nearest person for the "Bathroom". Next, we would create another Localization along the lines of {localization_site::StreetAddress(), "MyFavoriteRestaurant"}. In this case, StreetAddress would tell us to use a navigation app and maybe a car or taxi service to "extract" the restaurant form the world. Thus, we end up with all the information necessary to "extract" the "Bathroom" from "MyFavoriteRestaurant".
  */
 class Localization
 {
@@ -66,22 +66,15 @@ public:
 
 	/**
 	 * Find some place by following a chain of Localizations.
-	 * Will recurse only if done is provided.
-	 * Seek recursion stops when m_next is NULL or locale.m_site is invalid (i.e. the default value when not set).
-	 * @param locale
+	 * Will recurse upward, following m_previous for as long as possible.
 	 * @param seekIn
-	 * @param done indicates when to stop recursion.
-	 * @return a place specified by locale or NULL.
+	 * @return a Substance somewhere within the Substance provided or NULL.
 	 */
-	static chemical::Substance* Seek(
-		const Localization* locale,
-		chemical::Substance* seekIn,
-		bool* donePtr = NULL
-	);
+	virtual chemical::Substance* Seek(chemical::Substance* seekIn);
 
 	LocalizationSite m_site;
 	Name m_name;
-	Localization* m_next;
+	Localization* m_previous;
 };
 
 } //genetic namespace
