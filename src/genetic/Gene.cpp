@@ -22,12 +22,18 @@
 
 #include "bio/genetic/Gene.h"
 #include "bio/genetic/common/Properties.h"
+#include "bio/molecular/Protein.h"
 
 namespace bio {
 namespace genetic {
 
 Gene::~Gene()
 {
+}
+
+void Gene::CtorCommon()
+{
+	m_insertion.InsertThis(ChemicalCast< chemical::Substance* >(GetProtein()));
 }
 
 } //namespace genetic

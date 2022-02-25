@@ -54,6 +54,12 @@ typedef enum
 namespace bio {
 namespace chemical {
 
+template < typename T >
+struct Structure
+{
+	typedef std::vector< T > Contents;
+};
+
 /**
  * Valence defines how many Bonds an Atom (e.g. Substance) can have.
  * The max of valence (255 as a uint*_t) is essentially the max number of parents a child class can have.

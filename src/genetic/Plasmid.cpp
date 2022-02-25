@@ -20,6 +20,7 @@
  */
 
 #include "bio/genetic/Plasmid.h"
+#include "bio/genetic/Expressor.h"
 #include "bio/genetic/proteins/RNAPolymerase.h"
 
 namespace bio {
@@ -35,16 +36,22 @@ molecular::Protein* Plasmid::GetRNAPolymerase()
 	return GetProtein();
 }
 
-void Plasmid::CtorCommon()
+const molecular::Protein* Plasmid::GetRNAPolymerase() const
 {
-	m_protein = new RNAPolymerase();
+	return GetProtein();
 }
 
-RNA* Plasmid::TranscribeFor(const Expressor* expressor) const
+void Plasmid::CtorCommon()
 {
-	std::string rnaName = "mRNA_" + GetName();
+	m_protein = new RNAPolymerase(this);
+}
+
+RNA* Plasmid::TranscribeFor(Expressor* expressor) const
+{
+	std::string rnaName = "mRNA_";
+	rnaName += GetName();
 	RNA* ret = new RNA(rnaName.c_str());
-	RNAPolymerase* polymerase = CloneAndCast<RNAPolymerase*>(GetRNAPolymerase());
+	molecular::Protein* polymerase = ForceCast<molecular::Protein*>(GetRNAPolymerase()->Clone());
 	StandardDimension bindingSite = polymerase->GetIdFromName("RNA Binding Site");
 	polymerase->RecruitChaperones(expressor);
 	polymerase->Fold();

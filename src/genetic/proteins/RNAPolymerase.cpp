@@ -20,6 +20,7 @@
  */
 
 #include "bio/genetic/proteins/RNAPolymerase.h"
+#include "bio/genetic/Expressor.h"
 #include "bio/genetic/Plasmid.h"
 #include "bio/genetic/RNA.h"
 #include "bio/common/TypeName.h"
@@ -27,7 +28,7 @@
 namespace bio {
 namespace genetic {
 
-RNAPolymerase::RNAPolymerase(molecular::Plasmid* toTranscribe)
+RNAPolymerase::RNAPolymerase(Plasmid* toTranscribe)
 	:
 	molecular::Protein(chemical::PeriodicTable::Instance().GetNameFromType(*this))
 {
@@ -42,11 +43,11 @@ RNAPolymerase::~RNAPolymerase()
 
 Code RNAPolymerase::Activate()
 {
-	Expressor* expressor = GetEnvironment();
-	BIO_SANITIZE(environment, ,
+	Expressor* expressor = ChemicalCast< Expressor* >(GetEnvironment());
+	BIO_SANITIZE(expressor, ,
 		return code::BadArgument1());
 	RNA* boundRNA = RotateTo<RNA*>(mc_rna);
-	BIO_SANITIZE(m_rna, ,
+	BIO_SANITIZE(mc_rna, ,
 		return code::BadArgument2());
 
 	bool shouldTranscribe = false;
@@ -56,24 +57,14 @@ Code RNAPolymerase::Activate()
 		++gen
 		)
 	{
-		shouldTranscribe = expressor->GetNumMatching< TranscriptionFactor >(gene->m_requiredTranscriptionFactors) == gene->m_requiredTranscriptionFactors.size();
+		shouldTranscribe = expressor->GetNumMatching< TranscriptionFactor >((*gen)->m_requiredTranscriptionFactors) == (*gen)->m_requiredTranscriptionFactors.size();
 		if (!shouldTranscribe)
 		{
 			continue;
 		}
-		boundRNA->Add< Gene* >(gen);
+		boundRNA->Add< Gene* >(*gen);
 	}
+	return code::Success();
 }
-
-void RNAPolymerase::FeedRNA(RNA* toTranscribeOnto)
-{
-	m_rna = toTranscribeOnto;
-}
-
-RNA* RNAPolymerase::GetTranscribedRNA()
-{
-	return m_rna;
-}
-
 } //genetic namespace
 } //bio namespace

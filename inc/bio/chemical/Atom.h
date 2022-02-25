@@ -163,7 +163,7 @@ public:
 	template < typename T >
 	const T AsBondedQuantum() const
 	{
-		return AsBonded< physical::Quantum< T >* >();
+		return *AsBonded< physical::Quantum< T >* >();
 	}
 
 	/**

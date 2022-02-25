@@ -29,6 +29,8 @@
 namespace bio {
 namespace genetic {
 
+class Expressor;
+
 /**
  * The purpose of a Plasmid is to group logically similar Proteins into a single unit that can be easily distributed and applied to Biological projects.
  * Essentially, a Plasmid is a library; the code it stores is simply restricted to Proteins, Molecules, and other Biological classes for the purpose of integrating with the Biology framework.
@@ -76,10 +78,10 @@ public:
 	 * Similarly, here, RNAPolymerase is responsible for Transcribing Genes.
 	 * If you would like your own custom unpacking system for your Plasmid, override this method.
 	 * If you don't need anything fancy, leave this as is.
-	 * @param expressor the Expressor that is about to start Transcribing Genes from *this. By default, we assume this is a cellular::Cell*.
 	 * @return A Protein* that will carry out the Transcription of *this.
 	 */
 	virtual molecular::Protein* GetRNAPolymerase();
+	virtual const molecular::Protein* GetRNAPolymerase() const;
 
 	/**
 	 * Transcribes *this in the context of the given Expressor.
@@ -88,7 +90,7 @@ public:
 	 * @param expressor
 	 * @return a new RNA* to be Expressed.
 	 */
-	virtual RNA* TranscribeFor(const Expressor* expressor) const;
+	virtual RNA* TranscribeFor(Expressor* expressor) const;
 
 private:
 	/**

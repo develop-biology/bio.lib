@@ -527,7 +527,7 @@ public:
 			{
 				//NOTE: THIS REMOVES ANY STRUCTURAL COMPONENTS NOT EXPLICITLY IN addition
 
-				addition->ImportAll(toReplace);
+				addition->ImportAll(toReplace->AsWave());
 
 				#if 0
 				if (logger)
@@ -893,7 +893,7 @@ public:
 			++cnt
 			)
 		{
-			if ((**cnt) == content)
+			if ((**cnt) == *content)
 			{
 				return true;
 			}
@@ -918,7 +918,7 @@ public:
 			)
 		{
 			BIO_SANITIZE_WITH_CACHE(ChemicalCast< CONTENT_TYPE >((*cnt)->Clone()),
-				this->AddImplementation(*Cast< CONTENT_TYPE >(RESULT)),
+				this->AddImplementation(Cast< CONTENT_TYPE >(RESULT)),
 				continue);
 		}
 	}
@@ -985,7 +985,7 @@ public:
 	{
 		Emission ret;
 		for (
-			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::const_iterator cnt = this->m_contents.begin();
+			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::iterator cnt = this->m_contents.begin();
 			cnt != this->m_contents.end();
 			++cnt
 			)

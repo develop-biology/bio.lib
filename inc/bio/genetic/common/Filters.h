@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/physical/common/Filters.h"
+#include "bio/molecular/common/Filters.h"
 
 namespace bio {
 namespace filter {

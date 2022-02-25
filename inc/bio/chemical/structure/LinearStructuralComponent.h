@@ -41,6 +41,9 @@ namespace chemical {
  * IMPORTANT: CONTENT_TYPE MUST BE A chemical::Class* (which is in the StandardDimension).
  * YOU CANNOT USE LinearStructuralComponent WITH TYPES THAT ARE NOT POINTERS TO CHILDREN OF chemical::Class
  *
+ * NOTE: CONTENT_TYPE cannot be "const".
+ * cv qualifiers may be supported in a future release but for now, all CONTENT_TYPEs must have the option of being modified.
+ *
  * Other Dimensions may be supported in a future release (see note in LinearStructuralComponentImplementation.h for why).
  *
  * The "linear" comes from the idea that instead of a 0 dimensional pile of types, as are StructuralComponents, *this can be ordered along at least 1 dimension (i.e. the StandardDimension). In other words, LinearStructuralComponents contain logic for handling their CONTENT_TYPE by Id, Name, and other aspects innate to the physical::Identifiable<StandardDimension>.
@@ -132,7 +135,7 @@ public:
 			++cnt
 			)
 		{
-			this->AddImplementation(CloneAndCast<CONTENT_TYPE>(*cnt));
+			this->AddImplementation(*cnt);
 		}
 	}
 
@@ -146,6 +149,18 @@ public:
 		LinearStructuralComponentImplementation< CONTENT_TYPE >::ClearImplementation();
 	}
 
+	/**
+	 * Adds content to *this.
+	 * @param content
+	 * @return t or NULL.
+	 */
+	virtual CONTENT_TYPE AddImplementation(CONTENT_TYPE content)
+	{
+		return this->AddTo(
+			CloneAndCast< CONTENT_TYPE >(content),
+			&this->m_contents
+		);
+	}
 
 	/**
 	 * Implementation for inserting a Content to *this.
@@ -226,8 +241,8 @@ public:
 	{
 		BIO_SANITIZE(this->GetStructuralPerspective(), ,
 			return NULL);
-		return *this->AddImplementation(
-			(this->GetStructuralPerspective()->template GetNewObjectFromIdAs< CONTENT_TYPE >(id)));
+		return this->AddImplementation(
+			(this->GetStructuralPerspective()->template GetTypeFromIdAs< CONTENT_TYPE >(id)));
 	}
 
 	/**

@@ -38,7 +38,7 @@ class StructuralComponentImplementation :
 {
 public:
 
-	typedef std::vector< CONTENT_TYPE > Contents;
+	typedef typename Structure< CONTENT_TYPE >::Contents Contents;
 
 	/**
 	 *
@@ -71,7 +71,7 @@ public:
 	 * @return an Contents::iterator for the given content
 	 */
 	static typename Contents::iterator Find(
-		CONTENT_TYPE content,
+		const CONTENT_TYPE content,
 		Contents* contents
 	)
 	{
@@ -89,7 +89,7 @@ public:
 	 * @return an Contents::const_iterator for the given content
 	 */
 	static typename Contents::const_iterator Find(
-		CONTENT_TYPE content,
+		const CONTENT_TYPE content,
 		const Contents* contents
 	)
 	{
@@ -107,7 +107,7 @@ public:
 	 * @return whether or not content can be found in the contents.
 	 */
 	static bool DoesExist(
-		CONTENT_TYPE content,
+		const CONTENT_TYPE content,
 		const Contents* contents
 	)
 	{
@@ -124,7 +124,7 @@ public:
 	 * @return a pointer to the added content or 0.
 	 */
 	static CONTENT_TYPE AddTo(
-		CONTENT_TYPE content,
+		const CONTENT_TYPE content,
 		Contents* destination
 	)
 	{
@@ -144,7 +144,7 @@ public:
 	 * @return a pointer to the removed content or 0.
 	 */
 	static CONTENT_TYPE RemoveFrom(
-		CONTENT_TYPE toRemove,
+		const CONTENT_TYPE toRemove,
 		Contents* removeFrom
 	)
 	{
@@ -204,7 +204,7 @@ public:
 	 * @param content
 	 * @return a pointer to the given content matching that within *this; 0 if no match found.
 	 */
-	virtual CONTENT_TYPE GetImplementation(CONTENT_TYPE content)
+	virtual CONTENT_TYPE* GetImplementation(const CONTENT_TYPE content)
 	{
 		typename Contents::iterator ret = Find(
 			content,
@@ -212,7 +212,7 @@ public:
 		);
 		BIO_SANITIZE(ret != this->m_contents.end(), ,
 			return 0);
-		return *ret;
+		return &*ret;
 	}
 
 
@@ -221,7 +221,7 @@ public:
 	 * @param content
 	 * @return a pointer to the given content matching that within *this; 0 if no match found.
 	 */
-	virtual const CONTENT_TYPE GetImplementation(CONTENT_TYPE content) const
+	virtual const CONTENT_TYPE* GetImplementation(CONTENT_TYPE content) const
 	{
 		typename Contents::const_iterator ret = Find(
 			content,
@@ -229,7 +229,7 @@ public:
 		);
 		BIO_SANITIZE(ret != this->m_contents.end(), ,
 			return 0);
-		return *ret;
+		return &*ret;
 	}
 
 	/**
@@ -237,11 +237,11 @@ public:
 	 * @param content
 	 * @return t or 0.
 	 */
-	virtual CONTENT_TYPE AddImplementation(CONTENT_TYPE content)
+	virtual CONTENT_TYPE AddImplementation(const CONTENT_TYPE content)
 	{
 		return this->AddTo(
 			content,
-			&m_contents
+			&this->m_contents
 		);
 	}
 
@@ -249,7 +249,7 @@ public:
 	 * Removes content from *this and deletes it.
 	 * @param content
 	 */
-	virtual CONTENT_TYPE RemoveImplementation(CONTENT_TYPE content)
+	virtual CONTENT_TYPE RemoveImplementation(const CONTENT_TYPE content)
 	{
 		return this->RemoveFrom(
 			content,
@@ -262,7 +262,7 @@ public:
 	 * @param content
 	 * @return whether or not the given content exists in *this
 	 */
-	virtual bool HasImplementation(CONTENT_TYPE content) const
+	virtual bool HasImplementation(const CONTENT_TYPE content) const
 	{
 		return this->DoesExist(
 			content,

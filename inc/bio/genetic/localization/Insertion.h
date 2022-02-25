@@ -52,7 +52,7 @@ public:
 	 * @param name
 	 */
 	explicit Insertion(
-		chemical::Substance* whatToInsert,
+		chemical::Substance* whatToInsert = NULL,
 		InsertionSite site = InsertionSitePerspective::InvalidId(),
 		Name name = NULL
 	);
@@ -69,7 +69,7 @@ public:
 	 * @param insertIn
 	 * @return a Substance somewhere within the Substance provided or NULL.
 	 */
-	virtual chemical::Substance* Seek(chemical::Substance* insertIn);
+	virtual chemical::Substance* Seek(chemical::Substance* insertIn) const;
 	
 	/**
 	 * Tells *this to insert toInsert in its Localization.

@@ -84,7 +84,7 @@ public:
 	 * @param seekIn
 	 * @return a Substance somewhere within the Substance provided or NULL.
 	 */
-	virtual chemical::Substance* Seek(chemical::Substance* seekIn);
+	virtual chemical::Substance* Seek(chemical::Substance* seekIn) const;
 
 	/**
 	 * Get m_site.
@@ -116,7 +116,7 @@ protected:
 	 * @param seekIn
 	 * @return the result of Seeking through all Modulated Localizations.
 	 */
-	chemical::Substance* ResolvePrevious(chemical::Substance* seekIn);
+	chemical::Substance* ResolvePrevious(chemical::Substance* seekIn) const;
 
 	LocalizationSite m_site;
 	Name m_name;

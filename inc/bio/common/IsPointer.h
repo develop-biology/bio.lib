@@ -33,19 +33,11 @@ namespace bio {
 
 //@formatter:off
 #if BIO_CPP_VERSION < 11
-	template < typename T >
-	struct IsPointerImplementation
-	{
-		IsPointerImplementation() : m_value(false) {}
-		bool m_value;
-	};
+	template<typename T>
+	struct IsPointerImplementation {static const bool m_value = false;};
 
-	template < typename T >
-	struct IsPointerImplementation< T* >
-	{
-		IsPointerImplementation() : m_value(true) {}
-		bool m_value;
-	};
+	template<typename T>
+	struct IsPointerImplementation<T*> {static const bool m_value = true;};
 #endif
 //@formatter:on
 

@@ -23,9 +23,10 @@
 
 #include "bio/genetic/common/Types.h"
 #include "bio/genetic/common/Class.h"
+#include "bio/genetic/common/Filters.h"
 #include "bio/genetic/macros/Macros.h"
+#include "bio/genetic/localization/Insertion.h"
 #include "bio/molecular/DNA.h"
-#include "bio/genetic/localization/Localization.h"
 
 namespace bio {
 namespace genetic {
@@ -62,10 +63,7 @@ public:
 	/**
 	 *
 	 */
-	virtual ~Gene()
-	{
-
-	}
+	virtual ~Gene();
 
 	/**
 	 * If a Cell has the indicated TranscriptionFactors, insert the given protein at the localization (i.e. Cell::InsertProtein(protein, localization).
@@ -73,12 +71,18 @@ public:
 	TranscriptionFactors m_requiredTranscriptionFactors;
 
 	/**
-	 * The localization is a series of Names that corresponds to the Vesicles, Molecules, or Surfaces *this is to be added to. Index 0 is a Molecule in the Expressor Vesicle, with the index number increasing for each level down in the tree. Index end()-1 is what the Protein will be added to.
+	 * The insertion is the Name and type of Site that corresponds to the Vesicle, Molecule, Surface, etc. that *this should to be added to.
 	 * This is a functional equivalent to proteins being moved around a cell after being folded. The resulting sub-cellular localization puts certain proteins in closer proximity to each other such that they might affect (or, in this case, effect) each other's activity.
 	 * This also enables protein encapsulation, excretion, etc. by making the Proteins in a Vesicle stay in the Vesicle as it's Transferred between other Vesicles, etc.
-	 * For more info, see Localization.h
+	 * For more info, see Localization.h and Insertion.h
 	 */
-	Localization m_localization;
+	Insertion m_insertion;
+
+private:
+	/**
+	 * common constructor code
+	 */
+	void CtorCommon();
 };
 
 } //genetic namespace

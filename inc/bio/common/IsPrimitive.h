@@ -39,11 +39,8 @@ namespace bio {
 
 //@formatter:off
 #if BIO_CPP_VERSION < 11
-	template < typename T >
-	bool IsPrimitiveImplementation()
-	{
-		return false;
-	}
+	template<typename T>
+	struct IsPrimitiveImplementation {static const bool m_value = false;};
 #endif
 //@formatter:on
 
@@ -63,7 +60,7 @@ bool IsPrimitive(const T t)
 
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
-		return IsPrimitiveImplementation< T >();
+		return IsPrimitiveImplementation< T >::m_value;
 	#else
 		return std::is_fundamental<T>::value;
 	#endif
@@ -79,9 +76,13 @@ bool IsPrimitive(const T t)
 template < typename T >
 bool IsPrimitive()
 {
+	if (IsPointer< T >())
+	{
+		return false;
+	}
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
-		return IsPrimitiveImplementation< T >();
+		return IsPrimitiveImplementation< T >::m_value;
 	#else
 		return std::is_fundamental<T>::value;
 	#endif
@@ -91,83 +92,44 @@ bool IsPrimitive()
 #if BIO_CPP_VERSION < 11
 
 template <>
-bool IsPrimitiveImplementation< bool >()
-{
-	return true;
-}
+struct IsPrimitiveImplementation< bool > {static const bool m_value = true;};
 
 template <>
-bool IsPrimitiveImplementation< float >()
-{
-	return true;
-}
+struct IsPrimitiveImplementation< float > {static const bool m_value = true;};
 
 template <>
-bool IsPrimitiveImplementation< double >()
-{
-	return true;
-}
+struct IsPrimitiveImplementation< double > {static const bool m_value = true;};
 
 //This is int8_t & may cause compiler errors.
 //template <>
-//bool IsPrimitiveImplementation< char >()
-//{
-//	return true;
-//}
+//struct IsPrimitiveImplementation< char > {static const bool m_value = true;};
 
 template <>
-bool IsPrimitiveImplementation< std::string >()
-{
-	return true;
-}
+struct IsPrimitiveImplementation< std::string >{static const bool m_value = true;};
 
 template <>
-bool IsPrimitiveImplementation< int8_t >()
-{
-	return true;
-}
+struct IsPrimitiveImplementation< int8_t > {static const bool m_value = true;};
 
 template <>
-bool IsPrimitiveImplementation< int16_t >()
-{
-	return true;
-}
+struct IsPrimitiveImplementation< int16_t > {static const bool m_value = true;};
 
 template <>
-bool IsPrimitiveImplementation< int32_t >()
-{
-	return true;
-}
+struct IsPrimitiveImplementation< int32_t > {static const bool m_value = true;};
 
 template <>
-bool IsPrimitiveImplementation< int64_t >()
-{
-	return true;
-}
+struct IsPrimitiveImplementation< int64_t > {static const bool m_value = true;};
 
 template <>
-bool IsPrimitiveImplementation< uint8_t >()
-{
-	return true;
-}
+struct IsPrimitiveImplementation< uint8_t > {static const bool m_value = true;};
 
 template <>
-bool IsPrimitiveImplementation< uint16_t >()
-{
-	return true;
-}
+struct IsPrimitiveImplementation< uint16_t > {static const bool m_value = true;};
 
 template <>
-bool IsPrimitiveImplementation< uint32_t >()
-{
-	return true;
-}
+struct IsPrimitiveImplementation< uint32_t > {static const bool m_value = true;};
 
 template <>
-bool IsPrimitiveImplementation< uint64_t >()
-{
-	return true;
-}
+struct IsPrimitiveImplementation< uint64_t > {static const bool m_value = true;};
 
 #endif
 

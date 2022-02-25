@@ -20,22 +20,11 @@
  */
 
 #include "bio/genetic/Expressor.h"
+#include "bio/genetic/Plasmid.h"
 #include "bio/genetic/common/Codes.h"
-#include "bio/genetic/reactions/ExpressPlasmid.h"
 
 namespace bio {
 namespace genetic {
-
-Expressor::Expressor(const Expressor& other)
-	:
-	chemical::StructuralComponent< TranscriptionFactor >(other),
-	chemical::LinearStructuralComponent< const Plasmid* >(other),
-	chemical::LinearStructuralComponent< Protein* >(),
-	molecular::Vesicle(other),
-	m_transcriptome()
-{
-
-}
 
 Expressor::~Expressor()
 {
@@ -44,8 +33,8 @@ Expressor::~Expressor()
 
 Code Expressor::Activate(StandardDimension proteinId)
 {
-	ret = code::Success();
-	Protein* toActivate = GetById< Protein* >(
+	Code ret = code::Success();
+	molecular::Protein* toActivate = GetById< molecular::Protein* >(
 		proteinId,
 		false
 	);
@@ -56,7 +45,7 @@ Code Expressor::Activate(StandardDimension proteinId)
 
 Code Expressor::Activate(Name proteinName)
 {
-	return Activate(molecular::ProteinPerspective::Instance().IdFromName(proteinName));
+	return Activate(molecular::ProteinPerspective::Instance().GetIdWithoutCreation(proteinName));
 }
 
 Code Expressor::ExpressGenes()
@@ -74,8 +63,8 @@ Code Expressor::ExpressGenes()
 		}
 	}
 	for (
-		chemical::StructuralComponentImplementation< Gene* >::Contents::const_iterator rna = m_transcriptome.GetAll< Gene* >()->begin();
-		rna != m_transcriptome.GetAll< Gene* >()->end();
+		Transcriptome::const_iterator rna = m_transcriptome.begin();
+		rna != m_transcriptome.end();
 		++rna
 		)
 	{
@@ -100,22 +89,23 @@ Code Expressor::Translate(const RNA* mRNA)
 	BIO_SANITIZE(mRNA, ,
 		code::BadArgument1());
 
+	Code ret = code::Success();
 
 	for (
-		chemical::StructuralComponentImplementation< Gene* >::Contents::const_iterator rna = mRNA->GetAll< Gene* >()->begin();
-		rna != m_transcriptome.GetAll< Gene* >()->end();
+		Transcriptome::const_iterator rna = m_transcriptome.begin();
+		rna != m_transcriptome.end();
 		++rna
 		)
 	{
-		for (
-			Names::const_iterator nam = (*rna)->m_localization.begin();
-			nam != m_localization.end();
-			++nam
-			)
+		for (chemical::Structure< Gene* >::Contents::const_iterator gen = (*rna)->GetAll< Gene* >()->begin(); gen != (*rna)->GetAll< Gene* >()->end(); ++gen)
 		{
-			Surface*
+			if (!(*gen)->m_insertion.Seek(this))
+			{
+				ret = code::UnknownError();
+			}
 		}
 	}
+	return ret;
 }
 
 } //molecular namespace

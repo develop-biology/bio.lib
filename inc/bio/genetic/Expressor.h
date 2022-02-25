@@ -32,15 +32,43 @@
 namespace bio {
 namespace genetic {
 
+class Plasmid;
+
+/**
+ * chemical::StructuralComponent<TranscriptionFactor> is an ambiguous base of Expressor, so we use an intermediate class to disambiguate.
+ */
+class TranscriptionFactorStructure :
+	public chemical::Class< TranscriptionFactorStructure >,
+	public chemical::StructuralComponent< TranscriptionFactor >
+{
+public:
+	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(chemical,
+		TranscriptionFactorStructure)
+
+	TranscriptionFactorStructure()
+		:
+		chemical::Class< TranscriptionFactorStructure >(this)
+	{
+	}
+
+	virtual ~TranscriptionFactorStructure()
+	{
+	}
+};
+
 /**
  * genetic::Expressors contain the logic for storing and querying TranscriptionFactors.
  * NOTE: While TranscriptionFactors are used to control the translation of Plasmid dna into Proteins, Proteins themselves can only be Folded within a Cell, and thus are not included here.
-*/
+ */
 class Expressor :
-	virtual public molecular::Vesicle,
-	public chemical::StructuralComponent<TranscriptionFactor>,
-	public chemical::LinearStructuralComponent< const Plasmid* >,
-	public chemical::LinearStructuralComponent< molecular::Protein* >
+	public Class< Expressor >,
+	public TranscriptionFactorStructure,
+	public chemical::LinearStructuralComponent< Plasmid* >,
+	public chemical::LinearStructuralComponent< molecular::Protein* >,
+	virtual public molecular::Vesicle
 {
 public:
 
@@ -53,21 +81,10 @@ public:
 	/**
 	 * Standard ctors.
 	 */
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(genetic,
+	 BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(genetic,
 		Expressor,
 		&molecular::VesiclePerspective::Instance(),
 		filter::Genetic())
-
-
-	/**
-	 * NOTE: Protein*s and m_transcriptome are not copied!
-	 *
-	 * In order to make sure Proteins' life cycles are properly managed, *this will need to ExpressGenes() once copied. Because copying implies a change in context, which can potentially alter Gene Expression, we leave this method to be called manually.
-	 *
-	 * @param other
-	 */
-	Expressor(const Expressor& other);
-
 
 	/**
 	 *
@@ -98,10 +115,10 @@ public:
 	 * @tparam T
 	 * @return the result of Activate after resolving the given type to an Id.
 	 */
-	template <typename T>
+	template < typename T >
 	Code Activate()
 	{
-		return Activate(TypeName<T>);
+		return Activate(TypeName< T >);
 	}
 
 

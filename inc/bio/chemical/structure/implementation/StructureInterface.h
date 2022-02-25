@@ -58,7 +58,7 @@ public:
 	 * @return a T* pointing to the contents of *this or 0; 0 if T is invalid.
 	 */
 	template < typename T >
-	T Get(T t)
+	T Get(const T t)
 	{
 		T ret = 0;
 		LockThread();
@@ -78,7 +78,7 @@ public:
 	 * @return a const T* pointing to the contents of *this or 0; 0 if T is invalid.
 	 */
 	template < typename T >
-	const T Get(T t) const
+	const T Get(const T t) const
 	{
 		const T ret = 0;
 		LockThread();
@@ -100,7 +100,7 @@ public:
 	 * @return the t inserted or 0; 0 if T is invalid.
 	 */
 	template < typename T >
-	T Add(T t)
+	T Add(const T t)
 	{
 		T ret = 0;
 		LockThread();
@@ -121,7 +121,7 @@ public:
 	 * @return the removed content or 0; 0 if T is invalid.
 	 */
 	template < typename T >
-	T Remove(T t)
+	T Remove(const T t)
 	{
 		T ret = 0;
 		LockThread();
@@ -173,9 +173,9 @@ public:
 	 * This method side-steps the typical inheritance encapsulation in order to prevent child classes from having to override this method and account for each new StructuralComponent they add. In other words, complexity here removes repeated code downstream.
 	 * @param other
 	 */
-	Code ImportAll(const StructureInterface* other)
+	Code ImportAll(const physical::Wave* other)
 	{
-		BIO_SANITIZE(other,,return code::BadArgument1());
+		BIO_SANITIZE(other && other->AsAtom(),,return code::BadArgument1());
 
 		Code ret = code::Success();
 
@@ -196,7 +196,7 @@ public:
 			{
 				continue;
 			}
-			const physical::Wave* otherBond = other->GetBonded(other->GetBondPosition(m_bonds[val].GetId()));
+			const physical::Wave* otherBond = other->AsAtom()->GetBonded(other->AsAtom()->GetBondPosition(m_bonds[val].GetId()));
 			(Cast< AbstractStructure* >(m_bonds[val].GetBonded()))->ImportImplementation(otherBond); //actual work
 		}
 		UnlockThread();
