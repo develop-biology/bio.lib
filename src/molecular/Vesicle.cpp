@@ -20,33 +20,57 @@
  */
 
 #include "bio/molecular/Vesicle.h"
-#include "bio/molecular/Filters.h"
+#include "bio/molecular/common/Filters.h"
 
 namespace bio {
 namespace molecular {
 
-Vesicle::Vesicle() :
-	Class(this),
-	LinearStructuralComponent<Molecule*>(this)
-{
-
-}
-
-Vesicle::Vesicle(Name name) :
-	Class(this, name, &VesiclePerspective::Instance(), filter::Molecular()),
-	LinearStructuralComponent<Molecule*>(this)
-{
-}
-
 Vesicle::Vesicle(const Vesicle& toCopy) :
-	Class(this, toCopy.GetId(), &VesiclePerspective::Instance(), filter::Molecular()),
-	LinearStructuralComponent<Molecule*>(toCopy)
+	molecular::Class<Vesicle>(this, toCopy.GetId(), toCopy.GetPerspective(), toCopy.GetFilter()),
+	LinearStructuralComponent< Molecule* >(toCopy)
 {
-	LinearStructuralComponent<Molecule*>::m_perspective = this;
+	LinearStructuralComponent< Molecule* >::m_perspective = this;
 }
 
 Vesicle::~Vesicle()
 {
 }
+
+Molecule* Vesicle::operator[](StandardDimension moleculeId)
+{
+	return GetById< Molecule* >(moleculeId);
+}
+
+const Molecule* Vesicle::operator[](StandardDimension moleculeId) const
+{
+	return GetById< Molecule* >(moleculeId);
+}
+
+Molecule* Vesicle::operator[](Name moleculeName)
+{
+	return GetByName< Molecule* >(moleculeName);
+}
+
+const Molecule* Vesicle::operator[](Name moleculeName) const
+{
+	return GetByName< Molecule* >(moleculeName);
+}
+
+Vesicle* Vesicle::operator<<=(Vesicle* source)
+{
+	BIO_SANITIZE(source,,return NULL);
+	Import< Molecule* >(source);
+	return this;
+}
+
+Vesicle* Vesicle::operator>>=(Vesicle* target)
+{
+	BIO_SANITIZE(target,,return NULL);
+	target->Import< Molecule* >(this);
+	this->Clear< Molecule* >();
+	return target;
+}
+
+
 } //molecular namespace
 } //bio namespace

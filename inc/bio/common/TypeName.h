@@ -38,7 +38,7 @@ const std::string TypeName();
  * @return "void"
  */
 template <>
-const std::string TypeName<void>()
+inline const std::string TypeName<void>()
 {
 	return "void";
 }

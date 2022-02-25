@@ -21,9 +21,11 @@
 
 #pragma once
 
-#include "BondTypes.h"
-#include "Types.h"
-#include "Class.h"
+#include "bio/molecular/common/BondTypes.h"
+#include "bio/molecular/common/Types.h"
+#include "bio/molecular/common/Class.h"
+#include "bio/molecular/macros/Macros.h"
+#include "EnvironmentDependent.h"
 #include "bio/chemical/structure/LinearStructuralComponent.h"
 
 namespace bio {
@@ -37,16 +39,25 @@ class Molecule;
  * See Molecule.h for a more detailed explanation.
  */
 class Surface :
-	public Class<Surface>,
-	public chemical::LinearStructuralComponent<Molecule*>,
-	public EnvironmentDependent<Molecule>
+	public Class< Surface >,
+	public chemical::LinearStructuralComponent< Molecule* >,
+	public EnvironmentDependent< Molecule >
 {
 public:
 
 	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(molecular,
+		Surface)
+
+	/**
 	 * @param name
 	 */
-	Surface(Name name, Molecule* environment=NULL);
+	Surface(
+		Name name,
+		Molecule* environment = NULL
+	);
 
 	/**
 	 * Copying a Surface generates a new set of Molecules and will Clone any Manage()d Waves from toCopy into *this.
@@ -62,30 +73,17 @@ public:
 	virtual ~Surface();
 
 	/**
-	 * Required override of Wave::Clone()
-	 * @return a new copy of *this.
-	 */
-	virtual Surface* Clone() const;
-
-	/**
 	 * Required method from Wave. See that class for details.
 	 * @return a Symmetrical image of *this
 	 */
-	virtual Symmetry* Spin() const;
+	virtual physical::Symmetry* Spin() const;
 
 	/**
 	 * Required method from Wave. See that class for details.
 	 * Reconstruct *this from the given Symmetry.
 	 * @param symmetry
 	 */
-	virtual void Reify(Symmetry* symmetry);
-
-	/**
-	 * 2 Surfaces are equal if they contain the same Molecules, States, and Properties.
-	 * @param other
-	 * @return whether or not other is equivalent to *this.
-	 */
-	virtual bool operator==(const Surface& other) const;
+	virtual Code Reify(physical::Symmetry* symmetry);
 
 	/**
 	 * Create a Manage()d Bond with the given var.
@@ -95,10 +93,13 @@ public:
 	 * @param varPtr
 	 * @return
 	 */
-	template <typename T>
+	template < typename T >
 	T* Manage(T* varPtr)
 	{
-		FormBond(varPtr, bond_type::Manage());
+		//TODO: handle T being primitive.
+		FormBond(
+			varPtr,
+			bond_type::Manage());
 	}
 
 	/**
@@ -109,11 +110,51 @@ public:
 	 * @param varPtr
 	 * @return
 	 */
-	template <typename T>
+	template < typename T >
 	T* Use(T* varPtr)
 	{
-		FormBond(varPtr, bond_type::Use());
+		//TODO: handle T being primitive.
+		FormBond(
+			varPtr,
+			bond_type::Use());
 	}
+
+	/**
+	 * Binding, as opposed to permanent Bonding, forms a temporary association with the given Substance.
+	 * Binding forms a Temporary Bond, allowing *this to be treated as the Bound Substance.
+	 * @param toBind
+	 * @return the Bound Substance.
+	 */
+	virtual chemical::Substance* Bind(chemical::Substance* toBind, BondType bondType = bond_type::Temporary());
+
+	/**
+	 * Breaks the Temporary Bond formed by Bind.
+	 * @param toRelease
+	 * @return the previously bound Substance or NULL.
+	 */
+	virtual chemical::Substance* Release(chemical::Substance* toRelease, BondType bondType = bond_type::Temporary());
+
+	/**
+	 * Breaks the Temporary Bond formed by Bind.
+	 * NOTE: the given Substance could be Identifiable through some unknown Perspective, so this does actual string comparison. Unless a Perspective is given, in which case numeric comparison is done on the given Name.
+	 * @param toRelease
+	 * @return the previously bound Substance or NULL.
+	 */
+	virtual chemical::Substance* Release(Name toRelease, physical::Perspective<StandardDimension>* perspective = NULL, BondType bondType = bond_type::Temporary());
+
+	/**
+	 * Breaks the Temporary Bond formed by Bind.
+	 * NOTE: the given Substance could be Identifiable through some unknown Perspective, so this does an unreliable numeric comparison. However, if a Perspective is given, we can be certain if the id we find is correct or not.
+	 * @param toRelease
+	 * @return the previously bound Substance or NULL.
+	 */
+	virtual chemical::Substance* Release(StandardDimension toRelease, physical::Perspective<StandardDimension>* perspective = NULL, BondType bondType = bond_type::Temporary());
+
+	/**
+	 * Releases all Temporarily Bound Substances
+	 * @return all Temporarily Bound Substances
+	 */
+	virtual chemical::Substances ReleaseAll(BondType bondType = bond_type::Temporary());
 
 	/**
 	 * Sets both the m_environment and m_perspective and updates m_id.
@@ -127,35 +168,39 @@ public:
 	 */
 	virtual void SetPerspective(Molecule* perspective);
 
-protected:
+	/**
+	 * Wrapper around Bind
+	 * @param toBind
+	 * @return result of Bind(...)
+	 */
+	virtual chemical::Substance* operator+=(chemical::Substance* toBind);
 
 	/**
-	 * Adds handler for Mange() Bonds.
-	 * Otherwise passes to Atom::FormBondImplementation.
-	 * Currently a nop & just passes to Atom; this is here so children can call this method in case we need to add to it in the future.
-	 * @param toBond
-	 * @param id
-	 * @param position
-	 * @return whether or not the Bond was Formed.
+	 * Wrapper around Release
+	 * @param toRelease
+	 * @return result of Release
 	 */
-	virtual bool FormBondImplementation(Wave* toBond, AtomicNumber id, BondType type);
+	virtual chemical::Substance* operator-=(chemical::Substance* toRelease);
 
 	/**
-	 * Adds handler for Manage() Bonds.
-	 * Otherwise passes to Atom::BreakBondImplementation.
-	 * Currently a nop & just passes to Atom; this is here so children can call this method in case we need to add to it in the future.
-	 * @param toDisassociate
-	 * @param id
-	 * @param type
-	 * @return whether or not the Bond was Broken.
+	 * Wrapper around Release
+	 * @param toRelease
+	 * @return result of Release
 	 */
-	virtual bool BreakBondImplementation(Wave* toDisassociate, AtomicNumber id, BondType type);
+	virtual chemical::Substance* operator-=(Name toRelease);
 
-private:
 	/**
-	 * Common constructor code.
+	 * Wrapper around Release
+	 * @param toRelease
+	 * @return result of Release
 	 */
-	void CtorCommon();
+	virtual chemical::Substance* operator-=(StandardDimension toRelease);
+
+	/**
+	 * Wrapper around ReleaseAll
+	 * @return all Temporarily Bound Substances.
+	 */
+	virtual chemical::Substances operator--();
 };
 
 } //molecular namespace

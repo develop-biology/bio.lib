@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "Types.h"
+#include "bio/physical/common/Types.h"
 #include "Identifiable.h"
 #include "bio/common/ByteStream.h"
 
@@ -33,32 +33,58 @@ namespace physical {
  * See SymmetryTypes.h for what types of Symmetry are available on a physical level.
  * Both Symmetry and SymmetryTypes are intended to grow with each namespace, as the complexity of what is being Rotated grows.
  */
-class Symmetry : public Identifiable<StandardDimension>
+class Symmetry :
+	virtual public Identifiable< StandardDimension >,
+	Class< Symmetry >
 {
 public:
+
 	/**
-	 * @param name
-	 * @param type
+	 * Ensure virtual methods point to Class implementations.
 	 */
-	Symmetry(Name name, Name type);
+	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
+		Symmetry)
+
+	/**
+	 *
+	 */
+	Symmetry();
 
 	/**
 	 * @param name
 	 * @param type
 	 */
-	Symmetry(Name name, SymmetryType type);
+	Symmetry(
+		Name name,
+		Name type
+	);
+
+	/**
+	 * @param name
+	 * @param type
+	 */
+	Symmetry(
+		Name name,
+		SymmetryType type
+	);
 
 	/**
 	 * @param id
 	 * @param type
 	 */
-	Symmetry(StandardDimension id, Name type);
+	Symmetry(
+		StandardDimension id,
+		Name type
+	);
 
 	/**
 	 * @param id
 	 * @param type
 	 */
-	Symmetry(StandardDimension id, SymmetryType type);
+	Symmetry(
+		StandardDimension id,
+		SymmetryType type
+	);
 
 	/**
 	 *
@@ -69,7 +95,19 @@ public:
 	 * With Symmetry, we make "Type" what is Identifiable and Name ancillary.
 	 * @return The Type of *this, aka Identifiable<SymmetryType>::GetName().
 	 */
-	const Identifiable<SymmetryType>& GetType() const;
+	const Identifiable< SymmetryType >& GetType() const;
+
+	/**
+	 * Set the type of *this.
+	 * @param type
+	 */
+	void SetType(SymmetryType type);
+
+	/**
+	 * Set the type of *this.
+	 * @param type
+	 */
+	void SetType(Name type);
 
 	/**
 	 * Set the m_value of *this.
@@ -92,7 +130,7 @@ public:
 protected:
 	Name m_name;
 	ByteStream m_value;
-	Identifiable<SymmetryType> m_type;
+	Identifiable< SymmetryType > m_type;
 };
 
 } //physical namespace

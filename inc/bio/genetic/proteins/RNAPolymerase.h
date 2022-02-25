@@ -26,10 +26,15 @@
 namespace bio {
 namespace genetic {
 
+class Plasmid;
+class RNA;
+
 /**
- * Used for making Proteins from Genes. Technically, *this does the work of many proteins, including the ribosome. However, because it is the default way of reading a Plasmid, we name it based on
+ * Used for making RNA from Genes.
+ * RNA Polymerase must be fed an RNA molecule to add Gene*s to prior to each Activation(). See FeedRNA(), below.
  */
-class RNAPolymerase : public molecular::Protein
+class RNAPolymerase :
+	public molecular::Protein
 {
 public:
 	/**
@@ -42,31 +47,16 @@ public:
 	 */
 	virtual ~RNAPolymerase();
 
+
 	/**
 	 * Assumes the m_environment is an Expressor. If it is not, *this will fail.
 	 * Transcribes, then Translates all Genes from toTranscribe into the environment.
 	 * @return result of all Transcription & Translation.
 	 */
-	virtual Code operator()();
+	virtual Code Activate();
 
-	/**
-	 * Required method from Wave. See that class for details.
-	 * @return a new copy of *this.
-	 */
-	virtual RNAPolymerase* Clone() const;
-
-	/**
-	 * Required method from Wave. See that class for details.
-	 * @return a Symmetrical image of *this
-	 */
-	virtual Symmetry* Spin() const;
-
-	/**
-	 * Required method from Wave. See that class for details.
-	 * Reconstruct *this from the given Symmetry.
-	 * @param symmetry
-	 */
-	virtual void Reify(Symmetry* symmetry);
+protected:
+	StandardDimension mc_rna;
 };
 
 } //genetic namespace

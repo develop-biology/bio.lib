@@ -21,32 +21,19 @@
  */
 
 #include "bio/genetic/Gene.h"
-#include "bio/genetic/Properties.h"
+#include "bio/genetic/common/Properties.h"
+#include "bio/molecular/Protein.h"
 
 namespace bio {
 namespace genetic {
 
-Gene::Gene(
-	const TranscriptionFactors& requiredTranscriptionFactors,
-	cellular::Protein* protein,
-	StandardDimensions localization,
-	Position position = BOTTOM,
-	const StandardDimension optionalInsertionArg = 0,
-	bool transferSubProteins = false)
-	:
-	m_requiredTranscriptionFactors(requiredTranscriptionFactors)
-	m_allele(protein),
-	m_localization(localization),
-	m_position(position),
-	m_optionalInsertionParameter(optionalInsertionArg),
-	m_transferSubProteins(transferSubProteins)
-{
-	Add<Property>(chemical::DNA());
-	Add<Property>(chemical::Genetic());
-}
-
 Gene::~Gene()
 {
+}
+
+void Gene::CtorCommon()
+{
+	m_insertion.InsertThis(ChemicalCast< chemical::Substance* >(GetProtein()));
 }
 
 } //namespace genetic

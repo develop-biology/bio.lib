@@ -21,60 +21,76 @@
 
 #pragma once
 
-#include "bio/common/Types.h"
-#include "bio/phyisical/Periodic.h"
-#include "bio/chemical/structure/LinearStructuralComponent.h"
-#include "bio/log/Writer.h"
+#include "bio/cellular/common/Class.h"
+#include "bio/cellular/common/Types.h"
+#include "bio/cellular/common/Filters.h"
+#include "bio/cellular/macros/Macros.h"
 #include "bio/genetic/Expressor.h"
-
+#include "bio/genetic/Plasmid.h"
 
 namespace bio {
 
-namespace visceral {
+namespace cellular {
 class Tissue;
-}
-
-namespace molecular {
-class Protein;
 }
 
 namespace cellular {
 
+class Organelle;
+
 /**
  * A Cell is the basic unit of function-driven organization within Biology.
- * Cells use Proteins to accomplish tasks. You can think of each Protein as a stand-in for a class method except, instead of hard-coding your classes, you instead code in (hard or soft) the TranscriptionFactors and Plasmids present in a Cell. The Cell then determines its functionality at runtime.
- * NOTE: While Cells are Vesicles, they do not register with the VesiclePerspective; instead, they can be Identifiable by the CellPerspective.
+ * Cells use Proteins & Organelles to accomplish tasks. You can think of each Protein as a stand-in for a class method except, instead of hard-coding your classes, you instead code in (hard or soft) the TranscriptionFactors and Plasmids present in a Cell. The Cell then determines its functionality at runtime.
  *
  * In order to simplify the arbitrarily complex behavior that a Cell can perform, Cells are made to Peak, allowing their main function to be called on a clock at a regular interval.
- * Programming a Cell this way is similar to programming an Arduino.
+ * Programming a Cell this way is similar to programming an Arduino with a main loop.
  * Of course, you are allowed to modify this behavior in any way you'd like ;)
  */
 class Cell :
-	virtual public genetic::Expressor,
-	public chemical::LinearStructuralComponent<Organelle*>,
-	public molecular::EnvironmentDependent<Tissue>,
+	public Class< Cell >,
+	public chemical::LinearStructuralComponent< Organelle* >,
+	public molecular::EnvironmentDependent< cellular::Tissue >,
+	virtual public genetic::Expressor
 {
 public:
 
 	/**
-	 *
+	 * Ensure virtual methods point to Class implementations.
 	 */
-	Cell(Name name = "cell");
+	BIO_DISAMBIGUATE_CLASS_METHODS(cellular,
+		Cell)
 
 	/**
-	 * Copies all TranscriptionFactors & DNA in *this, giving a copy to the progeny.
-	 * THIS DOES NOT PRODUCE A FUNCTIONAL CELL!
-	 * The Progeny must Transcribe then Translate all Genes & Fold the resulting Proteins.
-	 * Proteins are not copied nor produced here in order to accommodate novel differentiation between the time of copying and the time of becoming functional.
-	 * For example, you could copy a Cell, then add or remove TranscriptionFactors in order to change the behavior of the Cell.
-	 * This DOES copy the m_environment by assuming the new Cell exists in the same Tissue as its progenitor. If this is not the case, you can always set the new Tissue with MoveTo().
+	 * Standard ctors.
 	 */
-	Cell(const Cell& toCopy);
+	 BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
+		Cell,
+		&CellPerspective::Instance(),
+		filter::Cellular())
 
 	/**
 	 *
 	 */
 	virtual ~Cell();
+
+	/**
+	 * Peak()s occur at Periodic::m_intervals.
+	 * Define your main Periodic logic here.
+	 * This method must be fast:
+	 *	* do not read slow hardware here
+	 *	* do not block for a long time
+	 *	* do not sleep
+	 * If derived classes must do slow work to oscillate, that slow logic MUST BE placed in a separate thread.
+	 * This method would then get the data stored by that thread and returns the data *quickly*. MAKE SURE that the thread never causes a long mutex wait as a side-effect in this Peak method.
+	 * Please call this method when you're done :)
+	 */
+	virtual Code Peak()
+	{
+
+		//     YOU CODE GOES HERE!
+
+		return cellular::Class< Cell >::Peak();
+	}
 
 };
 

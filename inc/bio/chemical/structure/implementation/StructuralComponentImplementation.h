@@ -21,24 +21,24 @@
 
 #pragma once
 
-#include "bio/common/Macros.h"
+#include "bio/common/macros/Macros.h"
 #include "bio/common/String.h"
 #include "bio/common/Cast.h"
-#include "bio/physical/Codes.h"
-#inclued "AbstractStructure.h"
+#include "bio/physical/common/Codes.h"
+#include "AbstractStructure.h"
 #include <vector>
 #include <algorithm>
 
 namespace bio {
 namespace chemical {
 
-template <typename CONTENT_TYPE>
+template < typename CONTENT_TYPE >
 class StructuralComponentImplementation :
-	public AbstractStructure,
+	public AbstractStructure
 {
 public:
 
-	typedef std::vector<CONTENT_TYPE> Contents;
+	typedef typename Structure< CONTENT_TYPE >::Contents Contents;
 
 	/**
 	 *
@@ -70,9 +70,10 @@ public:
 	 * @param contents
 	 * @return an Contents::iterator for the given content
 	 */
-	static Contents::iterator Find(
-		CONTENT_TYPE content,
-		Contents* contents)
+	static typename Contents::iterator Find(
+		const CONTENT_TYPE content,
+		Contents* contents
+	)
 	{
 		return std::find(
 			contents->begin(),
@@ -87,9 +88,10 @@ public:
 	 * @param contents
 	 * @return an Contents::const_iterator for the given content
 	 */
-	static Contents::const_iterator Find(
-		CONTENT_TYPE content,
-		const Contents* contents)
+	static typename Contents::const_iterator Find(
+		const CONTENT_TYPE content,
+		const Contents* contents
+	)
 	{
 		return std::find(
 			contents->begin(),
@@ -105,8 +107,9 @@ public:
 	 * @return whether or not content can be found in the contents.
 	 */
 	static bool DoesExist(
-		CONTENT_TYPE content,
-		const Contents* contents)
+		const CONTENT_TYPE content,
+		const Contents* contents
+	)
 	{
 		return Find(
 			content,
@@ -118,33 +121,35 @@ public:
 	 * Adds content to the destination iff it does not already exist.
 	 * @param content
 	 * @param destination
-	 * @return a pointer to the added content or NULL.
+	 * @return a pointer to the added content or 0.
 	 */
-	static CONTENT_TYPE* AddTo(
-		CONTENT_TYPE content,
-		Contents* destination)
+	static CONTENT_TYPE AddTo(
+		const CONTENT_TYPE content,
+		Contents* destination
+	)
 	{
 		BIO_SANITIZE_AT_SAFETY_LEVEL_2(DoesExist(
 			content,
 			destination
 		), ,
-			return NULL);
+			return 0);
 		destination->push_back(content);
-		return &*(destination->end() - 1);
+		return *(destination->end() - 1);
 	}
 
 	/**
 	 * Removes toRemove from removeFrom.
 	 * @param toRemove what to remove.
 	 * @param removeFrom where to remove toRemove from.
-	 * @return a pointer to the removed content or NULL.
+	 * @return a pointer to the removed content or 0.
 	 */
-	static CONTENT_TYPE* RemoveFrom(
-		CONTENT_TYPE toRemove,
-		Contents* removeFrom)
+	static CONTENT_TYPE RemoveFrom(
+		const CONTENT_TYPE toRemove,
+		Contents* removeFrom
+	)
 	{
 		BIO_SANITIZE(removeFrom, ,
-			return NULL);
+			return 0);
 
 		typename Contents::iterator cnt = std::find(
 			removeFrom->begin(),
@@ -152,8 +157,8 @@ public:
 			toRemove
 		);
 		BIO_SANITIZE_AT_SAFETY_LEVEL_2(cnt != removeFrom->end(), ,
-			return NULL);
-		CONTENT_TYPE* ret = &*cnt;
+			return 0);
+		CONTENT_TYPE ret = *cnt;
 		removeFrom->erase(cnt);
 		return ret;
 	}
@@ -165,7 +170,7 @@ public:
 	 */
 	virtual Contents* GetAllImplementation()
 	{
-		return &m_contents;
+		return &this->m_contents;
 	}
 
 	/**
@@ -174,7 +179,7 @@ public:
 	 */
 	virtual const Contents* GetAllImplementation() const
 	{
-		return &m_contents;
+		return &this->m_contents;
 	}
 
 	/**
@@ -182,7 +187,7 @@ public:
 	 */
 	virtual void ClearImplementation()
 	{
-		m_contents.clear();
+		this->m_contents.clear();
 	}
 
 	/**
@@ -191,22 +196,22 @@ public:
 	 */
 	virtual unsigned long GetCountImplementation() const
 	{
-		return m_contents.size();
+		return this->m_contents.size();
 	}
 
 	/**
 	 * Get a pointer to the content in *this
 	 * @param content
-	 * @return a pointer to the given content matching that within *this; NULL if no match found.
+	 * @return a pointer to the given content matching that within *this; 0 if no match found.
 	 */
-	virtual CONTENT_TYPE* GetImplementation(CONTENT_TYPE content)
+	virtual CONTENT_TYPE* GetImplementation(const CONTENT_TYPE content)
 	{
-		Contents::iterator ret = Find(
+		typename Contents::iterator ret = Find(
 			content,
-			&m_contents
+			&this->m_contents
 		);
-		BIO_SANITIZE(ret != m_contents.end(), ,
-			return NULL);
+		BIO_SANITIZE(ret != this->m_contents.end(), ,
+			return 0);
 		return &*ret;
 	}
 
@@ -214,43 +219,42 @@ public:
 	/**
 	 * Get a pointer to the content in *this
 	 * @param content
-	 * @return a pointer to the given content matching that within *this; NULL if no match found.
+	 * @return a pointer to the given content matching that within *this; 0 if no match found.
 	 */
 	virtual const CONTENT_TYPE* GetImplementation(CONTENT_TYPE content) const
 	{
-		Contents::const_iterator ret = Find(
+		typename Contents::const_iterator ret = Find(
 			content,
-			&m_contents
+			&this->m_contents
 		);
-		BIO_SANITIZE(ret != m_contents.end(), ,
-			return NULL);
+		BIO_SANITIZE(ret != this->m_contents.end(), ,
+			return 0);
 		return &*ret;
 	}
 
 	/**
 	 * Adds content to *this.
 	 * @param content
-	 * @return t or NULL.
+	 * @return t or 0.
 	 */
-	virtual CONTENT_TYPE* AddImplementation(CONTENT_TYPE content)
+	virtual CONTENT_TYPE AddImplementation(const CONTENT_TYPE content)
 	{
-		return AddTo(
+		return this->AddTo(
 			content,
-			&m_contents
+			&this->m_contents
 		);
 	}
 
 	/**
 	 * Removes content from *this and deletes it.
-	 * TODO: should content be const?
 	 * @param content
 	 */
-	virtual CONTENT_TYPE* RemoveImplementation(CONTENT_TYPE content)
+	virtual CONTENT_TYPE RemoveImplementation(const CONTENT_TYPE content)
 	{
-		return RemoveFrom(
+		return this->RemoveFrom(
 			content,
 			&m_contents
-		)
+		);
 	}
 
 	/**
@@ -258,9 +262,9 @@ public:
 	 * @param content
 	 * @return whether or not the given content exists in *this
 	 */
-	virtual bool HasImplementation(CONTENT_TYPE content) const
+	virtual bool HasImplementation(const CONTENT_TYPE content) const
 	{
-		return DoesExist(
+		return this->DoesExist(
 			content,
 			&m_contents
 		);
@@ -270,15 +274,15 @@ public:
 	 * Copy the contents of another container into *this.
 	 * @param other
 	 */
-	virtual void ImportImplementation(const StructuralComponentImplementation<T>* other)
+	virtual void ImportImplementation(const StructuralComponentImplementation< CONTENT_TYPE >* other)
 	{
 		BIO_SANITIZE_AT_SAFETY_LEVEL_2(other, ,
 			return);
 
-		m_contents.insert(
-			m_contents.end(),
-			other.m_contents.begin(),
-			other.m_contents.end());
+		this->m_contents.insert(
+			this->m_contents.end(),
+			other->m_contents.begin(),
+			other->m_contents.end());
 	}
 
 	/**
@@ -286,13 +290,16 @@ public:
 	 * @param other
 	 * @return quantity overlap with other.
 	 */
-	virtual unsigned int GetNumMatchingImplementation(const StructuralComponentImplementation<T>& other) const
+	virtual unsigned int GetNumMatchingImplementation(const StructuralComponentImplementation< CONTENT_TYPE >& other) const
 	{
 		unsigned int ret = 0;
-		for (Contents::const_iterator cnt = other.m_contents.begin(), cnt != other.m_contents.end();
-		++cnt)
+		for (
+			typename Contents::const_iterator cnt = other.m_contents.begin();
+			cnt != other.m_contents.end();
+			++cnt
+			)
 		{
-			if (HasImplementation(*cnt))
+			if (this->HasImplementation(*cnt))
 			{
 				++ret;
 			}
@@ -307,7 +314,7 @@ public:
 	 */
 	virtual bool HasAllImplementation(const Contents& contents) const
 	{
-		return GetNumMatchingImplementation(contents) == contents.size();
+		return this->GetNumMatchingImplementation(contents) == contents.size();
 	}
 
 	/**
@@ -318,10 +325,13 @@ public:
 	virtual std::string GetStringFromImplementation(std::string separator = ", ")
 	{
 		std::string ret = "";
-		for (Contents::const_iterator cnt = m_contents.begin(), cnt != m_contents.end();
-		++cnt)
+		for (
+			typename Contents::const_iterator cnt = m_contents.begin();
+			cnt != m_contents.end();
+			++cnt
+			)
 		{
-			ret += string::From<CONTENT_TYPE>(*cnt);
+			ret += string::From< CONTENT_TYPE >(*cnt);
 			if (cnt != m_contents.end() - 1)
 			{
 				ret += separator;

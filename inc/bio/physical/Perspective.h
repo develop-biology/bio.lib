@@ -21,15 +21,22 @@
 
 #pragma once
 
-#include "Types.h"
-#include "Macros.h"
+#include "bio/physical/macros/Macros.h"
 #include "Wave.h"
+#include "bio/common/Types.h"
 #include "bio/common/String.h"
 #include "bio/common/ThreadSafe.h"
-
-#include <cstdint>
+#include "bio/common/Cast.h"
 #include <sstream>
 #include <cstring>
+
+//@formatter:off
+#if BIO_CPP_VERSION < 11
+	#include <stdint.h>
+#else
+	#include <cstdint>
+#endif
+//@formatter:on
 
 namespace bio {
 namespace physical {
@@ -47,36 +54,39 @@ namespace physical {
  * Therefore, you'd likely want multiple Perspectives and a much larger DIMENSION (uint32_t, for instance) in order to accommodate a more total objects.
  * See below for a macro for creating singleton of Perspectives.
  */
-template <typename DIMENSION>
-class Perspective : virtual public ThreadSafe
+template < typename DIMENSION >
+class Perspective :
+	virtual public ThreadSafe
 {
 public:
 	typedef DIMENSION Id;
-	typedef std::vector<Id> Ids;
+	typedef std::vector< Id > Ids;
 
 	/**
 	 * What a single point in space contains.
 	 * Dimensions are Nuit ∴ ∴
 	 */
-	struct Hadit
+	class Hadit
 	{
+	public:
 		Hadit(
-			Id i,
-			Name n,
-			Wave* t)
+			Id id,
+			Name name,
+			Wave* type
+		)
 			:
-			id(i),
-			name(n),
-			type(t)
+			m_id(id),
+			m_name(name),
+			m_type(type)
 		{
 		}
 
-		Id id;
-		Name name;
-		Wave* type;
+		Id m_id;
+		Name m_name;
+		Wave* m_type;
 	};
 
-	typedef std::vector<Hadit> Hadits;
+	typedef std::vector< Hadit > Hadits;
 
 	/**
 	 *
@@ -99,15 +109,15 @@ public:
 			++itt
 			)
 		{
-			if (itt->name)
+			if (itt->m_name)
 			{
-				delete[] itt->name;
-				itt->name = NULL;
+				delete[] itt->m_name;
+				itt->m_name = NULL;
 			}
-			if (itt->type)
+			if (itt->m_type)
 			{
-				delete itt->type;
-				itt->type = NULL;
+				delete itt->m_type;
+				itt->m_type = NULL;
 			}
 		}
 		m_hadits.clear();
@@ -139,17 +149,21 @@ public:
 	 */
 	typename Hadits::iterator Find(Id id)
 	{
+
+		LockThread();
 		typename Hadits::iterator hdt = m_hadits.begin();
 		for (
 			; hdt != m_hadits.end();
 			++hdt
 			)
 		{
-			if (hdt->id == id)
+			if (hdt->m_id == id)
 			{
+				UnlockThread();
 				return hdt;
 			}
 		}
+		UnlockThread();
 		return hdt;
 	}
 
@@ -160,17 +174,20 @@ public:
 	 */
 	typename Hadits::const_iterator Find(Id id) const
 	{
+		LockThread();
 		typename Hadits::const_iterator hdt = m_hadits.begin();
 		for (
 			; hdt != m_hadits.end();
 			++hdt
 			)
 		{
-			if (hdt->id == id)
+			if (hdt->m_id == id)
 			{
+				UnlockThread();
 				return hdt;
 			}
 		}
+		UnlockThread();
 		return hdt;
 	}
 
@@ -233,7 +250,7 @@ public:
 		{
 			return InvalidName();
 		}
-		return result->name;
+		return result->m_name;
 	}
 
 
@@ -295,11 +312,11 @@ public:
 			)
 		{
 			if (!strcmp(
-				itt->name,
+				itt->m_name,
 				name
 			))
 			{
-				return itt->id;
+				return itt->m_id;
 			}
 		}
 		return InvalidId();
@@ -310,7 +327,6 @@ public:
 	 */
 	virtual Id GetNumUsedIds() const
 	{
-		//TODO: is this faster than m_hadits.size()?
 		return m_nextId - 1;
 	}
 
@@ -325,16 +341,19 @@ public:
 	 */
 	virtual bool AssociateType(
 		Id id,
-		Wave* type)
+		Wave* type
+	)
 	{
 		typename Hadits::iterator hdt = Find(id);
-		if (hdt == m_hadits.end() || hdt->type)
+		if (hdt == m_hadits.end() || hdt->m_type)
 		{
 			return false;
 		}
 
 		LockThread();
-		BIO_SANITIZE(type, hdt->type = type->Clone(), hdt->type = type);
+		BIO_SANITIZE(type,
+			hdt->m_type = type->Clone(),
+			hdt->m_type = type);
 		UnlockThread();
 
 		return true;
@@ -354,8 +373,9 @@ public:
 		}
 
 		LockThread();
-		BIO_SANITIZE_AT_SAFETY_LEVEL_2(hdt->type, delete hdt->type, );
-		hdt->type = NULL;
+		BIO_SANITIZE_AT_SAFETY_LEVEL_2(hdt->m_type,
+			delete hdt->m_type,);
+		hdt->m_type = NULL;
 		UnlockThread();
 
 		return true;
@@ -369,17 +389,24 @@ public:
 	 */
 	virtual const Wave* GetTypeFromId(Id id) const
 	{
-		if (id == InvalidId())
-		{
-			return NULL;
-		}
+		BIO_SANITIZE(id == InvalidId(), , return NULL);
 
 		typename Hadits::const_iterator result = Find(id);
 		if (result == m_hadits.end())
 		{
 			return NULL;
 		}
-		return result->type;
+		return result->m_type;
+	}
+
+	/**
+	 * Only works if AssociateType has been called with the given id.
+	 * @param id
+	 * @return the pointer to the Wave type associated with the given id else NULL.
+	 */
+	virtual const Wave* GetTypeFromName(Name name) const
+	{
+		return GetTypeFromId(GetIdWithoutCreation(name));
 	}
 
 	/**
@@ -404,7 +431,6 @@ public:
 	 */
 	virtual Wave* GetNewObjectFromName(Name name)
 	{
-		//TODO: Does this need to be faster or is this okay? It should be inline anyway...
 		return this->GetNewObjectFromId(this->GetIdFromName(name));
 	}
 
@@ -414,22 +440,40 @@ public:
 	 * @param id
 	 * @return a T* associated with the given name id NULL.
 	 */
-	template <typename T>
-	T* GetTypeFromIdAs(Id id)
+	template < typename T >
+	const T GetTypeFromIdAs(Id id) const
 	{
-		BIO_SANITIZE_WITH_CACHE(GetTypeFromId(id), return Cast<T*, Wave*>(RESULT), return NULL);
+		BIO_SANITIZE_WITH_CACHE(GetTypeFromId(id),
+			BIO_SINGLE_ARG(return ForceCast< T, const Wave* >(RESULT)),
+			return NULL);
 	}
 
 	/**
-	 * c
+	 * Ease of access method for casting the result of GetTypeFromId().
+	 * @tparam T
+	 * @param id
+	 * @return a T* associated with the given name id NULL.
+	 */
+	template < typename T >
+	const T GetTypeFromNameAs(Name name) const
+	{
+		BIO_SANITIZE_WITH_CACHE(GetTypeFromName(name),
+			BIO_SINGLE_ARG(return ForceCast< T, const Wave* >(RESULT)),
+			return NULL);
+	}
+
+	/**
+	 * Ease of use method for casting the result of GetNewObjectFromId()
 	 * @tparam T
 	 * @param id
 	 * @return a new T* from Clone()ing the type associated with the given id else NULL.
 	 */
-	template <typename T>
-	T* GetNewObjectFromIdAs(Id id)
+	template < typename T >
+	T GetNewObjectFromIdAs(Id id)
 	{
-		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromId(id), return Cast<T*, Wave*>(RESULT), return NULL);
+		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromId(id),
+			BIO_SINGLE_ARG(return ForceCast< T, Wave* >(RESULT)),
+			return NULL);
 	}
 
 	/**
@@ -438,10 +482,12 @@ public:
 	 * @param name
 	 * @return a new T* from Clone()ing the type associated with the given name else NULL.
 	 */
-	template <typename T>
-	T* GetNewObjectFromNameAs(Name name)
+	template < typename T >
+	T GetNewObjectFromNameAs(Name name)
 	{
-		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromName(name), return Cast<T*, Wave*>(RESULT), return NULL);
+		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromName(name),
+			BIO_SINGLE_ARG(return ForceCast< T, Wave* >(RESULT)),
+			return NULL);
 	}
 
 

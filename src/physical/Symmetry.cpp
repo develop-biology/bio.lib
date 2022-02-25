@@ -25,41 +25,96 @@
 namespace bio {
 namespace physical {
 
-Symmetry::Symmetry(Name name, Name type) :
-	Identifiable<StandardDimension>(name, &SymmetryPerspective::Instance()),
-	m_type(type, &SymmetryTypePerspective::Instance())
+Symmetry::Symmetry()
+	:
+	Class< Symmetry >(this),
+	Identifiable< StandardDimension >(&SymmetryPerspective::Instance()),
+	m_type(&SymmetryTypePerspective::Instance())
 {
 
 }
 
-Symmetry::Symmetry(Name name, SymmetryType type) :
-	Identifiable<StandardDimension>(name, &SymmetryPerspective::Instance()),
-	m_type(type, &SymmetryTypePerspective::Instance())
+Symmetry::Symmetry(
+	Name name,
+	Name type
+)
+	:
+	Class< Symmetry >(this),
+	m_type(
+		type,
+		&SymmetryTypePerspective::Instance())
 {
-
+	Identifiable< StandardDimension >::Initialize(
+		name,
+		&SymmetryPerspective::Instance()
+	);
 }
 
-Symmetry::Symmetry(StandardDimension id, Name type) :
-	Identifiable<StandardDimension>(id, &SymmetryPerspective::Instance()),
-	m_type(type, &SymmetryTypePerspective::Instance())
+Symmetry::Symmetry(
+	Name name,
+	SymmetryType type
+)
+	:
+	Class< Symmetry >(this),
+	m_type(
+		type,
+		&SymmetryTypePerspective::Instance())
 {
-
+	Identifiable< StandardDimension >::Initialize(
+		name,
+		&SymmetryPerspective::Instance()
+	);
 }
 
-Symmetry::Symmetry(StandardDimension id, SymmetryType type) :
-	Identifiable<StandardDimension>(id, &SymmetryPerspective::Instance()),
-	m_type(type, &SymmetryTypePerspective::Instance())
+Symmetry::Symmetry(
+	StandardDimension id,
+	Name type
+)
+	:
+	Class< Symmetry >(this),
+	m_type(
+		type,
+		&SymmetryTypePerspective::Instance())
 {
+	Identifiable< StandardDimension >::Initialize(
+		id,
+		&SymmetryPerspective::Instance()
+	);
+}
 
+Symmetry::Symmetry(
+	StandardDimension id,
+	SymmetryType type
+)
+	:
+	Class< Symmetry >(this),
+	m_type(
+		type,
+		&SymmetryTypePerspective::Instance())
+{
+	Identifiable< StandardDimension >::Initialize(
+		id,
+		&SymmetryPerspective::Instance()
+	);
 }
 
 Symmetry::~Symmetry()
 {
 }
 
-const Identifiable<SymmetryType>& Symmetry::GetType() const
+const Identifiable< SymmetryType >& Symmetry::GetType() const
 {
 	return m_type;
+}
+
+void Symmetry::SetType(SymmetryType type)
+{
+	m_type.SetId(type);
+}
+
+void Symmetry::SetType(Name type)
+{
+	m_type.SetName(type);
 }
 
 void Symmetry::SetValue(const ByteStream& bytes)
@@ -74,7 +129,7 @@ const ByteStream& Symmetry::GetValue() const
 
 ByteStream* Symmetry::AccessValue()
 {
-	retrun &m_value;
+	return &m_value;
 }
 
 } //physical namespace

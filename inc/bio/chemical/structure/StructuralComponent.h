@@ -23,7 +23,9 @@
 
 #include "bio/chemical/structure/implementation/StructuralComponentImplementation.h"
 #include "bio/chemical/structure/implementation/StructureInterface.h"
-#include "bio/chemical/Class.h"
+#include "bio/chemical/macros/Macros.h"
+#include "bio/chemical/common/Class.h"
+#include "bio/physical/common/Filters.h"
 
 namespace bio {
 namespace chemical {
@@ -32,28 +34,48 @@ namespace chemical {
  * StructuralComponent classes have Content classes stored within them.
  * They are simple containers.
  */
-template <typename CONTENT_TYPE> class StructuralComponent :
+template < typename CONTENT_TYPE >
+class StructuralComponent :
 	virtual public StructureInterface,
-	public Class<StructuralComponent<CONTENT_TYPE>,
-	public StructuralComponentImplementation<CONTENT_TYPE>,
+	public chemical::Class< StructuralComponent< CONTENT_TYPE > >,
+	public StructuralComponentImplementation< CONTENT_TYPE >
 {
 public:
+
+	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(chemical, StructuralComponent< CONTENT_TYPE >)
 
 	/**
 	 *
 	 */
 	StructuralComponent()
+		:
+		chemical::Class< StructuralComponent< CONTENT_TYPE > >(this) //TODO: Define Symmetry.
 	{
 	}
 
 	/**
 	 * @param contents
 	 */
-	explicit StructuralComponent(typename StructuralComponentImplementation<CONTENT_TYPE>::Contents contents)
+	explicit StructuralComponent(typename StructuralComponentImplementation< CONTENT_TYPE >::Contents contents)
 		:
-		StructuralComponentImplementation<CONTENT_TYPE>(contents)
+		chemical::Class< StructuralComponent< CONTENT_TYPE > >(this), //TODO: Define Symmetry.
+		StructuralComponentImplementation< CONTENT_TYPE >(contents)
 	{
 	}
+
+
+	/**
+	 * @param toCopy
+	 */
+	StructuralComponent(const StructuralComponent< CONTENT_TYPE >& toCopy) :
+		chemical::Class< StructuralComponent< CONTENT_TYPE > >(this) //TODO: Define Symmetry.
+	{
+		this->m_contents.insert(this->m_contents.begin(), toCopy.m_contents.begin(), toCopy.m_contents.end());
+	}
+
 
 	/**
 	 *
@@ -62,22 +84,7 @@ public:
 	{
 	}
 
-	/**
-	 * @param toCopy
-	 */
-	StructuralComponent(const StructuralComponent<CONTENT_TYPE>& toCopy)
-	{
-		for (
-			typename StructuralComponentImplementation<CONTENT_TYPE>::Contents::const_iterator cnt = toCopy.m_contents.begin();
-			cnt != toCopy.m_contents.end();
-			++cnt
-			)
-		{
-			this->m_contents.push_back(new CONTENT_TYPE(**cnt));
-		}
-	}
-
-#if 0
+	#if 0
 	//We are only using physical::Identifiable<>::operator== for Id comparison at the moment; contents do not matter (i.e. the performance cost is too high).
 
 	/**
@@ -95,7 +102,7 @@ public:
 			this->HasImplementation(*cnt);
 		}
 	}
-#endif
+	#endif
 
 };
 

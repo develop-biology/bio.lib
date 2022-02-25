@@ -22,14 +22,21 @@
 #pragma once
 
 #include "bio/common/Cast.h"
-#include "bio/common/Macros.h"
+#include "bio/common/macros/Macros.h"
 #include "bio/common/IsPrimitive.h"
-#include "bio/common/OS.h"
-#include "bio/physical/Class.h"
+#include "bio/common/macros/OSMacros.h"
+#include "bio/physical/Quantum.h"
+#include "bio/physical/common/Class.h"
 #include "PeriodicTable.h"
+#include "bio/chemical/common/BondTypes.h"
+#include "Bond.h"
 
 namespace bio {
 namespace chemical {
+
+class Symmetry;
+
+class Bond;
 
 /**
  * Atom MUST be virtually inherited!
@@ -41,9 +48,16 @@ namespace chemical {
  * NOTE: m_bonds[0] is always empty. This may change in a future release.
  */
 class Atom :
-	public physical::Class<Atom>
+	public physical::Class< Atom >
 {
 public:
+
+	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
+		Atom)
+
 	/**
 	 *
 	 */
@@ -65,27 +79,55 @@ public:
 	 * Required method from Wave. See that class for details.
 	 * @return a Symmetrical image of *this
 	 */
-	virtual Symmetry* Spin() const;
+	virtual physical::Symmetry* Spin() const;
 
 	/**
 	 * Required method from Wave. See that class for details.
 	 * Reconstruct *this from the given Symmetry.
 	 * @param symmetry
 	 */
-	virtual void Reify(Symmetry* symmetry);
+	virtual Code Reify(physical::Symmetry* symmetry);
+
+	/**
+	 * If the given Wave Resonates with any Bonded Wave in *this, the given Wave will be Demodulated and Attenuated by the Bonded Wave.
+	 * Attenuation here operates slightly differently from the real world concept. Because we have a continuous flow of electrons providing the power to run this code, doing work is essentially free (or at least abstracted and we don't HAVE to worry about it), Attenuation is more like amplification, where flux, in terms of work, is generated, rather than dispersed. However, if we treat some desired state as flux and any deviation from that state as offering resistance, "information flux" is lost as the desired state is approached, making Attenuation technically correct.
+	 * @param other
+	 */
+	virtual Code Attenuate(const Wave* other);
+
+	/**
+	 * If the given Wave Resonates with any Bonded Wave in *this, the given Wave will be Demodulated and Disattenuated by the Bonded Wave.
+	 * This is the opposite of Attenuation (above).
+	 * @param other
+	 */
+	virtual Code Disattenuate(const Wave* other);
+
+	/**
+	 * Simply get a bond.
+	 * @param position
+	 * @return the Bonded Wave*
+	 */
+	Wave* GetBonded(Valence position);
+
+	/**
+	 * Simply get a bond.
+	 * @param position
+	 * @return the Bonded Wave*
+	 */
+	const Wave* GetBonded(Valence position) const;
 
 	/**
 	 * Gets the bond to an bonded of type T from *this, then casts the Bond()ed Wave to T*.
 	 * @tparam T
 	 * @return a T* that is Bond()ed with *this; else NULL.
 	 */
-	template <typename T>
-	T* AsBonded()
+	template < typename T >
+	T AsBonded()
 	{
-		Valence position = GetBondPosition<T>();
+		Valence position = GetBondPosition< T >();
 		BIO_SANITIZE(position, ,
 			return NULL);
-		return Cast<T*>(m_bonds[position].m_bonded);
+		return ForceCast< T >(m_bonds[position].GetBonded());
 	}
 
 	/**
@@ -93,13 +135,13 @@ public:
 	 * @tparam T
 	 * @return  a const T* that is Bond()ed with *this; else NULL.
 	 */
-	template <typename T>
-	const T* AsBonded() const
+	template < typename T >
+	const T AsBonded() const
 	{
-		Valence position = GetBondPosition<T>();
+		Valence position = GetBondPosition< T >();
 		BIO_SANITIZE(position, ,
 			return NULL);
-		return Cast<const T*>(m_bonds[position].m_bonded);
+		return ForceCast< const T >(m_bonds[position].GetBonded());
 	}
 
 	/**
@@ -107,10 +149,10 @@ public:
 	 * @tparam T
 	 * @return *this as a T*, from a Bonded Quantum Wave, or NULL.
 	 */
-	template <typename T>
-	T* AsBondedQuantum()
+	template < typename T >
+	T AsBondedQuantum()
 	{
-		return AsBonded<Quantum<T>>();
+		return Cast< T >(AsBonded< physical::Quantum< T >* >());
 	}
 
 	/**
@@ -118,46 +160,46 @@ public:
 	 * @tparam T
 	 * @return *this as a const T*, from a Bonded Quantum Wave.
 	 */
-	template <typename T>
-	const T* AsBondedQuantum() const
+	template < typename T >
+	const T AsBondedQuantum() const
 	{
-		return AsBonded<Quantum < T>>
-		();
+		return *AsBonded< physical::Quantum< T >* >();
 	}
 
 	/**
-	 * Checks if T is a primitive type, which would require a Quantum<T> Bond or if T should be a Wave and can be Bonded regularly.
+	 * This method is here so that we can add different As____ methods without changing the downstream interfaces.
 	 * @tparam T
 	 * @return *this as a T* or NULL.
 	 */
-	template <typename T>
-	T* As()
+	template < typename T >
+	T As()
 	{
-		if (IsPrimitive<T>())
+		if (IsPrimitive< T >())
 		{
-			return AsBondedQuantum<T>();
+			return AsBondedQuantum< T >();
 		}
 		else
 		{
-			return AsBonded<T>();
+			return AsBonded< T >();
 		}
 	}
 
 	/**
 	 * Const version of As().
+	 * This method is here so that we can add different As____ methods without changing the downstream interfaces.
 	 * @tparam T
 	 * @return *this as a const T* or NULL.
 	 */
-	template <typename T>
-	const T* As() const
+	template < typename T >
+	const T As() const
 	{
-		if (IsPrimitive<T>())
+		if (IsPrimitive< T >())
 		{
-			return AsBondedQuantum<T>();
+			return AsBondedQuantum< T >();
 		}
 		else
 		{
-			return AsBonded<T>();
+			return AsBonded< T >();
 		}
 	}
 
@@ -167,73 +209,44 @@ public:
 	 * @tparam T
 	 * @return *this as a T* or NULL.
 	 */
-	template <typename T>
-	T* operator T*()
+	template < typename T >
+	operator T()
 	{
-		return As<T>();
+		return As< T >();
 	}
-
-	/**
-	 * Const version of operator T*
-	 * @tparam T
-	 * @return *this as a T* or NULL.
-	 */
-	template <typename T>
-	const T* operator T*() const
-	{
-		return As<T>();
-	}
-
-	/**
-	 * If the given Wave Resonates with any Bonded Wave in *this, the given Wave will be added to (+=) the Bonded Wave.
-	 * Attenuation here operates slightly differently from the real world concept. Because we have a continuous flow of electrons providing the power to run this code, doing work is essentially free (or at least abstracted and we don't HAVE to worry about it), Attenuation is more like amplification, where flux, in terms of work, is generated, rather than dispersed. However, if we treat some desired state as flux and any deviation from that state as offering resistance, "information flux" is lost as the desired state is approached, making Attenuation technically correct.
-	 * @param other
-	 */
-	virtual void Attenuate(const Wave* other);
-
-	/**
-	 * If the given Wave Resonates with any Bonded Wave in *this, the given Wave will be removed from (-=) the Bonded Wave.
-	 * This is the opposite of Attenuation (above).
-	 * @param other
-	 */
-	virtual void Disattenuate(const Wave* other);
-
-	/**
-	 * Attenuates the other Wave.
-	 * @param other
-	 */
-	virtual void operator += (const Wave* other);
-
-	/**
-	 * Disattenuates the other Wave
-	 * @param other
-	 */
-	virtual void operator -= (const Wave* other);
 
 	/**
 	 * Adds a new Bond to *this or updates an Empty Bond for T.
 	 * Updating a Bond requires both Breaking and Forming steps to be done manually.
 	 * You CANNOT bond the same T twice (without Breaking the initial Bond).
 	 * See Molecule.h if you would like to Bond multiple Ts.
-	 * @tparam T A class deriving from Wave which is not already Bonded.
+	 * @tparam T A pointer to an instance of a class deriving from Wave and which is not already Bonded.
 	 * @param toBond what to Bond
 	 * @return true, if the Bond was created; false otherwise.
 	 */
-	template <typename T>
+	template < typename T >
 	bool FormBond(
-		T* toBond,
-		BondType type = Unknown())
+		T toBond,
+		BondType type = bond_type::Unknown())
 	{
-		BIO_SANITIZE(IsPrimitive<T>(), ,
-			return false);
-		BIO_SANITIZE(Cast<Wave*>(toBond), ,
-			return false);
-		AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType<T>();
-		return FormBondImplementation(
-			toBond,
-			bondedId,
-			type
-		);
+		if (IsPrimitive< T >())
+		{
+			AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >();
+			return FormBondImplementation(
+				(new physical::Quantum< T >(toBond))->AsWave(),
+				bondedId,
+				type
+			);
+		}
+		else
+		{
+			AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< T >();
+			return FormBondImplementation(
+				toBond->AsWave(),
+				bondedId,
+				type
+			);
+		}
 	}
 
 	/**
@@ -245,16 +258,17 @@ public:
 	 * @param type
 	 * @return true if the Bond was Broken; false otherwise.
 	 */
-	template <typename T>
+	template < typename T >
 	bool BreakBond(
-		T* toDisassociate,
-		BondType type = Unknown())
+		T toDisassociate,
+		BondType type = bond_type::Unknown())
 	{
-		BIO_SANITIZE(IsPrimitive<T>(), ,
-			return false);
-		BIO_SANITIZE(Cast<Wave*>(toDisassociate), ,
-			return false);
-		AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType<T>();
+		if (IsPrimitive< T >())
+		{
+			return BreakBond< physical::Quantum< T >* >(NULL, type); //T matters, toDisassociate does not.
+		}
+
+		AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< T >();
 		return BreakBondImplementation(
 			toDisassociate,
 			bondedId,
@@ -284,10 +298,14 @@ public:
 	 * @tparam T
 	 * @return GetBondPosition() for the given type; else 0.
 	 */
-	template <typename T>
+	template < typename T >
 	Valence GetBondPosition() const
 	{
-		return GetBondPosition(PeriodicTable::Instance().GetIdFromType<T>());
+		if (IsPrimitive< T >())
+		{
+			return GetBondPosition(PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >());
+		}
+		return GetBondPosition(PeriodicTable::Instance().GetIdFromType< T >());
 	}
 
 	/**
@@ -302,10 +320,14 @@ public:
 	 * @tparam T
 	 * @return the BondType of the Bond for T or BondTypePerspective::InvalidId().
 	 */
-	template <typename T>
+	template < typename T >
 	BondType GetBondType() const
 	{
-		return GetBondType(GetBondPosition<T>());
+		if (IsPrimitive< T >())
+		{
+			return GetBondType(GetBondPosition< physical::Quantum< T > >());
+		}
+		return GetBondType(GetBondPosition< T >());
 	}
 
 protected:
@@ -321,7 +343,8 @@ protected:
 	virtual bool FormBondImplementation(
 		Wave* toBond,
 		AtomicNumber id,
-		BondType type);
+		BondType type
+	);
 
 	/**
 	 * Remove a Bond.
@@ -333,7 +356,8 @@ protected:
 	virtual bool BreakBondImplementation(
 		Wave* toDisassociate,
 		AtomicNumber id,
-		BondType type);
+		BondType type
+	);
 };
 
 } //chemical namespace

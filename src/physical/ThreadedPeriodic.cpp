@@ -19,14 +19,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
 #include "bio/physical/ThreadedPeriodic.h"
+#include "bio/physical/Time.h"
 
 namespace bio {
 namespace physical {
 
 ThreadedPeriodic::ThreadedPeriodic(TimeUS interval)
+	:
+	Class< ThreadedPeriodic >(this)
 {
 	Periodic::Initialize(interval);
 }
@@ -35,7 +36,7 @@ ThreadedPeriodic::~ThreadedPeriodic()
 {
 }
 
-void ThreadedPeriodic::Work()
+bool ThreadedPeriodic::Work()
 {
 	Timestamp now = GetCurrentTimestamp();
 	Peak();
@@ -44,6 +45,7 @@ void ThreadedPeriodic::Work()
 	UnlockThread();
 	Threaded::Work();
 	Sleep(GetInterval());
+	return true;
 }
 
 } //physical namespace

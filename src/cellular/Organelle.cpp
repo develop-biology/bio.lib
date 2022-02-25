@@ -24,7 +24,10 @@
 namespace bio {
 namespace cellular {
 
+Organelle::~Organelle()
+{
 
+}
 
 } //cellular namespace
 } //bio namespace

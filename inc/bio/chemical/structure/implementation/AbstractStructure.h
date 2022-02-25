@@ -20,7 +20,7 @@
  */
 #pragma once
 
-#include "bio/chemical/Types.h"
+#include "bio/chemical/common/Types.h"
 
 namespace bio {
 namespace chemical {
@@ -28,6 +28,13 @@ namespace chemical {
 class AbstractStructure
 {
 public:
+
+	/**
+	 * See physical::Wave for more info on Resonance and how to use Properties.
+	 * @return {property::Structural()}
+	 */
+	static Properties GetClassProperties();
+
 	/**
 	 *
 	 */

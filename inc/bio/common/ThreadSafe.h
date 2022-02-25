@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "Language.h"
+#include "bio/common/macros/LanguageMacros.h"
 
 //@formatter:off
 #if BIO_CPP_VERSION < 11

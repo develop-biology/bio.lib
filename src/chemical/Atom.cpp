@@ -19,17 +19,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
 #include "bio/chemical/Atom.h"
-#include "bio/chemical/Bond.h"
 #include "bio/chemical/PeriodicTable.h"
+#include "bio/chemical/Symmetry.h"
 
 namespace bio {
 namespace chemical {
 
 Atom::Atom()
 	:
+	physical::Class< Atom >(this),
 	m_valence(1)
 {
 	m_bonds = new Bond[m_valence];
@@ -37,6 +36,7 @@ Atom::Atom()
 
 Atom::Atom(const Atom& other)
 	:
+	physical::Class< Atom >(this),
 	m_valence(1)
 {
 	m_bonds = new Bond[m_valence];
@@ -44,12 +44,16 @@ Atom::Atom(const Atom& other)
 
 Atom::~Atom()
 {
-	//TODO: Make sure contents are always deleted.
-	delete m_bonds[];
+	delete[] m_bonds;
 }
 
-void Atom::Attenuate(const physical::Wave* other)
+Code Atom::Attenuate(const physical::Wave* other)
 {
+	BIO_SANITIZE(other, , return code::BadArgument1());
+
+	const physical::Wave* demodulated = other->Demodulate();
+	Code ret = code::Success();
+
 	for (
 		Valence val = 0;
 		val < m_valence;
@@ -60,19 +64,27 @@ void Atom::Attenuate(const physical::Wave* other)
 		{
 			continue;
 		}
-		if (Wave::GetResonanceBetween(
+		if (physical::Wave::GetResonanceBetween(
 			m_bonds[val].GetBonded(),
 			other
-		))
+		).size())
 		{
-			*(m_bonds[val].GetBonded()) += other;
+			if (m_bonds[val].GetBonded()->Attenuate(demodulated) != code::Success())
+			{
+				ret = code::UnknownError(); //user can debug from logs for now.
+			}
 		}
 	}
-	return val;
+	return ret;
 }
 
-void Atom::Disattenuate(const physical::Wave* other)
+Code Atom::Disattenuate(const physical::Wave* other)
 {
+	BIO_SANITIZE(other, , return code::BadArgument1());
+
+	const physical::Wave* demodulated = other->Demodulate();
+	Code ret = code::Success();
+
 	for (
 		Valence val = 0;
 		val < m_valence;
@@ -83,41 +95,29 @@ void Atom::Disattenuate(const physical::Wave* other)
 		{
 			continue;
 		}
-		if (Wave::GetResonanceBetween(
+		if (physical::Wave::GetResonanceBetween(
 			m_bonds[val].GetBonded(),
 			other
-		))
+		).size())
 		{
-			*(m_bonds[val].GetBonded()) -= other;
+			if (m_bonds[val].GetBonded()->Disattenuate(demodulated) != code::Success())
+			{
+				ret = code::UnknownError(); //user can debug from logs for now.
+			}
 		}
 	}
-	return val;
+	return ret;
 }
-
-void Atom::operator+=(const Wave* other)
-{
-	Attenuate(other);
-}
-
-void Atom::operator-=(const Wave* other)
-{
-	Disattenuate(other);
-}
-
-Atom* Atom::Clone() const
-{
-	return new Atom(*this);
-}
-
 
 bool Atom::FormBondImplementation(
 	Wave* toBond,
 	AtomicNumber id,
-	BondType type)
+	BondType type
+)
 {
 	Valence position = GetBondPosition(id);
 
-	BIO_SANITIZE(toBond && id && position, ,
+	BIO_SANITIZE(!toBond || !id || !position, ,
 		return false);
 
 	//position will == m_valence if the id for the given bonded was not found.
@@ -132,7 +132,7 @@ bool Atom::FormBondImplementation(
 		}
 		else
 		{
-			return m_bonds[position].Make(
+			return m_bonds[position].Form(
 				id,
 				toBond,
 				type
@@ -161,16 +161,17 @@ bool Atom::FormBondImplementation(
 bool Atom::BreakBondImplementation(
 	Wave* toBreak,
 	AtomicNumber id,
-	BondType type)
+	BondType type
+)
 {
 	Valence position = GetBondPosition(id);
 
-	BIO_SANITIZE(toBreak && id && position, ,
+	BIO_SANITIZE(id && position, ,
 		return false);
 	BIO_SANITIZE(position < m_valence, ,
 		return false);
 
-	m_bonds[position].Empty();
+	m_bonds[position].Break();
 	//Let dtor cleanup.
 
 	return true;
@@ -197,7 +198,7 @@ Valence Atom::GetBondPosition(AtomicNumber bondedId) const
 
 Valence Atom::GetBondPosition(Name typeName) const
 {
-	return GetBondPosition(PeriodicTable::Instance().IdFromName(typeName));
+	return GetBondPosition(PeriodicTable::Instance().GetIdWithoutCreation(typeName));
 }
 
 BondType Atom::GetBondType(Valence position) const
@@ -205,6 +206,30 @@ BondType Atom::GetBondType(Valence position) const
 	BIO_SANITIZE(position < m_valence, ,
 		return BondTypePerspective::InvalidId());
 	return m_bonds[position].GetId();
+}
+
+physical::Symmetry* Atom::Spin() const
+{
+	//TODO...
+	return Wave::Spin();
+}
+
+Code Atom::Reify(physical::Symmetry* symmetry)
+{
+	//TODO...
+	return Wave::Reify(symmetry);
+}
+
+physical::Wave* Atom::GetBonded(Valence position)
+{
+	BIO_SANITIZE(position < m_valence,,return NULL)
+	return m_bonds[position].GetBonded();
+}
+
+const physical::Wave* Atom::GetBonded(Valence position) const
+{
+	BIO_SANITIZE(position < m_valence,,return NULL)
+	return m_bonds[position].GetBonded();
 }
 
 

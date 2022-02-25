@@ -22,11 +22,13 @@
 #pragma once
 
 #include "Molecule.h"
-#include "Types.h"
-#include "Class.h"
+#include "bio/molecular/common/Types.h"
+#include "bio/molecular/common/Class.h"
 
 namespace bio {
 namespace molecular {
+
+class Protein;
 
 /**
  * DNA allows Proteins to be stored as variables and be Transcribed and Translated later.
@@ -38,22 +40,28 @@ namespace molecular {
  * In other words if you want 1 DNA Molecule to produce several Proteins, you must Add<Protein*>() those to the Protein in *this.
  */
 class DNA :
-	virtual public Molecule,
-	public Class<DNA>
+	public Class< DNA >,
+	virtual public Molecule
 {
 public:
 
 	/**
-	 * @param name
-	 * @param version
+	 * Ensure virtual methods point to Class implementations.
 	 */
-	DNA(Name name, Version version = 0);
+	BIO_DISAMBIGUATE_CLASS_METHODS(molecular,
+		DNA)
 
 	/**
-	 * @param id
-	 * @param version
+	 * Standard ctors.
+	 * These are easy to use but require setting the Version after instantiation.
+	 * For example:
+	 * 		DNA myAllele = DNA("MyGene");
+	 * 		myAllele.SetVersion(1.0);
 	 */
-	DNA(StandardDimension id, Version version = 0);
+	 BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(molecular,
+		DNA,
+		&DNAPerspective::Instance(),
+		filter::Molecular())
 
 	/**
 	 *
@@ -61,30 +69,49 @@ public:
 	virtual ~DNA();
 
 	/**
-	 * @return a new Protein from what *this encodes or NULL (e.g. if m_protein is NULL or Clone() somehow fails).
+	 * See classes in the genetic namespace for proper Translation of Protein.
+	 * @return the Protein in *this.
 	 */
-	Protein* Translate() const;
+	virtual Protein* GetProtein();
+
+	/**
+	 * See classes in the genetic namespace for proper Translation of Protein.
+	 * @return the Protein in *this.
+	 */
+	virtual const Protein* GetProtein() const;
+
+	/**
+	 * Change what *this encodes.
+	 * @param protein
+	 */
+	virtual void SetProtein(Protein* protein);
 
 	/**
 	 * @return the Id of the Protein *this encodes.
 	 */
-	StandardDimension GetProteinId() const;
+	virtual StandardDimension GetProteinId() const;
 
 	/**
 	 * @return the m_version of *this.
 	 */
-	Version GetVersion();
+	virtual Version GetVersion();
 
 	/**
 	 * Set the Version of *this.
 	 * @param newVersion
 	 */
-	void SetVersion(Version newVersion);
+	virtual void SetVersion(Version newVersion);
 
 protected:
 	Protein* m_protein;
 	Version m_version;
+
+private:
+	/**
+	 * common constructor code.
+	 */
+	void CtorCommon();
 };
 
-} //cellular namespace
+} //molecular namespace
 } //bio namespace

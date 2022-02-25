@@ -23,9 +23,9 @@
 
 //Filterable is a base class for all classes that need to use logs.
 
-#include "Types.h"
-#include "Class.h"
-#inclued "bio/common/VirtualBase.h"
+#include "bio/physical/common/Types.h"
+#include "bio/physical/common/Class.h"
+#include "bio/common/VirtualBase.h"
 
 namespace bio {
 namespace physical {
@@ -35,9 +35,19 @@ namespace physical {
  * NOTE: Filterable objects only use a single Filter at a time.
  * See log::Writer for example usage.
  */
-class Filterable : public Class<Filterable>, protected VirtualBase
+class Filterable :
+	public physical::Class< Filterable >,
+	protected VirtualBase
 {
 public:
+
+	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
+		Filterable)
+
+
 	/**
 	 *
 	 */
@@ -82,7 +92,7 @@ public:
 	 * Reconstruct *this from the given Symmetry.
 	 * @param symmetry
 	 */
-	virtual void Reify(Symmetry* symmetry);
+	virtual Code Reify(Symmetry* symmetry);
 
 protected:
 	Filter m_filter;

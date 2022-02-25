@@ -21,13 +21,15 @@
 
 #pragma once
 
-#include "bio/log/Writer.h"
 #include "bio/chemical/structure/LinearStructuralComponent.h"
+#include "bio/genetic/common/Types.h"
+#include "bio/genetic/common/Class.h"
 #include "Gene.h"
-#include "Types.h"
 
 namespace bio {
 namespace genetic {
+
+class Expressor;
 
 /**
  * The purpose of a Plasmid is to group logically similar Proteins into a single unit that can be easily distributed and applied to Biological projects.
@@ -44,21 +46,27 @@ namespace genetic {
  *
  */
 class Plasmid :
-	public log::Writer,
-	public chemical::LinearStructuralComponent<Gene*>,
-	public molecular::DNA
+	public genetic::Class<Plasmid>,
+	public chemical::LinearStructuralComponent< Gene* >,
+	public molecular::DNA,
+	virtual public ThreadSafe
 {
 public:
 
 	/**
-	 * @param name
-	 * @param version
-	 * @param logEngine
+	 * Ensure virtual methods point to Class implementations.
 	 */
-	Plasmid(
-		Name name = PlasmidPerspective::InvalidName(),
-		PlasmidVersion version = 0,
-		log::Engine* logEngine = NULL);
+	BIO_DISAMBIGUATE_CLASS_METHODS(genetic,
+		Plasmid)
+
+	/**
+	 * Standard ctors.
+	 * These are easy to use but require setting member variables manually.
+	 */
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(genetic,
+		Plasmid,
+		&PlasmidPerspective::Instance(),
+		filter::Genetic())
 
 	/**
 	 *
@@ -66,48 +74,30 @@ public:
 	virtual ~Plasmid();
 
 	/**
-	 * Required method from Wave. See that class for details.
-	 * @return a new copy of *this.
-	 */
-	virtual Plasmid* Clone() const;
-
-	/**
-	 * Required method from Wave. See that class for details.
-	 * @return a Symmetrical image of *this
-	 */
-	virtual Symmetry* Spin() const;
-
-	/**
-	 * Required method from Wave. See that class for details.
-	 * Reconstruct *this from the given Symmetry.
-	 * @param symmetry
-	 */
-	virtual void Reify(Symmetry* symmetry);
-
-	/**
-	 * 2 Plasmid are equal if they have the same Gene*s, Properties, and States
-	 * @param other
-	 * @return whether or not other is equivalent to *this.
-	 */
-	virtual bool operator==(const Plasmid& other) const;
-
-	/**
-	 * Calls Import<>() with all Bonded StructuralComponents.
-	 * @param other
-	 */
-	virtual void ImportAll(const Plasmid& other);
-
-
-	/**
-	 * RNA polymerase is responsible for transcribing DNA into mRNA that is then Translated into protein.
+	 * RNA polymerase is responsible for transcribing DNA into the mRNA that is then translated into protein.
 	 * Similarly, here, RNAPolymerase is responsible for Transcribing Genes.
 	 * If you would like your own custom unpacking system for your Plasmid, override this method.
 	 * If you don't need anything fancy, leave this as is.
-	 * @param expressor the Expressor that is about to start Transcribing Genes from *this. By default, we assume this is a cellular::Cell*.
 	 * @return A Protein* that will carry out the Transcription of *this.
 	 */
-	virtual molecular::Protein* GetRNAPolymerase(Expressor* expressor);
+	virtual molecular::Protein* GetRNAPolymerase();
+	virtual const molecular::Protein* GetRNAPolymerase() const;
+
+	/**
+	 * Transcribes *this in the context of the given Expressor.
+	 * This does not alter either the expressor given nor *this but, instead creates an new RNA* that can be added to the expressor's Transcriptome.
+	 * Uses the RNAPolymerase from *this.
+	 * @param expressor
+	 * @return a new RNA* to be Expressed.
+	 */
+	virtual RNA* TranscribeFor(Expressor* expressor) const;
+
+private:
+	/**
+	 * common constructor code.
+	 */
+	void CtorCommon();
 };
 
-} //cellular namespace
+} //genetic namespace
 } //bio namespace

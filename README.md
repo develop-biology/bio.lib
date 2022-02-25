@@ -17,29 +17,28 @@ Biology is broken into the following namespaces:
 4. chemical (edges) - expands on physical base classes, adding bonds, reactions, and structure.
 5. molecular (values) - adds symmetry and context to chemical base classes.
 6. genetic (modules) - adds the ability to combine molecules & proteins into discrete packages.
-7. cellular (work) - combines all lower namespaces and makes genetic information task-oriented.
-8. visceral (context) - groups related cells into tissues and provides context for the work done.
-9. organism (wrapper) - discretizes tissues and provides a functional, whole object.
+7. cellular (library interface) - combines all lower namespaces and provides common points for library extension.
+8. organism (binary interface) - provides a means of running Biology code.
 
-### Extension
+#### Extension
 In order to facilitate cross-namespace type extension, some special rules should be followed in order to create consistency between domains.
 
 When defining extendable types, primarily through the use of `physical::Perspectives`, it is customary to define the type with a capital (i.e. Type) in the main bio namespace, ignoring any other namespaces the type would otherwise belong to.
 The definitions of type-returning functions or raw types should then be placed in a lowercase namespace; again, this namespace should be directly under the main bio namespace and not in whatever sub-namespace the type would otherwise belong to.
-For example, States are defined in the physical folder but not in the physical namespace. They are then defined in the `bio::state` namespace.
+For example, States are defined in the physical folder but not in the physical namespace. They are then defined in the `::bio::state` namespace.
 This snippet is from "bio/chemical/States.h"
 ```c++
 namespace bio {
 namespace state { //<- lowercase "state", the namespace
 
-State Enabled(); //<- Capitalized "State", the type (bio::State, not bio::state::State).
+State Enabled(); //<- Capitalized "State", the type (::bio::State, not ::bio::state::State).
 
 } //state namespace
 } //bio namespace
 ```
 So, you can say
 ```c++
-bio::State myState = bio::state::Enabled();
+::bio::State myState = ::bio::state::Enabled();
 ```
 
 To recap, extendable types should follow these rules:
@@ -47,6 +46,10 @@ To recap, extendable types should follow these rules:
 * Type is UpperCamelCase.
 * Corresponding namespace is defined in bio namespace.
 * Corresponding namespace is lower_snake_case.
+
+### Templates
+
+Templates are handled in a WYSIWYG manner where `T` (or the appropriate `typename`) is never modified. This means if you call `Add < T >` you will get a `T` returned, not a `T*` or anything else.
 
 ## Building
 

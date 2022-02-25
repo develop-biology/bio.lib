@@ -20,52 +20,47 @@
  */
 
 #include "bio/genetic/Plasmid.h"
-#include "bio/genetic/Filters.h"
-#include "bio/physical/Codes.h"
-#include "bio/physical/Types.h"
-#include "bio/cellular/Cell.h"
-#include "bio/molecular/Protein.h"
-#include <cstring>
+#include "bio/genetic/Expressor.h"
+#include "bio/genetic/proteins/RNAPolymerase.h"
 
-using namespace bio;
-using namespace cellular;
-using namespace genetic;
-
-Plasmid::Plasmid(Name name, PlasmidVersion version, log::Engine* logEngine) :
-    Identifiable(name, &PlasmidPerspective::Instance()), Writer(logEngine, filter::Genetic()), m_version(version)
-{
-    BIO_LOG_DEBUG("Created %s v%u", GetName(), m_version);
-}
+namespace bio {
+namespace genetic {
 
 Plasmid::~Plasmid()
 {
 
 }
 
-virtual Plasmid* Clone() const
+molecular::Protein* Plasmid::GetRNAPolymerase()
 {
-	return new Plasmid(*this);
+	return GetProtein();
 }
 
-virtual bool operator==(const Plasmid& other) const
+const molecular::Protein* Plasmid::GetRNAPolymerase() const
 {
-	return chemical::Substance::operator==(other) && chemical::LinearStructuralComponent<Gene*>::operator==(other);
+	return GetProtein();
 }
 
-
-virtual void ImportAll(const Plasmid& other)
+void Plasmid::CtorCommon()
 {
-	chemical::Substance::ImportAll(other);
-	Import<Gene*>(other);
+	m_protein = new RNAPolymerase(this);
 }
 
-
-PlasmidVersion GetVersion()
+RNA* Plasmid::TranscribeFor(Expressor* expressor) const
 {
-	return m_version;
+	std::string rnaName = "mRNA_";
+	rnaName += GetName();
+	RNA* ret = new RNA(rnaName.c_str());
+	molecular::Protein* polymerase = ForceCast<molecular::Protein*>(GetRNAPolymerase()->Clone());
+	StandardDimension bindingSite = polymerase->GetIdFromName("RNA Binding Site");
+	polymerase->RecruitChaperones(expressor);
+	polymerase->Fold();
+	polymerase->RotateTo(bindingSite)->Bind(ret);
+	polymerase->Activate();
+	polymerase->RotateTo(bindingSite)->Release(ret);
+	delete polymerase;
+	return ret;
 }
 
-void Plasmid::SetVersion(PlasmidVersion newVersion)
-{
-    m_version = newVersion;
-}
+} //genetic namespace
+} //bio namespace

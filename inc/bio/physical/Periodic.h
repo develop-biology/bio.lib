@@ -21,8 +21,8 @@
 
 #pragma once
 
-#include "Types.h"
-#include "Class.h"
+#include "bio/physical/common/Types.h"
+#include "bio/physical/common/Class.h"
 #include "bio/common/VirtualBase.h"
 
 namespace bio {
@@ -31,9 +31,17 @@ namespace physical {
 /**
  * Periodic objects do work at regular intervals.
  */
-class Periodic : public Class<Periodic>, protected VirtualBase
+class Periodic :
+	public physical::Class< Periodic >,
+	protected VirtualBase
 {
 public:
+
+	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
+		Periodic)
 
 	/**
 	 * Currently default is set to 200 milliseconds (200000 microseconds).
@@ -73,7 +81,13 @@ public:
 	 * If derived classes must do slow work to oscillate, that slow logic MUST BE placed in a separate thread.
 	 * This method would then get the data stored by that thread and returns the data *quickly*. MAKE SURE that the thread never causes a long mutex wait as a side-effect in this Peak method.
 	 */
-	virtual void Peak() = 0;
+	virtual Code Peak()
+	{
+
+		//     YOU CODE GOES HERE!
+
+		return code::NotImplemented();
+	}
 
 	/**
 	 * Checks the current time & calls Peak, if a long enough interval has passed.
@@ -120,7 +134,7 @@ public:
 	 * Reconstruct *this from the given Symmetry.
 	 * @param symmetry
 	 */
-	virtual void Reify(Symmetry* symmetry);
+	virtual Code Reify(Symmetry* symmetry);
 
 	/**
 	 * Wave method. See that class for details.

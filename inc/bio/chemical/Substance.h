@@ -21,14 +21,63 @@
 
 #pragma once
 
-#include "Types.h"
-#include "States.h"
-#include "Properties.h"
-#include "Class.h"
-#include "bio/chemical/arrangment/StructuralComponent.h"
+#include "bio/chemical/common/Types.h"
+#include "bio/chemical/common/States.h"
+#include "bio/chemical/common/Properties.h"
+#include "bio/chemical/common/Class.h"
+#include "bio/chemical/macros/Macros.h"
+#include "bio/chemical/common/Filters.h"
+#include "bio/chemical/structure/StructuralComponent.h"
 
 namespace bio {
 namespace chemical {
+
+
+/**
+ * Apparently, C++ forbids direct inheritance of the same base class, even when using different templates.
+ * i.e. public StructuralComponent< Property >, public StructuralComponent< State > is not valid because Property & State are the same type / size.
+ * To work around this, we create 2 distinct ____Structure base classes for Substance to derive from.
+ */
+class PropertyStructure: public StructuralComponent< Property >
+{
+public:
+	/**
+	 *
+	 */
+	PropertyStructure();
+
+	/**
+	 * @param properties
+	 */
+	explicit PropertyStructure(
+		const typename StructuralComponent< Property >::Contents& properties
+	);
+
+	virtual ~PropertyStructure();
+};
+
+/**
+ * Apparently, C++ forbids direct inheritance of the same base class, even when using different templates.
+ * i.e. public StructuralComponent< Property >, public StructuralComponent< State > is not valid because Property & State are the same type / size.
+ * To work around this, we create 2 distinct ____Structure base classes for Substance to derive from.
+ */
+class StateStructure: public StructuralComponent< State >
+{
+public:
+	/**
+	 *
+	 */
+	StateStructure();
+
+	/**
+	 * @param properties
+	 */
+	explicit StateStructure(
+		const typename StructuralComponent< State >::Contents& states
+	);
+
+	virtual ~StateStructure();
+};
 
 /**
  * A chemical::Substance is just about everything.
@@ -36,12 +85,17 @@ namespace chemical {
  * Substances start Enable()d.
  */
 class Substance :
-	virtual public physical::Identifiable<StandardDimension>,
-	public Class<Substance>,
-	public StructuralComponent<Property>,
-	public StructuralComponent<State>
+	public chemical::Class< Substance >,
+	public PropertyStructure,
+	public StateStructure
 {
 public:
+	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(chemical,
+		Substance)
+
 	/**
 	 *
 	 */
@@ -51,34 +105,33 @@ public:
 	 * @param name
 	 * @param perspective
 	 */
-	Substance(Name name, physical::Perspective<StandardDimension>* perspective, Filter filter = filter::Chemical());
+	Substance(
+		Name name,
+		physical::Perspective< StandardDimension >* perspective,
+		Filter filter = filter::Chemical());
 
 	/**
 	 * @param id
 	 * @param perspective
 	 */
-	Substance(Id id, physical::Perspective<StandardDimension>* perspective, Filter filter = filter::Chemical());
+	Substance(
+		Id id,
+		physical::Perspective< StandardDimension >* perspective,
+		Filter filter = filter::Chemical());
 
 	/**
 	 * @param properties
 	 * @param states
 	 */
 	explicit Substance(
-		typename const StructuralComponent<Property>::Contents& properties,
-		typename const StructuralComponent<State>::Contents& states);
+		const typename StructuralComponent< Property >::Contents& properties,
+		const typename StructuralComponent< State >::Contents& states
+	);
 
 	/**
 	 *
 	 */
 	virtual ~Substance();
-
-	/**
-	 * This method does way more than it should reasonably be able to.
-	 * Here, we take advantage of some of the Biology features that are starting to form. Primarily, we leverage physical::Properties, Bonds (per Atom), and Reactions to search through the pseudo-vtable of Atom, find all StructuralComponents in *this and attempt to Import the corresponding StructuralComponents of other.
-	 * This method side-steps the typical inheritance encapsulation in order to prevent child classes from having to override this method and account for each new StructuralComponent they add. In other words, complexity here removes repeated code downstream.
-	 * @param other
-	 */
-	virtual void ImportAll(const Substance* other);
 
 	/**
 	 * Helper method for setting the Enabled() State.
@@ -98,22 +151,6 @@ public:
 	 * @return whether or not *this has the Enabled() State.
 	 */
 	virtual bool IsEnabled() const;
-
-	/**
-	 * Checks if *this has the given Property.
-	 * See physical/Types.h for more on Property.
-	 * @param property
-	 * @return if this->Has<Property>(property).
-	 */
-	virtual bool ProbeFor(Property property);
-
-	/**
-	 * Checks if *this has all the given Properties.
-	 * See ProbeFor(Property).
-	 * @param properties
-	 * @return if this->HasAll<Property>(properties).
-	 */
-	virtual bool ProbeFor(Properties properties);
 
 private:
 	void CtorCommon();

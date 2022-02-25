@@ -21,43 +21,78 @@
 
 #pragma once
 
-#include "Language.h"
+#include "bio/common/macros/LanguageMacros.h"
 
+//@formatter:off
 #if BIO_CPP_VERSION >= 11
-
 	#include <type_traits>
-
 #endif
-
+//@formatter:on
 
 namespace bio {
+
+//@formatter:off
+#if BIO_CPP_VERSION < 11
+	template<typename T>
+	struct IsPointerImplementation {static const bool m_value = false;};
+
+	template<typename T>
+	struct IsPointerImplementation<T*> {static const bool m_value = true;};
+#endif
+//@formatter:on
 
 /**
  * Check whether or not T is a pointer
  * @tparam T
  * @return whether or not T is a pointer.
  */
-template <typename T>
+template < typename T >
 inline bool IsPointer()
 {
+	//@formatter:off
 	#if BIO_CPP_VERSION >= 11
-	return std::is_pointer<T>::value;
+		return std::is_pointer<T>::value;
 	#else
-	return IsPointerImplementation<T>();
+		return IsPointerImplementation< T >::m_value;
 	#endif
+	//@formatter:on
 }
 
-#if BIO_CPP_VERSION < 11
+/**
+ * Ease of use method for passing T as arg.
+ * @tparam T
+ * @param t
+ * @return whether or not T is a pointer.
+ */
 template <typename T>
-inline bool IsPointerImplementation<T>()
+inline bool IsPointer(const T t)
 {
-	return false;
+	return IsPointer<T>();
 }
 
-template <typename T>
-inline bool IsPointerImplementation<T*>()
+/**
+ * Maybe a helper method?
+ * This is currently unused.
+ * @tparam T
+ * @param t
+ * @return T
+ */
+template < typename T >
+inline T& Dereference(T& t)
 {
-	return true;
+	return t;
 }
-#endif
+
+/**
+ * Maybe a helper method?
+ * This is currently unused.
+ * @tparam T
+ * @param t
+ * @return *T
+ */
+template < typename T >
+inline T& Dereference(T* t)
+{
+	return *t;
+}
 } //bio namespace

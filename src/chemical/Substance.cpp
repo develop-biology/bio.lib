@@ -24,33 +24,57 @@
 namespace bio {
 namespace chemical {
 
-Substance::Substance() :
-	Class(this)
+Substance::Substance()
+	:
+	chemical::Class<Substance>(this)
 {
-	CtorCommon();
-}
-
-Substance::Substance(Name name, physical::Perspective<StandardDimension>* perspective, Filter filter) :
-	Class(this, filter)
-{
-	physical::Identifiable<StandardDimension>::Initialize(name, perspective);
-	CtorCommon();
-}
-
-Substance::Substance(Id id, physical::Perspective<StandardDimension>* perspective, Filter filter) :
-	Class(this, filter)
-{
-	physical::Identifiable<StandardDimension>::Initialize(id, perspective);
 	CtorCommon();
 }
 
 Substance::Substance(
-	typename const StructuralComponent<Property>::Contents& properties,
-	typename const StructuralComponent<State>::Contents& states)
+	Name name,
+	physical::Perspective< StandardDimension >* perspective,
+	Filter filter
+)
 	:
-	Class(this),
-	StructuralComponent<Property>(properties),
-	StructuralComponent<State>(states)
+	chemical::Class<Substance>(
+		this,
+		filter
+	)
+{
+	physical::Identifiable< StandardDimension >::Initialize(
+		name,
+		perspective
+	);
+	CtorCommon();
+}
+
+Substance::Substance(
+	Id id,
+	physical::Perspective< StandardDimension >* perspective,
+	Filter filter
+)
+	:
+	chemical::Class<Substance>(
+		this,
+		filter
+	)
+{
+	physical::Identifiable< StandardDimension >::Initialize(
+		id,
+		perspective
+	);
+	CtorCommon();
+}
+
+Substance::Substance(
+	const typename StructuralComponent< Property >::Contents& properties,
+	const typename StructuralComponent< State >::Contents& states
+)
+	:
+	chemical::Class<Substance>(this),
+	PropertyStructure(properties),
+	StateStructure(states)
 {
 	CtorCommon();
 }
@@ -61,17 +85,17 @@ Substance::~Substance()
 
 void Substance::Enable()
 {
-	Add<State>(state::Enabled());
+	Add< State >(state::Enabled());
 }
 
 void Substance::Disable()
 {
-	Remove<State>(state::Enabled());
+	Remove< State >(state::Enabled());
 }
 
 bool Substance::IsEnabled() const
 {
-	return Has<State>(state::Enabled());
+	return Has< State >(state::Enabled());
 }
 
 void Substance::CtorCommon()
@@ -79,15 +103,37 @@ void Substance::CtorCommon()
 	Enable();
 }
 
-bool Substance::ProbeFor(Property property)
+PropertyStructure::PropertyStructure()
 {
-	return Has<Property>(property);
+
 }
 
-bool Substance::ProbeFor(Properties properties)
+PropertyStructure::PropertyStructure(const StructuralComponentImplementation< Property >::Contents& properties)
+	:
+	StructuralComponent<Property>(properties)
 {
-	return HasAll<Property>(properties);
+
 }
 
+PropertyStructure::~PropertyStructure()
+{
+
+}
+
+StateStructure::StateStructure()
+{
+
+}
+
+StateStructure::StateStructure(const StructuralComponentImplementation< State >::Contents& states) :
+	StructuralComponent< State >(states)
+{
+
+}
+
+StateStructure::~StateStructure()
+{
+
+}
 } //chemical namespace
 } //bio namespace

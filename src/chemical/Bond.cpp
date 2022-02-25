@@ -19,9 +19,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/chemical/bond.h"
-#include "bio/chemical/bonds.h"
+#include "bio/chemical/Bond.h"
 #include "bio/chemical/PeriodicTable.h"
+#include "bio/physical/Wave.h"
+#include "bio/common/macros/Macros.h"
 
 namespace bio {
 namespace chemical {
@@ -36,8 +37,9 @@ Bond::Bond()
 
 Bond::Bond(
 	AtomicNumber id,
-	Wave* bonded,
-	BondType type)
+	physical::Wave* bonded,
+	BondType type
+)
 	:
 	m_id(id),
 	m_bonded(bonded),
@@ -45,14 +47,18 @@ Bond::Bond(
 {
 }
 
-Bond::Form(
+bool Bond::Form(
 	AtomicNumber id,
-	Wave* bonded,
-	BondType type)
+	physical::Wave* bonded,
+	BondType type
+)
 {
+	BIO_SANITIZE(bonded, ,
+		return false);
 	m_id = id;
 	m_bonded = bonded;
 	m_type = type;
+	return true;
 }
 
 AtomicNumber Bond::GetId() const
@@ -85,7 +91,7 @@ void Bond::Break()
 	//leave m_id intact.
 	m_bonded = NULL;
 	m_type = bond_type::Empty();
-
+}
 
 } //chemical namespace
 } //bio namespace

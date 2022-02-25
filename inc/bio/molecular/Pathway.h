@@ -21,8 +21,8 @@
 
 #pragma once
 
-#include "bio/chemical/Reaction.h"
-#inclued "bio/chemical/Class.h"
+#include "bio/chemical/common/Class.h"
+#include "bio/chemical/reaction/Reaction.h"
 #include "bio/chemical/structure/LinearStructuralComponent.h"
 
 namespace bio {
@@ -44,14 +44,24 @@ namespace molecular {
  * TODO: Add switching logic for Products Code.
  */
 class Pathway :
+	public chemical::Class< Pathway >,
 	public chemical::Reaction,
-	public chemical::LinearStructuralComponent<Reaction*>
+	public chemical::LinearStructuralComponent< chemical::Reaction* >
 {
 public:
 	/**
-	 * @param name
+	 * Ensure virtual methods point to Class implementations.
 	 */
-	explicit Pathway(Name name);
+	BIO_DISAMBIGUATE_CLASS_METHODS(chemical,
+		Pathway)
+
+	/**
+	 * Standard ctors.
+	 */
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(chemical,
+		Pathway,
+		&chemical::ReactionPerspective::Instance(),
+		filter::Chemical())
 
 	/**
 	 *
@@ -64,14 +74,14 @@ public:
 	 * @param reactants
 	 * @return the Products from the last Reaction or a code::FailedReaction(), if any step did not succeed.
 	 */
-	virtual chemical::Products Process(chemical::Substances& reactants);
+	virtual chemical::Products Process(chemical::Reactants* reactants);
 
 	/**
 	 * *this shouldn't have an Requirements / Reactants, so instead we check the first Reaction in *this.
 	 * @param toCheck
 	 * @return whether or not the first Reaction in *this can use the given Substances.
 	 */
-	virtual bool SubstancesCanReact(const chemical::Substances& toCheck) const;
+	virtual bool ReactantsMeetRequirements(const chemical::Reactants* toCheck) const;
 };
 
 } //molecular namespace

@@ -19,8 +19,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
 #include "bio/chemical/PeriodicTable.h"
 #include "bio/chemical/Substance.h"
 
@@ -30,13 +28,27 @@ namespace chemical {
 /**
  * Elements track the Properties of items in the PeriodicTable.
  * This is a Substance for ease of use but can be changed later.
+ * We also want to use Element as a Substance here as we can store the Properties of classes which are not Substances (e.g. Symmetry)
  * NOTE, this is not chemical::Element<T>, which is used to define these Elements.
  */
-class Element : public Substance
+class Element :
+	public Substance
 {
 public:
-	Element() {}
-	virtual ~Element() {}
+	Element() :
+		m_type(NULL)
+	{
+	}
+
+	virtual ~Element()
+	{
+	}
+
+	/**
+	 * Optional type association.
+	 * This can be used for casting, etc.
+	 */
+	physical::Wave* m_type;
 };
 
 PeriodicTableImplementation::PeriodicTableImplementation()
@@ -52,49 +64,106 @@ PeriodicTableImplementation::~PeriodicTableImplementation()
 const Properties PeriodicTableImplementation::GetPropertiesOf(AtomicNumber id) const
 {
 	Properties ret;
-	Element* element = Cast<Element*>(GetTypeFromId(id));
-	BIO_SANITIZE(element,,return ret);
-	ret = &element->GetAll<Property>();
+	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id));
+	BIO_SANITIZE(element, ,
+		return ret);
+	LockThread();
+	ret = *(element->GetAll< Property >());
+	UnlockThread();
 	return ret;
 }
 
 const Properties PeriodicTableImplementation::GetPropertiesOf(Name name) const
 {
-	return GetPropertiesOf(GetIdFromName(name));
+	return GetPropertiesOf(GetIdWithoutCreation(name));
 }
 
-void PeriodicTableImplementation::RecordPropertyOf(AtomicNumber id, Property property)
+AtomicNumber PeriodicTableImplementation::RecordPropertyOf(
+	AtomicNumber id,
+	Property property
+)
 {
 	Properties properties;
 	properties.push_back(property);
-	RecordPropertiesOf(id, properties);
+	return RecordPropertiesOf(
+		id,
+		properties
+	);
 }
 
-void PeriodicTableImplementation::RecordPropertyOf(Name name, Property property)
+AtomicNumber PeriodicTableImplementation::RecordPropertyOf(
+	Name name,
+	Property property
+)
 {
-	RecordPropertyOf(GetIdFromName(name), property);
+	return RecordPropertyOf(
+		GetIdFromName(name),
+		property
+	);
 }
 
-void PeriodicTableImplementation::RecordPropertiesOf(AtomicNumber id, Properties properties)
+AtomicNumber PeriodicTableImplementation::RecordPropertiesOf(
+	AtomicNumber id,
+	Properties properties
+)
 {
 	typename Hadits::iterator hdt = Find(id);
-	if (hdt == this->m_hadits.end())
-	{
-		return;
-	}
+	BIO_SANITIZE_AT_SAFETY_LEVEL_2(hdt == this->m_hadits.end(),,return InvalidId());
 
-	Element* element = Cast<Element*>(hdt->type);
+	LockThread();
+	Element* element = ForceCast< Element* >(hdt->m_type);
 	if (!element)
 	{
 		element = new Element();
-		hdt->type = element; //just to be sure Cast didn't pull a fast one on us.
+		hdt->m_type = element->AsWave();
 	}
-	element->Import<Property>(properties);
+	element->Import< Property >(properties);
+	UnlockThread();
+	return id;
 }
 
-void PeriodicTableImplementation::RecordPropertiesOf(Name name, Properties properties)
+AtomicNumber PeriodicTableImplementation::RecordPropertiesOf(
+	Name name,
+	Properties properties
+)
 {
-	RecordPropertiesOf(GetIdFromName(name), properties);
+	return RecordPropertiesOf(
+		GetIdFromName(name),
+		properties
+	);
+}
+
+const physical::Wave* PeriodicTableImplementation::GetTypeFromId(AtomicNumber id) const
+{
+	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id));
+	BIO_SANITIZE(element, ,
+		return NULL);
+	return element->m_type;
+}
+
+bool PeriodicTableImplementation::AssociateType(
+	AtomicNumber id,
+	physical::Wave* type
+)
+{
+	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id));
+	BIO_SANITIZE(element, ,
+		return false);
+	LockThread();
+	element->m_type = type;
+	UnlockThread();
+	return true;
+}
+
+bool PeriodicTableImplementation::DisassociateType(AtomicNumber id)
+{
+	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id));
+	BIO_SANITIZE(element, ,
+		return false);
+	LockThread();
+	element->m_type = NULL;
+	UnlockThread();
+	return true;
 }
 
 } //chemical namespace

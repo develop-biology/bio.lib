@@ -19,22 +19,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/genetic/DNA.h"
-#include "bio/genetic/Filters.h"
-#include "bio/physical/Codes.h"
-#include "bio/physical/Types.h"
-#include "bio/cellular/Cell.h"
+#include "bio/molecular/DNA.h"
 #include "bio/molecular/Protein.h"
-#include <cstring>
+#include "bio/molecular/common/Filters.h"
+#include "bio/molecular/common/Codes.h"
+#include "bio/molecular/common/Types.h"
 
-using namespace bio;
-using namespace cellular;
-using namespace genetic;
+namespace bio {
+namespace molecular {
 
-DNA::DNA(Name name, PlasmidVersion version, log::Engine* logEngine) :
-    Identifiable(name, &PlasmidPerspective::Instance()), LoggerObject(logEngine, filter::Genetic()), m_version(version)
+void DNA::CtorCommon()
 {
-    BIO_LOG_DEBUG("Created %s v%u", GetName(), m_version);
+	m_protein = NULL;
+	m_version = 0.0f;
 }
 
 DNA::~DNA()
@@ -42,42 +39,37 @@ DNA::~DNA()
 
 }
 
-virtual DNA* Clone() const
+Protein* DNA::GetProtein()
 {
-	return new DNA(*this);
+	return m_protein;
 }
 
-Protein* DNA::Translate() const
+const Protein* DNA::GetProtein() const
 {
-	BIO_SANITIZE(m_protein, ,return NULL);
-	return m_protein->Clone();
+	return m_protein;
 }
 
-StandardDimension GetProteinId() const
+StandardDimension DNA::GetProteinId() const
 {
-	BIO_SANITIZE(m_protein, ,return ProteinPerspective::InvalidId());
+	BIO_SANITIZE(m_protein, ,
+		return ProteinPerspective::InvalidId());
 	return m_protein->GetId();
 }
 
-virtual bool operator==(const DNA& other) const
-{
-	return chemical::Substance::operator==(other) && chemical::LinearStructuralComponent<Gene*>::operator==(other);
-}
-
-
-virtual void ImportAll(const DNA& other)
-{
-	chemical::Substance::ImportAll(other);
-	Import<Gene*>(other);
-}
-
-
-PlasmidVersion GetVersion()
+Version DNA::GetVersion()
 {
 	return m_version;
 }
 
-void DNA::SetVersion(PlasmidVersion newVersion)
+void DNA::SetVersion(Version newVersion)
 {
-    m_version = newVersion;
+	m_version = newVersion;
 }
+
+void DNA::SetProtein(Protein* protein)
+{
+	m_protein = protein;
+}
+
+} //molecular namespace
+} //bio namespace

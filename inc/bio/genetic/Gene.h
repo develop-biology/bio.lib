@@ -21,8 +21,11 @@
 
 #pragma once
 
-#include "Types.h"
-#include "bio/cellular/Types.h"
+#include "bio/genetic/common/Types.h"
+#include "bio/genetic/common/Class.h"
+#include "bio/genetic/common/Filters.h"
+#include "bio/genetic/macros/Macros.h"
+#include "bio/genetic/localization/Insertion.h"
 #include "bio/molecular/DNA.h"
 
 namespace bio {
@@ -32,29 +35,30 @@ namespace genetic {
  * Genes are responsible for creating Proteins in cells. Genes do this by recognizing TranscriptionFactors that the Cells express and cloning a Protein into the given m_localization.
  *
  * NOTE: for simplicity, Genes are considered mRNA.
- * There is currently no need to create a new object to more closely mimic Transcription.
+ * There is currently no need to create a new object to more closely mimic transcription.
  *
  * Genes are treated more like a struct than a Class.
  * Members should be accessed directly.
  */
 class Gene :
-	molecular::DNA
+	public Class< Gene >,
+	public molecular::DNA
 {
 public:
 	/**
-	 * @param requiredTranscriptionFactors
-	 * @param protein
-	 * @param localization
-	 * @param position
-	 * @param optionalInsertionArg
-	 * @param transferSubProteins
+	 * Ensure virtual methods point to Class implementations.
 	 */
-	Gene(const TranscriptionFactors& requiredTranscriptionFactors,
-		cellular::Protein* protein,
-		StandardDimensions localization,
-		Position position = BOTTOM,
-		const StandardDimension optionalInsertionArg = 0,
-		bool transferSubProteins = false)
+	BIO_DISAMBIGUATE_CLASS_METHODS(genetic,
+		Gene)
+
+	/**
+	 * Standard ctors.
+	 * These are easy to use but require setting member variables manually.
+	 */
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(genetic,
+		Gene,
+		&molecular::DNAPerspective::Instance(),
+		filter::Genetic())
 
 	/**
 	 *
@@ -66,44 +70,20 @@ public:
 	 */
 	TranscriptionFactors m_requiredTranscriptionFactors;
 
-
 	/**
-	 * The localization is a vector of Protein ids that corresponds to the tree that would be present in whatever Cell this is being applied to. Index 0 in this vector is the topLevelProtein, with the index number increasing for each level down in the tree. Index end()-1 is what the protein will be added to.
-	 * This is a functional equivalent to proteins being moved around the cell after being folded. The resulting sub-cellular localization puts certain proteins in closer proximity to each other such that they might affect (or, in this case, effect) each other's activity.
-	 * See Protein::operator() for more info on how sub-proteins are handled.
+	 * The insertion is the Name and type of Site that corresponds to the Vesicle, Molecule, Surface, etc. that *this should to be added to.
+	 * This is a functional equivalent to proteins being moved around a cell after being folded. The resulting sub-cellular localization puts certain proteins in closer proximity to each other such that they might affect (or, in this case, effect) each other's activity.
+	 * This also enables protein encapsulation, excretion, etc. by making the Proteins in a Vesicle stay in the Vesicle as it's Transferred between other Vesicles, etc.
+	 * For more info, see Localization.h and Insertion.h
 	 */
-	StandardDimensions m_localization;
+	Insertion m_insertion;
 
+private:
 	/**
-	 * If there are sub-proteins, should this be added to the top, bottom, etc.
+	 * common constructor code
 	 */
-	Position m_position;
-	StandardDimension m_optionalInsertionParameter;
-
-	/**
-	 * Copy existing sub proteins when disabling and removing a conflicting protein.
-	 */
-	bool m_transferSubProteins;
-
-	/**
-	 * Required method from Wave. See that class for details.
-	 * @return a new copy of *this.
-	 */
-	virtual Substance* Clone() const;
-
-	/**
-	 * Required method from Wave. See that class for details.
-	 * @return a Symmetrical image of *this
-	 */
-	virtual Symmetry* Spin() const;
-
-	/**
-	 * Required method from Wave. See that class for details.
-	 * Reconstruct *this from the given Symmetry.
-	 * @param symmetry
-	 */
-	virtual void Reify(Symmetry* symmetry);
+	void CtorCommon();
 };
 
-} //cellular namespace
+} //genetic namespace
 } //bio namespace

@@ -19,7 +19,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/common/Functions.h"
+#include "bio/common/Random.h"
 
 #if BIO_CPP_VERSION >= 11
 #include <random>
@@ -31,10 +31,6 @@ namespace bio {
 static std::random_device rd;
 static std::mt19937 gen(rd());
 #endif
-
-//TODO: remove the overhead of creating and deleting the distributions used.
-//  Or not, if distributions are lightweight enough, see:
-//  https://stackoverflow.com/questions/19036141/vary-range-of-uniform-int-distribution
 
 float random::NormalFloat(
 	float mean,

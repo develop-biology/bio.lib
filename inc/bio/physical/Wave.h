@@ -21,12 +21,39 @@
 
 #pragma once
 
-#include "Types.h"
+#include "bio/common/Types.h"
+
+//@formatter:off
+#if BIO_CPP_VERSION < 11
+	#include <stdint.h>
+#else
+	#include <cstdint>
+#endif
+//@formatter:on
 
 namespace bio {
+
+typedef uint8_t Code; //redefinition from Types.
+
+typedef uint8_t Property;
+typedef std::vector< Property > Properties;
+
+//the easy way out...
+//see AsAtom()
+namespace chemical {
+class Atom;
+}
+
 namespace physical {
 
 class Symmetry;
+
+typedef std::vector< Symmetry* > Symmetries;
+
+class Wave;
+
+typedef std::vector< Wave* > Waves;
+typedef std::vector< const Wave* > ConstWaves;
 
 /**
  * A Wave is a base class for all Biology objects.
@@ -75,7 +102,7 @@ public:
 	 * @param waves
 	 * @return the number of overlapping Properties between both waves given.
 	 */
-	static Properties GetResonanceBetween(Waves waves);
+	static Properties GetResonanceBetween(ConstWaves waves);
 
 	/**
 	 * Ease of use method for getting the Resonance between just 2 waves, rather than n.
@@ -83,7 +110,21 @@ public:
 	 * @param wave2
 	 * @return the number of overlapping Properties between both waves given.
 	 */
-	static Properties GetResonanceBetween(const Wave* wave1, const Wave* wave2);
+	static Properties GetResonanceBetween(
+		const Wave* wave1,
+		const Wave* wave2
+	);
+
+	/**
+	 * Ease of use method for getting the Resonance between a Wave and a set of Properties
+	 * @param wave
+	 * @param properties
+	 * @return the number of overlapping Properties between the Wave and Properties given.
+	 */
+	static Properties GetResonanceBetween(
+		const Wave* wave,
+		const Properties& properties
+	);
 
 	/**
 	 * Spinning a Wave produces a Symmetry. Waves can be Rotated about any number of Axes.
@@ -104,19 +145,12 @@ public:
 	 * See Quantum.h for an example implementation.
 	 * @param symmetry
 	 */
-	virtual void Reify(Symmetry* symmetry);
+	virtual Code Reify(Symmetry* symmetry);
 
 	/**
-	 * Reifies *this.
-	 * (*myParticle) | jsonAxis("...");
-	 * @param symmetry
-	 */
-	virtual void operator|(Symmetry* symmetry);
-
-	/**
-	 * This will overwrite any signal currently carried by *this.
-	 * @return the signal Modulated.
-	 */
+ * This will overwrite any signal currently carried by *this.
+ * @return the signal Modulated.
+ */
 	virtual Wave* Modulate(Wave* signal);
 
 	/**
@@ -129,7 +163,79 @@ public:
 	 * Treats *this as a carrier wave.
 	 * @return the signal carried by *this.
 	 */
-	virtual const Wave* Demodulate() const
+	virtual const Wave* Demodulate() const;
+
+	/**
+	 * Moves other through *this, taking something from it.
+	 * Used for += operator
+	 * This is a nop unless implemented by children.
+	 * @param other
+	 */
+	virtual Code Attenuate(const Wave* other);
+
+	/**
+	 * Pulls other out of *this, maybe giving something back?
+	 * The opposite of Attenuation.
+	 * Used for -= operator.
+	 * This is a nop unless implemented by children.
+	 * @param other
+	 */
+	virtual Code Disattenuate(const Wave* other);
+
+	/**
+	 * For Upcasting.
+	 * Used for resolving ambiguous inheritance without the need to explicitly derive from Wave.
+	 * NOTE: operator Wave*() and various perturbations fail to resolve ambiguous implicit upcasting.
+	 * @return this
+	 */
+	virtual Wave* AsWave()
+	{
+		return this;
+	}
+
+	/**
+	 * For Upcasting.
+	 * Used for resolving ambiguous inheritance without the need to explicitly derive from Wave.
+	 * NOTE: operator Wave*() and various perturbations fail to resolve ambiguous implicit upcasting.
+	 * @return this
+	 */
+	virtual const Wave* AsWave() const
+	{
+		return this;
+	}
+
+	/**
+	 * For Downcasting.
+	 * Because Wave cannot be virtually inherited and will likely become an ambiguous base, we commit a sin and provide a cheat.
+	 * This method can be used to resolve any downcasting.
+	 * For example: this->AsAtom()->As<Whatever>().
+	 * @return this as an Atom, if possible.
+	 */
+	virtual chemical::Atom* AsAtom()
+	{
+		return NULL;
+	}
+
+	/**
+	 * For Downcasting.
+	 * Because Wave cannot be virtually inherited and will likely become an ambiguous base, we commit a sin and provide a cheat.
+	 * This method can be used to resolve any downcasting.
+	 * For example: this->AsAtom()->As<Whatever>().
+	 * @return this as an Atom, if possible.
+	 */
+	virtual const chemical::Atom* AsAtom() const
+	{
+		return NULL;
+	}
+
+	//HERE THERE BE OPERATORS
+
+	/**
+	 * Reifies *this.
+	 * (*myParticle) | jsonAxis("...");
+	 * @param symmetry
+	 */
+	virtual void operator|(Symmetry* symmetry);
 
 	/**
 	 * Modulate operator (i.e. not "modulo")
@@ -142,43 +248,27 @@ public:
 	 * Demodulate operator (also not "modulo")
 	 * @return Demodulate()
 	 */
-	virtual Wave* operator%();
+	virtual Wave* operator~();
 
 	/**
 	 * Demodulate operator (also not "modulo")
 	 * @return Demodulate()
 	 */
-	virtual const Wave* operator%() const;
-
-	/**
-	 * Add 2 Waves together and returns the result.
-	 * Actually returns *this->Clone() += other, so implementing Clone() and += will make + work.
-	 * @param other
-	 * @return a new Wave from *this with other added to it.
-	 */
-	virtual Wave* operator+ (const Wave* other);
-
-	/**
-	 * Isolates & remove a Wave from *this.
-	 * Actually returns *this->Clone() -= other, so implementing Clone() and -= will make - work.
-	 * @param other
-	 * @return a new Wave from *this with other removed from it.
-	 */
-	virtual Wave* operator- (const Wave* other);
+	virtual const Wave* operator~() const;
 
 	/**
 	 * Makes other interfere with *this.
-	 * This is a nop unless implemented by children.
+	 * Attenuates other.
 	 * @param other
 	 */
-	virtual void operator += (const Wave* other);
+	virtual void operator+(const Wave* other);
 
 	/**
 	 * Removes the interference of other from *this.
-	 * This is a nop unless implemented by children.
+	 * Disattenuates other.
 	 * @param other
 	 */
-	virtual void operator -= (const Wave* other);
+	virtual void operator-(const Wave* other);
 
 protected:
 	/**

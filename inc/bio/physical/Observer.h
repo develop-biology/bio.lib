@@ -23,6 +23,7 @@
 
 #include "Perspective.h"
 #include "bio/common/VirtualBase.h"
+#include "bio/common/macros/Macros.h"
 
 namespace bio {
 namespace physical {
@@ -30,10 +31,13 @@ namespace physical {
 /**
  * An Observer class is one that has a PERSPECTIVE.
  * This is intended for Identifiable classes (see Identifiable.h) and any other classes that manage or work with Identifiable classes.
+ *
+ * NOTE: At this time we do not currently support viewing objects from multiple Perspectives. This is because if you can get the object's Id, you should also be able to get it's Perspective (i.e observer->GetPerspective).
+ * By not allowing objects to be duplicated across perspectives, we reduce our overall memory footprint.
 */
-template <typename PERSPECTIVE>
+template < typename PERSPECTIVE >
 class Observer :
-	public VirtualBase
+	protected VirtualBase
 {
 public:
 	typedef PERSPECTIVE Perspective;
@@ -64,16 +68,6 @@ public:
 	}
 
 	/**
-	 * VirtualBase required method. See that class for details (in common/)
-	 * @param args
-	 */
-	virtual void InitializeImplementation(ByteStreams args)
-	{
-		BIO_SANITIZE(args.size() == 1 && args[0].Is(m_perspective));
-		m_perspective = args[0];
-	}
-
-	/**
 	 * Sets the perspective for *this.
 	 * @param perspective
 	 */
@@ -82,12 +76,24 @@ public:
 		m_perspective = perspective;
 	}
 
-	/**
+	virtual /**
 	 * @return the perspective held by *this.
 	 */
 	Perspective* GetPerspective() const
 	{
 		return m_perspective;
+	}
+
+protected:
+	/**
+	 * VirtualBase required method. See that class for details (in common/)
+	 * @param args
+	 */
+	virtual void InitializeImplementation(ByteStreams args)
+	{
+		BIO_SANITIZE(args.size() == 1 && args[0].Is(m_perspective), ,
+			return);
+		m_perspective = args[0];
 	}
 
 private:

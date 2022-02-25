@@ -30,7 +30,7 @@ namespace molecular {
  * For example, a Protein is dependent on the Cell in which it resides and a Cell is dependent on the Tissue in which it resides. However, no where is a Protein dependent on multiple Cells directly nor is any Cell dependent on more than 1 Tissue at a time. Instead, these EnvironmentDependent classes rely on their greater context to move between themselves and further contexts, whatever resources they need or produce. In other words, the immediate m_environment is a pivot point into the larger system & the larger system is often tiered, having an even larger system "above" it.
  * @tparam T what *this is dependent on (will store a T* as m_environment).
  */
-template <Typename T>
+template <typename T>
 class EnvironmentDependent
 {
 public:
@@ -46,7 +46,7 @@ public:
 	/**
 	 *
 	 */
-	virtual ~Environment()
+	virtual ~EnvironmentDependent()
 	{
 
 	}

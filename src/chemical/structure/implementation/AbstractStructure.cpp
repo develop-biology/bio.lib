@@ -18,10 +18,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#pragma once
 
-#include "bio/chemical/sturcture/implementation/AbstractStructure.h"
-#include "bio/chemical/Properties.h"
+#include "bio/chemical/structure/implementation/AbstractStructure.h"
+#include "bio/chemical/common/Properties.h"
 
 namespace bio {
 namespace chemical {

@@ -1,3 +1,4 @@
+
 /*
  * This file is a part of the Biology project by eons LLC.
  * Biology (aka Develop Biology) is a framework for approaching software
@@ -21,8 +22,8 @@
 
 #pragma once
 
-#include "bio/common/Typename.h"
-#include "Types.h"
+#include "bio/common/TypeName.h"
+#include "bio/chemical/common/Types.h"
 #include "bio/physical/Perspective.h"
 
 
@@ -37,7 +38,8 @@ namespace chemical {
  * This is done because neither static nor virtual methods will allow for the inverted inheritance necessary to make inverted-inheritance methods like Atom::CallForAll work properly.
  * See Element.h for a more detailed description of this system.
  */
-class PeriodicTableImplementation : public physical::Perspective<AtomicNumber>
+class PeriodicTableImplementation :
+	public physical::Perspective< AtomicNumber >
 {
 public:
 	/**
@@ -54,10 +56,10 @@ public:
 	 * @tparam T
 	 * @return the Name associated with the given type.
 	 */
-	template <typename T>
+	template < typename T >
 	Name GetNameFromType() const
 	{
-		return TypeName<T>().c_str();
+		return TypeName< T >().c_str();
 	}
 
 	/**
@@ -66,20 +68,20 @@ public:
 	 * @param t
 	 * @return the Name associated with the given type.
 	 */
-	template <typename T>
+	template < typename T >
 	Name GetNameFromType(const T t) const
 	{
-		return GetNameFromType<T>()
+		return GetNameFromType< T >();
 	}
 
 	/**
 	 * @tparam T
 	 * @return the AtomicNumber associated with the given type.
 	 */
-	template <typename T>
-	AtomicNumber GetIdFromType() const
+	template < typename T >
+	AtomicNumber GetIdFromType()
 	{
-		return GetIdFromName(GetNameFromType<T>());
+		return GetIdFromName(GetNameFromType< T >());
 	}
 
 	/**
@@ -88,10 +90,10 @@ public:
 	 * @param t
 	 * @return the AtomicNumber associated with the given type.
 	 */
-	template <typename T>
-	AtomicNumber GetIdFromType(const T t) const
+	template < typename T >
+	AtomicNumber GetIdFromType(const T t)
 	{
-		return GetIdFromType<T>()
+		return GetIdFromType< T >();
 	}
 
 	/**
@@ -110,64 +112,114 @@ public:
 	 * @tparam T
 	 * @return whatever properties have been Recorded for the given type.
 	 */
-	template <typename T>
+	template < typename T >
 	const Properties GetPropertiesOf() const
 	{
-		return GetPropertiesOf(TypeName<T>().c_str());
+		return GetPropertiesOf(TypeName< T >().c_str());
 	}
 
 	/**
 	 * Add a Property to the given type's record in *this.
 	 * @param id
 	 * @param property
+	 * @return the id given.
 	 */
-	void RecordPropertyOf(AtomicNumber id, Property property);
+	AtomicNumber RecordPropertyOf(
+		AtomicNumber id,
+		Property property
+	);
 
 	/**
 	 * Add a Property to the given type's record in *this.
 	 * @param name
 	 * @param property
+	 * @return the id of the given name.
 	 */
-	void RecordPropertyOf(Name name, Property property);
+	AtomicNumber RecordPropertyOf(
+		Name name,
+		Property property
+	);
 
 	/**
 	 * Add a Property to the given type's record in *this.
 	 * @tparam T
 	 * @param property
+	 * @return the id of the given typo.
 	 */
-	template <typename T>
-	void RecordPropertyOf(Property property)
+	template < typename T >
+	AtomicNumber RecordPropertyOf(Property property)
 	{
-		RecordPropertyOf(TypeName<T>().c_str(), property);
+		return RecordPropertyOf(
+			TypeName< T >().c_str(),
+			property
+		);
 	}
 
 	/**
 	 * Add Properties to the given type's record in *this.
 	 * @param id
 	 * @param properties
+	 * @return the given id.
 	 */
-	void RecordPropertiesOf(AtomicNumber id, Properties properties);
+	AtomicNumber RecordPropertiesOf(
+		AtomicNumber id,
+		Properties properties
+	);
 
 	/**
 	 * Add Properties to the given type's record in *this.
 	 * @param name
 	 * @param properties
+	 * @return the id of the given name.
 	 */
-	void RecordPropertiesOf(Name name, Properties properties);
+	AtomicNumber RecordPropertiesOf(
+		Name name,
+		Properties properties
+	);
 
 	/**
 	 * Add Properties to the given type's record in *this.
 	 * @tparam T
 	 * @param properties
+	 * @return the id of the given type.
 	 */
-	template <typename T>
-	void RecordPropertiesOf(Properties properties)
+	template < typename T >
+	AtomicNumber RecordPropertiesOf(Properties properties)
 	{
-		RecordPropertiesOf(TypeName<T>().c_str(), properties);
+		return RecordPropertiesOf(
+			TypeName< T >().c_str(),
+			properties
+		);
 	}
+
+	/**
+	 * Only works if AssociateType has been called with the given id.
+	 * @param id
+	 * @return the pointer to the Wave type associated with the given id else NULL.
+	 */
+	virtual const physical::Wave* GetTypeFromId(AtomicNumber id) const;
+
+	/**
+	 * Associates the given Wave type with the given id.
+	 * This is only necessary if you want to use GetTypeFromId later on.
+	 * Associating a type with an id has no effect on the Recorded Properties.
+	 * @param id
+	 * @param type
+	 * @return true if the association completed successfully else false
+	 */
+	virtual bool AssociateType(AtomicNumber id, physical::Wave* type);
+
+	/**
+	 * Removes the type association created by AssociateType().
+	 * Disassociating a type has no effect on the Recorded Properties.
+	 * @param id
+	 * @return true if the association was removed else false.
+	 */
+	virtual bool DisassociateType(AtomicNumber id);
 };
 
-BIO_SINGLETON(PeriodicTable, PeriodicTableImplementation)
+BIO_SINGLETON(PeriodicTable,
+	PeriodicTableImplementation)
 
 } //chemical namespace
 } //bio namespace

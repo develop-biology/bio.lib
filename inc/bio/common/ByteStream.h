@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "Assert.h"
+#include "bio/common/macros/AssertMacros.h"
 #include "TypeName.h"
 #include <cstddef>
 
@@ -48,6 +48,12 @@ public:
 	 */
 	ByteStream();
 
+	template<typename T>
+	ByteStream(T in)
+	{
+		Set(in);
+	}
+
 	/**
 	 * @param other
 	 */
@@ -69,7 +75,7 @@ public:
 	 * @return stored bytes as T.
 	 */
 	template <typename T>
-	operator T()
+	operator T() const
 	{
 		BIO_ASSERT(Is<T>());
 		union Converter
@@ -87,7 +93,7 @@ public:
 	 * @tparam T
 	 */
 	template <typename T>
-	Set(T in)
+	void Set(T in)
 	{
 		union Converter
 		{
@@ -113,7 +119,7 @@ public:
 	 * @return whether or not *this should be pointing to data of type T.
 	 */
 	template <typename T>
-	bool Is()
+	bool Is() const
 	{
 		return sizeof(T) == m_size && TypeName<T>() == m_typeName;
 	}
@@ -125,7 +131,7 @@ public:
 	 * @return whether or not *this should be pointing to data of type T.
 	 */
 	template <typename T>
-	bool Is(const T& t)
+	bool Is(const T& t) const
 	{
 		return Is<T>();
 	}

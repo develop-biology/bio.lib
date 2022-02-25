@@ -47,7 +47,7 @@ namespace chemical {
  *
  * @tparam T
  */
-template <typename T>
+template < typename T >
 class Element
 {
 public:
@@ -65,7 +65,8 @@ public:
 	{
 		if (!hasRegistered)
 		{
-			PeriodicTable::Instance().RecordPropertiesOf<T>(properties);
+			PeriodicTable::Instance().RecordPropertiesOf< T >(properties);
+
 		}
 	}
 
@@ -85,7 +86,6 @@ public:
 	{
 
 	}
-
 
 
 	/**
