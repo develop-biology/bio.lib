@@ -25,6 +25,7 @@
 namespace bio {
 namespace code {
 
+// THIS PAGE INTENTIONALLY LEFT BLANK EXCEPT FOR THESE WORDS WHICH WERE ALSO INTENTIONAL.
 
 } //code namespace
 } //bio namespace

@@ -19,8 +19,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/visceral/common/Properties.h"
-#include "bio/chemical/macros/Macros.h"
+#include "bio/cellular/common/Properties.h"
 
 namespace bio {
 

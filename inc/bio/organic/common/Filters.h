@@ -26,9 +26,7 @@
 namespace bio {
 namespace filter {
 
-Filter Organism();
-
-Filter Habitat();
+Filter Organic();
 
 } //filter namespace
 } //bio namespace

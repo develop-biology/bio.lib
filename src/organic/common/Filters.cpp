@@ -19,13 +19,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/organism/common/Filters.h"
-#include "bio/physical/macros/Macros.h"
+#include "bio/organic/common/Filters.h"
 
 namespace bio {
 namespace filter {
 
-BIO_FILTER_FUNCTION_BODY(Organism)
+BIO_FILTER_FUNCTION_BODY(Organic)
 
 } //filter namespace
 } //bio namespace

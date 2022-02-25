@@ -21,13 +21,12 @@
 
 #pragma once
 
-#include "bio/visceral/common/Codes.h"
-#include "Types.h"
+#include "bio/cellular/common/Codes.h"
 
 namespace bio {
 namespace code {
 
-
+// THIS PAGE INTENTIONALLY LEFT BLANK EXCEPT FOR THESE WORDS WHICH WERE ALSO INTENTIONAL.
 
 } //code namespace
 } //bio namespace

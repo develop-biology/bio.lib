@@ -19,55 +19,31 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/organism/Organism.h"
-#include "bio/organism/common/Filters.h"
-#include "bio/organism/reactions/Organogenesis.h"
+#include "bio/organic/Organism.h"
 
 namespace bio {
-
-Organism::Organism()
-	:
-	visceral::Class(this),
-	chemical::LinearStructuralComponent< OrganSystem* >(&visceral::OrganSystemPerspective::Instance()),
-	molecular::EnvironmentDependent<Habitat>()
-{
-
-}
-
-Organism::Organism(StandardDimension id)
-	:
-	visceral::Class(this, id &OrganismPerspective::Instance(), filter::Organism()),
-	chemical::LinearStructuralComponent< OrganSystem* >(&visceral::OrganSystemPerspective::Instance()),
-	molecular::EnvironmentDependent<Habitat>()
-{
-
-}
-
-
-Organism::Organism(Name name)
-	:
-	visceral::Class(this, name &OrganismPerspective::Instance(), filter::Organism()),
-	chemical::LinearStructuralComponent< OrganSystem* >(&visceral::OrganSystemPerspective::Instance()),
-	molecular::EnvironmentDependent<Habitat>()
-{
-
-}
-
-Organism::Organism(const Organism& toCopy) :
-	visceral::Class(this, toCopy.GetId(), toCopy.GetPerspective(), toCopy.GetFilter()),
-	chemical::LinearStructuralComponent< visceral::OrganSystem* >(toCopy),
-	molecular::EnvironmentDependent<Habitat>(toCopy)
-{
-
-}
+namespace organic {
 
 Organism::~Organism()
 {
 }
 
-void Organism::Morphogenesis()
+Code Organism::Morphogenesis()
 {
-	ForEach<visceral::OrganSystem*>(chemical::Reaction::Initiate<Organogenesis>(), this);
+	Code ret = code::Success();
+	for (
+		chemical::Structure< cellular::OrganSystem* >::Contents::iterator sys = GetAll< cellular::OrganSystem* >()->begin();
+		sys != GetAll< cellular::OrganSystem* >()->end();
+		++sys
+		)
+	{
+		if ((*sys)->Organogenesis() != code::Success() && ret == code::Success())
+		{
+			ret = code::UnknownError();
+		}
+	}
+	return ret;
 }
 
+} //organic namespace
 } //bio namespace

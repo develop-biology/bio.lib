@@ -21,13 +21,11 @@
 
 #pragma once
 
+#include "Organism.h"
 #include "bio/physical/ThreadedPeriodic.h"
-#include "bio/chemical/structure/LinearStructuralComponent.h"
-#include "bio/visceral/common/Class.h"
 
 namespace bio {
-
-class Organism
+namespace organic {
 
 /**
  * Habitat: Is a home!
@@ -38,34 +36,25 @@ class Organism
  */
 
 class Habitat :
-	public visceral::Class<Habitat>,
+	public cellular::Class< Habitat >,
 	public chemical::LinearStructuralComponent< Organism* >,
-	public physical::ThreadedPeriodic,
+	public physical::ThreadedPeriodic
 {
 public:
-	
-	/**
-	 * @param name what shall we call this new land?
-	 */
-	Habitat(Name name);
-
 
 	/**
-	 * @param id does our new land have an Id?
+	 * Ensure virtual methods point to Class implementations.
 	 */
-	Habitat(StandardDimension id);
+	BIO_DISAMBIGUATE_CLASS_METHODS(cellular,
+		Habitat)
 
 	/**
-	 *
+	 * Standard ctors.
 	 */
-	Habitat();
-
-	/**
-	 * Copies all contents of the given Habitat into *this.
-	 * NOTE: All copied Organisms need to be Adapted in order to start living in this new environment.
-	 * @param toCopy
-	 */
-	Habitat(const Habitat& toCopy);
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
+		Habitat,
+		&HabitatPerspective::Instance(),
+		filter::Organic())
 
 	/**
 	 *
@@ -75,7 +64,8 @@ public:
 	/**
 	 * Causes each Organism to undergo Morphogenesis, after which, they will be ready to live here.
 	 */
-	virtual void AdaptInhabitants();
+	virtual Code AdaptInhabitants();
 };
 
+} //organic namespace
 } //bio namespace

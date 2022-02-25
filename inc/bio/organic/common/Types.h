@@ -21,12 +21,14 @@
 
 #pragma once
 
-#include "bio/common/Types.h"
-#include "bio/physical/Perspective.h"
+#include "bio/cellular/common/Types.h"
 
 namespace bio {
 
 BIO_PERSPECTIVE_SINGLETON(OrganismPerspective,
+	StandardDimension)
+
+BIO_PERSPECTIVE_SINGLETON(HabitatPerspective,
 	StandardDimension)
 
 } //bio namespace

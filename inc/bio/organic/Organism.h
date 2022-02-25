@@ -21,15 +21,12 @@
 
 #pragma once
 
-#include "bio/chemical/structure/LinearStructuralComponent.h"
-#include "bio/molecular/EnvironmentDependent.h"
-#include "bio/visceral/common/Class.h"
+#include "bio/cellular/OrganSystem.h"
+#include "bio/organic/common/Filters.h"
+#include "bio/organic/common/Types.h"
 
 namespace bio {
-
-namespace visceral {
-class OrganSystem;
-}
+namespace organic {
 
 class Habitat;
 
@@ -37,7 +34,7 @@ class Habitat;
  * Organisms are the basic units of "life" within Biology.
  * They are organized in a hierarchical, Cell-centric manner.
  * They grow and develop through Morphogenesis().
- * They can respond to stimuli, depending on the Organism.
+ * They can respond to stimuli, depending on the implementation.
  * They can reproduce, if you Clone() them.
  * They can adapt to new environments, if you add in dynamic Plasmid & TranscriptionFactor rules.
  * They "metabolize" time & data into their own organization. This is the primary difference between computational and biological (proper) life and makes these Organisms more "electric" or "ethereal" than "real".
@@ -48,33 +45,25 @@ class Habitat;
  * Have fun!
  */
 class Organism :
-	public visceral::Class<Organism>,
-	public chemical::LinearStructuralComponent< visceral::OrganSystem* >,
-	public molecular::EnvironmentDependent<Habitat>,
+	public cellular::Class< Organism >,
+	public chemical::LinearStructuralComponent< cellular::OrganSystem* >,
+	public molecular::EnvironmentDependent< Habitat >
 {
 public:
 
 	/**
-	 * @param name what's our new friend's name???
+	 * Ensure virtual methods point to Class implementations.
 	 */
-	Organism(Name name);
+	BIO_DISAMBIGUATE_CLASS_METHODS(cellular,
+		Organism)
 
 	/**
-	 * @param id Does our new friend have an Id already?
+	 * Standard ctors.
 	 */
-	Organism(StandardDimension id);
-
-	/**
-	 *
-	 */
-	Organism();
-
-	/**
-	 * Copies all contents of the given Organism into *this.
-	 * NOTE: Cells are not functionally when copied. To make the new Cells in *this work, you must also call DifferentiateCells().
-	 * @param toCopy
-	 */
-	Organism(const Organism& toCopy);
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
+		Organism,
+		&OrganismPerspective::Instance(),
+		filter::Organic())
 
 	/**
 	 *
@@ -84,7 +73,8 @@ public:
 	/**
 	 * new your OrganSystems here, then call the parent method (Organism::Morphogenesis()), which will handle the Organ, Tissue, & Cell Differentiation, producing a fully functional Organism.
 	 */
-	virtual void Morphogenesis();
+	virtual Code Morphogenesis();
 };
 
+} //organic namespace
 } //bio namespace

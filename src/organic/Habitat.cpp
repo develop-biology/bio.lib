@@ -19,59 +19,33 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/organism/Habitat.h"
-#include "bio/organism/common/Filters.h"
-#include "bio/organism/reactions/Morphogenesis.h"
+#include "bio/organic/Habitat.h"
 
 namespace bio {
-
-Habitat::Habitat()
-	:
-	visceral::Class(this),
-	chemical::LinearStructuralComponent< Organism** >(&OrganismPerspective::Instance()),
-	physical::ThreadedPeriodic()
-{
-
-}
-
-Habitat::Habitat(StandardDimension id)
-	:
-	visceral::Class(this, id, &HabitatPerspective::Instance(), filter::Habitat()),
-	chemical::LinearStructuralComponent< Organism* >(&OrganismPerspective::Instance()),
-	physical::ThreadedPeriodic()
-{
-
-}
-
-Habitat::Habitat(Name name)
-	:
-	visceral::Class(this, name, &HabitatPerspective::Instance(), filter::Habitat()),
-	chemical::LinearStructuralComponent< Organism* >(&OrganismPerspective::Instance()),
-	physical::ThreadedPeriodic()
-{
-
-}
-
-Habitat::Habitat(const Habitat& toCopy)
-	:
-	visceral::Class(this, toCopy.GetId(), toCopy.GetPerspective(), toCopy.GetFilter()),
-	chemical::LinearStructuralComponent< Organism* >(toCopy),
-	physical::ThreadedPeriodic(toCopy)
-{
-
-}
+namespace organic {
 
 Habitat::~Habitat()
 {
 
 }
 
-void Habitat::AdaptInhabitants()
+Code Habitat::AdaptInhabitants()
 {
-	ForEach<Organism*>(
-		chemical::Reaction::Initiate<Morphogenesis>(),
-		this
-	);
+	Code ret = code::Success();
+	for (
+		chemical::Structure< Organism* >::Contents::iterator bud = GetAll< Organism* >()->begin();
+		bud != GetAll< Organism* >()->end();
+		++bud
+		)
+	{
+		(*bud)->SetEnvironment(this);
+		if ((*bud)->Morphogenesis() != code::Success() && ret == code::Success())
+		{
+			ret = code::UnknownError();
+		}
+	}
+	return ret;
 }
 
+} //organic namespace
 } //bio namespace
