@@ -52,7 +52,7 @@ protected:
 	BIO_EXCITATION_CLASS(physical::Periodic, Code) m_peakExcitation;
 };
 
-PeakCarrierWave g_peakCarrierWave;
+static PeakCarrierWave g_peakCarrierWave;
 
 /**
  * A cellular::Class extends genetic::Class
