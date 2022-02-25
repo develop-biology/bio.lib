@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2022 Séon O'Shannon & eons LLC
+ * Copyright (C) 2021 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,21 +19,33 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include "bio/cellular/common/Types.h"
+#include "bio/cellular/Organ.h"
+#include "bio/cellular/Tissue.h"
 
 namespace bio {
-namespace visceral {
+namespace cellular {
 
-BIO_PERSPECTIVE_SINGLETON(TissuePerspective,
-	StandardDimension)
+Organ::~Organ()
+{
 
-BIO_PERSPECTIVE_SINGLETON(OrganPerspective,
-	StandardDimension)
+}
 
-BIO_PERSPECTIVE_SINGLETON(OrganSystemPerspective,
-	StandardDimension)
+Code Organ::SpecializeTissues()
+{
+	Code ret = code::Success();
+	for (
+		chemical::Structure< Tissue* >::Contents::iterator tis = GetAll< Tissue* >()->begin();
+		tis != GetAll< Tissue* >()->end();
+		++tis
+		)
+	{
+		if((*tis)->DifferentiateCells() != code::Success() && ret == code::Success())
+		{
+			ret = code::UnknownError();
+		}
+	}
+	return ret;
+}
 
-} //visceral namespace
+} //cellular namespace
 } //bio namespace

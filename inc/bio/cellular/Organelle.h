@@ -31,6 +31,10 @@ namespace cellular {
 
 class Cell;
 
+/**
+ * Organelles are functionally grouped sets of Proteins.
+ * Create an Organelle for your Cells if you have complex behavior that you would like to isolate, conserve, and/or transport across your system.
+ */
 class Organelle :
 	public Class< Organelle >,
 	public molecular::EnvironmentDependent< Cell >

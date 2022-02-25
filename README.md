@@ -16,9 +16,8 @@ Biology is broken into the following namespaces:
 4. chemical (edges) - expands on physical base classes, adding bonds, reactions, and structure.
 5. molecular (values) - adds symmetry and context to chemical base classes.
 6. genetic (modules) - adds the ability to combine molecules & proteins into discrete packages.
-7. cellular (work) - combines all lower namespaces and makes genetic information task-oriented.
-8. visceral (context) - groups related cells into tissues and provides context for the work done.
-9. organism (wrapper) - discretizes tissues and provides a functional, whole object.
+7. cellular (library interface) - combines all lower namespaces and provides common points for library extension.
+8. organism (binary interface) - provides a means of running Biology code.
 
 #### Extension
 In order to facilitate cross-namespace type extension, some special rules should be followed in order to create consistency between domains.

@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,56 +19,44 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pagma once
+#pragma once
 
-#include "bio/visceral/common/Class.h"
+#include "bio/cellular/common/Class.h"
+#include "bio/cellular/common/Types.h"
+#include "bio/cellular/common/Filters.h"
+#include "bio/cellular/macros/Macros.h"
+#include "bio/cellular/Organ.h"
+#include "bio/genetic/Plasmid.h"
 #include "bio/chemical/structure/LinearStructuralComponent.h"
-#include "bio/molecular/EnvironmentDependent.h"
 
 namespace bio {
-
-class Organism;
-
-namespace visceral {
+namespace cellular {
 
 class Organ;
 
 /**
  * OrganSystems are very similar to Organs. The only difference is that they contain logic for combining multiple Organs.
  * For example, the heart relies on vasculature to move blood around the body. This requires a Heart Organ as well as integrations into all other Tissues in order to supply the BloodStream. In order to accommodate this functionality, we must invasively add functionality to other Organs.
- * Because the modification of existing Organs can lead to more errors and make debugging more difficult, it is not recommended that you take advantage of OrganSystem machinary unless you absolutely need to. However, if you do need to make system wide modifications, these methods are available to you.
+ * Because the modification of existing Organs can lead to more errors and make debugging more difficult, it is not recommended that you take advantage of OrganSystem machinery unless you absolutely need to. However, if you do need to make system-wide modifications, these methods are available to you.
  */
 class OrganSystem :
-	Class<OrganSystem>,
-	public chemical::LinearArrangment<Organ*>,
-	public molecular::EnvironmentDependent<Organism>
+	Class< OrganSystem >,
+	public chemical::LinearStructuralComponent< Organ* >
 {
 public:
 
 	/**
-	 *
+	 * Ensure virtual methods point to Class implementations.
 	 */
-	OrganSystem();
+	BIO_DISAMBIGUATE_CLASS_METHODS(cellular,
+		OrganSystem)
 
 	/**
-	 * @param id
-	 */
-	OrganSystem(StandardDimension id);
-
-	/**
-	 * @param name
-	 */
-	OrganSystem(Name name);
-
-
-	/**
-	 * Copies all of the given OrganSystem into *this.
-	 * However, Cells, when copied, must be Differentiated. So, you must call Organogenesis() after copying in order to get a functional OrganSystem.
-	 * This can get messy, so it's best to avoid trying to copy OrganSystems at all.
-	 * Besides, each OrganSystem should meet a unique need of the Organism. If 2 OrganSystems are similar enough that they can be copied, they should probably be merged into a single system.
-	 * @param toCopy
-	 */
-	OrganSystem(const OrganSystem& toCopy);
+	 * Standard ctors.
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
+		OrganSystem,
+		&OrganSystemPerspective::Instance(),
+		filter::Cellular())
 
 
 	/**
@@ -80,8 +68,8 @@ public:
 	 * Create all Organs and, if necessary, link them.
 	 * Call the parent method (OrganSystem::Organogenesis()) when done to initialize all Organs (calls Organ::BuildMobilome() and Organ::SpecializeTissues()).
 	 */
-	virtual void Organogenesis();
+	virtual Code Organogenesis();
 };
 
-} //visceral namespace
+} //cellular namespace
 } //bio namespace

@@ -23,8 +23,8 @@
 
 #include "bio/organism/reactions/Organogenesis.h"
 #include "bio/organism/common/Properties.h"
-#include "bio/visceral/Organ.h"
-#include "bio/visceral/OrganSystem.h"
+#include "bio/cellular/Organ.h"
+#include "bio/cellular/OrganSystem.h"
 #include "bio/chemical/PeriodicTable.h"
 #include "bio/chemical/common/SymmetryTypes.h"
 

@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2022 Séon O'Shannon & eons LLC
+ * Copyright (C) 2021 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,13 +19,43 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "bio/cellular/OrganSystem.h"
+#include "bio/cellular/Organ.h"
 
-#include "bio/cellular/macros/Macros.h"
+namespace bio {
+namespace cellular {
 
-/**
- * Get all virtual methods defined by visceral::Class.
- * @return function signatures for use in BIO_DISAMBIGUATE_CLASS_METHODS
- */
-#define BIO_GET_CLASS_METHODS_FOR_visceral()                                   \
-    BIO_GET_CLASS_METHODS_FOR_cellular()
+
+OrganSystem::~OrganSystem()
+{
+
+}
+
+Code OrganSystem::Organogenesis()
+{
+	Code ret = code::Success();
+	for (
+		chemical::Structure< Organ* >::Contents::iterator org = GetAll< Organ* >()->begin();
+		org != GetAll< Organ* >()->end();
+		++org
+		)
+	{
+		(*org)->SetEnvironment(this);
+		if ((*org)->BuildMobilome() != code::Success() && ret == code::Success())
+		{
+			ret = code::UnknownError();
+		}
+		if ((*org)->GrowTissues() != code::Success() && ret == code::Success())
+		{
+			ret = code::UnknownError();
+		}
+		if ((*org)->SpecializeTissues() != code::Success() && ret == code::Success())
+		{
+			ret = code::UnknownError();
+		}
+	}
+	return ret;
+}
+
+} //cellular namespace
+} //bio namespace

@@ -19,41 +19,48 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include "bio/visceral/reactions/DifferentiateCell.h"
-#include "bio/visceral/Tissue.h"
-#include "bio/visceral/common/Properties.h"
+#include "bio/cellular/Tissue.h"
 #include "bio/cellular/Cell.h"
-#include "bio/molecular/reactions/RecruitChaperonesForProtein.h"
-#include "bio/molecular/reactions/FoldProtein.h"
-#include "bio/chemical/PeriodicTable.h"
-#include "bio/chemical/common/SymmetryTypes.h"
 
 namespace bio {
-namespace visceral {
+namespace cellular {
 
-DifferentiateCell::DifferentiateCell()
-	:
-	chemical::Reaction(PeriodicTable::Instance().GetNameFromType(*this)),
-	physical::Class(this, new physical::Symmetry(PeriodicTable::Instance().GetNameFromType(*this),symmetry_type::Operation()))
+Tissue::~Tissue()
 {
-	Require<cellular::Cell>();
-	Require<Tissue>();
+
 }
 
-DifferentiateCell::~DifferentiateCell()
+Code Tissue::DifferentiateCells()
 {
+	Code ret = code::Success();
+	for (
+		chemical::Structure< Cell* >::Contents::iterator cel = GetAll< Cell* >()->begin();
+		cel != GetAll< Cell* >()->end();
+		++cel
+		)
+	{
+		(*cel)->SetEnvironment(this);
+		(*cel)->Import< genetic::Plasmid* >(this);
+		if ((*cel)->ExpressGenes() != code::Success() && ret == code::Success())
+		{
+			ret = code::UnknownError();
+		}
+	}
+
+	for (
+		chemical::Structure< Tissue* >::Contents::iterator tis = GetAll< Tissue* >()->begin();
+		tis != GetAll< Tissue* >()->end();
+		++tis
+		)
+	{
+		(*tis)->SetEnvironment(this);
+		if ((*tis)->DifferentiateCells() != code::Success() && ret == code::Success())
+		{
+			ret = code::UnknownError();
+		}
+	}
+	return ret;
 }
 
-Products DifferentiateCell::Process(chemical::Substances& reactants)
-{
-	cellular::Cell* cell = reactants[0];
-	Tissue* tissue = reactants[1];
-	cell->SetEnvironment(tissue);
-	cell->Import<Plasmid*>(tissue);
-	return Products(cell->ExpressGenes(), reactants);
-}
-
-} //visceral namespace
+} //cellular namespace
 } //bio namespace

@@ -30,7 +30,7 @@
 
 namespace bio {
 
-namespace visceral {
+namespace cellular {
 class Tissue;
 }
 
@@ -40,17 +40,16 @@ class Organelle;
 
 /**
  * A Cell is the basic unit of function-driven organization within Biology.
- * Cells use Proteins to accomplish tasks. You can think of each Protein as a stand-in for a class method except, instead of hard-coding your classes, you instead code in (hard or soft) the TranscriptionFactors and Plasmids present in a Cell. The Cell then determines its functionality at runtime.
- * NOTE: While Cells are Vesicles, they do not register with the VesiclePerspective; instead, they can be Identifiable by the CellPerspective.
+ * Cells use Proteins & Organelles to accomplish tasks. You can think of each Protein as a stand-in for a class method except, instead of hard-coding your classes, you instead code in (hard or soft) the TranscriptionFactors and Plasmids present in a Cell. The Cell then determines its functionality at runtime.
  *
  * In order to simplify the arbitrarily complex behavior that a Cell can perform, Cells are made to Peak, allowing their main function to be called on a clock at a regular interval.
- * Programming a Cell this way is similar to programming an Arduino.
+ * Programming a Cell this way is similar to programming an Arduino with a main loop.
  * Of course, you are allowed to modify this behavior in any way you'd like ;)
  */
 class Cell :
 	public Class< Cell >,
 	public chemical::LinearStructuralComponent< Organelle* >,
-	public molecular::EnvironmentDependent< visceral::Tissue >,
+	public molecular::EnvironmentDependent< cellular::Tissue >,
 	virtual public genetic::Expressor
 {
 public:
@@ -63,7 +62,8 @@ public:
 
 	/**
 	 * Standard ctors.
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
+	 */
+	 BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
 		Cell,
 		&CellPerspective::Instance(),
 		filter::Cellular())

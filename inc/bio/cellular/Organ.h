@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -21,14 +21,20 @@
 
 #pragma once
 
-#include "bio/visceral/common/Class.h"
-#include "bio/chemical/structure/LinearStructuralComponent.h"
+#include "bio/cellular/common/Class.h"
+#include "bio/cellular/common/Types.h"
+#include "bio/cellular/common/Filters.h"
+#include "bio/cellular/macros/Macros.h"
+#include "bio/cellular/Tissue.h"
+#include "bio/genetic/Plasmid.h"
 #include "bio/molecular/EnvironmentDependent.h"
+#include "bio/chemical/structure/LinearStructuralComponent.h"
 
 namespace bio {
-namespace visceral {
+namespace cellular {
 
 class Tissue;
+
 class OrganSystem;
 
 /**
@@ -42,38 +48,27 @@ class OrganSystem;
  * Once your Organ is prepared, you can initialize it with SpecializeTissues() and run it with Peak. However, these will be done for you through the parent OrganSystem.
  */
 class Organ :
-	public Class<Organ>,
+	public Class< Organ >,
 	public chemical::LinearStructuralComponent< genetic::Plasmid* >,
 	public chemical::LinearStructuralComponent< Tissue* >,
-	public molecular::EnvironmentDependent<OrganSystem>
+	public molecular::EnvironmentDependent< OrganSystem >
 {
 public:
 
 	/**
-	 *
+	 * Ensure virtual methods point to Class implementations.
 	 */
-	Organ();
+	BIO_DISAMBIGUATE_CLASS_METHODS(cellular,
+		Organ)
 
 	/**
-	 * @param id
+	 * Standard ctors.
 	 */
-	Organ(StandardDimension id);
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
+		Organ,
+		&OrganPerspective::Instance(),
+		filter::Cellular())
 
-	/**
-	 * @param name
-	 */
-	Organ(Name name);
-
-	/**
-	 * Copies all of the given Organ into *this.
-	 * However, Cells, when copied, must be Differentiated. So, you must call SpecializeTissues() after copying in order to get a functional Organ.
-	 * @param toCopy
-	 */
-	Organ(const Organ& toCopy);
-
-	/**
-	 *
-	 */
 	virtual ~Organ();
 
 	/**
@@ -81,20 +76,30 @@ public:
 	 * Does NOT distribute them. See SpecializeTissues for that.
 	 * NOTE: we pronounce "mobilome" as "mobile-lee-ome" because it's more fun.
 	 */
-	virtual void BuildMobilome() = 0;
-	
+	virtual Code BuildMobilome()
+	{
+		//     CREATE YOUR PLASMIDS HERE!
+
+		return code::NotImplemented();
+	}
+
 	/**
 	 * new all Tissues.
 	 * Does NOT Differentiate them. See SpecializeTissues for that.
 	 */
-	virtual void GrowTissues() = 0;
+	virtual Code GrowTissues()
+	{
+		//     CREATE YOUR TISSUES HERE!
+
+		return code::NotImplemented();
+	}
 
 	/**
 	 * Differentiate all Cells in all Tissues.
 	 */
-	virtual void SpecializeTissues();
+	virtual Code SpecializeTissues();
 };
 
 
-} //visceral namespace
+} //cellular namespace
 } //bio namespace

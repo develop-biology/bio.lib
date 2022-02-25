@@ -26,10 +26,19 @@
 namespace bio {
 namespace cellular {
 
+BIO_PERSPECTIVE_SINGLETON(OrganellePerspective,
+	StandardDimension)
+
 BIO_PERSPECTIVE_SINGLETON(CellPerspective,
 	StandardDimension)
 
-BIO_PERSPECTIVE_SINGLETON(OrganellePerspective,
+BIO_PERSPECTIVE_SINGLETON(TissuePerspective,
+	StandardDimension)
+
+BIO_PERSPECTIVE_SINGLETON(OrganPerspective,
+	StandardDimension)
+
+BIO_PERSPECTIVE_SINGLETON(OrganSystemPerspective,
 	StandardDimension)
 
 } //cellular namespace

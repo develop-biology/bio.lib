@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -21,52 +21,49 @@
 
 #pragma once
 
-#include "bio/visceral/common/Class.h"
-#include "bio/chemical/structure/LinearStructuralComponent.h"
+#include "bio/cellular/common/Class.h"
+#include "bio/cellular/common/Types.h"
+#include "bio/cellular/common/Filters.h"
+#include "bio/cellular/macros/Macros.h"
+#include "bio/cellular/Organelle.h"
+#include "bio/cellular/Cell.h"
+#include "bio/genetic/Plasmid.h"
 #include "bio/molecular/EnvironmentDependent.h"
+#include "bio/chemical/structure/LinearStructuralComponent.h"
 
 namespace bio {
+namespace cellular {
 
-namespace genetic {
-class Plasmid;
-}
-
-namespace cellular{
 class Cell;
-}
-
-namespace visceral {
 
 /**
-Tissues are a container for storing and manipulating many cells at once
-*/
+ * Tissues are a container for storing and manipulating many cells at once
+ * Tissues can hold other Tissues, so create them in any structure you need.
+ * Once a group of Tissues is functioning as desired, it is recommended that you package them into an Organ.
+ */
 class Tissue :
 	public Class<Tissue>,
-	public chemical::LinearStructuralComponent< const genetic::Plasmid* >,
-	public chemical::LinearStructuralComponent< cellular::Cell* >,
+	public chemical::LinearStructuralComponent< genetic::Plasmid* >,
+	public chemical::LinearStructuralComponent< Cell* >,
 	public chemical::LinearStructuralComponent< Tissue* >,
-	public molecular::EnvironmentDependent<Tissue> //Not Organ because of LinearStructuralComponent.
+	public molecular::EnvironmentDependent<Tissue> //Not Organ.
 {
 public:
 
-	Tissue();
+	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(cellular,
+		Tissue)
 
 	/**
-	 * @param id Recommend name=PeriodicTable::Instance().GetIdFromType(*this).
+	 * Standard ctors.
 	 */
-	explicit Tissue(StandardDimension id);
+	 BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
+		Tissue,
+		&TissuePerspective::Instance(),
+		filter::Cellular())
 
-	/**
-	 * @param name Recommend name=PeriodicTable::Instance().GetNameFromType(*this).
-	 */
-	explicit Tissue(Name name);
-
-	/**
-	 * Copies all contents of the given Tissue into *this.
-	 * NOTE: Cells are not functionally when copied. To make the new Cells in *this work, you must also call DifferentiateCells().
-	 * @param toCopy
-	 */
-	Tissue(const Tissue& toCopy);
 
 	/**
 	 *
@@ -79,9 +76,9 @@ public:
 	 *     2. Transcribes & Translates all Genes
 	 *     3. Folds all Proteins.
 	 */
-	virtual void DifferentiateCells();
+	virtual Code DifferentiateCells();
 
 };
 
-} //organismal namespace
+} //cellular namespace
 } //bio namespace
