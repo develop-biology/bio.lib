@@ -20,56 +20,15 @@
  */
 
 #include "bio/cellular/Cell.h"
-#include "bio/molecular/Protein.h"
-#include "bio/cellular/common/Filters.h"
-#include "bio/cellular/common/Properties.h"
-#include "bio/log/Engine.h"
-#include <string.h>
-#include <algorithm>
+#include "bio/cellular/Organelle.h"
 
-using namespace bio;
-using namespace cellular;
+namespace bio {
+namespace cellular {
 
-Cell::Cell(Name name, organismal::Organism* organism) :
-	genetic::Expressor(),
-    log::Writer(NULL, filter::Cellular()),
-	physical::Identifiable<StandardDimension>(name, &CellPerspective::Instance())
-{
-}
-
-Cell::Cell(const Cell& toCopy) :
-    log::Writer(toCopy),
-	genetic::Expressor(toCopy)
-{
-
-}
 Cell::~Cell()
 {
 
 }
 
-Cell* Cell::Clone() const
-{
-	return new Cell(*this);
-}
-
-
-bool Cell::operator==(const Cell& other) const
-{
-	return genetic::Expressor::operator==(other);
-}
-
-void ImportAll(const Cell& other)
-{
-	gentic::Expressor::ImportAll(other);
-}
-
-void Cell::SetLogEngine(log::Engine* logEngine)
-{
-	log::Writer::SetLogEngine(logEngine);
-	ForEach<Protein*>(
-		chemical::Reaction::Iniate<SetLogEngine>,
-		this
-	);
-}
-
+} //cellular
+} //bio

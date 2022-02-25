@@ -32,6 +32,11 @@ namespace property {
 Property Structural();
 
 /**
+ * For LinearStructuralComponent.h
+ */
+Property Linear();
+
+/**
  * See Excitation.h
  */
 Property Excitatory();

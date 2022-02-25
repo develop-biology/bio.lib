@@ -66,6 +66,17 @@ public:
 		LinearStructuralComponent< CONTENT_TYPE >)
 
 	/**
+	 * Add property::Linear() to what is given by AbstractStructure.
+	 * @return {Structural(), Linear()}
+	 */
+	static Properties GetClassProperties()
+	{
+		Properties ret = AbstractStructure::GetClassProperties();
+		ret.push_back(property::Linear());
+		return ret;
+	}
+
+	/**
 	 * Each LinearStructuralComponent may use a different Perspective for identifying its contents.
 	 * This Perspective will be used for Name <-> Id matching, Wave->Clone()ing, etc.
 	 * See bio/physical/Perspective.h for more details.
@@ -93,7 +104,7 @@ public:
 	 */
 	explicit LinearStructuralComponent(physical::Perspective< StandardDimension >* perspective = NULL)
 		:
-		Element< LinearStructuralComponent< CONTENT_TYPE > >(AbstractStructure::GetClassProperties()),
+		Element< LinearStructuralComponent< CONTENT_TYPE > >(GetClassProperties()),
 		chemical::Class< LinearStructuralComponent< CONTENT_TYPE > >(this),
 		m_perspective(perspective)
 	{
@@ -110,7 +121,7 @@ public:
 		physical::Perspective< StandardDimension >* perspective = NULL
 	)
 		:
-		Element< LinearStructuralComponent< CONTENT_TYPE > >(AbstractStructure::GetClassProperties()),
+		Element< LinearStructuralComponent< CONTENT_TYPE > >(GetClassProperties()),
 		chemical::Class< LinearStructuralComponent< CONTENT_TYPE > >(this),
 		StructuralComponent< CONTENT_TYPE >(contents),
 		m_perspective(perspective)

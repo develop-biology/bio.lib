@@ -27,6 +27,8 @@ namespace property {
 
 BIO_PROPERTY_FUNCTION_BODY(Structural)
 
+BIO_PROPERTY_FUNCTION_BODY(Linear)
+
 BIO_PROPERTY_FUNCTION_BODY(Excitatory)
 
 } //property namespace

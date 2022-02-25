@@ -20,7 +20,7 @@
  */
 
 #include "bio/cellular/common/Properties.h"
-#include "bio/chemical/Macros/h"
+#include "bio/chemical/macros/Macros.h"
 
 namespace bio {
 namespace cellular {

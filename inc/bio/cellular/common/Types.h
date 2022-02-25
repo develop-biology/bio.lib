@@ -29,5 +29,8 @@ namespace cellular {
 BIO_PERSPECTIVE_SINGLETON(CellPerspective,
 	StandardDimension)
 
+BIO_PERSPECTIVE_SINGLETON(OrganellePerspective,
+	StandardDimension)
+
 } //cellular namespace
 } //bio namespace

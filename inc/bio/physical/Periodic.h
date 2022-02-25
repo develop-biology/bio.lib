@@ -81,9 +81,12 @@ public:
 	 * If derived classes must do slow work to oscillate, that slow logic MUST BE placed in a separate thread.
 	 * This method would then get the data stored by that thread and returns the data *quickly*. MAKE SURE that the thread never causes a long mutex wait as a side-effect in this Peak method.
 	 */
-	virtual void Peak()
+	virtual Code Peak()
 	{
-		//Your code goes here!
+
+		//     YOU CODE GOES HERE!
+
+		return code::NotImplemented();
 	}
 
 	/**

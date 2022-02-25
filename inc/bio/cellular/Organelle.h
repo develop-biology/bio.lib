@@ -21,12 +21,60 @@
 
 #pragma once
 
+#include "bio/cellular/common/Class.h"
+#include "bio/cellular/common/Types.h"
+#include "bio/cellular/common/Filters.h"
+#include "bio/cellular/macros/Macros.h"
+
 namespace bio {
 namespace cellular {
 
+class Cell;
+
 class Organelle :
-	virtual public molecular::Vesicle,
-	public molecular::EnvironmentDependent<Cell>
+	public Class< Organelle >,
+	public molecular::EnvironmentDependent< Cell >
+{
+public:
+
+	/**
+	 * Ensure virtual methods point to Class implementations.
+	 */
+	BIO_DISAMBIGUATE_CLASS_METHODS(cellular,
+		Organelle)
+
+	/**
+	 * Standard ctors.
+	 */
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
+		Organelle,
+		&OrganellePerspective::Instance(),
+		filter::Molecular())
+
+	/**
+	 *
+	 */
+	virtual ~Organelle();
+
+	/**
+	 * Peak()s occur at Periodic::m_intervals.
+	 * Define your main Periodic logic here.
+	 * This method must be fast:
+	 *	* do not read slow hardware here
+	 *	* do not block for a long time
+	 *	* do not sleep
+	 * If derived classes must do slow work to oscillate, that slow logic MUST BE placed in a separate thread.
+	 * This method would then get the data stored by that thread and returns the data *quickly*. MAKE SURE that the thread never causes a long mutex wait as a side-effect in this Peak method.
+	 * Please call this method when you're done :)
+	 */
+	virtual Code Peak()
+	{
+
+		//     YOU CODE GOES HERE!
+
+		return cellular::Class< Organelle >::Peak();
+	}
+};
 
 } //cellular namespace
 } //bio namespace

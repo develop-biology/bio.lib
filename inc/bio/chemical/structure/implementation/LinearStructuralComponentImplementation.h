@@ -934,7 +934,7 @@ public:
 			other,
 			ExcitationBase::GetClassProperties()).size())
 		{
-			ForEachImplementation(Cast< ExcitationBase* >(other));
+			ForEachImplementation(ChemicalCast< ExcitationBase* >(other));
 			return code::Success();
 		}
 

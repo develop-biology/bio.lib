@@ -29,28 +29,66 @@ namespace bio {
 namespace cellular {
 
 /**
+ * The PeakCarrierWave will propagate Peak Excitations to all LinearStructuralComponents
+ */
+class PeakCarrierWave : public physical::Wave
+{
+public:
+	PeakCarrierWave() :
+		m_peakExcitation(&physical::Periodic::Peak)
+	{
+		Modulate(m_peakExcitation);
+	}
+	virtual ~PeakCarrierWave() {}
+
+	virtual Properties GetProperties() const
+	{
+		Properties ret = chemical::AbstractStructure::GetClassProperties();
+		ret.push_back(property::Linear());
+		return ret;
+	}
+
+protected:
+	BIO_EXCITATION_CLASS(physical::Periodic, Code) m_peakExcitation;
+};
+
+PeakCarrierWave g_peakCarrierWave;
+
+/**
  * A cellular::Class extends genetic::Class
- * Right now, this only ensures that every cellular::Class implements Peak
  * Class in other namespaces will grow to include more complex, templated logic.
  * This pattern prevents you from having to define virtual methods each of your child classes, so long as you always derive from the appropriate Class<T>.
  * @tparam T
  */
-template <typename T>
-class Class : public genetic::Class<T>, virtual public physical::Periodic, virtual public molecular::Vesicle
+template < typename T >
+class Class :
+	public genetic::Class< T >,
+	virtual public physical::Periodic,
+	virtual public molecular::Vesicle
 {
 public:
+
+	BIO_DISAMBIGUATE_CLASS_METHODS(genetic,
+		T)
 
 	/**
 	 * Providing just the object should not Initialize anything.
 	 * For default constructors of virtually inherited classes.
 	 * @param object
 	 */
-	Class(T* object)
-		:
-		genetic::Class<T>(object)
-	{
+		Class(
+			T* object,
+			physical::Perspective <StandardDimension>* perspective = NULL,
+			Filter filter = filter::Default())
+			:
+			genetic::Class< T >(
+				object,
+				perspective,
+				filter
+			)
+		{
 
-	}
+		}
 
 	/**
 	 * @param object
@@ -59,14 +97,21 @@ public:
 	 * @param filter
 	 * @param interval
 	 */
-	Class(T* object,
+	Class(
+		T* object,
 		Name name,
-		Perspective <StandardDimension>* perspective = NULL,
+		physical::Perspective <StandardDimension>* perspective = NULL,
 		Filter filter = filter::Default(),
-		TimeUS interval = GetDefaultInterval()) :
-		genetic::Class<T>(object, name, perspective, filter)
+		TimeUS interval = GetDefaultInterval())
+		:
+		genetic::Class< T >(
+			object,
+			name,
+			perspective,
+			filter
+		)
 	{
-		physical::Periodic::Intialize(interval);
+		physical::Periodic::Initialize(interval);
 	}
 
 	/**
@@ -76,14 +121,21 @@ public:
 	 * @param filter
 	 * @param interval
 	 */
-	Class(T* object,
+	Class(
+		T* object,
 		StandardDimension id,
-		Perspective <StandardDimension>* perspective = NULL,
+		physical::Perspective <StandardDimension>* perspective = NULL,
 		Filter filter = filter::Default(),
-		TimeUS interval = GetDefaultInterval()) :
-		genetic::Class<T>(object, id, perspective, filter)
+		TimeUS interval = GetDefaultInterval())
+		:
+		genetic::Class< T >(
+			object,
+			id,
+			perspective,
+			filter
+		)
 	{
-		physical::Periodic::Intialize(interval);
+		physical::Periodic::Initialize(interval);
 	}
 
 
@@ -94,6 +146,12 @@ public:
 	{
 
 	}
+
+	Code Peak()
+	{
+		return Attenuate(&g_peakCarrierWave);
+	}
+
 };
 
 } //cellular namespace

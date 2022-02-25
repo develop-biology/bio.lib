@@ -30,7 +30,6 @@ namespace genetic {
 
 /**
  * A genetic::Class extends molecular::Class
- * This is currently just a place holder for future additions and simply passes to molecular::Class.
  * Class in other namespaces will grow to include more complex, templated logic.
  * This pattern prevents you from having to define virtual methods each of your child classes, so long as you always derive from the appropriate Class<T>.
  * @tparam T
