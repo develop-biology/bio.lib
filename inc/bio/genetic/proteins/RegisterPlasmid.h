@@ -19,61 +19,39 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/molecular/DNA.h"
+#pragma once
+
 #include "bio/molecular/Protein.h"
-#include "bio/molecular/common/Filters.h"
-#include "bio/molecular/common/Codes.h"
-#include "bio/molecular/common/Types.h"
 
 namespace bio {
-namespace molecular {
+namespace genetic {
 
-void DNA::CtorCommon()
+/**
+ * Takes a Plasmid* in the "Plasmid Binding Site" and stores it in the PlasmidPerspective.
+ */
+class RegisterPlasmid :
+	public molecular::Protein
 {
-	m_protein = NULL;
-	m_version = 0.0f;
-}
+public:
+	/**
+	 *
+	 */
+	RegisterPlasmid();
 
-DNA::~DNA()
-{
-	if (m_protein)
-	{
-		delete m_protein;
-		m_protein = NULL;
-	}
-}
+	/**
+	 *
+	 */
+	virtual ~RegisterPlasmid();
 
-Protein* DNA::GetProtein()
-{
-	return m_protein;
-}
 
-const Protein* DNA::GetProtein() const
-{
-	return m_protein;
-}
+	/**
+	 * Do the Register stuff.
+	 */
+	virtual Code Activate();
 
-StandardDimension DNA::GetProteinId() const
-{
-	BIO_SANITIZE(m_protein, ,
-		return ProteinPerspective::InvalidId());
-	return m_protein->GetId();
-}
+protected:
+	mc_plasmidSite;
+};
 
-Version DNA::GetVersion()
-{
-	return m_version;
-}
-
-void DNA::SetVersion(Version newVersion)
-{
-	m_version = newVersion;
-}
-
-void DNA::SetProtein(Protein* protein)
-{
-	m_protein = protein;
-}
-
-} //molecular namespace
+} //genetic namespace
 } //bio namespace

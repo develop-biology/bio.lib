@@ -21,11 +21,11 @@
 
 #pragma once
 
-#include "bio/chemical/structure/StructuralComponent.h"
 #include "bio/molecular/Vesicle.h"
 #include "bio/molecular/Protein.h"
 #include "bio/genetic/common/Types.h"
 #include "bio/genetic/common/Filters.h"
+#include "bio/genetic/common/TranscriptionFactorStructure.h"
 #include "bio/genetic/macros/Macros.h"
 #include "RNA.h"
 
@@ -33,31 +33,6 @@ namespace bio {
 namespace genetic {
 
 class Plasmid;
-
-/**
- * chemical::StructuralComponent<TranscriptionFactor> is an ambiguous base of Expressor, so we use an intermediate class to disambiguate.
- */
-class TranscriptionFactorStructure :
-	public chemical::Class< TranscriptionFactorStructure >,
-	public chemical::StructuralComponent< TranscriptionFactor >
-{
-public:
-	/**
-	 * Ensure virtual methods point to Class implementations.
-	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(chemical,
-		TranscriptionFactorStructure)
-
-	TranscriptionFactorStructure()
-		:
-		chemical::Class< TranscriptionFactorStructure >(this)
-	{
-	}
-
-	virtual ~TranscriptionFactorStructure()
-	{
-	}
-};
 
 /**
  * genetic::Expressors contain the logic for storing and querying TranscriptionFactors.
@@ -90,6 +65,17 @@ public:
 	 *
 	 */
 	virtual ~Expressor();
+
+	/**
+	 * Use this method to populate any member variable Protein* or StandardDimension Ids.
+	 * You'll want to do this to speed up your code by bypassing the dynamic execution provided by Molecule.
+	 * Use StandardDimension Ids when the Protein* might change (e.g. the Protein may be Transferred in or out of *this).
+	 * Use a Protein* if you know & will enforce a static set of Proteins which will not be Transferred.
+	 */
+	virtual void CacheProteins()
+	{
+		//   YOUR CODE HERE
+	}
 
 	/**
 	 * Calls molecular::Protein::Activate() for a molecular::Protein of the given id.

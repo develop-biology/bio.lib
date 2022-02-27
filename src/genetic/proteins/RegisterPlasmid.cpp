@@ -19,54 +19,33 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/genetic/proteins/RNAPolymerase.h"
-#include "bio/genetic/Expressor.h"
-#include "bio/genetic/Plasmid.h"
-#include "bio/genetic/RNA.h"
-#include "bio/common/TypeName.h"
+#include "bio/genetic/proteins/RegisterPlasmid.h"
+#include "bio/genetic/common/Types.h"
 
 namespace bio {
 namespace genetic {
 
-RNAPolymerase::RNAPolymerase(Plasmid* toTranscribe)
-	:
+RegisterPlasmid::RegisterPlasmid() :
 	molecular::Protein(chemical::PeriodicTable::Instance().GetNameFromType(*this))
 {
-	SetSource(toTranscribe);
-	mc_rna = Define("RNA Binding Site");
+	mc_plasmidSite = Define("Plasmid Binding Site");
 }
 
-RNAPolymerase::~RNAPolymerase()
+RegisterPlasmid::~RegisterPlasmid()
 {
 
 }
 
-Code RNAPolymerase::Activate()
+Code RegisterPlasmid::Activate()
 {
-	Expressor* expressor = ChemicalCast< Expressor* >(GetEnvironment());
-	BIO_SANITIZE(expressor, ,
-		return code::BadArgument1());
-	RNA* boundRNA = RotateTo< RNA* >(mc_rna);
-	BIO_SANITIZE(mc_rna, ,
-		return code::BadArgument2());
-
-	bool shouldTranscribe = false;
-	for (
-		chemical::StructuralComponentImplementation< Gene* >::Contents::const_iterator gen = m_source->GetAll< Gene* >()->begin();
-		gen != m_source->GetAll< Gene* >()->end();
-		++gen
-		)
-	{
-		shouldTranscribe = expressor->HasAll< TranscriptionFactor >(
-			*((*gen)->GetAll< TranscriptionFactor >())
-		);
-		if (!shouldTranscribe)
-		{
-			continue;
-		}
-		boundRNA->Add< Gene* >(*gen);
-	}
-	return code::Success();
+	Code ret = code::BadArgument1();
+	Plasmid* boundPlasmid = RotateTo< Plasmid* >(mc_plasmidSite);
+	BIO_SANITIZE(boundPlasmid, , return ret)
+	PlasmidPerspective::Instance().AssociateType(boundPlasmid->GetId(), boundPlasmid);
+	ret = code::Success();
+	RotateTo(mc_plasmidSite)->Release();
+	return ret;
 }
+
 } //genetic namespace
 } //bio namespace

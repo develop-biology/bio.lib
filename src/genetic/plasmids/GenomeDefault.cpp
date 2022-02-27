@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,61 +19,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/molecular/DNA.h"
-#include "bio/molecular/Protein.h"
-#include "bio/molecular/common/Filters.h"
-#include "bio/molecular/common/Codes.h"
-#include "bio/molecular/common/Types.h"
+#include "bio/genetic/plasmids/GenomeDefault.h"
+#include "bio/genetic/proteins/RegisterPlasmid.h"
+#include "bio/genetic/proteins/FetchPlasmid.h"
 
 namespace bio {
-namespace molecular {
+namespace genetic {
 
-void DNA::CtorCommon()
+GenomeDefault::GenomeDefault()
 {
-	m_protein = NULL;
-	m_version = 0.0f;
+	Gene* registerPlasmid = new Gene("Register Plasmid Default");
+	registerPlasmid->SetProtein(new RegistrePlasmid());
+	registerPlasmid->Add< TranscriptionFactor >(transcription_factor::Genome());
+	Add< Gene* >(registerPlasmid);
+
+	Gene* registerPlasmid = new Gene("Fetch Plasmid Default");
+	fetchPlasmid->SetProtein(new FetchPlasmid());
+	fetchPlasmid->Add< TranscriptionFactor >(transcription_factor::Genome());
+	Add< Gene* >(fetchPlasmid);
 }
 
-DNA::~DNA()
+GenomeDefault::~GenomeDefault()
 {
-	if (m_protein)
-	{
-		delete m_protein;
-		m_protein = NULL;
-	}
+	//Gene*s will be automatically deleted.
 }
 
-Protein* DNA::GetProtein()
-{
-	return m_protein;
-}
-
-const Protein* DNA::GetProtein() const
-{
-	return m_protein;
-}
-
-StandardDimension DNA::GetProteinId() const
-{
-	BIO_SANITIZE(m_protein, ,
-		return ProteinPerspective::InvalidId());
-	return m_protein->GetId();
-}
-
-Version DNA::GetVersion()
-{
-	return m_version;
-}
-
-void DNA::SetVersion(Version newVersion)
-{
-	m_version = newVersion;
-}
-
-void DNA::SetProtein(Protein* protein)
-{
-	m_protein = protein;
-}
-
-} //molecular namespace
+} //genetic namespace
 } //bio namespace
