@@ -19,54 +19,51 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/genetic/proteins/RNAPolymerase.h"
-#include "bio/genetic/Expressor.h"
+#include "bio/genetic/proteins/FetchPlasmid.h"
 #include "bio/genetic/Plasmid.h"
-#include "bio/genetic/RNA.h"
-#include "bio/common/TypeName.h"
+#include "bio/genetic/common/Types.h"
 
 namespace bio {
 namespace genetic {
 
-RNAPolymerase::RNAPolymerase(Plasmid* toTranscribe)
-	:
+FetchPlasmid::FetchPlasmid() :
 	molecular::Protein(chemical::PeriodicTable::Instance().GetNameFromType(*this))
 {
-	SetSource(toTranscribe);
-	mc_rna = Define("RNA Binding Site");
+	mc_nameSite = Define("Name Binding Site");
+	mc_idSite = Define("Id Binding Site");
+	mc_returnSite = Define("Return Site");
 }
 
-RNAPolymerase::~RNAPolymerase()
+FetchPlasmid::~FetchPlasmid()
 {
 
 }
 
-Code RNAPolymerase::Activate()
+Code FetchPlasmid::Activate()
 {
-	Expressor* expressor = ChemicalCast< Expressor* >(GetEnvironment());
-	BIO_SANITIZE(expressor, ,
-		return code::BadArgument1());
-	RNA* boundRNA = RotateTo< RNA* >(mc_rna);
-	BIO_SANITIZE(mc_rna, ,
-		return code::BadArgument2());
+	Code ret = code::BadArgument1();
 
-	bool shouldTranscribe = false;
-	for (
-		chemical::StructuralComponentImplementation< Gene* >::Contents::const_iterator gen = m_source->GetAll< Gene* >()->begin();
-		gen != m_source->GetAll< Gene* >()->end();
-		++gen
-		)
+	RotateTo(mc_returnSite)->ReleaseAll();
+
+	Name boundName = RotateTo< Name >(mc_nameSite);
+	StandardDimension boundId = RotateTo< StandardDimension >(mc_idSite);
+
+	if (boundName)
 	{
-		shouldTranscribe = expressor->HasAll< TranscriptionFactor >(
-			*((*gen)->GetAll< TranscriptionFactor >())
-		);
-		if (!shouldTranscribe)
-		{
-			continue;
-		}
-		boundRNA->Add< Gene* >(*gen);
+		RotateTo(mc_returnSite)->Bind(PlasmidPerspective::Instance().GetTypeFromIdAs< Plasmid* >(boundId));
+		ret = code::Success();
 	}
-	return code::Success();
+	else if (boundId)
+	{
+		RotateTo(mc_returnSite)->Bind(PlasmidPerspective::Instance().GetTypeFromIdAs< Plasmid* >(boundId));
+		ret = code::Success();
+	}
+
+	RotateTo(mc_nameSite)->ReleaseAll();
+	RotateTo(mc_idSite)->ReleaseAll();
+
+	return ret;
 }
+
 } //genetic namespace
 } //bio namespace

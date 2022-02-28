@@ -34,8 +34,14 @@
  * @return function signatures for use in BIO_DISAMBIGUATE_CLASS_METHODS
  */
 #define BIO_GET_CLASS_METHODS_FOR_physical()                                   \
-    (virtual ::bio::physical::Wave* Clone() const, Clone()),\
-    (virtual ::bio::physical::Wave* AsWave(), AsWave()),\
+    (                                                                          \
+		virtual ::bio::physical::Wave* Clone() const,                          \
+		Clone()                                                                \
+	),                                                                         \
+    (                                                                          \
+		virtual ::bio::physical::Wave* AsWave(),                                     \
+		AsWave()                                                                     \
+	),\
     (virtual const ::bio::physical::Wave* AsWave() const, AsWave()),\
 	(virtual operator ::bio::physical::Wave*(), operator ::bio::physical::Wave*()),\
 	(virtual ::bio::physical::Wave* Modulate(Wave* signal), Modulate(signal)),\
@@ -50,7 +56,7 @@
 */
 #define BIO_CODE_FUNCTION_BODY(functionName)                                   \
 BIO_ID_FUNCTION_BODY(                                                          \
-    functionName,                                                              \
+    functionName##Code,                                                        \
     ::bio::CodePerspective::Instance(),                                        \
     ::bio::Code)
 
@@ -61,7 +67,7 @@ BIO_ID_FUNCTION_BODY(                                                          \
  */
 #define BIO_STATE_FUNCTION_BODY(functionName)                                  \
 BIO_ID_FUNCTION_BODY(                                                          \
-    functionName,                                                              \
+    functionName##State,                                                       \
     ::bio::StatePerspective::Instance(),                                       \
     ::bio::State)
 
@@ -73,7 +79,7 @@ BIO_ID_FUNCTION_BODY(                                                          \
  */
 #define BIO_PROPERTY_FUNCTION_BODY(functionName)                               \
 BIO_ID_FUNCTION_BODY(                                                          \
-    functionName,                                                              \
+    functionName##Property,                                                    \
     ::bio::PropertyPerspective::Instance(),                                    \
     ::bio::Property)
 
@@ -84,7 +90,7 @@ BIO_ID_FUNCTION_BODY(                                                          \
  */
 #define BIO_SYMMETRY_TYPE_FUNCTION_BODY(functionName)                          \
 BIO_ID_FUNCTION_BODY(                                                          \
-    functionName,                                                              \
+    functionName##SymmetryType,                                                \
     ::bio::SymmetryTypePerspective::Instance(),                                \
     ::bio::SymmetryType)
 
@@ -95,7 +101,7 @@ BIO_ID_FUNCTION_BODY(                                                          \
  */
 #define BIO_FILTER_FUNCTION_BODY(functionName)                                 \
 BIO_ID_FUNCTION_BODY(                                                          \
-    functionName,                                                              \
+    functionName##Filter,                                                      \
     ::bio::FilterPerspective::Instance(),                                      \
     ::bio::Filter)
 

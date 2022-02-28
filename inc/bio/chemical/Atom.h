@@ -46,6 +46,8 @@ class Bond;
  * Bonds are arbitrarily flexible, so this system can be (ab)used in many ways.
  * Unlike real chemistry, the actual valence of a Atom changes to accommodate new Bonds.
  * NOTE: m_bonds[0] is always empty. This may change in a future release.
+ *
+ * NOTE: iff using a C++ version below 11, only Quantum<> Bonds are supported. This is due to an inability to evaluate IsPrimitive<>() expressions at compile time and the compiler following all "possible" execution paths, which are necessarily incompatible.
  */
 class Atom :
 	public physical::Class< Atom >
@@ -139,6 +141,7 @@ public:
 	const T AsBonded() const
 	{
 		Valence position = GetBondPosition< T >();
+
 		BIO_SANITIZE(position, ,
 			return NULL);
 		return ForceCast< const T >(m_bonds[position].GetBonded());
@@ -174,6 +177,9 @@ public:
 	template < typename T >
 	T As()
 	{
+		#if BIO_CPP_VERSION < 11
+		return AsBondedQuantum< T >();
+		#else
 		if (IsPrimitive< T >())
 		{
 			return AsBondedQuantum< T >();
@@ -182,6 +188,7 @@ public:
 		{
 			return AsBonded< T >();
 		}
+		#endif
 	}
 
 	/**
@@ -193,6 +200,9 @@ public:
 	template < typename T >
 	const T As() const
 	{
+		#if BIO_CPP_VERSION < 11
+		return AsBondedQuantum< T >();
+		#else
 		if (IsPrimitive< T >())
 		{
 			return AsBondedQuantum< T >();
@@ -201,6 +211,7 @@ public:
 		{
 			return AsBonded< T >();
 		}
+		#endif
 	}
 
 
@@ -229,6 +240,14 @@ public:
 		T toBond,
 		BondType type = bond_type::Unknown())
 	{
+		#if BIO_CPP_VERSION < 11
+		AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >();
+		return FormBondImplementation(
+			(new physical::Quantum< T >(toBond))->AsWave(),
+			bondedId,
+			type
+		);
+		#else
 		if (IsPrimitive< T >())
 		{
 			AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >();
@@ -247,6 +266,7 @@ public:
 				type
 			);
 		}
+		#endif
 	}
 
 	/**
@@ -263,6 +283,9 @@ public:
 		T toDisassociate,
 		BondType type = bond_type::Unknown())
 	{
+		#if BIO_CPP_VERSION < 11
+		return BreakBond< physical::Quantum< T >* >(NULL, type);
+		#else
 		if (IsPrimitive< T >())
 		{
 			return BreakBond< physical::Quantum< T >* >(NULL, type); //T matters, toDisassociate does not.
@@ -274,6 +297,7 @@ public:
 			bondedId,
 			type
 		);
+		#endif
 	}
 
 
@@ -301,11 +325,15 @@ public:
 	template < typename T >
 	Valence GetBondPosition() const
 	{
+		#if BIO_CPP_VERSION < 11
+		return GetBondPosition(PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >());
+		#else
 		if (IsPrimitive< T >())
 		{
 			return GetBondPosition(PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >());
 		}
 		return GetBondPosition(PeriodicTable::Instance().GetIdFromType< T >());
+		#endif
 	}
 
 	/**
@@ -323,11 +351,15 @@ public:
 	template < typename T >
 	BondType GetBondType() const
 	{
+		#if BIO_CPP_VERSION < 11
+		return GetBondType(GetBondPosition< physical::Quantum< T > >());
+		#else
 		if (IsPrimitive< T >())
 		{
 			return GetBondType(GetBondPosition< physical::Quantum< T > >());
 		}
 		return GetBondType(GetBondPosition< T >());
+		#endif
 	}
 
 protected:

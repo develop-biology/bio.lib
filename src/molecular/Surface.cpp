@@ -111,24 +111,12 @@ physical::Symmetry* Surface::Spin() const
 	return NULL;
 }
 
-chemical::Substance* Surface::Bind(
-	chemical::Substance* toBind,
+physical::Wave* Surface::Release(
+	physical::Wave* toRelease,
 	BondType bondType
 )
 {
-	FormBond(
-		toBind,
-		bondType
-	);
-	return toBind;
-}
-
-chemical::Substance* Surface::Release(
-	chemical::Substance* toRelease,
-	BondType bondType
-)
-{
-	chemical::Substance* ret = NULL;
+	physical::Wave* ret = NULL;
 	for (
 		chemical::Valence val = 0;
 		val < m_valence;
@@ -137,7 +125,7 @@ chemical::Substance* Surface::Release(
 	{
 		if (m_bonds[val].GetType() == bondType)
 		{
-			ret = ChemicalCast< chemical::Substance* >(m_bonds[val].GetBonded());
+			ret = ChemicalCast< physical::Wave* >(m_bonds[val].GetBonded());
 			BIO_SANITIZE_AT_SAFETY_LEVEL_2(!ret || ret != toRelease,
 				continue,);
 			m_bonds[val].Break();
@@ -205,9 +193,9 @@ chemical::Substance* Surface::Release(
 	return ret;
 }
 
-chemical::Substances Surface::ReleaseAll(BondType bondType)
+physical::Waves Surface::ReleaseAll(BondType bondType)
 {
-	chemical::Substances ret;
+	physical::Waves ret;
 	for (
 		chemical::Valence val = 0;
 		val < m_valence;
@@ -216,19 +204,14 @@ chemical::Substances Surface::ReleaseAll(BondType bondType)
 	{
 		if (m_bonds[val].GetType() == bondType)
 		{
-			ret.push_back(ChemicalCast< chemical::Substance* >(m_bonds[val].GetBonded()));
+			ret.push_back(ChemicalCast< physical::Wave* >(m_bonds[val].GetBonded()));
 			m_bonds[val].Break();
 		}
 	}
 	return ret;
 }
 
-chemical::Substance* Surface::operator+=(chemical::Substance* toBind)
-{
-	return Bind(toBind);
-}
-
-chemical::Substance* Surface::operator-=(chemical::Substance* toRelease)
+physical::Wave* Surface::operator-=(physical::Wave* toRelease)
 {
 	return Release(toRelease);
 }
@@ -243,7 +226,7 @@ chemical::Substance* Surface::operator-=(StandardDimension toRelease)
 	return Release(toRelease);
 }
 
-chemical::Substances Surface::operator--()
+physical::Waves Surface::operator--()
 {
 	return ReleaseAll();
 }

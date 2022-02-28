@@ -24,6 +24,7 @@
 #include "bio/genetic/common/Types.h"
 #include "bio/genetic/common/Class.h"
 #include "bio/genetic/common/Filters.h"
+#include "bio/genetic/common/TranscriptionFactorStructure.h"
 #include "bio/genetic/macros/Macros.h"
 #include "bio/genetic/localization/Insertion.h"
 #include "bio/molecular/DNA.h"
@@ -32,7 +33,10 @@ namespace bio {
 namespace genetic {
 
 /**
- * Genes are responsible for creating Proteins in cells. Genes do this by recognizing TranscriptionFactors that the Cells express and cloning a Protein into the given m_localization.
+ * Genes are responsible for creating Proteins in cells. Genes do this by recognizing TranscriptionFactors that the Cells express and cloning a Protein into the given m_insertion.
+ *
+ * If a Cell has the indicated TranscriptionFactors, insert the given protein at the insertion.
+ * For more info, see Expressor and localization/*.h
  *
  * NOTE: for simplicity, Genes are considered mRNA.
  * There is currently no need to create a new object to more closely mimic transcription.
@@ -42,7 +46,8 @@ namespace genetic {
  */
 class Gene :
 	public Class< Gene >,
-	public molecular::DNA
+	public molecular::DNA,
+	public TranscriptionFactorStructure
 {
 public:
 	/**
@@ -64,11 +69,6 @@ public:
 	 *
 	 */
 	virtual ~Gene();
-
-	/**
-	 * If a Cell has the indicated TranscriptionFactors, insert the given protein at the localization (i.e. Cell::InsertProtein(protein, localization).
-	 */
-	TranscriptionFactors m_requiredTranscriptionFactors;
 
 	/**
 	 * The insertion is the Name and type of Site that corresponds to the Vesicle, Molecule, Surface, etc. that *this should to be added to.
