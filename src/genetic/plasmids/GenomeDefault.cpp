@@ -22,6 +22,8 @@
 #include "bio/genetic/plasmids/GenomeDefault.h"
 #include "bio/genetic/proteins/RegisterPlasmid.h"
 #include "bio/genetic/proteins/FetchPlasmid.h"
+#include "bio/genetic/common/Types.h"
+#include "bio/genetic/common/TranscriptionFactors.h"
 
 namespace bio {
 namespace genetic {
@@ -29,11 +31,11 @@ namespace genetic {
 GenomeDefault::GenomeDefault()
 {
 	Gene* registerPlasmid = new Gene("Register Plasmid Default");
-	registerPlasmid->SetProtein(new RegistrePlasmid());
+	registerPlasmid->SetProtein(new RegisterPlasmid());
 	registerPlasmid->Add< TranscriptionFactor >(transcription_factor::Genome());
 	Add< Gene* >(registerPlasmid);
 
-	Gene* registerPlasmid = new Gene("Fetch Plasmid Default");
+	Gene* fetchPlasmid = new Gene("Fetch Plasmid Default");
 	fetchPlasmid->SetProtein(new FetchPlasmid());
 	fetchPlasmid->Add< TranscriptionFactor >(transcription_factor::Genome());
 	Add< Gene* >(fetchPlasmid);

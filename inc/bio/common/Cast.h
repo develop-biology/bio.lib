@@ -21,10 +21,6 @@
 
 #pragma once
 
-/**
-This file includes all global functions for the bio namespace.
-*/
-
 namespace bio {
 
 /**

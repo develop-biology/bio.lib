@@ -20,6 +20,8 @@
  */
 
 #include "bio/genetic/Genome.h"
+#include "bio/genetic/Plasmid.h"
+#include "bio/genetic/common/TranscriptionFactors.h"
 
 namespace bio {
 namespace genetic {
@@ -27,7 +29,7 @@ namespace genetic {
 GenomeImplementation::GenomeImplementation() :
 	genetic::Class < GenomeImplementation >(this, "Genome", NULL, filter::Genetic())
 {
-
+	Add< TranscriptionFactor >(transcription_factor::Genome());
 }
 
 GenomeImplementation::~GenomeImplementation()
@@ -37,9 +39,9 @@ GenomeImplementation::~GenomeImplementation()
 
 void GenomeImplementation::CacheProteins()
 {
-	mc_registerPlasmid = RotateTo("RegisterPlasmid");
-	mc_fetchPlasmid = RotateTo("FetchPlasmid");
-	mc_registrationSite = mc_registerPlasmid.GetIdWithoutCreation("Plasmid Binding Site");
+	mc_registerPlasmid = RotateTo< molecular::Protein* >("RegisterPlasmid");
+	mc_fetchPlasmid = RotateTo< molecular::Protein* >("FetchPlasmid");
+	mc_registrationSite = mc_registerPlasmid->GetIdWithoutCreation("Plasmid Binding Site");
 	mc_nameSite = mc_fetchPlasmid->GetIdWithoutCreation("Name Binding Site");
 	mc_idSite = mc_fetchPlasmid->GetIdWithoutCreation("Id Binding Site");
 	mc_fetchSite = mc_fetchPlasmid->GetIdWithoutCreation("Return Site");
@@ -49,7 +51,7 @@ StandardDimension GenomeImplementation::RegisterPlasmid(Plasmid* toRegister)
 {
 	StandardDimension ret = PlasmidPerspective::InvalidId();
 	LockThread();
-	mc_registerPlasmid->RotateTo(mc_registrationSite)->Bind(toRegister);
+	mc_registerPlasmid->RotateTo(mc_registrationSite)->Bind(ChemicalCast< chemical::Substance* >(toRegister));
 	ret = mc_registerPlasmid->Activate();
 	UnlockThread();
 	return ret;

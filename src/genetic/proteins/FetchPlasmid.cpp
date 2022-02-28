@@ -20,6 +20,7 @@
  */
 
 #include "bio/genetic/proteins/FetchPlasmid.h"
+#include "bio/genetic/Plasmid.h"
 #include "bio/genetic/common/Types.h"
 
 namespace bio {
@@ -42,24 +43,24 @@ Code FetchPlasmid::Activate()
 {
 	Code ret = code::BadArgument1();
 
-	RotateTo(mc_ReturnSite)->Release();
+	RotateTo(mc_returnSite)->ReleaseAll();
 
 	Name boundName = RotateTo< Name >(mc_nameSite);
 	StandardDimension boundId = RotateTo< StandardDimension >(mc_idSite);
 
 	if (boundName)
 	{
-		RotateTo(mc_ReturnSite)->Bind(PlasmidPerspective::Instance().GetTypeFromNameAs< Plasmid* >(boundId));
+		RotateTo(mc_returnSite)->Bind(PlasmidPerspective::Instance().GetTypeFromIdAs< Plasmid* >(boundId));
 		ret = code::Success();
 	}
 	else if (boundId)
 	{
-		RotateTo(mc_ReturnSite)->Bind(PlasmidPerspective::Instance().GetTypeFromIdAs< Plasmid* >(boundId));
+		RotateTo(mc_returnSite)->Bind(PlasmidPerspective::Instance().GetTypeFromIdAs< Plasmid* >(boundId));
 		ret = code::Success();
 	}
 
-	RotateTo(mc_nameSite)->Release();
-	RotateTo(mc_idSite)->Release();
+	RotateTo(mc_nameSite)->ReleaseAll();
+	RotateTo(mc_idSite)->ReleaseAll();
 
 	return ret;
 }

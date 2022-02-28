@@ -94,9 +94,8 @@ public:
 	 * @return
 	 */
 	template < typename T >
-	T* Manage(T* varPtr)
+	T Manage(T varPtr)
 	{
-		//TODO: handle T being primitive.
 		FormBond(
 			varPtr,
 			bond_type::Manage());
@@ -111,9 +110,8 @@ public:
 	 * @return
 	 */
 	template < typename T >
-	T* Use(T* varPtr)
+	T Use(T varPtr)
 	{
-		//TODO: handle T being primitive.
 		FormBond(
 			varPtr,
 			bond_type::Use());
@@ -122,17 +120,26 @@ public:
 	/**
 	 * Binding, as opposed to permanent Bonding, forms a temporary association with the given Substance.
 	 * Binding forms a Temporary Bond, allowing *this to be treated as the Bound Substance.
+	 * @tparam T
 	 * @param toBind
-	 * @return the Bound Substance.
+	 * @return the Bound type.
 	 */
-	virtual chemical::Substance* Bind(chemical::Substance* toBind, BondType bondType = bond_type::Temporary());
+	template < typename T >
+	T Bind(T toBind, BondType bondType = bond_type::Temporary())
+	{
+		FormBond(
+			toBind,
+			bondType
+		);
+		return toBind;
+	}
 
 	/**
 	 * Breaks the Temporary Bond formed by Bind.
 	 * @param toRelease
 	 * @return the previously bound Substance or NULL.
 	 */
-	virtual chemical::Substance* Release(chemical::Substance* toRelease, BondType bondType = bond_type::Temporary());
+	virtual physical::Wave* Release(physical::Wave* toRelease, BondType bondType = bond_type::Temporary());
 
 	/**
 	 * Breaks the Temporary Bond formed by Bind.
@@ -154,7 +161,7 @@ public:
 	 * Releases all Temporarily Bound Substances
 	 * @return all Temporarily Bound Substances
 	 */
-	virtual chemical::Substances ReleaseAll(BondType bondType = bond_type::Temporary());
+	virtual physical::Waves ReleaseAll(BondType bondType = bond_type::Temporary());
 
 	/**
 	 * Sets both the m_environment and m_perspective and updates m_id.
@@ -173,14 +180,18 @@ public:
 	 * @param toBind
 	 * @return result of Bind(...)
 	 */
-	virtual chemical::Substance* operator+=(chemical::Substance* toBind);
+	template < typename T >
+	T operator+=(T toBind)
+	{
+		return Bind< T >(toBind);
+	}
 
 	/**
 	 * Wrapper around Release
 	 * @param toRelease
 	 * @return result of Release
 	 */
-	virtual chemical::Substance* operator-=(chemical::Substance* toRelease);
+	virtual physical::Wave* operator-=(physical::Wave* toRelease);
 
 	/**
 	 * Wrapper around Release
@@ -200,7 +211,7 @@ public:
 	 * Wrapper around ReleaseAll
 	 * @return all Temporarily Bound Substances.
 	 */
-	virtual chemical::Substances operator--();
+	virtual physical::Waves operator--();
 };
 
 } //molecular namespace

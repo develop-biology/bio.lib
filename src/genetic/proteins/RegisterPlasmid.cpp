@@ -21,6 +21,7 @@
 
 #include "bio/genetic/proteins/RegisterPlasmid.h"
 #include "bio/genetic/common/Types.h"
+#include "bio/genetic/Plasmid.h"
 
 namespace bio {
 namespace genetic {
@@ -41,9 +42,9 @@ Code RegisterPlasmid::Activate()
 	Code ret = code::BadArgument1();
 	Plasmid* boundPlasmid = RotateTo< Plasmid* >(mc_plasmidSite);
 	BIO_SANITIZE(boundPlasmid, , return ret)
-	PlasmidPerspective::Instance().AssociateType(boundPlasmid->GetId(), boundPlasmid);
+	PlasmidPerspective::Instance().AssociateType(boundPlasmid->GetId(), boundPlasmid->AsWave());
 	ret = code::Success();
-	RotateTo(mc_plasmidSite)->Release();
+	RotateTo(mc_plasmidSite)->ReleaseAll();
 	return ret;
 }
 

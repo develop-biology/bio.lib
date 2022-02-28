@@ -35,7 +35,7 @@ namespace genetic {
  * The Genome is a singleton to match the PlasmidPerspective it manages.
  */
 class GenomeImplementation :
-	public Class< Genome >,
+	public Class< GenomeImplementation >,
 	public Expressor,
 	virtual public ThreadSafe
 {
@@ -84,7 +84,7 @@ protected:
 	StandardDimension mc_nameSite;
 	StandardDimension mc_idSite;
 	StandardDimension mc_fetchSite;
-}
+};
 
 BIO_SINGLETON(Genome, GenomeImplementation)
 
