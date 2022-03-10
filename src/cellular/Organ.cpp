@@ -33,9 +33,11 @@ Organ::~Organ()
 Code Organ::SpecializeTissues()
 {
 	Code ret = code::Success();
+	chemical::Structure< Tissue* >::Contents* tissues = GetAll< Tissue* >();
+	BIO_SANITIZE(tissues,,return code::CouldNotFindValue1());
 	for (
-		chemical::Structure< Tissue* >::Contents::iterator tis = GetAll< Tissue* >()->begin();
-		tis != GetAll< Tissue* >()->end();
+		chemical::Structure< Tissue* >::Contents::iterator tis = tissues->begin();
+		tis != tissues->end();
 		++tis
 		)
 	{

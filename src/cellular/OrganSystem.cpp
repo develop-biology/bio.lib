@@ -34,9 +34,11 @@ OrganSystem::~OrganSystem()
 Code OrganSystem::Organogenesis()
 {
 	Code ret = code::Success();
+	chemical::Structure< Organ* >::Contents* organs = GetAll< Organ* >();
+	BIO_SANITIZE(organs,,return code::CouldNotFindValue1());
 	for (
-		chemical::Structure< Organ* >::Contents::iterator org = GetAll< Organ* >()->begin();
-		org != GetAll< Organ* >()->end();
+		chemical::Structure< Organ* >::Contents::iterator org = organs->begin();
+		org != organs->end();
 		++org
 		)
 	{

@@ -31,9 +31,11 @@ Organism::~Organism()
 Code Organism::Morphogenesis()
 {
 	Code ret = code::Success();
+	chemical::Structure< cellular::OrganSystem* >::Contents* organSystems = GetAll< cellular::OrganSystem* >();
+	BIO_SANITIZE(organSystems,,return code::CouldNotFindValue1());
 	for (
-		chemical::Structure< cellular::OrganSystem* >::Contents::iterator sys = GetAll< cellular::OrganSystem* >()->begin();
-		sys != GetAll< cellular::OrganSystem* >()->end();
+		chemical::Structure< cellular::OrganSystem* >::Contents::iterator sys = organSystems->begin();
+		sys != organSystems->end();
 		++sys
 		)
 	{
