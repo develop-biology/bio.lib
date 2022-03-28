@@ -55,17 +55,15 @@ public:
 	 * Removes any conflicting Contents of the same Id as toAdd.
 	 * @tparam T the type of Content
 	 * @param toAdd what to add.
-	 * @param insertionPoint path of Ids describing where to add toAdd.
 	 * @param position where toAdd is inserted (e.g. the TOP or BOTTOM).
 	 * @param optionalPositionArg If a position is specified, the optionalPositionArg is the id of the Content referenced (e.g. BEFORE, MyContentId()).
-	 * @param transferSubContents allows all of the Contents within a Content that conflicts with toadd to be copied into toAdd, before the conflicting Content is deleted (similar to renaming an upper directory while preserving it's contents).
+	 * @param transferSubContents allows all of the Contents within a Content that conflicts with toAdd to be copied into toAdd, before the conflicting Content is deleted (similar to renaming an upper directory while preserving it's contents).
 	 */
 	template < typename T >
 	Code Insert(
 		T toAdd,
-		const typename LinearStructuralComponentImplementation< T >::Dimensions& insertionPoint,
 		const Position position = BOTTOM,
-		const typename LinearStructuralComponentImplementation< T >::Dimension optionalPositionArg = 0,
+		const typename LinearStructuralComponentImplementation< T >::Dimension optionalPositionArg = 0, // assuming 0 is the InvalidId for all Perspectives.
 		const bool transferSubContents = false
 	)
 	{
@@ -76,7 +74,6 @@ public:
 		{
 			ret = implementer->InsertImplementation(
 				toAdd,
-				insertionPoint,
 				position,
 				optionalPositionArg,
 				transferSubContents
@@ -90,13 +87,11 @@ public:
 	 * Gets a T* by its id.
 	 * @tparam T
 	 * @param id
-	 * @param recurse whether or not to search the Contents of Contents, traversing the tree of all T in *this.
 	 * @return a T of the given id or NULL; NULL if T is invalid.
 	 */
 	template < typename T >
 	T GetById(
-		typename LinearStructuralComponentImplementation< T >::Dimension id,
-		const bool recurse = false
+		typename LinearStructuralComponentImplementation< T >::Dimension id
 	)
 	{
 		T ret = NULL;
@@ -105,8 +100,7 @@ public:
 		if (implementer)
 		{
 			ret = implementer->GetByIdImplementation(
-				id,
-				recurse
+				id
 			);
 		}
 		UnlockThread();
@@ -117,13 +111,11 @@ public:
 	 * Gets a const T* by its id.
 	 * @tparam T
 	 * @param id
-	 * @param recurse whether or not to search the Contents of Contents, traversing the tree of all T in *this.
 	 * @return a T of the given id or NULL; NULL if T is invalid.
 	 */
 	template < typename T >
 	const T GetById(
-		typename LinearStructuralComponentImplementation< T >::Dimension id,
-		const bool recurse = false
+		typename LinearStructuralComponentImplementation< T >::Dimension id
 	) const
 	{
 		T ret = NULL;
@@ -132,8 +124,7 @@ public:
 		if (implementer)
 		{
 			ret = implementer->GetByIdImplementation(
-				id,
-				recurse
+				id
 			);
 		}
 		UnlockThread();
@@ -144,13 +135,11 @@ public:
 	 * Gets a T* by its name.
 	 * @tparam T
 	 * @param name
-	 * @param recurse whether or not to search the Contents of Contents, traversing the tree of all T in *this.
 	 * @return a T of the given id or NULL; NULL if T is invalid.
 	 */
 	template < typename T >
 	T GetByName(
-		Name name,
-		bool recurse = false
+		Name name
 	)
 	{
 		T ret = NULL;
@@ -159,8 +148,7 @@ public:
 		if (implementer)
 		{
 			ret = implementer->GetByNameImplementation(
-				name,
-				recurse
+				name
 			);
 		}
 		UnlockThread();
@@ -171,13 +159,11 @@ public:
 	 * Gets a const T* by its name.
 	 * @tparam T
 	 * @param name
-	 * @param recurse whether or not to search the Contents of Contents, traversing the tree of all T in *this.
 	 * @return a T of the given id or NULL; NULL if T is invalid.
 	 */
 	template < typename T >
 	const T GetByName(
-		Name name,
-		const bool recurse = false
+		Name name
 	) const
 	{
 		T ret = NULL;
@@ -186,8 +172,7 @@ public:
 		if (implementer)
 		{
 			ret = implementer->GetByNameImplementation(
-				name,
-				recurse
+				name
 			);
 		}
 		UnlockThread();
@@ -199,13 +184,11 @@ public:
 	 * If such an object doesn't exist, one is created from its Wave.
 	 * @tparam T
 	 * @param id
-	 * @param recurse
 	 * @return A T* of the given id; NULL if T is invalid.
 	 */
 	template < typename T >
 	T GetOrCreateById(
-		typename LinearStructuralComponentImplementation< T >::Dimension id,
-		const bool recurse = false
+		typename LinearStructuralComponentImplementation< T >::Dimension id
 	)
 	{
 		T ret = NULL;
@@ -214,8 +197,7 @@ public:
 		if (implementer)
 		{
 			ret = implementer->GetOrCreateByIdImplementation(
-				id,
-				recurse
+				id
 			);
 		}
 		UnlockThread();
@@ -227,13 +209,11 @@ public:
 	 * If such an object doesn't exist, one is created from its Wave.
 	 * @tparam T
 	 * @param name
-	 * @param recurse
 	 * @return A T* of the given id; NULL if T is invalid.
 	 */
 	template < typename T >
 	T GetOrCreateByName(
-		Name name,
-		const bool recurse = false
+		Name name
 	)
 	{
 		T ret = NULL;
@@ -242,8 +222,7 @@ public:
 		if (implementer)
 		{
 			ret = implementer->GetOrCreateByNameImplementation(
-				name,
-				recurse
+				name
 			);
 		}
 		UnlockThread();

@@ -64,19 +64,9 @@ public:
 	virtual ~ThreadSafe();
 
 	/**
-	 * Lock the mutex member.
-	 */
-	virtual void LockThread();
-
-	/**
 	 * uses const_cast to call LockThread().
 	 */
 	void LockThread() const;
-
-	/**
-	 * Unlock the mutex member.
-	 */
-	virtual void UnlockThread();
 
 	/**
 	 * uses const_cast to call UnlockThread().
@@ -86,11 +76,11 @@ public:
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
 		#ifdef BIO_OS_IS_LINUX
-			pthread_mutex_t m_lock;
+			mutable pthread_mutex_t m_lock;
 		#endif
 	#else
 		std::mutex m_mutex;
-		std::unique_lock<std::mutex> m_lock;
+		mutable std::unique_lock<std::mutex> m_lock;
 	#endif
 	//@formatter:on
 };

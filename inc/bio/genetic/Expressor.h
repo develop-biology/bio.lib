@@ -25,7 +25,6 @@
 #include "bio/molecular/Protein.h"
 #include "bio/genetic/common/Types.h"
 #include "bio/genetic/common/Filters.h"
-#include "bio/genetic/common/TranscriptionFactorStructure.h"
 #include "bio/genetic/macros/Macros.h"
 #include "RNA.h"
 
@@ -40,7 +39,7 @@ class Plasmid;
  */
 class Expressor :
 	public Class< Expressor >,
-	public TranscriptionFactorStructure,
+	public chemical::StructuralComponent< TranscriptionFactor >,
 	public chemical::LinearStructuralComponent< Plasmid* >,
 	public chemical::LinearStructuralComponent< molecular::Protein* >,
 	virtual public molecular::Vesicle

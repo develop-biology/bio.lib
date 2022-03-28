@@ -32,6 +32,7 @@
 #include "OptimizeMacros.h"
 #include "OSMacros.h"
 #include "SanitizeMacros.h"
+#include "StrongTypedef.h"
 #include "bio/common/ByteStream.h"
 
 /**

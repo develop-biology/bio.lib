@@ -38,6 +38,7 @@ TO Cast(FROM toCast)
 	return dynamic_cast<TO>(toCast);
 	#else
 	return (TO)(toCast);
+	//Is reinterpret_cast the appropriate substitute here? Need to check usages.
 	#endif
 }
 

@@ -27,6 +27,7 @@
 #include "bio/chemical/structure/StructuralComponent.h"
 #include "bio/chemical/structure/implementation/LinearStructuralComponentImplementation.h"
 #include "bio/chemical/structure/implementation/LinearStructureInterface.h"
+#include "bio/chemical/arrangement/Linear.h"
 
 #if BIO_CPP_VERSION >= 11
 	#include <type_traits>
@@ -36,28 +37,32 @@ namespace bio {
 namespace chemical {
 
 /**
- * LinearStructuralComponent objects contain pointers to Substances.
+ * LinearStructuralComponent objects contain pointers to chemical::Classes.
  *
  * IMPORTANT: CONTENT_TYPE MUST BE A chemical::Class* (which is in the StandardDimension).
- * YOU CANNOT USE LinearStructuralComponent WITH TYPES THAT ARE NOT POINTERS TO CHILDREN OF chemical::Class
+ * YOU CANNOT USE LinearStructuralComponent WITH TYPES THAT ARE NOT POINTERS TO CHILDREN OF chemical::Class (i.e. a physical::Identifiable<StandardDimension>)
+ * Other Dimensions may be supported in a future release.
+ * Linear.h for why.
  *
  * NOTE: CONTENT_TYPE cannot be "const".
  * cv qualifiers may be supported in a future release but for now, all CONTENT_TYPEs must have the option of being modified.
+ * For more on this, see Linear.h.
  *
- * Other Dimensions may be supported in a future release (see note in LinearStructuralComponentImplementation.h for why).
- *
- * The "linear" comes from the idea that instead of a 0 dimensional pile of types, as are StructuralComponents, *this can be ordered along at least 1 dimension (i.e. the StandardDimension). In other words, LinearStructuralComponents contain logic for handling their CONTENT_TYPE by Id, Name, and other aspects innate to the physical::Identifiable<StandardDimension>.
- *
- * @tparam CONTENT_TYPE a pointer type to a child of chemical::Substance
+ * @tparam CONTENT_TYPE a pointer type to a child of chemical::Class
  */
 template < typename CONTENT_TYPE >
 class LinearStructuralComponent :
 	virtual public LinearStructureInterface,
 	public Element< LinearStructuralComponent< CONTENT_TYPE > >,
 	public chemical::Class< LinearStructuralComponent< CONTENT_TYPE > >,
-	public LinearStructuralComponentImplementation< CONTENT_TYPE >
+	public StructuralComponent< CONTENT_TYPE >
 {
 public:
+
+	/**
+	 * For cleaner code, we redefine Contents.
+	 */
+	typedef typename StructuralComponent< CONTENT_TYPE >::Contents Contents;
 
 	/**
 	 * Ensure virtual methods point to Class implementations.
@@ -74,6 +79,60 @@ public:
 		Properties ret = AbstractStructure::GetClassProperties();
 		ret.push_back(property::Linear());
 		return ret;
+	}
+	/**
+	 * @param perspective
+	 */
+	explicit LinearStructuralComponent(physical::Perspective< StandardDimension >* perspective = NULL)
+		:
+		Element< LinearStructuralComponent< CONTENT_TYPE > >(GetClassProperties()),
+		chemical::Class< LinearStructuralComponent< CONTENT_TYPE > >(this),
+		m_perspective(perspective)
+	{
+		CtorCommon();
+	}
+
+	/**
+	 * @param contents
+	 * @param name
+	 * @param perspective
+	 */
+	explicit LinearStructuralComponent(
+		const Contents& contents,
+		physical::Perspective< StandardDimension >* perspective = NULL
+	)
+		:
+		Element< LinearStructuralComponent< CONTENT_TYPE > >(GetClassProperties()),
+		chemical::Class< LinearStructuralComponent< CONTENT_TYPE > >(this),
+		m_perspective(perspective)
+	{
+		CtorCommon();
+		this->m_contents->Import(contents);
+	}
+
+	/**
+	 * Copying a LinearStructuralComponent will Clone all contents in toCopy into *this.
+	 * Keep in mind that dtor will delete the contents of *this.
+	 * @param toCopy
+	 */
+	LinearStructuralComponent(const LinearStructuralComponent< CONTENT_TYPE >* toCopy)
+		:
+		Element< LinearStructuralComponent< CONTENT_TYPE > >(toCopy->GetClassProperties()),
+		chemical::Class< LinearStructuralComponent< CONTENT_TYPE > >(this),
+		m_perspective(toCopy->m_perspective)
+	{
+		CtorCommon();
+		this->m_contents->Import(toCopy->GetAllImplementation());
+	}
+
+	/**
+	 * Deletes all the Contents in *this.
+	 * NOTE: this uses delete, not delete[].
+	 * The only way to avoid this is by Clear()ing *this yourself first.
+	 */
+	virtual ~LinearStructuralComponent()
+	{
+		this->m_contents->Clear();
 	}
 
 	/**
@@ -100,67 +159,6 @@ public:
 	}
 
 	/**
-	 * @param perspective
-	 */
-	explicit LinearStructuralComponent(physical::Perspective< StandardDimension >* perspective = NULL)
-		:
-		Element< LinearStructuralComponent< CONTENT_TYPE > >(GetClassProperties()),
-		chemical::Class< LinearStructuralComponent< CONTENT_TYPE > >(this),
-		m_perspective(perspective)
-	{
-		CtorCommon();
-	}
-
-	/**
-	 * @param contents
-	 * @param name
-	 * @param perspective
-	 */
-	explicit LinearStructuralComponent(
-		const typename StructuralComponentImplementation< CONTENT_TYPE >::Contents& contents,
-		physical::Perspective< StandardDimension >* perspective = NULL
-	)
-		:
-		Element< LinearStructuralComponent< CONTENT_TYPE > >(GetClassProperties()),
-		chemical::Class< LinearStructuralComponent< CONTENT_TYPE > >(this),
-		StructuralComponent< CONTENT_TYPE >(contents),
-		m_perspective(perspective)
-	{
-		CtorCommon();
-	}
-
-	/**
-	 * Copying a LinearStructuralComponent will Clone all contents in toCopy into *this.
-	 * Keep in mind that dtor will delete the contents of *this.
-	 * @param toCopy
-	 */
-	LinearStructuralComponent(const LinearStructuralComponent< CONTENT_TYPE >& toCopy)
-		:
-		chemical::Class< LinearStructuralComponent< CONTENT_TYPE > >(this)
-	{
-		CtorCommon();
-		m_perspective = toCopy.m_perspective;
-		for (
-			typename StructuralComponentImplementation< CONTENT_TYPE >::Contents::const_iterator cnt = toCopy.m_contents.begin();
-			cnt != toCopy.m_contents.end();
-			++cnt
-			)
-		{
-			this->AddImplementation(*cnt);
-		}
-	}
-
-	/**
-	 * Deletes all the Contents in *this.
-	 * NOTE: this uses delete, not delete[].
-	 * The only way to avoid this is by Clear()ing *this yourself first.
-	 */
-	virtual ~LinearStructuralComponent()
-	{
-		LinearStructuralComponentImplementation< CONTENT_TYPE >::ClearImplementation();
-	}
-
-	/**
 	 * Adds content to *this.
 	 * @param content
 	 * @return t or NULL.
@@ -168,7 +166,7 @@ public:
 	virtual CONTENT_TYPE AddImplementation(CONTENT_TYPE content)
 	{
 		return this->AddTo(
-			CloneAndCast< CONTENT_TYPE >(content),
+			Linear(CloneAndCast< CONTENT_TYPE >(content)),
 			&this->m_contents
 		);
 	}
@@ -176,7 +174,6 @@ public:
 	/**
 	 * Implementation for inserting a Content to *this.
 	 * @param toAdd
-	 * @param insertionPoint
 	 * @param position
 	 * @param optionalPositionArg
 	 * @param transferSubContents
@@ -184,7 +181,6 @@ public:
 	 */
 	virtual Code InsertImplementation(
 		CONTENT_TYPE toAdd,
-		const typename LinearStructuralComponentImplementation< CONTENT_TYPE >::Dimensions& insertionPoint,
 		const Position position = BOTTOM,
 		const StandardDimension optionalPositionArg = CONTENT_TYPE::Perspective::InvalidId(),
 		const bool transferSubContents = false
@@ -194,7 +190,6 @@ public:
 			this->GetStructuralPerspective(),
 			toAdd,
 			this->GetAllImplementation(),
-			insertionPoint,
 			position,
 			optionalPositionArg,
 			transferSubContents,
@@ -204,38 +199,32 @@ public:
 	/**
 	 * Implementation for getting by name.
 	 * @param name
-	 * @param recurse
 	 * @return a CONTENT_TYPE of the given name or NULL.
 	 */
 	virtual CONTENT_TYPE GetByNameImplementation(
-		Name name,
-		const bool recurse = false
+		Name name
 	)
 	{
 		return LinearStructuralComponentImplementation< CONTENT_TYPE >::FindByNameIn(
 			this->GetStructuralPerspective(),
 			this->GetAllImplementation(),
-			name,
-			recurse
+			name
 		);
 	}
 
 	/**
 	 * Implementation for getting by name.
 	 * @param name
-	 * @param recurse
 	 * @return a CONTENT_TYPE of the given name or NULL.
 	 */
 	virtual const CONTENT_TYPE GetByNameImplementation(
-		Name name,
-		const bool recurse = false
+		Name name
 	) const
 	{
 		return LinearStructuralComponentImplementation< CONTENT_TYPE >::FindByNameIn(
 			this->GetStructuralPerspective(),
 			this->GetAllImplementation(),
-			name,
-			recurse
+			name
 		);
 	}
 
@@ -260,17 +249,14 @@ public:
 	 * Tries to find a Content of the given id in *this and, optionally, the Contents beneath.
 	 * If such an object doesn't exist, one is created from its Wave.
 	 * @param id
-	 * @param recurse
 	 * @return A CONTENT_TYPE of the given id.
 	 */
 	virtual CONTENT_TYPE GetOrCreateByIdImplementation(
-		StandardDimension id,
-		const bool recurse = false
+		StandardDimension id
 	)
 	{
 		CONTENT_TYPE ret = this->GetByIdImplementation(
-			id,
-			recurse
+			id
 		);
 		if (ret)
 		{
@@ -283,20 +269,17 @@ public:
 	 * Tries to find a Content of the given id in *this and, optionally, the Contents beneath.
 	 * If such an object doesn't exist, one is created from its Wave.
 	 * @param name
-	 * @param recurse
 	 * @return A CONTENT_TYPE of the given id.
 	 */
 	virtual CONTENT_TYPE GetOrCreateByNameImplementation(
-		Name name,
-		const bool recurse = false
+		Name name
 	)
 	{
 		BIO_SANITIZE(this->GetStructuralPerspective(), ,
 			return NULL);
 		StandardDimension id = this->GetStructuralPerspective()->GetIdFromName(name);
 		CONTENT_TYPE ret = this->GetByNameImplementation(
-			name,
-			recurse
+			name
 		);
 		if (ret)
 		{

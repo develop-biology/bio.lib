@@ -25,6 +25,8 @@
 namespace bio {
 namespace chemical {
 
+class AbstractArrangement;
+
 class AbstractStructure
 {
 public:
@@ -81,6 +83,9 @@ public:
 	{
 		return "";
 	}
+
+protected:
+	mutable AbstractArrangement* m_contents;
 };
 
 } //chemical namespace

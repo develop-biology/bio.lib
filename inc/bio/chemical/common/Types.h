@@ -32,7 +32,7 @@ namespace bio {
  * This can be used to inform other systems (e.g. molecular) of how to treat the Bonded Wave.
  * NOTE: Atoms can Bond things that are not Atoms. The only requirement is that they are Wave.
  */
-typedef uint8_t BondType;
+BIO_STRONG_TYPEDEF(uint8_t, BondType, 0)
 
 BIO_PERSPECTIVE_SINGLETON(BondTypePerspective,
 	BondType)

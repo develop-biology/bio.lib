@@ -24,7 +24,6 @@
 #include "bio/genetic/common/Types.h"
 #include "bio/genetic/common/Class.h"
 #include "bio/genetic/common/Filters.h"
-#include "bio/genetic/common/TranscriptionFactorStructure.h"
 #include "bio/genetic/macros/Macros.h"
 #include "bio/genetic/localization/Insertion.h"
 #include "bio/molecular/DNA.h"
@@ -47,7 +46,7 @@ namespace genetic {
 class Gene :
 	public Class< Gene >,
 	public molecular::DNA,
-	public TranscriptionFactorStructure
+	public chemical::StructuralComponent< TranscriptionFactor >
 {
 public:
 	/**

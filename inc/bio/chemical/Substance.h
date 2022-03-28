@@ -32,53 +32,6 @@
 namespace bio {
 namespace chemical {
 
-
-/**
- * Apparently, C++ forbids direct inheritance of the same base class, even when using different templates.
- * i.e. public StructuralComponent< Property >, public StructuralComponent< State > is not valid because Property & State are the same type / size.
- * To work around this, we create 2 distinct ____Structure base classes for Substance to derive from.
- */
-class PropertyStructure: public StructuralComponent< Property >
-{
-public:
-	/**
-	 *
-	 */
-	PropertyStructure();
-
-	/**
-	 * @param properties
-	 */
-	explicit PropertyStructure(
-		const typename StructuralComponent< Property >::Contents& properties
-	);
-
-	virtual ~PropertyStructure();
-};
-
-/**
- * Apparently, C++ forbids direct inheritance of the same base class, even when using different templates.
- * i.e. public StructuralComponent< Property >, public StructuralComponent< State > is not valid because Property & State are the same type / size.
- * To work around this, we create 2 distinct ____Structure base classes for Substance to derive from.
- */
-class StateStructure: public StructuralComponent< State >
-{
-public:
-	/**
-	 *
-	 */
-	StateStructure();
-
-	/**
-	 * @param properties
-	 */
-	explicit StateStructure(
-		const typename StructuralComponent< State >::Contents& states
-	);
-
-	virtual ~StateStructure();
-};
-
 /**
  * A chemical::Substance is just about everything.
  * Substances have Properties and States and that's it.
@@ -86,8 +39,8 @@ public:
  */
 class Substance :
 	public chemical::Class< Substance >,
-	public PropertyStructure,
-	public StateStructure
+	public StructuralComponent< Property >,
+	public StructuralComponent< State >
 {
 public:
 	/**
