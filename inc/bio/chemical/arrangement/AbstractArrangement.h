@@ -33,6 +33,14 @@ namespace chemical {
  * Essentially we need a generic, non-template std::vector<> base class, so we'll make our own.
  *
  * Arrangements create Structure.
+ *
+ * You can think of Arrangements as our own internal RAM.
+ *
+ * When using Arrangements, we make no guarantees regarding the type of data stored. All we provide is a consistent means of accessing those data. To this end, we ensure that a Position's validity follows the lifecycle of the datum at that Position. This is identical to pointers: a Position represents the memory address of what is stored in *this. This means that as data are erased from *this, the memory is not moved, consolidated, or manipulated in any way that destroys the old references.
+ *
+ * When using an Iterator, you will be given a SmartIterator which dynamically determines its implementation. Thus, we allow for full inheritance of *this base class.
+ *
+ * There is another tradeoff here that we are leaning into: our implementation does not make for easy use of std:: containers under-the-hood. By enforcing consistency on access, we've made the system less flexible. This may be changed in a major release down the road but its what we're sticking with for now.
  */
 class AbstractArrangement
 {
@@ -83,13 +91,13 @@ public:
 	/**
 	 * @return the number of allocatable Positions in *this.
 	 */
-	virtual Position GetTotalSize() const
+	virtual Position GetCapacity() const
 	{
 		return InvalidPosition();
 	}
 
 	/**
-	 * GetTotalSize - the number of free Positions at the end (ignores any deallocated Positions in the middle).
+	 * GetCapacity - the number of free Positions at the end (ignores any deallocated Positions in the middle).
 	 * @return the number of Positions that have been allocated in *this.
 	 */
 	virtual Position GetAllocatedSize() const
@@ -101,7 +109,7 @@ public:
 	 * GetAllocatedSize - the number of deallocated Positions.
 	 * @return the number of elements in *this.
 	 */
-	virtual Position GetUsedSize() const
+	virtual Position GetNumberOfElements() const
 	{
 		return InvalidPosition();
 	}
@@ -207,7 +215,7 @@ public:
 		/**
 		 * @return whether or not *this has reached the beginning of its Arrangement.
 		 */
-		virtual bool IsAtBeginning()
+		virtual bool IsAtBeginning() const
 		{
 			return !m_position;
 		}
@@ -215,52 +223,16 @@ public:
 		/**
 		 * @return whether or not *this has reached the end of its Arrangement.
 		 */
-		virtual bool IsAtEnd()
+		virtual bool IsAtEnd() const
 		{
 			return m_position == m_arrangement->GetAllocatedSize();
 		}
 
-		//PLEASE DEFINE THE FOLLOWING FUNCTIONS IN YOUR CHILD ITERATOR
-		//replace "void" with the appropriate type.
-
-		#if 0
 		/**
-		 * @return whatever is stored in the Arrangement *this is iterating over at the Position *this is currently at.
-		 */
-		virtual void& operator*()
-		{
-			return;
-		}
-
-		/**
-		 * @return whatever is stored in the Arrangement *this is iterating over at the Position *this is currently at.
-		 */
-		virtual const void& operator*() const
-		{
-			return;
-		}
-
-		/**
-		 * @return whatever is stored in the Arrangement *this is iterating over at the Position *this is currently at.
-		 */
-		virtual void* operator->()
-		{
-			return NULL;
-		}
-
-		/**
-		 * @return whatever is stored in the Arrangement *this is iterating over at the Position *this is currently at.
-		 */
-		virtual const void* operator->() const
-		{
-			return NULL;
-		}
-		#endif
-
-		/**
+		 * Move *this up a Position
 		 * @return *this after incrementing.
 		 */
-		virtual Iterator& operator++()
+		virtual Iterator* Increment()
 		{
 			if (m_position >= m_arrangement->GetAllocatedSize())
 			{
@@ -271,23 +243,14 @@ public:
 			{
 				continue; //avoid re-referencing m_position; see condition.
 			}
-			return *this;
+			return this;
 		}
 
 		/**
-		 * @return a copy of *this before incrementing.
-		 */
-		virtual Iterator operator++(int)
-		{
-			Iterator ret = *this;
-			++*this;
-			return ret;
-		}
-
-		/**
+		 * Move *this down a Position.
 		 * @return *this following decrementing.
 		 */
-		virtual Iterator& operator--()
+		virtual Iterator* Decrement()
 		{
 			if (!m_position)
 			{
@@ -297,23 +260,158 @@ public:
 			{
 				continue; //avoid re-referencing m_position; see condition.
 			}
+			return this;
+		}
+
+		/**
+		 * Using -> should give you the pointer type you expect; we just don't know what that is yet.
+		 * @return Wrapper type for drill-down
+		 */
+		virtual TYPE_WRAPPER_OF_SOME_SORT& operator->()
+		{
+			return *TYPE_WRAPPER_OF_SOME_SORT;
+		}
+
+		/**
+		 * Using -> should give you the pointer type you expect; we just don't know what that is yet.
+		 * @return Wrapper type for drill-down
+		 */
+		virtual const TYPE_WRAPPER_OF_SOME_SORT& operator->() const
+		{
+			return *TYPE_WRAPPER_OF_SOME_SORT;
+		}
+
+	protected:
+		mutable AbstractArrangement* m_arrangement;
+		Position m_position;
+	}; //Iterator class.
+
+	/**
+	 * SmartIterators wrap our iterator implementation to provide a consistent means of access.
+	 * Everything is const so that we don't need to worry about const_iterator vs iterator nonsense.
+	 */
+	class SmartIterator
+	{
+	public:
+
+		/**
+		 * @param arrangement
+		 * @param position
+		 */
+		SmartIterator(
+			const AbstractArrangement* arrangement,
+			Position position = InvalidPosition())
+			:
+			m_implementation(arrangment->ConstructClassIterator(position))
+		{
+
+		}
+
+		/**
+		 * Not virtual
+		 */
+		~SmartIterator()
+		{
+			delete m_implementation;
+		}
+
+		/**
+		 * @return the position *this is currently at.
+		 */
+		Position GetPosition() const
+		{
+			return m_implementation->GetPosition();
+		}
+
+		/**
+		 * Make *this point somewhere else;
+		 * @param position
+		 * @return whether or not *this was moved.
+		 */
+		bool MoveTo(Position position) const
+		{
+			return m_implementation->MoveTo(position);
+		}
+
+		/**
+		 * @return whether or not *this has reached the beginning of its Arrangement.
+		 */
+		bool IsAtBeginning() const
+		{
+			return m_implementation->IsAtBeginning();
+		}
+
+		/**
+		 * @return whether or not *this has reached the end of its Arrangement.
+		 */
+		bool IsAtEnd() const
+		{
+			return m_implementation->IsAtEnd();
+		}
+
+		/**
+		 * Using -> should give you the pointer type you expect; we just don't know what that is yet.
+		 * @return Implementation for drill-down
+		 */
+		Iterator& operator->()
+		{
+			return *m_implementation;
+		}
+
+		/**
+		 * Using -> should give you the pointer type you expect; we just don't know what that is yet.
+		 * @return Implementation for drill-down
+		 */
+		const Iterator& operator->() const
+		{
+			return *m_implementation;
+		}
+
+		/**
+		 * @return *this after incrementing.
+		 */
+		SmartIterator& operator++() const
+		{
+			m_implementation->Increment();
+			return *this;
+		}
+
+		/**
+		 * @return a copy of *this before incrementing.
+		 */
+		SmartIterator operator++(int) const
+		{
+			SmartIterator ret = *this;
+			m_implementation->Increment();
+			return ret;
+		}
+
+		/**
+		 * @return *this following decrementing.
+		 */
+		SmartIterator& operator--() const
+		{
+			m_implementation->Decrement();
 			return *this;
 		}
 
 		/**
 		 * @return a copy of *this before decrementing.
 		 */
-		virtual Iterator operator--(int)
+		SmartIterator operator--(int) const
 		{
-			Iterator ret = *this;
-			--*this;
+			SmartIterator ret = *this;
+			m_implementation->Decrement();
 			return ret;
 		}
 
 	protected:
-		AbstractArrangement* m_arrangement;
-		Position m_position;
-	}; //Iterator class.
+		/**
+		 * Whatever. Make it mutable. I don't care.
+		 */
+		mutable AbstractArrangement::Iterator* m_implementation;
+	};
+
 
 	/**
 	 * Override this to construct Iterators for your Arrangements.
@@ -334,40 +432,18 @@ public:
 	 * NOTE: This does not need to be overridden if you've already defined ConstructClassIterator().
 	 * @return A new Iterator pointing to the beginning of *this.
 	 */
-	virtual Iterator* Begin() const
+	virtual SmartIterator Begin() const
 	{
-		return ConstructClassIterator(GetBeginPosition());
-	}
-
-	/**
-	 * NOTE: This does not need to be overridden if you've already defined ConstructClassIterator().
-	 * @tparam T the kind of Iterator you expect.
-	 * @return A new Iterator pointing to the beginning of *this.
-	 */
-	template < typename T >
-	virtual Iterator* Begin() const
-	{
-		return Cast< T >(ConstructClassIterator(GetBeginPosition()));
+		return SmartIterator(this, GetBeginPosition());
 	}
 
 	/**
 	 * NOTE: This does not need to be overridden if you've already defined ConstructClassIterator().
 	 * @return An Iterator pointing to the end of *this.
 	 */
-	virtual Iterator* End() const
+	virtual SmartIterator End() const
 	{
-		return ConstructClassIterator(GetEndPosition());
-	}
-
-	/**
-	 * NOTE: This does not need to be overridden if you've already defined ConstructClassIterator().
-	 * @tparam T the kind of iterator you expect.
-	 * @return An Iterator pointing to the end of *this.
-	 */
-	template < typename T >
-	virtual Iterator* End() const
-	{
-		return Cast< T >(ConstructClassIterator(GetEndPosition()));
+		return SmartIterator(this, GetEndPosition());
 	}
 };
 

@@ -67,13 +67,13 @@ public:
 	/**
 	 * @return the number of allocatable Positions in *this.
 	 */
-	virtual Position GetTotalSize() const
+	virtual Position GetCapacity() const
 	{
 		return m_size;
 	}
 
 	/**
-	 * GetTotalSize - the number of free Positions at the end (ignores any allocated Positions in the middle).
+	 * GetCapacity - the number of free Positions at the end (ignores any allocated Positions in the middle).
 	 * @return the number of Positions that have been allocated in *this.
 	 */
 	virtual Position GetAllocatedSize() const
@@ -85,7 +85,7 @@ public:
 	 * GetAllocatedSize - the number of deallocated Positions.
 	 * @return the number of elements in *this.
 	 */
-	virtual Position GetUsedSize() const
+	virtual Position GetNumberOfElements() const
 	{
 		return this->GetAllocatedSize() - this->m_deallocated.size();
 	}

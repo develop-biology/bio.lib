@@ -125,7 +125,7 @@ public:
 	 */
 	virtual unsigned long GetCountImplementation() const
 	{
-		return this->m_contents->GetUsedSize();
+		return this->m_contents->GetNumberOfElements();
 	}
 
 	/**
