@@ -49,6 +49,7 @@ class Wave;
 struct PerspectiveUtilities
 {
 	static Wave* Clone(const Wave* toClone);
+	static void Delete(Wave* toDelete);
 };
 
 /**
@@ -126,7 +127,7 @@ public:
 			}
 			if (itt->m_type)
 			{
-				delete itt->m_type;
+				PerspectiveUtilities::Delete(itt->m_type);
 				itt->m_type = NULL;
 			}
 		}
@@ -337,7 +338,7 @@ public:
 	 */
 	virtual Id GetNumUsedIds() const
 	{
-		return m_nextId - 1;
+		return this->m_nextId - 1;
 	}
 
 
@@ -384,7 +385,7 @@ public:
 
 		LockThread();
 		BIO_SANITIZE_AT_SAFETY_LEVEL_2(hdt->m_type,
-			delete hdt->m_type,);
+			PerspectiveUtilities::Delete(hdt->m_type),);
 		hdt->m_type = NULL;
 		UnlockThread();
 

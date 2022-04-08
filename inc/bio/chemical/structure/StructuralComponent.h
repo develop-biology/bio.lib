@@ -45,7 +45,7 @@ class StructuralComponent :
 {
 public:
 
-	typedef typename Arrangement< CONTENT_TYPE >::Contents Contents;
+	typedef physical::Arrangement Contents;
 
 	/**
 	 * Ensure virtual methods point to Class implementations.

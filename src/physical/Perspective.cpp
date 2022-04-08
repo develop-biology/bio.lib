@@ -22,7 +22,19 @@
 #include "bio/physical/Perspective.h"
 #include "bio/physical/Wave.h"
 
+namespace bio {
+namespace physical {
+
 Wave* PerspectiveUtilities::Clone(const Wave* toClone)
 {
 	return toClone->Clone();
 }
+
+void PerspectiveUtilities::Delete(bio::physical::Wave* toDelete)
+{
+	delete toDelete;
+	toDelete = NULL;
+}
+
+} //physical namespace
+} //bio namespace

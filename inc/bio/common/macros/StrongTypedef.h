@@ -21,26 +21,58 @@
 
 #pragma once
 
+/**
+ * Another problem with C++: the "typedef" keyword does not create a distinct type, only an alias. Thus 2 identical typedefs of different names become merged into the same symbol at compile time.
+ *
+ * Here, we work around this bug by creating a wrapper class that does nothing but contain another value.
+ * Unfortunately, operator type() alone is not sufficient to treat this new class as the type it holds and we must instead forward all operations to the contained type.
+ * ugh.
+ * If you know of a better solution to this problem, please make a pull request.
+ *
+ * This wrapper is currently not virtual and cannot be inherited from. This may change in a future release.
+ */
 #define BIO_STRONG_TYPEDEF(type, name, defaultValue)                           \
 class name                                                                     \
 {                                                                              \
 public:                                                                        \
 	name(type t = defaultValue) :                                              \
 		m_t(t)                                                                 \
-	{                                                                          \
-		                                                                       \
-	}                                                                          \
-	                                                                           \
-	virtual ~name()                                                            \
-	{                                                                          \
-		                                                                       \
-	}                                                                          \
-	                                                                           \
-	operator type()                                                            \
-	{                                                                          \
-		return m_t;                                                            \
-	}                                                                          \
-	                                                                           \
-protected:                                                                     \
+	{}                                                                         \
+	~name() {}                                                                 \
+	operator type() {return m_t;}                                              \
+	bool operator==(const type& t) const  {return m_t == t;}                   \
+	bool operator<=(const type& t) const  {return m_t <= t;}                   \
+	bool operator>=(const type& t) const  {return m_t >= t;}                   \
+	bool operator<(const type& t) const {return m_t < t;}                      \
+	bool operator>(const type& t) const {return m_t > t;}                      \
+	bool operator==(const name& other) const {return m_t == other.m_t;}        \
+	bool operator<=(const name& other) const {return m_t <= other.m_t;}        \
+	bool operator>=(const name& other) const {return m_t >= other.m_t;}        \
+	bool operator<(const name& other) const {return m_t < other.m_t;}          \
+	bool operator>(const name& other) const {return m_t > other.m_t;}          \
+	type& operator++() {return ++m_t;}                                         \
+	type operator++(int) {return m_t++;}                                       \
+	type& operator--() {return --m_t;}                                         \
+	type operator--(int) {return m_t--;}                                       \
+	type operator+=(const type& t) {return m_t += t;}                          \
+	type operator-=(const type& t) {return m_t -= t;}                          \
+	type operator+=(const name& other) {return m_t += other.m_t;}              \
+	type operator-=(const name& other) {return m_t -= other.m_t;}              \
+	type operator+(const type& t) const {return m_t + t;}                      \
+	type operator-(const type& t) const {return m_t - t;}                      \
+	type operator+(const name& other) const {return m_t + other.m_t;}          \
+	type operator-(const name& other) const {return m_t - other.m_t;}          \
+	type operator*=(const type& t) {return m_t *= t;}                          \
+	type operator/=(const type& t) {return m_t /= t;}                          \
+	type operator*=(const name& other) {return m_t *= other.m_t;}              \
+	type operator/=(const name& other) {return m_t /= other.m_t;}              \
+	type operator*(const type& t) const {return m_t * t;}                      \
+	type operator/(const type& t) const {return m_t / t;}                      \
+	type operator*(const name& other) const {return m_t * other.m_t;}          \
+	type operator/(const name& other) const {return m_t / other.m_t;}          \
+	/*that's all we're doing for now. Please add to this list as necessary*/   \
+                                                                               \
+/*public because we need to treat this as type when we don't know the type.*/  \
+public:                                                                        \
 	type m_t;                                                                  \
 };

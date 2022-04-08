@@ -113,7 +113,7 @@ Index Arrangement::Add(const ByteStream content)
 	Index ret = GetNextAvailableIndex(sizeof(ByteStream));
 	BIO_SANITIZE(ret,,return ret)
 	ByteStream toStore;
-	toStore.Hold(content);
+	toStore.Set(content);
 	m_store[ret * sizeof(ByteStream)] = toStore;
 	return ret;
 }

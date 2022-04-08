@@ -49,7 +49,7 @@ void ByteStream::operator=(const ByteStream& other)
 	if (other.m_holding)
 	{
 		//We can't free the same memory twice, so we have to allocate a new block for ourselves.
-		Hold(other);
+		Set(other);
 	}
 	else
 	{
@@ -80,10 +80,10 @@ void* ByteStream::IKnowWhatImDoing()
 	return m_stream;
 }
 
-void ByteStream::Hold(const ByteStream& other)
+void ByteStream::Set(const ByteStream& other)
 {
 	m_stream = std::malloc(other.m_size);
-	memcopy(
+	memcpy(
 		m_stream,
 		other.m_stream,
 		other.m_size

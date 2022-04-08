@@ -179,7 +179,7 @@ public:
 		{
 			return false;
 		}
-		if (!this->GetId() == id)
+		if (!this->GetId() == id.m_t)
 		{
 			return false;
 		}

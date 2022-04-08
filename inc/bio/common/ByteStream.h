@@ -25,6 +25,7 @@
 #include "TypeName.h"
 #include <cstddef>
 #include <cstdlib>
+#include <cstring>
 
 namespace bio {
 
@@ -88,35 +89,39 @@ public:
 	operator T() const
 	{
 		BIO_ASSERT(Is<T>());
-		union Converter
-		{
-			void* bytes;
-			T type;
-		};
-		Converter c;
-		c.bytes = m_stream;
-		return c.type;
+		T ret;
+		std::memcpy(&ret, m_stream, sizeof(T));
+		return ret;
 	}
 
 	/**
-	 * Stores bytes of T in *this.
+	 * Copies the data given to a new memory location.
+	 * This should be used if the provided "in" is expected to go out of scope but the value still be valid.
+	 * Make sure you Release *this to delete the stored content.
 	 * @tparam T
-	 * @param in what to store.
+	 * @param in data to store
 	 */
 	template <typename T>
 	void Set(T in)
 	{
-		union Converter
-		{
-			void* bytes;
-			T type;
-		};
-		Converter c;
-		c.type = in;
-		m_stream = c.bytes;
-		m_typeName = TypeName<T>();
+		m_stream = std::malloc(sizeof(T));
+		std::memcpy(m_stream, &in, sizeof(T));
 		m_size = sizeof(T);
+		m_typeName = TypeName<T>();
 	}
+
+	/**
+	 * Copies the data from an other into *this and Holds it.
+	 */
+	void Set(const ByteStream& other);
+
+	/**
+	 * Frees the memory *this was Holding.
+	 * Nop if *this was not holding anything.
+	 * NOTE: This does not call any destructors. You must do that yourself.
+	 * (i.e. there is no typename -> new type* -> union -> delete; delete)
+	 */
+	void Release();
 
 	/**
 	 * Check if *this has been Set.
@@ -163,35 +168,6 @@ public:
 	 * @return the data in *this
 	 */
 	void* IKnowWhatImDoing();
-
-	/**
-	 * Copies the data given to a new memory location.
-	 * This should be used if the provided "in" is expected to go out of scope but the value still be valid.
-	 * Make sure you Release *this to delete the stored content.
-	 * @tparam T
-	 * @param in data to store
-	 */
-	template <typename T>
-	void Hold(T in)
-	{
-		m_stream = std::malloc(sizeof(T));
-		memcopy(m_stream, in, sizeof(T));
-		m_size = sizeof(T);
-		m_typeName = TypeName<T>();
-	}
-	
-	/**
-	 * Copies the data from an other into *this and Holds it.
-	 */
-	void Hold(const ByteStream& other);
-	
-	/**
-	 * Frees the memory *this was Holding.
-	 * Nop if *this was not holding anything.
-	 * NOTE: This does not call any destructors. You must do that yourself.
-	 * (i.e. there is no typename -> new type* -> union -> delete; delete)
-	 */
-	void Release();
 
 protected:
 	void* m_stream;

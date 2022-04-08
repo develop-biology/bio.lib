@@ -24,7 +24,6 @@
 #include "bio/physical/Symmetry.h"
 #include "bio/physical/common/Codes.h"
 #include "bio/common/macros/Macros.h"
-
 #include <algorithm>
 
 namespace bio {
@@ -240,7 +239,7 @@ Properties Wave::GetProperties() const
 				wavProperties.begin(),
 				wavProperties.end(),
 				*prp
-			) == wavProperties.end())
+			) != wavProperties.end())
 			{
 				remBuffer.push_back(
 					prp
