@@ -39,16 +39,6 @@ Linear::~Linear()
 	}
 }
 
-Linear::operator Identifiable< StandardDimension >*()
-{
-	return m_component;
-}
-
-Linear::operator const Identifiable< StandardDimension >*() const
-{
-	return m_component;
-}
-
 Identifiable< StandardDimension >& Linear::operator*()
 {
 	return *m_component;
@@ -59,12 +49,12 @@ const Identifiable< StandardDimension >& Linear::operator*() const
 	return *m_component;
 }
 
-Identifiable< StandardDimension >* Linear::operator Identifiable< StandardDimension >*()
+Linear::operator Identifiable< StandardDimension >*()
 {
 	return m_component;
 }
 
-const Identifiable< StandardDimension >* Linear::operator Identifiable< StandardDimension >*>() const
+Linear::operator const Identifiable< StandardDimension >*() const
 {
 	return m_component;
 }

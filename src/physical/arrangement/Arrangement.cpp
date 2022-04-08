@@ -22,36 +22,32 @@
 #include "bio/physical/arrangement/Arrangement.h"
 #include "bio/physical/arrangement/Iterator.h"
 #include <limits>
+#include <algorithm>
 
 namespace bio {
 namespace physical {
-
-static const Index Arrangement::InvalidIndex()
-{
-	return 0;
-}
 
 Arrangement::Arrangement(const Index expectedSize, std::size_t stepSize) :
 	m_firstFree(1),
 	m_size(expectedSize+1),
 	m_tempItt(NULL)
 {
-	m_store = std::malloc(m_store, m_size * stepSize);
+	m_store = (unsigned char*)std::malloc(m_size * stepSize);
 	BIO_ASSERT(m_store)
 }
 
 Arrangement::~Arrangement()
 {
 	Clear();
-	std::free(m_store);
 	if (m_tempItt)
 	{
 		delete m_tempItt;
 		m_tempItt = NULL;
 	}
+	std::free(m_store);
 }
 
-Arrangement::Postion Arrangement::GetBeginIndex() const
+Index Arrangement::GetBeginIndex() const
 {
 	return 1;
 }
@@ -90,7 +86,7 @@ bool Arrangement::IsFree(Index index) const
 	return std::find(m_deallocated.begin(), m_deallocated.end(), index) != m_deallocated.end();
 }
 
-inline bool Arrangement::IsAllocated(const Index index) const
+bool Arrangement::IsAllocated(const Index index) const
 {
 	return IsInRange(index) && !IsFree(index);
 }
@@ -103,7 +99,7 @@ void Arrangement::Expand(std::size_t stepSize)
 	{
 		targetSize = std::numeric_limits< Index >::max();
 	}
-	m_store = std::realloc(m_store, targetSize * stepSize);
+	m_store = (unsigned char*)std::realloc(m_store, targetSize * stepSize);
 	BIO_SANITIZE(m_store,,return)
 	m_size = targetSize;
 }
@@ -112,22 +108,24 @@ Index Arrangement::Add(const ByteStream content)
 {
 	Index ret = GetNextAvailableIndex(sizeof(ByteStream));
 	BIO_SANITIZE(ret,,return ret)
-	ByteStream toStore;
-	toStore.Set(content);
-	m_store[ret * sizeof(ByteStream)] = toStore;
+	std::memcpy(&m_store[ret * sizeof(ByteStream)], content, sizeof(ByteStream));
 	return ret;
 }
 
 ByteStream Arrangement::Access(const Index index)
 {
 	BIO_SANITIZE(IsAllocated(index),,return NULL)
-	return Cast< ByteStream >(m_store[index * sizeof(ByteStream)]);
+	ByteStream* ret;
+	std::memcpy(ret, &m_store[index * sizeof(ByteStream)], sizeof(ByteStream));
+	return *ret;
 }
 
 const ByteStream Arrangement::Access(const Index index) const
 {
 	BIO_SANITIZE(IsAllocated(index),,return NULL)
-	return Cast< const ByteStream >(m_store[index * sizeof(ByteStream)]);
+	ByteStream* ret;
+	std::memcpy(ret, &m_store[index * sizeof(ByteStream)], sizeof(ByteStream));
+	return *ret;
 }
 
 Index Arrangement::SeekTo(const ByteStream content) const
@@ -138,11 +136,11 @@ Index Arrangement::SeekTo(const ByteStream content) const
 		m_tempItt = ConstructClassIterator();
 	}
 	m_tempItt->MoveTo(GetEndIndex());
-	for (; !itt->IsAtBeginning(); --itt)
+	for (; !m_tempItt->IsAtBeginning(); --m_tempItt)
 	{
-		if (AreEqual(itt->GetIndex(), content))
+		if (AreEqual(m_tempItt->GetIndex(), content))
 		{
-			return itt->GetIndex();
+			return m_tempItt->GetIndex();
 		}
 	}
 	return InvalidIndex();
@@ -156,9 +154,10 @@ bool Arrangement::Has(const ByteStream content) const
 bool Arrangement::Erase(const Index index)
 {
 	BIO_SANITIZE(IsAllocated(index),,return false)
-	ByteStream toDelete = Cast< ByteStream >(m_store[index * sizeof(ByteStream)]);
-	~toDelete;
-	m_deallocated.push(index);
+	ByteStream* toDelete;
+	std::memcpy(toDelete, &m_store[index * sizeof(ByteStream)], sizeof(ByteStream));
+	delete toDelete;
+	m_deallocated.push_back(index);
 	return true;
 }
 
@@ -175,17 +174,21 @@ void Arrangement::Import(const Arrangement* other)
 void Arrangement::Clear()
 {
 	//Call destructors before clearing the array.
-	Iterator* otr = other->End();
-	for(;!otr->IsAtBeginning(); --otr)
+	if (!m_tempItt)
 	{
-		Erase((*otr)->GetIndex());
+		m_tempItt = ConstructClassIterator();
+	}
+	m_tempItt->MoveTo(GetEndIndex());
+	for(;!m_tempItt->IsAtBeginning(); --m_tempItt)
+	{
+		Erase(m_tempItt->GetIndex());
 	}
 
 	m_firstFree = 1;
 	m_deallocated.clear();
 }
 
-Iterator* Arrangement::ConstructClassIterator(const Index index = InvalidIndex())
+Iterator* Arrangement::ConstructClassIterator(const Index index) const
 {
 	BIO_SANITIZE(IsAllocated(index), ,
 		return NULL)
@@ -221,7 +224,7 @@ Index Arrangement::GetNextAvailableIndex(std::size_t stepSize)
 	if (!m_deallocated.empty())
 	{
 		ret = m_deallocated.front();
-		m_deallocated.pop();
+		m_deallocated.pop_front();
 	}
 	else if (m_firstFree == m_size)
 	{
@@ -233,8 +236,8 @@ Index Arrangement::GetNextAvailableIndex(std::size_t stepSize)
 
 bool Arrangement::AreEqual(
 	Index internal,
-	ByteStream external
-)
+	const ByteStream external
+) const
 {
 	return Access(internal) == external;
 }

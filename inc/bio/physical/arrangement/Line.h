@@ -67,7 +67,7 @@ public:
 	 * @param index
 	 * @return whether or not the Linear at the given Index is equal to the provided Identifiable< StandardDimension >*.
 	 */
-	virtual bool AreEqual(Index internal, ByteStream external);
+	virtual bool AreEqual(Index internal, const ByteStream external) const;
 };
 
 } //physical namespace

@@ -26,4 +26,4 @@
 
 #include <assert.h>
 
-#define BIO_ASSERT(cond)    assert(cond)
+#define BIO_ASSERT(cond)    assert(cond);

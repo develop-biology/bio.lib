@@ -105,7 +105,7 @@ void ByteStream::Release()
 	m_holding = false;
 }
 
-bool ByteStream::operator==(const ByteStream& other)
+bool ByteStream::operator==(const ByteStream& other) const
 {
 	if (m_size != other.m_size || m_typeName != other.m_typeName)
 	{
@@ -115,7 +115,7 @@ bool ByteStream::operator==(const ByteStream& other)
 		m_stream,
 		other.m_stream,
 		m_size
-	);
+	) == 0;
 }
 
 } //bio namespace

@@ -19,14 +19,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
 #include "bio/physical/arrangement/Line.h"
 
 namespace bio {
 namespace physical {
 
-Line::Line(Position expectedSize)
+Line::Line(Index expectedSize)
 	:
 	TypeOptimizedArrangement< Linear >(expectedSize)
 {
@@ -40,18 +38,18 @@ Line::~Line()
 
 ByteStream Line::Access(const Index index)
 {
-	BIO_SANITIZE(IsInRange(index),,return NULL)
-	return Cast< Identifiable< StandardDimension >* >(TypeOptimizedArrangement< Linear >::Access(index));
+	return Cast< Identifiable< StandardDimension >* >(TypeOptimizedArrangement< Linear >::Access(index).template As< Linear >());
 }
 
 const ByteStream Line::Access(const Index index) const
 {
-	return Cast< Identifiable< StandardDimension >* >(TypeOptimizedArrangement< Linear >::Access(index));
+	return Cast< Identifiable< StandardDimension >* >(TypeOptimizedArrangement< Linear >::Access(index).template As< Linear >());
 }
 
-bool Line::AreEqual(Index internal, ByteStream external)
+bool Line::AreEqual(Index internal, const ByteStream external) const
 {
-	Cast< Linear >(Access(internal)) == Cast< Identifiable< StandardDimension >* >(external.IKnowWhatImDoing());
+	BIO_SANITIZE(external.Is< Identifiable< StandardDimension >* >(),,return false)
+	return TypeOptimizedArrangement< Linear >::Access(internal).template As< Linear >() == external.template As< const Identifiable< StandardDimension >* >();
 }
 
 } //physical namespace

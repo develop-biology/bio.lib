@@ -29,7 +29,7 @@ Iterator::Iterator(
 	const Arrangement* arrangement,
 	const Index index)
 	:
-	m_arrangment(const_cast< Arrangement* >(arrangment)),
+	m_arrangement(const_cast< Arrangement* >(arrangement)),
 	m_index(index)
 {
 
@@ -70,7 +70,7 @@ Iterator* Iterator::Increment()
 	if (m_index >= m_arrangement->GetAllocatedSize())
 	{
 		m_index = m_arrangement->GetAllocatedSize();
-		return *this;
+		return this;
 	}
 	while (m_arrangement->IsFree(++m_index) && !IsAtEnd())
 	{
@@ -83,7 +83,7 @@ Iterator* Iterator::Decrement()
 {
 	if (!m_index)
 	{
-		return *this;
+		return this;
 	}
 	while (m_arrangement->IsFree(--m_index) && !IsAtBeginning())
 	{
@@ -99,7 +99,7 @@ ByteStream Iterator::operator*()
 
 const ByteStream Iterator::operator*() const
 {
-	return m_arrangement->Access(m_index)
+	return m_arrangement->Access(m_index);
 }
 
 } //physical namespace

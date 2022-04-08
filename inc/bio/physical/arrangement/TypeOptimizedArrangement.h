@@ -58,38 +58,46 @@ public:
 
 	Index Add(const ByteStream content)
 	{
+		BIO_SANITIZE(content.Is<TYPE>(),,return InvalidIndex())
 		Index ret = GetNextAvailableIndex(sizeof(TYPE));
-		BIO_SANITIZE(ret,,return ret)
-		TYPE toTYPE = content;
-		m_store[ret * sizeof(TYPE)] = toTYPE;
+		BIO_SANITIZE(ret,,return InvalidIndex())
+		TYPE toAdd = content;
+		std::memcpy(&m_store[ret * sizeof(TYPE)], &toAdd, sizeof(TYPE));
 		return ret;
 	}
 
 	ByteStream Access(const Index index)
 	{
 		BIO_SANITIZE(IsInRange(index),,return NULL)
-		return Cast< TYPE >(m_store[index * sizeof(TYPE)]);
+		TYPE* ret;
+		std::memcpy(ret, &m_store[index * sizeof(TYPE)], sizeof(TYPE));
+		return *ret;
 	}
 
 	const ByteStream Access(const Index index) const
 	{
 		BIO_SANITIZE(IsInRange(index),,return NULL)
-		return Cast< const TYPE >(m_store[index * sizeof(TYPE)]);
+		TYPE* ret;
+		std::memcpy(ret, &m_store[index * sizeof(TYPE)], sizeof(TYPE));
+		return *ret;
 	}
 
 	bool Erase(const Index index)
 	{
 		BIO_SANITIZE(IsAllocated(index),,return false)
-		TYPE toDelete = Cast< TYPE >(m_store[index * sizeof(TYPE)]);
-		~toDelete;
-		m_deallocated.push(index);
+		TYPE* toDelete;
+		std::memcpy(toDelete, &m_store[index * sizeof(TYPE)], sizeof(TYPE));
+		delete toDelete;
+		m_deallocated.push_back(index);
 		return true;
 	}
 
-	virtual bool AreEqual(Index internal, ByteStream external)
+	virtual bool AreEqual(Index internal, const ByteStream external) const
 	{
-		Cast< TYPE >(Access(internal)) == Cast< TYPE >(external);
+		BIO_SANITIZE(external.Is< TYPE >(),, return false)
+		return Access(internal).template As< TYPE >() == external.template As< TYPE >();
 	}
 };
+
 } //physical namespace
 } //bio namespace

@@ -26,6 +26,7 @@
 namespace bio {
 namespace physical {
 
+class Arrangement;
 class Iterator;
 
 /**
@@ -41,13 +42,18 @@ public:
 	 * @param index
 	 */
 	SmartIterator(
-		const AbstractArrangement* arrangement,
+		const Arrangement* arrangement,
 		Index index = InvalidIndex());
 
 	/**
 	 * Not virtual
 	 */
 	~SmartIterator();
+
+	/**
+	 * @return the implementation used by *this.
+	 */
+	operator Iterator*();
 
 	/**
 	 * @return the index *this is currently at.

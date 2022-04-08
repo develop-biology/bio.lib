@@ -27,10 +27,10 @@ namespace bio {
 namespace physical {
 
 SmartIterator::SmartIterator(
-	const AbstractArrangement* arrangement,
+	const Arrangement* arrangement,
 	Index index)
 	:
-	m_implementation(arrangment->ConstructClassIterator(index))
+	m_implementation(arrangement->ConstructClassIterator(index))
 {
 
 }
@@ -38,6 +38,11 @@ SmartIterator::SmartIterator(
 SmartIterator::~SmartIterator()
 {
 	delete m_implementation;
+}
+
+SmartIterator::operator Iterator*()
+{
+	return m_implementation;
 }
 
 Index SmartIterator::GetIndex() const
@@ -70,26 +75,26 @@ const ByteStream SmartIterator::operator*() const
 	return **m_implementation;
 }
 
-SmartIterator::SmartIterator& SmartIterator::operator++() const
+SmartIterator& SmartIterator::operator++() const
 {
 	m_implementation->Increment();
-	return *this;
+	return *const_cast< SmartIterator* >(this);
 }
 
-SmartIterator::SmartIterator SmartIterator::operator++(int) const
+SmartIterator SmartIterator::operator++(int) const
 {
 	SmartIterator ret = *this;
 	m_implementation->Increment();
 	return ret;
 }
 
-SmartIterator::SmartIterator& SmartIterator::operator--() const
+SmartIterator& SmartIterator::operator--() const
 {
 	m_implementation->Decrement();
-	return *this;
+	return *const_cast< SmartIterator* >(this);
 }
 
-SmartIterator::SmartIterator SmartIterator::operator--(int) const
+SmartIterator SmartIterator::operator--(int) const
 {
 	SmartIterator ret = *this;
 	m_implementation->Decrement();

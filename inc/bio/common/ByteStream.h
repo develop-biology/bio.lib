@@ -78,7 +78,7 @@ public:
 	 * @param other
 	 * @return whether or not other holds the same bits as *this.
 	 */
-	bool operator==(const ByteStream& other);
+	bool operator==(const ByteStream& other) const;
 
 	/**
 	 * Casts stored data to T.
@@ -86,12 +86,48 @@ public:
 	 * @return stored bytes as T.
 	 */
 	template <typename T>
-	operator T() const
+	T As()
 	{
 		BIO_ASSERT(Is<T>());
-		T ret;
-		std::memcpy(&ret, m_stream, sizeof(T));
-		return ret;
+		T* ret;
+		std::memcpy(ret, m_stream, sizeof(T));
+		return *ret;
+	}
+
+	/**
+	 * Casts stored data to T.
+	 * @tparam T
+	 * @return stored bytes as T.
+	 */
+	template <typename T>
+	const T As() const
+	{
+		BIO_ASSERT(Is<T>());
+		T* ret;
+		std::memcpy(ret, m_stream, sizeof(T));
+		return *ret;
+	}
+
+	/**
+	 * Casts stored data to T.
+	 * @tparam T
+	 * @return stored bytes as T.
+	 */
+	template <typename T>
+	operator T()
+	{
+		return As< T >();
+	}
+
+	/**
+	 * Casts stored data to T.
+	 * @tparam T
+	 * @return stored bytes as T.
+	 */
+	template <typename T>
+	operator const T() const
+	{
+		return As< T >();
 	}
 
 	/**

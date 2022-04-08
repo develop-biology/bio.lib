@@ -25,6 +25,7 @@
 #include "bio/physical/macros/Macros.h"
 #include "bio/common/Cast.h"
 #include "SmartIterator.h"
+#include <deque>
 
 namespace bio {
 namespace physical {
@@ -65,7 +66,7 @@ public:
 	/**
 	 * @return where to start.
 	 */
-	virtual Postion GetBeginIndex() const;
+	virtual Index GetBeginIndex() const;
 
 	/**
 	 * @return where to end.
@@ -108,7 +109,7 @@ public:
 	 * @param Index
 	 * @return IsInRange && !IsFree.
 	 */
-	inline bool IsAllocated(const Index Index) const;
+	virtual bool IsAllocated(const Index Index) const;
 
 	/**
 	 * Grow store to accommodate dynamic allocation.
@@ -130,7 +131,7 @@ public:
 	 * @param Index
 	 * @return a pointer to the value stored in *this.
 	 */
-	virtual ByteSteam Access(const Index Index);
+	virtual ByteStream Access(const Index Index);
 
 	/**
 	 * Get access to an element.
@@ -193,7 +194,7 @@ public:
 	 * @param Index
 	 * @return a new Iterator pointing to the given Index in *this or NULL.
 	 */
-	virtual Iterator* ConstructClassIterator(const Index Index = InvalidIndex());
+	virtual Iterator* ConstructClassIterator(const Index Index = InvalidIndex()) const;
 
 	/**
 	 * NOTE: This does not need to be overridden if you've already defined ConstructClassIterator().
@@ -222,7 +223,7 @@ protected:
 	 * @param external
 	 * @return whether or not the contents of *this at the given Index match the given datum.
 	 */
-	virtual bool AreEqual(Index internal, ByteStream external);
+	virtual bool AreEqual(Index internal, const ByteStream external) const;
 
 	/**
 	 * cannot be void* as we need an object type for pointer arithmetic.
