@@ -35,7 +35,7 @@ Pathway::~Pathway()
 
 chemical::Products Pathway::Process(chemical::Reactants* reactants)
 {
-	BIO_SANITIZE(reactants,,return code::BadArgument1());
+	BIO_SANITIZE(reactants,,return code::BadArgument1())
 
 	chemical::Products products(*reactants);
 	for (
@@ -59,7 +59,7 @@ chemical::Products Pathway::Process(chemical::Reactants* reactants)
 
 bool Pathway::ReactantsMeetRequirements(const chemical::Reactants* toCheck) const
 {
-	BIO_SANITIZE(GetCount< chemical::Reaction* >(),,return false);
+	BIO_SANITIZE(GetCount< chemical::Reaction* >(),,return false)
 	return (*GetAll< chemical::Reaction* >())[0]->ReactantsMeetRequirements(toCheck);
 }
 

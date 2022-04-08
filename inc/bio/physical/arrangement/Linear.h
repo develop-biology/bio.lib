@@ -24,14 +24,14 @@
 #include "bio/physical/Identifiable.h"
 
 namespace bio {
-namespace chemical {
+namespace physical {
 
 /**
  * Linear is a ____pointer implementation for Biology.
  *
- * This class is used by LinearStructuralComponents, see that class for more info.
+ * This class is used by Line and chemical::LinearStructuralComponents, see those classes for more info.
  *
- * The term "linear" comes from the idea that instead of a 0 dimensional pile of types, as are StructuralComponents, *this can be ordered along at least 1 dimension (i.e. the StandardDimension). In other words, LinearStructuralComponents contain logic for handling their CONTENT_TYPE by Id, Name, and other aspects innate to the physical::Identifiable<StandardDimension>.
+ * Lines contain logic for handling their CONTENT_TYPE by Id, Name, and other aspects innate to the Identifiable<StandardDimension>. The term "linear" comes from the idea that instead of a 0 dimensional pile of objects, as are Arrangements, *this can be ordered along at least 1 dimension (i.e. the StandardDimension).
  *
  * Current features:
  * 1. Shared: determines whether or not m_component will be deleted with *this.
@@ -42,7 +42,7 @@ namespace chemical {
  * NOTE: Linear is NOT VIRTUAL!
  * This is done to save space in lists. Because we do not need a vtable, we shan't have one!
  *
- * NOTE: we should support Dimensions other than the StandardDimension. However, the limitations of Atom::Bonds prevent us from indexing more than 1 template variable from the ____Interface.
+ * NOTE: we should support Dimensions other than the StandardDimension. However, the limitations of chemical::Atom::Bonds prevent us from indexing more than 1 template variable from ____Interfaces (e.g. StructureInterface).
  * StandardDimension here, mirrors what is used by chemical::Class and does not require any additional template specialization.
  * Plus, not supporting other Dimensions makes for cleaner inheritance / downstream code.
  * Support for other Dimensions may be added in a future release.
@@ -54,7 +54,7 @@ public:
 	 * @param component
 	 * @param shared
 	 */
-	Linear(physical::Identifiable< StandardDimension >* component, bool shared = false);
+	Linear(Identifiable< StandardDimension >* component, bool shared = false);
 
 	/**
 	 * Will delete m_component iff !m_shared.
@@ -66,7 +66,7 @@ public:
 	 * @param component
 	 * @return whether the component of *this matches the given component.
 	 */
-	bool operator==(const physical::Identifiable< StandardDimension >* component) const;
+	bool operator==(const Identifiable< StandardDimension >* component) const;
 
 	/**
 	 * NOTE: Comparison should be handled by Identifiable, i.e. by Id.
@@ -78,37 +78,37 @@ public:
 	/**
 	 * @return m_component
 	 */
-	operator physical::Identifiable< StandardDimension >*();
+	operator Identifiable< StandardDimension >*();
 
 	/**
 	 * @return m_component
 	 */
-	operator const physical::Identifiable< StandardDimension >*() const;
+	operator const Identifiable< StandardDimension >*() const;
 
 	/**
 	 * @return m_component
 	 */
-	physical::Identifiable< StandardDimension >& operator*();
+	Identifiable< StandardDimension >& operator*();
 
 	/**
 	 * @return m_component
 	 */
-	const physical::Identifiable< StandardDimension >& operator*() const;
+	const Identifiable< StandardDimension >& operator*() const;
 
 	/**
 	 * @return m_component
 	 */
-	physical::Identifiable< StandardDimension >* operator->();
+	Identifiable< StandardDimension >* operator->();
 
 	/**
 	 * @return m_component
 	 */
-	const physical::Identifiable< StandardDimension >* operator->() const;
+	const Identifiable< StandardDimension >* operator->() const;
 
 protected:
-	physical::Identifiable< StandardDimension >* m_component;
+	Identifiable< StandardDimension >* m_component;
 	bool m_shared;
 };
 
-} //chemical namespace
+} //physical namespace
 } //bio namespace

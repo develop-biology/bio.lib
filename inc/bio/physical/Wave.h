@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/common/Types.h"
+#include "bio/physical/common/Types.h"
 
 //@formatter:off
 #if BIO_CPP_VERSION < 11
@@ -32,11 +32,6 @@
 //@formatter:on
 
 namespace bio {
-
-typedef uint8_t Code; //redefinition from Types.
-
-typedef uint8_t Property;
-typedef std::vector< Property > Properties;
 
 //the easy way out...
 //see AsAtom()
@@ -238,23 +233,23 @@ public:
 	virtual void operator|(Symmetry* symmetry);
 
 	/**
-	 * Modulate operator (i.e. not "modulo")
+	 * Modulate operator (i.e. not "multiply")
 	 * @param signal
 	 * @return Modulate(signal)
 	 */
-	virtual Wave* operator%(Wave* signal);
+	virtual Wave* operator*(Wave* signal);
 
 	/**
-	 * Demodulate operator (also not "modulo")
+	 * Demodulate operator (i.e. not "dereference")
 	 * @return Demodulate()
 	 */
-	virtual Wave* operator~();
+	virtual Wave* operator*();
 
 	/**
-	 * Demodulate operator (also not "modulo")
+	 * Demodulate operator (i.e. not "dereference")
 	 * @return Demodulate()
 	 */
-	virtual const Wave* operator~() const;
+	virtual const Wave* operator*() const;
 
 	/**
 	 * Makes other interfere with *this.

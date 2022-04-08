@@ -19,12 +19,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/chemical/arrangement/Linear.h"
+#include "bio/physical/arrangement/Linear.h"
 
 namespace bio {
-namespace chemical {
+namespace physical {
 
-Linear::Linear(physical::Identifiable< StandardDimension >* component, bool shared) :
+Linear::Linear(Identifiable< StandardDimension >* component, bool shared) :
 	m_component(component),
 	m_shared(false)
 {
@@ -39,32 +39,32 @@ Linear::~Linear()
 	}
 }
 
-Linear::operator physical::Identifiable< StandardDimension >*()
+Linear::operator Identifiable< StandardDimension >*()
 {
 	return m_component;
 }
 
-Linear::operator const physical::Identifiable< StandardDimension >*() const
+Linear::operator const Identifiable< StandardDimension >*() const
 {
 	return m_component;
 }
 
-physical::Identifiable< StandardDimension >& Linear::operator*()
+Identifiable< StandardDimension >& Linear::operator*()
 {
 	return *m_component;
 }
 
-const physical::Identifiable< StandardDimension >& Linear::operator*() const
+const Identifiable< StandardDimension >& Linear::operator*() const
 {
 	return *m_component;
 }
 
-physical::Identifiable< StandardDimension >* Linear::operator->()
+Identifiable< StandardDimension >* Linear::operator Identifiable< StandardDimension >*()
 {
 	return m_component;
 }
 
-const physical::Identifiable< StandardDimension >* Linear::operator->() const
+const Identifiable< StandardDimension >* Linear::operator Identifiable< StandardDimension >*>() const
 {
 	return m_component;
 }
@@ -74,11 +74,21 @@ bool Linear::operator==(const Linear& other) const
 	return *m_component == *other.m_component;
 }
 
-bool Linear::operator==(physical::Identifiable< StandardDimension >* component) const
+bool Linear::operator==(const Identifiable< StandardDimension >* component) const
 {
 	BIO_SANITIZE(component,, return false)
 	return *m_component == *component;
 }
 
-} //chemical namespace
+Identifiable< StandardDimension >* Linear::operator->()
+{
+	return m_component;
+}
+
+const Identifiable< StandardDimension >* Linear::operator->() const
+{
+	return m_component;
+}
+
+} //physical namespace
 } //bio namespace

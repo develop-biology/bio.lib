@@ -82,7 +82,7 @@ public:
 	 * For example:
 	 * virtual Code RecruitChaperones(Vesicle* environment)
 	 * {
-	 *     BIO_SANITIZE(MyChecks(),,return code::GeneralFailure());
+	 *     BIO_SANITIZE(MyChecks(),,return code::GeneralFailure())
 	 *     return Protein::RecruitChaperones(environment);
 	 * }
 	 *

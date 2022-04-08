@@ -49,7 +49,7 @@ Atom::~Atom()
 
 Code Atom::Attenuate(const physical::Wave* other)
 {
-	BIO_SANITIZE(other, , return code::BadArgument1());
+	BIO_SANITIZE(other, , return code::BadArgument1())
 
 	const physical::Wave* demodulated = other->Demodulate();
 	Code ret = code::Success();
@@ -80,7 +80,7 @@ Code Atom::Attenuate(const physical::Wave* other)
 
 Code Atom::Disattenuate(const physical::Wave* other)
 {
-	BIO_SANITIZE(other, , return code::BadArgument1());
+	BIO_SANITIZE(other, , return code::BadArgument1())
 
 	const physical::Wave* demodulated = other->Demodulate();
 	Code ret = code::Success();

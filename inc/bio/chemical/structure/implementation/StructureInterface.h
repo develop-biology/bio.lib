@@ -175,7 +175,7 @@ public:
 	 */
 	Code ImportAll(const physical::Wave* other)
 	{
-		BIO_SANITIZE(other && other->AsAtom(),,return code::BadArgument1());
+		BIO_SANITIZE(other && other->AsAtom(),,return code::BadArgument1())
 
 		Code ret = code::Success();
 

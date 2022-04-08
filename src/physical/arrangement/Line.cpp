@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,33 +19,40 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/organic/Organism.h"
+#pragma once
+
+#include "bio/physical/arrangement/Line.h"
 
 namespace bio {
-namespace organic {
+namespace physical {
 
-Organism::~Organism()
+Line::Line(Position expectedSize)
+	:
+	TypeOptimizedArrangement< Linear >(expectedSize)
 {
+
 }
 
-Code Organism::Morphogenesis()
+Line::~Line()
 {
-	Code ret = code::Success();
-	chemical::Structure< cellular::OrganSystem* >::Contents* organSystems = GetAll< cellular::OrganSystem* >();
-	BIO_SANITIZE(organSystems,,return code::CouldNotFindValue1())
-	for (
-		chemical::Structure< cellular::OrganSystem* >::Contents::iterator sys = organSystems->begin();
-		sys != organSystems->end();
-		++sys
-		)
-	{
-		if ((*sys)->Organogenesis() != code::Success() && ret == code::Success())
-		{
-			ret = code::UnknownError();
-		}
-	}
-	return ret;
+
 }
 
-} //organic namespace
+ByteStream Line::Access(const Index index)
+{
+	BIO_SANITIZE(IsInRange(index),,return NULL)
+	return Cast< Identifiable< StandardDimension >* >(TypeOptimizedArrangement< Linear >::Access(index));
+}
+
+const ByteStream Line::Access(const Index index) const
+{
+	return Cast< Identifiable< StandardDimension >* >(TypeOptimizedArrangement< Linear >::Access(index));
+}
+
+bool Line::AreEqual(Index internal, ByteStream external)
+{
+	Cast< Linear >(Access(internal)) == Cast< Identifiable< StandardDimension >* >(external.IKnowWhatImDoing());
+}
+
+} //physical namespace
 } //bio namespace

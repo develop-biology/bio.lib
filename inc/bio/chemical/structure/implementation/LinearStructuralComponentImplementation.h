@@ -40,7 +40,7 @@ namespace chemical {
 /**
  * Basic implementation of methods for a LinearStructuralComponent
  *
- * Using LinearStructuralComponents requires the storage of chemical::Class*, so CONTENT_TYPE must derive from chemical::Class (or at minimum physical::Identifiable<StandardDimension>)
+ * Using LinearStructuralComponents requires the store of chemical::Class*, so CONTENT_TYPE must derive from chemical::Class (or at minimum physical::Identifiable<StandardDimension>)
  * For an example, see chemical::Symmetry.
  * For more information, see Linear.h.
  *
@@ -384,7 +384,7 @@ public:
 		}
 
 		Linear addition = Linear(CloneAndCast< CONTENT_TYPE >(content));
-//		BIO_SANITIZE(addition, ,return code::GeneralFailure());
+//		BIO_SANITIZE(addition, ,return code::GeneralFailure())
 
 		if (toReplace != destination->end())
 		{

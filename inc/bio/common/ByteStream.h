@@ -24,12 +24,13 @@
 #include "bio/common/macros/AssertMacros.h"
 #include "TypeName.h"
 #include <cstddef>
+#include <cstdlib>
 
 namespace bio {
 
 /**
- * Generic byte stream class. Kinda like a Cast that you can save and use later.
- * Work around for c++98 auto keyword
+ * Generic byte stream class. Kinda like a void* that you can save and cast later.
+ * Work around for c++98 auto keyword and other wonky problems.
  *
  *******************************************************************************
  *                    DO NOT USE THIS IMPROPERLY!!
@@ -38,7 +39,9 @@ namespace bio {
  * If you don't understand what this does and how it CAN GO HORRIBLY WRONG,
  * DO NOT USE THIS CLASS!
  *
- * This is used by BIO_SANITIZE_WITH_CACHE
+ * This is used by BIO_SANITIZE_WITH_CACHE and physical::Arrangement.
+ *
+ * NOTE: ByteStreams are not virtual to save what space we can. This may change in a future release if we decide we somehow need more hacky, abstract storage.
  */
 class ByteStream
 {
@@ -62,12 +65,19 @@ public:
 	/**
 	 *
 	 */
-	virtual ~ByteStream();
+	~ByteStream();
 
 	/**
 	 * @param other
 	 */
-	virtual void operator=(const ByteStream& other);
+	void operator=(const ByteStream& other);
+
+	/**
+	 * Compares the memory contained in both *this and other.
+	 * @param other
+	 * @return whether or not other holds the same bits as *this.
+	 */
+	bool operator==(const ByteStream& other);
 
 	/**
 	 * Casts stored data to T.
@@ -80,7 +90,7 @@ public:
 		BIO_ASSERT(Is<T>());
 		union Converter
 		{
-			char* bytes;
+			void* bytes;
 			T type;
 		};
 		Converter c;
@@ -91,13 +101,14 @@ public:
 	/**
 	 * Stores bytes of T in *this.
 	 * @tparam T
+	 * @param in what to store.
 	 */
 	template <typename T>
 	void Set(T in)
 	{
 		union Converter
 		{
-			char* bytes;
+			void* bytes;
 			T type;
 		};
 		Converter c;
@@ -149,13 +160,43 @@ public:
 	/**
 	 * Assume the caller knows something we don't.
 	 * Please don't use this.
-	 * @return the data in *this as void*.
+	 * @return the data in *this
 	 */
 	void* IKnowWhatImDoing();
 
+	/**
+	 * Copies the data given to a new memory location.
+	 * This should be used if the provided "in" is expected to go out of scope but the value still be valid.
+	 * Make sure you Release *this to delete the stored content.
+	 * @tparam T
+	 * @param in data to store
+	 */
+	template <typename T>
+	void Hold(T in)
+	{
+		m_stream = std::malloc(sizeof(T));
+		memcopy(m_stream, in, sizeof(T));
+		m_size = sizeof(T);
+		m_typeName = TypeName<T>();
+	}
+	
+	/**
+	 * Copies the data from an other into *this and Holds it.
+	 */
+	void Hold(const ByteStream& other);
+	
+	/**
+	 * Frees the memory *this was Holding.
+	 * Nop if *this was not holding anything.
+	 * NOTE: This does not call any destructors. You must do that yourself.
+	 * (i.e. there is no typename -> new type* -> union -> delete; delete)
+	 */
+	void Release();
+
 protected:
-	char* m_stream;
+	void* m_stream;
 	std::string m_typeName;
 	std::size_t m_size;
+	bool m_holding;
 };
 } //bio namespace

@@ -107,7 +107,7 @@ const Wave* Wave::Demodulate() const
 	return m_signal;
 }
 
-Wave* Wave::operator%(
+Wave* Wave::operator*(
 	Wave* signal
 )
 {
@@ -116,12 +116,12 @@ Wave* Wave::operator%(
 	);
 }
 
-Wave* Wave::operator~()
+Wave* Wave::operator*()
 {
 	return Demodulate();
 }
 
-const Wave* Wave::operator~() const
+const Wave* Wave::operator*() const
 {
 	return Demodulate();
 }

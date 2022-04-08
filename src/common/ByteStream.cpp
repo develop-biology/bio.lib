@@ -23,29 +23,41 @@
 
 namespace bio {
 
-ByteStream::ByteStream() :
+ByteStream::ByteStream()
+	:
 	m_stream(NULL),
 	m_typeName(""),
-	m_size(0)
+	m_size(0),
+	m_holding(false)
 {
 }
 
-ByteStream::ByteStream(const ByteStream& other) :
-	m_stream(other.m_stream),
-	m_typeName(other.m_typeName),
-	m_size(other.m_size)
+ByteStream::ByteStream(const ByteStream& other)
 {
+	*this = other;
 }
 
-ByteStream:: ~ByteStream()
+ByteStream::~ByteStream()
 {
+	Release();
 }
 
 void ByteStream::operator=(const ByteStream& other)
 {
-	m_stream = other.m_stream;
-	m_typeName = other.m_typeName;
-	m_size = other.m_size;
+	Release(); //wipe old state.
+
+	if (other.m_holding)
+	{
+		//We can't free the same memory twice, so we have to allocate a new block for ourselves.
+		Hold(other);
+	}
+	else
+	{
+		m_stream = other.m_stream;
+		m_typeName = other.m_typeName;
+		m_size = other.m_size;
+		m_holding = false;
+	}
 }
 
 bool ByteStream::IsEmpty() const
@@ -65,7 +77,45 @@ std::size_t ByteStream::GetSize() const
 
 void* ByteStream::IKnowWhatImDoing()
 {
-	return (void*)m_stream;
+	return m_stream;
+}
+
+void ByteStream::Hold(const ByteStream& other)
+{
+	m_stream = std::malloc(other.m_size);
+	memcopy(
+		m_stream,
+		other.m_stream,
+		other.m_size
+	);
+	m_size = other.m_size;
+	m_typeName = other.m_typename;
+	m_holding = true;
+}
+
+void ByteStream::Release()
+{
+	if (!m_holding)
+	{
+		return;
+	}
+	std::free(m_stream);
+	m_size = 0;
+	m_typeName.clear();
+	m_holding = false;
+}
+
+bool ByteStream::operator==(const ByteStream& other)
+{
+	if (m_size != other.m_size || m_typeName != other.m_typeName)
+	{
+		return false;
+	}
+	return memcmp(
+		m_stream,
+		other.m_stream,
+		m_size
+	);
 }
 
 } //bio namespace

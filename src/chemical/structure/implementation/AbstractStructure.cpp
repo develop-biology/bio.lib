@@ -32,17 +32,19 @@ namespace chemical {
 	return ret;
 }
 
-AbstractStructure::AbstractStructure()
+AbstractStructure::AbstractStructure() :
+	m_contents(NULL)
+{
+
+}
+
+AbstractStructure::~AbstractStructure()
 {
 	if (m_contents)
 	{
 		delete m_contents;
 		m_contents = NULL;
 	}
-}
-
-AbstractStructure::~AbstractStructure()
-{
 }
 
 } //chemical namespace

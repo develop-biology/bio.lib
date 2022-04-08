@@ -21,11 +21,10 @@
 #pragma once
 
 #include "bio/chemical/common/Types.h"
+#include "bio/physical/arrangement/Arrangement.h"
 
 namespace bio {
 namespace chemical {
-
-class AbstractArrangement;
 
 class AbstractStructure
 {
@@ -85,7 +84,7 @@ public:
 	}
 
 protected:
-	mutable AbstractArrangement* m_contents;
+	mutable physical::Arrangement* m_contents;
 };
 
 } //chemical namespace

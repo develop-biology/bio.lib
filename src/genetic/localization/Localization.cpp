@@ -81,13 +81,13 @@ chemical::Substance* Localization::Seek(chemical::Substance* seekIn) const
 		return seekIn;
 	}
 
-	BIO_SANITIZE(mc_method,, return NULL);
+	BIO_SANITIZE(mc_method,, return NULL)
 	ByteStream newName(m_name);
 	(const_cast< chemical::ExcitationBase* >(mc_method))->EditArg(0, newName);
 	ByteStream result;
 	mc_method->CallDown(seekIn->AsWave(), result);
 	chemical::Substance* extract = ChemicalCast<chemical::Substance*>(Cast<physical::Wave*>(result.IKnowWhatImDoing())); //This is about as safe as we can get right now.
-	BIO_SANITIZE(extract,,return NULL);
+	BIO_SANITIZE(extract,,return NULL)
 	return extract;
 }
 

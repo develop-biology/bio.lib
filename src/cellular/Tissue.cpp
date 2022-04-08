@@ -34,7 +34,7 @@ Code Tissue::DifferentiateCells()
 {
 	Code ret = code::Success();
 	chemical::Structure< Cell* >::Contents* cells = GetAll< Cell* >();
-	BIO_SANITIZE(cells,,return code::CouldNotFindValue1());
+	BIO_SANITIZE(cells,,return code::CouldNotFindValue1())
 	for (
 		chemical::Structure< Cell* >::Contents::iterator cel = cells->begin();
 		cel != cells->end();
@@ -50,7 +50,7 @@ Code Tissue::DifferentiateCells()
 	}
 
 	chemical::Structure< Tissue* >::Contents* tissues = GetAll< Tissue* >();
-	BIO_SANITIZE(tissues,,return code::CouldNotFindValue1());
+	BIO_SANITIZE(tissues,,return code::CouldNotFindValue1())
 	for (
 		chemical::Structure< Tissue* >::Contents::iterator tis = tissues->begin();
 		tis != tissues->end();

@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,33 +19,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/organic/Organism.h"
+#include "bio/physical/Perspective.h"
+#include "bio/physical/Wave.h"
 
-namespace bio {
-namespace organic {
-
-Organism::~Organism()
+Wave* PerspectiveUtilities::Clone(const Wave* toClone)
 {
+	return toClone->Clone();
 }
-
-Code Organism::Morphogenesis()
-{
-	Code ret = code::Success();
-	chemical::Structure< cellular::OrganSystem* >::Contents* organSystems = GetAll< cellular::OrganSystem* >();
-	BIO_SANITIZE(organSystems,,return code::CouldNotFindValue1())
-	for (
-		chemical::Structure< cellular::OrganSystem* >::Contents::iterator sys = organSystems->begin();
-		sys != organSystems->end();
-		++sys
-		)
-	{
-		if ((*sys)->Organogenesis() != code::Success() && ret == code::Success())
-		{
-			ret = code::UnknownError();
-		}
-	}
-	return ret;
-}
-
-} //organic namespace
-} //bio namespace

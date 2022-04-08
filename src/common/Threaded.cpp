@@ -117,18 +117,18 @@ bool Threaded::Start()
 	bool isStopped = !m_created && !m_running;
 	UnlockThread();
 	//@formatter:off
-	BIO_SANITIZE(!isStopped, ,return true);
+	BIO_SANITIZE(!isStopped, ,return true)
 	//@formatter:on
 
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
-		BIO_SANITIZE(m_running,,return false);
+		BIO_SANITIZE(m_running,,return false)
 		#ifdef BIO_OS_IS_LINUX
 			int result = pthread_create(&m_thread, NULL, Worker, this);
 		#endif
 		m_created = result == 0;
 	#else
-		BIO_SANITIZE(m_thread,,return false);
+		BIO_SANITIZE(m_thread,,return false)
 		m_thread = new std::thread(&Threaded::Worker, this);
 		m_created = true
 	#endif

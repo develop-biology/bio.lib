@@ -33,7 +33,7 @@ Code Habitat::AdaptInhabitants()
 {
 	Code ret = code::Success();
 	chemical::Structure< Organism* >::Contents* buddies = GetAll< Organism* >();
-	BIO_SANITIZE(buddies,,return code::CouldNotFindValue1());
+	BIO_SANITIZE(buddies,,return code::CouldNotFindValue1())
 	for (
 		chemical::Structure< Organism* >::Contents::iterator bud = buddies->begin();
 		bud != buddies->end();

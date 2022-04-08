@@ -35,10 +35,10 @@
  * Any variables declared will go out of scope and won't be accessible to you.
  *
  * BIO_SANITIZE should be usable in the following ways (and the variations thereof):
- * BIO_SANITIZE(some_test(), some_test()->do_something(), );
- * BIO_SANITIZE(myVar, myVar->do_something(), do_something_else());
- * auto myVar; BIO_SANITIZE(some_test(), myVar = some_test(), myVar = 0);
- * auto myOtherVar; BIO_SANITIZE(myVar, myOtherVar = myVar->do_something(), myOtherVar = 0);
+ * BIO_SANITIZE(some_test(), some_test()->do_something(), )
+ * BIO_SANITIZE(myVar, myVar->do_something(), do_something_else())
+ * auto myVar; BIO_SANITIZE(some_test(), myVar = some_test(), myVar = 0)
+ * auto myOtherVar; BIO_SANITIZE(myVar, myOtherVar = myVar->do_something(), myOtherVar = 0)
  */
 #define BIO_SANITIZE_AT_SAFETY_LEVEL_0(test, success, failure)                 \
 {                                                                              \
