@@ -21,7 +21,6 @@
 
 #pragma once
 
-#include "StructuralComponentImplementation.h"
 #include "bio/common/ThreadSafe.h"
 #include "bio/chemical/Atom.h"
 
@@ -179,25 +178,27 @@ public:
 
 		Code ret = code::Success();
 
-		LockThread(); // in case m_valence changes.
+		LockThread(); // in case m_bonds changes.
+		Bond* bondBuffer;
 		for (
-			Valence val = 0;
-			val < m_valence; //per Atom
-			++val
+			physical::SmartIterator bnd = toCopy.m_bonds.End();
+			!bnd.IsAtBeginning();
+			--bnd
 			)
 		{
-			if (m_bonds[val].IsEmpty())
+			bondBuffer = bnd;
+			if (bondBuffer->IsEmpty())
 			{
 				continue;
 			}
 			if (physical::Wave::GetResonanceBetween(
-				m_bonds[val].GetBonded(),
+				bondBuffer->GetBonded(),
 				AbstractStructure::GetClassProperties()).size() == 0)
 			{
 				continue;
 			}
-			const physical::Wave* otherBond = other->AsAtom()->GetBonded(other->AsAtom()->GetBondPosition(m_bonds[val].GetId()));
-			(Cast< AbstractStructure* >(m_bonds[val].GetBonded()))->ImportImplementation(otherBond); //actual work
+			const physical::Wave* otherBond = other->AsAtom()->GetBonded(other->AsAtom()->GetBondPosition(bondBuffer->GetId()));
+			(Cast< AbstractStructure* >(bondBuffer->GetBonded()))->ImportImplementation(otherBond); //actual work
 		}
 		UnlockThread();
 

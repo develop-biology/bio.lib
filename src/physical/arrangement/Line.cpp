@@ -20,6 +20,7 @@
  */
 
 #include "bio/physical/arrangement/Line.h"
+#include "bio/physical/arrangement/Iterator.h"
 
 namespace bio {
 namespace physical {
@@ -38,18 +39,62 @@ Line::~Line()
 
 ByteStream Line::Access(const Index index)
 {
-	return Cast< Identifiable< StandardDimension >* >(TypeOptimizedArrangement< Linear >::Access(index).template As< Linear >());
+	return Cast< Identifiable< StandardDimension >* >(OptimizedAccess(index));
 }
 
 const ByteStream Line::Access(const Index index) const
 {
-	return Cast< Identifiable< StandardDimension >* >(TypeOptimizedArrangement< Linear >::Access(index).template As< Linear >());
+	return Cast< Identifiable< StandardDimension >* >(OptimizedAccess(index));
 }
 
 bool Line::AreEqual(Index internal, const ByteStream external) const
 {
 	BIO_SANITIZE(external.Is< Identifiable< StandardDimension >* >(),,return false)
-	return TypeOptimizedArrangement< Linear >::Access(internal).template As< Linear >() == external.template As< const Identifiable< StandardDimension >* >();
+	return OptimizedAccess(internal) == external.template As< const Identifiable< StandardDimension >* >();
+}
+
+Identifiable< StandardDimension >* Line::LinearAccess(Index index)
+{
+	return OptimizedAccess(index);
+}
+
+const Identifiable< StandardDimension >* Line::LinearAccess(Index index) const
+{
+	return OptimizedAccess(index);
+}
+
+Index Line::SeekToName(Name name)
+{
+	if (!m_tempItt)
+	{
+		m_tempItt = ConstructClassIterator();
+	}
+	m_tempItt->MoveTo(GetEndIndex());
+	for (; !m_tempItt->IsAtBeginning(); --m_tempItt)
+	{
+		if (LinearAccess(m_tempItt->GetIndex())->IsName(name))
+		{
+			return m_tempItt->GetIndex();
+		}
+	}
+	return InvalidIndex();
+}
+
+Index Line::SeekToId(StandardDimension id)
+{
+	if (!m_tempItt)
+	{
+		m_tempItt = ConstructClassIterator();
+	}
+	m_tempItt->MoveTo(GetEndIndex());
+	for (; !m_tempItt->IsAtBeginning(); --m_tempItt)
+	{
+		if (LinearAccess(m_tempItt->GetIndex())->IsId(id))
+		{
+			return m_tempItt->GetIndex();
+		}
+	}
+	return InvalidIndex();
 }
 
 } //physical namespace

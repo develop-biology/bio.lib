@@ -36,8 +36,6 @@ namespace chemical {
 
 class Symmetry;
 
-class Bond;
-
 /**
  * Atom MUST be virtually inherited!
  * Atom is an interface for other implementations.
@@ -363,8 +361,7 @@ public:
 	}
 
 protected:
-	Bond* m_bonds;
-	Valence m_valence;
+	Bonds m_bonds;
 
 	/**
 	 * Create a Bond.

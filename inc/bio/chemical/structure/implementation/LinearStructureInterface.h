@@ -21,7 +21,6 @@
 
 #pragma once
 
-#include "LinearStructuralComponentImplementation.h"
 #include "StructureInterface.h"
 
 namespace bio {

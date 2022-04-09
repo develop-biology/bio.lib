@@ -25,9 +25,8 @@
 #include "bio/chemical/common/Class.h"
 #include "bio/chemical/Element.h"
 #include "bio/chemical/structure/StructuralComponent.h"
-#include "bio/chemical/structure/implementation/LinearStructuralComponentImplementation.h"
 #include "bio/chemical/structure/implementation/LinearStructureInterface.h"
-#include "bio/chemical/arrangement/Linear.h"
+#include "bio/physical/arrangement/Line.h"
 
 #if BIO_CPP_VERSION >= 11
 	#include <type_traits>
@@ -42,7 +41,7 @@ namespace chemical {
  * IMPORTANT: CONTENT_TYPE MUST BE A chemical::Class* (which is in the StandardDimension).
  * YOU CANNOT USE LinearStructuralComponent WITH TYPES THAT ARE NOT POINTERS TO CHILDREN OF chemical::Class (i.e. a physical::Identifiable<StandardDimension>)
  * Other Dimensions may be supported in a future release.
- * Linear.h for why.
+ * physical::Line and physical::Linear for why.
  *
  * NOTE: CONTENT_TYPE cannot be "const".
  * cv qualifiers may be supported in a future release but for now, all CONTENT_TYPEs must have the option of being modified.
@@ -62,7 +61,7 @@ public:
 	/**
 	 * For cleaner code, we redefine Contents.
 	 */
-	typedef typename StructuralComponent< CONTENT_TYPE >::Contents Contents;
+	typedef typename physical::Line Contents;
 
 	/**
 	 * Ensure virtual methods point to Class implementations.
@@ -80,6 +79,7 @@ public:
 		ret.push_back(property::Linear());
 		return ret;
 	}
+
 	/**
 	 * @param perspective
 	 */
@@ -98,7 +98,7 @@ public:
 	 * @param perspective
 	 */
 	explicit LinearStructuralComponent(
-		const Contents& contents,
+		const Contents* contents,
 		physical::Perspective< StandardDimension >* perspective = NULL
 	)
 		:
@@ -115,14 +115,14 @@ public:
 	 * Keep in mind that dtor will delete the contents of *this.
 	 * @param toCopy
 	 */
-	LinearStructuralComponent(const LinearStructuralComponent< CONTENT_TYPE >* toCopy)
+	LinearStructuralComponent(const LinearStructuralComponent< CONTENT_TYPE >& toCopy)
 		:
-		Element< LinearStructuralComponent< CONTENT_TYPE > >(toCopy->GetClassProperties()),
+		Element< LinearStructuralComponent< CONTENT_TYPE > >(toCopy.GetClassProperties()),
 		chemical::Class< LinearStructuralComponent< CONTENT_TYPE > >(this),
-		m_perspective(toCopy->m_perspective)
+		m_perspective(toCopy.m_perspective)
 	{
 		CtorCommon();
-		this->m_contents->Import(toCopy->GetAllImplementation());
+		this->m_contents->Import(toCopy.GetAllImplementation());
 	}
 
 	/**
@@ -165,36 +165,158 @@ public:
 	 */
 	virtual CONTENT_TYPE AddImplementation(CONTENT_TYPE content)
 	{
-		return this->AddTo(
-			Linear(CloneAndCast< CONTENT_TYPE >(content)),
-			&this->m_contents
-		);
+		return this->m_contents->LinearAccess(this->m_contents->Add(content));
 	}
 
 	/**
-	 * Implementation for inserting a Content to *this.
-	 * @param toAdd
-	 * @param position
-	 * @param optionalPositionArg
-	 * @param transferSubContents
-	 * @return status of insertion
+	 * Adds a Content in *this at the indicated position.
+	 * Multiple contents of the same id will cause the previously existing Content to be removed.
+	 *
+	 * NOTE: THIS DESTROYS INDEX INTEGRITY.
+	 * Indices will be rearranged to accommodate the insertion, making any cached Index invalid.
+	 *
+	 * @param toAdd what to add. IMPORTANT: This must not already be in a LinearStructuralComponent (i.e. create a clone() before adding it to another destination).
+	 * @param position determines where in *this the Content is added.
+	 * @param optionalPositionArg If a position is specified, the optionalPositionArg is the id of the Content referenced (e.g. BEFORE, MyContentId()).
+	 * @param transferSubContents allows all of the Contents within a conflicting Content to be copied into the new Content, before the conflicting Content is deleted (similar to renaming an upper directory while preserving it's contents).
+	 * @return Status of addition (e.g. success or failure).
 	 */
 	virtual Code InsertImplementation(
 		CONTENT_TYPE toAdd,
 		const Position position = BOTTOM,
-		const StandardDimension optionalPositionArg = CONTENT_TYPE::Perspective::InvalidId(),
+		const StandardDimension optionalPositionArg = 0, //i.e. invalid.
 		const bool transferSubContents = false
 	)
 	{
-		return LinearStructuralComponentImplementation< CONTENT_TYPE >::Insert(
-			this->GetStructuralPerspective(),
-			toAdd,
-			this->GetAllImplementation(),
-			position,
-			optionalPositionArg,
-			transferSubContents,
-			this->GetLogEngine());
+		BIO_SANITIZE(toAdd, ,
+			return code::MissingAgument1())
+
+		Code ret = code::Success();
+
+		physical::SmartIterator toReplace(
+			this->m_contents,
+			InvalidIndex());
+
+		//Remove conflicts
+		for (
+			physical::SmartIterator cnt = destination->End();
+			!cnt->IsAtBeginning();
+			--cnt
+			)
+		{
+			if (cnt.template As< CONTENT_TYPE >()->IsId(toAdd->GetId()))
+			{
+				//Not an error, but potentially worth noting.
+				ret = code::SuccessfullyReplaced();
+
+				toReplace = cnt;
+				break; //Only find 1 conflict, as no others should exist.
+			}
+		}
+
+		CONTENT_TYPE addition = CloneAndCast< CONTENT_TYPE >(content);
+		BIO_SANITIZE(addition, ,
+			return code::GeneralFailure())
+
+		if (this->m_contents->IsAllocated(toReplace.GetIndex())) //i.e. GetIndex() != 0.
+		{
+			if (transferSubContents)
+			{
+				//NOTE: THIS REMOVES ANY STRUCTURAL COMPONENTS NOT EXPLICITLY IN addition
+				addition->ImportAll(toReplace.template As< CONTENT_TYPE >()->AsWave());
+			}
+			this->m_contents->Erase(toReplace);
+		}
+
+		switch (position)
+		{
+			case TOP:
+			{
+				this->m_contents->Insert(
+					this->m_contents->GetBeginIndex(),
+					addition
+				);
+				break;
+			}
+			case BEFORE:
+			{
+				Index placement = Cast< Line* >(this->m_contents)->SeekToId(optionalPositionArg);
+				if (!placement)
+				{
+					return code::GeneralFailure();
+				}
+				BIO_SANITIZE(Cast< Line* >(this->m_contents)->LinearAccess(placement)->GetPerspective() == addition->GetPerspective(), ,
+					return code::GeneralFailure());
+
+				this->m_contents->Insert(
+					addition,
+					placement
+				);
+				break;
+			}
+			case AFTER:
+			{
+				Index placement = Cast< Line* >(this->m_contents)->SeekToId(optionalPositionArg);
+				if (!placement)
+				{
+					return code::GeneralFailure();
+				}
+				BIO_SANITIZE(Cast< Line* >(this->m_contents)->LinearAccess(placement)->GetPerspective() == addition->GetPerspective(), ,
+					return code::GeneralFailure());
+
+				this->m_contents->Insert(
+					addition,
+					++placement
+				);
+				break;
+			}
+			case BOTTOM:
+			{
+				this->m_contents->Insert(
+					addition,
+					this->m_contents->GetEndIndex());
+				break;
+			}
+			default:
+			{
+				this->m_contents->Add(addition);
+				break;
+			}
+		} //switch
+
+		return ret;
 	}
+
+	/**
+	 * Implementation for getting by id.
+	 * @param id
+	 * @return a Content of the given id or NULL.
+	 */
+	virtual CONTENT_TYPE GetByIdImplementation(
+		StandardDimension id
+	)
+	{
+		Index ret = Cast< Line* >(this->m_contents)->SeekToId(id);
+		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret,,return NULL) //level 2 for GetOrCreate.
+
+		return ChemicalCast< CONTENT_TYPE >(Cast< Line* >(this->m_contents)->LinearAccess(ret));
+	}
+
+	/**
+	* const implementation for getting by id.
+	* @param id
+	* @return a Content of the given id or NULL.
+	*/
+	virtual const CONTENT_TYPE GetByIdImplementation(
+		StandardDimension id
+	) const
+	{
+		Index ret = Cast< Line* >(this->m_contents)->SeekToId(id);
+		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret,,return NULL) //level 2 for GetOrCreate.
+
+		return ChemicalCast< CONTENT_TYPE >(Cast< Line* >(this->m_contents)->LinearAccess(ret));
+	}
+
 
 	/**
 	 * Implementation for getting by name.
@@ -205,11 +327,10 @@ public:
 		Name name
 	)
 	{
-		return LinearStructuralComponentImplementation< CONTENT_TYPE >::FindByNameIn(
-			this->GetStructuralPerspective(),
-			this->GetAllImplementation(),
-			name
-		);
+		Index ret = Cast< Line* >(this->m_contents)->SeekToName(name);
+		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret,,return NULL) //level 2 for GetOrCreate.
+
+		return ChemicalCast< CONTENT_TYPE >(Cast< Line* >(this->m_contents)->LinearAccess(ret));
 	}
 
 	/**
@@ -221,11 +342,10 @@ public:
 		Name name
 	) const
 	{
-		return LinearStructuralComponentImplementation< CONTENT_TYPE >::FindByNameIn(
-			this->GetStructuralPerspective(),
-			this->GetAllImplementation(),
-			name
-		);
+		Index ret = Cast< Line* >(this->m_contents)->SeekToName(name);
+		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret,,return NULL) //level 2 for GetOrCreate.
+
+		return ChemicalCast< CONTENT_TYPE >(Cast< Line* >(this->m_contents)->LinearAccess(ret));
 	}
 
 	/**
@@ -241,8 +361,7 @@ public:
 	{
 		BIO_SANITIZE(this->GetStructuralPerspective(), ,
 			return NULL);
-		return this->AddImplementation(
-			(this->GetStructuralPerspective()->template GetTypeFromIdAs< CONTENT_TYPE >(id)));
+		return this->AddImplementation((this->GetStructuralPerspective()->template GetTypeFromIdAs< CONTENT_TYPE >(id)));
 	}
 
 	/**
@@ -277,15 +396,152 @@ public:
 	{
 		BIO_SANITIZE(this->GetStructuralPerspective(), ,
 			return NULL);
+		//We convert to Id in case the Name is not already registered in the desired Perspective.
 		StandardDimension id = this->GetStructuralPerspective()->GetIdFromName(name);
-		CONTENT_TYPE ret = this->GetByNameImplementation(
-			name
-		);
+		CONTENT_TYPE ret = this->GetByIdImplementation(id);
 		if (ret)
 		{
 			return ret;
 		}
 		return this->CreateImplementation(id);
+	}
+
+	/**
+	 * Check for content.
+	 * Dereferences content (i.e. prevents pointer comparison (unless**)).
+	 * @param content
+	 * @return whether or not the given content exists in *this
+	 */
+	virtual bool HasImplementation(const CONTENT_TYPE& content) const
+	{
+		return this->m_contents->Has(content);
+	}
+
+	/**
+	 * Copy the contents of another container into *this.
+	 * Clone()s each element.
+	 * @param other
+	 */
+	virtual void ImportImplementation(const LinearStructuralComponent< CONTENT_TYPE >* other)
+	{
+		BIO_SANITIZE(other, ,
+			return);
+
+		this->m_contents->Import(other->m_contens);
+	}
+
+	/**
+	 * Override of Wave method. See that class for details.
+	 * If other is an Excitation, call ForEach instead.
+	 * @param other
+	 * @return the result of all Attenuations.
+	 */
+	virtual Code Attenuate(const physical::Wave* other)
+	{
+		if (physical::Wave::GetResonanceBetween(
+			other,
+			ExcitationBase::GetClassProperties()).size())
+		{
+			ForEachImplementation(ChemicalCast< ExcitationBase* >(other));
+			return code::Success();
+		}
+
+		Code ret = code::Success();
+		for (
+			physical::SmartIterator cnt = this->m_contents;
+			!cnt.IsAtBeginning();
+			--cnt
+			)
+		{
+			if (cnt.template As< physical::Identifiable< StandardDimension >* >()->Attenuate(other) != code::Success())
+			{
+				ret = code::UnknownError();
+			}
+		}
+		return ret;
+	}
+
+	/**
+	 * Override of Wave method. See that class for details.
+	 * @param other
+	 * @return the result of all Disattenuations.
+	 */
+	virtual Code Disattenuate(const physical::Wave* other)
+	{
+		Code ret = code::Success();
+		for (
+			physical::SmartIterator cnt = this->m_contents;
+			!cnt.IsAtBeginning();
+			--cnt
+			)
+		{
+			if (cnt.template As< physical::Identifiable< StandardDimension >* >()->Disattenuate(other) != code::Success())
+			{
+				ret = code::UnknownError();
+			}
+		}
+		return ret;
+	}
+
+
+	/**
+	 * Performs the given Excitation on all contents.
+	 * @param excitation
+	 * @param self a pointer to *this, if *this is a chemical::Substance.
+	 */
+	virtual Emission ForEachImplementation(
+		ExcitationBase* excitation
+	)
+	{
+		Emission ret;
+		for (
+			physical::SmartIterator cnt = this->m_contents;
+			!cnt.IsAtBeginning();
+			--cnt
+			)
+		{
+			ByteStream result;
+			excitation->CallDown(
+				cnt.template As< physical::Identifiable< StandardDimension >* >()->AsWave(),
+				&result
+			);
+			ret.push_back(result);
+		}
+		return ret;
+	}
+
+	/**
+	 * Gets the Names of all Contents and puts them into a string.
+	 * @param separator e.g. ", ", the default, or just " ".
+	 * @return the Contents of *this as a string.
+	 */
+	virtual std::string GetStringFromImplementation(std::string separator = ", ")
+	{
+		std::string ret = "";
+
+		for (
+			physical::SmartIterator cnt(this->m_contents, this->m_contents->GetBeginIndex());
+			!cnt.IsAtEnd();
+			++cnt
+			)
+		{
+			ret += cnt.template As< physical::Identifiable< StandardDimension >* >()->GetName();
+			if (cnt.GetIndex() != this->m_contents.GetEndIndex() - 1)
+			{
+				ret += separator;
+			}
+		}
+		return ret;
+	}
+
+	/**
+	 * Deletes & clears the contents of *this.
+	 * NOTE: this uses delete, not delete[].
+	 */
+	virtual void ClearImplementation()
+	{
+		//No need to delete anything, since our Linear wrapper handles that for us.
+		this->m_contents->Clear();
 	}
 
 private:
@@ -299,8 +555,14 @@ private:
 		BIO_ASSERT(std::is_base_of<Substance, CONTENT_TYPE>::value);
 		#else
 		CONTENT_TYPE ct;
-		BIO_ASSERT(Cast<Substance*>(&ct) != NULL);
+		BIO_ASSERT(Cast< Substance* >(&ct) != NULL);
 		#endif
+
+		if (m_contents)
+		{
+			delete m_contents;
+		}
+		m_contents = new physical::Line(4);
 	}
 
 };

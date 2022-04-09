@@ -24,7 +24,7 @@
 #include "bio/chemical/macros/Macros.h"
 #include "bio/chemical/common/Class.h"
 #include "bio/physical/common/Filters.h"
-#include "bio/chemical/arrangement/Arrangement.h"
+#include "bio/physical/arrangement/TypeOptimizedArrangement.h"
 #include "StructureInterface.h"
 #include "AbstractStructure.h"
 #include <vector>
@@ -45,7 +45,7 @@ class StructuralComponent :
 {
 public:
 
-	typedef physical::Arrangement Contents;
+	typedef physical::TypeOptimizedArrangement Contents;
 
 	/**
 	 * Ensure virtual methods point to Class implementations.
@@ -58,30 +58,27 @@ public:
 	StructuralComponent()
 		:
 		chemical::Class< StructuralComponent< CONTENT_TYPE > >(this), //TODO: Define Symmetry.
-		m_contents(new Contents())
+		m_contents(new Contents(4))
 	{
 	}
 
 	/**
 	 * @param contents
 	 */
-	StructuralComponent(Contents contents)
+	StructuralComponent(Contents* contents)
 		:
 		chemical::Class< StructuralComponent< CONTENT_TYPE > >(this), //TODO: Define Symmetry.
-		m_contents(new Contents())
+		m_contents(new Contents(*contents))
 	{
-		this->m_contents->Import(contents);
 	}
-
 
 	/**
 	 * @param toCopy
 	 */
 	StructuralComponent(const StructuralComponent< CONTENT_TYPE >* toCopy) :
 		chemical::Class< StructuralComponent< CONTENT_TYPE > >(this), //TODO: Define Symmetry.
-		m_contents(new Contents())
+		m_contents(new Contents(*toCopy->m_contents))
 	{
-		this->m_contents->Import(toCopy->m_contents);
 	}
 
 	/**
@@ -91,7 +88,6 @@ public:
 	{
 		//NOTE: Children are responsible for clearing m_contents (e.g. through ClearImplementation().
 	}
-
 
 	/**
 	 * Implementation for accessing all Contents.
@@ -129,30 +125,9 @@ public:
 	}
 
 	/**
-	 * Get a pointer to the content in *this
-	 * @param content
-	 * @return a pointer to the given content matching that within *this; 0 if no match found.
-	 */
-	virtual CONTENT_TYPE* GetImplementation(const CONTENT_TYPE content)
-	{
-		return this->m_contents->GetInternalPointer(content);
-	}
-
-
-	/**
-	 * Get a pointer to the content in *this
-	 * @param content
-	 * @return a pointer to the given content matching that within *this; 0 if no match found.
-	 */
-	virtual const CONTENT_TYPE* GetImplementation(const CONTENT_TYPE content) const
-	{
-		return this->m_contents->GetInternalPointer(content);
-	}
-
-	/**
 	 * Adds content to *this.
 	 * @param content
-	 * @return t or 0.
+	 * @return the added content or 0.
 	 */
 	virtual CONTENT_TYPE AddImplementation(const CONTENT_TYPE content)
 	{
@@ -168,12 +143,10 @@ public:
 	 */
 	virtual CONTENT_TYPE RemoveImplementation(const CONTENT_TYPE content)
 	{
-		typename Contents::Position toErase = this->m_contents->SeekTo(content);
-		CONTENT_TYPE* retPtr = this->m_contents->Access(toErase);
+		typename Index toErase = this->m_contents->SeekTo(content);
+		CONTENT_TYPE ret = this->m_contents->Access(toErase);
 		this->m_contents->Erase(toErase);
-		BIO_SANITIZE(retPtr, ,
-			return 0); //dereference after erase should be okay.
-		return *retPtr;
+		return ret;
 	}
 
 	/**
@@ -209,18 +182,17 @@ public:
 			return 0);
 
 		unsigned int ret = 0;
-		typename Contents::Iterator* otr = other->End();
 		for (
+			physical::SmartIterator otr = other->End();
 			; !otr->IsAtBeginning();
 			--otr
 			)
 		{
-			if (this->HasImplementation(**otr))
+			if (this->HasImplementation(*otr))
 			{
 				++ret;
 			}
 		}
-		delete otr;
 		return ret;
 	}
 
@@ -244,10 +216,10 @@ public:
 	virtual std::string GetStringFromImplementation(std::string separator = ", ")
 	{
 		std::string ret = "";
-		typename Contents::Iterator cnt = this->m_contents->Begin();
+		physical::SmartIterator cnt = this->m_contents->Begin();
 		while (true)
 		{
-			ret += string::From< CONTENT_TYPE >(**cnt);
+			ret += string::From< CONTENT_TYPE >(*cnt);
 			++cnt;
 			if (cnt->IsAtEnd())
 			{

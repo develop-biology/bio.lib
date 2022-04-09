@@ -49,16 +49,30 @@ public:
 	virtual ~Line();
 
 	/**
-	 * We want to return a Identifiable< StandardDimension >*, not a Linear.
+	 * Get the position of an Identifiable< StandardDimension >* with the given name in *this.
+	 * @param name
+	 * @return an Index matching the given name or InvalidIndex().
+	 */
+	virtual Index SeekToName(Name name);
+
+	/**
+	 * Get the position of an Identifiable< StandardDimension >* with the given id in *this.
+	 * @param id
+	 * @return an Index matching the given id or InvalidIndex().
+	 */
+	virtual Index SeekToId(StandardDimension id);
+
+	/**
+	 * We want to return an Identifiable< StandardDimension >*, not a Linear.
 	 * @param index
-	 * @return a Identifiable< StandardDimension >* from the Linear at the given Index.
+	 * @return an Identifiable< StandardDimension >* from the Linear at the given Index.
 	 */
 	ByteStream Access(const Index index);
 
 	/**
-	 * We want to return a Identifiable< StandardDimension >*, not a Linear.
+	 * We want to return an Identifiable< StandardDimension >*, not a Linear.
 	 * @param index
-	 * @return a Identifiable< StandardDimension >* from the Linear at the given Index.
+	 * @return an Identifiable< StandardDimension >* from the Linear at the given Index.
 	 */
 	const ByteStream Access(const Index index) const;
 
@@ -68,6 +82,20 @@ public:
 	 * @return whether or not the Linear at the given Index is equal to the provided Identifiable< StandardDimension >*.
 	 */
 	virtual bool AreEqual(Index internal, const ByteStream external) const;
+
+	/**
+	 * Convenience wrapper around OptimizedAccess.
+	 * @param index
+	 * @return the given position casted to an Identifiable< StandardDimension >*
+	 */
+	virtual Identifiable< StandardDimension >* LinearAccess(Index index);
+
+	/**
+	 * Convenience wrapper around OptimizedAccess.
+	 * @param index
+	 * @return the given position casted to an Identifiable< StandardDimension >*
+	 */
+	virtual const Identifiable< StandardDimension >* LinearAccess(Index index) const;
 };
 
 } //physical namespace

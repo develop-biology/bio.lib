@@ -44,6 +44,7 @@ class Iterator;
  *
  * When using Arrangements, we make no guarantees regarding the type of data stored.
  * All we provide is a consistent means of accessing those data. To this end, we ensure that a Index's validity follows the lifecycle of the datum at that Index. This is identical to pointers: a Index represents the memory address of what is stored in *this. This means that as data are erased from *this, the memory is not moved, consolidated, or manipulated in any way that destroys the old references.
+ * This rule does have some exceptions and you are allowed to break it yourself. However, we try to stick by this as much as possible (e.g. see Insert(), below).
  *
  * When using an Iterator, you will be given a SmartIterator which dynamically determines its implementation. Thus, we allow for full inheritance of *this base class.
  *
@@ -54,10 +55,17 @@ class Arrangement
 public:
 
 	/**
-	 *
+	 * NOTE: We cannot use GetStepSize() here as virtual functions are not available to ctors.
 	 */
 	Arrangement(const Index expectedSize=2, std::size_t stepSize = sizeof(ByteStream));
 
+	/**
+	 * Copy ctor.
+	 * Imports all contents from other into *this.
+	 * @param other 
+	 */
+	Arrangement(const Arrangement& other);
+	
 	/**
 	 *
 	 */
@@ -74,18 +82,18 @@ public:
 	virtual Index GetEndIndex() const;
 
 	/**
-	 * @return the number of allocatable Indexs in *this.
+	 * @return the number of allocatable Indices in *this.
 	 */
 	virtual Index GetCapacity() const;
 
 	/**
-	 * GetCapacity - the number of free Indexs at the end (ignores any deallocated Indexs in the middle).
-	 * @return the number of Indexs that have been allocated in *this.
+	 * GetCapacity - the number of free Indices at the end (ignores any deallocated Indices in the middle).
+	 * @return the number of Indices that have been allocated in *this.
 	 */
 	virtual Index GetAllocatedSize() const;
 
 	/**
-	 * GetAllocatedSize - the number of deallocated Indexs.
+	 * GetAllocatedSize - the number of deallocated Indices.
 	 * @return the number of elements in *this.
 	 */
 	virtual Index GetNumberOfElements() const;
@@ -96,26 +104,26 @@ public:
 	 * @param Index
 	 * @return whether or not the given Index is free to use.
 	 */
-	virtual bool IsFree(const Index Index) const;
+	virtual bool IsFree(const Index index) const;
 
 	/**
 	 * NOTE: Just because a Index IsInRange does not mean it is free or allocated.
 	 * @param Index
 	 * @return whether or not the Index is expected to yield a valid result when used with *this.
 	 */
-	virtual bool IsInRange(const Index Index) const;
+	virtual bool IsInRange(const Index index) const;
 
 	/**
 	 * @param Index
 	 * @return IsInRange && !IsFree.
 	 */
-	virtual bool IsAllocated(const Index Index) const;
+	virtual bool IsAllocated(const Index index) const;
 
 	/**
 	 * Grow store to accommodate dynamic allocation.
 	 * @param datumSize the memory size a Index should jump over.
 	 */
-	virtual void Expand(std::size_t stepSize = sizeof(ByteStream));
+	virtual void Expand();
 
 	/**
 	 * Adds content to *this.
@@ -125,22 +133,54 @@ public:
 	virtual Index Add(const ByteStream content);
 
 	/**
-	 * Get access to an element.
-	 * NOTE: THIS DOES NOT CHECK IF THE ELEMENT IsFree!!!
-	 * Free checks can be done independently. This is done for speed.
-	 * @param Index
-	 * @return a pointer to the value stored in *this.
+	 * Adds content to *this at the specified position.
+	 * All content past the given position is shifted down.
+	 * NOTE: This explicitly breaks our rule about Indices being preserved. However, this logic is necessary if the items being inserted need to be accessed in the specified order; for example: the items in *this are molecular::Proteins that have a set execution order.
+	 *
+	 * To make implementing your own Arrangements easier, this method simply hacks the GetNextAvailableIndex method to return the desired index and then calls Add. Thus, by implementing Add, you also implement Insert.
+	 *
+	 * @param content
+	 * @return the Index of the added content.
 	 */
-	virtual ByteStream Access(const Index Index);
+	virtual Index Insert(const ByteStream content, const Index index);
 
 	/**
 	 * Get access to an element.
 	 * NOTE: THIS DOES NOT CHECK IF THE ELEMENT IsFree!!!
 	 * Free checks can be done independently. This is done for speed.
-	 * @param Index
-	 * @return a pointer to the value stored in *this.
+	 * @param index
+	 * @return the value stored in *this at the given index.
 	 */
-	virtual const ByteStream Access(const Index Index) const;
+	virtual ByteStream Access(const Index index);
+
+	/**
+	 * Get access to an element.
+	 * NOTE: THIS DOES NOT CHECK IF THE ELEMENT IsFree!!!
+	 * Free checks can be done independently. This is done for speed.
+	 * @param index
+	 * @return the value stored in *this at the given index.
+	 */
+	virtual const ByteStream Access(const Index index) const;
+
+	/**
+	 * Access wrapper for SmartIterators.
+	 * @param index
+	 * @return the value stored in *this at the given index.
+	 */
+	inline ByteStream Access(const SmartIterator itt)
+	{
+		return Access(itt.GetIndex());
+	}
+
+	/**
+	 * Access wrapper for SmartIterators.
+	 * @param index
+	 * @return the value stored in *this at the given index.
+	 */
+	virtual const ByteStream Access(const SmartIterator itt) const
+	{
+		return Access(itt.GetIndex());
+	}
 
 	/**
 	 * Find the Index of content within *this.
@@ -160,7 +200,17 @@ public:
 	 * @param Index
 	 * @return whether or not the erasure was successful.
 	 */
-	virtual bool Erase(Index Index);
+	virtual bool Erase(Index index);
+
+	/**
+	 * Erase wrapper for SmartIterators.
+	 * @param itt
+	 * @return whether or not the erasure was successful.
+	 */
+	inline bool Erase(const SmartIterator itt)
+	{
+		return Erase(itt.GetIndex());
+	}
 
 	/**
 	 * Remove all elements from *this.
@@ -179,7 +229,7 @@ public:
 	 * @param Index
 	 * @return Access(Index).
 	 */
-	virtual ByteStream operator[](const Index Index);
+	virtual ByteStream operator[](const Index index);
 
 	/**
 	 * Ease of use wrapper around Access.
@@ -187,14 +237,30 @@ public:
 	 * @param Index
 	 * @return Access(Index).
 	 */
-	virtual const ByteStream operator[](const Index Index) const;
+	virtual const ByteStream operator[](const Index index) const;
+
+	/**
+	 * Ease of use wrapper around Access.
+	 * See Access for details.
+	 * @param Index
+	 * @return Access(itt).
+	 */
+	virtual ByteStream operator[](const SmartIterator itt);
+
+	/**
+	 * Ease of use wrapper around Access.
+	 * See Access for details.
+	 * @param Index
+	 * @return Access(itt).
+	 */
+	virtual const ByteStream operator[](const SmartIterator itt) const;
 
 	/**
 	 * Override this to construct Iterators for your Arrangements.
 	 * @param Index
 	 * @return a new Iterator pointing to the given Index in *this or NULL.
 	 */
-	virtual Iterator* ConstructClassIterator(const Index Index = InvalidIndex()) const;
+	virtual Iterator* ConstructClassIterator(const Index index = InvalidIndex()) const;
 
 	/**
 	 * NOTE: This does not need to be overridden if you've already defined ConstructClassIterator().
@@ -211,11 +277,17 @@ public:
 protected:
 
 	/**
+	 * Please override this to return the size of the type your Arrangement implementation is working with.
+	 * @return the size of the data type stored in *this.
+	 */
+	virtual const std::size_t GetStepSize() const;
+
+	/**
 	 * For ease of use when Add()ing.
 	 * NOTE: This will mark the returned Index as filled, so please make sure it actually receives content.
 	 * @return a Index to fill with new content.
 	 */
-	virtual Index GetNextAvailableIndex(std::size_t stepSize);
+	virtual Index GetNextAvailableIndex();
 
 	/**
 	 * To make comparisons easier and reduce the work needed to optimize *this, children can define a comparison method which will be used for all searches.

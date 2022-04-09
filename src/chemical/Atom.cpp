@@ -29,22 +29,21 @@ namespace chemical {
 Atom::Atom()
 	:
 	physical::Class< Atom >(this),
-	m_valence(1)
+	m_bonds(4)
 {
-	m_bonds = new Bond[m_valence];
 }
 
 Atom::Atom(const Atom& other)
 	:
 	physical::Class< Atom >(this),
-	m_valence(1)
+	m_bonds(other.m_bonds.GetCapacity())
 {
-	m_bonds = new Bond[m_valence];
+
 }
 
 Atom::~Atom()
 {
-	delete[] m_bonds;
+
 }
 
 Code Atom::Attenuate(const physical::Wave* other)
@@ -54,22 +53,24 @@ Code Atom::Attenuate(const physical::Wave* other)
 	const physical::Wave* demodulated = other->Demodulate();
 	Code ret = code::Success();
 
+	Bond* bondBuffer;
 	for (
-		Valence val = 0;
-		val < m_valence;
-		++val
+		physical::SmartIterator bnd = m_bonds.End();
+		!bnd.IsAtBeginning();
+		--bnd
 		)
 	{
-		if (m_bonds[val].IsEmpty())
+		bondBuffer = bnd;
+		if (bondBuffer->IsEmpty())
 		{
 			continue;
 		}
 		if (physical::Wave::GetResonanceBetween(
-			m_bonds[val].GetBonded(),
+			bondBuffer->GetBonded(),
 			other
 		).size())
 		{
-			if (m_bonds[val].GetBonded()->Attenuate(demodulated) != code::Success())
+			if (bondBuffer->GetBonded()->Attenuate(demodulated) != code::Success())
 			{
 				ret = code::UnknownError(); //user can debug from logs for now.
 			}
@@ -85,22 +86,24 @@ Code Atom::Disattenuate(const physical::Wave* other)
 	const physical::Wave* demodulated = other->Demodulate();
 	Code ret = code::Success();
 
+	Bond* bondBuffer;
 	for (
-		Valence val = 0;
-		val < m_valence;
-		++val
+		physical::SmartIterator bnd = m_bonds.End();
+		!bnd.IsAtBeginning();
+		--bnd
 		)
 	{
-		if (m_bonds[val].IsEmpty())
+		bondBuffer = bnd;
+		if (bondBuffer->IsEmpty())
 		{
 			continue;
 		}
 		if (physical::Wave::GetResonanceBetween(
-			m_bonds[val].GetBonded(),
+			bondBuffer->GetBonded(),
 			other
 		).size())
 		{
-			if (m_bonds[val].GetBonded()->Disattenuate(demodulated) != code::Success())
+			if (bondBuffer->GetBonded()->Disattenuate(demodulated) != code::Success())
 			{
 				ret = code::UnknownError(); //user can debug from logs for now.
 			}
@@ -115,47 +118,27 @@ bool Atom::FormBondImplementation(
 	BondType type
 )
 {
-	Valence position = GetBondPosition(id);
-
-	BIO_SANITIZE(!toBond || !id || !position, ,
+	BIO_SANITIZE(!toBond || !id ||, ,
 		return false);
 
-	//position will == m_valence if the id for the given bonded was not found.
-	//If that's the case, we need to expand our valence to make room for the new bond.
-	//Unless a bond was broken, this should always be the case.
-	if (position != m_valence)
+	Valence position = GetBondPosition(id);
+	Bond* bondBuffer;
+	if (m_bonds.IsAllocated(position))
 	{
-		if (!m_bonds[position].IsEmpty())
-		{
-			//Bond already exists.
-			return false;
-		}
-		else
-		{
-			return m_bonds[position].Form(
-				id,
-				toBond,
-				type
-			);
-		}
+		*bondBuffer = m_bonds[position];
+		BIO_SANITIZE(!bondBuffer->IsEmpty(),,return false)
+		return bondBuffer->Form(
+			id,
+			toBond,
+			type
+		);
 	}
-
-	++m_valence;
-
-	Bond* tempBonds = new Bond[m_valence];
-	memcpy(
-		tempBonds,
-		m_bonds,
-		m_valence * sizeof(Bond));
-	delete[] m_bonds;
-	m_bonds = tempBonds;
-
-	m_bonds[position] = Bond(
+	//implicitly cast the addition index to a bool.
+	return m_bonds.Add(Bond(
 		id,
 		toBond,
 		type
-	);
-	return true;
+	));
 }
 
 bool Atom::BreakBondImplementation(
@@ -168,10 +151,10 @@ bool Atom::BreakBondImplementation(
 
 	BIO_SANITIZE(id && position, ,
 		return false);
-	BIO_SANITIZE(position < m_valence, ,
+	BIO_SANITIZE(m_bonds.IsAllocated(position), ,
 		return false);
 
-	m_bonds[position].Break();
+	m_bonds.OptimizedAccess(position).Break();
 	//Let dtor cleanup.
 
 	return true;
@@ -182,18 +165,17 @@ Valence Atom::GetBondPosition(AtomicNumber bondedId) const
 {
 	BIO_SANITIZE(bondedId, ,
 		return 0);
-	Valence val = 0;
-	for (
-		; val < m_valence;
-		++val
+	for (physical::SmartIterator bnd = m_bonds.End();
+		!bnd.IsAtBeginning();
+		--bnd
 		)
 	{
-		if (m_bonds[val].GetId() == bondedId)
+		if ((*bnd).template As< Bond >() == bondedId)
 		{
-			break;
+			return bnd.GetIndex();
 		}
 	}
-	return val;
+	return 0;
 }
 
 Valence Atom::GetBondPosition(Name typeName) const
@@ -203,9 +185,9 @@ Valence Atom::GetBondPosition(Name typeName) const
 
 BondType Atom::GetBondType(Valence position) const
 {
-	BIO_SANITIZE(position < m_valence, ,
+	BIO_SANITIZE(m_bonds.IsAllocated(position), ,
 		return BondTypePerspective::InvalidId());
-	return m_bonds[position].GetId();
+	return m_bonds.OptimizedAccess(position).GetId();
 }
 
 physical::Symmetry* Atom::Spin() const
@@ -222,14 +204,14 @@ Code Atom::Reify(physical::Symmetry* symmetry)
 
 physical::Wave* Atom::GetBonded(Valence position)
 {
-	BIO_SANITIZE(position < m_valence,,return NULL)
-	return m_bonds[position].GetBonded();
+	BIO_SANITIZE(m_bonds.IsAllocated(position),,return NULL)
+	return m_bonds.OptimizedAccess(position).GetBonded();
 }
 
 const physical::Wave* Atom::GetBonded(Valence position) const
 {
-	BIO_SANITIZE(position < m_valence,,return NULL)
-	return m_bonds[position].GetBonded();
+	BIO_SANITIZE(m_bonds.IsAllocated(position),,return NULL)
+	return m_bonds.OptimizedAccess(position).GetBonded();
 }
 
 

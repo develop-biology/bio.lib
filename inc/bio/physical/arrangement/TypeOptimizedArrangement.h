@@ -59,43 +59,73 @@ public:
 	Index Add(const ByteStream content)
 	{
 		BIO_SANITIZE(content.Is<TYPE>(),,return InvalidIndex())
-		Index ret = GetNextAvailableIndex(sizeof(TYPE));
+		Index ret = this->GetNextAvailableIndex();
 		BIO_SANITIZE(ret,,return InvalidIndex())
 		TYPE toAdd = content;
-		std::memcpy(&m_store[ret * sizeof(TYPE)], &toAdd, sizeof(TYPE));
+		std::memcpy(&this->m_store[ret * sizeof(TYPE)], &toAdd, sizeof(TYPE));
 		return ret;
 	}
 
 	ByteStream Access(const Index index)
 	{
-		BIO_SANITIZE(IsInRange(index),,return NULL)
+		BIO_SANITIZE(this->IsAllocated(index),,return NULL)
 		TYPE* ret;
-		std::memcpy(ret, &m_store[index * sizeof(TYPE)], sizeof(TYPE));
+		std::memcpy(ret, &this->m_store[index * sizeof(TYPE)], sizeof(TYPE));
 		return *ret;
 	}
 
 	const ByteStream Access(const Index index) const
 	{
-		BIO_SANITIZE(IsInRange(index),,return NULL)
+		BIO_SANITIZE(this->IsAllocated(index),,return NULL)
 		TYPE* ret;
-		std::memcpy(ret, &m_store[index * sizeof(TYPE)], sizeof(TYPE));
+		std::memcpy(ret, &this->m_store[index * sizeof(TYPE)], sizeof(TYPE));
 		return *ret;
 	}
 
 	bool Erase(const Index index)
 	{
-		BIO_SANITIZE(IsAllocated(index),,return false)
+		BIO_SANITIZE(this->IsAllocated(index),,return false)
 		TYPE* toDelete;
-		std::memcpy(toDelete, &m_store[index * sizeof(TYPE)], sizeof(TYPE));
+		std::memcpy(toDelete, &this->m_store[index * sizeof(TYPE)], sizeof(TYPE));
 		delete toDelete;
-		m_deallocated.push_back(index);
+		this->m_deallocated.push_back(index);
 		return true;
 	}
 
 	virtual bool AreEqual(Index internal, const ByteStream external) const
 	{
-		BIO_SANITIZE(external.Is< TYPE >(),, return false)
-		return Access(internal).template As< TYPE >() == external.template As< TYPE >();
+		BIO_SANITIZE(external.Is< TYPE >(), ,
+			return false)
+		return this->Access(internal).template As< TYPE >() == external.template As< TYPE >();
+	}
+
+	/**
+	 * Convenience wrapper for accessing without casting.
+	 * @param index
+	 * @return the given position in *this as a TYPE.
+	 */
+	virtual TYPE OptimizedAccess(Index index)
+	{
+		return this->Access(index);
+	}
+
+	/**
+	 * Convenience wrapper for accessing without casting.
+	 * @param index
+	 * @return the given position in *this as a TYPE.
+	 */
+	virtual const TYPE OptimizedAccess(Index index) const
+	{
+		return this->Access(index).template As< TYPE >();
+	}
+
+	/**
+	 * Please override this to return the size of the type your Arrangement implementation is working with.
+	 * @return the size of the data type stored in *this.
+	 */
+	virtual const std::size_t GetStepSize() const
+	{
+		return sizeof(TYPE);
 	}
 };
 

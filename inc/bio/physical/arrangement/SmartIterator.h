@@ -38,12 +38,18 @@ class SmartIterator
 public:
 
 	/**
+	 * Sets m_index to arrangement->GetEndIndex().
+	 * @param arrangement
+	 */
+	SmartIterator(const Arrangement* arrangement);
+
+	/**
 	 * @param arrangement
 	 * @param index
 	 */
 	SmartIterator(
 		const Arrangement* arrangement,
-		Index index = InvalidIndex());
+		Index index);
 
 	/**
 	 * Not virtual
@@ -88,6 +94,72 @@ public:
 	 * @return a ByteStream containing the datum requested.
 	 */
 	virtual const ByteStream operator*() const;
+
+	/**
+	 * Convenient casting wrapper.
+	 * @tparam T
+	 * @return *this casted to the given value.
+	 */
+	template < typename T >
+	T As()
+	{
+		return **this.template As< T >();
+	}
+
+	/**
+	 * Convenient casting wrapper.
+	 * @tparam T
+	 * @return *this casted to the given value.
+	 */
+	template < typename T >
+	const T As() const
+	{
+		return **this.template As< T >();
+	}
+
+	/**
+	 * Convenient casting wrapper.
+	 * @tparam T
+	 * @return *this casted to the given value.
+	 */
+	template < typename T >
+	operator T()
+	{
+		return As< T >();
+	}
+
+	/**
+	 * Convenient casting wrapper.
+	 * @tparam T
+	 * @return *this casted to the given value.
+	 */
+	template < typename T >
+	operator const T() const
+	{
+		return As< T >();
+	}
+
+	/**
+	 * Convenient casting wrapper.
+	 * @tparam T
+	 * @return *this casted to the given value.
+	 */
+	template < typename T >
+	operator T*()
+	{
+		return &(**this.template As< T >());
+	}
+
+	/**
+	 * Convenient casting wrapper.
+	 * @tparam T
+	 * @return *this casted to the given value.
+	 */
+	template < typename T >
+	operator const T*() const
+	{
+		return &(**this.template As< T >());
+	}
 
 	/**
 	 * @return *this after incrementing.

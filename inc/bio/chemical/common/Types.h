@@ -62,9 +62,11 @@ struct Structure
 
 /**
  * Valence defines how many Bonds an Atom (e.g. Substance) can have.
- * The max of valence (255 as a uint*_t) is essentially the max number of parents a child class can have.
+ * The max of valence is essentially the max number of parents a child class can have.
+ * Valence can be any size up to the size of Index (used by physical::Arrangements).
+ * For now, we set Valence to the max possible size and may optimize later.
  */
-typedef uint8_t Valence;
+typedef Index Valence;
 
 /**
  * The AtomicNumber tracks class definitions.

@@ -26,6 +26,13 @@
 namespace bio {
 namespace physical {
 
+SmartIterator::SmartIterator(const Arrangement* arrangement)
+	:
+	m_implementation(arrangement->ConstructClassIterator(arrangement->GetEndIndex()))
+{
+
+}
+
 SmartIterator::SmartIterator(
 	const Arrangement* arrangement,
 	Index index)
