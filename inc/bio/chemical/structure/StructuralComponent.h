@@ -24,7 +24,7 @@
 #include "bio/chemical/macros/Macros.h"
 #include "bio/chemical/common/Class.h"
 #include "bio/physical/common/Filters.h"
-#include "bio/physical/arrangement/TypeOptimizedArrangement.h"
+#include "bio/physical/arrangement/Arrangement.h"
 #include "StructureInterface.h"
 #include "AbstractStructure.h"
 #include <vector>
@@ -45,7 +45,7 @@ class StructuralComponent :
 {
 public:
 
-	typedef physical::TypeOptimizedArrangement Contents;
+	typedef physical::Arrangement Contents;
 
 	/**
 	 * Ensure virtual methods point to Class implementations.
@@ -183,7 +183,7 @@ public:
 
 		unsigned int ret = 0;
 		for (
-			physical::SmartIterator otr = other->End();
+			SmartIterator otr = other->End();
 			; !otr->IsAtBeginning();
 			--otr
 			)
@@ -216,7 +216,7 @@ public:
 	virtual std::string GetStringFromImplementation(std::string separator = ", ")
 	{
 		std::string ret = "";
-		physical::SmartIterator cnt = this->m_contents->Begin();
+		SmartIterator cnt = this->m_contents->Begin();
 		while (true)
 		{
 			ret += string::From< CONTENT_TYPE >(*cnt);

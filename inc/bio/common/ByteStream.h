@@ -40,7 +40,7 @@ namespace bio {
  * If you don't understand what this does and how it CAN GO HORRIBLY WRONG,
  * DO NOT USE THIS CLASS!
  *
- * This is used by BIO_SANITIZE_WITH_CACHE and physical::Arrangement.
+ * This is used by BIO_SANITIZE_WITH_CACHE and Containers.
  *
  * NOTE: ByteStreams are not virtual to save what space we can. This may change in a future release if we decide we somehow need more hacky, abstract storage.
  */

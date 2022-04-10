@@ -23,7 +23,7 @@
 
 #include "bio/chemical/common/Types.h"
 #include "bio/chemical/common/BondTypes.h"
-#include "bio/physical/arrangement/TypeOptimizedArrangement.h"
+#include "bio/physical/arrangement/Arrangement.h"
 
 namespace bio {
 
@@ -107,7 +107,7 @@ private:
 	BondType m_type;
 };
 
-typedef physical::TypeOptimizedArrangement< Bond > Bonds;
+typedef physical::Arrangement< Bond > Bonds;
 
 } //chemical namespace
 } //bio namespace

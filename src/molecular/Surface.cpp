@@ -56,7 +56,7 @@ Surface::Surface(const Surface& toCopy)
 {
 	Bond* bondBuffer;
 	for (
-		physical::SmartIterator bnd = toCopy.m_bonds.End();
+		SmartIterator bnd = toCopy.m_bonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
@@ -77,7 +77,7 @@ Surface::~Surface()
 {
 	Bond* bondBuffer;
 	for (
-		physical::SmartIterator bnd = toCopy.m_bonds.End();
+		SmartIterator bnd = toCopy.m_bonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
@@ -124,7 +124,7 @@ physical::Wave* Surface::Release(
 	physical::Wave* ret = NULL;
 	Bond* bondBuffer;
 	for (
-		physical::SmartIterator bnd = toCopy.m_bonds.End();
+		SmartIterator bnd = toCopy.m_bonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
@@ -150,7 +150,7 @@ chemical::Substance* Surface::Release(
 {
 	Bond* bondBuffer;
 	for (
-		physical::SmartIterator bnd = toCopy.m_bonds.End();
+		SmartIterator bnd = toCopy.m_bonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
@@ -181,7 +181,7 @@ chemical::Substance* Surface::Release(
 	chemical::Substance* ret = NULL;
 	Bond* bondBuffer;
 	for (
-		physical::SmartIterator bnd = toCopy.m_bonds.End();
+		SmartIterator bnd = toCopy.m_bonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
@@ -208,7 +208,7 @@ physical::Waves Surface::ReleaseAll(BondType bondType)
 	physical::Waves ret;
 	Bond* bondBuffer;
 	for (
-		physical::SmartIterator bnd = toCopy.m_bonds.End();
+		SmartIterator bnd = toCopy.m_bonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)

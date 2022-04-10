@@ -193,13 +193,13 @@ public:
 
 		Code ret = code::Success();
 
-		physical::SmartIterator toReplace(
+		SmartIterator toReplace(
 			this->m_contents,
 			InvalidIndex());
 
 		//Remove conflicts
 		for (
-			physical::SmartIterator cnt = destination->End();
+			SmartIterator cnt = destination->End();
 			!cnt->IsAtBeginning();
 			--cnt
 			)
@@ -448,7 +448,7 @@ public:
 
 		Code ret = code::Success();
 		for (
-			physical::SmartIterator cnt = this->m_contents;
+			SmartIterator cnt = this->m_contents;
 			!cnt.IsAtBeginning();
 			--cnt
 			)
@@ -470,7 +470,7 @@ public:
 	{
 		Code ret = code::Success();
 		for (
-			physical::SmartIterator cnt = this->m_contents;
+			SmartIterator cnt = this->m_contents;
 			!cnt.IsAtBeginning();
 			--cnt
 			)
@@ -495,7 +495,7 @@ public:
 	{
 		Emission ret;
 		for (
-			physical::SmartIterator cnt = this->m_contents;
+			SmartIterator cnt = this->m_contents;
 			!cnt.IsAtBeginning();
 			--cnt
 			)
@@ -520,7 +520,7 @@ public:
 		std::string ret = "";
 
 		for (
-			physical::SmartIterator cnt(this->m_contents, this->m_contents->GetBeginIndex());
+			SmartIterator cnt(this->m_contents, this->m_contents->GetBeginIndex());
 			!cnt.IsAtEnd();
 			++cnt
 			)

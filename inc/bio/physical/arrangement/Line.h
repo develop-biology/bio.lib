@@ -22,7 +22,7 @@
 #pragma once
 
 #include "Linear.h"
-#include "TypeOptimizedArrangement.h"
+#include "Arrangement.h"
 
 namespace bio {
 namespace physical {
@@ -34,7 +34,7 @@ namespace physical {
  *
  * @tparam STORE
  */
-class Line : public TypeOptimizedArrangement< Linear >
+class Line : public Arrangement< Linear >
 {
 public:
 

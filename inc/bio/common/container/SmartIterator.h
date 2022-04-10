@@ -21,12 +21,11 @@
 
 #pragma once
 
-#include "bio/physical/common/Types.h"
+#include "bio/common/Types.h"
 
 namespace bio {
-namespace physical {
 
-class Arrangement;
+class Container;
 class Iterator;
 
 /**
@@ -38,17 +37,17 @@ class SmartIterator
 public:
 
 	/**
-	 * Sets m_index to arrangement->GetEndIndex().
-	 * @param arrangement
+	 * Sets m_index to container->GetEndIndex().
+	 * @param container
 	 */
-	SmartIterator(const Arrangement* arrangement);
+	SmartIterator(const Container* container);
 
 	/**
-	 * @param arrangement
+	 * @param container
 	 * @param index
 	 */
 	SmartIterator(
-		const Arrangement* arrangement,
+		const Container* container,
 		Index index);
 
 	/**
@@ -59,7 +58,12 @@ public:
 	/**
 	 * @return the implementation used by *this.
 	 */
-	operator Iterator*();
+	Iterator* GetImplementation();
+
+	/**
+	 * @return the implementation used by *this.
+	 */
+	const Iterator* GetImplementation() const;
 
 	/**
 	 * @return the index *this is currently at.
@@ -74,12 +78,12 @@ public:
 	bool MoveTo(Index index) const;
 
 	/**
-	 * @return whether or not *this has reached the beginning of its TypeOptimizedArrangement.
+	 * @return whether or not *this has reached the beginning of its Arrangement.
 	 */
 	bool IsAtBeginning() const;
 
 	/**
-	 * @return whether or not *this has reached the end of its TypeOptimizedArrangement.
+	 * @return whether or not *this has reached the end of its Arrangement.
 	 */
 	bool IsAtEnd() const;
 
@@ -103,7 +107,7 @@ public:
 	template < typename T >
 	T As()
 	{
-		return **this.template As< T >();
+		return (**this).template As< T >();
 	}
 
 	/**
@@ -114,7 +118,7 @@ public:
 	template < typename T >
 	const T As() const
 	{
-		return **this.template As< T >();
+		return (**this).template As< T >();
 	}
 
 	/**
@@ -137,28 +141,6 @@ public:
 	operator const T() const
 	{
 		return As< T >();
-	}
-
-	/**
-	 * Convenient casting wrapper.
-	 * @tparam T
-	 * @return *this casted to the given value.
-	 */
-	template < typename T >
-	operator T*()
-	{
-		return &(**this.template As< T >());
-	}
-
-	/**
-	 * Convenient casting wrapper.
-	 * @tparam T
-	 * @return *this casted to the given value.
-	 */
-	template < typename T >
-	operator const T*() const
-	{
-		return &(**this.template As< T >());
 	}
 
 	/**
@@ -188,5 +170,4 @@ protected:
 	mutable Iterator* m_implementation;
 };
 
-} //physical namespace
 } //bio namespace

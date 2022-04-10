@@ -19,15 +19,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/physical/arrangement/Arrangement.h"
-#include "bio/physical/arrangement/Iterator.h"
+#include "bio/common/container/Container.h"
+#include "bio/common/container/Iterator.h"
 #include <limits>
 #include <algorithm>
 
 namespace bio {
-namespace physical {
 
-Arrangement::Arrangement(
+Container::Container(
 	const Index expectedSize,
 	std::size_t stepSize
 )
@@ -40,7 +39,7 @@ Arrangement::Arrangement(
 	BIO_ASSERT(m_store)
 }
 
-Arrangement::Arrangement(const Arrangement& other)
+Container::Container(const Container& other)
 	:
 	m_firstFree(other.m_firstFree),
 	m_size(other.m_size),
@@ -51,7 +50,7 @@ Arrangement::Arrangement(const Arrangement& other)
 	Import(&other); // <- NOT VIRTUAL (in ctor).
 }
 
-Arrangement::~Arrangement()
+Container::~Container()
 {
 	Clear(); // <- NOT VIRTUAL (in dtor).
 	if (m_tempItt)
@@ -62,37 +61,37 @@ Arrangement::~Arrangement()
 	std::free(m_store);
 }
 
-Index Arrangement::GetBeginIndex() const
+Index Container::GetBeginIndex() const
 {
 	return 1;
 }
 
-Index Arrangement::GetEndIndex() const
+Index Container::GetEndIndex() const
 {
 	return GetAllocatedSize();
 }
 
-Index Arrangement::GetCapacity() const
+Index Container::GetCapacity() const
 {
 	return m_size;
 }
 
-Index Arrangement::GetAllocatedSize() const
+Index Container::GetAllocatedSize() const
 {
 	return m_firstFree;
 }
 
-Index Arrangement::GetNumberOfElements() const
+Index Container::GetNumberOfElements() const
 {
 	return GetAllocatedSize() - m_deallocated.size();
 }
 
-bool Arrangement::IsInRange(const Index index) const
+bool Container::IsInRange(const Index index) const
 {
 	return index && index < m_size;
 }
 
-bool Arrangement::IsFree(Index index) const
+bool Container::IsFree(Index index) const
 {
 	if (index >= m_firstFree)
 	{
@@ -105,12 +104,12 @@ bool Arrangement::IsFree(Index index) const
 	) != m_deallocated.end();
 }
 
-bool Arrangement::IsAllocated(const Index index) const
+bool Container::IsAllocated(const Index index) const
 {
 	return IsInRange(index) && !IsFree(index);
 }
 
-void Arrangement::Expand()
+void Container::Expand()
 {
 	BIO_SANITIZE(m_size < std::numeric_limits< Index >::max(), ,
 		return)
@@ -127,7 +126,7 @@ void Arrangement::Expand()
 	m_size = targetSize;
 }
 
-Index Arrangement::Add(const ByteStream content)
+Index Container::Add(const ByteStream content)
 {
 	Index ret = GetNextAvailableIndex();
 	BIO_SANITIZE(ret, ,
@@ -139,7 +138,7 @@ Index Arrangement::Add(const ByteStream content)
 	return ret;
 }
 
-Index Arrangement::Insert(
+Index Container::Insert(
 	const ByteStream content,
 	const Index index
 )
@@ -178,7 +177,7 @@ Index Arrangement::Insert(
 	return Add(content);
 }
 
-ByteStream Arrangement::Access(const Index index)
+ByteStream Container::Access(const Index index)
 {
 	BIO_SANITIZE(IsAllocated(index), ,
 		return NULL)
@@ -190,7 +189,7 @@ ByteStream Arrangement::Access(const Index index)
 	return *ret;
 }
 
-const ByteStream Arrangement::Access(const Index index) const
+const ByteStream Container::Access(const Index index) const
 {
 	BIO_SANITIZE(IsAllocated(index), ,
 		return NULL)
@@ -202,7 +201,7 @@ const ByteStream Arrangement::Access(const Index index) const
 	return *ret;
 }
 
-Index Arrangement::SeekTo(const ByteStream content) const
+Index Container::SeekTo(const ByteStream content) const
 {
 	if (!m_tempItt)
 	{
@@ -225,12 +224,12 @@ Index Arrangement::SeekTo(const ByteStream content) const
 	return InvalidIndex();
 }
 
-bool Arrangement::Has(const ByteStream content) const
+bool Container::Has(const ByteStream content) const
 {
 	return SeekTo(content); //implicit cast to bool should work.
 }
 
-bool Arrangement::Erase(const Index index)
+bool Container::Erase(const Index index)
 {
 	BIO_SANITIZE(IsAllocated(index), ,
 		return false)
@@ -244,7 +243,7 @@ bool Arrangement::Erase(const Index index)
 	return true;
 }
 
-void Arrangement::Import(const Arrangement* other)
+void Container::Import(const Container* other)
 {
 	BIO_SANITIZE(other, ,
 		return)
@@ -258,7 +257,7 @@ void Arrangement::Import(const Arrangement* other)
 	}
 }
 
-void Arrangement::Clear()
+void Container::Clear()
 {
 	//Call destructors before clearing the array.
 	if (!m_tempItt)
@@ -278,7 +277,7 @@ void Arrangement::Clear()
 	m_deallocated.clear();
 }
 
-Iterator* Arrangement::ConstructClassIterator(const Index index) const
+Iterator* Container::ConstructClassIterator(const Index index) const
 {
 	BIO_SANITIZE(IsAllocated(index), ,
 		return NULL)
@@ -288,41 +287,41 @@ Iterator* Arrangement::ConstructClassIterator(const Index index) const
 	);
 }
 
-SmartIterator Arrangement::Begin() const
+SmartIterator Container::Begin() const
 {
 	return SmartIterator(
 		this,
 		GetBeginIndex());
 }
 
-SmartIterator Arrangement::End() const
+SmartIterator Container::End() const
 {
 	return SmartIterator(
 		this,
 		GetEndIndex());
 }
 
-ByteStream Arrangement::operator[](const Index index)
+ByteStream Container::operator[](const Index index)
 {
 	return Access(index);
 }
 
-const ByteStream Arrangement::operator[](const Index index) const
+const ByteStream Container::operator[](const Index index) const
 {
 	return Access(index);
 }
 
-ByteStream Arrangement::operator[](const SmartIterator itt)
+ByteStream Container::operator[](const SmartIterator itt)
 {
 	return Access(itt);
 }
 
-const ByteStream Arrangement::operator[](const SmartIterator itt) const
+const ByteStream Container::operator[](const SmartIterator itt) const
 {
 	return Access(itt);
 }
 
-Index Arrangement::GetNextAvailableIndex()
+Index Container::GetNextAvailableIndex()
 {
 	Index ret = InvalidIndex();
 	if (!m_deallocated.empty())
@@ -338,7 +337,7 @@ Index Arrangement::GetNextAvailableIndex()
 	return ret;
 }
 
-bool Arrangement::AreEqual(
+bool Container::AreEqual(
 	Index internal,
 	const ByteStream external
 ) const
@@ -346,10 +345,9 @@ bool Arrangement::AreEqual(
 	return Access(internal) == external;
 }
 
-const std::size_t Arrangement::GetStepSize() const
+const std::size_t Container::GetStepSize() const
 {
 	return sizeof(ByteStream);
 }
 
-} //physical namespace
 } //bio namespace

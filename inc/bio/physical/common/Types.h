@@ -27,20 +27,6 @@
 namespace bio {
 
 /**
- * Indices are used by Arrangements to manage and manipulate what they store.
- */
-typedef uint32_t Index;
-
-/**
- * We sacrifice our first index for the ability to do error checking.
- * @return a Index that holds no content.
- */
-const Index InvalidIndex()
-{
-	return 0;
-}
-
-/**
  * Id type used for all Ids until Named classes can be properly derived from. See physical::Identifiable.h for more info.
  * StandardDimension is NOT used when the type itself is the id, e.g. for Code, etc.
  */

@@ -25,30 +25,29 @@
 #include "bio/physical/macros/Macros.h"
 
 namespace bio {
-namespace physical {
 
-class Arrangement;
+class Container;
 
 /**
- * An Iterator is the preferred means of accessing the elements stored in an Arrangement.
+ * An Iterator is the preferred means of accessing the elements stored in an Container.
  * Please use increment and decrement operators to move through these elements.
  * While untested, it is likely that starting at the end and decrementing will be faster than starting at the beginning and incrementing, due to removing the overhead of having to keep track of where the end is.
  *
- * NOTE: There are no checks to guard against being given a bad Arrangement*. These have been neglected to increase performance.
+ * NOTE: There are no checks to guard against being given a bad Container*. These have been neglected to increase performance.
  */
 class Iterator
 {
 public:
 
 	/**
-	 * Constructor is only built with a const Arrangement*.
+	 * Constructor is only built with a const Container*.
 	 * We cast away the cv and keep only the mutable pointer.
 	 * This is done in order to avoid having a separate class for const access (as is in the standard library).
-	 * @param arrangement
+	 * @param container
 	 * @param index
 	 */
 	Iterator(
-		const Arrangement* arrangement,
+		const Container* container,
 		const Index index = InvalidIndex());
 
 	/**
@@ -69,12 +68,12 @@ public:
 	bool MoveTo(const Index index);
 
 	/**
-	 * @return whether or not *this has reached the beginning of its TypeOptimizedArrangement.
+	 * @return whether or not *this has reached the beginning of its Arrangement.
 	 */
 	virtual bool IsAtBeginning() const;
 
 	/**
-	 * @return whether or not *this has reached the end of its TypeOptimizedArrangement.
+	 * @return whether or not *this has reached the end of its Arrangement.
 	 */
 	virtual bool IsAtEnd() const;
 
@@ -103,9 +102,8 @@ public:
 	virtual const ByteStream operator*() const;
 
 protected:
-	mutable Arrangement* m_arrangement;
+	mutable Container* m_container;
 	Index m_index;
 }; //Iterator class.
 
-} //physical namespace
 } //bio namespace

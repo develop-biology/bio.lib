@@ -20,14 +20,14 @@
  */
 
 #include "bio/physical/arrangement/Line.h"
-#include "bio/physical/arrangement/Iterator.h"
+#include "bio/common/container/Iterator.h"
 
 namespace bio {
 namespace physical {
 
 Line::Line(Index expectedSize)
 	:
-	TypeOptimizedArrangement< Linear >(expectedSize)
+	Arrangement< Linear >(expectedSize)
 {
 
 }

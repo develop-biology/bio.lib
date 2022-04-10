@@ -49,6 +49,20 @@ typedef std::vector<std::string> StdStrings;
 typedef std::vector<ByteStream> ByteStreams;
 
 /**
+ * Indices are used by Arrangements to manage and manipulate what they store.
+ */
+typedef uint32_t Index;
+
+/**
+ * We sacrifice our first index for the ability to do error checking.
+ * @return a Index that holds no content.
+ */
+const Index InvalidIndex()
+{
+	return 0;
+}
+
+/**
  * milliseconds (ms for short)
  */
 typedef uint32_t Timestamp;

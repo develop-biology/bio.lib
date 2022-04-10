@@ -55,7 +55,7 @@ Code Atom::Attenuate(const physical::Wave* other)
 
 	Bond* bondBuffer;
 	for (
-		physical::SmartIterator bnd = m_bonds.End();
+		SmartIterator bnd = m_bonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
@@ -88,7 +88,7 @@ Code Atom::Disattenuate(const physical::Wave* other)
 
 	Bond* bondBuffer;
 	for (
-		physical::SmartIterator bnd = m_bonds.End();
+		SmartIterator bnd = m_bonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
@@ -165,7 +165,7 @@ Valence Atom::GetBondPosition(AtomicNumber bondedId) const
 {
 	BIO_SANITIZE(bondedId, ,
 		return 0);
-	for (physical::SmartIterator bnd = m_bonds.End();
+	for (SmartIterator bnd = m_bonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)

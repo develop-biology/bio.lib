@@ -19,25 +19,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/physical/arrangement/SmartIterator.h"
-#include "bio/physical/arrangement/Iterator.h"
-#include "bio/physical/arrangement/Arrangement.h"
+#include "bio/common/container/SmartIterator.h"
+#include "bio/common/container/Iterator.h"
+#include "bio/common/container/Container.h"
 
 namespace bio {
-namespace physical {
 
-SmartIterator::SmartIterator(const Arrangement* arrangement)
+SmartIterator::SmartIterator(const Container* container)
 	:
-	m_implementation(arrangement->ConstructClassIterator(arrangement->GetEndIndex()))
+	m_implementation(container->ConstructClassIterator(container->GetEndIndex()))
 {
 
 }
 
 SmartIterator::SmartIterator(
-	const Arrangement* arrangement,
+	const Container* container,
 	Index index)
 	:
-	m_implementation(arrangement->ConstructClassIterator(index))
+	m_implementation(container->ConstructClassIterator(index))
 {
 
 }
@@ -47,7 +46,12 @@ SmartIterator::~SmartIterator()
 	delete m_implementation;
 }
 
-SmartIterator::operator Iterator*()
+Iterator* SmartIterator::GetImplementation()
+{
+	return m_implementation;
+}
+
+const Iterator* SmartIterator::GetImplementation() const
 {
 	return m_implementation;
 }
@@ -108,5 +112,4 @@ SmartIterator SmartIterator::operator--(int) const
 	return ret;
 }
 
-} //physical namespace
 } //bio namespace

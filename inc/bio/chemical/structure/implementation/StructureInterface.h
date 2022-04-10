@@ -181,7 +181,7 @@ public:
 		LockThread(); // in case m_bonds changes.
 		Bond* bondBuffer;
 		for (
-			physical::SmartIterator bnd = toCopy.m_bonds.End();
+			SmartIterator bnd = toCopy.m_bonds.End();
 			!bnd.IsAtBeginning();
 			--bnd
 			)

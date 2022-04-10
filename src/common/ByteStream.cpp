@@ -89,7 +89,7 @@ void ByteStream::Set(const ByteStream& other)
 		other.m_size
 	);
 	m_size = other.m_size;
-	m_typeName = other.m_typename;
+	m_typeName = other.m_typeName;
 	m_holding = true;
 }
 

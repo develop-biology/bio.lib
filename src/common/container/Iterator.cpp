@@ -19,17 +19,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/physical/arrangement/Iterator.h"
-#include "bio/physical/arrangement/Arrangement.h"
+#include "bio/common/container/Iterator.h"
+#include "bio/common/container/Container.h"
 
 namespace bio {
-namespace physical {
 
 Iterator::Iterator(
-	const Arrangement* arrangement,
+	const Container* container,
 	const Index index)
 	:
-	m_arrangement(const_cast< Arrangement* >(arrangement)),
+	m_container(const_cast< Container* >(container)),
 	m_index(index)
 {
 
@@ -47,7 +46,7 @@ Index Iterator::GetIndex() const
 
 bool Iterator::MoveTo(const Index index)
 {
-	if (m_arrangement->IsAllocated(index))
+	if (m_container->IsAllocated(index))
 	{
 		m_index = index;
 		return true;
@@ -62,17 +61,17 @@ bool Iterator::IsAtBeginning() const
 
 bool Iterator::IsAtEnd() const
 {
-	return m_index == m_arrangement->GetAllocatedSize();
+	return m_index == m_container->GetAllocatedSize();
 }
 
 Iterator* Iterator::Increment()
 {
-	if (m_index >= m_arrangement->GetAllocatedSize())
+	if (m_index >= m_container->GetAllocatedSize())
 	{
-		m_index = m_arrangement->GetAllocatedSize();
+		m_index = m_container->GetAllocatedSize();
 		return this;
 	}
-	while (m_arrangement->IsFree(++m_index) && !IsAtEnd())
+	while (m_container->IsFree(++m_index) && !IsAtEnd())
 	{
 		continue; //avoid re-referencing m_index; see condition.
 	}
@@ -85,7 +84,7 @@ Iterator* Iterator::Decrement()
 	{
 		return this;
 	}
-	while (m_arrangement->IsFree(--m_index) && !IsAtBeginning())
+	while (m_container->IsFree(--m_index) && !IsAtBeginning())
 	{
 		continue; //avoid re-referencing m_index; see condition.
 	}
@@ -94,13 +93,12 @@ Iterator* Iterator::Decrement()
 
 ByteStream Iterator::operator*()
 {
-	return m_arrangement->Access(m_index);
+	return m_container->Access(m_index);
 }
 
 const ByteStream Iterator::operator*() const
 {
-	return m_arrangement->Access(m_index);
+	return m_container->Access(m_index);
 }
 
-} //physical namespace
 } //bio namespace
