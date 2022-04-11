@@ -43,7 +43,7 @@ public:
 
 	virtual Properties GetProperties() const
 	{
-		Properties ret = chemical::AbstractStructure::GetClassProperties();
+		Properties ret = chemical::AbstractMotif::GetClassProperties();
 		ret.push_back(property::Linear());
 		return ret;
 	}
@@ -68,7 +68,7 @@ class Class :
 {
 public:
 
-	BIO_DISAMBIGUATE_CLASS_METHODS(genetic,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(genetic,
 		T)
 
 	/**

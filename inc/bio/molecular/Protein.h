@@ -22,7 +22,7 @@
 #pragma once
 
 #include "bio/log/Writer.h"
-#include "bio/chemical/structure/LinearStructuralComponent.h"
+#include "bio/chemical/structure/motif/LinearMotif.h"
 #include "Molecule.h"
 #include "bio/molecular/common/Types.h"
 #include "bio/molecular/common/Class.h"
@@ -44,7 +44,7 @@ class DNA;
 class Protein :
 	virtual public Molecule,
 	public Class< Protein >,
-	public chemical::LinearStructuralComponent< Protein* >,
+	public chemical::LinearMotif< Protein* >,
 	public EnvironmentDependent< Vesicle >
 {
 public:
@@ -52,7 +52,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(molecular,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular,
 		Protein)
 
 	/**

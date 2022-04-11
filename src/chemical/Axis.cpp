@@ -21,7 +21,7 @@
 
 #include "bio/chemical/Axis.h"
 #include "bio/chemical/Symmetry.h"
-#include "bio/chemical/structure/StructuralComponent.h"
+#include "bio/chemical/structure/motif/UnorderedMotif.h"
 
 namespace bio {
 namespace chemical {
@@ -40,14 +40,14 @@ std::string Axis::Rotate(Symmetry* symmetry) const
 {
 	std::string ret = "";
 	ret += Encode(symmetry);
-	typename StructuralComponent< Symmetry* >::Contents* toRotate = symmetry->GetAll< Symmetry* >();
+	Container* toRotate = symmetry->GetAll< Symmetry* >();
 	for (
-		typename StructuralComponent< Symmetry* >::Contents::const_iterator sym = toRotate->begin();
-		sym != toRotate->end();
+		SmartIterator sym = toRotate->Begin();
+		!sym.IsAtEnd();
 		++sym
 		)
 	{
-		ret += Rotate(*sym);
+		ret += Rotate(sym.As< Symmetry* >());
 	}
 
 	return ret;

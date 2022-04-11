@@ -60,8 +60,8 @@ void Reaction::Require(
 
 void Reaction::Require(
 	Name typeName,
-	const StructuralComponent< Property >::Contents& properties,
-	const StructuralComponent< State >::Contents& states
+	const UnorderedMotif< Property >::Contents& properties,
+	const UnorderedMotif< State >::Contents& states
 )
 {
 	Require(

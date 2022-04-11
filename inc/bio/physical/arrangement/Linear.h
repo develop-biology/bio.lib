@@ -27,7 +27,7 @@ namespace bio {
 namespace physical {
 
 /**
- * Linear is a ____pointer implementation for Biology.
+ * Linear is a ____pointer interface for Biology.
  *
  * This class is used by Line and chemical::LinearStructuralComponents, see those classes for more info.
  *
@@ -42,7 +42,7 @@ namespace physical {
  * NOTE: Linear is NOT VIRTUAL!
  * This is done to save space in lists. Because we do not need a vtable, we shan't have one!
  *
- * NOTE: we should support Dimensions other than the StandardDimension. However, the limitations of chemical::Atom::Bonds prevent us from indexing more than 1 template variable from ____Interfaces (e.g. StructureInterface).
+ * NOTE: we should support Dimensions other than the StandardDimension. However, the limitations of chemical::Atom::Bonds prevent us from indexing more than 1 template variable from ____Interfaces (e.g. Structure).
  * StandardDimension here, mirrors what is used by chemical::Class and does not require any additional template specialization.
  * Plus, not supporting other Dimensions makes for cleaner inheritance / downstream code.
  * Support for other Dimensions may be added in a future release.

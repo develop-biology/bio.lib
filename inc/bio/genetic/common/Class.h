@@ -41,7 +41,7 @@ class Class :
 {
 public:
 
-	BIO_DISAMBIGUATE_CLASS_METHODS(molecular,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular,
 		T)
 
 	/**

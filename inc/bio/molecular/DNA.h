@@ -34,7 +34,7 @@ class Protein;
  * DNA allows Proteins to be stored as variables and be Transcribed and Translated later.
  * In order to improve debugging, Proteins store a pointer to their encoding DNA (similar to how a RISC-like mechanism might identify similar mRNA to that with produced the Protein in order to down-regulate its production; for more info, look into RNA Interference).
  * Because Proteins will point back to their parent DNA, we also provide a name and version for each DNA Molecule. This helps to identify Proteins that might be otherwise indistinguishable.
- * NOTE: genetic/Gene.h has most of the DNA implementation.
+ * NOTE: genetic/Gene.h has most of the DNA interface.
  *
  * Also note that, in reality, a single allele (Protein*) may result in the production of multiple proteins. That is true here as well; however, that logic is abstracted to a Protein's sub-proteins.
  * In other words if you want 1 DNA Molecule to produce several Proteins, you must Add<Protein*>() those to the Protein in *this.
@@ -48,7 +48,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(molecular,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular,
 		DNA)
 
 	/**

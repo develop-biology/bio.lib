@@ -36,9 +36,9 @@ Molecule::Molecule(const Molecule& toCopy)
 		toCopy.GetPerspective(),
 		toCopy.GetFilter()),
 	physical::Perspective< StandardDimension >(toCopy),
-	chemical::LinearStructuralComponent< Surface* >(toCopy)
+	chemical::LinearMotif< Surface* >(toCopy)
 {
-	chemical::LinearStructuralComponent< Surface* >::m_perspective = this;
+	chemical::LinearMotif< Surface* >::m_perspective = this;
 }
 
 Molecule::~Molecule()

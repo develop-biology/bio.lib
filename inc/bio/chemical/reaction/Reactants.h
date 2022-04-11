@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/chemical/structure/LinearStructuralComponent.h"
+#include "bio/chemical/structure/motif/LinearMotif.h"
 #include "bio/chemical/Substance.h"
 #include "bio/physical/common/Class.h"
 
@@ -37,14 +37,14 @@ class Reactant; //unused here but anything including Reactants will likely use R
  */
 class Reactants :
 	public chemical::Class< Reactants >,
-	public LinearStructuralComponent< Substance* >
+	public LinearMotif< Substance* >
 {
 public:
 
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(chemical,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical,
 		Reactants)
 
 	/**

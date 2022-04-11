@@ -25,7 +25,7 @@
 #include "bio/molecular/Molecule.h"
 #include "bio/molecular/Vesicle.h"
 #include "bio/chemical/reaction/Excitation.h"
-#include "bio/chemical/structure/LinearStructuralComponent.h"
+#include "bio/chemical/structure/motif/LinearMotif.h"
 #include "bio/physical/Periodic.h"
 
 namespace bio {

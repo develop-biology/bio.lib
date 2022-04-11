@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/chemical/structure/LinearStructuralComponent.h"
+#include "bio/chemical/structure/motif/LinearMotif.h"
 #include "bio/genetic/common/Types.h"
 #include "bio/genetic/common/Class.h"
 #include "Gene.h"
@@ -47,7 +47,7 @@ class Expressor;
  */
 class Plasmid :
 	public genetic::Class<Plasmid>,
-	public chemical::LinearStructuralComponent< Gene* >,
+	public chemical::LinearMotif< Gene* >,
 	public molecular::DNA,
 	virtual public ThreadSafe
 {
@@ -56,7 +56,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(genetic,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(genetic,
 		Plasmid)
 
 	/**

@@ -86,7 +86,7 @@
     loopName##_##iterations(__VA_ARGS__)
 
 /**
- * Singleton implementation makes the constructor private so that there is only one instance ever created, which is by Instance()
+ * Singleton interface makes the constructor private so that there is only one instance ever created, which is by Instance()
  * we also override default copy constructor and assignment operator so that nobody can make a copy of the singleton  (otherwise it wouldn't be a singleton). We don't define them, so these methods will give a link error if used.
  * @param className the name of the new singleton
  * @param baseClass the name of the class the new singleton will inherit from (i.e. what to make into a singleton).

@@ -43,8 +43,8 @@ Reactant::Reactant(Name typeName)
 
 Reactant::Reactant(
 	Name typeName,
-	const typename StructuralComponent< Property >::Contents& properties,
-	const typename StructuralComponent< State >::Contents& states
+	const typename UnorderedMotif< Property >::Contents& properties,
+	const typename UnorderedMotif< State >::Contents& states
 )
 	:
 	Class< Reactant >(this),

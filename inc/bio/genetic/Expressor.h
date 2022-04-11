@@ -39,9 +39,9 @@ class Plasmid;
  */
 class Expressor :
 	public Class< Expressor >,
-	public chemical::StructuralComponent< TranscriptionFactor >,
-	public chemical::LinearStructuralComponent< Plasmid* >,
-	public chemical::LinearStructuralComponent< molecular::Protein* >,
+	public chemical::UnorderedMotif< TranscriptionFactor >,
+	public chemical::LinearMotif< Plasmid* >,
+	public chemical::LinearMotif< molecular::Protein* >,
 	virtual public molecular::Vesicle
 {
 public:
@@ -49,7 +49,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(genetic,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(genetic,
 		Expressor)
 
 	/**

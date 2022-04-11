@@ -47,7 +47,7 @@ namespace bio {
 /**
  * IsPrimitive is a bit more complex than it might need to be but the features, while slow, should be robust.
  * First, if T is a pointer, we'll dereference it and try again until it is not.
- * Second, if we're using C++98 and don't have an implementation for T, we'll try looking for std:: in its typename.
+ * Second, if we're using C++98 and don't have an interface for T, we'll try looking for std:: in its typename.
  * @tparam T
  * @param t
  * @return whether or not T is a built-in type or a Biology class, which should, except for a few exceptions, always mean a child of physical::Wave; false by default.
@@ -69,7 +69,7 @@ bool IsPrimitive(const T t)
 
 /**
  * IsPrimitive without an arg is the same as that with, except no automatic pointer dereferencing can be done.
- * If we're using C++98 and don't have an implementation for T, we'll try looking for std:: in its typename.
+ * If we're using C++98 and don't have an interface for T, we'll try looking for std:: in its typename.
  * @tparam T
  * @return whether or not T is a built-in type or a Biology class, which should, except for a few exceptions, always mean a child of physical::Wave; false by default.
  */

@@ -40,7 +40,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(chemical,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical,
 		Reactant)
 
 	/**
@@ -64,8 +64,8 @@ public:
 	 */
 	Reactant(
 		Name typeName,
-		const typename StructuralComponent< Property >::Contents& properties,
-		const typename StructuralComponent< State >::Contents& states
+		const typename UnorderedMotif< Property >::Contents& properties,
+		const typename UnorderedMotif< State >::Contents& states
 	);
 
 	/**

@@ -28,7 +28,7 @@ namespace bio {
 namespace physical {
 
 /**
- * Arrangements provide a more memory-efficient implementation of the Container interface for a single type.
+ * Arrangements provide a more memory-efficient interface of the Container interface for a single type.
  * @tparam TYPE
  */
 template < typename TYPE >
@@ -117,7 +117,7 @@ public:
 	}
 
 	/**
-	 * Please override this to return the size of the type your Container implementation is working with.
+	 * Please override this to return the size of the type your Container interface is working with.
 	 * @return the size of the data type stored in *this.
 	 */
 	virtual const std::size_t GetStepSize() const

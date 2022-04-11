@@ -51,7 +51,7 @@ Surface::Surface(const Surface& toCopy)
 		toCopy.GetPerspective(),
 		toCopy.GetFilter(),
 		symmetry_type::Variable()),
-	chemical::LinearStructuralComponent< Molecule* >(toCopy),
+	chemical::LinearMotif< Molecule* >(toCopy),
 	EnvironmentDependent< Molecule >(toCopy)
 {
 	Bond* bondBuffer;
@@ -61,7 +61,7 @@ Surface::Surface(const Surface& toCopy)
 		--bnd
 		)
 	{
-		bondBuffer = bnd;
+		*bondBuffer = bnd;
 		if (bondBuffer->GetType() == bond_type::Manage())
 		{
 			//Calling FormBondImplementation directly saves us some work and should be safer than trying to do auto-template type determination from Clone().
@@ -82,7 +82,7 @@ Surface::~Surface()
 		--bnd
 		)
 	{
-		bondBuffer = bnd;
+		*bondBuffer = bnd;
 		if (bondBuffer->GetType() == bond_type::Manage())
 		{
 			//bypass BreakBondImplementation and just do it.
@@ -129,7 +129,7 @@ physical::Wave* Surface::Release(
 		--bnd
 		)
 	{
-		bondBuffer = bnd;
+		*bondBuffer = bnd;
 		if (bondBuffer->GetType() == bondType)
 		{
 			ret = ChemicalCast< physical::Wave* >(bondBuffer->GetBonded());
@@ -155,7 +155,7 @@ chemical::Substance* Surface::Release(
 		--bnd
 		)
 	{
-		bondBuffer = bnd;
+		*bondBuffer = bnd;
 		if (bondBuffer->GetType() == bondType)
 		{
 			ret = ChemicalCast< chemical::Substance* >(bondBuffer->GetBonded());
@@ -186,7 +186,7 @@ chemical::Substance* Surface::Release(
 		--bnd
 		)
 	{
-		bondBuffer = bnd;
+		*bondBuffer = bnd;
 		if (bondBuffer->GetType() == bondType)
 		{
 			ret = ChemicalCast< chemical::Substance* >(bondBuffer->GetBonded());
@@ -213,7 +213,7 @@ physical::Waves Surface::ReleaseAll(BondType bondType)
 		--bnd
 		)
 	{
-		bondBuffer = bnd;
+		*bondBuffer = bnd;
 		if (bondBuffer->GetType() == bondType)
 		{
 			ret.push_back(ChemicalCast< physical::Wave* >(bondBuffer->GetBonded()));

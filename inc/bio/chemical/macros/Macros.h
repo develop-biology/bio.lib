@@ -28,17 +28,40 @@
 
 /**
  * Get all virtual methods defined by chemical::Class.
- * @return function signatures for use in BIO_DISAMBIGUATE_CLASS_METHODS
+ * @return function signatures for use in BIO_DISAMBIGUATE_ALL_CLASS_METHODS
  */
-#define BIO_GET_CLASS_METHODS_FOR_chemical()                                   \
-    BIO_GET_CLASS_METHODS_FOR_physical(),\
-    (virtual ::bio::Properties GetProperties() const, GetProperties()),\
-    (virtual ::bio::chemical::Atom* AsAtom(), AsAtom()),\
-    (template< typename AS > operator AS(), template As< AS >()),\
-    (virtual const ::bio::chemical::Atom* AsAtom() const, AsAtom()),\
-    (virtual Code Attenuate(const ::bio::physical::Wave* other), Attenuate(other)),\
-    (virtual Code Disattenuate(const ::bio::physical::Wave* other), Disattenuate(other))
-
+#define BIO_GET_REQUIRED_CLASS_METHODS_FOR_chemical()                          \
+    BIO_GET_REQUIRED_CLASS_METHODS_FOR_physical(),                             \
+    (                                                                          \
+		virtual ::bio::Properties GetProperties() const,                       \
+		GetProperties()                                                        \
+	),                                                                         \
+    (                                                                          \
+		virtual ::bio::chemical::Atom* AsAtom(),                               \
+		AsAtom()                                                               \
+	),                                                                         \
+    (                                                                          \
+		template< typename AS > operator AS(),                                 \
+		template As< AS >()                                                    \
+	),                                                                         \
+    (                                                                          \
+		virtual const ::bio::chemical::Atom* AsAtom() const,                   \
+		AsAtom()                                                               \
+	)
+/**
+ * Get all virtual methods defined by chemical::Class.
+ * @return function signatures for use in BIO_DISAMBIGUATE_ALL_CLASS_METHODS
+ */
+#define BIO_GET_OPTIONAL_CLASS_METHODS_FOR_chemical()                          \
+    BIO_GET_OPTIONAL_CLASS_METHODS_FOR_physical(),                             \
+    (                                                                          \
+		virtual Code Attenuate(const ::bio::physical::Wave* other),            \
+		Attenuate(other)                                                       \
+	),                                                                         \
+    (                                                                          \
+		virtual Code Disattenuate(const ::bio::physical::Wave* other),         \
+		Disattenuate(other)                                                    \
+	)
 
 /**
 To make defining BondTypes easier, use this macro to define the function body of your BondType Function().

@@ -59,6 +59,23 @@ public:
 		BondType type = bond_type::Unknown());
 
 	/**
+	 *
+	 */
+	~Bond();
+
+	/**
+	 * @param id
+	 * @return whether or not the given id matches that of *this.
+	 */
+	bool operator==(const AtomicNumber id) const;
+
+	/**
+	 * @param other
+	 * @return whether or not id of other matches that of *this.
+	 */
+	bool operator==(const Bond& other) const;
+
+	/**
 	 * Update the contents of *this.
 	 * Only works if *this IsEmpty().
 	 * @param id

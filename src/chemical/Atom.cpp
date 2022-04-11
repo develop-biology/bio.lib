@@ -60,7 +60,7 @@ Code Atom::Attenuate(const physical::Wave* other)
 		--bnd
 		)
 	{
-		bondBuffer = bnd;
+		*bondBuffer = bnd;
 		if (bondBuffer->IsEmpty())
 		{
 			continue;
@@ -93,7 +93,7 @@ Code Atom::Disattenuate(const physical::Wave* other)
 		--bnd
 		)
 	{
-		bondBuffer = bnd;
+		*bondBuffer = bnd;
 		if (bondBuffer->IsEmpty())
 		{
 			continue;
@@ -118,7 +118,7 @@ bool Atom::FormBondImplementation(
 	BondType type
 )
 {
-	BIO_SANITIZE(!toBond || !id ||, ,
+	BIO_SANITIZE(!toBond || !id, ,
 		return false);
 
 	Valence position = GetBondPosition(id);
@@ -212,6 +212,16 @@ const physical::Wave* Atom::GetBonded(Valence position) const
 {
 	BIO_SANITIZE(m_bonds.IsAllocated(position),,return NULL)
 	return m_bonds.OptimizedAccess(position).GetBonded();
+}
+
+Bonds* Atom::GetAllBonds()
+{
+	return &m_bonds;
+}
+
+const Bonds* Atom::GetAllBonds() const
+{
+	return &m_bonds;
 }
 
 

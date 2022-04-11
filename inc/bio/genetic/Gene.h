@@ -46,13 +46,13 @@ namespace genetic {
 class Gene :
 	public Class< Gene >,
 	public molecular::DNA,
-	public chemical::StructuralComponent< TranscriptionFactor >
+	public chemical::UnorderedMotif< TranscriptionFactor >
 {
 public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(genetic,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(genetic,
 		Gene)
 
 	/**

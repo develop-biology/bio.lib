@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,32 +19,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/chemical/structure/implementation/AbstractStructure.h"
-#include "bio/chemical/common/Properties.h"
+#include "bio/chemical/structure/Structure.h"
 
 namespace bio {
 namespace chemical {
 
-/*static*/ Properties AbstractStructure::GetClassProperties()
+Structure::Structure()
 {
-	Properties ret;
-	ret.push_back(property::Structural());
-	return ret;
 }
 
-AbstractStructure::AbstractStructure() :
-	m_contents(NULL)
+Structure::~Structure()
 {
-
-}
-
-AbstractStructure::~AbstractStructure()
-{
-	if (m_contents)
-	{
-		delete m_contents;
-		m_contents = NULL;
-	}
 }
 
 } //chemical namespace

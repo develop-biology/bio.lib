@@ -27,9 +27,9 @@ namespace molecular {
 
 Vesicle::Vesicle(const Vesicle& toCopy) :
 	molecular::Class<Vesicle>(this, toCopy.GetId(), toCopy.GetPerspective(), toCopy.GetFilter()),
-	LinearStructuralComponent< Molecule* >(toCopy)
+	LinearMotif< Molecule* >(toCopy)
 {
-	LinearStructuralComponent< Molecule* >::m_perspective = this;
+	LinearMotif< Molecule* >::m_perspective = this;
 }
 
 Vesicle::~Vesicle()

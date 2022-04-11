@@ -45,9 +45,9 @@ class Iterator;
  * All we provide is a consistent means of accessing those data. To this end, we ensure that a Index's validity follows the lifecycle of the datum at that Index. This is identical to pointers: a Index represents the memory address of what is stored in *this. This means that as data are erased from *this, the memory is not moved, consolidated, or manipulated in any way that destroys the old references.
  * This rule does have some exceptions and you are allowed to break it yourself. However, we try to stick by this as much as possible (e.g. see Insert(), below).
  *
- * When using an Iterator, you will be given a SmartIterator which dynamically determines its implementation. Thus, we allow for full inheritance of *this base class.
+ * When using an Iterator, you will be given a SmartIterator which dynamically determines its interface. Thus, we allow for full inheritance of *this base class.
  *
- * There is another tradeoff here that we are leaning into: our implementation does not make for easy use of std:: containers under-the-hood. By enforcing consistency on access, we've made the system less flexible. This may be changed in a major release down the road but its what we're sticking with for now.
+ * There is another tradeoff here that we are leaning into: our interface does not make for easy use of std:: containers under-the-hood. By enforcing consistency on access, we've made the system less flexible. This may be changed in a major release down the road but its what we're sticking with for now.
  */
 class Container
 {
@@ -276,7 +276,7 @@ public:
 protected:
 
 	/**
-	 * Please override this to return the size of the type your Container implementation is working with.
+	 * Please override this to return the size of the type your Container interface is working with.
 	 * @return the size of the data type stored in *this.
 	 */
 	virtual const std::size_t GetStepSize() const;

@@ -34,7 +34,7 @@ class Habitat;
  * Organisms are the basic units of "life" within Biology.
  * They are organized in a hierarchical, Cell-centric manner.
  * They grow and develop through Morphogenesis().
- * They can respond to stimuli, depending on the implementation.
+ * They can respond to stimuli, depending on the interface.
  * They can reproduce, if you Clone() them.
  * They can adapt to new environments, if you add in dynamic Plasmid & TranscriptionFactor rules.
  * They "metabolize" time & data into their own organization. This is the primary difference between computational and biological (proper) life and makes these Organisms more "electric" or "ethereal" than "real".
@@ -46,7 +46,7 @@ class Habitat;
  */
 class Organism :
 	public cellular::Class< Organism >,
-	public chemical::LinearStructuralComponent< cellular::OrganSystem* >,
+	public chemical::LinearMotif< cellular::OrganSystem* >,
 	public molecular::EnvironmentDependent< Habitat >
 {
 public:
@@ -54,7 +54,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(cellular,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular,
 		Organism)
 
 	/**

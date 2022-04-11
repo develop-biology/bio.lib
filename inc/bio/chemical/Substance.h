@@ -25,9 +25,10 @@
 #include "bio/chemical/common/States.h"
 #include "bio/chemical/common/Properties.h"
 #include "bio/chemical/common/Class.h"
-#include "bio/chemical/macros/Macros.h"
 #include "bio/chemical/common/Filters.h"
-#include "bio/chemical/structure/StructuralComponent.h"
+#include "bio/chemical/macros/Macros.h"
+#include "bio/chemical/structure/Structure.h"
+#include "bio/chemical/structure/motif/UnorderedMotif.h"
 
 namespace bio {
 namespace chemical {
@@ -38,47 +39,28 @@ namespace chemical {
  * Substances start Enable()d.
  */
 class Substance :
+	virtual public Structure,
 	public chemical::Class< Substance >,
-	public StructuralComponent< Property >,
-	public StructuralComponent< State >
+	public UnorderedMotif< Property >,
+	public UnorderedMotif< State >
 {
 public:
+
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(chemical, Substance, &SubstancePerspective::Instance(), filter::Chemical())
+
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(chemical,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical,
 		Substance)
-
-	/**
-	 *
-	 */
-	Substance();
-
-	/**
-	 * @param name
-	 * @param perspective
-	 */
-	Substance(
-		Name name,
-		physical::Perspective< StandardDimension >* perspective,
-		Filter filter = filter::Chemical());
-
-	/**
-	 * @param id
-	 * @param perspective
-	 */
-	Substance(
-		Id id,
-		physical::Perspective< StandardDimension >* perspective,
-		Filter filter = filter::Chemical());
 
 	/**
 	 * @param properties
 	 * @param states
 	 */
-	explicit Substance(
-		const typename StructuralComponent< Property >::Contents& properties,
-		const typename StructuralComponent< State >::Contents& states
+	Substance(
+		const typename UnorderedMotif< Property >::Contents& properties,
+		const typename UnorderedMotif< State >::Contents& states
 	);
 
 	/**

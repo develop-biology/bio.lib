@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -23,14 +23,15 @@
 
 #include "bio/common/ThreadSafe.h"
 #include "bio/chemical/Atom.h"
+#include "bio/chemical/structure/motif/LinearMotif.h"
 
 namespace bio {
 namespace chemical {
 
 /**
- * Interface methods for all StructuralComponent classes.
+ * Interface methods for all UnorderedMotif classes.
  */
-class StructureInterface :
+class UnorderedStructureInterface :
 	virtual public ThreadSafe,
 	virtual public Atom
 {
@@ -39,60 +40,20 @@ public:
 	/**
 	 *
 	 */
-	StructureInterface()
+	UnorderedStructureInterface()
 	{
 	}
 
 	/**
 	 *
 	 */
-	virtual ~StructureInterface()
+	virtual ~UnorderedStructureInterface()
 	{
-	}
-
-	/**
-	 * Gets a pointer to the t within *this using the appropriate implementation for T.
-	 * @tparam T
-	 * @param t
-	 * @return a T* pointing to the contents of *this or 0; 0 if T is invalid.
-	 */
-	template < typename T >
-	T Get(const T t)
-	{
-		T ret = 0;
-		LockThread();
-		StructuralComponentImplementation< T >* implementer = this->AsBonded< StructuralComponentImplementation< T >* >();
-		if (implementer)
-		{
-			ret = implementer->GetImplementation(t);
-		}
-		UnlockThread();
-		return ret;
-	}
-
-	/**
-	 * Gets a pointer to the t within *this using the appropriate implementation for T.
-	 * @tparam T
-	 * @param t
-	 * @return a const T* pointing to the contents of *this or 0; 0 if T is invalid.
-	 */
-	template < typename T >
-	const T Get(const T t) const
-	{
-		const T ret = 0;
-		LockThread();
-		StructuralComponentImplementation< T >* implementer = this->AsBonded< StructuralComponentImplementation< T >* >();
-		if (implementer)
-		{
-			ret = implementer->GetImplementation(t);
-		}
-		UnlockThread();
-		return ret;
 	}
 
 
 	/**
-	 * Adds to *this using the appropriate implementation for T.
+	 * Adds to *this using the appropriate interface for T.
 	 * Does not allow duplicates.
 	 * @tparam T
 	 * @param t
@@ -103,7 +64,7 @@ public:
 	{
 		T ret = 0;
 		LockThread();
-		StructuralComponentImplementation< T >* implementer = this->AsBonded< StructuralComponentImplementation< T >* >();
+		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
 		if (implementer)
 		{
 			ret = implementer->AddImplementation(t);
@@ -124,7 +85,7 @@ public:
 	{
 		T ret = 0;
 		LockThread();
-		StructuralComponentImplementation< T >* implementer = this->AsBonded< StructuralComponentImplementation< T >* >();
+		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
 		if (implementer)
 		{
 			ret = implementer->RemoveImplementation(t);
@@ -141,10 +102,10 @@ public:
 	 * @param other
 	 */
 	template < typename T >
-	void Import(const StructuralComponentImplementation <T>* other)
+	void Import(const UnorderedMotif <T>* other)
 	{
 		LockThread();
-		StructuralComponentImplementation< T >* implementer = this->AsBonded< StructuralComponentImplementation< T >* >();
+		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
 		if (implementer)
 		{
 			implementer->ImportImplementation(other);
@@ -154,7 +115,7 @@ public:
 
 	/**
 	 * Copy the contents of a vector into *this.
-	 * Will only work if *this contains a StructuralComponent of the given type.
+	 * Will only work if *this contains a UnorderedMotif of the given type.
 	 * Does nothing if T is invalid.
 	 * @tparam T
 	 * @param other
@@ -162,14 +123,14 @@ public:
 	template < typename T >
 	void Import(const std::vector< T >& other)
 	{
-		StructuralComponentImplementation<T> buffer(other);
+		UnorderedMotif<T> buffer(other);
 		this->Import<T>(&buffer);
 	}
 
 	/**
 	 * This method does way more than it should reasonably be able to.
 	 * Here, we take advantage of some of the Biology features that are starting to form. Primarily, we leverage physical::Properties and Bonds (per Atom) to search through the pseudo-vtable of Atom, find all StructuralComponents in *this and attempt to Import the corresponding StructuralComponents of other.
-	 * This method side-steps the typical inheritance encapsulation in order to prevent child classes from having to override this method and account for each new StructuralComponent they add. In other words, complexity here removes repeated code downstream.
+	 * This method side-steps the typical inheritance encapsulation in order to prevent child classes from having to override this method and account for each new UnorderedMotif they add. In other words, complexity here removes repeated code downstream.
 	 * @param other
 	 */
 	Code ImportAll(const physical::Wave* other)
@@ -181,24 +142,24 @@ public:
 		LockThread(); // in case m_bonds changes.
 		Bond* bondBuffer;
 		for (
-			SmartIterator bnd = toCopy.m_bonds.End();
+			SmartIterator bnd = other->AsAtom()->GetAllBonds()->End();
 			!bnd.IsAtBeginning();
 			--bnd
 			)
 		{
-			bondBuffer = bnd;
+			*bondBuffer = bnd;
 			if (bondBuffer->IsEmpty())
 			{
 				continue;
 			}
 			if (physical::Wave::GetResonanceBetween(
 				bondBuffer->GetBonded(),
-				AbstractStructure::GetClassProperties()).size() == 0)
+				AbstractMotif::GetClassProperties()).size() == 0)
 			{
 				continue;
 			}
 			const physical::Wave* otherBond = other->AsAtom()->GetBonded(other->AsAtom()->GetBondPosition(bondBuffer->GetId()));
-			(Cast< AbstractStructure* >(bondBuffer->GetBonded()))->ImportImplementation(otherBond); //actual work
+			(Cast< AbstractMotif* >(bondBuffer->GetBonded()))->ImportImplementation(otherBond); //actual work
 		}
 		UnlockThread();
 
@@ -215,7 +176,7 @@ public:
 	{
 		unsigned long ret = 0;
 		LockThread();
-		StructuralComponentImplementation< T >* implementer = this->AsBonded< StructuralComponentImplementation< T >* >();
+		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
 		if (implementer)
 		{
 			ret = implementer->GetCountImplementation();
@@ -231,11 +192,11 @@ public:
 	 * @return A pointer to all contents in *this; 0 if T is invalid.
 	 */
 	template < typename T >
-	typename StructuralComponentImplementation< T >::Contents* GetAll()
+	Container* GetAll()
 	{
-		typename StructuralComponentImplementation< T >::Contents* ret = 0;
+		Container* ret = 0;
 		LockThread();
-		StructuralComponentImplementation< T >* implementer = this->AsBonded< StructuralComponentImplementation< T >* >();
+		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
 		if (implementer)
 		{
 			ret = implementer->GetAllImplementation();
@@ -251,11 +212,11 @@ public:
 	 * @return A pointer to all contents in *this; 0 if T is invalid.
 	 */
 	template < typename T >
-	const typename StructuralComponentImplementation< T >::Contents* GetAll() const
+	const typename UnorderedMotif< T >::Contents* GetAll() const
 	{
-		const typename StructuralComponentImplementation< T >::Contents* ret = 0;
+		const typename UnorderedMotif< T >::Contents* ret = 0;
 		LockThread();
-		StructuralComponentImplementation< T >* implementer = this->AsBonded< StructuralComponentImplementation< T >* >();
+		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
 		if (implementer)
 		{
 			ret = implementer->GetAllImplementation();
@@ -276,7 +237,7 @@ public:
 	{
 		bool ret = false;
 		LockThread();
-		StructuralComponentImplementation< T >* implementer = this->AsBonded< StructuralComponentImplementation< T >* >();
+		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
 		if (implementer)
 		{
 			ret = implementer->HasImplementation(t);
@@ -291,11 +252,11 @@ public:
 	 * @return quantity overlap with other; 0 if T is invalid.
 	 */
 	template < typename T >
-	unsigned int GetNumMatching(const StructuralComponentImplementation <T>& other) const
+	unsigned int GetNumMatching(const Container* other) const
 	{
 		unsigned int ret = 0;
 		LockThread();
-		StructuralComponentImplementation< T >* implementer = this->AsBonded< StructuralComponentImplementation< T >* >();
+		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
 		if (implementer)
 		{
 			ret = implementer->GetNumMatchingImplementation(other);
@@ -311,11 +272,11 @@ public:
 	 * @return whether or not the given contents exists in *this
 	 */
 	template < typename T >
-	bool HasAll(const typename StructuralComponentImplementation< T >::Contents& contents) const
+	bool HasAll(const Container* contents) const
 	{
 		bool ret = false;
 		LockThread();
-		StructuralComponentImplementation< T >* implementer = this->AsBonded< StructuralComponentImplementation< T >* >();
+		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
 		if (implementer)
 		{
 			ret = implementer->HasAllImplementation(contents);
@@ -334,7 +295,7 @@ public:
 	void Clear()
 	{
 		LockThread();
-		StructuralComponentImplementation< T >* implementer = this->AsBonded< StructuralComponentImplementation< T >* >();
+		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
 		if (implementer)
 		{
 			implementer->ClearImplementation();
@@ -352,7 +313,7 @@ public:
 	{
 		std::string ret = "";
 		LockThread();
-		StructuralComponentImplementation< T >* implementer = this->AsBonded< StructuralComponentImplementation< T >* >();
+		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
 		if (implementer)
 		{
 			ret = implementer->GetStringFromImplementation(separator);

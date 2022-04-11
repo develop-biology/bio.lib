@@ -27,8 +27,8 @@
 #include "bio/common/macros/OSMacros.h"
 #include "bio/physical/Quantum.h"
 #include "bio/physical/common/Class.h"
-#include "PeriodicTable.h"
 #include "bio/chemical/common/BondTypes.h"
+#include "PeriodicTable.h"
 #include "Bond.h"
 
 namespace bio {
@@ -55,7 +55,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
 		Atom)
 
 	/**
@@ -127,7 +127,7 @@ public:
 		Valence position = GetBondPosition< T >();
 		BIO_SANITIZE(position, ,
 			return NULL);
-		return ForceCast< T >(m_bonds[position].GetBonded());
+		return ForceCast< T >(m_bonds.OptimizedAccess(position).GetBonded());
 	}
 
 	/**
@@ -142,7 +142,7 @@ public:
 
 		BIO_SANITIZE(position, ,
 			return NULL);
-		return ForceCast< const T >(m_bonds[position].GetBonded());
+		return ForceCast< const T >(m_bonds.OptimizedAccess(position).GetBonded());
 	}
 
 	/**
@@ -359,6 +359,18 @@ public:
 		return GetBondType(GetBondPosition< T >());
 		#endif
 	}
+
+	/**
+	 * DANGEROUS!
+	 * @return a pointer to the Bonds in *this.
+	 */
+	Bonds* GetAllBonds();
+
+	/**
+	 * DANGEROUS! (but slightly less so).
+	 * @return a pointer to the Bonds in *this.
+	 */
+	const Bonds* GetAllBonds() const;
 
 protected:
 	Bonds m_bonds;

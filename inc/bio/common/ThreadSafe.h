@@ -38,7 +38,7 @@ namespace bio {
 /**
  * ThreadSafe classes are ones that can work with threads.
  * They are meant to be simple and abstract.
- * The actual implementation of ThreadSafe methods is c++ version and platform specific.
+ * The actual interface of ThreadSafe methods is c++ version and platform specific.
  * Fortunately, threading was standardized in c++11; however, we do still support c++98 builds.
  * At this time, ThreadSafe methods are only implemented for c++11 and on and on linux systems using c++98 and on.
  * Support for c++98 on other platforms may or may not ever happen.

@@ -21,35 +21,36 @@
 
 #pragma once
 
-#include "Gene.h"
+#include "bio/chemical/structure/interface/UnorderedStructureInterface.h"
+#include "bio/chemical/structure/interface/LinearStructureInterface.h"
 
 namespace bio {
-namespace genetic {
+namespace chemical {
 
 /**
- * RNA is responsible for interacting with Genes and making Expression possible.
+ * Chemical structures can have Motifs.
+ * Here, we implement all the necessary interfaces for adding Motifs to your classes.
+ *
+ * This class should be virtually inherited.
+ *
+ * Motifs should be inherited (but can be added through Bonding). The reason that we break the "has a motif" idea and instead go for "is a motif" inheritance style is that chemical compositions define the identity of chemical structures. So if a chemical substance would change its identity by containing different motifs, it makes sense that the motifs define the class structure of the substance.
  */
-class RNA :
-	public Class< RNA >,
-	public chemical::LinearMotif< Gene* >
+class Structure :
+	public UnorderedStructureInterface,
+	public LinearStructureInterface
 {
 public:
-	/**
-	 * Ensure virtual methods point to Class implementations.
-	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(genetic,
-		RNA)
 
 	/**
-	 * Standard ctors.
-	 * NOTE: RNA does not always have to be Identifiable. We simply make it so for ease-of use.
+	 *
 	 */
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(genetic,
-		RNA,
-		&genetic::RNAPerspective::Instance(),
-		filter::Genetic())
+	Structure();
 
+	/**
+	 *
+	 */
+	virtual ~Structure();
 };
 
-} //genetic namespace
+} //chemical namespace
 } //bio namespace

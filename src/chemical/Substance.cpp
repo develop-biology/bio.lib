@@ -24,57 +24,14 @@
 namespace bio {
 namespace chemical {
 
-Substance::Substance()
-	:
-	chemical::Class< Substance >(this)
-{
-	CtorCommon();
-}
-
 Substance::Substance(
-	Name name,
-	physical::Perspective< StandardDimension >* perspective,
-	Filter filter
-)
-	:
-	chemical::Class< Substance >(
-		this,
-		filter
-	)
-{
-	physical::Identifiable< StandardDimension >::Initialize(
-		name,
-		perspective
-	);
-	CtorCommon();
-}
-
-Substance::Substance(
-	Id id,
-	physical::Perspective< StandardDimension >* perspective,
-	Filter filter
-)
-	:
-	chemical::Class< Substance >(
-		this,
-		filter
-	)
-{
-	physical::Identifiable< StandardDimension >::Initialize(
-		id,
-		perspective
-	);
-	CtorCommon();
-}
-
-Substance::Substance(
-	const typename StructuralComponent< Property >::Contents& properties,
-	const typename StructuralComponent< State >::Contents& states
+	const typename UnorderedMotif< Property >::Contents& properties,
+	const typename UnorderedMotif< State >::Contents& states
 )
 	:
 	chemical::Class< Substance >(this),
-	StructuralComponent< Property >(properties),
-	StructuralComponent< State >(states)
+	UnorderedMotif< Property >(properties),
+	UnorderedMotif< State >(states)
 {
 	CtorCommon();
 }

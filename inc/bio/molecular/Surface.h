@@ -26,7 +26,7 @@
 #include "bio/molecular/common/Class.h"
 #include "bio/molecular/macros/Macros.h"
 #include "EnvironmentDependent.h"
-#include "bio/chemical/structure/LinearStructuralComponent.h"
+#include "bio/chemical/structure/motif/LinearMotif.h"
 
 namespace bio {
 namespace molecular {
@@ -40,7 +40,7 @@ class Molecule;
  */
 class Surface :
 	public Class< Surface >,
-	public chemical::LinearStructuralComponent< Molecule* >,
+	public chemical::LinearMotif< Molecule* >,
 	public EnvironmentDependent< Molecule >
 {
 public:
@@ -48,7 +48,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(molecular,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular,
 		Surface)
 
 	/**

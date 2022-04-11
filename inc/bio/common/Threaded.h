@@ -40,7 +40,7 @@
 namespace bio {
 
 /**
- * Threaded classes are a wrapper around whatever thread implementation the system is using.
+ * Threaded classes are a wrapper around whatever thread interface the system is using.
  * This class moves whatever Work() you need to do into a new thread with a simple wrapper that is OS & c++ version independent.
  *
  * NOTE: we're currently only supporting threading on c++11 and greater and on linux using c++98 on.

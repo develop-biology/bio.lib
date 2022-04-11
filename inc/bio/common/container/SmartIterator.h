@@ -29,7 +29,7 @@ class Container;
 class Iterator;
 
 /**
- * SmartIterators wrap our iterator implementation to provide a consistent means of access.
+ * SmartIterators wrap our iterator interface to provide a consistent means of access.
  * Everything is const so that we don't need to worry about const_iterator vs iterator nonsense.
  */
 class SmartIterator
@@ -56,12 +56,12 @@ public:
 	~SmartIterator();
 
 	/**
-	 * @return the implementation used by *this.
+	 * @return the interface used by *this.
 	 */
 	Iterator* GetImplementation();
 
 	/**
-	 * @return the implementation used by *this.
+	 * @return the interface used by *this.
 	 */
 	const Iterator* GetImplementation() const;
 

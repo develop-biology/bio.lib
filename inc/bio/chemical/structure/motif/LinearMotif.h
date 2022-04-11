@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -21,11 +21,12 @@
 
 #pragma once
 
+#include "UnorderedMotif.h"
 #include "bio/chemical/common/Cast.h"
 #include "bio/chemical/common/Class.h"
+#include "bio/chemical/common/Properties.h"
 #include "bio/chemical/Element.h"
-#include "bio/chemical/structure/StructuralComponent.h"
-#include "bio/chemical/structure/implementation/LinearStructureInterface.h"
+#include "bio/chemical/reaction/Excitation.h"
 #include "bio/physical/arrangement/Line.h"
 
 #if BIO_CPP_VERSION >= 11
@@ -36,10 +37,10 @@ namespace bio {
 namespace chemical {
 
 /**
- * LinearStructuralComponent objects contain pointers to chemical::Classes.
+ * LinearMotif objects contain pointers to chemical::Classes.
  *
  * IMPORTANT: CONTENT_TYPE MUST BE A chemical::Class* (which is in the StandardDimension).
- * YOU CANNOT USE LinearStructuralComponent WITH TYPES THAT ARE NOT POINTERS TO CHILDREN OF chemical::Class (i.e. a physical::Identifiable<StandardDimension>)
+ * YOU CANNOT USE LinearMotif WITH TYPES THAT ARE NOT POINTERS TO CHILDREN OF chemical::Class (i.e. a physical::Identifiable<StandardDimension>)
  * Other Dimensions may be supported in a future release.
  * physical::Line and physical::Linear for why.
  *
@@ -50,11 +51,10 @@ namespace chemical {
  * @tparam CONTENT_TYPE a pointer type to a child of chemical::Class
  */
 template < typename CONTENT_TYPE >
-class LinearStructuralComponent :
-	virtual public LinearStructureInterface,
-	public Element< LinearStructuralComponent< CONTENT_TYPE > >,
-	public chemical::Class< LinearStructuralComponent< CONTENT_TYPE > >,
-	public StructuralComponent< CONTENT_TYPE >
+class LinearMotif :
+	public Element< LinearMotif< CONTENT_TYPE > >,
+	public chemical::Class< LinearMotif< CONTENT_TYPE > >,
+	public UnorderedMotif< CONTENT_TYPE >
 {
 public:
 
@@ -65,17 +65,20 @@ public:
 
 	/**
 	 * Ensure virtual methods point to Class implementations.
+	 * We want to define our own Attenuate & Disattenuate, so we have to ignore the optional class methods for the chemical class.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(chemical,
-		LinearStructuralComponent< CONTENT_TYPE >)
+	BIO_DISAMBIGUATE_REQUIRED_CLASS_METHODS(chemical,
+		LinearMotif< CONTENT_TYPE >)
+	BIO_DISAMBIGUATE_OPTIONAL_CLASS_METHODS(physical,
+		LinearMotif< CONTENT_TYPE >)
 
 	/**
-	 * Add property::Linear() to what is given by AbstractStructure.
+	 * Add property::Linear() to what is given by AbstractMotif.
 	 * @return {Structural(), Linear()}
 	 */
 	static Properties GetClassProperties()
 	{
-		Properties ret = AbstractStructure::GetClassProperties();
+		Properties ret = AbstractMotif::GetClassProperties();
 		ret.push_back(property::Linear());
 		return ret;
 	}
@@ -83,10 +86,10 @@ public:
 	/**
 	 * @param perspective
 	 */
-	explicit LinearStructuralComponent(physical::Perspective< StandardDimension >* perspective = NULL)
+	explicit LinearMotif(physical::Perspective< StandardDimension >* perspective = NULL)
 		:
-		Element< LinearStructuralComponent< CONTENT_TYPE > >(GetClassProperties()),
-		chemical::Class< LinearStructuralComponent< CONTENT_TYPE > >(this),
+		Element< LinearMotif< CONTENT_TYPE > >(GetClassProperties()),
+		chemical::Class< LinearMotif< CONTENT_TYPE > >(this),
 		m_perspective(perspective)
 	{
 		CtorCommon();
@@ -97,13 +100,13 @@ public:
 	 * @param name
 	 * @param perspective
 	 */
-	explicit LinearStructuralComponent(
+	explicit LinearMotif(
 		const Contents* contents,
 		physical::Perspective< StandardDimension >* perspective = NULL
 	)
 		:
-		Element< LinearStructuralComponent< CONTENT_TYPE > >(GetClassProperties()),
-		chemical::Class< LinearStructuralComponent< CONTENT_TYPE > >(this),
+		Element< LinearMotif< CONTENT_TYPE > >(GetClassProperties()),
+		chemical::Class< LinearMotif< CONTENT_TYPE > >(this),
 		m_perspective(perspective)
 	{
 		CtorCommon();
@@ -111,14 +114,14 @@ public:
 	}
 
 	/**
-	 * Copying a LinearStructuralComponent will Clone all contents in toCopy into *this.
+	 * Copying a LinearMotif will Clone all contents in toCopy into *this.
 	 * Keep in mind that dtor will delete the contents of *this.
 	 * @param toCopy
 	 */
-	LinearStructuralComponent(const LinearStructuralComponent< CONTENT_TYPE >& toCopy)
+	LinearMotif(const LinearMotif< CONTENT_TYPE >& toCopy)
 		:
-		Element< LinearStructuralComponent< CONTENT_TYPE > >(toCopy.GetClassProperties()),
-		chemical::Class< LinearStructuralComponent< CONTENT_TYPE > >(this),
+		Element< LinearMotif< CONTENT_TYPE > >(toCopy.GetClassProperties()),
+		chemical::Class< LinearMotif< CONTENT_TYPE > >(this),
 		m_perspective(toCopy.m_perspective)
 	{
 		CtorCommon();
@@ -130,13 +133,13 @@ public:
 	 * NOTE: this uses delete, not delete[].
 	 * The only way to avoid this is by Clear()ing *this yourself first.
 	 */
-	virtual ~LinearStructuralComponent()
+	virtual ~LinearMotif()
 	{
 		this->m_contents->Clear();
 	}
 
 	/**
-	 * Each LinearStructuralComponent may use a different Perspective for identifying its contents.
+	 * Each LinearMotif may use a different Perspective for identifying its contents.
 	 * This Perspective will be used for Name <-> Id matching, Wave->Clone()ing, etc.
 	 * See bio/physical/Perspective.h for more details.
 	 */
@@ -165,7 +168,7 @@ public:
 	 */
 	virtual CONTENT_TYPE AddImplementation(CONTENT_TYPE content)
 	{
-		return this->m_contents->LinearAccess(this->m_contents->Add(content));
+		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(this->m_contents->Add(content)));
 	}
 
 	/**
@@ -175,7 +178,7 @@ public:
 	 * NOTE: THIS DESTROYS INDEX INTEGRITY.
 	 * Indices will be rearranged to accommodate the insertion, making any cached Index invalid.
 	 *
-	 * @param toAdd what to add. IMPORTANT: This must not already be in a LinearStructuralComponent (i.e. create a clone() before adding it to another destination).
+	 * @param toAdd what to add. IMPORTANT: This must not already be in a LinearMotif (i.e. create a clone() before adding it to another destination).
 	 * @param position determines where in *this the Content is added.
 	 * @param optionalPositionArg If a position is specified, the optionalPositionArg is the id of the Content referenced (e.g. BEFORE, MyContentId()).
 	 * @param transferSubContents allows all of the Contents within a conflicting Content to be copied into the new Content, before the conflicting Content is deleted (similar to renaming an upper directory while preserving it's contents).
@@ -189,7 +192,7 @@ public:
 	)
 	{
 		BIO_SANITIZE(toAdd, ,
-			return code::MissingAgument1())
+			return code::MissingArgument1())
 
 		Code ret = code::Success();
 
@@ -199,8 +202,8 @@ public:
 
 		//Remove conflicts
 		for (
-			SmartIterator cnt = destination->End();
-			!cnt->IsAtBeginning();
+			SmartIterator cnt = this->m_contents->End();
+			!cnt.IsAtBeginning();
 			--cnt
 			)
 		{
@@ -214,7 +217,7 @@ public:
 			}
 		}
 
-		CONTENT_TYPE addition = CloneAndCast< CONTENT_TYPE >(content);
+		CONTENT_TYPE addition = CloneAndCast< CONTENT_TYPE >(toAdd);
 		BIO_SANITIZE(addition, ,
 			return code::GeneralFailure())
 
@@ -233,19 +236,19 @@ public:
 			case TOP:
 			{
 				this->m_contents->Insert(
-					this->m_contents->GetBeginIndex(),
-					addition
+					addition,
+					this->m_contents->GetBeginIndex()
 				);
 				break;
 			}
 			case BEFORE:
 			{
-				Index placement = Cast< Line* >(this->m_contents)->SeekToId(optionalPositionArg);
+				Index placement = Cast< physical::Line* >(this->m_contents)->SeekToId(optionalPositionArg);
 				if (!placement)
 				{
 					return code::GeneralFailure();
 				}
-				BIO_SANITIZE(Cast< Line* >(this->m_contents)->LinearAccess(placement)->GetPerspective() == addition->GetPerspective(), ,
+				BIO_SANITIZE(Cast< physical::Line* >(this->m_contents)->LinearAccess(placement)->GetPerspective() == addition->GetPerspective(), ,
 					return code::GeneralFailure());
 
 				this->m_contents->Insert(
@@ -256,12 +259,12 @@ public:
 			}
 			case AFTER:
 			{
-				Index placement = Cast< Line* >(this->m_contents)->SeekToId(optionalPositionArg);
+				Index placement = Cast< physical::Line* >(this->m_contents)->SeekToId(optionalPositionArg);
 				if (!placement)
 				{
 					return code::GeneralFailure();
 				}
-				BIO_SANITIZE(Cast< Line* >(this->m_contents)->LinearAccess(placement)->GetPerspective() == addition->GetPerspective(), ,
+				BIO_SANITIZE(Cast< physical::Line* >(this->m_contents)->LinearAccess(placement)->GetPerspective() == addition->GetPerspective(), ,
 					return code::GeneralFailure());
 
 				this->m_contents->Insert(
@@ -296,14 +299,14 @@ public:
 		StandardDimension id
 	)
 	{
-		Index ret = Cast< Line* >(this->m_contents)->SeekToId(id);
+		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToId(id);
 		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret,,return NULL) //level 2 for GetOrCreate.
 
-		return ChemicalCast< CONTENT_TYPE >(Cast< Line* >(this->m_contents)->LinearAccess(ret));
+		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret));
 	}
 
 	/**
-	* const implementation for getting by id.
+	* const interface for getting by id.
 	* @param id
 	* @return a Content of the given id or NULL.
 	*/
@@ -311,10 +314,10 @@ public:
 		StandardDimension id
 	) const
 	{
-		Index ret = Cast< Line* >(this->m_contents)->SeekToId(id);
+		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToId(id);
 		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret,,return NULL) //level 2 for GetOrCreate.
 
-		return ChemicalCast< CONTENT_TYPE >(Cast< Line* >(this->m_contents)->LinearAccess(ret));
+		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret));
 	}
 
 
@@ -327,10 +330,10 @@ public:
 		Name name
 	)
 	{
-		Index ret = Cast< Line* >(this->m_contents)->SeekToName(name);
+		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToName(name);
 		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret,,return NULL) //level 2 for GetOrCreate.
 
-		return ChemicalCast< CONTENT_TYPE >(Cast< Line* >(this->m_contents)->LinearAccess(ret));
+		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret));
 	}
 
 	/**
@@ -342,10 +345,10 @@ public:
 		Name name
 	) const
 	{
-		Index ret = Cast< Line* >(this->m_contents)->SeekToName(name);
+		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToName(name);
 		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret,,return NULL) //level 2 for GetOrCreate.
 
-		return ChemicalCast< CONTENT_TYPE >(Cast< Line* >(this->m_contents)->LinearAccess(ret));
+		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret));
 	}
 
 	/**
@@ -422,12 +425,12 @@ public:
 	 * Clone()s each element.
 	 * @param other
 	 */
-	virtual void ImportImplementation(const LinearStructuralComponent< CONTENT_TYPE >* other)
+	virtual void ImportImplementation(const LinearMotif< CONTENT_TYPE >* other)
 	{
 		BIO_SANITIZE(other, ,
 			return);
 
-		this->m_contents->Import(other->m_contens);
+		this->m_contents->Import(other->m_contents);
 	}
 
 	/**
@@ -526,7 +529,7 @@ public:
 			)
 		{
 			ret += cnt.template As< physical::Identifiable< StandardDimension >* >()->GetName();
-			if (cnt.GetIndex() != this->m_contents.GetEndIndex() - 1)
+			if (cnt.GetIndex() != this->m_contents->GetEndIndex() - 1)
 			{
 				ret += separator;
 			}
@@ -558,11 +561,11 @@ private:
 		BIO_ASSERT(Cast< Substance* >(&ct) != NULL);
 		#endif
 
-		if (m_contents)
+		if (this->m_contents)
 		{
-			delete m_contents;
+			delete this->m_contents;
 		}
-		m_contents = new physical::Line(4);
+		this->m_contents = new physical::Line(4);
 	}
 
 };

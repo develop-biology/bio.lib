@@ -19,37 +19,43 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include "Gene.h"
+#include "bio/chemical/structure/motif/AbstractMotif.h"
+#include "bio/chemical/common/Properties.h"
 
 namespace bio {
-namespace genetic {
+namespace chemical {
 
-/**
- * RNA is responsible for interacting with Genes and making Expression possible.
- */
-class RNA :
-	public Class< RNA >,
-	public chemical::LinearMotif< Gene* >
+/*static*/ Properties AbstractMotif::GetClassProperties()
 {
-public:
-	/**
-	 * Ensure virtual methods point to Class implementations.
-	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(genetic,
-		RNA)
+	Properties ret;
+	ret.push_back(property::Structural());
+	return ret;
+}
 
-	/**
-	 * Standard ctors.
-	 * NOTE: RNA does not always have to be Identifiable. We simply make it so for ease-of use.
-	 */
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(genetic,
-		RNA,
-		&genetic::RNAPerspective::Instance(),
-		filter::Genetic())
+AbstractMotif::AbstractMotif() :
+	m_contents(NULL)
+{
 
-};
+}
 
-} //genetic namespace
+AbstractMotif::~AbstractMotif()
+{
+	if (m_contents)
+	{
+		delete m_contents;
+		m_contents = NULL;
+	}
+}
+
+Container* AbstractMotif::GetAllImplementation()
+{
+	return this->m_contents;
+}
+
+const Container* AbstractMotif::GetAllImplementation() const
+{
+	return this->m_contents;
+}
+
+} //chemical namespace
 } //bio namespace

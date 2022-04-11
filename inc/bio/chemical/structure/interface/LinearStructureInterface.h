@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "StructureInterface.h"
+#include "bio/chemical/structure/Structure.h"
 
 namespace bio {
 namespace chemical {
@@ -29,10 +29,11 @@ namespace chemical {
 class ExcitationBase;
 
 /**
- * Interface methods for all LinearStructuralComponent classes.
+ * Interface methods for all LinearMotif classes.
  */
 class LinearStructureInterface :
-	virtual public StructureInterface
+	virtual public ThreadSafe,
+	virtual public Atom
 {
 public:
 	/**
@@ -62,13 +63,13 @@ public:
 	Code Insert(
 		T toAdd,
 		const Position position = BOTTOM,
-		const typename LinearStructuralComponentImplementation< T >::Dimension optionalPositionArg = 0, // assuming 0 is the InvalidId for all Perspectives.
+		const typename LinearMotif< T >::Dimension optionalPositionArg = 0, // assuming 0 is the InvalidId for all Perspectives.
 		const bool transferSubContents = false
 	)
 	{
 		Code ret = code::GeneralFailure();
 		LockThread();
-		LinearStructuralComponentImplementation< T >* implementer = this->AsBonded< LinearStructuralComponentImplementation< T >* >();
+		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
 		if (implementer)
 		{
 			ret = implementer->InsertImplementation(
@@ -90,12 +91,12 @@ public:
 	 */
 	template < typename T >
 	T GetById(
-		typename LinearStructuralComponentImplementation< T >::Dimension id
+		typename LinearMotif< T >::Dimension id
 	)
 	{
 		T ret = NULL;
 		LockThread();
-		LinearStructuralComponentImplementation< T >* implementer = this->AsBonded< LinearStructuralComponentImplementation< T >* >();
+		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
 		if (implementer)
 		{
 			ret = implementer->GetByIdImplementation(
@@ -114,12 +115,12 @@ public:
 	 */
 	template < typename T >
 	const T GetById(
-		typename LinearStructuralComponentImplementation< T >::Dimension id
+		typename LinearMotif< T >::Dimension id
 	) const
 	{
 		T ret = NULL;
 		LockThread();
-		LinearStructuralComponentImplementation< T >* implementer = this->AsBonded< LinearStructuralComponentImplementation< T >* >();
+		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
 		if (implementer)
 		{
 			ret = implementer->GetByIdImplementation(
@@ -143,7 +144,7 @@ public:
 	{
 		T ret = NULL;
 		LockThread();
-		LinearStructuralComponentImplementation< T >* implementer = this->AsBonded< LinearStructuralComponentImplementation< T >* >();
+		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
 		if (implementer)
 		{
 			ret = implementer->GetByNameImplementation(
@@ -167,7 +168,7 @@ public:
 	{
 		T ret = NULL;
 		LockThread();
-		LinearStructuralComponentImplementation< T >* implementer = this->AsBonded< LinearStructuralComponentImplementation< T >* >();
+		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
 		if (implementer)
 		{
 			ret = implementer->GetByNameImplementation(
@@ -187,12 +188,12 @@ public:
 	 */
 	template < typename T >
 	T GetOrCreateById(
-		typename LinearStructuralComponentImplementation< T >::Dimension id
+		typename LinearMotif< T >::Dimension id
 	)
 	{
 		T ret = NULL;
 		LockThread();
-		LinearStructuralComponentImplementation< T >* implementer = this->AsBonded< LinearStructuralComponentImplementation< T >* >();
+		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
 		if (implementer)
 		{
 			ret = implementer->GetOrCreateByIdImplementation(
@@ -217,7 +218,7 @@ public:
 	{
 		T ret = NULL;
 		LockThread();
-		LinearStructuralComponentImplementation< T >* implementer = this->AsBonded< LinearStructuralComponentImplementation< T >* >();
+		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
 		if (implementer)
 		{
 			ret = implementer->GetOrCreateByNameImplementation(
@@ -241,7 +242,7 @@ public:
 	{
 		Emission ret;
 		LockThread();
-		LinearStructuralComponentImplementation< T >* implementer = this->AsBonded< LinearStructuralComponentImplementation< T >* >();
+		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
 		if (implementer)
 		{
 			ret = implementer->ForEachImplementation(excitation);
