@@ -63,7 +63,7 @@ public:
 	/**
 	 * @param contents
 	 */
-	UnorderedMotif(Contents* contents)
+	UnorderedMotif(const Contents* contents)
 		:
 		chemical::Class< UnorderedMotif< CONTENT_TYPE > >(this) //TODO: Define Symmetry.
 	{
@@ -111,10 +111,8 @@ public:
 	 */
 	virtual CONTENT_TYPE AddImplementation(const CONTENT_TYPE content)
 	{
-		CONTENT_TYPE retPtr = this->m_contents->Access(this->m_contents->Add(content));
-		BIO_SANITIZE(retPtr, ,
-			return 0);
-		return *retPtr;
+		CONTENT_TYPE ret = this->m_contents->Access(this->m_contents->Add(content));
+		return ret;
 	}
 
 	/**

@@ -36,7 +36,7 @@ namespace chemical {
  *
  * The PeriodicTable tracks Properties of types in addition to assigning them an AtomicNumber..
  * This is done because neither static nor virtual methods will allow for the inverted inheritance necessary to make inverted-inheritance methods like Atom::CallForAll work properly.
- * See Element.h for a more detailed description of this system.
+ * See Elementary.h for a more detailed description of this system.
  */
 class PeriodicTableImplementation :
 	public physical::Perspective< AtomicNumber >

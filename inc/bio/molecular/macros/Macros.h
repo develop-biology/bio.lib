@@ -25,7 +25,14 @@
 
 /**
  * Get all virtual methods defined by molecular::Class.
- * @return function signatures for use in BIO_DISAMBIGUATE_ALL_CLASS_METHODS
+ * @return function signatures for use in BIO_DISAMBIGUATE_REQUIRED_CLASS_METHODS
  */
-#define BIO_GET_CLASS_METHODS_FOR_molecular()                                  \
-    BIO_GET_CLASS_METHODS_FOR_chemical()
+#define BIO_GET_REQUIRED_CLASS_METHODS_FOR_molecular()                         \
+    BIO_GET_REQUIRED_CLASS_METHODS_FOR_chemical()
+
+/**
+ * Get all virtual methods defined by molecular::Class.
+ * @return function signatures for use in BIO_DISAMBIGUATE_OPTIONAL_CLASS_METHODS
+ */
+#define BIO_GET_OPTIONAL_CLASS_METHODS_FOR_molecular()                         \
+    BIO_GET_OPTIONAL_CLASS_METHODS_FOR_chemical()

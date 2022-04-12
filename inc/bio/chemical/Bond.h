@@ -124,7 +124,7 @@ private:
 	BondType m_type;
 };
 
-typedef physical::Arrangement< Bond > Bonds;
+typedef physical::Arrangement< Bond* > Bonds;
 
 } //chemical namespace
 } //bio namespace

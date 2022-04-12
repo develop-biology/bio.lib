@@ -60,7 +60,7 @@ Code Atom::Attenuate(const physical::Wave* other)
 		--bnd
 		)
 	{
-		*bondBuffer = bnd;
+		bondBuffer = bnd;
 		if (bondBuffer->IsEmpty())
 		{
 			continue;
@@ -93,7 +93,7 @@ Code Atom::Disattenuate(const physical::Wave* other)
 		--bnd
 		)
 	{
-		*bondBuffer = bnd;
+		bondBuffer = bnd;
 		if (bondBuffer->IsEmpty())
 		{
 			continue;
@@ -125,7 +125,7 @@ bool Atom::FormBondImplementation(
 	Bond* bondBuffer;
 	if (m_bonds.IsAllocated(position))
 	{
-		*bondBuffer = m_bonds[position];
+		bondBuffer = m_bonds.OptimizedAccess(position);
 		BIO_SANITIZE(!bondBuffer->IsEmpty(),,return false)
 		return bondBuffer->Form(
 			id,
@@ -154,7 +154,7 @@ bool Atom::BreakBondImplementation(
 	BIO_SANITIZE(m_bonds.IsAllocated(position), ,
 		return false);
 
-	m_bonds.OptimizedAccess(position).Break();
+	m_bonds.OptimizedAccess(position)->Break();
 	//Let dtor cleanup.
 
 	return true;
@@ -187,7 +187,7 @@ BondType Atom::GetBondType(Valence position) const
 {
 	BIO_SANITIZE(m_bonds.IsAllocated(position), ,
 		return BondTypePerspective::InvalidId());
-	return m_bonds.OptimizedAccess(position).GetId();
+	return m_bonds.OptimizedAccess(position)->GetId();
 }
 
 physical::Symmetry* Atom::Spin() const
@@ -205,13 +205,13 @@ Code Atom::Reify(physical::Symmetry* symmetry)
 physical::Wave* Atom::GetBonded(Valence position)
 {
 	BIO_SANITIZE(m_bonds.IsAllocated(position),,return NULL)
-	return m_bonds.OptimizedAccess(position).GetBonded();
+	return m_bonds.OptimizedAccess(position)->GetBonded();
 }
 
 const physical::Wave* Atom::GetBonded(Valence position) const
 {
 	BIO_SANITIZE(m_bonds.IsAllocated(position),,return NULL)
-	return m_bonds.OptimizedAccess(position).GetBonded();
+	return m_bonds.OptimizedAccess(position)->GetBonded();
 }
 
 Bonds* Atom::GetAllBonds()

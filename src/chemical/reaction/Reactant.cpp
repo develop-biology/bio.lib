@@ -43,8 +43,8 @@ Reactant::Reactant(Name typeName)
 
 Reactant::Reactant(
 	Name typeName,
-	const typename UnorderedMotif< Property >::Contents& properties,
-	const typename UnorderedMotif< State >::Contents& states
+	const typename UnorderedMotif< Property >::Contents* properties,
+	const typename UnorderedMotif< State >::Contents* states
 )
 	:
 	Class< Reactant >(this),
@@ -58,11 +58,11 @@ Reactant::Reactant(
 
 Reactant::Reactant(
 	Name typeName,
-	const Substance& substance
+	const Substance* substance
 )
 	:
 	Class< Reactant >(this),
-	Substance(substance)
+	Substance(*substance)
 {
 	CtorCommon(typeName);
 }

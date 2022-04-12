@@ -166,21 +166,21 @@ public:
 	}
 
 	/**
-	 * Using the PeriodicTable, we can reliably implement Wave::GetProperties without having to store m_properties internally.
-	 * NOTE: You must still record the Properties of T elsewhere. See Element.h for an easy means of doing this.
-	 * @return the Properties of T that have been Registered with the PeriodicTable.
-	 */
-	virtual Properties GetProperties() const
-	{
-		return PeriodicTable::Instance().GetPropertiesOf< T >();
-	}
-
-	/**
 	 *
 	 */
 	virtual ~Class()
 	{
 
+	}
+
+	/**
+	 * Using the PeriodicTable, we can reliably implement Wave::GetProperties without having to store m_properties internally.
+	 * NOTE: You must still record the Properties of T elsewhere. See Elementary.h for an easy means of doing this.
+	 * @return the Properties of T that have been Registered with the PeriodicTable.
+	 */
+	virtual Properties GetProperties() const
+	{
+		return PeriodicTable::Instance().GetPropertiesOf< T >();
 	}
 
 	/**

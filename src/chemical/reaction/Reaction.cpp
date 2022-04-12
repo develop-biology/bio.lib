@@ -29,15 +29,16 @@ namespace chemical {
 
 Reaction::Reaction(
 	Name name,
-	const Reactants& reactants
+	const Reactants* reactants
 )
 	:
 	chemical::Class< Reaction >(
 		this,
 		name,
 		&ReactionPerspective::Instance(),
+		filter::Chemical(),
 		symmetry_type::Operation()),
-	m_requiredReactants(reactants)
+	m_requiredReactants(*reactants)
 {
 }
 
@@ -48,7 +49,7 @@ void Reaction::Require(Reactant* reactant)
 
 void Reaction::Require(
 	Name typeName,
-	const Substance& substance
+	const Substance* substance
 )
 {
 	Require(
@@ -60,8 +61,8 @@ void Reaction::Require(
 
 void Reaction::Require(
 	Name typeName,
-	const UnorderedMotif< Property >::Contents& properties,
-	const UnorderedMotif< State >::Contents& states
+	const UnorderedMotif< Property >::Contents* properties,
+	const UnorderedMotif< State >::Contents* states
 )
 {
 	Require(
@@ -75,7 +76,7 @@ void Reaction::Require(
 
 bool Reaction::ReactantsMeetRequirements(const Reactants* toCheck) const
 {
-	return toCheck->HasAll< Substance* >(*(m_requiredReactants.GetAll< Substance* >()));
+	return toCheck->HasAll< Substance* >(m_requiredReactants.GetAll< Substance* >());
 }
 
 /*static*/ const Reaction* Reaction::Initiate(StandardDimension id)

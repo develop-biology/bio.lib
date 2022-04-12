@@ -39,29 +39,29 @@ Products::Products(Code result)
 
 }
 
-Products::Products(const Substances& substances)
+Products::Products(const Substances* substances)
 	:
 	m_result(code::Success()),
-	m_substances(substances)
+	m_substances(*substances)
 {
 
 }
 
-Products::Products(const Reactants& reactants)
+Products::Products(const Reactants* reactants)
 	:
 	m_result(code::Success()),
-	m_substances(reactants)
+	m_substances(reactants->GetAllAsVector< Substance* >())
 {
 
 }
 
 Products::Products(
 	Code result,
-	const Substances& substances
+	const Substances* substances
 )
 	:
 	m_result(result),
-	m_substances(substances)
+	m_substances(*substances)
 {
 
 }
@@ -84,6 +84,16 @@ Products::operator Substances()
 Products::operator Reactants()
 {
 	return Reactants(m_substances);
+}
+
+bool Products::operator!=(const Code code) const
+{
+	return m_result != code;
+}
+
+bool Products::operator==(const Code code) const
+{
+	return m_result == code;
 }
 
 } //chemical namespace

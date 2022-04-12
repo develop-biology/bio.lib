@@ -32,22 +32,31 @@ namespace bio {
 class Iterator;
 
 /**
- * Container exists as a base class to templated Arrangements.
+ * Containers are the singular Biology container construct.
  * Essentially we need a generic, non-template std::vector<> base class, so we'll make our own.
+ * Different containers (e.g. the corollaries to std::set vs std::map vs std::vector) are all children of *this and we use typical inheritance to modify the behavior of each specialization.
+ * By using inheritance for our Containers, we can pass Container*s around and use a standard interface to manipulate the contents. In other words, we can treat std::sets like std::vectors or even treat std::maps like std::queues, all by overriding virtual methods and handling inputs consistently (obviously containers with key value pairs will need to pull a new piece of information from somewhere if given only a key or only a value).
+ * 
+ * NOTE: we still use stl containers where the additional features of *this class are not needed. Those usages may be changed to implement *this in a future release.
  *
- * You can think of Arrangements as our own internal RAM.
+ * You can think of Containers as our own internal RAM.
  * We allocated a block of bytes and manipulate them as necessary.
  * By default, we use ByteStreams to store arbitrary data in our allocated memory.
  * ByteStreams can be wasteful though (e.g. a whole extra std::string for every Index); so, overrides of *this can use the same internal memory block but store other data structures for more efficient memory usage.
  * We maintain ByteStreams as our data conversion type, as they are flexible but safer than a void*.
  *
- * When using Arrangements, we make no guarantees regarding the type of data stored.
+ * When using Containers, we make no guarantees regarding the type of data stored.
  * All we provide is a consistent means of accessing those data. To this end, we ensure that a Index's validity follows the lifecycle of the datum at that Index. This is identical to pointers: a Index represents the memory address of what is stored in *this. This means that as data are erased from *this, the memory is not moved, consolidated, or manipulated in any way that destroys the old references.
  * This rule does have some exceptions and you are allowed to break it yourself. However, we try to stick by this as much as possible (e.g. see Insert(), below).
  *
- * When using an Iterator, you will be given a SmartIterator which dynamically determines its interface. Thus, we allow for full inheritance of *this base class.
+ * When using an Iterator, you will be given a SmartIterator which dynamically determines its implementation. Thus, we allow for full inheritance of *this base class.
  *
  * There is another tradeoff here that we are leaning into: our interface does not make for easy use of std:: containers under-the-hood. By enforcing consistency on access, we've made the system less flexible. This may be changed in a major release down the road but its what we're sticking with for now.
+ *
+ * When using Containers there are a few guidelines we recommend:
+ * 1. If you need direct access to the memory stored, store a pointer. Keep it simple.
+ * 2. If you do not need direct access, store the raw type (e.g. for .?int\d+_t types)
+ * 3. Containers themselves should be passed by pointer. This consistency helps when the Container needs to be Cast, etc.
  */
 class Container
 {
@@ -136,7 +145,7 @@ public:
 	 * All content past the given position is shifted down.
 	 * NOTE: This explicitly breaks our rule about Indices being preserved. However, this logic is necessary if the items being inserted need to be accessed in the specified order; for example: the items in *this are molecular::Proteins that have a set execution order.
 	 *
-	 * To make implementing your own Arrangements easier, this method simply hacks the GetNextAvailableIndex method to return the desired index and then calls Add. Thus, by implementing Add, you also implement Insert.
+	 * To make implementing your own Containers easier, this method simply hacks the GetNextAvailableIndex method to return the desired index and then calls Add. Thus, by implementing Add, you also implement Insert.
 	 *
 	 * @param content
 	 * @return the Index of the added content.
@@ -255,7 +264,7 @@ public:
 	virtual const ByteStream operator[](const SmartIterator itt) const;
 
 	/**
-	 * Override this to construct Iterators for your Arrangements.
+	 * Override this to construct Iterators for your Containers.
 	 * @param Index
 	 * @return a new Iterator pointing to the given Index in *this or NULL.
 	 */
@@ -272,6 +281,23 @@ public:
 	 * @return An Iterator pointing to the end of *this.
 	 */
 	virtual SmartIterator End() const;
+
+	/**
+	 * Ease of use wrapper around casting *this to a std::vector.
+	 * Since template methods are not virtual, you must make sure to properly implement Access() and make sure that *this contains the given type.
+	 * @tparam T
+	 * @return a std::vector containing the contents from *this.
+	 */
+	template< typename T >
+	std::vector< T > AsVector() const
+	{
+		std::vector< T > ret;
+		for(SmartIterator rct = End(); !rct.IsAtBeginning(); --rct)
+		{
+			ret.push_back(rct.As< T >());
+		}
+		return ret;
+	}
 
 protected:
 

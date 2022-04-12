@@ -73,7 +73,7 @@ namespace chemical {
  */
 class Reaction :
 	public chemical::Class< Reaction >,
-	virtual public Structure //for use in LinearStructuralComponents downstream, we must have interface methods available, even though Reaction does not directly contain anything.
+	virtual public Structure //for use in LinearMotifs downstream, we must have interface methods available, even though Reaction does not directly contain anything.
 {
 public:
 
@@ -98,7 +98,7 @@ public:
 	 */
 	explicit Reaction(
 		Name name,
-		const Reactants& reactants
+		const Reactants* reactants
 	);
 
 	/**
@@ -117,7 +117,7 @@ public:
 	 */
 	void Require(
 		Name typeName,
-		const Substance& substance
+		const Substance* substance
 	);
 
 	/**
@@ -129,8 +129,8 @@ public:
 	 */
 	void Require(
 		Name typeName,
-		const typename UnorderedMotif< Property >::Contents& properties,
-		const typename UnorderedMotif< State >::Contents& states
+		const typename UnorderedMotif< Property >::Contents* properties,
+		const typename UnorderedMotif< State >::Contents* states
 	);
 
 	/**
@@ -155,11 +155,11 @@ public:
 	/**
 	 * Wrapper around Require(Reactant*).
 	 * Constructs Reactant from args
-	 * @tparam T the T* which will be used in the Reaction (without the *)
-	 * @param substance
+	 * @tparam T of the T* which will be used in the Reaction (without the *)
+	 * @param substance the T* to use (with the *).
 	 */
 	template < typename T >
-	void Require(const T& substance)
+	void Require(const T* substance)
 	{
 		Require(
 			TypeName< T >(),
@@ -174,8 +174,8 @@ public:
 	 */
 	template < typename T >
 	void Require(
-		const typename UnorderedMotif< Property >::Contents& properties,
-		const typename UnorderedMotif< State >::Contents& states
+		const typename UnorderedMotif< Property >::Contents* properties,
+		const typename UnorderedMotif< State >::Contents* states
 	)
 	{
 		Require(

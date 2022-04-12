@@ -115,7 +115,7 @@ public:
 
 	/**
 	 * Copy the contents of a vector into *this.
-	 * Will only work if *this contains a UnorderedMotif of the given type.
+	 * Will only work if *this contains an UnorderedMotif of the given type.
 	 * Does nothing if T is invalid.
 	 * @tparam T
 	 * @param other
@@ -123,8 +123,10 @@ public:
 	template < typename T >
 	void Import(const std::vector< T >& other)
 	{
-		UnorderedMotif<T> buffer(other);
-		this->Import<T>(&buffer);
+		for(typename std::vector< T >::const_iterator otr = other.begin(); otr != other.end(); ++otr)
+		{
+			this->Add< T >(*otr);
+		}
 	}
 
 	/**
@@ -147,7 +149,7 @@ public:
 			--bnd
 			)
 		{
-			*bondBuffer = bnd;
+			bondBuffer = bnd;
 			if (bondBuffer->IsEmpty())
 			{
 				continue;
@@ -212,9 +214,9 @@ public:
 	 * @return A pointer to all contents in *this; 0 if T is invalid.
 	 */
 	template < typename T >
-	const typename UnorderedMotif< T >::Contents* GetAll() const
+	const Container* GetAll() const
 	{
-		const typename UnorderedMotif< T >::Contents* ret = 0;
+		Container* ret = 0;
 		LockThread();
 		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
 		if (implementer)
@@ -320,6 +322,28 @@ public:
 		}
 		UnlockThread();
 		return ret;
+	}
+
+	/**
+	 * Ease of use wrapper around casting the contents of *this as a std::vector.
+	 * @tparam T
+	 * @return the contents of *this casted to an std::vector.
+	 */
+	template< typename T >
+	std::vector< T > GetAllAsVector()
+	{
+		return this->template GetAll< T >()->template AsVector< T >();
+	}
+
+	/**
+	 * Ease of use wrapper around casting the contents of *this as a std::vector.
+	 * @tparam T
+	 * @return the contents of *this casted to an std::vector.
+	 */
+	template< typename T >
+	const std::vector< T > GetAllAsVector() const
+	{
+		return this->template GetAll< T >()->template AsVector< T >();
 	}
 };
 

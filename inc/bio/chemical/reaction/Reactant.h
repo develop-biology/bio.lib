@@ -54,7 +54,7 @@ public:
 	 */
 	Reactant(
 		Name typeName,
-		const Substance& substance
+		const Substance* substance
 	);
 
 	/**
@@ -64,8 +64,8 @@ public:
 	 */
 	Reactant(
 		Name typeName,
-		const typename UnorderedMotif< Property >::Contents& properties,
-		const typename UnorderedMotif< State >::Contents& states
+		const typename UnorderedMotif< Property >::Contents* properties,
+		const typename UnorderedMotif< State >::Contents* states
 	);
 
 	/**

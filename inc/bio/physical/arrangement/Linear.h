@@ -29,7 +29,7 @@ namespace physical {
 /**
  * Linear is a ____pointer interface for Biology.
  *
- * This class is used by Line and chemical::LinearStructuralComponents, see those classes for more info.
+ * This class is used by Line and chemical::LinearMotifs, see those classes for more info.
  *
  * Lines contain logic for handling their CONTENT_TYPE by Id, Name, and other aspects innate to the Identifiable<StandardDimension>. The term "linear" comes from the idea that instead of a 0 dimensional pile of objects, as are Arrangements, *this can be ordered along at least 1 dimension (i.e. the StandardDimension).
  *

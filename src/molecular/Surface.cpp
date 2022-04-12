@@ -54,14 +54,14 @@ Surface::Surface(const Surface& toCopy)
 	chemical::LinearMotif< Molecule* >(toCopy),
 	EnvironmentDependent< Molecule >(toCopy)
 {
-	Bond* bondBuffer;
+	chemical::Bond* bondBuffer;
 	for (
 		SmartIterator bnd = toCopy.m_bonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
 	{
-		*bondBuffer = bnd;
+		bondBuffer = bnd;
 		if (bondBuffer->GetType() == bond_type::Manage())
 		{
 			//Calling FormBondImplementation directly saves us some work and should be safer than trying to do auto-template type determination from Clone().
@@ -75,14 +75,14 @@ Surface::Surface(const Surface& toCopy)
 
 Surface::~Surface()
 {
-	Bond* bondBuffer;
+	chemical::Bond* bondBuffer;
 	for (
-		SmartIterator bnd = toCopy.m_bonds.End();
+		SmartIterator bnd = m_bonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
 	{
-		*bondBuffer = bnd;
+		bondBuffer = bnd;
 		if (bondBuffer->GetType() == bond_type::Manage())
 		{
 			//bypass BreakBondImplementation and just do it.
@@ -122,14 +122,14 @@ physical::Wave* Surface::Release(
 )
 {
 	physical::Wave* ret = NULL;
-	Bond* bondBuffer;
+	chemical::Bond* bondBuffer;
 	for (
-		SmartIterator bnd = toCopy.m_bonds.End();
+		SmartIterator bnd = m_bonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
 	{
-		*bondBuffer = bnd;
+		bondBuffer = bnd;
 		if (bondBuffer->GetType() == bondType)
 		{
 			ret = ChemicalCast< physical::Wave* >(bondBuffer->GetBonded());
@@ -148,14 +148,15 @@ chemical::Substance* Surface::Release(
 	BondType bondType
 )
 {
-	Bond* bondBuffer;
+	chemical::Substance* ret = NULL;
+	chemical::Bond* bondBuffer;
 	for (
-		SmartIterator bnd = toCopy.m_bonds.End();
+		SmartIterator bnd = m_bonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
 	{
-		*bondBuffer = bnd;
+		bondBuffer = bnd;
 		if (bondBuffer->GetType() == bondType)
 		{
 			ret = ChemicalCast< chemical::Substance* >(bondBuffer->GetBonded());
@@ -179,14 +180,14 @@ chemical::Substance* Surface::Release(
 )
 {
 	chemical::Substance* ret = NULL;
-	Bond* bondBuffer;
+	chemical::Bond* bondBuffer;
 	for (
-		SmartIterator bnd = toCopy.m_bonds.End();
+		SmartIterator bnd = m_bonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
 	{
-		*bondBuffer = bnd;
+		bondBuffer = bnd;
 		if (bondBuffer->GetType() == bondType)
 		{
 			ret = ChemicalCast< chemical::Substance* >(bondBuffer->GetBonded());
@@ -206,14 +207,14 @@ chemical::Substance* Surface::Release(
 physical::Waves Surface::ReleaseAll(BondType bondType)
 {
 	physical::Waves ret;
-	Bond* bondBuffer;
+	chemical::Bond* bondBuffer;
 	for (
-		SmartIterator bnd = toCopy.m_bonds.End();
+		SmartIterator bnd = m_bonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
 	{
-		*bondBuffer = bnd;
+		bondBuffer = bnd;
 		if (bondBuffer->GetType() == bondType)
 		{
 			ret.push_back(ChemicalCast< physical::Wave* >(bondBuffer->GetBonded()));

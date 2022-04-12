@@ -25,7 +25,7 @@
 #include "bio/chemical/common/Cast.h"
 #include "bio/chemical/common/Class.h"
 #include "bio/chemical/common/Properties.h"
-#include "bio/chemical/Element.h"
+#include "bio/chemical/Elementary.h"
 #include "bio/chemical/reaction/Excitation.h"
 #include "bio/physical/arrangement/Line.h"
 
@@ -52,7 +52,7 @@ namespace chemical {
  */
 template < typename CONTENT_TYPE >
 class LinearMotif :
-	public Element< LinearMotif< CONTENT_TYPE > >,
+	public Elementary< LinearMotif< CONTENT_TYPE > >,
 	public chemical::Class< LinearMotif< CONTENT_TYPE > >,
 	public UnorderedMotif< CONTENT_TYPE >
 {
@@ -88,7 +88,7 @@ public:
 	 */
 	explicit LinearMotif(physical::Perspective< StandardDimension >* perspective = NULL)
 		:
-		Element< LinearMotif< CONTENT_TYPE > >(GetClassProperties()),
+		Elementary< LinearMotif< CONTENT_TYPE > >(GetClassProperties()),
 		chemical::Class< LinearMotif< CONTENT_TYPE > >(this),
 		m_perspective(perspective)
 	{
@@ -105,7 +105,7 @@ public:
 		physical::Perspective< StandardDimension >* perspective = NULL
 	)
 		:
-		Element< LinearMotif< CONTENT_TYPE > >(GetClassProperties()),
+		Elementary< LinearMotif< CONTENT_TYPE > >(GetClassProperties()),
 		chemical::Class< LinearMotif< CONTENT_TYPE > >(this),
 		m_perspective(perspective)
 	{
@@ -120,7 +120,7 @@ public:
 	 */
 	LinearMotif(const LinearMotif< CONTENT_TYPE >& toCopy)
 		:
-		Element< LinearMotif< CONTENT_TYPE > >(toCopy.GetClassProperties()),
+		Elementary< LinearMotif< CONTENT_TYPE > >(toCopy.GetClassProperties()),
 		chemical::Class< LinearMotif< CONTENT_TYPE > >(this),
 		m_perspective(toCopy.m_perspective)
 	{

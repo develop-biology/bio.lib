@@ -63,7 +63,7 @@ public:
 	Code Insert(
 		T toAdd,
 		const Position position = BOTTOM,
-		const typename LinearMotif< T >::Dimension optionalPositionArg = 0, // assuming 0 is the InvalidId for all Perspectives.
+		const StandardDimension optionalPositionArg = 0, // assuming 0 is the InvalidId for all Perspectives.
 		const bool transferSubContents = false
 	)
 	{
@@ -90,9 +90,7 @@ public:
 	 * @return a T of the given id or NULL; NULL if T is invalid.
 	 */
 	template < typename T >
-	T GetById(
-		typename LinearMotif< T >::Dimension id
-	)
+	T GetById(StandardDimension id)
 	{
 		T ret = NULL;
 		LockThread();
@@ -115,7 +113,7 @@ public:
 	 */
 	template < typename T >
 	const T GetById(
-		typename LinearMotif< T >::Dimension id
+		StandardDimension id
 	) const
 	{
 		T ret = NULL;
@@ -188,7 +186,7 @@ public:
 	 */
 	template < typename T >
 	T GetOrCreateById(
-		typename LinearMotif< T >::Dimension id
+		StandardDimension id
 	)
 	{
 		T ret = NULL;

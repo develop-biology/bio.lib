@@ -29,7 +29,7 @@ namespace bio {
 namespace cellular {
 
 /**
- * The PeakCarrierWave will propagate Peak Excitations to all LinearStructuralComponents
+ * The PeakCarrierWave will propagate Peak Excitations to all LinearMotifs
  */
 class PeakCarrierWave : public physical::Wave
 {

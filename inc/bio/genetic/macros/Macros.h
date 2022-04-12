@@ -27,10 +27,18 @@
 
 /**
  * Get all virtual methods defined by genetic::Class.
- * @return function signatures for use in BIO_DISAMBIGUATE_ALL_CLASS_METHODS
+ * @return function signatures for use in BIO_DISAMBIGUATE_REQUIRED_CLASS_METHODS
  */
-#define BIO_GET_CLASS_METHODS_FOR_genetic()                                    \
-    BIO_GET_CLASS_METHODS_FOR_molecular()
+#define BIO_GET_REQUIRED_CLASS_METHODS_FOR_genetic()                           \
+    BIO_GET_REQUIRED_CLASS_METHODS_FOR_molecular()
+
+/**
+ * Get all virtual methods defined by genetic::Class.
+ * @return function signatures for use in BIO_DISAMBIGUATE_OPTIONAL_CLASS_METHODS
+ */
+#define BIO_GET_OPTIONAL_CLASS_METHODS_FOR_genetic()                           \
+    BIO_GET_OPTIONAL_CLASS_METHODS_FOR_molecular()
+
 
 /**
 Macro for defining TranscriptionFactors.
@@ -48,13 +56,15 @@ BIO_ID_FUNCTION_BODY(                                                          \
 	bool g_##site##Registered =                                                \
 		::bio::LocalizationSitePerspective::Instance().AssociateType(          \
 			g_##site,                                                          \
-			(new BIO_EXCITATION_CLASS(                                         \
-				::bio::chemical::LinearStructuralComponent< type >,            \
-				type,                                                          \
-				BIO_EXPAND_TUPLE typeTuple                                     \
-			)(                                                                 \
-				&::bio::chemical::LinearStructuralComponent< type >::function, \
-				BIO_EXPAND_TUPLE argTuple )                                    \
+			(                                                                  \
+				new BIO_EXCITATION_CLASS(                                      \
+					::bio::chemical::LinearMotif< type >,                      \
+					type,                                                      \
+					BIO_EXPAND_TUPLE typeTuple                                 \
+				)(                                                             \
+					&::bio::chemical::LinearMotif< type >::function,           \
+					BIO_EXPAND_TUPLE argTuple                                  \
+				)                                                              \
 			)->AsWave()                                                        \
 		);
 

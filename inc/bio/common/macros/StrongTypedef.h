@@ -21,6 +21,9 @@
 
 #pragma once
 
+//since we use these here, we might as well include them.
+#include <ostream>
+
 /**
  * Another problem with C++: the "typedef" keyword does not create a distinct type, only an alias. Thus 2 identical typedefs of different names become merged into the same symbol at compile time.
  *
@@ -70,9 +73,15 @@ public:                                                                        \
 	type operator/(const type& t) const {return m_t / t;}                      \
 	type operator*(const name& other) const {return m_t * other.m_t;}          \
 	type operator/(const name& other) const {return m_t / other.m_t;}          \
+	friend std::ostream& operator <<(std::ostream& out, const name& t);        \
 	/*that's all we're doing for now. Please add to this list as necessary*/   \
                                                                                \
 /*public because we need to treat this as type when we don't know the type.*/  \
 public:                                                                        \
 	type m_t;                                                                  \
-};
+};                                                                             \
+std::ostream& operator <<(std::ostream& out, const name& t)                    \
+{                                                                              \
+	out << t.m_t;                                                              \
+	return out;                                                                \
+}
