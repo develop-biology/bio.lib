@@ -30,8 +30,8 @@ namespace genetic {
  * Insertions are a type of Insertion which, instead of just finding a place, add something to a place.
  * This is used to move Proteins to their correct position after Transcription.
  * 
- * NOTE: All InsertionSites currently have a 1 to 1 mapping with LocalizationSites and should always be the same value.
- * i.e. Cast< InsertionSite >(myLocalizationSiteId) == InsertionSitePerspective::Instance().GetIdWithoutCreation(myLocalizationSiteName)
+ * NOTE: All Sites currently have a 1 to 1 mapping with Sites and should always be the same value.
+ * i.e. Cast< Site >(mySiteId) == InsertionSitePerspective::Instance().GetIdWithoutCreation(mySiteName)
  */
 class Insertion :
 	public physical::Class< Insertion >,
@@ -53,7 +53,7 @@ public:
 	 */
 	explicit Insertion(
 		chemical::Substance* whatToInsert = NULL,
-		InsertionSite site = InsertionSitePerspective::InvalidId(),
+		Site site = InsertionSitePerspective::InvalidId(),
 		Name name = NULL
 	);
 
@@ -86,7 +86,7 @@ public:
 	 * Set m_site.
 	 * @param site 
 	 */
-	virtual void SetSite(LocalizationSite site);
+	virtual void SetSite(Site site);
 	
 protected:
 	chemical::Substance* m_toInsert;

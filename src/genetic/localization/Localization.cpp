@@ -28,7 +28,7 @@ namespace bio {
 namespace genetic {
 
 Localization::Localization(
-	LocalizationSite site,
+	Site site,
 	Name name
 )
 	:
@@ -105,7 +105,7 @@ Name Localization::GetNameOfSite() const
 	return m_name;
 }
 
-void Localization::SetSite(LocalizationSite site)
+void Localization::SetSite(Site site)
 {
 	m_site = site;
 	if (mc_method)
@@ -115,7 +115,7 @@ void Localization::SetSite(LocalizationSite site)
 	mc_method = LocalizationSitePerspective::Instance().GetNewObjectFromIdAs< chemical::ExcitationBase* >(m_site);
 }
 
-LocalizationSite Localization::GetSite() const
+Site Localization::GetSite() const
 {
 	return m_site;
 }

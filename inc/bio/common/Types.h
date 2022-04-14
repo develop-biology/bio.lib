@@ -57,10 +57,7 @@ typedef uint32_t Index;
  * We sacrifice our first index for the ability to do error checking.
  * @return a Index that holds no content.
  */
-const Index InvalidIndex()
-{
-	return 0;
-}
+const Index InvalidIndex();
 
 /**
  * milliseconds (ms for short)

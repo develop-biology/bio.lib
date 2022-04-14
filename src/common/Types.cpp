@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,47 +19,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/cellular/OrganSystem.h"
-#include "bio/cellular/Organ.h"
+#include "bio/common/Types.h"
 
 namespace bio {
-namespace cellular {
 
-
-OrganSystem::~OrganSystem()
+const Index InvalidIndex()
 {
-
+	return 0;
 }
 
-Code OrganSystem::Organogenesis()
-{
-	Code ret = code::Success();
-	Container* organs = GetAll< Organ* >();
-	BIO_SANITIZE(organs,,return code::CouldNotFindValue1())
-	Organ* organBuffer;
-	for (
-		SmartIterator org = organs->Begin();
-		!org.IsAtEnd();
-		++org
-		)
-	{
-		organBuffer = org;
-		organBuffer->SetEnvironment(this);
-		if (organBuffer->BuildMobilome() != code::Success() && ret == code::Success())
-		{
-			ret = code::UnknownError();
-		}
-		if (organBuffer->GrowTissues() != code::Success() && ret == code::Success())
-		{
-			ret = code::UnknownError();
-		}
-		if (organBuffer->SpecializeTissues() != code::Success() && ret == code::Success())
-		{
-			ret = code::UnknownError();
-		}
-	}
-	return ret;
-}
-
-} //cellular namespace
 } //bio namespace

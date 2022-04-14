@@ -49,10 +49,14 @@ void GenomeImplementation::CacheProteins()
 
 StandardDimension GenomeImplementation::RegisterPlasmid(Plasmid* toRegister)
 {
+	BIO_SANITIZE(toRegister,,return PlasmidPerspective::InvalidId())
 	StandardDimension ret = PlasmidPerspective::InvalidId();
 	LockThread();
 	mc_registerPlasmid->RotateTo(mc_registrationSite)->Bind(ChemicalCast< chemical::Substance* >(toRegister));
-	ret = mc_registerPlasmid->Activate();
+	if (mc_registerPlasmid->Activate() == code::Success())
+	{
+		ret = toRegister->GetId();
+	}
 	UnlockThread();
 	return ret;
 }

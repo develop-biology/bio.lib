@@ -29,7 +29,7 @@ namespace genetic {
 
 Insertion::Insertion(
 	chemical::Substance* toInsert,
-	InsertionSite site,
+	Site site,
 	Name name
 )
 	:
@@ -70,9 +70,9 @@ chemical::Substance* Insertion::Seek(chemical::Substance* insertIn) const
 	return insert;
 }
 
-void Insertion::SetSite(LocalizationSite site)
+void Insertion::SetSite(Site site)
 {
-	//Assume InsertionSites & LocalizationSites always match exactly.
+	//Assume Sites & Sites always match exactly.
 	m_site = site;
 	mc_method = InsertionSitePerspective::Instance().GetNewObjectFromIdAs< chemical::ExcitationBase* >(m_site);
 }

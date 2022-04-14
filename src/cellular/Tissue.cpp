@@ -33,32 +33,36 @@ Tissue::~Tissue()
 Code Tissue::DifferentiateCells()
 {
 	Code ret = code::Success();
-	chemical::Structure< Cell* >::Contents* cells = GetAll< Cell* >();
+	Container* cells = GetAll< Cell* >();
 	BIO_SANITIZE(cells,,return code::CouldNotFindValue1())
+	Cell* cellBuffer;
 	for (
-		chemical::Structure< Cell* >::Contents::iterator cel = cells->begin();
-		cel != cells->end();
+		SmartIterator cel = cells->Begin();
+		!cel.IsAtEnd();
 		++cel
 		)
 	{
-		(*cel)->SetEnvironment(this);
-		(*cel)->Import< genetic::Plasmid* >(this);
-		if ((*cel)->ExpressGenes() != code::Success() && ret == code::Success())
+		cellBuffer = cel;
+		cellBuffer->SetEnvironment(this);
+		cellBuffer->Import< genetic::Plasmid* >(this);
+		if (cellBuffer->ExpressGenes() != code::Success() && ret == code::Success())
 		{
 			ret = code::UnknownError();
 		}
 	}
 
-	chemical::Structure< Tissue* >::Contents* tissues = GetAll< Tissue* >();
+	Container* tissues = GetAll< Tissue* >();
 	BIO_SANITIZE(tissues,,return code::CouldNotFindValue1())
+	Tissue* tissueBuffer;
 	for (
-		chemical::Structure< Tissue* >::Contents::iterator tis = tissues->begin();
-		tis != tissues->end();
+		SmartIterator tis = tissues->Begin();
+		!tis.IsAtEnd();
 		++tis
 		)
 	{
-		(*tis)->SetEnvironment(this);
-		if ((*tis)->DifferentiateCells() != code::Success() && ret == code::Success())
+		tissueBuffer = tis;
+		tissueBuffer->SetEnvironment(this);
+		if (tissueBuffer->DifferentiateCells() != code::Success() && ret == code::Success())
 		{
 			ret = code::UnknownError();
 		}

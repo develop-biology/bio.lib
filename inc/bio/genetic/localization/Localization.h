@@ -41,7 +41,7 @@ class Localization;
  * Each place is a different Localization, which has more places (Localizations) around it.
  * This system allows us to traverse arbitrarily complex spaces with ease.
  *
- * In order to use a standard interface with arbitrarily complex containers, we rely on physical::Perspective::AssociateType(), chemical::Excitation, and the chemical/structure system to provide us with a means of translating a LocalizationSite (AssociateType) into a class method (Excitation) that is used to query a container by Name (structure).
+ * In order to use a standard interface with arbitrarily complex containers, we rely on physical::Perspective::AssociateType(), chemical::Excitation, and the chemical/structure system to provide us with a means of translating a Site (AssociateType) into a class method (Excitation) that is used to query a container by Name (structure).
  * See genetic/Macros.h for an easy way to define all that (its not nearly as hard to use as it is to implement).
  *
  * For specifying a series of places, we use the already existing physical::Wave Modulation system in reverse order; meaning the Modulated signal is what should be evaluated BEFORE *this. Evaluation here means Localization::Seek() (past tense as Sought).
@@ -69,7 +69,7 @@ public:
 	 * @param name
 	 */
 	explicit Localization(
-		LocalizationSite site = LocalizationSitePerspective::InvalidId(),
+		Site site = LocalizationSitePerspective::InvalidId(),
 		Name name = NULL
 	);
 
@@ -90,13 +90,13 @@ public:
 	 * Get m_site.
 	 * @return m_site.
 	 */
-	virtual LocalizationSite GetSite() const;
+	virtual Site GetSite() const;
 
 	/**
 	 * Set m_site.
 	 * @param site
 	 */
-	virtual void SetSite(LocalizationSite site);
+	virtual void SetSite(Site site);
 
 	/**
 	 * Get the Name to use with m_site.
@@ -118,7 +118,7 @@ protected:
 	 */
 	chemical::Substance* ResolvePrevious(chemical::Substance* seekIn) const;
 
-	LocalizationSite m_site;
+	Site m_site;
 	Name m_name;
 	Localization* m_previous;
 	chemical::ExcitationBase* mc_method; //cached pointer to site-associated function pointer.

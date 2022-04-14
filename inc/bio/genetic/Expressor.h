@@ -38,7 +38,7 @@ class Plasmid;
  * NOTE: While TranscriptionFactors are used to control the translation of Plasmid dna into Proteins, Proteins themselves can only be Folded within a Cell, and thus are not included here.
  */
 class Expressor :
-	public Class< Expressor >,
+	public genetic::Class< Expressor >,
 	public chemical::UnorderedMotif< TranscriptionFactor >,
 	public chemical::LinearMotif< Plasmid* >,
 	public chemical::LinearMotif< molecular::Protein* >,

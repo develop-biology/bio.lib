@@ -50,21 +50,22 @@ Code RNAPolymerase::Activate()
 	BIO_SANITIZE(mc_rna, ,
 		return code::BadArgument2());
 
+	Gene* geneBuffer;
 	bool shouldTranscribe = false;
 	for (
-		chemical::StructuralComponentImplementation< Gene* >::Contents::const_iterator gen = m_source->GetAll< Gene* >()->begin();
-		gen != m_source->GetAll< Gene* >()->end();
+		SmartIterator gen = m_source->GetAll< Gene* >()->Begin();
+		!gen.IsAtEnd();
 		++gen
 		)
 	{
+		geneBuffer = gen;
 		shouldTranscribe = expressor->HasAll< TranscriptionFactor >(
-			*((*gen)->GetAll< TranscriptionFactor >())
-		);
+			geneBuffer->GetAll< TranscriptionFactor >());
 		if (!shouldTranscribe)
 		{
 			continue;
 		}
-		boundRNA->Add< Gene* >(*gen);
+		boundRNA->Add< Gene* >(geneBuffer);
 	}
 	return code::Success();
 }

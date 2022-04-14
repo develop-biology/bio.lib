@@ -26,20 +26,15 @@
 namespace bio {
 
 /**
- * LocalizationSites are types of places.
+ * Sites are types of places.
  * The place itself should be specified by Name or Id.
- * Because places can be anything, we rely on Perspective::AssociateType and chemical::Excitation in order to turn a LocalizationSite into an actionable function.
+ * Because places can be anything, we rely on Perspective::AssociateType and chemical::Excitation in order to turn a Site into an actionable function.
+ * Sites are identical to Sites except they have an insertion method, rather than an extraction method.
  * See Localization.h for more info.
  */
-BIO_ID_WITH_PERSPECTIVE(LocalizationSite,
-	uint8_t)
-
-/**
- * InsertionSites are identical to LocalizationSites except they have an insertion method, rather than an extraction method.
- */
-BIO_ID_WITH_PERSPECTIVE(InsertionSite,
-	uint8_t)
-
+BIO_ID(Site, uint8_t)
+BIO_PERSPECTIVE_SINGLETON(LocalizationSitePerspective, Site)
+BIO_PERSPECTIVE_SINGLETON(InsertionSitePerspective, Site)
 
 /**
  * TranscriptionFactors determine which Proteins are expressed in which Cells.

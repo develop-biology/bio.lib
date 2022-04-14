@@ -225,8 +225,34 @@ public:
 		{
 			if (transferSubContents)
 			{
-				//NOTE: THIS REMOVES ANY STRUCTURAL COMPONENTS NOT EXPLICITLY IN addition
-				addition->ImportAll(toReplace.template As< CONTENT_TYPE >()->AsWave());
+				//NOTE: THIS REMOVES ALL STRUCTURAL COMPONENTS IN toReplace
+				// WHICH ARE NOT EXPLICITLY IN addition
+				//This makes sense but is bound to be a bug at some point...
+
+				CONTENT_TYPE toReplaceCasted = toReplace.template As< CONTENT_TYPE >();
+				//addition->ImportAll(toReplaceCasted); //<- inaccessible, so we replicate the function here.
+
+				Bond* bondBuffer;
+				for (
+					SmartIterator bnd = addition->AsAtom()->GetAllBonds()->End();
+					!bnd.IsAtBeginning();
+					--bnd
+					)
+				{
+					bondBuffer = bnd;
+					if (bondBuffer->IsEmpty())
+					{
+						continue;
+					}
+					if (physical::Wave::GetResonanceBetween(
+						bondBuffer->GetBonded(),
+						AbstractMotif::GetClassProperties()).size() == 0)
+					{
+						continue;
+					}
+					const physical::Wave* otherBond = toReplaceCasted->AsAtom()->GetBonded(toReplaceCasted->AsAtom()->GetBondPosition(bondBuffer->GetId()));
+					Cast< AbstractMotif* >(bondBuffer->GetBonded())->ImportImplementation(otherBond); //actual work
+				}
 			}
 			this->m_contents->Erase(toReplace);
 		}

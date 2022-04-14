@@ -32,16 +32,18 @@ Habitat::~Habitat()
 Code Habitat::AdaptInhabitants()
 {
 	Code ret = code::Success();
-	chemical::Structure< Organism* >::Contents* buddies = GetAll< Organism* >();
+	Container* buddies = GetAll< Organism* >();
 	BIO_SANITIZE(buddies,,return code::CouldNotFindValue1())
+	Organism* buddy;
 	for (
-		chemical::Structure< Organism* >::Contents::iterator bud = buddies->begin();
-		bud != buddies->end();
+		SmartIterator bud = buddies->Begin();
+		!bud.IsAtEnd();
 		++bud
 		)
 	{
-		(*bud)->SetEnvironment(this);
-		if ((*bud)->Morphogenesis() != code::Success() && ret == code::Success())
+		buddy = bud;
+		buddy->SetEnvironment(this);
+		if (buddy->Morphogenesis() != code::Success() && ret == code::Success())
 		{
 			ret = code::UnknownError();
 		}
