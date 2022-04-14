@@ -24,12 +24,14 @@
 #include "bio/common/macros/AssertMacros.h"
 #include "TypeName.h"
 #include <cstddef>
+#include <cstdlib>
+#include <cstring>
 
 namespace bio {
 
 /**
- * Generic byte stream class. Kinda like a Cast that you can save and use later.
- * Work around for c++98 auto keyword
+ * Generic byte stream class. Kinda like a void* that you can save and cast later.
+ * Work around for c++98 auto keyword and other wonky problems.
  *
  *******************************************************************************
  *                    DO NOT USE THIS IMPROPERLY!!
@@ -38,7 +40,9 @@ namespace bio {
  * If you don't understand what this does and how it CAN GO HORRIBLY WRONG,
  * DO NOT USE THIS CLASS!
  *
- * This is used by BIO_SANITIZE_WITH_CACHE
+ * This is used by BIO_SANITIZE_WITH_CACHE and Containers.
+ *
+ * NOTE: ByteStreams are not virtual to save what space we can. This may change in a future release if we decide we somehow need more hacky, abstract storage.
  */
 class ByteStream
 {
@@ -48,7 +52,7 @@ public:
 	 */
 	ByteStream();
 
-	template<typename T>
+	template < typename T >
 	ByteStream(T in)
 	{
 		Set(in);
@@ -62,50 +66,107 @@ public:
 	/**
 	 *
 	 */
-	virtual ~ByteStream();
+	~ByteStream();
 
 	/**
 	 * @param other
 	 */
-	virtual void operator=(const ByteStream& other);
+	void operator=(const ByteStream& other);
+
+	/**
+	 * Compares the memory contained in both *this and other.
+	 * @param other
+	 * @return whether or not other holds the same bits as *this.
+	 */
+	bool operator==(const ByteStream& other) const;
 
 	/**
 	 * Casts stored data to T.
 	 * @tparam T
 	 * @return stored bytes as T.
 	 */
-	template <typename T>
-	operator T() const
+	template < typename T >
+	T As()
 	{
-		BIO_ASSERT(Is<T>());
-		union Converter
-		{
-			char* bytes;
-			T type;
-		};
-		Converter c;
-		c.bytes = m_stream;
-		return c.type;
+		BIO_ASSERT(Is< T >());
+		T* ret;
+		std::memcpy(
+			ret,
+			m_stream,
+			sizeof(T));
+		return *ret;
 	}
 
 	/**
-	 * Stores bytes of T in *this.
+	 * Casts stored data to T.
 	 * @tparam T
+	 * @return stored bytes as T.
 	 */
-	template <typename T>
+	template < typename T >
+	const T As() const
+	{
+		BIO_ASSERT(Is< T >());
+		T* ret;
+		std::memcpy(
+			ret,
+			m_stream,
+			sizeof(T));
+		return *ret;
+	}
+
+	/**
+	 * Casts stored data to T.
+	 * @tparam T
+	 * @return stored bytes as T.
+	 */
+	template < typename T >
+	operator T()
+	{
+		return As< T >();
+	}
+
+	/**
+	 * Casts stored data to T.
+	 * @tparam T
+	 * @return stored bytes as T.
+	 */
+	template < typename T >
+	operator const T() const
+	{
+		return As< T >();
+	}
+
+	/**
+	 * Copies the data given to a new memory location.
+	 * This should be used if the provided "in" is expected to go out of scope but the value still be valid.
+	 * Make sure you Release *this to delete the stored content.
+	 * @tparam T
+	 * @param in data to store
+	 */
+	template < typename T >
 	void Set(T in)
 	{
-		union Converter
-		{
-			char* bytes;
-			T type;
-		};
-		Converter c;
-		c.type = in;
-		m_stream = c.bytes;
-		m_typeName = TypeName<T>();
+		m_stream = std::malloc(sizeof(T));
+		std::memcpy(
+			m_stream,
+			&in,
+			sizeof(T));
 		m_size = sizeof(T);
+		m_typeName = TypeName< T >();
 	}
+
+	/**
+	 * Copies the data from an other into *this and Holds it.
+	 */
+	void Set(const ByteStream& other);
+
+	/**
+	 * Frees the memory *this was Holding.
+	 * Nop if *this was not holding anything.
+	 * NOTE: This does not call any destructors. You must do that yourself.
+	 * (i.e. there is no typename -> new type* -> union -> delete; delete)
+	 */
+	void Release();
 
 	/**
 	 * Check if *this has been Set.
@@ -118,10 +179,10 @@ public:
 	 * @tparam T
 	 * @return whether or not *this should be pointing to data of type T.
 	 */
-	template <typename T>
+	template < typename T >
 	bool Is() const
 	{
-		return sizeof(T) == m_size && TypeName<T>() == m_typeName;
+		return sizeof(T) == m_size && TypeName< T >() == m_typeName;
 	}
 
 	/**
@@ -130,10 +191,10 @@ public:
 	 * @param t only used for automatically determining T.
 	 * @return whether or not *this should be pointing to data of type T.
 	 */
-	template <typename T>
+	template < typename T >
 	bool Is(const T& t) const
 	{
-		return Is<T>();
+		return Is< T >();
 	}
 
 	/**
@@ -149,13 +210,14 @@ public:
 	/**
 	 * Assume the caller knows something we don't.
 	 * Please don't use this.
-	 * @return the data in *this as void*.
+	 * @return the data in *this
 	 */
 	void* IKnowWhatImDoing();
 
 protected:
-	char* m_stream;
+	void* m_stream;
 	std::string m_typeName;
 	std::size_t m_size;
+	bool m_holding;
 };
 } //bio namespace

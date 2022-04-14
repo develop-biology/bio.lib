@@ -27,10 +27,10 @@
  * Define a virtual function that forwards to a Class.
  * Currently only works for functions that have a non-void return type.
  */
-#define BIO_CLASS_METHOD(                                                      \
-	ns,                                                                        \
-	caller,                                                                    \
-	functionSignature,                                                         \
+#define BIO_CLASS_METHOD(\
+    ns, \
+    caller, \
+    functionSignature, \
     functionCall)                                                              \
 functionSignature                                                              \
 {                                                                              \
@@ -49,36 +49,65 @@ functionSignature                                                              \
  * @param caller a tuple containing the class
  * @param argsMacro the arguments to be looped over (1 per iteration).
  */
-#define BIO_CALL_CLASS_METHOD_LOOP_WITH_MACRO(                                 \
+#define BIO_CALL_CLASS_METHOD_LOOP_WITH_MACRO(\
+        loopName, \
+        iterationsMacro, \
+        ns, \
+        caller, \
+        argsMacro                                                              \
+)                                                                          \
+    BIO_CALL_LOOP(                                                             \
         loopName,                                                              \
         iterationsMacro,                                                       \
         ns,                                                                    \
         caller,                                                                \
-        argsMacro                                                              \
-	)                                                                          \
-    BIO_CALL_LOOP(                                                             \
-		loopName,                                                              \
-		iterationsMacro,                                                       \
-		ns,                                                                    \
-		caller,                                                                \
-		argsMacro)
+        argsMacro)
 
 /**
- * Calls the appropriate loop to define up to 99 class methods from BIO_GET_CLASS_METHODS_FOR_...
- * NOTE: We call BIO_GET_CLASS_METHODS_FOR_##ns() with this. ns is lowercase. This deviates from the Biology macro naming scheme but improves usability, since we don't need to provide ns in lowercase and in uppercase.
+ * Calls the appropriate loop to define up to 99 class methods from BIO_GET_REQUIRED_CLASS_METHODS_FOR_...
+ * NOTE: We call BIO_GET_REQUIRED_CLASS_METHODS_FOR_##ns() with this. ns is lowercase. This deviates from the Biology macro naming scheme but improves usability, since we don't need to provide ns in lowercase and in uppercase.
  * @param ns the namespace of the class.
  * @param caller the name of the class.
  */
-#define BIO_DISAMBIGUATE_CLASS_METHODS(ns, caller)                             \
+#define BIO_DISAMBIGUATE_REQUIRED_CLASS_METHODS(ns, caller)                    \
     BIO_CALL_CLASS_METHOD_LOOP_WITH_MACRO(                                     \
         BIO_DEFINE_CLASS_METHODS_LOOP,                                         \
         BIO_GET_NUM_ARGS_OF_MACRO(                                             \
-			BIO_GET_CLASS_METHODS_FOR_##ns()                                   \
+            BIO_GET_REQUIRED_CLASS_METHODS_FOR_##ns()                          \
         ),                                                                     \
         ns,                                                                    \
         (caller),                                                              \
         BIO_CALL_NS_MACRO(                                                     \
-            BIO_GET_CLASS_METHODS_FOR,                                         \
+            BIO_GET_REQUIRED_CLASS_METHODS_FOR,                                \
             ns                                                                 \
         )                                                                      \
     )
+
+/**
+ * Calls the appropriate loop to define up to 99 class methods from BIO_GET_CLASS_OPTIONAL_METHODS_FOR_...
+ * NOTE: We call BIO_GET_OPTIONAL_CLASS_METHODS_FOR_##ns() with this. ns is lowercase. This deviates from the Biology macro naming scheme but improves usability, since we don't need to provide ns in lowercase and in uppercase.
+ * @param ns the namespace of the class.
+ * @param caller the name of the class.
+ */
+#define BIO_DISAMBIGUATE_OPTIONAL_CLASS_METHODS(ns, caller)                    \
+    BIO_CALL_CLASS_METHOD_LOOP_WITH_MACRO(                                     \
+        BIO_DEFINE_CLASS_METHODS_LOOP,                                         \
+        BIO_GET_NUM_ARGS_OF_MACRO(                                             \
+            BIO_GET_OPTIONAL_CLASS_METHODS_FOR_##ns()                          \
+        ),                                                                     \
+        ns,                                                                    \
+        (caller),                                                              \
+        BIO_CALL_NS_MACRO(                                                     \
+            BIO_GET_OPTIONAL_CLASS_METHODS_FOR,                                \
+            ns                                                                 \
+        )                                                                      \
+    )
+
+/**
+ * Ease of use wrapper for defining REQUIRED and OPTIONAL CLASS_METHODS.
+ * @param ns the namespace of the class.
+ * @param caller the name of the class.
+ */
+#define BIO_DISAMBIGUATE_ALL_CLASS_METHODS(ns, caller)                         \
+    BIO_DISAMBIGUATE_REQUIRED_CLASS_METHODS(ns, BIO_SINGLE_ARG(caller))        \
+    BIO_DISAMBIGUATE_OPTIONAL_CLASS_METHODS(ns, BIO_SINGLE_ARG(caller))

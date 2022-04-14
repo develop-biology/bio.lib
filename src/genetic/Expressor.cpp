@@ -34,10 +34,7 @@ Expressor::~Expressor()
 Code Expressor::Activate(StandardDimension proteinId)
 {
 	Code ret = code::Success();
-	molecular::Protein* toActivate = GetById< molecular::Protein* >(
-		proteinId,
-		false
-	);
+	molecular::Protein* toActivate = GetById< molecular::Protein* >(proteinId);
 	BIO_SANITIZE(toActivate, ,
 		return false);
 	return toActivate->Activate();
@@ -50,14 +47,16 @@ Code Expressor::Activate(Name proteinName)
 
 Code Expressor::ExpressGenes()
 {
+	Plasmid* plasmidBuffer;
 	Code ret = code::Success();
 	for (
-		chemical::StructuralComponentImplementation< const Plasmid* >::Contents::const_iterator dna = GetAll< const Plasmid* >()->begin();
-		dna != GetAll< const Plasmid* >()->end();
+		SmartIterator dna = GetAll< Plasmid* >()->Begin();
+		!dna.IsAtEnd();
 		++dna
 		)
 	{
-		if (AddToTranscriptome((*dna)->TranscribeFor(this)) != code::Success() && ret == code::Success())
+		plasmidBuffer = dna;
+		if (AddToTranscriptome(plasmidBuffer->TranscribeFor(this)) != code::Success() && ret == code::Success())
 		{
 			ret = code::TranscriptionError();
 		}
@@ -91,15 +90,21 @@ Code Expressor::Translate(const RNA* mRNA)
 
 	Code ret = code::Success();
 
+	Gene* geneBuffer;
 	for (
 		Transcriptome::const_iterator rna = m_transcriptome.begin();
 		rna != m_transcriptome.end();
 		++rna
 		)
 	{
-		for (chemical::Structure< Gene* >::Contents::const_iterator gen = (*rna)->GetAll< Gene* >()->begin(); gen != (*rna)->GetAll< Gene* >()->end(); ++gen)
+		for (
+			SmartIterator gen = (*rna)->GetAll< Gene* >()->Begin();
+			!gen.IsAtEnd();
+			++gen
+			)
 		{
-			if (!(*gen)->m_insertion.Seek(this))
+			geneBuffer = gen;
+			if (!geneBuffer->m_insertion.Seek(this))
 			{
 				ret = code::UnknownError();
 			}

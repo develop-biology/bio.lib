@@ -25,7 +25,7 @@
 #include "bio/molecular/common/Class.h"
 #include "bio/molecular/common/Filters.h"
 #include "Surface.h"
-#include "bio/chemical/structure/LinearStructuralComponent.h"
+#include "bio/chemical/structure/motif/LinearMotif.h"
 
 namespace bio {
 namespace molecular {
@@ -72,20 +72,19 @@ namespace molecular {
 class Molecule :
 	public Class< Molecule >,
 	public physical::Perspective< StandardDimension >,
-	public chemical::LinearStructuralComponent< Surface* >
+	public chemical::LinearMotif< Surface* >
 {
 public:
 
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(molecular,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular,
 		Molecule)
 
 	/**
 	 * Standard ctors.
-	 */
-	 BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(molecular,
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(molecular,
 		Molecule,
 		&MoleculePerspective::Instance(),
 		filter::Molecular())

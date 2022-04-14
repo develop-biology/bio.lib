@@ -32,6 +32,7 @@
 #include "OptimizeMacros.h"
 #include "OSMacros.h"
 #include "SanitizeMacros.h"
+#include "StrongTypedef.h"
 #include "bio/common/ByteStream.h"
 
 /**
@@ -72,7 +73,7 @@
  * @param ns the namespace in which to call the macro.
  */
 #define BIO_CALL_NS_MACRO(macroName, ns, ...)                                  \
-	macroName##_##ns(__VA_ARGS__)
+    macroName##_##ns(__VA_ARGS__)
 
 /**
  * Call a macro-based loop. These are hard-coded with a certain iteration count.
@@ -85,7 +86,7 @@
     loopName##_##iterations(__VA_ARGS__)
 
 /**
- * Singleton implementation makes the constructor private so that there is only one instance ever created, which is by Instance()
+ * Singleton interface makes the constructor private so that there is only one instance ever created, which is by Instance()
  * we also override default copy constructor and assignment operator so that nobody can make a copy of the singleton  (otherwise it wouldn't be a singleton). We don't define them, so these methods will give a link error if used.
  * @param className the name of the new singleton
  * @param baseClass the name of the class the new singleton will inherit from (i.e. what to make into a singleton).

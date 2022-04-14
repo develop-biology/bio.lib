@@ -51,7 +51,7 @@ RNA* Plasmid::TranscribeFor(Expressor* expressor) const
 	std::string rnaName = "mRNA_";
 	rnaName += GetName();
 	RNA* ret = new RNA(rnaName.c_str());
-	molecular::Protein* polymerase = ForceCast<molecular::Protein*>(GetRNAPolymerase()->Clone());
+	molecular::Protein* polymerase = ForceCast< molecular::Protein* >(GetRNAPolymerase()->Clone());
 	StandardDimension bindingSite = polymerase->GetIdFromName("RNA Binding Site");
 	polymerase->RecruitChaperones(expressor);
 	polymerase->Fold();

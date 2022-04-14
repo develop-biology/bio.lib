@@ -22,19 +22,19 @@
 #pragma once
 
 #define BIO_EXCITATION_CLASS_0(wave, ret, ...)                                 \
-	::bio::chemical::ExcitationWithoutArgument< wave, ret >
+    ::bio::chemical::ExcitationWithoutArgument< wave, ret >
 
 #define BIO_EXCITATION_CLASS_1(wave, ret, ...)                                 \
-	::bio::chemical::ExcitationWithArgument< wave, ret, __VA_ARGS__ >
+    ::bio::chemical::ExcitationWithArgument< wave, ret, __VA_ARGS__ >
 
 #define BIO_EXCITATION_CLASS_2(wave, ret, ...)                                 \
-	::bio::chemical::ExcitationWithTwoArguments< wave, ret, __VA_ARGS__ >
+    ::bio::chemical::ExcitationWithTwoArguments< wave, ret, __VA_ARGS__ >
 
 #define BIO_CREATE_EXCITATION_CLASS(wave, ret, num, ...)                       \
-	BIO_EXCITATION_CLASS_##num(wave, ret, __VA_ARGS__)
+    BIO_EXCITATION_CLASS_##num(wave, ret, __VA_ARGS__)
 
 #define BIO_CREATE_EXCITATION_CLASS_WITH_NUM(wave, ret, num, ...)              \
-	BIO_CREATE_EXCITATION_CLASS(wave, ret, num, __VA_ARGS__)
+    BIO_CREATE_EXCITATION_CLASS(wave, ret, num, __VA_ARGS__)
 
 /**
  * Work around for C++ < 17, where variadic macros are supported but variadic template parameters are not.
@@ -45,12 +45,12 @@
  * @param ... any arguments to the function
  */
 #define BIO_EXCITATION_CLASS(wave, ret, ...)                                   \
-	BIO_CREATE_EXCITATION_CLASS_WITH_NUM(                                      \
-		wave,                                                                  \
-		ret,                                                                   \
-		BIO_GET_NUM_ARGS(__VA_ARGS__),                                         \
-		__VA_ARGS__                                                            \
-	)
+    BIO_CREATE_EXCITATION_CLASS_WITH_NUM(                                      \
+        wave,                                                                  \
+        ret,                                                                   \
+        BIO_GET_NUM_ARGS(__VA_ARGS__),                                         \
+        __VA_ARGS__                                                            \
+    )
 
 //@formatter:off
 #if BIO_CPP_VERSION >= 17

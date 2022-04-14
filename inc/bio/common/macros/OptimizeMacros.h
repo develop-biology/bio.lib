@@ -28,7 +28,7 @@
  * Values generally range from 0 to 4 (unless you make your own code dependent on the BIO_SAFETY_LEVEL).
  */
 #ifndef BIO_SAFETY_LEVEL
-#define BIO_SAFETY_LEVEL 2
+	#define BIO_SAFETY_LEVEL 2
 #endif
 
 /**
@@ -39,7 +39,7 @@
  * Values generally range from 0 to 1 (on or off, for the time being).
  */
 #ifndef BIO_MEMORY_OPTIMIZE_LEVEL
-#define BIO_MEMORY_OPTIMIZE_LEVEL 0
+	#define BIO_MEMORY_OPTIMIZE_LEVEL 0
 #endif
 
 /**
@@ -54,7 +54,7 @@
  * and all the classes in bio/molecular.
  */
 #ifndef BIO_ENABLE_REFLECTION
-#define BIO_ENABLE_REFLECTION 1
+	#define BIO_ENABLE_REFLECTION 1
 #endif
 
 /**
@@ -64,5 +64,5 @@
  * Doing so will make all thread related operations into nops and save you some cpu cycles.
  */
 #ifndef BIO_ENABLE_THREADING
-#define BIO_ENABLE_THREADING 1
+	#define BIO_ENABLE_THREADING 1
 #endif

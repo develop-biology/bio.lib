@@ -31,13 +31,18 @@ Organism::~Organism()
 Code Organism::Morphogenesis()
 {
 	Code ret = code::Success();
+	Container* organSystems = GetAll< cellular::OrganSystem* >();
+	BIO_SANITIZE(organSystems, ,
+		return code::CouldNotFindValue1())
+	cellular::OrganSystem* systemBuffer;
 	for (
-		chemical::Structure< cellular::OrganSystem* >::Contents::iterator sys = GetAll< cellular::OrganSystem* >()->begin();
-		sys != GetAll< cellular::OrganSystem* >()->end();
+		SmartIterator sys = organSystems->Begin();
+		!sys.IsAtEnd();
 		++sys
 		)
 	{
-		if ((*sys)->Organogenesis() != code::Success() && ret == code::Success())
+		systemBuffer = sys;
+		if (systemBuffer->Organogenesis() != code::Success() && ret == code::Success())
 		{
 			ret = code::UnknownError();
 		}

@@ -30,8 +30,8 @@ namespace genetic {
  * Insertions are a type of Insertion which, instead of just finding a place, add something to a place.
  * This is used to move Proteins to their correct position after Transcription.
  * 
- * NOTE: All InsertionSites currently have a 1 to 1 mapping with LocalizationSites and should always be the same value.
- * i.e. Cast< InsertionSite >(myLocalizationSiteId) == InsertionSitePerspective::Instance().GetIdWithoutCreation(myLocalizationSiteName)
+ * NOTE: All Sites currently have a 1 to 1 mapping with Sites and should always be the same value.
+ * i.e. Cast< Site >(mySiteId) == InsertionSitePerspective::Instance().GetIdWithoutCreation(mySiteName)
  */
 class Insertion :
 	public physical::Class< Insertion >,
@@ -42,7 +42,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
 		Insertion)
 
 
@@ -53,7 +53,7 @@ public:
 	 */
 	explicit Insertion(
 		chemical::Substance* whatToInsert = NULL,
-		InsertionSite site = InsertionSitePerspective::InvalidId(),
+		Site site = InsertionSitePerspective::InvalidId(),
 		Name name = NULL
 	);
 
@@ -70,13 +70,13 @@ public:
 	 * @return a Substance somewhere within the Substance provided or NULL.
 	 */
 	virtual chemical::Substance* Seek(chemical::Substance* insertIn) const;
-	
+
 	/**
 	 * Tells *this to insert toInsert in its Localization.
 	 * @param toInsert 
 	 */
 	virtual void InsertThis(chemical::Substance* toInsert);
-	
+
 	/**
 	 * @return what *this will try to insert in its Localization
 	 */
@@ -86,8 +86,8 @@ public:
 	 * Set m_site.
 	 * @param site 
 	 */
-	virtual void SetSite(LocalizationSite site);
-	
+	virtual void SetSite(Site site);
+
 protected:
 	chemical::Substance* m_toInsert;
 };

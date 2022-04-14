@@ -22,7 +22,6 @@
 #pragma once
 
 #include "bio/physical/macros/Macros.h"
-#include "Wave.h"
 #include "bio/common/Types.h"
 #include "bio/common/String.h"
 #include "bio/common/ThreadSafe.h"
@@ -40,6 +39,19 @@
 
 namespace bio {
 namespace physical {
+
+class Wave;
+
+/**
+ * Wave is incomplete here due to circular inheritance.
+ * To provide the complete type, we provide this Utilities class which is defined in a non-templated compilation unit.
+ */
+struct PerspectiveUtilities
+{
+	static Wave* Clone(const Wave* toClone);
+
+	static void Delete(Wave* toDelete);
+};
 
 /**
  * A Perspective keeps track of Names and Ids for a certain set of objects within a DIMENSION and ensures a unique Id <-> Name pairing for all objects it "observes".
@@ -116,7 +128,7 @@ public:
 			}
 			if (itt->m_type)
 			{
-				delete itt->m_type;
+				PerspectiveUtilities::Delete(itt->m_type);
 				itt->m_type = NULL;
 			}
 		}
@@ -327,7 +339,7 @@ public:
 	 */
 	virtual Id GetNumUsedIds() const
 	{
-		return m_nextId - 1;
+		return this->m_nextId - 1;
 	}
 
 
@@ -352,7 +364,7 @@ public:
 
 		LockThread();
 		BIO_SANITIZE(type,
-			hdt->m_type = type->Clone(),
+			hdt->m_type = PerspectiveUtilities::Clone(type),
 			hdt->m_type = type);
 		UnlockThread();
 
@@ -374,7 +386,7 @@ public:
 
 		LockThread();
 		BIO_SANITIZE_AT_SAFETY_LEVEL_2(hdt->m_type,
-			delete hdt->m_type,);
+			PerspectiveUtilities::Delete(hdt->m_type),);
 		hdt->m_type = NULL;
 		UnlockThread();
 
@@ -389,7 +401,8 @@ public:
 	 */
 	virtual const Wave* GetTypeFromId(Id id) const
 	{
-		BIO_SANITIZE(id == InvalidId(), , return NULL);
+		BIO_SANITIZE(id == InvalidId(), ,
+			return NULL)
 
 		typename Hadits::const_iterator result = Find(id);
 		if (result == m_hadits.end())
@@ -419,7 +432,7 @@ public:
 		const Wave* ret = GetTypeFromId(id);
 		if (ret)
 		{
-			return ret->Clone();
+			return PerspectiveUtilities::Clone(ret);
 		}
 		return NULL;
 	}

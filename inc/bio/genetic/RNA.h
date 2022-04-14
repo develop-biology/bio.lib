@@ -31,20 +31,19 @@ namespace genetic {
  */
 class RNA :
 	public Class< RNA >,
-	public chemical::LinearStructuralComponent< Gene* >
+	public chemical::LinearMotif< Gene* >
 {
 public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(genetic,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(genetic,
 		RNA)
 
 	/**
 	 * Standard ctors.
 	 * NOTE: RNA does not always have to be Identifiable. We simply make it so for ease-of use.
-	 */
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(genetic,
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(genetic,
 		RNA,
 		&genetic::RNAPerspective::Instance(),
 		filter::Genetic())

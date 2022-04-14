@@ -22,7 +22,7 @@
 #include "bio/chemical/common/Filters.h"
 #include "bio/physical/macros/Macros.h"
 
-namespace bio{
+namespace bio {
 namespace filter {
 
 BIO_FILTER_FUNCTION_BODY(Chemical)

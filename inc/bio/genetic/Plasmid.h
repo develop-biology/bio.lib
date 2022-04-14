@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/chemical/structure/LinearStructuralComponent.h"
+#include "bio/chemical/structure/motif/LinearMotif.h"
 #include "bio/genetic/common/Types.h"
 #include "bio/genetic/common/Class.h"
 #include "Gene.h"
@@ -46,8 +46,8 @@ class Expressor;
  *
  */
 class Plasmid :
-	public genetic::Class<Plasmid>,
-	public chemical::LinearStructuralComponent< Gene* >,
+	public genetic::Class< Plasmid >,
+	public chemical::LinearMotif< Gene* >,
 	public molecular::DNA,
 	virtual public ThreadSafe
 {
@@ -56,14 +56,13 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(genetic,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(genetic,
 		Plasmid)
 
 	/**
 	 * Standard ctors.
 	 * These are easy to use but require setting member variables manually.
-	 */
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(genetic,
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(genetic,
 		Plasmid,
 		&PlasmidPerspective::Instance(),
 		filter::Genetic())
@@ -81,6 +80,7 @@ public:
 	 * @return A Protein* that will carry out the Transcription of *this.
 	 */
 	virtual molecular::Protein* GetRNAPolymerase();
+
 	virtual const molecular::Protein* GetRNAPolymerase() const;
 
 	/**

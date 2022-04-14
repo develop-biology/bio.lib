@@ -29,18 +29,31 @@ namespace physical {
  * See SymmetryTypes.h for what types of Symmetry are available on a physical level.
  * Both Symmetry and SymmetryTypes are intended to grow with each namespace, as the complexity of what is being Rotated grows.
  */
-class Symmetry : public Identifiable<SymmetryType>
+class Symmetry :
+	public Identifiable< SymmetryType >
 {
 public:
-	Symmetry(Name name, Name type);
-	Symmetry(Name name, SymmetryType type);
+	Symmetry(
+		Name name,
+		Name type
+	);
+
+	Symmetry(
+		Name name,
+		SymmetryType type
+	);
+
 	virtual ~Symmetry();
 
-	Name GetType() const {return Identifiable<SymmetryType>::GetName();}
+	Name GetType() const
+	{
+		return Identifiable< SymmetryType >::GetName();
+	}
 
 	SetValue(const ByteStream& bytes);
 
-	AddSymmetry(Symmetry* symmetry);
+	AddSymmetry(Symmetry
+	* symmetry);
 
 protected:
 	Name m_name;

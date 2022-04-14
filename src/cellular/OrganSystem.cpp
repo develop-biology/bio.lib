@@ -34,22 +34,27 @@ OrganSystem::~OrganSystem()
 Code OrganSystem::Organogenesis()
 {
 	Code ret = code::Success();
+	Container* organs = GetAll< Organ* >();
+	BIO_SANITIZE(organs, ,
+		return code::CouldNotFindValue1())
+	Organ* organBuffer;
 	for (
-		chemical::Structure< Organ* >::Contents::iterator org = GetAll< Organ* >()->begin();
-		org != GetAll< Organ* >()->end();
+		SmartIterator org = organs->Begin();
+		!org.IsAtEnd();
 		++org
 		)
 	{
-		(*org)->SetEnvironment(this);
-		if ((*org)->BuildMobilome() != code::Success() && ret == code::Success())
+		organBuffer = org;
+		organBuffer->SetEnvironment(this);
+		if (organBuffer->BuildMobilome() != code::Success() && ret == code::Success())
 		{
 			ret = code::UnknownError();
 		}
-		if ((*org)->GrowTissues() != code::Success() && ret == code::Success())
+		if (organBuffer->GrowTissues() != code::Success() && ret == code::Success())
 		{
 			ret = code::UnknownError();
 		}
-		if ((*org)->SpecializeTissues() != code::Success() && ret == code::Success())
+		if (organBuffer->SpecializeTissues() != code::Success() && ret == code::Success())
 		{
 			ret = code::UnknownError();
 		}

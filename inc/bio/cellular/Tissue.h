@@ -29,7 +29,7 @@
 #include "bio/cellular/Cell.h"
 #include "bio/genetic/Plasmid.h"
 #include "bio/molecular/EnvironmentDependent.h"
-#include "bio/chemical/structure/LinearStructuralComponent.h"
+#include "bio/chemical/structure/motif/LinearMotif.h"
 
 namespace bio {
 namespace cellular {
@@ -42,24 +42,23 @@ class Cell;
  * Once a group of Tissues is functioning as desired, it is recommended that you package them into an Organ.
  */
 class Tissue :
-	public Class<Tissue>,
-	public chemical::LinearStructuralComponent< genetic::Plasmid* >,
-	public chemical::LinearStructuralComponent< Cell* >,
-	public chemical::LinearStructuralComponent< Tissue* >,
-	public molecular::EnvironmentDependent<Tissue> //Not Organ.
+	public Class< Tissue >,
+	public chemical::LinearMotif< genetic::Plasmid* >,
+	public chemical::LinearMotif< Cell* >,
+	public chemical::LinearMotif< Tissue* >,
+	public molecular::EnvironmentDependent< Tissue > //Not Organ.
 {
 public:
 
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(cellular,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular,
 		Tissue)
 
 	/**
 	 * Standard ctors.
-	 */
-	 BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
 		Tissue,
 		&TissuePerspective::Instance(),
 		filter::Cellular())

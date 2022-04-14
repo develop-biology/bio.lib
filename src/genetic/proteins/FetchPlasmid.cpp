@@ -26,7 +26,8 @@
 namespace bio {
 namespace genetic {
 
-FetchPlasmid::FetchPlasmid() :
+FetchPlasmid::FetchPlasmid()
+	:
 	molecular::Protein(chemical::PeriodicTable::Instance().GetNameFromType(*this))
 {
 	mc_nameSite = Define("Name Binding Site");

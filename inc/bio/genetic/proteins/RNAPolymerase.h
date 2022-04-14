@@ -27,6 +27,7 @@ namespace bio {
 namespace genetic {
 
 class Plasmid;
+
 class RNA;
 
 /**

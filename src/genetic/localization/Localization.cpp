@@ -28,11 +28,11 @@ namespace bio {
 namespace genetic {
 
 Localization::Localization(
-	LocalizationSite site,
+	Site site,
 	Name name
 )
 	:
-	physical::Class< Localization > (this),
+	physical::Class< Localization >(this),
 	m_name(NULL),
 	mc_method(NULL)
 {
@@ -60,7 +60,7 @@ chemical::Substance* Localization::ResolvePrevious(chemical::Substance* seekIn) 
 		return seekIn);
 
 	//TODO: What if *this has been Modulated with something other than a Localization?
-	Localization* previous = ForceCast<Localization*>(Demodulate());
+	Localization* previous = ForceCast< Localization* >(Demodulate());
 
 	if (previous)
 	{
@@ -81,13 +81,21 @@ chemical::Substance* Localization::Seek(chemical::Substance* seekIn) const
 		return seekIn;
 	}
 
-	BIO_SANITIZE(mc_method,, return NULL);
+	BIO_SANITIZE(mc_method, ,
+		return NULL)
 	ByteStream newName(m_name);
-	(const_cast< chemical::ExcitationBase* >(mc_method))->EditArg(0, newName);
+	(const_cast< chemical::ExcitationBase* >(mc_method))->EditArg(
+		0,
+		newName
+	);
 	ByteStream result;
-	mc_method->CallDown(seekIn->AsWave(), result);
-	chemical::Substance* extract = ChemicalCast<chemical::Substance*>(Cast<physical::Wave*>(result.IKnowWhatImDoing())); //This is about as safe as we can get right now.
-	BIO_SANITIZE(extract,,return NULL);
+	mc_method->CallDown(
+		seekIn->AsWave(),
+		result
+	);
+	chemical::Substance* extract = ChemicalCast< chemical::Substance* >(Cast< physical::Wave* >(result.IKnowWhatImDoing())); //This is about as safe as we can get right now.
+	BIO_SANITIZE(extract, ,
+		return NULL)
 	return extract;
 }
 
@@ -97,7 +105,10 @@ void Localization::SetNameOfSite(Name name)
 	{
 		delete[] m_name;
 	}
-	string::CloneInto(name, m_name);
+	string::CloneInto(
+		name,
+		m_name
+	);
 }
 
 Name Localization::GetNameOfSite() const
@@ -105,7 +116,7 @@ Name Localization::GetNameOfSite() const
 	return m_name;
 }
 
-void Localization::SetSite(LocalizationSite site)
+void Localization::SetSite(Site site)
 {
 	m_site = site;
 	if (mc_method)
@@ -115,7 +126,7 @@ void Localization::SetSite(LocalizationSite site)
 	mc_method = LocalizationSitePerspective::Instance().GetNewObjectFromIdAs< chemical::ExcitationBase* >(m_site);
 }
 
-LocalizationSite Localization::GetSite() const
+Site Localization::GetSite() const
 {
 	return m_site;
 }

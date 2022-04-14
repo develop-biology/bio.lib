@@ -51,38 +51,43 @@ Surface::Surface(const Surface& toCopy)
 		toCopy.GetPerspective(),
 		toCopy.GetFilter(),
 		symmetry_type::Variable()),
-	chemical::LinearStructuralComponent< Molecule* >(toCopy),
+	chemical::LinearMotif< Molecule* >(toCopy),
 	EnvironmentDependent< Molecule >(toCopy)
 {
+	chemical::Bond* bondBuffer;
 	for (
-		chemical::Valence val = 0;
-		val < toCopy.m_valence;
-		++val
+		SmartIterator bnd = toCopy.m_bonds.End();
+		!bnd.IsAtBeginning();
+		--bnd
 		)
 	{
-		if (toCopy.m_bonds[val].GetType() == bond_type::Manage())
+		bondBuffer = bnd;
+		if (bondBuffer->GetType() == bond_type::Manage())
 		{
 			//Calling FormBondImplementation directly saves us some work and should be safer than trying to do auto-template type determination from Clone().
 			FormBondImplementation(
-				toCopy.m_bonds[val].GetBonded()->Clone(),
-				toCopy.m_bonds[val].GetId(),
-				toCopy.m_bonds[val].GetType());
+				bondBuffer->GetBonded()->Clone(),
+				bondBuffer->GetId(),
+				bondBuffer->GetType());
 		}
 	}
 }
 
 Surface::~Surface()
 {
+	chemical::Bond* bondBuffer;
 	for (
-		chemical::Valence val = 0;
-		val < m_valence;
-		++val
+		SmartIterator bnd = m_bonds.End();
+		!bnd.IsAtBeginning();
+		--bnd
 		)
 	{
-		if (m_bonds[val].GetType() == bond_type::Manage())
+		bondBuffer = bnd;
+		if (bondBuffer->GetType() == bond_type::Manage())
 		{
-			delete m_bonds[val].GetBonded();
-			m_bonds[val].Break();
+			//bypass BreakBondImplementation and just do it.
+			delete bondBuffer->GetBonded();
+			bondBuffer->Break();
 		}
 	}
 }
@@ -117,18 +122,20 @@ physical::Wave* Surface::Release(
 )
 {
 	physical::Wave* ret = NULL;
+	chemical::Bond* bondBuffer;
 	for (
-		chemical::Valence val = 0;
-		val < m_valence;
-		++val
+		SmartIterator bnd = m_bonds.End();
+		!bnd.IsAtBeginning();
+		--bnd
 		)
 	{
-		if (m_bonds[val].GetType() == bondType)
+		bondBuffer = bnd;
+		if (bondBuffer->GetType() == bondType)
 		{
-			ret = ChemicalCast< physical::Wave* >(m_bonds[val].GetBonded());
+			ret = ChemicalCast< physical::Wave* >(bondBuffer->GetBonded());
 			BIO_SANITIZE_AT_SAFETY_LEVEL_2(!ret || ret != toRelease,
 				continue,);
-			m_bonds[val].Break();
+			bondBuffer->Break();
 			break;
 		}
 	}
@@ -142,22 +149,24 @@ chemical::Substance* Surface::Release(
 )
 {
 	chemical::Substance* ret = NULL;
+	chemical::Bond* bondBuffer;
 	for (
-		chemical::Valence val = 0;
-		val < m_valence;
-		++val
+		SmartIterator bnd = m_bonds.End();
+		!bnd.IsAtBeginning();
+		--bnd
 		)
 	{
-		if (m_bonds[val].GetType() == bondType)
+		bondBuffer = bnd;
+		if (bondBuffer->GetType() == bondType)
 		{
-			ret = ChemicalCast< chemical::Substance* >(m_bonds[val].GetBonded());
+			ret = ChemicalCast< chemical::Substance* >(bondBuffer->GetBonded());
 			BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
 				continue);
 			BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret->IsName(toRelease), ,
 				continue);
 			BIO_SANITIZE_AT_SAFETY_LEVEL_2(perspective && ret->GetPerspective() != perspective,
 				continue,);
-			m_bonds[val].Break();
+			bondBuffer->Break();
 			break;
 		}
 	}
@@ -171,22 +180,24 @@ chemical::Substance* Surface::Release(
 )
 {
 	chemical::Substance* ret = NULL;
+	chemical::Bond* bondBuffer;
 	for (
-		chemical::Valence val = 0;
-		val < m_valence;
-		++val
+		SmartIterator bnd = m_bonds.End();
+		!bnd.IsAtBeginning();
+		--bnd
 		)
 	{
-		if (m_bonds[val].GetType() == bondType)
+		bondBuffer = bnd;
+		if (bondBuffer->GetType() == bondType)
 		{
-			ret = ChemicalCast< chemical::Substance* >(m_bonds[val].GetBonded());
+			ret = ChemicalCast< chemical::Substance* >(bondBuffer->GetBonded());
 			BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
 				continue);
 			BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret->IsId(toRelease), ,
 				continue);
 			BIO_SANITIZE_AT_SAFETY_LEVEL_2(perspective && ret->GetPerspective() != perspective,
 				continue,);
-			m_bonds[val].Break();
+			bondBuffer->Break();
 			break;
 		}
 	}
@@ -196,16 +207,18 @@ chemical::Substance* Surface::Release(
 physical::Waves Surface::ReleaseAll(BondType bondType)
 {
 	physical::Waves ret;
+	chemical::Bond* bondBuffer;
 	for (
-		chemical::Valence val = 0;
-		val < m_valence;
-		++val
+		SmartIterator bnd = m_bonds.End();
+		!bnd.IsAtBeginning();
+		--bnd
 		)
 	{
-		if (m_bonds[val].GetType() == bondType)
+		bondBuffer = bnd;
+		if (bondBuffer->GetType() == bondType)
 		{
-			ret.push_back(ChemicalCast< physical::Wave* >(m_bonds[val].GetBonded()));
-			m_bonds[val].Break();
+			ret.push_back(ChemicalCast< physical::Wave* >(bondBuffer->GetBonded()));
+			bondBuffer->Break();
 		}
 	}
 	return ret;

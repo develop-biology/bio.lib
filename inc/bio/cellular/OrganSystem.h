@@ -27,7 +27,7 @@
 #include "bio/cellular/macros/Macros.h"
 #include "bio/cellular/Organ.h"
 #include "bio/genetic/Plasmid.h"
-#include "bio/chemical/structure/LinearStructuralComponent.h"
+#include "bio/chemical/structure/motif/LinearMotif.h"
 
 namespace bio {
 namespace cellular {
@@ -41,14 +41,14 @@ class Organ;
  */
 class OrganSystem :
 	Class< OrganSystem >,
-	public chemical::LinearStructuralComponent< Organ* >
+	public chemical::LinearMotif< Organ* >
 {
 public:
 
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(cellular,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular,
 		OrganSystem)
 
 	/**

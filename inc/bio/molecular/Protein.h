@@ -22,7 +22,7 @@
 #pragma once
 
 #include "bio/log/Writer.h"
-#include "bio/chemical/structure/LinearStructuralComponent.h"
+#include "bio/chemical/structure/motif/LinearMotif.h"
 #include "Molecule.h"
 #include "bio/molecular/common/Types.h"
 #include "bio/molecular/common/Class.h"
@@ -44,7 +44,7 @@ class DNA;
 class Protein :
 	virtual public Molecule,
 	public Class< Protein >,
-	public chemical::LinearStructuralComponent< Protein* >,
+	public chemical::LinearMotif< Protein* >,
 	public EnvironmentDependent< Vesicle >
 {
 public:
@@ -52,7 +52,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(molecular,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular,
 		Protein)
 
 	/**
@@ -60,8 +60,7 @@ public:
 	 * For example:
 	 * 		Protein myProtein = Protein("MyProtein");
 	 * 		myProtein.SetSource(myDNA); //myDNA created sometime earlier.
-	 */
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(molecular,
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(molecular,
 		Protein,
 		&ProteinPerspective::Instance(),
 		filter::Molecular())
@@ -82,7 +81,7 @@ public:
 	 * For example:
 	 * virtual Code RecruitChaperones(Vesicle* environment)
 	 * {
-	 *     BIO_SANITIZE(MyChecks(),,return code::GeneralFailure());
+	 *     BIO_SANITIZE(MyChecks(),,return code::GeneralFailure())
 	 *     return Protein::RecruitChaperones(environment);
 	 * }
 	 *

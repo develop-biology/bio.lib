@@ -25,7 +25,6 @@
 #include "bio/molecular/Protein.h"
 #include "bio/genetic/common/Types.h"
 #include "bio/genetic/common/Filters.h"
-#include "bio/genetic/common/TranscriptionFactorStructure.h"
 #include "bio/genetic/macros/Macros.h"
 #include "RNA.h"
 
@@ -39,10 +38,10 @@ class Plasmid;
  * NOTE: While TranscriptionFactors are used to control the translation of Plasmid dna into Proteins, Proteins themselves can only be Folded within a Cell, and thus are not included here.
  */
 class Expressor :
-	public Class< Expressor >,
-	public TranscriptionFactorStructure,
-	public chemical::LinearStructuralComponent< Plasmid* >,
-	public chemical::LinearStructuralComponent< molecular::Protein* >,
+	public genetic::Class< Expressor >,
+	public chemical::UnorderedMotif< TranscriptionFactor >,
+	public chemical::LinearMotif< Plasmid* >,
+	public chemical::LinearMotif< molecular::Protein* >,
 	virtual public molecular::Vesicle
 {
 public:
@@ -50,13 +49,12 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(genetic,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(genetic,
 		Expressor)
 
 	/**
 	 * Standard ctors.
-	 */
-	 BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(genetic,
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(genetic,
 		Expressor,
 		&molecular::VesiclePerspective::Instance(),
 		filter::Genetic())

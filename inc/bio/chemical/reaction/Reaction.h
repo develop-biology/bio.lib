@@ -27,7 +27,7 @@
 #include "bio/chemical/common/Class.h"
 #include "bio/chemical/common/Filters.h"
 #include "bio/chemical/common/States.h"
-#include "bio/chemical/structure/LinearStructuralComponent.h"
+#include "bio/chemical/structure/motif/LinearMotif.h"
 #include "bio/physical/Identifiable.h"
 #include "bio/common/TypeName.h"
 
@@ -73,20 +73,19 @@ namespace chemical {
  */
 class Reaction :
 	public chemical::Class< Reaction >,
-	virtual public StructureInterface //for use in LinearStructuralComponents downstream, we must have interface methods available, even though Reaction does not directly contain anything.
+	virtual public Structure //for use in LinearMotifs downstream, we must have interface methods available, even though Reaction does not directly contain anything.
 {
 public:
 
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(chemical,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical,
 		Reaction)
 
 	/**
 	 * Standard ctors.
-	 */
-	 BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(chemical,
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(chemical,
 		Reaction,
 		&ReactionPerspective::Instance(),
 		filter::Chemical(),
@@ -98,7 +97,7 @@ public:
 	 */
 	explicit Reaction(
 		Name name,
-		const Reactants& reactants
+		const Reactants* reactants
 	);
 
 	/**
@@ -117,7 +116,7 @@ public:
 	 */
 	void Require(
 		Name typeName,
-		const Substance& substance
+		const Substance* substance
 	);
 
 	/**
@@ -129,8 +128,8 @@ public:
 	 */
 	void Require(
 		Name typeName,
-		const typename StructuralComponent< Property >::Contents& properties,
-		const typename StructuralComponent< State >::Contents& states
+		const typename UnorderedMotif< Property >::Contents* properties,
+		const typename UnorderedMotif< State >::Contents* states
 	);
 
 	/**
@@ -155,11 +154,11 @@ public:
 	/**
 	 * Wrapper around Require(Reactant*).
 	 * Constructs Reactant from args
-	 * @tparam T the T* which will be used in the Reaction (without the *)
-	 * @param substance
+	 * @tparam T of the T* which will be used in the Reaction (without the *)
+	 * @param substance the T* to use (with the *).
 	 */
 	template < typename T >
-	void Require(const T& substance)
+	void Require(const T* substance)
 	{
 		Require(
 			TypeName< T >(),
@@ -174,8 +173,8 @@ public:
 	 */
 	template < typename T >
 	void Require(
-		const typename StructuralComponent< Property >::Contents& properties,
-		const typename StructuralComponent< State >::Contents& states
+		const typename UnorderedMotif< Property >::Contents* properties,
+		const typename UnorderedMotif< State >::Contents* states
 	)
 	{
 		Require(
@@ -252,7 +251,10 @@ public:
 	{
 		BIO_SANITIZE_WITH_CACHE(Initiate< T >(),
 			return (*Cast< const T* >(RESULT))(reactants),
-			return Products(code::NotImplemented(), reactants));
+			return Products(
+				code::NotImplemented(),
+				reactants
+			));
 	}
 
 	template < typename T >
@@ -261,7 +263,10 @@ public:
 		Reactants reactants(substances);
 		BIO_SANITIZE_WITH_CACHE(Initiate< T >(),
 			return (*Cast< const T* >(RESULT))(&reactants),
-			return Products(code::NotImplemented(), reactants));
+			return Products(
+				code::NotImplemented(),
+				reactants
+			));
 	}
 
 	/**

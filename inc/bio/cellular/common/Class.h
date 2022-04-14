@@ -29,27 +29,33 @@ namespace bio {
 namespace cellular {
 
 /**
- * The PeakCarrierWave will propagate Peak Excitations to all LinearStructuralComponents
+ * The PeakCarrierWave will propagate Peak Excitations to all LinearMotifs
  */
-class PeakCarrierWave : public physical::Wave
+class PeakCarrierWave :
+	public physical::Wave
 {
 public:
-	PeakCarrierWave() :
+	PeakCarrierWave()
+		:
 		m_peakExcitation(&physical::Periodic::Peak)
 	{
 		Modulate(m_peakExcitation);
 	}
-	virtual ~PeakCarrierWave() {}
+
+	virtual ~PeakCarrierWave()
+	{
+	}
 
 	virtual Properties GetProperties() const
 	{
-		Properties ret = chemical::AbstractStructure::GetClassProperties();
+		Properties ret = chemical::AbstractMotif::GetClassProperties();
 		ret.push_back(property::Linear());
 		return ret;
 	}
 
 protected:
-	BIO_EXCITATION_CLASS(physical::Periodic, Code) m_peakExcitation;
+	BIO_EXCITATION_CLASS(physical::Periodic,
+		Code) m_peakExcitation;
 };
 
 static PeakCarrierWave g_peakCarrierWave;
@@ -68,7 +74,7 @@ class Class :
 {
 public:
 
-	BIO_DISAMBIGUATE_CLASS_METHODS(genetic,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(genetic,
 		T)
 
 	/**
@@ -76,19 +82,19 @@ public:
 	 * For default constructors of virtually inherited classes.
 	 * @param object
 	 */
-		Class(
-			T* object,
-			physical::Perspective <StandardDimension>* perspective = NULL,
-			Filter filter = filter::Default())
-			:
-			genetic::Class< T >(
-				object,
-				perspective,
-				filter
-			)
-		{
+	Class(
+		T* object,
+		physical::Perspective< StandardDimension >* perspective = NULL,
+		Filter filter = filter::Default())
+		:
+		genetic::Class< T >(
+			object,
+			perspective,
+			filter
+		)
+	{
 
-		}
+	}
 
 	/**
 	 * @param object
@@ -100,7 +106,7 @@ public:
 	Class(
 		T* object,
 		Name name,
-		physical::Perspective <StandardDimension>* perspective = NULL,
+		physical::Perspective< StandardDimension >* perspective = NULL,
 		Filter filter = filter::Default(),
 		TimeUS interval = GetDefaultInterval())
 		:
@@ -124,7 +130,7 @@ public:
 	Class(
 		T* object,
 		StandardDimension id,
-		physical::Perspective <StandardDimension>* perspective = NULL,
+		physical::Perspective< StandardDimension >* perspective = NULL,
 		Filter filter = filter::Default(),
 		TimeUS interval = GetDefaultInterval())
 		:

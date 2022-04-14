@@ -24,7 +24,7 @@
 namespace bio {
 
 ThreadSafe::ThreadSafe()
-	//@formatter:off
+//@formatter:off
 	#if BIO_CPP_VERSION < 11
     #else
         :
@@ -47,7 +47,7 @@ ThreadSafe::ThreadSafe()
 }
 
 ThreadSafe::ThreadSafe(const ThreadSafe& toCopy)
-	//@formatter:off
+//@formatter:off
 	#if BIO_CPP_VERSION < 11
     #else
         :
@@ -81,7 +81,7 @@ ThreadSafe::~ThreadSafe()
 	//@formatter:on
 }
 
-void ThreadSafe::LockThread()
+void ThreadSafe::LockThread() const
 {
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
@@ -94,12 +94,7 @@ void ThreadSafe::LockThread()
 	//@formatter:on
 }
 
-void ThreadSafe::LockThread() const
-{
-	const_cast<ThreadSafe*>(this)->LockThread();
-}
-
-void ThreadSafe::UnlockThread()
+void ThreadSafe::UnlockThread() const
 {
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
@@ -110,11 +105,6 @@ void ThreadSafe::UnlockThread()
 		m_lock.unlock();
 	#endif
 	//@formatter:on
-}
-
-void ThreadSafe::UnlockThread() const
-{
-	const_cast<ThreadSafe*>(this)->UnlockThread();
 }
 
 } //bio namespaace

@@ -31,22 +31,43 @@
 
 /**
  * Get all virtual methods defined by physical::Class.
- * @return function signatures for use in BIO_DISAMBIGUATE_CLASS_METHODS
+ * @return function signatures for use in BIO_DISAMBIGUATE_REQUIRED_CLASS_METHODS
  */
-#define BIO_GET_CLASS_METHODS_FOR_physical()                                   \
+#define BIO_GET_REQUIRED_CLASS_METHODS_FOR_physical()                          \
     (                                                                          \
 		virtual ::bio::physical::Wave* Clone() const,                          \
 		Clone()                                                                \
 	),                                                                         \
     (                                                                          \
-		virtual ::bio::physical::Wave* AsWave(),                                     \
-		AsWave()                                                                     \
-	),\
-    (virtual const ::bio::physical::Wave* AsWave() const, AsWave()),\
-	(virtual operator ::bio::physical::Wave*(), operator ::bio::physical::Wave*()),\
-	(virtual ::bio::physical::Wave* Modulate(Wave* signal), Modulate(signal)),\
-	(virtual ::bio::physical::Wave* Demodulate(), Demodulate()),\
-	(virtual const ::bio::physical::Wave* Demodulate() const, Demodulate())
+		virtual ::bio::physical::Wave* AsWave(),                               \
+		AsWave()                                                               \
+	),                                                                         \
+    (                                                                          \
+		virtual const ::bio::physical::Wave* AsWave() const,                   \
+		AsWave()                                                               \
+	),                                                                         \
+	(                                                                          \
+		virtual operator ::bio::physical::Wave*(),                             \
+		operator ::bio::physical::Wave*()                                      \
+	)
+
+/**
+ * Get all optional virtual methods defined by physical::Class.
+ * @return function signatures for use in BIO_DISAMBIGUATE_OPTIONAL_CLASS_METHODS
+ */
+#define BIO_GET_OPTIONAL_CLASS_METHODS_FOR_physical()                          \
+	(                                                                          \
+		virtual ::bio::physical::Wave* Modulate(::bio::physical::Wave* signal),\
+		Modulate(signal)                                                       \
+	),                                                                         \
+	(                                                                          \
+		virtual ::bio::physical::Wave* Demodulate(),                           \
+		Demodulate()                                                           \
+	),                                                                         \
+	(                                                                          \
+		virtual const ::bio::physical::Wave* Demodulate() const,               \
+		Demodulate()                                                           \
+	)
 
 
 /**

@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/chemical/structure/LinearStructuralComponent.h"
+#include "bio/chemical/structure/motif/LinearMotif.h"
 #include "Molecule.h"
 #include "bio/molecular/common/Types.h"
 
@@ -35,21 +35,20 @@ namespace molecular {
  */
 class Vesicle :
 	virtual public Molecule,
-	public Class<Vesicle>,
-	public chemical::LinearStructuralComponent< Molecule* >
+	public Class< Vesicle >,
+	public chemical::LinearMotif< Molecule* >
 {
 public:
 
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(molecular,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular,
 		Vesicle)
 
 	/**
 	 * Standard ctors.
-	 */
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(molecular,
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(molecular,
 		Vesicle,
 		&VesiclePerspective::Instance(),
 		filter::Molecular())

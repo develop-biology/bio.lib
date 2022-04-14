@@ -25,10 +25,13 @@
  */
 
 #if BIO_CPP_VERSION < 11
+
 	#include <stdint.h>
+
 #else
 	#include <cstdint>
 #endif
+
 #include <cstddef> //for NULL
 #include <vector>
 #include <map>
@@ -41,18 +44,29 @@ namespace bio {
  * Names are used in NameTracker<>s but are defined here for simplicity.
  */
 typedef const char* Name;
-typedef std::vector<Name> Names;
+typedef std::vector< Name > Names;
 
-typedef std::vector<const char*> CharStrings;
-typedef std::vector<std::string> StdStrings;
+typedef std::vector< const char* > CharStrings;
+typedef std::vector< std::string > StdStrings;
 
-typedef std::vector<ByteStream> ByteStreams;
+typedef std::vector< ByteStream > ByteStreams;
+
+/**
+ * Indices are used by Arrangements to manage and manipulate what they store.
+ */
+typedef uint32_t Index;
+
+/**
+ * We sacrifice our first index for the ability to do error checking.
+ * @return a Index that holds no content.
+ */
+const Index InvalidIndex();
 
 /**
  * milliseconds (ms for short)
  */
 typedef uint32_t Timestamp;
-typedef std::vector<Timestamp> Timestamps;
+typedef std::vector< Timestamp > Timestamps;
 
 /**
  * microseconds (us for short)

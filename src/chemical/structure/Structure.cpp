@@ -19,39 +19,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include "bio/genetic/common/Types.h"
-#include "bio/chemical/common/Class.h"
-#include "bio/chemical/structure/StructuralComponent.h"
+#include "bio/chemical/structure/Structure.h"
 
 namespace bio {
-namespace genetic {
+namespace chemical {
 
-/**
- * chemical::StructuralComponent<TranscriptionFactor> is an ambiguous base of Expressor & Gene, so we use an intermediate class to disambiguate.
- */
-class TranscriptionFactorStructure :
-	public chemical::Class< TranscriptionFactorStructure >,
-	public chemical::StructuralComponent< TranscriptionFactor >
+Structure::Structure()
 {
-public:
-	/**
-	 * Ensure virtual methods point to Class implementations.
-	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(chemical,
-		TranscriptionFactorStructure)
+}
 
-	TranscriptionFactorStructure()
-		:
-		chemical::Class< TranscriptionFactorStructure >(this)
-	{
-	}
+Structure::~Structure()
+{
+}
 
-	virtual ~TranscriptionFactorStructure()
-	{
-	}
-};
-
-} //genetic namespace
+} //chemical namespace
 } //bio namespace

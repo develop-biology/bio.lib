@@ -28,7 +28,7 @@
 #include "bio/cellular/Tissue.h"
 #include "bio/genetic/Plasmid.h"
 #include "bio/molecular/EnvironmentDependent.h"
-#include "bio/chemical/structure/LinearStructuralComponent.h"
+#include "bio/chemical/structure/motif/LinearMotif.h"
 
 namespace bio {
 namespace cellular {
@@ -49,8 +49,8 @@ class OrganSystem;
  */
 class Organ :
 	public Class< Organ >,
-	public chemical::LinearStructuralComponent< genetic::Plasmid* >,
-	public chemical::LinearStructuralComponent< Tissue* >,
+	public chemical::LinearMotif< genetic::Plasmid* >,
+	public chemical::LinearMotif< Tissue* >,
 	public molecular::EnvironmentDependent< OrganSystem >
 {
 public:
@@ -58,13 +58,12 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(cellular,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular,
 		Organ)
 
 	/**
 	 * Standard ctors.
-	 */
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
 		Organ,
 		&OrganPerspective::Instance(),
 		filter::Cellular())

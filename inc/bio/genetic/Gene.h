@@ -24,7 +24,6 @@
 #include "bio/genetic/common/Types.h"
 #include "bio/genetic/common/Class.h"
 #include "bio/genetic/common/Filters.h"
-#include "bio/genetic/common/TranscriptionFactorStructure.h"
 #include "bio/genetic/macros/Macros.h"
 #include "bio/genetic/localization/Insertion.h"
 #include "bio/molecular/DNA.h"
@@ -47,20 +46,19 @@ namespace genetic {
 class Gene :
 	public Class< Gene >,
 	public molecular::DNA,
-	public TranscriptionFactorStructure
+	public chemical::UnorderedMotif< TranscriptionFactor >
 {
 public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(genetic,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(genetic,
 		Gene)
 
 	/**
 	 * Standard ctors.
 	 * These are easy to use but require setting member variables manually.
-	 */
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(genetic,
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(genetic,
 		Gene,
 		&molecular::DNAPerspective::Instance(),
 		filter::Genetic())

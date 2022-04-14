@@ -41,7 +41,7 @@ class Class :
 {
 public:
 
-	BIO_DISAMBIGUATE_CLASS_METHODS(molecular,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular,
 		T)
 
 	/**
@@ -51,7 +51,7 @@ public:
 	 */
 	Class(
 		T* object,
-		physical::Perspective <StandardDimension>* perspective = NULL,
+		physical::Perspective< StandardDimension >* perspective = NULL,
 		Filter filter = filter::Default())
 		:
 		molecular::Class< T >(
@@ -72,7 +72,7 @@ public:
 	Class(
 		T* object,
 		Name name,
-		physical::Perspective <StandardDimension>* perspective = NULL,
+		physical::Perspective< StandardDimension >* perspective = NULL,
 		Filter filter = filter::Default())
 		:
 		molecular::Class< T >(
@@ -94,7 +94,7 @@ public:
 	Class(
 		T* object,
 		StandardDimension id,
-		physical::Perspective <StandardDimension>* perspective = NULL,
+		physical::Perspective< StandardDimension >* perspective = NULL,
 		Filter filter = filter::Default())
 		:
 		molecular::Class< T >(

@@ -27,16 +27,14 @@
 #include "bio/common/macros/OSMacros.h"
 #include "bio/physical/Quantum.h"
 #include "bio/physical/common/Class.h"
-#include "PeriodicTable.h"
 #include "bio/chemical/common/BondTypes.h"
+#include "PeriodicTable.h"
 #include "Bond.h"
 
 namespace bio {
 namespace chemical {
 
 class Symmetry;
-
-class Bond;
 
 /**
  * Atom MUST be virtually inherited!
@@ -57,7 +55,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
 		Atom)
 
 	/**
@@ -129,7 +127,7 @@ public:
 		Valence position = GetBondPosition< T >();
 		BIO_SANITIZE(position, ,
 			return NULL);
-		return ForceCast< T >(m_bonds[position].GetBonded());
+		return ForceCast< T >(m_bonds.OptimizedAccess(position)->GetBonded());
 	}
 
 	/**
@@ -144,7 +142,7 @@ public:
 
 		BIO_SANITIZE(position, ,
 			return NULL);
-		return ForceCast< const T >(m_bonds[position].GetBonded());
+		return ForceCast< const T >(m_bonds.OptimizedAccess(position)->GetBonded());
 	}
 
 	/**
@@ -242,8 +240,7 @@ public:
 	{
 		#if BIO_CPP_VERSION < 11
 		AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >();
-		return FormBondImplementation(
-			(new physical::Quantum< T >(toBond))->AsWave(),
+		return FormBondImplementation((new physical::Quantum< T >(toBond))->AsWave(),
 			bondedId,
 			type
 		);
@@ -284,7 +281,10 @@ public:
 		BondType type = bond_type::Unknown())
 	{
 		#if BIO_CPP_VERSION < 11
-		return BreakBond< physical::Quantum< T >* >(NULL, type);
+		return BreakBond< physical::Quantum< T >* >(
+			NULL,
+			type
+		);
 		#else
 		if (IsPrimitive< T >())
 		{
@@ -362,9 +362,20 @@ public:
 		#endif
 	}
 
+	/**
+	 * DANGEROUS!
+	 * @return a pointer to the Bonds in *this.
+	 */
+	Bonds* GetAllBonds();
+
+	/**
+	 * DANGEROUS! (but slightly less so).
+	 * @return a pointer to the Bonds in *this.
+	 */
+	const Bonds* GetAllBonds() const;
+
 protected:
-	Bond* m_bonds;
-	Valence m_valence;
+	Bonds m_bonds;
 
 	/**
 	 * Create a Bond.

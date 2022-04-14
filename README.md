@@ -9,6 +9,8 @@ We'll be releasing the alpha version as soon as we can!
 
 As a part of eons, we follow all [eons conventions](https://eons.llc/convention/).
 
+## Style
+
 ### Namespaces
 Biology is broken into the following namespaces:
 1. common (base) - the corollary to real-life mathematics; used everywhere.
@@ -50,6 +52,18 @@ To recap, extendable types should follow these rules:
 ### Templates
 
 Templates are handled in a WYSIWYG manner where `T` (or the appropriate `typename`) is never modified. This means if you call `Add < T >` you will get a `T` returned, not a `T*` or anything else.
+
+### Inheritance & Naming
+
+All Biology classes, with few exceptions, are virtual and may be extended as far as you would like. To accommodate this, objects are almost always passed by pointer; meaning, you can pass references to your derived classes and functions will treat them as the base class. Your code is then executed through virtual method calls.  
+
+`AbstractClasses` cannot be instantiated but can be used to pass implementations by pointer.  
+
+`Classes` may be templated if they necessarily require a template. Otherwise, they contain the minimal functionality they represent and may be extended. 
+
+`ClassOf<>` will be used if `Class` is functional on its own, and we also want a templated derivation. The template (i.e. `ClassOf<>`) will share the same name as the base `Class` with the addition of "of" in order to avoid file name conflicts. It will NEVER be the case that a `Class` derives from a templated base class of the same name (i.e. `Class : ClassOf<>` is invalid as are `Class<> : Class` and `Class : Class<>`). Use of `ClassOf<>` is discouraged; a more descriptive name is preferred (i.e. what does the template override provide?).
+
+Thus, in terms of possible templates, we get either `Class<>` on its own, `Class<> : AbstractClass`, or `ClassOf<> : Class`, depending on whether the base class is functional (of course, we also have `Class : OtherClass<>` but that's just general inheritance).
 
 ## Building
 

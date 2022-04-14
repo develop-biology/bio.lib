@@ -44,13 +44,12 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(cellular,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular,
 		Organelle)
 
 	/**
 	 * Standard ctors.
-	 */
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
 		Organelle,
 		&OrganellePerspective::Instance(),
 		filter::Molecular())

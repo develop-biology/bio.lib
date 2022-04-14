@@ -23,7 +23,7 @@
 
 #include "bio/chemical/common/Class.h"
 #include "bio/chemical/reaction/Reaction.h"
-#include "bio/chemical/structure/LinearStructuralComponent.h"
+#include "bio/chemical/structure/motif/LinearMotif.h"
 
 namespace bio {
 namespace molecular {
@@ -46,19 +46,18 @@ namespace molecular {
 class Pathway :
 	public chemical::Class< Pathway >,
 	public chemical::Reaction,
-	public chemical::LinearStructuralComponent< chemical::Reaction* >
+	public chemical::LinearMotif< chemical::Reaction* >
 {
 public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(chemical,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical,
 		Pathway)
 
 	/**
 	 * Standard ctors.
-	 */
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(chemical,
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(chemical,
 		Pathway,
 		&chemical::ReactionPerspective::Instance(),
 		filter::Chemical())

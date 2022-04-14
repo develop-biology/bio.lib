@@ -27,12 +27,12 @@ namespace bio {
 namespace property {
 
 /**
- * See AbstractStructure.h
+ * See UnorderedMotif.h
  */
 Property Structural();
 
 /**
- * For LinearStructuralComponent.h
+ * For LinearMotif.h
  */
 Property Linear();
 

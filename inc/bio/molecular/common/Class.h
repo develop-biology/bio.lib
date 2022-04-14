@@ -40,7 +40,7 @@ class Class :
 {
 public:
 
-	BIO_DISAMBIGUATE_CLASS_METHODS(chemical,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical,
 		T)
 
 	/**

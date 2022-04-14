@@ -25,15 +25,18 @@
 #include "bio/molecular/Molecule.h"
 #include "bio/molecular/Vesicle.h"
 #include "bio/chemical/reaction/Excitation.h"
-#include "bio/chemical/structure/LinearStructuralComponent.h"
+#include "bio/chemical/structure/motif/LinearMotif.h"
 #include "bio/physical/Periodic.h"
 
 namespace bio {
 
-BIO_SITE_FUNCTION_BODY(InSurface, molecular::Molecule*)
+BIO_SITE_FUNCTION_BODY(InSurface,
+	molecular::Molecule*)
 
-BIO_SITE_FUNCTION_BODY(OnMolecule, molecular::Surface*)
+BIO_SITE_FUNCTION_BODY(OnMolecule,
+	molecular::Surface*)
 
-BIO_SITE_FUNCTION_BODY(InVesicle, molecular::Vesicle*)
+BIO_SITE_FUNCTION_BODY(InVesicle,
+	molecular::Vesicle*)
 
 } //bio namespace

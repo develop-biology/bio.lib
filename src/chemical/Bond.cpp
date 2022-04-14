@@ -47,6 +47,11 @@ Bond::Bond(
 {
 }
 
+Bond::~Bond()
+{
+
+}
+
 bool Bond::Form(
 	AtomicNumber id,
 	physical::Wave* bonded,
@@ -91,6 +96,16 @@ void Bond::Break()
 	//leave m_id intact.
 	m_bonded = NULL;
 	m_type = bond_type::Empty();
+}
+
+bool Bond::operator==(const AtomicNumber id) const
+{
+	return m_id == id;
+}
+
+bool Bond::operator==(const Bond& other) const
+{
+	return m_id == other.m_id;
 }
 
 } //chemical namespace

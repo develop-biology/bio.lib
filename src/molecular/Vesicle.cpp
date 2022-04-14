@@ -27,9 +27,9 @@ namespace molecular {
 
 Vesicle::Vesicle(const Vesicle& toCopy) :
 	molecular::Class<Vesicle>(this, toCopy.GetId(), toCopy.GetPerspective(), toCopy.GetFilter()),
-	LinearStructuralComponent< Molecule* >(toCopy)
+	LinearMotif< Molecule* >(toCopy)
 {
-	LinearStructuralComponent< Molecule* >::m_perspective = this;
+	LinearMotif< Molecule* >::m_perspective = this;
 }
 
 Vesicle::~Vesicle()
@@ -58,14 +58,14 @@ const Molecule* Vesicle::operator[](Name moleculeName) const
 
 Vesicle* Vesicle::operator<<=(Vesicle* source)
 {
-	BIO_SANITIZE(source,,return NULL);
+	BIO_SANITIZE(source,,return NULL)
 	Import< Molecule* >(source);
 	return this;
 }
 
 Vesicle* Vesicle::operator>>=(Vesicle* target)
 {
-	BIO_SANITIZE(target,,return NULL);
+	BIO_SANITIZE(target,,return NULL)
 	target->Import< Molecule* >(this);
 	this->Clear< Molecule* >();
 	return target;

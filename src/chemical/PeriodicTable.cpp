@@ -29,13 +29,14 @@ namespace chemical {
  * Elements track the Properties of items in the PeriodicTable.
  * This is a Substance for ease of use but can be changed later.
  * We also want to use Element as a Substance here as we can store the Properties of classes which are not Substances (e.g. Symmetry)
- * NOTE, this is not chemical::Element<T>, which is used to define these Elements.
+ * NOTE, this is not chemical::Elementary<T>, which is used to define these Elements.
  */
 class Element :
 	public Substance
 {
 public:
-	Element() :
+	Element()
+		:
 		m_type(NULL)
 	{
 	}
@@ -68,7 +69,7 @@ const Properties PeriodicTableImplementation::GetPropertiesOf(AtomicNumber id) c
 	BIO_SANITIZE(element, ,
 		return ret);
 	LockThread();
-	ret = *(element->GetAll< Property >());
+	ret = element->GetAllAsVector< Property >();
 	UnlockThread();
 	return ret;
 }
@@ -108,7 +109,8 @@ AtomicNumber PeriodicTableImplementation::RecordPropertiesOf(
 )
 {
 	typename Hadits::iterator hdt = Find(id);
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(hdt == this->m_hadits.end(),,return InvalidId());
+	BIO_SANITIZE_AT_SAFETY_LEVEL_2(hdt == this->m_hadits.end(), ,
+		return InvalidId());
 
 	LockThread();
 	Element* element = ForceCast< Element* >(hdt->m_type);

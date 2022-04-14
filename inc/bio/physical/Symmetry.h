@@ -42,7 +42,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
 		Symmetry)
 
 	/**
@@ -93,7 +93,7 @@ public:
 
 	/**
 	 * With Symmetry, we make "Type" what is Identifiable and Name ancillary.
-	 * @return The Type of *this, aka Identifiable<SymmetryType>::GetName().
+	 * @return The Type of *this, akan Identifiable<SymmetryType>::GetName().
 	 */
 	const Identifiable< SymmetryType >& GetType() const;
 

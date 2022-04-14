@@ -24,7 +24,6 @@
 #include "bio/physical/Symmetry.h"
 #include "bio/physical/common/Codes.h"
 #include "bio/common/macros/Macros.h"
-
 #include <algorithm>
 
 namespace bio {
@@ -107,7 +106,7 @@ const Wave* Wave::Demodulate() const
 	return m_signal;
 }
 
-Wave* Wave::operator%(
+Wave* Wave::operator*(
 	Wave* signal
 )
 {
@@ -116,12 +115,12 @@ Wave* Wave::operator%(
 	);
 }
 
-Wave* Wave::operator~()
+Wave* Wave::operator*()
 {
 	return Demodulate();
 }
 
-const Wave* Wave::operator~() const
+const Wave* Wave::operator*() const
 {
 	return Demodulate();
 }
@@ -240,7 +239,7 @@ Properties Wave::GetProperties() const
 				wavProperties.begin(),
 				wavProperties.end(),
 				*prp
-			) == wavProperties.end())
+			) != wavProperties.end())
 			{
 				remBuffer.push_back(
 					prp

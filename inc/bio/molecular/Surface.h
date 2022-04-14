@@ -26,7 +26,7 @@
 #include "bio/molecular/common/Class.h"
 #include "bio/molecular/macros/Macros.h"
 #include "EnvironmentDependent.h"
-#include "bio/chemical/structure/LinearStructuralComponent.h"
+#include "bio/chemical/structure/motif/LinearMotif.h"
 
 namespace bio {
 namespace molecular {
@@ -40,7 +40,7 @@ class Molecule;
  */
 class Surface :
 	public Class< Surface >,
-	public chemical::LinearStructuralComponent< Molecule* >,
+	public chemical::LinearMotif< Molecule* >,
 	public EnvironmentDependent< Molecule >
 {
 public:
@@ -48,7 +48,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(molecular,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular,
 		Surface)
 
 	/**
@@ -125,7 +125,9 @@ public:
 	 * @return the Bound type.
 	 */
 	template < typename T >
-	T Bind(T toBind, BondType bondType = bond_type::Temporary())
+	T Bind(
+		T toBind,
+		BondType bondType = bond_type::Temporary())
 	{
 		FormBond(
 			toBind,
@@ -139,7 +141,9 @@ public:
 	 * @param toRelease
 	 * @return the previously bound Substance or NULL.
 	 */
-	virtual physical::Wave* Release(physical::Wave* toRelease, BondType bondType = bond_type::Temporary());
+	virtual physical::Wave* Release(
+		physical::Wave* toRelease,
+		BondType bondType = bond_type::Temporary());
 
 	/**
 	 * Breaks the Temporary Bond formed by Bind.
@@ -147,7 +151,10 @@ public:
 	 * @param toRelease
 	 * @return the previously bound Substance or NULL.
 	 */
-	virtual chemical::Substance* Release(Name toRelease, physical::Perspective<StandardDimension>* perspective = NULL, BondType bondType = bond_type::Temporary());
+	virtual chemical::Substance* Release(
+		Name toRelease,
+		physical::Perspective< StandardDimension >* perspective = NULL,
+		BondType bondType = bond_type::Temporary());
 
 	/**
 	 * Breaks the Temporary Bond formed by Bind.
@@ -155,7 +162,10 @@ public:
 	 * @param toRelease
 	 * @return the previously bound Substance or NULL.
 	 */
-	virtual chemical::Substance* Release(StandardDimension toRelease, physical::Perspective<StandardDimension>* perspective = NULL, BondType bondType = bond_type::Temporary());
+	virtual chemical::Substance* Release(
+		StandardDimension toRelease,
+		physical::Perspective< StandardDimension >* perspective = NULL,
+		BondType bondType = bond_type::Temporary());
 
 	/**
 	 * Releases all Temporarily Bound Substances

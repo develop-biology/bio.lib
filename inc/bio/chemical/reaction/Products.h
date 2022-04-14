@@ -51,13 +51,13 @@ public:
 	 * Assume m_result Success(), since we're given a value and no error to report.
 	 * @param substances
 	 */
-	Products(const Substances& substances);
+	Products(const Substances* substances);
 
 	/**
 	 * Assume m_result Success(), since we're given a value and no error to report.
 	 * @param reactants
 	 */
-	Products(const Reactants& reactants);
+	Products(const Reactants* reactants);
 
 	/**
 	 * @param result
@@ -65,13 +65,25 @@ public:
 	 */
 	Products(
 		Code result,
-		const Substances& substances
+		const Substances* substances
 	);
 
 	/**
 	 *
 	 */
 	virtual ~Products();
+
+	/**
+	 * @param code
+	 * @return whether or not the given code matches that of *this.
+	 */
+	virtual bool operator==(const Code code) const;
+
+	/**
+	 * @param code
+	 * @return whether or not the given code does not match that of *this.
+	 */
+	virtual bool operator!=(const Code code) const;
 
 	/**
 	 * @return *this as a Code.

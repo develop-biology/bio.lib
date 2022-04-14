@@ -33,13 +33,18 @@ Organ::~Organ()
 Code Organ::SpecializeTissues()
 {
 	Code ret = code::Success();
+	Container* tissues = GetAll< Tissue* >();
+	BIO_SANITIZE(tissues, ,
+		return code::CouldNotFindValue1())
+	Tissue* tissueBuffer;
 	for (
-		chemical::Structure< Tissue* >::Contents::iterator tis = GetAll< Tissue* >()->begin();
-		tis != GetAll< Tissue* >()->end();
+		SmartIterator tis = tissues->Begin();
+		!tis.IsAtEnd();
 		++tis
 		)
 	{
-		if((*tis)->DifferentiateCells() != code::Success() && ret == code::Success())
+		tissueBuffer = tis;
+		if (tissueBuffer->DifferentiateCells() != code::Success() && ret == code::Success())
 		{
 			ret = code::UnknownError();
 		}

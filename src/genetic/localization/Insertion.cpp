@@ -29,7 +29,7 @@ namespace genetic {
 
 Insertion::Insertion(
 	chemical::Substance* toInsert,
-	InsertionSite site,
+	Site site,
 	Name name
 )
 	:
@@ -60,19 +60,27 @@ chemical::Substance* Insertion::Seek(chemical::Substance* insertIn) const
 		return insertIn;
 	}
 
-	BIO_SANITIZE(mc_method,, return NULL);
+	BIO_SANITIZE(mc_method, ,
+		return NULL)
 	ByteStream insertion(m_toInsert);
-	(const_cast< chemical::ExcitationBase* >(mc_method))->EditArg(0, insertion);
+	(const_cast< chemical::ExcitationBase* >(mc_method))->EditArg(
+		0,
+		insertion
+	);
 	ByteStream result;
-	mc_method->CallDown(insertIn->AsWave(), result);
-	chemical::Substance* insert = ChemicalCast<chemical::Substance*>(Cast<physical::Wave*>(result.IKnowWhatImDoing())); //This is about as safe as we can get right now.
-	BIO_SANITIZE(insert,,return NULL);
+	mc_method->CallDown(
+		insertIn->AsWave(),
+		result
+	);
+	chemical::Substance* insert = ChemicalCast< chemical::Substance* >(Cast< physical::Wave* >(result.IKnowWhatImDoing())); //This is about as safe as we can get right now.
+	BIO_SANITIZE(insert, ,
+		return NULL)
 	return insert;
 }
 
-void Insertion::SetSite(LocalizationSite site)
+void Insertion::SetSite(Site site)
 {
-	//Assume InsertionSites & LocalizationSites always match exactly.
+	//Assume Sites & Sites always match exactly.
 	m_site = site;
 	mc_method = InsertionSitePerspective::Instance().GetNewObjectFromIdAs< chemical::ExcitationBase* >(m_site);
 }

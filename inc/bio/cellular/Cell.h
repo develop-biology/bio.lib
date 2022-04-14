@@ -48,7 +48,7 @@ class Organelle;
  */
 class Cell :
 	public Class< Cell >,
-	public chemical::LinearStructuralComponent< Organelle* >,
+	public chemical::LinearMotif< Organelle* >,
 	public molecular::EnvironmentDependent< cellular::Tissue >,
 	virtual public genetic::Expressor
 {
@@ -57,13 +57,12 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(cellular,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular,
 		Cell)
 
 	/**
 	 * Standard ctors.
-	 */
-	 BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
 		Cell,
 		&CellPerspective::Instance(),
 		filter::Cellular())

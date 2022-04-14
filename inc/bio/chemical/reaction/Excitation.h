@@ -48,7 +48,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
 		ExcitationBase)
 
 	/**
@@ -136,7 +136,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(physical, BIO_SINGLE_ARG(Excitation<WAVE,RETURN,ARGUMENTS...>))
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, BIO_SINGLE_ARG(Excitation<WAVE,RETURN,ARGUMENTS...>))
 
 	/**
 	 *
@@ -220,7 +220,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
 		BIO_SINGLE_ARG(ExcitationWithoutArgument< WAVE, RETURN >))
 
 	/**
@@ -297,7 +297,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
 		BIO_SINGLE_ARG(ExcitationWithArgument< WAVE, RETURN, ARGUMENT >))
 
 
@@ -396,7 +396,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
 		BIO_SINGLE_ARG(ExcitationWithTwoArguments< WAVE, RETURN, ARGUMENT1, ARGUMENT2 >))
 
 
@@ -404,7 +404,10 @@ public:
 	 *
 	 */
 	ExcitationWithTwoArguments(
-		RETURN(WAVE::*function)(ARGUMENT1, ARGUMENT2),
+		RETURN(WAVE::*function)(
+			ARGUMENT1,
+			ARGUMENT2
+		),
 		ARGUMENT1 arg1,
 		ARGUMENT2 arg2
 	)

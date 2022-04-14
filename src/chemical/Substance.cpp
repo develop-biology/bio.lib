@@ -24,57 +24,14 @@
 namespace bio {
 namespace chemical {
 
-Substance::Substance()
-	:
-	chemical::Class<Substance>(this)
-{
-	CtorCommon();
-}
-
 Substance::Substance(
-	Name name,
-	physical::Perspective< StandardDimension >* perspective,
-	Filter filter
+	const typename UnorderedMotif< Property >::Contents* properties,
+	const typename UnorderedMotif< State >::Contents* states
 )
 	:
-	chemical::Class<Substance>(
-		this,
-		filter
-	)
-{
-	physical::Identifiable< StandardDimension >::Initialize(
-		name,
-		perspective
-	);
-	CtorCommon();
-}
-
-Substance::Substance(
-	Id id,
-	physical::Perspective< StandardDimension >* perspective,
-	Filter filter
-)
-	:
-	chemical::Class<Substance>(
-		this,
-		filter
-	)
-{
-	physical::Identifiable< StandardDimension >::Initialize(
-		id,
-		perspective
-	);
-	CtorCommon();
-}
-
-Substance::Substance(
-	const typename StructuralComponent< Property >::Contents& properties,
-	const typename StructuralComponent< State >::Contents& states
-)
-	:
-	chemical::Class<Substance>(this),
-	PropertyStructure(properties),
-	StateStructure(states)
+	chemical::Class< Substance >(this),
+	UnorderedMotif< Property >(properties),
+	UnorderedMotif< State >(states)
 {
 	CtorCommon();
 }
@@ -103,37 +60,5 @@ void Substance::CtorCommon()
 	Enable();
 }
 
-PropertyStructure::PropertyStructure()
-{
-
-}
-
-PropertyStructure::PropertyStructure(const StructuralComponentImplementation< Property >::Contents& properties)
-	:
-	StructuralComponent<Property>(properties)
-{
-
-}
-
-PropertyStructure::~PropertyStructure()
-{
-
-}
-
-StateStructure::StateStructure()
-{
-
-}
-
-StateStructure::StateStructure(const StructuralComponentImplementation< State >::Contents& states) :
-	StructuralComponent< State >(states)
-{
-
-}
-
-StateStructure::~StateStructure()
-{
-
-}
 } //chemical namespace
 } //bio namespace

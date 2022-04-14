@@ -36,9 +36,9 @@ Molecule::Molecule(const Molecule& toCopy)
 		toCopy.GetPerspective(),
 		toCopy.GetFilter()),
 	physical::Perspective< StandardDimension >(toCopy),
-	chemical::LinearStructuralComponent< Surface* >(toCopy)
+	chemical::LinearMotif< Surface* >(toCopy)
 {
-	chemical::LinearStructuralComponent< Surface* >::m_perspective = this;
+	chemical::LinearMotif< Surface* >::m_perspective = this;
 }
 
 Molecule::~Molecule()
@@ -48,8 +48,7 @@ Molecule::~Molecule()
 Surface* Molecule::RotateTo(StandardDimension surfaceId)
 {
 	BIO_SANITIZE_WITH_CACHE(GetById< Surface* >(
-		surfaceId,
-		false
+		surfaceId
 	),
 		return *Cast< Surface** >(RESULT),
 		return NULL);
@@ -58,8 +57,7 @@ Surface* Molecule::RotateTo(StandardDimension surfaceId)
 const Surface* Molecule::RotateTo(StandardDimension surfaceId) const
 {
 	BIO_SANITIZE_WITH_CACHE(GetById< Surface* >(
-		surfaceId,
-		false
+		surfaceId
 	),
 		return *Cast< const Surface** >(RESULT),
 		return NULL);
@@ -68,8 +66,7 @@ const Surface* Molecule::RotateTo(StandardDimension surfaceId) const
 Surface* Molecule::RotateTo(Name surfaceName)
 {
 	BIO_SANITIZE_WITH_CACHE(GetByName< Surface* >(
-		surfaceName,
-		false
+		surfaceName
 	),
 		return *Cast< Surface** >(RESULT),
 		return NULL);
@@ -78,8 +75,7 @@ Surface* Molecule::RotateTo(Name surfaceName)
 const Surface* Molecule::RotateTo(Name surfaceName) const
 {
 	BIO_SANITIZE_WITH_CACHE(GetByName< Surface* >(
-		surfaceName,
-		false
+		surfaceName
 	),
 		return *Cast< const Surface** >(RESULT),
 		return NULL);

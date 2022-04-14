@@ -21,7 +21,8 @@
 
 #pragma once
 
-#include "bio/chemical/structure/LinearStructuralComponent.h"
+#include "bio/chemical/structure/Structure.h"
+#include "bio/chemical/structure/motif/LinearMotif.h"
 #include "bio/chemical/Substance.h"
 #include "bio/physical/common/Class.h"
 
@@ -36,15 +37,16 @@ class Reactant; //unused here but anything including Reactants will likely use R
  * Reactants is intended to be the single input to a Reaction. In this way, a Reactants represents all the Reacting Substances coming together, making the job of Reaction then to pull them apart into the appropriate Products.
  */
 class Reactants :
+	virtual public Structure,
 	public chemical::Class< Reactants >,
-	public LinearStructuralComponent< Substance* >
+	public LinearMotif< Substance* >
 {
 public:
 
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(chemical,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical,
 		Reactants)
 
 	/**

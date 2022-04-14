@@ -43,7 +43,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(genetic,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(genetic,
 		GenomeImplementation)
 
 	GenomeImplementation();
@@ -86,7 +86,8 @@ protected:
 	StandardDimension mc_fetchSite;
 };
 
-BIO_SINGLETON(Genome, GenomeImplementation)
+BIO_SINGLETON(Genome,
+	GenomeImplementation)
 
 } //genetic namespace
 } //bio namespace

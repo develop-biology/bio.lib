@@ -23,6 +23,7 @@
 
 #include "bio/chemical/common/Types.h"
 #include "bio/chemical/common/BondTypes.h"
+#include "bio/physical/arrangement/Arrangement.h"
 
 namespace bio {
 
@@ -56,6 +57,23 @@ public:
 		AtomicNumber id,
 		physical::Wave* bonded,
 		BondType type = bond_type::Unknown());
+
+	/**
+	 *
+	 */
+	~Bond();
+
+	/**
+	 * @param id
+	 * @return whether or not the given id matches that of *this.
+	 */
+	bool operator==(const AtomicNumber id) const;
+
+	/**
+	 * @param other
+	 * @return whether or not id of other matches that of *this.
+	 */
+	bool operator==(const Bond& other) const;
 
 	/**
 	 * Update the contents of *this.
@@ -105,6 +123,8 @@ private:
 	physical::Wave* m_bonded;
 	BondType m_type;
 };
+
+typedef physical::Arrangement< Bond* > Bonds;
 
 } //chemical namespace
 } //bio namespace

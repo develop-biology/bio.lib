@@ -32,7 +32,7 @@ BIO_SINGLETON(className, ::bio::physical::Perspective<dimension>)
  * For more on DIMENSIONs, Ids, etc., see Perspective.h and Identifiable.h
  */
 #define BIO_ID_WITH_PLURAL(className, pluralName, dimension)                   \
-typedef dimension className;                                                   \
+BIO_STRONG_TYPEDEF(dimension, className, 0)                                    \
 typedef std::vector<className> pluralName;
 
 /**

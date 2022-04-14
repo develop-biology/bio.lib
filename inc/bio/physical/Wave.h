@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/common/Types.h"
+#include "bio/physical/common/Types.h"
 
 //@formatter:off
 #if BIO_CPP_VERSION < 11
@@ -32,11 +32,6 @@
 //@formatter:on
 
 namespace bio {
-
-typedef uint8_t Code; //redefinition from Types.
-
-typedef uint8_t Property;
-typedef std::vector< Property > Properties;
 
 //the easy way out...
 //see AsAtom()
@@ -133,7 +128,7 @@ public:
 	 * You can visualize this by imagining a triangle that is then folded over to produce a polygon. Reflecting a triangle about 1 axis generates a rectangle, 2 a square, 3 a hexagon, 4 an octagon, and so on (sides = 3 + fibonacci sequence, starting at 0). Though, in this system, Axes do not overlap, so 1/2 of the polygon is discarded, once n >= 2. In this way, Spin() generates a triangle and you decide the shape by specifying how many Axes to Rotate the Symmetry about.
 	 *
 	 * You should override Spin to update m_symmetry, then return the parent method.
-	 * See Quantum.h for an example implementation.
+	 * See Quantum.h for an example interface.
 	 * @return m_symmetry.
 	 */
 	virtual Symmetry* Spin() const;
@@ -142,15 +137,15 @@ public:
 	 * Reifying a Wave takes a Symmetry and realizes it by copying the values supplied into *this.
 	 * Will update m_symmetry to the Symmetry provided but do nothing else.
 	 * You should override Reify to update the contents of *this from the given Symmetry. Calling the parent method after is optional.
-	 * See Quantum.h for an example implementation.
+	 * See Quantum.h for an example interface.
 	 * @param symmetry
 	 */
 	virtual Code Reify(Symmetry* symmetry);
 
 	/**
- * This will overwrite any signal currently carried by *this.
- * @return the signal Modulated.
- */
+	 * This will overwrite any signal currently carried by *this.
+	 * @return the signal Modulated.
+	 */
 	virtual Wave* Modulate(Wave* signal);
 
 	/**
@@ -238,23 +233,23 @@ public:
 	virtual void operator|(Symmetry* symmetry);
 
 	/**
-	 * Modulate operator (i.e. not "modulo")
+	 * Modulate operator (i.e. not "multiply")
 	 * @param signal
 	 * @return Modulate(signal)
 	 */
-	virtual Wave* operator%(Wave* signal);
+	virtual Wave* operator*(Wave* signal);
 
 	/**
-	 * Demodulate operator (also not "modulo")
+	 * Demodulate operator (i.e. not "dereference")
 	 * @return Demodulate()
 	 */
-	virtual Wave* operator~();
+	virtual Wave* operator*();
 
 	/**
-	 * Demodulate operator (also not "modulo")
+	 * Demodulate operator (i.e. not "dereference")
 	 * @return Demodulate()
 	 */
-	virtual const Wave* operator~() const;
+	virtual const Wave* operator*() const;
 
 	/**
 	 * Makes other interfere with *this.

@@ -38,7 +38,7 @@ namespace bio {
 /**
  * ThreadSafe classes are ones that can work with threads.
  * They are meant to be simple and abstract.
- * The actual implementation of ThreadSafe methods is c++ version and platform specific.
+ * The actual interface of ThreadSafe methods is c++ version and platform specific.
  * Fortunately, threading was standardized in c++11; however, we do still support c++98 builds.
  * At this time, ThreadSafe methods are only implemented for c++11 and on and on linux systems using c++98 and on.
  * Support for c++98 on other platforms may or may not ever happen.
@@ -64,19 +64,9 @@ public:
 	virtual ~ThreadSafe();
 
 	/**
-	 * Lock the mutex member.
-	 */
-	virtual void LockThread();
-
-	/**
 	 * uses const_cast to call LockThread().
 	 */
 	void LockThread() const;
-
-	/**
-	 * Unlock the mutex member.
-	 */
-	virtual void UnlockThread();
 
 	/**
 	 * uses const_cast to call UnlockThread().
@@ -86,11 +76,11 @@ public:
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
 		#ifdef BIO_OS_IS_LINUX
-			pthread_mutex_t m_lock;
+			mutable pthread_mutex_t m_lock;
 		#endif
 	#else
 		std::mutex m_mutex;
-		std::unique_lock<std::mutex> m_lock;
+		mutable std::unique_lock<std::mutex> m_lock;
 	#endif
 	//@formatter:on
 };

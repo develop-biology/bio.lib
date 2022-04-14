@@ -65,7 +65,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_CLASS_METHODS(physical,
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
 		T)
 
 	/**
@@ -86,8 +86,7 @@ public:
 			new physical::Symmetry(
 				TypeName< T >().c_str(),
 				symmetryType
-			)
-		)
+			))
 	{
 		CtorCommon(filter);
 	}
@@ -111,8 +110,7 @@ public:
 			new physical::Symmetry(
 				TypeName< T >().c_str(),
 				symmetryType
-			)
-		)
+			))
 	{
 		CtorCommon(filter);
 
@@ -147,8 +145,7 @@ public:
 			new physical::Symmetry(
 				TypeName< T >().c_str(),
 				symmetryType
-			)
-		)
+			))
 	{
 		CtorCommon(filter);
 
@@ -166,21 +163,21 @@ public:
 	}
 
 	/**
-	 * Using the PeriodicTable, we can reliably implement Wave::GetProperties without having to store m_properties internally.
-	 * NOTE: You must still record the Properties of T elsewhere. See Element.h for an easy means of doing this.
-	 * @return the Properties of T that have been Registered with the PeriodicTable.
-	 */
-	virtual Properties GetProperties() const
-	{
-		return PeriodicTable::Instance().GetPropertiesOf< T >();
-	}
-
-	/**
 	 *
 	 */
 	virtual ~Class()
 	{
 
+	}
+
+	/**
+	 * Using the PeriodicTable, we can reliably implement Wave::GetProperties without having to store m_properties internally.
+	 * NOTE: You must still record the Properties of T elsewhere. See Elementary.h for an easy means of doing this.
+	 * @return the Properties of T that have been Registered with the PeriodicTable.
+	 */
+	virtual Properties GetProperties() const
+	{
+		return PeriodicTable::Instance().GetPropertiesOf< T >();
 	}
 
 	/**

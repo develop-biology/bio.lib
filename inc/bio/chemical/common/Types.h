@@ -32,7 +32,9 @@ namespace bio {
  * This can be used to inform other systems (e.g. molecular) of how to treat the Bonded Wave.
  * NOTE: Atoms can Bond things that are not Atoms. The only requirement is that they are Wave.
  */
-typedef uint8_t BondType;
+BIO_STRONG_TYPEDEF(uint8_t,
+	BondType,
+	0)
 
 BIO_PERSPECTIVE_SINGLETON(BondTypePerspective,
 	BondType)
@@ -54,17 +56,13 @@ typedef enum
 namespace bio {
 namespace chemical {
 
-template < typename T >
-struct Structure
-{
-	typedef std::vector< T > Contents;
-};
-
 /**
  * Valence defines how many Bonds an Atom (e.g. Substance) can have.
- * The max of valence (255 as a uint*_t) is essentially the max number of parents a child class can have.
+ * The max of valence is essentially the max number of parents a child class can have.
+ * Valence can be any size up to the size of Index (used by physical::Arrangements).
+ * For now, we set Valence to the max possible size and may optimize later.
  */
-typedef uint8_t Valence;
+typedef Index Valence;
 
 /**
  * The AtomicNumber tracks class definitions.
@@ -80,7 +78,10 @@ class Substance;
 
 typedef std::vector< Substance* > Substances;
 
-typedef std::vector<ByteStream> Emission;
+BIO_PERSPECTIVE_SINGLETON(SubstancePerspective,
+	StandardDimension)
+
+typedef std::vector< ByteStream > Emission;
 
 } //chemical namespace
 } //bio namespace

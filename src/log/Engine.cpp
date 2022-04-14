@@ -51,7 +51,8 @@ void Engine::Log(
 	Filter filter,
 	Level level,
 	const char* format,
-	va_list args)
+	va_list args
+)
 {
 	BIO_SANITIZE_AT_SAFETY_LEVEL_2(FilterPass(
 		filter,
@@ -81,7 +82,8 @@ void Engine::Log(
 	Filter filter,
 	Level level,
 	const char* format,
-	...)
+	...
+)
 {
 	if (FilterPass(
 		filter,
@@ -105,14 +107,16 @@ void Engine::Log(
 
 bool Engine::FilterPass(
 	Filter filter,
-	Level level) const
+	Level level
+) const
 {
 	return level >= m_levelFilter[filter];
 }
 
 bool Engine::FilterSet(
 	Filter filter,
-	Level level)
+	Level level
+)
 {
 	m_levelFilter[filter] = level;
 	return true; //SUCCESS
@@ -120,7 +124,8 @@ bool Engine::FilterSet(
 
 bool Engine::FilterSet(
 	Name filter,
-	Name level)
+	Name level
+)
 {
 	return FilterSet(
 		FilterPerspective::Instance().GetIdFromName(filter),

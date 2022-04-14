@@ -23,14 +23,22 @@
 
 #include "bio/molecular/macros/Macros.h"
 #include "bio/genetic/common/Types.h"
-
+#include "bio/genetic/macros/SiteMacros.h"
 
 /**
  * Get all virtual methods defined by genetic::Class.
- * @return function signatures for use in BIO_DISAMBIGUATE_CLASS_METHODS
+ * @return function signatures for use in BIO_DISAMBIGUATE_REQUIRED_CLASS_METHODS
  */
-#define BIO_GET_CLASS_METHODS_FOR_genetic()                                    \
-    BIO_GET_CLASS_METHODS_FOR_molecular()
+#define BIO_GET_REQUIRED_CLASS_METHODS_FOR_genetic()                           \
+    BIO_GET_REQUIRED_CLASS_METHODS_FOR_molecular()
+
+/**
+ * Get all virtual methods defined by genetic::Class.
+ * @return function signatures for use in BIO_DISAMBIGUATE_OPTIONAL_CLASS_METHODS
+ */
+#define BIO_GET_OPTIONAL_CLASS_METHODS_FOR_genetic()                           \
+    BIO_GET_OPTIONAL_CLASS_METHODS_FOR_molecular()
+
 
 /**
 Macro for defining TranscriptionFactors.
@@ -40,64 +48,3 @@ BIO_ID_FUNCTION_BODY(                                                          \
     functionName##TranscriptionFactor,                                         \
     ::bio::TranscriptionFactorPerspective::Instance(),                         \
     ::bio::TranscriptionFactor)
-
-/**
- * This is not for you.
- */
-#define BIO_SITE_FUNCTION(site, type, function, typeTuple, argTuple)           \
-	bool g_##site##Registered =                                                \
-		::bio::LocalizationSitePerspective::Instance().AssociateType(          \
-			g_##site,                                                          \
-			(new BIO_EXCITATION_CLASS(                                         \
-				::bio::chemical::LinearStructuralComponent< type >,            \
-				type,                                                          \
-				BIO_EXPAND_TUPLE typeTuple                                     \
-			)(                                                                 \
-				&::bio::chemical::LinearStructuralComponent< type >::function, \
-				BIO_EXPAND_TUPLE argTuple )                                    \
-			)->AsWave()                                                        \
-		);
-
-/**
- * To make defining LocalizationSites easier, use this macro to define the function body of your LocalizationSite Function().
- * This will assign a value to a string that is identical to your FunctionName e.g. LocalizationSitePerspective::Instance().GetNameFromId(Value()) would give "Value".
- * This will also help you define the required extraction method (chemical::Excitation*) required for accessing your LocalizationSite.
- * REMINDER: Your LocalizationSite Function()s should be in the ::bio::localization_site namespace.
- */
-#define BIO_LOCALIZATION_SITE_FUNCTION_BODY(functionName, toExtract)           \
-	BIO_ID_FUNCTION_BODY(                                                      \
-		functionName##LocalizationSite,                                        \
-		::bio::LocalizationSitePerspective::Instance(),                        \
-		::bio::LocalizationSite)                                               \
-	BIO_SITE_FUNCTION(functionName##LocalizationSite, toExtract, GetByNameImplementation, (Name, bool), (NULL, false))
-
-/**
- * To make defining InsertionSites easier, use this macro to define the function body of your InsertionSite Function().
- * This will assign a value to a string that is identical to your FunctionName e.g. InsertionSitePerspective::Instance().GetNameFromId(Value()) would give "Value".
- * This will also help you define the required insertion method (chemical::Excitation*) required for using your InsertionSite.
- * REMINDER: Your InsertionSite Function()s should be in the ::bio::insertion_site namespace.
- */
-#define BIO_INSERTION_SITE_FUNCTION_BODY(functionName, toInsert)               \
-	BIO_ID_FUNCTION_BODY(                                                      \
-		functionName##InsertionSite,                                           \
-		::bio::InsertionSitePerspective::Instance(),                           \
-		::bio::InsertionSite)                                                  \
-	BIO_SITE_FUNCTION(functionName##InsertionSite, toInsert, AddImplementation, (toInsert), (NULL))
-
-/**
- * Ease of use method for declaring all kinds of sites at once.
- */
-#define BIO_SITE(functionName)                                                 \
-	namespace localization_site {LocalizationSite functionName();}             \
-	namespace insertion_site {InsertionSite functionName();}
-
-/**
- * Ease of use method of defining all kinds of sites at once.
- */
-#define BIO_SITE_FUNCTION_BODY(functionName, type)                             \
-	namespace localization_site {                                              \
-		BIO_LOCALIZATION_SITE_FUNCTION_BODY(functionName, type)                \
-	}                                                                          \
-	namespace insertion_site {                                                 \
-		BIO_INSERTION_SITE_FUNCTION_BODY(functionName, type)                   \
-	}

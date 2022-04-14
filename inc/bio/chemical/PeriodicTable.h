@@ -1,4 +1,3 @@
-
 /*
  * This file is a part of the Biology project by eons LLC.
  * Biology (aka Develop Biology) is a framework for approaching software
@@ -36,7 +35,7 @@ namespace chemical {
  *
  * The PeriodicTable tracks Properties of types in addition to assigning them an AtomicNumber..
  * This is done because neither static nor virtual methods will allow for the inverted inheritance necessary to make inverted-inheritance methods like Atom::CallForAll work properly.
- * See Element.h for a more detailed description of this system.
+ * See Elementary.h for a more detailed description of this system.
  */
 class PeriodicTableImplementation :
 	public physical::Perspective< AtomicNumber >
@@ -207,7 +206,10 @@ public:
 	 * @param type
 	 * @return true if the association completed successfully else false
 	 */
-	virtual bool AssociateType(AtomicNumber id, physical::Wave* type);
+	virtual bool AssociateType(
+		AtomicNumber id,
+		physical::Wave* type
+	);
 
 	/**
 	 * Removes the type association created by AssociateType().
