@@ -43,7 +43,7 @@ Timestamp GetCurrentTimestamp()
 	#ifdef BIO_FAKE_SYSTEM_TIME
 	return g_fakeTime;
 	#elif BIO_CPP_VERSION < 11
-	return 0; //FIXME!
+	return 0; //TODO...
 	#else
 	using namespace std::chrono;
 	auto now = time_point_cast<milliseconds>(system_clock::now());

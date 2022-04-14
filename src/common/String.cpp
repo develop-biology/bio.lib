@@ -48,7 +48,6 @@ bool string::ToInt(
 		return false; //FAIL: empty string
 	}
 
-	//FIXME: duplicate code
 	char* endptr = NULL;
 	*value = strtol(
 		s,
@@ -68,7 +67,6 @@ bool string::ToUInt(
 		return false; //FAIL: empty string
 	}
 
-	//FIXME: duplicate code
 	char* endptr = NULL;
 	*value = strtoul(
 		s,
@@ -88,7 +86,6 @@ bool string::ToFloat(
 		return false; //FAIL: empty string
 	}
 
-	//FIXME: duplicate code
 	char* endptr = NULL;
 	*value = strtof(
 		s,
@@ -115,7 +112,6 @@ StdStrings string::Parse(
 			delimiter
 		);
 
-		//FIXME: duplicate code
 		if (trimLeadingSpaces)
 		{
 			//trim leading spaces from substring
@@ -147,7 +143,6 @@ std::string string::FromVectorOfStrings(
 	{
 		std::string substring = *iter;
 
-		//FIXME: duplicate code
 		if (trimLeadingSpaces)
 		{
 			//trim leading spaces from substring
@@ -186,7 +181,6 @@ std::string string::FromVectorOfStrings(
 	{
 		std::string substring(*iter);
 
-		//FIXME: duplicate code
 		if (trimLeadingSpaces)
 		{
 			//trim leading spaces from substring
@@ -244,7 +238,7 @@ void string::CloneInto(
 	const char*& target
 )
 {
-	//FIXME because "new" is used here, a delete needs to be called either here or in the caller.
+	//NOTE: because "new" is used here, a delete needs to be called either here or in the caller.
 	const size_t len = strlen(source);
 	char* tmpName = new char[len + 1];
 	strncpy(
