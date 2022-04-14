@@ -26,8 +26,13 @@
 namespace bio {
 namespace genetic {
 
-GenomeImplementation::GenomeImplementation() :
-	genetic::Class < GenomeImplementation >(this, "Genome", NULL, filter::Genetic())
+GenomeImplementation::GenomeImplementation()
+	:
+	genetic::Class< GenomeImplementation >(
+		this,
+		"Genome",
+		NULL,
+		filter::Genetic())
 {
 	Add< TranscriptionFactor >(transcription_factor::Genome());
 }
@@ -49,7 +54,8 @@ void GenomeImplementation::CacheProteins()
 
 StandardDimension GenomeImplementation::RegisterPlasmid(Plasmid* toRegister)
 {
-	BIO_SANITIZE(toRegister,,return PlasmidPerspective::InvalidId())
+	BIO_SANITIZE(toRegister, ,
+		return PlasmidPerspective::InvalidId())
 	StandardDimension ret = PlasmidPerspective::InvalidId();
 	LockThread();
 	mc_registerPlasmid->RotateTo(mc_registrationSite)->Bind(ChemicalCast< chemical::Substance* >(toRegister));

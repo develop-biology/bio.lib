@@ -48,7 +48,9 @@ public:
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical,
 		Symmetry)
 
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(chemical, Symmetry, &physical::SymmetryPerspective::Instance())
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(chemical,
+		Symmetry,
+		&physical::SymmetryPerspective::Instance())
 
 	/**
 	 * @param name

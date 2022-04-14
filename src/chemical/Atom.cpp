@@ -48,7 +48,8 @@ Atom::~Atom()
 
 Code Atom::Attenuate(const physical::Wave* other)
 {
-	BIO_SANITIZE(other, , return code::BadArgument1())
+	BIO_SANITIZE(other, ,
+		return code::BadArgument1())
 
 	const physical::Wave* demodulated = other->Demodulate();
 	Code ret = code::Success();
@@ -81,7 +82,8 @@ Code Atom::Attenuate(const physical::Wave* other)
 
 Code Atom::Disattenuate(const physical::Wave* other)
 {
-	BIO_SANITIZE(other, , return code::BadArgument1())
+	BIO_SANITIZE(other, ,
+		return code::BadArgument1())
 
 	const physical::Wave* demodulated = other->Demodulate();
 	Code ret = code::Success();
@@ -126,7 +128,8 @@ bool Atom::FormBondImplementation(
 	if (m_bonds.IsAllocated(position))
 	{
 		bondBuffer = m_bonds.OptimizedAccess(position);
-		BIO_SANITIZE(!bondBuffer->IsEmpty(),,return false)
+		BIO_SANITIZE(!bondBuffer->IsEmpty(), ,
+			return false)
 		return bondBuffer->Form(
 			id,
 			toBond,
@@ -134,11 +137,12 @@ bool Atom::FormBondImplementation(
 		);
 	}
 	//implicitly cast the addition index to a bool.
-	return m_bonds.Add(Bond(
-		id,
-		toBond,
-		type
-	));
+	return m_bonds.Add(
+		Bond(
+			id,
+			toBond,
+			type
+		));
 }
 
 bool Atom::BreakBondImplementation(
@@ -165,7 +169,8 @@ Valence Atom::GetBondPosition(AtomicNumber bondedId) const
 {
 	BIO_SANITIZE(bondedId, ,
 		return 0);
-	for (SmartIterator bnd = m_bonds.End();
+	for (
+		SmartIterator bnd = m_bonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
@@ -204,13 +209,15 @@ Code Atom::Reify(physical::Symmetry* symmetry)
 
 physical::Wave* Atom::GetBonded(Valence position)
 {
-	BIO_SANITIZE(m_bonds.IsAllocated(position),,return NULL)
+	BIO_SANITIZE(m_bonds.IsAllocated(position), ,
+		return NULL)
 	return m_bonds.OptimizedAccess(position)->GetBonded();
 }
 
 const physical::Wave* Atom::GetBonded(Valence position) const
 {
-	BIO_SANITIZE(m_bonds.IsAllocated(position),,return NULL)
+	BIO_SANITIZE(m_bonds.IsAllocated(position), ,
+		return NULL)
 	return m_bonds.OptimizedAccess(position)->GetBonded();
 }
 

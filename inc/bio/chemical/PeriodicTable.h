@@ -1,4 +1,3 @@
-
 /*
  * This file is a part of the Biology project by eons LLC.
  * Biology (aka Develop Biology) is a framework for approaching software
@@ -207,7 +206,10 @@ public:
 	 * @param type
 	 * @return true if the association completed successfully else false
 	 */
-	virtual bool AssociateType(AtomicNumber id, physical::Wave* type);
+	virtual bool AssociateType(
+		AtomicNumber id,
+		physical::Wave* type
+	);
 
 	/**
 	 * Removes the type association created by AssociateType().

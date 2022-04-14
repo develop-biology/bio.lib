@@ -85,8 +85,7 @@ public:
 
 	/**
 	 * Standard ctors.
-	 */
-	 BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(chemical,
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(chemical,
 		Reaction,
 		&ReactionPerspective::Instance(),
 		filter::Chemical(),
@@ -252,7 +251,10 @@ public:
 	{
 		BIO_SANITIZE_WITH_CACHE(Initiate< T >(),
 			return (*Cast< const T* >(RESULT))(reactants),
-			return Products(code::NotImplemented(), reactants));
+			return Products(
+				code::NotImplemented(),
+				reactants
+			));
 	}
 
 	template < typename T >
@@ -261,7 +263,10 @@ public:
 		Reactants reactants(substances);
 		BIO_SANITIZE_WITH_CACHE(Initiate< T >(),
 			return (*Cast< const T* >(RESULT))(&reactants),
-			return Products(code::NotImplemented(), reactants));
+			return Products(
+				code::NotImplemented(),
+				reactants
+			));
 	}
 
 	/**

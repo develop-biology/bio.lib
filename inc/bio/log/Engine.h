@@ -67,7 +67,8 @@ public:
 		Filter filter,
 		Level level,
 		const char* format,
-		va_list args);
+		va_list args
+	);
 
 	/**
 	 * Create a log string that will be Output().
@@ -81,7 +82,8 @@ public:
 		Filter filter,
 		Level level,
 		const char* format,
-		...);
+		...
+	);
 
 	/**
 	 * @param filter
@@ -90,7 +92,8 @@ public:
 	 */
 	bool FilterPass(
 		Filter filter,
-		Level level) const;
+		Level level
+	) const;
 
 	/**
 	 * Change filter level for the filter
@@ -100,7 +103,8 @@ public:
 	 */
 	bool FilterSet(
 		Filter filter,
-		Level level);
+		Level level
+	);
 
 	/**
 	 * Change filter level for the filter
@@ -110,7 +114,8 @@ public:
 	 */
 	bool FilterSet(
 		Name filter,
-		Name level); //calls StringTo...
+		Name level
+	); //calls StringTo...
 
 	/**
 	 * @param filter
@@ -131,7 +136,7 @@ private:
 	 * Only log if level is >= value loaded in this vector
 	 * the index in the vector is the Filter
 	 */
-	std::vector<Level> m_levelFilter;
+	std::vector< Level > m_levelFilter;
 };
 } //log namespace
 } //bio namespace

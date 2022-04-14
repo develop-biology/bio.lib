@@ -86,8 +86,7 @@ public:
 			new physical::Symmetry(
 				TypeName< T >().c_str(),
 				symmetryType
-			)
-		)
+			))
 	{
 		CtorCommon(filter);
 	}
@@ -111,8 +110,7 @@ public:
 			new physical::Symmetry(
 				TypeName< T >().c_str(),
 				symmetryType
-			)
-		)
+			))
 	{
 		CtorCommon(filter);
 
@@ -147,8 +145,7 @@ public:
 			new physical::Symmetry(
 				TypeName< T >().c_str(),
 				symmetryType
-			)
-		)
+			))
 	{
 		CtorCommon(filter);
 

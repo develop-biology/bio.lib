@@ -32,7 +32,8 @@ namespace chemical {
 	return ret;
 }
 
-AbstractMotif::AbstractMotif() :
+AbstractMotif::AbstractMotif()
+	:
 	m_contents(NULL)
 {
 

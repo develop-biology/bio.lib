@@ -38,7 +38,10 @@ namespace string {
  * @param s
  * @return true on success, false if s is not an integer
  */
-bool ToBool(const char* s, bool* returned);
+bool ToBool(
+	const char* s,
+	bool* returned
+);
 
 /**
  * convert string s to an integer and return result in value
@@ -48,7 +51,8 @@ bool ToBool(const char* s, bool* returned);
  */
 bool ToInt(
 	const char* s,
-	int32_t* returned);
+	int32_t* returned
+);
 
 /**
  * convert string s to an unsigned integer and return result in value
@@ -58,7 +62,8 @@ bool ToInt(
  */
 bool ToUInt(
 	const char* s,
-	uint32_t* returned);
+	uint32_t* returned
+);
 
 /**
  * convert string s to a float and return result in value.
@@ -68,7 +73,8 @@ bool ToUInt(
  */
 bool ToFloat(
 	const char* s,
-	float* returned);
+	float* returned
+);
 
 /**
  * Converts the given value to a string.
@@ -76,7 +82,7 @@ bool ToFloat(
  * @param value 
  * @return value as a string.
  */
-template <typename T>
+template < typename T >
 std::string From(const T& value)
 {
 	std::ostringstream str;
@@ -95,7 +101,8 @@ std::string From(const T& value)
 StdStrings Parse(
 	const std::string& s,
 	char delimiter = ',',
-	bool trimLeadingSpaces = true);
+	bool trimLeadingSpaces = true
+);
 
 /**
  * Take a vector of strings and output as a single string with delimiter separating the strings.
@@ -107,7 +114,8 @@ StdStrings Parse(
 std::string FromVectorOfStrings(
 	const StdStrings& v,
 	char delimiter = ',',
-	bool trimLeadingSpaces = true);
+	bool trimLeadingSpaces = true
+);
 
 /**
  * Take a vector of char*s and outputs a single string with delimiter separating the strings.
@@ -119,7 +127,8 @@ std::string FromVectorOfStrings(
 std::string FromVectorOfStrings(
 	const CharStrings& v,
 	char delimiter = ',',
-	bool trimLeadingSpaces = true);
+	bool trimLeadingSpaces = true
+);
 
 /**
  * Takes a vector of std::strings and converts it to a vector of const char*.
@@ -142,7 +151,8 @@ StdStrings ToStdStrings(const CharStrings& strings);
  */
 void CloneInto(
 	const char* source,
-	const char*& target);
+	const char*& target
+);
 
 /**
  * A string at a level.
@@ -152,7 +162,7 @@ struct Echelon
 	const char* string;
 	unsigned int echelon;
 };
-typedef std::vector<Echelon> Echelons;
+typedef std::vector< Echelon > Echelons;
 
 
 } //string namespace

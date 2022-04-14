@@ -64,10 +64,10 @@ inline bool IsPointer()
  * @param t
  * @return whether or not T is a pointer.
  */
-template <typename T>
+template < typename T >
 inline bool IsPointer(const T t)
 {
-	return IsPointer<T>();
+	return IsPointer< T >();
 }
 
 /**

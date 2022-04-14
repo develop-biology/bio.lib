@@ -404,7 +404,10 @@ public:
 	 *
 	 */
 	ExcitationWithTwoArguments(
-		RETURN(WAVE::*function)(ARGUMENT1, ARGUMENT2),
+		RETURN(WAVE::*function)(
+			ARGUMENT1,
+			ARGUMENT2
+		),
 		ARGUMENT1 arg1,
 		ARGUMENT2 arg2
 	)

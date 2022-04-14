@@ -34,7 +34,8 @@ SmartIterator::SmartIterator(const Container* container)
 
 SmartIterator::SmartIterator(
 	const Container* container,
-	Index index)
+	Index index
+)
 	:
 	m_implementation(container->ConstructClassIterator(index))
 {

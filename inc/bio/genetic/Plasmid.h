@@ -46,7 +46,7 @@ class Expressor;
  *
  */
 class Plasmid :
-	public genetic::Class<Plasmid>,
+	public genetic::Class< Plasmid >,
 	public chemical::LinearMotif< Gene* >,
 	public molecular::DNA,
 	virtual public ThreadSafe
@@ -62,8 +62,7 @@ public:
 	/**
 	 * Standard ctors.
 	 * These are easy to use but require setting member variables manually.
-	 */
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(genetic,
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(genetic,
 		Plasmid,
 		&PlasmidPerspective::Instance(),
 		filter::Genetic())
@@ -81,6 +80,7 @@ public:
 	 * @return A Protein* that will carry out the Transcription of *this.
 	 */
 	virtual molecular::Protein* GetRNAPolymerase();
+
 	virtual const molecular::Protein* GetRNAPolymerase() const;
 
 	/**

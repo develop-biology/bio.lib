@@ -33,7 +33,8 @@ Code Habitat::AdaptInhabitants()
 {
 	Code ret = code::Success();
 	Container* buddies = GetAll< Organism* >();
-	BIO_SANITIZE(buddies,,return code::CouldNotFindValue1())
+	BIO_SANITIZE(buddies, ,
+		return code::CouldNotFindValue1())
 	Organism* buddy;
 	for (
 		SmartIterator bud = buddies->Begin();

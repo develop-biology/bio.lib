@@ -31,12 +31,17 @@ Reactants::Reactants()
 
 }
 
-Reactants::Reactants(Substances& substances) :
+Reactants::Reactants(Substances& substances)
+	:
 	chemical::Class< Reactants >(this)
 {
-	for (Substances::const_iterator sub = substances.begin(); sub != substances.end(); ++sub)
+	for (
+		Substances::const_iterator sub = substances.begin();
+		sub != substances.end();
+		++sub
+		)
 	{
-		Add<Substance*>(*sub);
+		Add< Substance* >(*sub);
 	}
 }
 

@@ -28,6 +28,5 @@ namespace bio {
 namespace code {
 
 
-
 } //code namespace
 } //bio namespace

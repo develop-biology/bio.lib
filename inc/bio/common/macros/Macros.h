@@ -73,7 +73,7 @@
  * @param ns the namespace in which to call the macro.
  */
 #define BIO_CALL_NS_MACRO(macroName, ns, ...)                                  \
-	macroName##_##ns(__VA_ARGS__)
+    macroName##_##ns(__VA_ARGS__)
 
 /**
  * Call a macro-based loop. These are hard-coded with a certain iteration count.

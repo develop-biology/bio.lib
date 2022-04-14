@@ -49,6 +49,7 @@ class Wave;
 struct PerspectiveUtilities
 {
 	static Wave* Clone(const Wave* toClone);
+
 	static void Delete(Wave* toDelete);
 };
 
@@ -400,7 +401,8 @@ public:
 	 */
 	virtual const Wave* GetTypeFromId(Id id) const
 	{
-		BIO_SANITIZE(id == InvalidId(), , return NULL)
+		BIO_SANITIZE(id == InvalidId(), ,
+			return NULL)
 
 		typename Hadits::const_iterator result = Find(id);
 		if (result == m_hadits.end())

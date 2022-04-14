@@ -32,9 +32,14 @@ namespace bio {
  * Sites are identical to Sites except they have an insertion method, rather than an extraction method.
  * See Localization.h for more info.
  */
-BIO_ID(Site, uint8_t)
-BIO_PERSPECTIVE_SINGLETON(LocalizationSitePerspective, Site)
-BIO_PERSPECTIVE_SINGLETON(InsertionSitePerspective, Site)
+BIO_ID(Site,
+	uint8_t)
+
+BIO_PERSPECTIVE_SINGLETON(LocalizationSitePerspective,
+	Site)
+
+BIO_PERSPECTIVE_SINGLETON(InsertionSitePerspective,
+	Site)
 
 /**
  * TranscriptionFactors determine which Proteins are expressed in which Cells.

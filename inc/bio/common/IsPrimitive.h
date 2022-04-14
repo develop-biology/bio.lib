@@ -92,44 +92,80 @@ bool IsPrimitive()
 #if BIO_CPP_VERSION < 11
 
 template <>
-struct IsPrimitiveImplementation< bool > {static const bool m_value = true;};
+struct IsPrimitiveImplementation< bool >
+{
+	static const bool m_value = true;
+};
 
 template <>
-struct IsPrimitiveImplementation< float > {static const bool m_value = true;};
+struct IsPrimitiveImplementation< float >
+{
+	static const bool m_value = true;
+};
 
 template <>
-struct IsPrimitiveImplementation< double > {static const bool m_value = true;};
+struct IsPrimitiveImplementation< double >
+{
+	static const bool m_value = true;
+};
 
 //This is int8_t & may cause compiler errors.
 //template <>
 //struct IsPrimitiveImplementation< char > {static const bool m_value = true;};
 
 template <>
-struct IsPrimitiveImplementation< std::string >{static const bool m_value = true;};
+struct IsPrimitiveImplementation< std::string >
+{
+	static const bool m_value = true;
+};
 
 template <>
-struct IsPrimitiveImplementation< int8_t > {static const bool m_value = true;};
+struct IsPrimitiveImplementation< int8_t >
+{
+	static const bool m_value = true;
+};
 
 template <>
-struct IsPrimitiveImplementation< int16_t > {static const bool m_value = true;};
+struct IsPrimitiveImplementation< int16_t >
+{
+	static const bool m_value = true;
+};
 
 template <>
-struct IsPrimitiveImplementation< int32_t > {static const bool m_value = true;};
+struct IsPrimitiveImplementation< int32_t >
+{
+	static const bool m_value = true;
+};
 
 template <>
-struct IsPrimitiveImplementation< int64_t > {static const bool m_value = true;};
+struct IsPrimitiveImplementation< int64_t >
+{
+	static const bool m_value = true;
+};
 
 template <>
-struct IsPrimitiveImplementation< uint8_t > {static const bool m_value = true;};
+struct IsPrimitiveImplementation< uint8_t >
+{
+	static const bool m_value = true;
+};
 
 template <>
-struct IsPrimitiveImplementation< uint16_t > {static const bool m_value = true;};
+struct IsPrimitiveImplementation< uint16_t >
+{
+	static const bool m_value = true;
+};
 
 template <>
-struct IsPrimitiveImplementation< uint32_t > {static const bool m_value = true;};
+struct IsPrimitiveImplementation< uint32_t >
+{
+	static const bool m_value = true;
+};
 
 template <>
-struct IsPrimitiveImplementation< uint64_t > {static const bool m_value = true;};
+struct IsPrimitiveImplementation< uint64_t >
+{
+	static const bool m_value = true;
+};
 
 #endif
 

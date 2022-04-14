@@ -43,8 +43,7 @@ public:
 	/**
 	 * Standard ctors.
 	 * NOTE: RNA does not always have to be Identifiable. We simply make it so for ease-of use.
-	 */
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(genetic,
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(genetic,
 		RNA,
 		&genetic::RNAPerspective::Instance(),
 		filter::Genetic())

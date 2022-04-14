@@ -24,7 +24,7 @@
 namespace bio {
 
 ThreadSafe::ThreadSafe()
-	//@formatter:off
+//@formatter:off
 	#if BIO_CPP_VERSION < 11
     #else
         :
@@ -47,7 +47,7 @@ ThreadSafe::ThreadSafe()
 }
 
 ThreadSafe::ThreadSafe(const ThreadSafe& toCopy)
-	//@formatter:off
+//@formatter:off
 	#if BIO_CPP_VERSION < 11
     #else
         :

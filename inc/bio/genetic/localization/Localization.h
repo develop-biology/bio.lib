@@ -53,7 +53,8 @@ class Localization;
  * If you would like to identify a place within another place, simple repeat and Modulate the first Localization with the second.
  * For example, if you want to identify where the bathroom is within a restaurant, we would start with a Localization like {localization_site::Room(), "Bathroom"}, which might cause us to ask the nearest person for the "Bathroom". Next, we would create another Localization along the lines of {localization_site::StreetAddress(), "MyFavoriteRestaurant"}. In this case, StreetAddress would tell us to use a navigation app and maybe a car or taxi service to "extract" the restaurant form the world. Then, we say bathroomLocalization % restaurantLocalization. Thus, we end up with all the information necessary to "extract" the "Bathroom" from "MyFavoriteRestaurant".
  */
-class Localization : physical::Class<Localization>
+class Localization :
+	physical::Class< Localization >
 {
 public:
 

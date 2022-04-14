@@ -22,7 +22,7 @@
 #include "bio/common/Random.h"
 
 #if BIO_CPP_VERSION >= 11
-#include <random>
+	#include <random>
 #endif
 
 namespace bio {
@@ -34,7 +34,8 @@ static std::mt19937 gen(rd());
 
 float random::NormalFloat(
 	float mean,
-	float standardDeviation)
+	float standardDeviation
+)
 {
 	#if BIO_CPP_VERSION >= 11
 	std::normal_distribution<float> dist
@@ -50,7 +51,8 @@ float random::NormalFloat(
 
 float random::UniformFloat(
 	float min,
-	float max)
+	float max
+)
 {
 	#if BIO_CPP_VERSION >= 11
 	std::uniform_real_distribution<float> dist(

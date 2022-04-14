@@ -52,7 +52,7 @@ public:
 	 */
 	ByteStream();
 
-	template<typename T>
+	template < typename T >
 	ByteStream(T in)
 	{
 		Set(in);
@@ -85,12 +85,15 @@ public:
 	 * @tparam T
 	 * @return stored bytes as T.
 	 */
-	template <typename T>
+	template < typename T >
 	T As()
 	{
-		BIO_ASSERT(Is<T>());
+		BIO_ASSERT(Is< T >());
 		T* ret;
-		std::memcpy(ret, m_stream, sizeof(T));
+		std::memcpy(
+			ret,
+			m_stream,
+			sizeof(T));
 		return *ret;
 	}
 
@@ -99,12 +102,15 @@ public:
 	 * @tparam T
 	 * @return stored bytes as T.
 	 */
-	template <typename T>
+	template < typename T >
 	const T As() const
 	{
-		BIO_ASSERT(Is<T>());
+		BIO_ASSERT(Is< T >());
 		T* ret;
-		std::memcpy(ret, m_stream, sizeof(T));
+		std::memcpy(
+			ret,
+			m_stream,
+			sizeof(T));
 		return *ret;
 	}
 
@@ -113,7 +119,7 @@ public:
 	 * @tparam T
 	 * @return stored bytes as T.
 	 */
-	template <typename T>
+	template < typename T >
 	operator T()
 	{
 		return As< T >();
@@ -124,7 +130,7 @@ public:
 	 * @tparam T
 	 * @return stored bytes as T.
 	 */
-	template <typename T>
+	template < typename T >
 	operator const T() const
 	{
 		return As< T >();
@@ -137,13 +143,16 @@ public:
 	 * @tparam T
 	 * @param in data to store
 	 */
-	template <typename T>
+	template < typename T >
 	void Set(T in)
 	{
 		m_stream = std::malloc(sizeof(T));
-		std::memcpy(m_stream, &in, sizeof(T));
+		std::memcpy(
+			m_stream,
+			&in,
+			sizeof(T));
 		m_size = sizeof(T);
-		m_typeName = TypeName<T>();
+		m_typeName = TypeName< T >();
 	}
 
 	/**
@@ -170,10 +179,10 @@ public:
 	 * @tparam T
 	 * @return whether or not *this should be pointing to data of type T.
 	 */
-	template <typename T>
+	template < typename T >
 	bool Is() const
 	{
-		return sizeof(T) == m_size && TypeName<T>() == m_typeName;
+		return sizeof(T) == m_size && TypeName< T >() == m_typeName;
 	}
 
 	/**
@@ -182,10 +191,10 @@ public:
 	 * @param t only used for automatically determining T.
 	 * @return whether or not *this should be pointing to data of type T.
 	 */
-	template <typename T>
+	template < typename T >
 	bool Is(const T& t) const
 	{
-		return Is<T>();
+		return Is< T >();
 	}
 
 	/**

@@ -143,7 +143,8 @@ Index Container::Insert(
 	const Index index
 )
 {
-	BIO_SANITIZE(index,,return InvalidIndex())
+	BIO_SANITIZE(index, ,
+		return InvalidIndex())
 
 	if (index == m_firstFree)
 	{
@@ -163,8 +164,12 @@ Index Container::Insert(
 		(m_firstFree - index) * GetStepSize());
 
 	//adjust all deallocated positions.
-	std::deque<Index> adjustedDeallocations;
-	for (std::deque<Index>::iterator dlc = m_deallocated.begin(); dlc != m_deallocated.end(); ++dlc)
+	std::deque< Index > adjustedDeallocations;
+	for (
+		std::deque< Index >::iterator dlc = m_deallocated.begin();
+		dlc != m_deallocated.end();
+		++dlc
+		)
 	{
 		adjustedDeallocations.push_front(*dlc + 1);
 	}

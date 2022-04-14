@@ -24,7 +24,7 @@
 namespace bio {
 
 namespace physical {
-	class Wave;
+class Wave;
 }
 
 template < typename TO, typename FROM >
@@ -38,7 +38,7 @@ TO ChemicalCast(FROM toCast)
  * @tparam T
  * @return a Clone of T casted to back to T.
  */
-template< typename T >
+template < typename T >
 T CloneAndCast(const T toClone)
 {
 	//Dereference here might be dangerous & need sanitization.

@@ -240,8 +240,7 @@ public:
 	{
 		#if BIO_CPP_VERSION < 11
 		AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >();
-		return FormBondImplementation(
-			(new physical::Quantum< T >(toBond))->AsWave(),
+		return FormBondImplementation((new physical::Quantum< T >(toBond))->AsWave(),
 			bondedId,
 			type
 		);
@@ -282,7 +281,10 @@ public:
 		BondType type = bond_type::Unknown())
 	{
 		#if BIO_CPP_VERSION < 11
-		return BreakBond< physical::Quantum< T >* >(NULL, type);
+		return BreakBond< physical::Quantum< T >* >(
+			NULL,
+			type
+		);
 		#else
 		if (IsPrimitive< T >())
 		{

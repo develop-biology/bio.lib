@@ -41,14 +41,15 @@ class Engine;
  */
 class Writer :
 	virtual public physical::Filterable,
-	public physical::Class<Writer>
+	public physical::Class< Writer >
 {
 public:
 
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, Writer)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
+		Writer)
 
 	/**
 	 *
@@ -61,7 +62,8 @@ public:
 	 */
 	Writer(
 		Engine* logEngine,
-		Filter logFilter);
+		Filter logFilter
+	);
 
 	/**
 	 *
@@ -80,7 +82,8 @@ public:
 		Filter logFilter,
 		Level level,
 		const char* format,
-		...) const;
+		...
+	) const;
 
 	/**
 	 * Set the log::Engine* for *this.
@@ -124,7 +127,8 @@ protected:
 	void Log(
 		Level level,
 		const char* format,
-		...) const;
+		...
+	) const;
 
 private:
 	Engine* m_logEngine;

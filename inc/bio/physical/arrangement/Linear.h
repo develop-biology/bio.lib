@@ -54,7 +54,10 @@ public:
 	 * @param component
 	 * @param shared
 	 */
-	Linear(Identifiable< StandardDimension >* component, bool shared = false);
+	Linear(
+		Identifiable< StandardDimension >* component,
+		bool shared = false
+	);
 
 	/**
 	 * Will delete m_component iff !m_shared.

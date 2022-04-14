@@ -26,7 +26,8 @@
 namespace bio {
 namespace genetic {
 
-RegisterPlasmid::RegisterPlasmid() :
+RegisterPlasmid::RegisterPlasmid()
+	:
 	molecular::Protein(chemical::PeriodicTable::Instance().GetNameFromType(*this))
 {
 	mc_plasmidSite = Define("Plasmid Binding Site");
@@ -41,8 +42,11 @@ Code RegisterPlasmid::Activate()
 {
 	Code ret = code::BadArgument1();
 	Plasmid* boundPlasmid = RotateTo< Plasmid* >(mc_plasmidSite);
-	BIO_SANITIZE(boundPlasmid, , return ret)
-	PlasmidPerspective::Instance().AssociateType(boundPlasmid->GetId(), boundPlasmid->AsWave());
+	BIO_SANITIZE(boundPlasmid, ,
+		return ret)
+	PlasmidPerspective::Instance().AssociateType(
+		boundPlasmid->GetId(),
+		boundPlasmid->AsWave());
 	ret = code::Success();
 	RotateTo(mc_plasmidSite)->ReleaseAll();
 	return ret;

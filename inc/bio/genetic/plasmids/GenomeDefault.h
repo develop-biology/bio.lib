@@ -26,7 +26,8 @@
 namespace bio {
 namespace genetic {
 
-class GenomeDefault : public Plasmid
+class GenomeDefault :
+	public Plasmid
 {
 public:
 	GenomeDefault();

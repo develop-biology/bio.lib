@@ -51,6 +51,7 @@ Bond::~Bond()
 {
 
 }
+
 bool Bond::Form(
 	AtomicNumber id,
 	physical::Wave* bonded,

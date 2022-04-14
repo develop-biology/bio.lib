@@ -70,13 +70,13 @@ public:
 	 * @return a Substance somewhere within the Substance provided or NULL.
 	 */
 	virtual chemical::Substance* Seek(chemical::Substance* insertIn) const;
-	
+
 	/**
 	 * Tells *this to insert toInsert in its Localization.
 	 * @param toInsert 
 	 */
 	virtual void InsertThis(chemical::Substance* toInsert);
-	
+
 	/**
 	 * @return what *this will try to insert in its Localization
 	 */
@@ -87,7 +87,7 @@ public:
 	 * @param site 
 	 */
 	virtual void SetSite(Site site);
-	
+
 protected:
 	chemical::Substance* m_toInsert;
 };

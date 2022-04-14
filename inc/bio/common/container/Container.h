@@ -65,7 +65,9 @@ public:
 	/**
 	 * NOTE: We cannot use GetStepSize() here as virtual functions are not available to ctors.
 	 */
-	Container(const Index expectedSize=2, std::size_t stepSize = sizeof(ByteStream));
+	Container(
+		const Index expectedSize = 2,
+		std::size_t stepSize = sizeof(ByteStream));
 
 	/**
 	 * Copy ctor.
@@ -73,7 +75,7 @@ public:
 	 * @param other 
 	 */
 	Container(const Container& other);
-	
+
 	/**
 	 *
 	 */
@@ -150,7 +152,10 @@ public:
 	 * @param content
 	 * @return the Index of the added content.
 	 */
-	virtual Index Insert(const ByteStream content, const Index index);
+	virtual Index Insert(
+		const ByteStream content,
+		const Index index
+	);
 
 	/**
 	 * Get access to an element.
@@ -288,11 +293,15 @@ public:
 	 * @tparam T
 	 * @return a std::vector containing the contents from *this.
 	 */
-	template< typename T >
+	template < typename T >
 	std::vector< T > AsVector() const
 	{
 		std::vector< T > ret;
-		for(SmartIterator rct = End(); !rct.IsAtBeginning(); --rct)
+		for (
+			SmartIterator rct = End();
+			!rct.IsAtBeginning();
+			--rct
+			)
 		{
 			ret.push_back(rct.As< T >());
 		}
@@ -320,7 +329,10 @@ protected:
 	 * @param external
 	 * @return whether or not the contents of *this at the given Index match the given datum.
 	 */
-	virtual bool AreEqual(Index internal, const ByteStream external) const;
+	virtual bool AreEqual(
+		Index internal,
+		const ByteStream external
+	) const;
 
 	/**
 	 * cannot be void* as we need an object type for pointer arithmetic.
@@ -329,7 +341,7 @@ protected:
 
 	Index m_size;
 	Index m_firstFree;
-	std::deque<Index> m_deallocated;
+	std::deque< Index > m_deallocated;
 
 	/**
 	 * An iterator for use in loops.

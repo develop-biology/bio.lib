@@ -81,7 +81,9 @@ bool Reaction::ReactantsMeetRequirements(const Reactants* toCheck) const
 
 /*static*/ const Reaction* Reaction::Initiate(StandardDimension id)
 {
-	BIO_SANITIZE_WITH_CACHE(ReactionPerspective::Instance().GetTypeFromIdAs< Reaction* >(id), return *(Cast< const Reaction**>(RESULT)), return NULL);
+	BIO_SANITIZE_WITH_CACHE(ReactionPerspective::Instance().GetTypeFromIdAs< Reaction* >(id),
+		return *(Cast< const Reaction** >(RESULT)),
+		return NULL);
 }
 
 Products Reaction::operator()(Reactants* reactants) const

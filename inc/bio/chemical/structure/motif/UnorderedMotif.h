@@ -48,7 +48,8 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations.
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical, UnorderedMotif< CONTENT_TYPE >)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical,
+		UnorderedMotif< CONTENT_TYPE >)
 
 	/**
 	 *
@@ -73,7 +74,8 @@ public:
 	/**
 	 * @param toCopy
 	 */
-	UnorderedMotif(const UnorderedMotif< CONTENT_TYPE >* toCopy) :
+	UnorderedMotif(const UnorderedMotif< CONTENT_TYPE >* toCopy)
+		:
 		chemical::Class< UnorderedMotif< CONTENT_TYPE > >(this) //TODO: Define Symmetry.
 	{
 		this->m_contents = new Contents(*toCopy->m_contents);
@@ -84,7 +86,7 @@ public:
 	 */
 	virtual ~UnorderedMotif()
 	{
-		//NOTE: Children are responsible for clearing m_contents (e.g. through ClearImplementation().
+		//NOTE: Children are responsible for clearing m_contents (e.g. through ClearImplementation()).
 	}
 
 	/**

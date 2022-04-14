@@ -32,7 +32,8 @@ Code Organism::Morphogenesis()
 {
 	Code ret = code::Success();
 	Container* organSystems = GetAll< cellular::OrganSystem* >();
-	BIO_SANITIZE(organSystems,,return code::CouldNotFindValue1())
+	BIO_SANITIZE(organSystems, ,
+		return code::CouldNotFindValue1())
 	cellular::OrganSystem* systemBuffer;
 	for (
 		SmartIterator sys = organSystems->Begin();

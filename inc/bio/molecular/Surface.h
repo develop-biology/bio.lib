@@ -125,7 +125,9 @@ public:
 	 * @return the Bound type.
 	 */
 	template < typename T >
-	T Bind(T toBind, BondType bondType = bond_type::Temporary())
+	T Bind(
+		T toBind,
+		BondType bondType = bond_type::Temporary())
 	{
 		FormBond(
 			toBind,
@@ -139,7 +141,9 @@ public:
 	 * @param toRelease
 	 * @return the previously bound Substance or NULL.
 	 */
-	virtual physical::Wave* Release(physical::Wave* toRelease, BondType bondType = bond_type::Temporary());
+	virtual physical::Wave* Release(
+		physical::Wave* toRelease,
+		BondType bondType = bond_type::Temporary());
 
 	/**
 	 * Breaks the Temporary Bond formed by Bind.
@@ -147,7 +151,10 @@ public:
 	 * @param toRelease
 	 * @return the previously bound Substance or NULL.
 	 */
-	virtual chemical::Substance* Release(Name toRelease, physical::Perspective<StandardDimension>* perspective = NULL, BondType bondType = bond_type::Temporary());
+	virtual chemical::Substance* Release(
+		Name toRelease,
+		physical::Perspective< StandardDimension >* perspective = NULL,
+		BondType bondType = bond_type::Temporary());
 
 	/**
 	 * Breaks the Temporary Bond formed by Bind.
@@ -155,7 +162,10 @@ public:
 	 * @param toRelease
 	 * @return the previously bound Substance or NULL.
 	 */
-	virtual chemical::Substance* Release(StandardDimension toRelease, physical::Perspective<StandardDimension>* perspective = NULL, BondType bondType = bond_type::Temporary());
+	virtual chemical::Substance* Release(
+		StandardDimension toRelease,
+		physical::Perspective< StandardDimension >* perspective = NULL,
+		BondType bondType = bond_type::Temporary());
 
 	/**
 	 * Releases all Temporarily Bound Substances

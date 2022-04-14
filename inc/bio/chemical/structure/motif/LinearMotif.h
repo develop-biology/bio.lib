@@ -69,6 +69,7 @@ public:
 	 */
 	BIO_DISAMBIGUATE_REQUIRED_CLASS_METHODS(chemical,
 		LinearMotif< CONTENT_TYPE >)
+
 	BIO_DISAMBIGUATE_OPTIONAL_CLASS_METHODS(physical,
 		LinearMotif< CONTENT_TYPE >)
 
@@ -263,8 +264,7 @@ public:
 			{
 				this->m_contents->Insert(
 					addition,
-					this->m_contents->GetBeginIndex()
-				);
+					this->m_contents->GetBeginIndex());
 				break;
 			}
 			case BEFORE:
@@ -326,7 +326,8 @@ public:
 	)
 	{
 		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToId(id);
-		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret,,return NULL) //level 2 for GetOrCreate.
+		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
+			return NULL) //level 2 for GetOrCreate.
 
 		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret));
 	}
@@ -341,7 +342,8 @@ public:
 	) const
 	{
 		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToId(id);
-		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret,,return NULL) //level 2 for GetOrCreate.
+		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
+			return NULL) //level 2 for GetOrCreate.
 
 		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret));
 	}
@@ -357,7 +359,8 @@ public:
 	)
 	{
 		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToName(name);
-		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret,,return NULL) //level 2 for GetOrCreate.
+		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
+			return NULL) //level 2 for GetOrCreate.
 
 		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret));
 	}
@@ -372,7 +375,8 @@ public:
 	) const
 	{
 		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToName(name);
-		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret,,return NULL) //level 2 for GetOrCreate.
+		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
+			return NULL) //level 2 for GetOrCreate.
 
 		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret));
 	}
@@ -549,7 +553,9 @@ public:
 		std::string ret = "";
 
 		for (
-			SmartIterator cnt(this->m_contents, this->m_contents->GetBeginIndex());
+			SmartIterator cnt(
+				this->m_contents,
+				this->m_contents->GetBeginIndex());
 			!cnt.IsAtEnd();
 			++cnt
 			)

@@ -46,7 +46,10 @@ class Substance :
 {
 public:
 
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(chemical, Substance, &SubstancePerspective::Instance(), filter::Chemical())
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(chemical,
+		Substance,
+		&SubstancePerspective::Instance(),
+		filter::Chemical())
 
 	/**
 	 * Ensure virtual methods point to Class implementations.

@@ -35,7 +35,8 @@ Code OrganSystem::Organogenesis()
 {
 	Code ret = code::Success();
 	Container* organs = GetAll< Organ* >();
-	BIO_SANITIZE(organs,,return code::CouldNotFindValue1())
+	BIO_SANITIZE(organs, ,
+		return code::CouldNotFindValue1())
 	Organ* organBuffer;
 	for (
 		SmartIterator org = organs->Begin();

@@ -34,7 +34,8 @@ Code Tissue::DifferentiateCells()
 {
 	Code ret = code::Success();
 	Container* cells = GetAll< Cell* >();
-	BIO_SANITIZE(cells,,return code::CouldNotFindValue1())
+	BIO_SANITIZE(cells, ,
+		return code::CouldNotFindValue1())
 	Cell* cellBuffer;
 	for (
 		SmartIterator cel = cells->Begin();
@@ -52,7 +53,8 @@ Code Tissue::DifferentiateCells()
 	}
 
 	Container* tissues = GetAll< Tissue* >();
-	BIO_SANITIZE(tissues,,return code::CouldNotFindValue1())
+	BIO_SANITIZE(tissues, ,
+		return code::CouldNotFindValue1())
 	Tissue* tissueBuffer;
 	for (
 		SmartIterator tis = tissues->Begin();

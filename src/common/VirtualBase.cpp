@@ -24,7 +24,8 @@
 
 namespace bio {
 
-VirtualBase::VirtualBase() :
+VirtualBase::VirtualBase()
+	:
 	m_hasBeenInitialized(false)
 {
 
@@ -38,14 +39,16 @@ VirtualBase::~VirtualBase()
 
 void VirtualBase::Initialize(ByteStreams args)
 {
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(m_hasBeenInitialized,,return);
+	BIO_SANITIZE_AT_SAFETY_LEVEL_2(m_hasBeenInitialized, ,
+		return);
 	InitializeImplementation(args);
 	m_hasBeenInitialized = true;
 }
 
 void VirtualBase::Initialize(ByteStream arg1)
 {
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(m_hasBeenInitialized,,return);
+	BIO_SANITIZE_AT_SAFETY_LEVEL_2(m_hasBeenInitialized, ,
+		return);
 	ByteStreams args;
 	args.push_back(arg1);
 	Initialize(args);
@@ -53,9 +56,11 @@ void VirtualBase::Initialize(ByteStream arg1)
 
 void VirtualBase::Initialize(
 	ByteStream arg1,
-	ByteStream arg2)
+	ByteStream arg2
+)
 {
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(m_hasBeenInitialized,,return);
+	BIO_SANITIZE_AT_SAFETY_LEVEL_2(m_hasBeenInitialized, ,
+		return);
 	ByteStreams args;
 	args.push_back(arg1);
 	args.push_back(arg2);
@@ -65,9 +70,11 @@ void VirtualBase::Initialize(
 void VirtualBase::Initialize(
 	ByteStream arg1,
 	ByteStream arg2,
-	ByteStream arg3)
+	ByteStream arg3
+)
 {
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(m_hasBeenInitialized,,return);
+	BIO_SANITIZE_AT_SAFETY_LEVEL_2(m_hasBeenInitialized, ,
+		return);
 	ByteStreams args;
 	args.push_back(arg1);
 	args.push_back(arg2);

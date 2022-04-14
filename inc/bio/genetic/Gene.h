@@ -58,8 +58,7 @@ public:
 	/**
 	 * Standard ctors.
 	 * These are easy to use but require setting member variables manually.
-	 */
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(genetic,
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(genetic,
 		Gene,
 		&molecular::DNAPerspective::Instance(),
 		filter::Genetic())

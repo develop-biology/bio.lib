@@ -75,7 +75,7 @@ void Threaded::RequestStop()
 
 /*static*/ void* Threaded::Worker(void* arg)
 {
-	Threaded* threaded = Cast<Threaded*>(arg);
+	Threaded* threaded = Cast< Threaded* >(arg);
 	BIO_SANITIZE(threaded, ,
 		return NULL);
 

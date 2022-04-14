@@ -97,7 +97,11 @@ Code Expressor::Translate(const RNA* mRNA)
 		++rna
 		)
 	{
-		for (SmartIterator gen = (*rna)->GetAll< Gene* >()->Begin(); !gen.IsAtEnd(); ++gen)
+		for (
+			SmartIterator gen = (*rna)->GetAll< Gene* >()->Begin();
+			!gen.IsAtEnd();
+			++gen
+			)
 		{
 			geneBuffer = gen;
 			if (!geneBuffer->m_insertion.Seek(this))

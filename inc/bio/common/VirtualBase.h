@@ -81,7 +81,10 @@ protected:
 	 * @param arg1
 	 * @param arg2
 	 */
-	void Initialize(ByteStream arg1, ByteStream arg2);
+	void Initialize(
+		ByteStream arg1,
+		ByteStream arg2
+	);
 
 	/**
 	 * Ease-of-use calls for wrapping c++98 vector initialization.
@@ -90,7 +93,11 @@ protected:
 	 * @param arg2
 	 * @param arg3
 	 */
-	void Initialize(ByteStream arg1, ByteStream arg2, ByteStream arg3);
+	void Initialize(
+		ByteStream arg1,
+		ByteStream arg2,
+		ByteStream arg3
+	);
 
 	/**
 	 * Your initialization logic goes here.

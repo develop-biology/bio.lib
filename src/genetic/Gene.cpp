@@ -1,4 +1,3 @@
-
 /*
  * This file is a part of the Biology project by eons LLC.
  * Biology (aka Develop Biology) is a framework for approaching software

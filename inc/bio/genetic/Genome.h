@@ -86,7 +86,8 @@ protected:
 	StandardDimension mc_fetchSite;
 };
 
-BIO_SINGLETON(Genome, GenomeImplementation)
+BIO_SINGLETON(Genome,
+	GenomeImplementation)
 
 } //genetic namespace
 } //bio namespace

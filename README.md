@@ -60,7 +60,7 @@ All Biology classes, with few exceptions, are virtual and may be extended as far
 
 `Classes` may be templated if they necessarily require a template. Otherwise, they contain the minimal functionality they represent and may be extended. 
 
-`ClassOf<>` will be used if `Class` is functional on its own and we also want a templated derivation. The template (i.e. `ClassOf<>`) will share the same name as the base `Class` with the addition of "of" in order to avoid file name conflicts. It will NEVER be the case that a `Class` derives from a templated base class of the same name (i.e. `Class : ClassOf<>` is invalid as are `Class<> : Class` and `Class : Class<>`). Use of `ClassOf<>` is discouraged; a more descriptive name is preferred (i.e. what does the template override provide?).
+`ClassOf<>` will be used if `Class` is functional on its own, and we also want a templated derivation. The template (i.e. `ClassOf<>`) will share the same name as the base `Class` with the addition of "of" in order to avoid file name conflicts. It will NEVER be the case that a `Class` derives from a templated base class of the same name (i.e. `Class : ClassOf<>` is invalid as are `Class<> : Class` and `Class : Class<>`). Use of `ClassOf<>` is discouraged; a more descriptive name is preferred (i.e. what does the template override provide?).
 
 Thus, in terms of possible templates, we get either `Class<>` on its own, `Class<> : AbstractClass`, or `ClassOf<> : Class`, depending on whether the base class is functional (of course, we also have `Class : OtherClass<>` but that's just general inheritance).
 

@@ -25,20 +25,20 @@
  * This is not for you.
  */
 #define BIO_SITE_FUNCTION(perspective, site, type, function, typeTuple, argTuple)\
-	bool g_##site##Registered =                                                \
-		::bio::perspective::Instance().AssociateType(                          \
-			g_##site,                                                          \
-			(                                                                  \
-				new BIO_EXCITATION_CLASS(                                      \
-					::bio::chemical::LinearMotif< type >,                      \
-					type,                                                      \
-					BIO_EXPAND_TUPLE typeTuple                                 \
-				)(                                                             \
-					&::bio::chemical::LinearMotif< type >::function,           \
-					BIO_EXPAND_TUPLE argTuple                                  \
-				)                                                              \
-			)->AsWave()                                                        \
-		);
+    bool g_##site##Registered =                                                \
+        ::bio::perspective::Instance().AssociateType(                          \
+            g_##site,                                                          \
+            (                                                                  \
+                new BIO_EXCITATION_CLASS(                                      \
+                    ::bio::chemical::LinearMotif< type >,                      \
+                    type,                                                      \
+                    BIO_EXPAND_TUPLE typeTuple                                 \
+                )(                                                             \
+                    &::bio::chemical::LinearMotif< type >::function,           \
+                    BIO_EXPAND_TUPLE argTuple                                  \
+                )                                                              \
+            )->AsWave()                                                        \
+        );
 
 /**
  * To make defining Sites easier, use this macro to define the function body of your Site Function().
@@ -47,11 +47,11 @@
  * REMINDER: Your Site Function()s should be in the ::bio::localization_site namespace.
  */
 #define BIO_LOCALIZATION_SITE_FUNCTION_BODY(functionName, toExtract)           \
-	BIO_ID_FUNCTION_BODY(                                                      \
-		functionName##LocalizationSite,                                        \
-		::bio::LocalizationSitePerspective::Instance(),                        \
-		::bio::Site)                                                           \
-	BIO_SITE_FUNCTION(LocalizationSitePerspective, functionName##LocalizationSite, toExtract, GetByNameImplementation, (Name), (NULL))
+    BIO_ID_FUNCTION_BODY(                                                      \
+        functionName##LocalizationSite,                                        \
+        ::bio::LocalizationSitePerspective::Instance(),                        \
+        ::bio::Site)                                                           \
+    BIO_SITE_FUNCTION(LocalizationSitePerspective, functionName##LocalizationSite, toExtract, GetByNameImplementation, (Name), (NULL))
 
 /**
  * To make defining Sites easier, use this macro to define the function body of your Site Function().
@@ -60,25 +60,25 @@
  * REMINDER: Your Site Function()s should be in the ::bio::insertion_site namespace.
  */
 #define BIO_INSERTION_SITE_FUNCTION_BODY(functionName, toInsert)               \
-	BIO_ID_FUNCTION_BODY(                                                      \
-		functionName##InsertionSite,                                           \
-		::bio::InsertionSitePerspective::Instance(),                           \
-		::bio::Site)                                                           \
-	BIO_SITE_FUNCTION(InsertionSitePerspective, functionName##InsertionSite, toInsert, AddImplementation, (toInsert), (NULL))
+    BIO_ID_FUNCTION_BODY(                                                      \
+        functionName##InsertionSite,                                           \
+        ::bio::InsertionSitePerspective::Instance(),                           \
+        ::bio::Site)                                                           \
+    BIO_SITE_FUNCTION(InsertionSitePerspective, functionName##InsertionSite, toInsert, AddImplementation, (toInsert), (NULL))
 
 /**
  * Ease of use method for declaring all kinds of sites at once.
  */
 #define BIO_SITE(functionName)                                                 \
-	namespace site {                                                           \
-		Site functionName();                                                   \
-	}
+    namespace site {                                                           \
+        Site functionName();                                                   \
+    }
 
 /**
  * Ease of use method of defining all kinds of sites at once.
  */
 #define BIO_SITE_FUNCTION_BODY(functionName, type)                             \
-	namespace site {                                                           \
-		BIO_LOCALIZATION_SITE_FUNCTION_BODY(functionName, type)                \
-		BIO_INSERTION_SITE_FUNCTION_BODY(functionName, type)                   \
-	}
+    namespace site {                                                           \
+        BIO_LOCALIZATION_SITE_FUNCTION_BODY(functionName, type)                \
+        BIO_INSERTION_SITE_FUNCTION_BODY(functionName, type)                   \
+    }

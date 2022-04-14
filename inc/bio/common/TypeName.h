@@ -31,14 +31,14 @@ namespace bio {
  * @tparam T
  * @return Just T as a string.
  */
-template <typename T>
+template < typename T >
 const std::string TypeName();
 
 /**
  * @return "void"
  */
 template <>
-inline const std::string TypeName<void>()
+inline const std::string TypeName< void >()
 {
 	return "void";
 }
@@ -54,7 +54,7 @@ typedef void TypeNameProber;
  * @tparam T
  * @return T as a string with wrapping symbols.
  */
-template <typename T>
+template < typename T >
 static const std::string WrappedTypeName()
 {
 	#ifdef __clang__
@@ -64,7 +64,7 @@ static const std::string WrappedTypeName()
 	#elif defined(_MSC_VER)
 	return __FUNCSIG__;
 	#else
-	#error "Unsupported compiler"
+		#error "Unsupported compiler"
 	#endif
 }
 
@@ -74,7 +74,7 @@ static const std::string WrappedTypeName()
  */
 static const std::size_t WrappedTypeNamePrefixLength()
 {
-	return WrappedTypeName<TypeNameProber>().find(TypeName<TypeNameProber>());
+	return WrappedTypeName< TypeNameProber >().find(TypeName< TypeNameProber >());
 }
 
 /**
@@ -83,9 +83,7 @@ static const std::size_t WrappedTypeNamePrefixLength()
  */
 static const std::size_t WrappedTypeNameSuffixLength()
 {
-	return WrappedTypeName<TypeNameProber>().length()
-		- WrappedTypeNamePrefixLength()
-		- TypeName<TypeNameProber>().length();
+	return WrappedTypeName< TypeNameProber >().length() - WrappedTypeNamePrefixLength() - TypeName< TypeNameProber >().length();
 }
 
 /**
@@ -93,10 +91,10 @@ static const std::size_t WrappedTypeNameSuffixLength()
  * @tparam T
  * @return Just T as a string.
  */
-template <typename T>
+template < typename T >
 static const std::string TypeName()
 {
-	static const std::string wrappedName = WrappedTypeName<T>();
+	static const std::string wrappedName = WrappedTypeName< T >();
 	static const std::size_t prefixLength = WrappedTypeNamePrefixLength();
 	static const std::size_t suffixLength = WrappedTypeNameSuffixLength();
 	static const std::size_t typeNameLength = wrappedName.length() - prefixLength - suffixLength;
@@ -112,10 +110,10 @@ static const std::string TypeName()
  * @param t used for auto type determination.
  * @return Just T as a string.
  */
-template <typename T>
+template < typename T >
 const std::string TypeName(const T t)
 {
-	return TypeName<T>();
+	return TypeName< T >();
 }
 
 } //bio namespace

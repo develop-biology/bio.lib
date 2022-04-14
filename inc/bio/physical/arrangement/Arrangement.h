@@ -32,17 +32,21 @@ namespace physical {
  * @tparam TYPE
  */
 template < typename TYPE >
-class Arrangement : public Container
+class Arrangement :
+	public Container
 {
 public:
 
 	/**
 	 * @param expectedSize
 	 */
-	Arrangement(const Index expectedSize=2) :
-		Container(expectedSize, sizeof(TYPE))
+	Arrangement(const Index expectedSize = 2)
+		:
+		Container(
+			expectedSize,
+			sizeof(TYPE))
 	{
-		
+
 	}
 
 	/**
@@ -55,41 +59,61 @@ public:
 
 	Index Add(const ByteStream content)
 	{
-		BIO_SANITIZE(content.Is<TYPE>(),,return InvalidIndex())
+		BIO_SANITIZE(content.Is< TYPE >(), ,
+			return InvalidIndex())
 		Index ret = this->GetNextAvailableIndex();
-		BIO_SANITIZE(ret,,return InvalidIndex())
+		BIO_SANITIZE(ret, ,
+			return InvalidIndex())
 		TYPE toAdd = content;
-		std::memcpy(&this->m_store[ret * sizeof(TYPE)], &toAdd, sizeof(TYPE));
+		std::memcpy(
+			&this->m_store[ret * sizeof(TYPE)],
+			&toAdd,
+			sizeof(TYPE));
 		return ret;
 	}
 
 	ByteStream Access(const Index index)
 	{
-		BIO_SANITIZE(this->IsAllocated(index),,return NULL)
+		BIO_SANITIZE(this->IsAllocated(index), ,
+			return NULL)
 		TYPE* ret;
-		std::memcpy(ret, &this->m_store[index * sizeof(TYPE)], sizeof(TYPE));
+		std::memcpy(
+			ret,
+			&this->m_store[index * sizeof(TYPE)],
+			sizeof(TYPE));
 		return *ret;
 	}
 
 	const ByteStream Access(const Index index) const
 	{
-		BIO_SANITIZE(this->IsAllocated(index),,return NULL)
+		BIO_SANITIZE(this->IsAllocated(index), ,
+			return NULL)
 		TYPE* ret;
-		std::memcpy(ret, &this->m_store[index * sizeof(TYPE)], sizeof(TYPE));
+		std::memcpy(
+			ret,
+			&this->m_store[index * sizeof(TYPE)],
+			sizeof(TYPE));
 		return *ret;
 	}
 
 	bool Erase(const Index index)
 	{
-		BIO_SANITIZE(this->IsAllocated(index),,return false)
+		BIO_SANITIZE(this->IsAllocated(index), ,
+			return false)
 		TYPE* toDelete;
-		std::memcpy(toDelete, &this->m_store[index * sizeof(TYPE)], sizeof(TYPE));
+		std::memcpy(
+			toDelete,
+			&this->m_store[index * sizeof(TYPE)],
+			sizeof(TYPE));
 		delete toDelete;
 		this->m_deallocated.push_back(index);
 		return true;
 	}
 
-	virtual bool AreEqual(Index internal, const ByteStream external) const
+	virtual bool AreEqual(
+		Index internal,
+		const ByteStream external
+	) const
 	{
 		BIO_SANITIZE(external.Is< TYPE >(), ,
 			return false)

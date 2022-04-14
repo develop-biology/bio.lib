@@ -34,7 +34,8 @@ namespace physical {
  *
  * @tparam STORE
  */
-class Line : public Arrangement< Linear >
+class Line :
+	public Arrangement< Linear >
 {
 public:
 
@@ -81,7 +82,10 @@ public:
 	 * @param index
 	 * @return whether or not the Linear at the given Index is equal to the provided Identifiable< StandardDimension >*.
 	 */
-	virtual bool AreEqual(Index internal, const ByteStream external) const;
+	virtual bool AreEqual(
+		Index internal,
+		const ByteStream external
+	) const;
 
 	/**
 	 * Convenience wrapper around OptimizedAccess.

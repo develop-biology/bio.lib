@@ -38,51 +38,51 @@
 class name                                                                     \
 {                                                                              \
 public:                                                                        \
-	name(type t = defaultValue) :                                              \
-		m_t(t)                                                                 \
-	{}                                                                         \
-	~name() {}                                                                 \
-	operator type() {return m_t;}                                              \
-	bool operator==(const type& t) const  {return m_t == t;}                   \
-	bool operator!=(const type& t) const  {return m_t != t;}                   \
-	bool operator<=(const type& t) const  {return m_t <= t;}                   \
-	bool operator>=(const type& t) const  {return m_t >= t;}                   \
-	bool operator<(const type& t) const {return m_t < t;}                      \
-	bool operator>(const type& t) const {return m_t > t;}                      \
-	bool operator==(const name& other) const {return m_t == other.m_t;}        \
-	bool operator!=(const name& other) const {return m_t != other.m_t;}        \
-	bool operator<=(const name& other) const {return m_t <= other.m_t;}        \
-	bool operator>=(const name& other) const {return m_t >= other.m_t;}        \
-	bool operator<(const name& other) const {return m_t < other.m_t;}          \
-	bool operator>(const name& other) const {return m_t > other.m_t;}          \
-	type& operator++() {return ++m_t;}                                         \
-	type operator++(int) {return m_t++;}                                       \
-	type& operator--() {return --m_t;}                                         \
-	type operator--(int) {return m_t--;}                                       \
-	type operator+=(const type& t) {return m_t += t;}                          \
-	type operator-=(const type& t) {return m_t -= t;}                          \
-	type operator+=(const name& other) {return m_t += other.m_t;}              \
-	type operator-=(const name& other) {return m_t -= other.m_t;}              \
-	type operator+(const type& t) const {return m_t + t;}                      \
-	type operator-(const type& t) const {return m_t - t;}                      \
-	type operator+(const name& other) const {return m_t + other.m_t;}          \
-	type operator-(const name& other) const {return m_t - other.m_t;}          \
-	type operator*=(const type& t) {return m_t *= t;}                          \
-	type operator/=(const type& t) {return m_t /= t;}                          \
-	type operator*=(const name& other) {return m_t *= other.m_t;}              \
-	type operator/=(const name& other) {return m_t /= other.m_t;}              \
-	type operator*(const type& t) const {return m_t * t;}                      \
-	type operator/(const type& t) const {return m_t / t;}                      \
-	type operator*(const name& other) const {return m_t * other.m_t;}          \
-	type operator/(const name& other) const {return m_t / other.m_t;}          \
-	friend std::ostream& operator <<(std::ostream& out, const name& t)         \
-	{                                                                          \
-		out << t.m_t;                                                          \
-		return out;                                                            \
-	}                                                                          \
-	/*that's all we're doing for now. Please add to this list as necessary*/   \
+    name(type t = defaultValue) :                                              \
+        m_t(t)                                                                 \
+    {}                                                                         \
+    ~name() {}                                                                 \
+    operator type() {return m_t;}                                              \
+    bool operator==(const type& t) const  {return m_t == t;}                   \
+    bool operator!=(const type& t) const  {return m_t != t;}                   \
+    bool operator<=(const type& t) const  {return m_t <= t;}                   \
+    bool operator>=(const type& t) const  {return m_t >= t;}                   \
+    bool operator<(const type& t) const {return m_t < t;}                      \
+    bool operator>(const type& t) const {return m_t > t;}                      \
+    bool operator==(const name& other) const {return m_t == other.m_t;}        \
+    bool operator!=(const name& other) const {return m_t != other.m_t;}        \
+    bool operator<=(const name& other) const {return m_t <= other.m_t;}        \
+    bool operator>=(const name& other) const {return m_t >= other.m_t;}        \
+    bool operator<(const name& other) const {return m_t < other.m_t;}          \
+    bool operator>(const name& other) const {return m_t > other.m_t;}          \
+    type& operator++() {return ++m_t;}                                         \
+    type operator++(int) {return m_t++;}                                       \
+    type& operator--() {return --m_t;}                                         \
+    type operator--(int) {return m_t--;}                                       \
+    type operator+=(const type& t) {return m_t += t;}                          \
+    type operator-=(const type& t) {return m_t -= t;}                          \
+    type operator+=(const name& other) {return m_t += other.m_t;}              \
+    type operator-=(const name& other) {return m_t -= other.m_t;}              \
+    type operator+(const type& t) const {return m_t + t;}                      \
+    type operator-(const type& t) const {return m_t - t;}                      \
+    type operator+(const name& other) const {return m_t + other.m_t;}          \
+    type operator-(const name& other) const {return m_t - other.m_t;}          \
+    type operator*=(const type& t) {return m_t *= t;}                          \
+    type operator/=(const type& t) {return m_t /= t;}                          \
+    type operator*=(const name& other) {return m_t *= other.m_t;}              \
+    type operator/=(const name& other) {return m_t /= other.m_t;}              \
+    type operator*(const type& t) const {return m_t * t;}                      \
+    type operator/(const type& t) const {return m_t / t;}                      \
+    type operator*(const name& other) const {return m_t * other.m_t;}          \
+    type operator/(const name& other) const {return m_t / other.m_t;}          \
+    friend std::ostream& operator <<(std::ostream& out, const name& t)         \
+    {                                                                          \
+        out << t.m_t;                                                          \
+        return out;                                                            \
+    }                                                                          \
+    /*that's all we're doing for now. Please add to this list as necessary*/   \
                                                                                \
 /*public because we need to treat this as type when we don't know the type.*/  \
 public:                                                                        \
-	type m_t;                                                                  \
+    type m_t;                                                                  \
 };

@@ -30,10 +30,13 @@
 
 namespace bio {
 
-BIO_SITE_FUNCTION_BODY(InSurface, molecular::Molecule*)
+BIO_SITE_FUNCTION_BODY(InSurface,
+	molecular::Molecule*)
 
-BIO_SITE_FUNCTION_BODY(OnMolecule, molecular::Surface*)
+BIO_SITE_FUNCTION_BODY(OnMolecule,
+	molecular::Surface*)
 
-BIO_SITE_FUNCTION_BODY(InVesicle, molecular::Vesicle*)
+BIO_SITE_FUNCTION_BODY(InVesicle,
+	molecular::Vesicle*)
 
 } //bio namespace

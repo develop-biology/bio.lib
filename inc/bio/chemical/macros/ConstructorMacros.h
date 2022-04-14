@@ -37,13 +37,13 @@
  */
 #define BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(ns, class, ...)                  \
 class() :                                                                      \
-	ns::Class< class >(this, __VA_ARGS__)                                      \
+    ns::Class< class >(this, __VA_ARGS__)                                      \
 {}                                                                             \
 explicit class(Name name) :                                                    \
-	ns::Class< class >(this, name, __VA_ARGS__)                                \
+    ns::Class< class >(this, name, __VA_ARGS__)                                \
 {}                                                                             \
 explicit class(StandardDimension id) :                                         \
-	ns::Class< class >(this, id, __VA_ARGS__)                                  \
+    ns::Class< class >(this, id, __VA_ARGS__)                                  \
 {}
 
 /**
@@ -64,17 +64,17 @@ explicit class(StandardDimension id) :                                         \
  */
 #define BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(ns, class, ...) \
 class() :                                                                      \
-	ns::Class< class >(this, __VA_ARGS__)                                      \
+    ns::Class< class >(this, __VA_ARGS__)                                      \
 {                                                                              \
-	this->CtorCommon();                                                        \
+    this->CtorCommon();                                                        \
 }                                                                              \
 explicit class(Name name) :                                                    \
-	ns::Class< class >(this, name, __VA_ARGS__)                                \
+    ns::Class< class >(this, name, __VA_ARGS__)                                \
 {                                                                              \
-	this->CtorCommon();                                                        \
+    this->CtorCommon();                                                        \
 }                                                                              \
 explicit class(StandardDimension id) :                                         \
-	ns::Class< class >(this, id, __VA_ARGS__)                                  \
+    ns::Class< class >(this, id, __VA_ARGS__)                                  \
 {                                                                              \
-	this->CtorCommon();                                                        \
+    this->CtorCommon();                                                        \
 }

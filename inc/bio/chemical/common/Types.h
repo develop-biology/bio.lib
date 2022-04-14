@@ -32,7 +32,9 @@ namespace bio {
  * This can be used to inform other systems (e.g. molecular) of how to treat the Bonded Wave.
  * NOTE: Atoms can Bond things that are not Atoms. The only requirement is that they are Wave.
  */
-BIO_STRONG_TYPEDEF(uint8_t, BondType, 0)
+BIO_STRONG_TYPEDEF(uint8_t,
+	BondType,
+	0)
 
 BIO_PERSPECTIVE_SINGLETON(BondTypePerspective,
 	BondType)
@@ -73,12 +75,13 @@ BIO_PERSPECTIVE_SINGLETON(ReactionPerspective,
 	StandardDimension)
 
 class Substance;
+
 typedef std::vector< Substance* > Substances;
 
 BIO_PERSPECTIVE_SINGLETON(SubstancePerspective,
 	StandardDimension)
 
-typedef std::vector<ByteStream> Emission;
+typedef std::vector< ByteStream > Emission;
 
 } //chemical namespace
 } //bio namespace

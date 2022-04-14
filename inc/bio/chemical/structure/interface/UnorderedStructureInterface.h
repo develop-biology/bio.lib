@@ -123,7 +123,11 @@ public:
 	template < typename T >
 	void Import(const std::vector< T >& other)
 	{
-		for(typename std::vector< T >::const_iterator otr = other.begin(); otr != other.end(); ++otr)
+		for (
+			typename std::vector< T >::const_iterator otr = other.begin();
+			otr != other.end();
+			++otr
+			)
 		{
 			this->Add< T >(*otr);
 		}
@@ -137,7 +141,8 @@ public:
 	 */
 	Code ImportAll(const physical::Wave* other)
 	{
-		BIO_SANITIZE(other && other->AsAtom(),,return code::BadArgument1())
+		BIO_SANITIZE(other && other->AsAtom(), ,
+			return code::BadArgument1())
 
 		Code ret = code::Success();
 
@@ -329,10 +334,11 @@ public:
 	 * @tparam T
 	 * @return the contents of *this casted to an std::vector.
 	 */
-	template< typename T >
+	template < typename T >
 	std::vector< T > GetAllAsVector()
 	{
-		return this->template GetAll< T >()->template AsVector< T >();
+		return this->template GetAll< T >()->
+			template AsVector< T >();
 	}
 
 	/**
@@ -340,10 +346,11 @@ public:
 	 * @tparam T
 	 * @return the contents of *this casted to an std::vector.
 	 */
-	template< typename T >
+	template < typename T >
 	const std::vector< T > GetAllAsVector() const
 	{
-		return this->template GetAll< T >()->template AsVector< T >();
+		return this->template GetAll< T >()->
+			template AsVector< T >();
 	}
 };
 

@@ -35,7 +35,7 @@ namespace molecular {
  */
 class Vesicle :
 	virtual public Molecule,
-	public Class<Vesicle>,
+	public Class< Vesicle >,
 	public chemical::LinearMotif< Molecule* >
 {
 public:
@@ -48,8 +48,7 @@ public:
 
 	/**
 	 * Standard ctors.
-	 */
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(molecular,
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(molecular,
 		Vesicle,
 		&VesiclePerspective::Instance(),
 		filter::Molecular())

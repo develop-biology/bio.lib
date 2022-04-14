@@ -54,8 +54,7 @@ public:
 
 	/**
 	 * Standard ctors.
-	 */
-	 BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(genetic,
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(genetic,
 		Expressor,
 		&molecular::VesiclePerspective::Instance(),
 		filter::Genetic())

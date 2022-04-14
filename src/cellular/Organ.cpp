@@ -34,7 +34,8 @@ Code Organ::SpecializeTissues()
 {
 	Code ret = code::Success();
 	Container* tissues = GetAll< Tissue* >();
-	BIO_SANITIZE(tissues,,return code::CouldNotFindValue1())
+	BIO_SANITIZE(tissues, ,
+		return code::CouldNotFindValue1())
 	Tissue* tissueBuffer;
 	for (
 		SmartIterator tis = tissues->Begin();
@@ -43,7 +44,7 @@ Code Organ::SpecializeTissues()
 		)
 	{
 		tissueBuffer = tis;
-		if(tissueBuffer->DifferentiateCells() != code::Success() && ret == code::Success())
+		if (tissueBuffer->DifferentiateCells() != code::Success() && ret == code::Success())
 		{
 			ret = code::UnknownError();
 		}

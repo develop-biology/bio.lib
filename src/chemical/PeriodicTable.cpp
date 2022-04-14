@@ -35,7 +35,8 @@ class Element :
 	public Substance
 {
 public:
-	Element() :
+	Element()
+		:
 		m_type(NULL)
 	{
 	}
@@ -108,7 +109,8 @@ AtomicNumber PeriodicTableImplementation::RecordPropertiesOf(
 )
 {
 	typename Hadits::iterator hdt = Find(id);
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(hdt == this->m_hadits.end(),,return InvalidId());
+	BIO_SANITIZE_AT_SAFETY_LEVEL_2(hdt == this->m_hadits.end(), ,
+		return InvalidId());
 
 	LockThread();
 	Element* element = ForceCast< Element* >(hdt->m_type);

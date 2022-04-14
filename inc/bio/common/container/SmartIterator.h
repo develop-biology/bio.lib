@@ -26,6 +26,7 @@
 namespace bio {
 
 class Container;
+
 class Iterator;
 
 /**
@@ -48,7 +49,8 @@ public:
 	 */
 	SmartIterator(
 		const Container* container,
-		Index index);
+		Index index
+	);
 
 	/**
 	 * Not virtual

@@ -26,6 +26,6 @@
     ::bio::ByteStream RESULT;                                                  \
     RESULT.Set(expression);
 #else
-#define BIO_CACHE(expression)                                                  \
+	#define BIO_CACHE(expression)                                                  \
 	auto RESULT = (expression);
 #endif

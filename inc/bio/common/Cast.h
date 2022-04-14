@@ -31,7 +31,7 @@ namespace bio {
  * @param toCast a FROM.
  * @return toCast as a TO
  */
-template <typename TO, typename FROM>
+template < typename TO, typename FROM >
 TO Cast(FROM toCast)
 {
 	#ifdef RTTI_ENABLED
@@ -57,7 +57,7 @@ TO Cast(FROM toCast)
  * @param toCast a FROM.
  * @return toCast as a TO, regardless of what it was before.
  */
-template <typename TO, typename FROM>
+template < typename TO, typename FROM >
 TO ForceCast(FROM toCast)
 {
 	return (TO)(void*)(toCast);
@@ -72,8 +72,11 @@ TO ForceCast(FROM toCast)
  * @param, autoTo dummy.
  * @return toCast as a TO, regardless of what it was before.
  */
-template <typename TO_FINAL, typename TO_1, typename FROM>
-TO_FINAL DoubleForceCast(FROM toCast, TO_1* autoTo)
+template < typename TO_FINAL, typename TO_1, typename FROM >
+TO_FINAL DoubleForceCast(
+	FROM toCast,
+	TO_1* autoTo
+)
 {
 	return (TO_FINAL)(TO_1)(void*)(toCast);
 }

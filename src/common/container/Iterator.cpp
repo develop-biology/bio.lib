@@ -26,7 +26,8 @@ namespace bio {
 
 Iterator::Iterator(
 	const Container* container,
-	const Index index)
+	const Index index
+)
 	:
 	m_container(const_cast< Container* >(container)),
 	m_index(index)

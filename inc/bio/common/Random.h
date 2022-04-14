@@ -37,7 +37,8 @@ namespace random {
  */
 float NormalFloat(
 	float mean,
-	float standardDeviation);
+	float standardDeviation
+);
 
 /**
  * x ~ Uniform
@@ -47,7 +48,8 @@ float NormalFloat(
  */
 float UniformFloat(
 	float min,
-	float max);
+	float max
+);
 
 } //random namespace
 } //bio namespace
