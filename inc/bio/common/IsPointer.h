@@ -30,6 +30,7 @@
 //@formatter:on
 
 namespace bio {
+namespace utility {
 
 //@formatter:off
 #if BIO_CPP_VERSION < 11
@@ -95,4 +96,6 @@ inline T& Dereference(T* t)
 {
 	return *t;
 }
+
+} //utility namespace
 } //bio namespace

@@ -79,7 +79,8 @@ public:
 
 	/**
 	 * Since we operate on Identifiable< StandardDimension >*, not Linears, we want to treat the external datum as Identifiable< StandardDimension >*.
-	 * @param index
+	 * @param internal
+	 * @param external
 	 * @return whether or not the Linear at the given Index is equal to the provided Identifiable< StandardDimension >*.
 	 */
 	virtual bool AreEqual(

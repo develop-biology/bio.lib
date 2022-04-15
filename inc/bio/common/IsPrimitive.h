@@ -36,6 +36,7 @@
 //@formatter:on
 
 namespace bio {
+namespace utility {
 
 //@formatter:off
 #if BIO_CPP_VERSION < 11
@@ -169,4 +170,5 @@ struct IsPrimitiveImplementation< uint64_t >
 
 #endif
 
+} //utility namespace
 } //bio namespace

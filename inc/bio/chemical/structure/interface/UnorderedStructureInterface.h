@@ -240,14 +240,14 @@ public:
 	 * @return whether or not content exists in *this; false if T is invalid.
 	 */
 	template < typename T >
-	bool Has(T t) const
+	bool Has(T content) const
 	{
 		bool ret = false;
 		LockThread();
 		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
 		if (implementer)
 		{
-			ret = implementer->HasImplementation(t);
+			ret = implementer->HasImplementation(content);
 		}
 		UnlockThread();
 		return ret;

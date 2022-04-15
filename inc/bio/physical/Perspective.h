@@ -414,7 +414,7 @@ public:
 
 	/**
 	 * Only works if AssociateType has been called with the given id.
-	 * @param id
+	 * @param name
 	 * @return the pointer to the Wave type associated with the given id else NULL.
 	 */
 	virtual const Wave* GetTypeFromName(Name name) const
@@ -439,7 +439,7 @@ public:
 
 	/**
 	 * Creates a new object by Clone()ing the associated type.
-	 * @param id
+	 * @param name
 	 * @return a Clone() of the Wave* associated with the given name else NULL.
 	 */
 	virtual Wave* GetNewObjectFromName(Name name)
@@ -464,7 +464,7 @@ public:
 	/**
 	 * Ease of access method for casting the result of GetTypeFromId().
 	 * @tparam T
-	 * @param id
+	 * @param name
 	 * @return a T* associated with the given name id NULL.
 	 */
 	template < typename T >

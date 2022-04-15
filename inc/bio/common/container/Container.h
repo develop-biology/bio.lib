@@ -111,20 +111,20 @@ public:
 	/**
 	 * Checks if the given Index is available to be allocated, i.e. the Index should not be used.
 	 * NOTE: Just because a Index is not free does not necessarily mean the Index has been allocated.
-	 * @param Index
+	 * @param index
 	 * @return whether or not the given Index is free to use.
 	 */
 	virtual bool IsFree(const Index index) const;
 
 	/**
 	 * NOTE: Just because a Index IsInRange does not mean it is free or allocated.
-	 * @param Index
+	 * @param index
 	 * @return whether or not the Index is expected to yield a valid result when used with *this.
 	 */
 	virtual bool IsInRange(const Index index) const;
 
 	/**
-	 * @param Index
+	 * @param index
 	 * @return IsInRange && !IsFree.
 	 */
 	virtual bool IsAllocated(const Index index) const;
@@ -177,7 +177,7 @@ public:
 
 	/**
 	 * Access wrapper for SmartIterators.
-	 * @param index
+	 * @param itt
 	 * @return the value stored in *this at the given index.
 	 */
 	inline ByteStream Access(const SmartIterator itt)
@@ -187,7 +187,7 @@ public:
 
 	/**
 	 * Access wrapper for SmartIterators.
-	 * @param index
+	 * @param itt
 	 * @return the value stored in *this at the given index.
 	 */
 	virtual const ByteStream Access(const SmartIterator itt) const
@@ -210,7 +210,7 @@ public:
 
 	/**
 	 * Removes content from *this.
-	 * @param Index
+	 * @param index
 	 * @return whether or not the erasure was successful.
 	 */
 	virtual bool Erase(Index index);
@@ -239,7 +239,7 @@ public:
 	/**
 	 * Ease of use wrapper around Access.
 	 * See Access for details.
-	 * @param Index
+	 * @param index
 	 * @return Access(Index).
 	 */
 	virtual ByteStream operator[](const Index index);
@@ -247,7 +247,7 @@ public:
 	/**
 	 * Ease of use wrapper around Access.
 	 * See Access for details.
-	 * @param Index
+	 * @param index
 	 * @return Access(Index).
 	 */
 	virtual const ByteStream operator[](const Index index) const;
@@ -255,7 +255,7 @@ public:
 	/**
 	 * Ease of use wrapper around Access.
 	 * See Access for details.
-	 * @param Index
+	 * @param itt
 	 * @return Access(itt).
 	 */
 	virtual ByteStream operator[](const SmartIterator itt);
@@ -263,14 +263,14 @@ public:
 	/**
 	 * Ease of use wrapper around Access.
 	 * See Access for details.
-	 * @param Index
+	 * @param itt
 	 * @return Access(itt).
 	 */
 	virtual const ByteStream operator[](const SmartIterator itt) const;
 
 	/**
 	 * Override this to construct Iterators for your Containers.
-	 * @param Index
+	 * @param index
 	 * @return a new Iterator pointing to the given Index in *this or NULL.
 	 */
 	virtual Iterator* ConstructClassIterator(const Index index = InvalidIndex()) const;

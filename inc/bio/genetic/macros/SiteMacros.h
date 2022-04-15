@@ -44,7 +44,7 @@
  * To make defining Sites easier, use this macro to define the function body of your Site Function().
  * This will assign a value to a string that is identical to your FunctionName e.g. LocalizationSitePerspective::Instance().GetNameFromId(Value()) would give "Value".
  * This will also help you define the required extraction method (chemical::Excitation*) required for accessing your Site.
- * REMINDER: Your Site Function()s should be in the ::bio::localization_site namespace.
+ * REMINDER: Your Site Function()s should be in the ::bio::site namespace.
  */
 #define BIO_LOCALIZATION_SITE_FUNCTION_BODY(functionName, toExtract)           \
     BIO_ID_FUNCTION_BODY(                                                      \
@@ -57,7 +57,7 @@
  * To make defining Sites easier, use this macro to define the function body of your Site Function().
  * This will assign a value to a string that is identical to your FunctionName e.g. InsertionSitePerspective::Instance().GetNameFromId(Value()) would give "Value".
  * This will also help you define the required insertion method (chemical::Excitation*) required for using your Site.
- * REMINDER: Your Site Function()s should be in the ::bio::insertion_site namespace.
+ * REMINDER: Your Site Function()s should be in the ::bio::site namespace.
  */
 #define BIO_INSERTION_SITE_FUNCTION_BODY(functionName, toInsert)               \
     BIO_ID_FUNCTION_BODY(                                                      \

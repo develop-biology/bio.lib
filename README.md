@@ -75,3 +75,13 @@ ebbs
 ```
 
 installation instructions coming soon (need package manager / repository semantics for module delivery)
+
+## Branding
+
+### Colors
+* Dark Blue: #5ca3ff rgb(92, 163, 255)
+* Cyan: #13f4ef rgb(19, 244, 239)
+* Green: #68ff00 rgb(104, 255, 0)
+* Yellow: #faff00 rgb(250, 255, 0)
+* Orange: #ffbf00 rgb(255, 191, 0)
+* Magenta: #ff5794 rgb(255, 87, 148)

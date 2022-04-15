@@ -230,8 +230,7 @@ public:
 
 	/**
 	 * Performs the given Reaction on all contents.
-	 * @param reaction
-	 * @param self a pointer to *this, if *this is a chemical::Substance.
+	 * @param excitation
 	 */
 	template < typename T >
 	Emission ForEach(

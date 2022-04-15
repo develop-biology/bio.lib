@@ -36,6 +36,7 @@ namespace string {
  * Convert "true" or "false" to bool
  * Case sensitive. TODO: make insensitive.
  * @param s
+ * @param returned
  * @return true on success, false if s is not an integer
  */
 bool ToBool(

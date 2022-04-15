@@ -72,7 +72,7 @@ public:
 
 	/**
 	 * Get a Plasmid!
-	 * @param plasmidId
+	 * @param plasmidName
 	 * @return a shared Plasmid*. Should become const in a future release.
 	 */
 	virtual Plasmid* FetchPlasmid(Name plasmidName);

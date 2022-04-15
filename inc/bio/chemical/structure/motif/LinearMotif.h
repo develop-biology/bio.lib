@@ -520,7 +520,6 @@ public:
 	/**
 	 * Performs the given Excitation on all contents.
 	 * @param excitation
-	 * @param self a pointer to *this, if *this is a chemical::Substance.
 	 */
 	virtual Emission ForEachImplementation(
 		ExcitationBase* excitation

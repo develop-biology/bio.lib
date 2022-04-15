@@ -54,3 +54,5 @@ language.settings.xml
 /ebbs/
 /eons/
 /.idea/
+/doc/out/
+/doc/run.log

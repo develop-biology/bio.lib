@@ -122,6 +122,7 @@ public:
 	 * Binding forms a Temporary Bond, allowing *this to be treated as the Bound Substance.
 	 * @tparam T
 	 * @param toBind
+	 * @param bondType
 	 * @return the Bound type.
 	 */
 	template < typename T >
@@ -139,6 +140,7 @@ public:
 	/**
 	 * Breaks the Temporary Bond formed by Bind.
 	 * @param toRelease
+	 * @param bondType
 	 * @return the previously bound Substance or NULL.
 	 */
 	virtual physical::Wave* Release(
@@ -149,6 +151,8 @@ public:
 	 * Breaks the Temporary Bond formed by Bind.
 	 * NOTE: the given Substance could be Identifiable through some unknown Perspective, so this does actual string comparison. Unless a Perspective is given, in which case numeric comparison is done on the given Name.
 	 * @param toRelease
+	 * @param perspective
+	 * @param bondType
 	 * @return the previously bound Substance or NULL.
 	 */
 	virtual chemical::Substance* Release(
@@ -160,6 +164,8 @@ public:
 	 * Breaks the Temporary Bond formed by Bind.
 	 * NOTE: the given Substance could be Identifiable through some unknown Perspective, so this does an unreliable numeric comparison. However, if a Perspective is given, we can be certain if the id we find is correct or not.
 	 * @param toRelease
+	 * @param perspective
+	 * @param bondType
 	 * @return the previously bound Substance or NULL.
 	 */
 	virtual chemical::Substance* Release(

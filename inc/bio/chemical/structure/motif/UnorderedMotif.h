@@ -178,7 +178,7 @@ public:
 
 	/**
 	 * Check for all contents
-	 * @param content
+	 * @param contents
 	 * @return whether or not the given contents exists in *this
 	 */
 	virtual bool HasAllImplementation(const Container* contents) const
