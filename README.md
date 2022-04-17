@@ -66,6 +66,8 @@ Thus, in terms of possible templates, we get either `Class<>` on its own, `Class
 
 ## Building
 
+### Code
+
 This project depends on the [eons Basic Build System](https://github.com/eons-dev/bin_ebbs), which can be installed with `pip install ebbs`.  
 With that said, this is just c++ code. Build it however you want.
 
@@ -75,6 +77,10 @@ ebbs
 ```
 
 installation instructions coming soon (need package manager / repository semantics for module delivery)
+
+### Docs
+
+Documentation is available [on the Develop Biology website](https://develop.bio/doc/libbio/index.html)
 
 ## Branding
 
