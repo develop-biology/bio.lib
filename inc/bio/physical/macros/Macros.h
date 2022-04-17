@@ -30,20 +30,20 @@
 #include "bio/physical/Perspective.h"
 
 /**
- * Get all virtual methods defined by physical::Class.
+ * Get all virtual methods defined by physical::Class. <br />
  * @return function signatures for use in BIO_DISAMBIGUATE_REQUIRED_CLASS_METHODS
  */
 #define BIO_GET_REQUIRED_CLASS_METHODS_FOR_physical()                          \
     (                                                                          \
-		virtual ::bio::physical::Wave* Clone() const,                          \
+		virtual ::bio::physical::Wave* Clone() const,                          \ <br />
 		Clone()                                                                \
 	),                                                                         \
     (                                                                          \
-		virtual ::bio::physical::Wave* AsWave(),                               \
+		virtual ::bio::physical::Wave* AsWave(),                               \ <br />
 		AsWave()                                                               \
 	),                                                                         \
     (                                                                          \
-		virtual const ::bio::physical::Wave* AsWave() const,                   \
+		virtual const ::bio::physical::Wave* AsWave() const,                   \ <br />
 		AsWave()                                                               \
 	),                                                                         \
 	(                                                                          \
@@ -52,28 +52,28 @@
 	)
 
 /**
- * Get all optional virtual methods defined by physical::Class.
+ * Get all optional virtual methods defined by physical::Class. <br />
  * @return function signatures for use in BIO_DISAMBIGUATE_OPTIONAL_CLASS_METHODS
  */
 #define BIO_GET_OPTIONAL_CLASS_METHODS_FOR_physical()                          \
 	(                                                                          \
-		virtual ::bio::physical::Wave* Modulate(::bio::physical::Wave* signal),\
+		virtual ::bio::physical::Wave* Modulate(::bio::physical::Wave* signal),\ <br />
 		Modulate(signal)                                                       \
 	),                                                                         \
 	(                                                                          \
-		virtual ::bio::physical::Wave* Demodulate(),                           \
+		virtual ::bio::physical::Wave* Demodulate(),                           \ <br />
 		Demodulate()                                                           \
 	),                                                                         \
 	(                                                                          \
-		virtual const ::bio::physical::Wave* Demodulate() const,               \
+		virtual const ::bio::physical::Wave* Demodulate() const,               \ <br />
 		Demodulate()                                                           \
 	)
 
 
 /**
- * To make defining return codes easier, use this macro to define the function body of your Code Function().
- * This will assign a value to a string that is identical to your FunctionName e.g. CodePerspective::Instance().GetNameFromId(Success()) would give "Success"
- * REMINDER: Your Code Function()s should be in the ::bio::code namespace.
+ * To make defining return codes easier, use this macro to define the function body of your Code Function(). <br />
+ * This will assign a value to a string that is identical to your FunctionName e.g. CodePerspective::Instance().GetNameFromId(Success()) would give "Success" <br />
+ * REMINDER: Your Code Function()s should be in the ::bio::code namespace. <br />
 */
 #define BIO_CODE_FUNCTION_BODY(functionName)                                   \
 BIO_ID_FUNCTION_BODY(                                                          \
@@ -82,9 +82,9 @@ BIO_ID_FUNCTION_BODY(                                                          \
     ::bio::Code)
 
 /**
- * To make defining States easier, use this macro to define the function body of your State Function().
- * This will assign a value to a string that is identical to your FunctionName e.g. StatePerspective::Instance().GetNameFromId(Value()) would give "Value".
- * REMINDER: Your State Function()s should be in the ::bio::state namespace.
+ * To make defining States easier, use this macro to define the function body of your State Function(). <br />
+ * This will assign a value to a string that is identical to your FunctionName e.g. StatePerspective::Instance().GetNameFromId(Value()) would give "Value". <br />
+ * REMINDER: Your State Function()s should be in the ::bio::state namespace. <br />
  */
 #define BIO_STATE_FUNCTION_BODY(functionName)                                  \
 BIO_ID_FUNCTION_BODY(                                                          \
@@ -94,9 +94,9 @@ BIO_ID_FUNCTION_BODY(                                                          \
 
 
 /**
- * To make defining Properties easier, use this macro to define the function body of your Property Function().
- * This will assign a value to a string that is identical to your FunctionName e.g. PropertyPerspective::Instance().GetNameFromId(Value()) would give "Value".
- * REMINDER: Your Property Function()s should be in the ::bio::property namespace.
+ * To make defining Properties easier, use this macro to define the function body of your Property Function(). <br />
+ * This will assign a value to a string that is identical to your FunctionName e.g. PropertyPerspective::Instance().GetNameFromId(Value()) would give "Value". <br />
+ * REMINDER: Your Property Function()s should be in the ::bio::property namespace. <br />
  */
 #define BIO_PROPERTY_FUNCTION_BODY(functionName)                               \
 BIO_ID_FUNCTION_BODY(                                                          \
@@ -105,9 +105,9 @@ BIO_ID_FUNCTION_BODY(                                                          \
     ::bio::Property)
 
 /**
- * To make defining SymmetryTypes easier, use this macro to define the function body of your SymmetryType Function().
- * This will assign a value to a string that is identical to your FunctionName e.g. SymmetryTypePerspective::Instance().GetNameFromId(Value()) would give "Value".
- * REMINDER: Your SymmetryType Function()s should be in the ::bio::symmetry_type namespace.
+ * To make defining SymmetryTypes easier, use this macro to define the function body of your SymmetryType Function(). <br />
+ * This will assign a value to a string that is identical to your FunctionName e.g. SymmetryTypePerspective::Instance().GetNameFromId(Value()) would give "Value". <br />
+ * REMINDER: Your SymmetryType Function()s should be in the ::bio::symmetry_type namespace. <br />
  */
 #define BIO_SYMMETRY_TYPE_FUNCTION_BODY(functionName)                          \
 BIO_ID_FUNCTION_BODY(                                                          \
@@ -116,9 +116,9 @@ BIO_ID_FUNCTION_BODY(                                                          \
     ::bio::SymmetryType)
 
 /**
- * To make defining Filters easier, use this macro to define the function body of your Filter Function().
- * This will assign a value to a string that is identical to your FunctionName e.g. FilterPerspective::Instance().GetNameFromId(Value()) would give "Value".
- * REMINDER: Your Filter Function()s should be in the ::bio::filter namespace.
+ * To make defining Filters easier, use this macro to define the function body of your Filter Function(). <br />
+ * This will assign a value to a string that is identical to your FunctionName e.g. FilterPerspective::Instance().GetNameFromId(Value()) would give "Value". <br />
+ * REMINDER: Your Filter Function()s should be in the ::bio::filter namespace. <br />
  */
 #define BIO_FILTER_FUNCTION_BODY(functionName)                                 \
 BIO_ID_FUNCTION_BODY(                                                          \

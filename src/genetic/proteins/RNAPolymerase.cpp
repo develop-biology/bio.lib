@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -28,7 +28,7 @@
 namespace bio {
 namespace genetic {
 
-RNAPolymerase::RNAPolymerase(Plasmid* toTranscribe)
+RNAPolymerase::RNAPolymerase(Plasmid* toTranscribe) <br />
 	:
 	molecular::Protein(chemical::PeriodicTable::Instance().GetNameFromType(*this))
 {
@@ -43,17 +43,17 @@ RNAPolymerase::~RNAPolymerase()
 
 Code RNAPolymerase::Activate()
 {
-	Expressor* expressor = ChemicalCast< Expressor* >(GetEnvironment());
+	Expressor* expressor = ChemicalCast< Expressor* >(GetEnvironment()); <br />
 	BIO_SANITIZE(expressor, ,
 		return code::BadArgument1());
-	RNA* boundRNA = RotateTo< RNA* >(mc_rna);
+	RNA* boundRNA = RotateTo< RNA* >(mc_rna); <br />
 	BIO_SANITIZE(mc_rna, ,
 		return code::BadArgument2());
 
-	Gene* geneBuffer;
+	Gene* geneBuffer; <br />
 	bool shouldTranscribe = false;
 	for (
-		SmartIterator gen = m_source->GetAll< Gene* >()->Begin();
+		SmartIterator gen = m_source->GetAll< Gene* >()->Begin(); <br />
 		!gen.IsAtEnd();
 		++gen
 		)
@@ -65,7 +65,7 @@ Code RNAPolymerase::Activate()
 		{
 			continue;
 		}
-		boundRNA->Add< Gene* >(geneBuffer);
+		boundRNA->Add< Gene* >(geneBuffer); <br />
 	}
 	return code::Success();
 }

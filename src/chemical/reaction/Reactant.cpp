@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -43,8 +43,8 @@ Reactant::Reactant(Name typeName)
 
 Reactant::Reactant(
 	Name typeName,
-	const typename UnorderedMotif< Property >::Contents* properties,
-	const typename UnorderedMotif< State >::Contents* states
+	const typename UnorderedMotif< Property >::Contents* properties, <br />
+	const typename UnorderedMotif< State >::Contents* states <br />
 )
 	:
 	Class< Reactant >(this),
@@ -58,7 +58,7 @@ Reactant::Reactant(
 
 Reactant::Reactant(
 	Name typeName,
-	const Substance* substance
+	const Substance* substance <br />
 )
 	:
 	Class< Reactant >(this),

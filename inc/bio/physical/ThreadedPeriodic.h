@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -28,8 +28,8 @@ namespace bio {
 namespace physical {
 
 /**
- * A ThreadedPeriodic is simply an Periodic that vibrates in its own thread.
- * See Periodic.h & Threaded.h for more info.
+ * A ThreadedPeriodic is simply an Periodic that vibrates in its own thread. <br />
+ * See Periodic.h & Threaded.h for more info. <br />
  */
 class ThreadedPeriodic :
 	virtual public Periodic,
@@ -39,7 +39,7 @@ class ThreadedPeriodic :
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
 		ThreadedPeriodic)
@@ -55,7 +55,7 @@ public:
 	virtual ~ThreadedPeriodic();
 
 	/**
-	 * Calls Peak() then sleeps.
+	 * Calls Peak() then sleeps. <br />
 	 */
 	virtual bool Work();
 };

@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -33,10 +33,10 @@ Tissue::~Tissue()
 Code Tissue::DifferentiateCells()
 {
 	Code ret = code::Success();
-	Container* cells = GetAll< Cell* >();
+	Container* cells = GetAll< Cell* >(); <br />
 	BIO_SANITIZE(cells, ,
 		return code::CouldNotFindValue1())
-	Cell* cellBuffer;
+	Cell* cellBuffer; <br />
 	for (
 		SmartIterator cel = cells->Begin();
 		!cel.IsAtEnd();
@@ -45,17 +45,17 @@ Code Tissue::DifferentiateCells()
 	{
 		cellBuffer = cel;
 		cellBuffer->SetEnvironment(this);
-		cellBuffer->Import< genetic::Plasmid* >(this);
+		cellBuffer->Import< genetic::Plasmid* >(this); <br />
 		if (cellBuffer->ExpressGenes() != code::Success() && ret == code::Success())
 		{
 			ret = code::UnknownError();
 		}
 	}
 
-	Container* tissues = GetAll< Tissue* >();
+	Container* tissues = GetAll< Tissue* >(); <br />
 	BIO_SANITIZE(tissues, ,
 		return code::CouldNotFindValue1())
-	Tissue* tissueBuffer;
+	Tissue* tissueBuffer; <br />
 	for (
 		SmartIterator tis = tissues->Begin();
 		!tis.IsAtEnd();

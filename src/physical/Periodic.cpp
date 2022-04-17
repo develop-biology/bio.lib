@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -86,7 +86,7 @@ void Periodic::SetLastPeakTimestamp(Timestamp lastPeak)
 	m_lastPeakTimestamp = lastPeak;
 }
 
-Symmetry* Periodic::Spin() const
+Symmetry* Periodic::Spin() const <br />
 {
 	m_symmetry->AccessValue()->Set(
 		m_interval
@@ -94,7 +94,7 @@ Symmetry* Periodic::Spin() const
 	return Wave::Spin();
 }
 
-Code Periodic::Reify(Symmetry* symmetry)
+Code Periodic::Reify(Symmetry* symmetry) <br />
 {
 	BIO_SANITIZE(symmetry, ,
 		return code::BadArgument1());

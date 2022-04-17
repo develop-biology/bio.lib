@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -34,10 +34,10 @@ namespace log {
 class Engine;
 
 /**
- * A Writer is a base class for any other object that can write to a log engine.
- * The reason for Writer to be a base class, rather than using a singleton log engine is that some objects may wish to write logs to different files than others or, perhaps some logs should be seen only in console output while others should be saved to a file.
- * This also allows an easy drop-in replacement of log::Engine for specific platforms and apps.
- * The above is accomplished by passing log::Engine as a pointer to all LoggerObjects.
+ * A Writer is a base class for any other object that can write to a log engine. <br />
+ * The reason for Writer to be a base class, rather than using a singleton log engine is that some objects may wish to write logs to different files than others or, perhaps some logs should be seen only in console output while others should be saved to a file. <br />
+ * This also allows an easy drop-in replacement of log::Engine for specific platforms and apps. <br />
+ * The above is accomplished by passing log::Engine as a pointer to all LoggerObjects. <br />
  */
 class Writer :
 	virtual public physical::Filterable,
@@ -46,7 +46,7 @@ class Writer :
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
 		Writer)
@@ -61,7 +61,7 @@ public:
 	 * @param logFilter
 	 */
 	Writer(
-		Engine* logEngine,
+		Engine* logEngine, <br />
 		Filter logFilter
 	);
 
@@ -71,8 +71,8 @@ public:
 	virtual ~Writer();
 
 	/**
-	 * For static callers only.
-	 * This is a little hacky, but its better than having a static logger
+	 * For static callers only. <br />
+	 * This is a little hacky, but its better than having a static logger <br />
 	 * @param logFilter
 	 * @param level
 	 * @param format
@@ -81,29 +81,29 @@ public:
 	void ExternalLog(
 		Filter logFilter,
 		Level level,
-		const char* format,
+		const char* format, <br />
 		...
 	) const;
 
 	/**
-	 * Set the log::Engine* for *this.
-	 * Propagate logEngine to any and all related classes that should receive the change.
-	 * if *this contains member LoggerObjects, these may be overridden to pass the call along to those objects as well.
-	 * It should be assumed (and is true for bio classes) that the creation of any Writer within another Writer will have its m_logEngine* set by the owner object AND that calling SetLogEngine on an owner object will also call SetLogEngine on all objects owned by it.
-	 * This is not true for SetFilter, as each class may use a different filter
+	 * Set the log::Engine* for *this. <br />
+	 * Propagate logEngine to any and all related classes that should receive the change. <br />
+	 * if *this contains member LoggerObjects, these may be overridden to pass the call along to those objects as well. <br />
+	 * It should be assumed (and is true for bio classes) that the creation of any Writer within another Writer will have its m_logEngine* set by the owner object AND that calling SetLogEngine on an owner object will also call SetLogEngine on all objects owned by it. <br />
+	 * This is not true for SetFilter, as each class may use a different filter <br />
 	 * @param logEngine
 	 */
-	virtual void SetLogEngine(Engine* logEngine);
+	virtual void SetLogEngine(Engine* logEngine); <br />
 
 	/**
 	 * @return a pointer to the log::Engine used by *this.
 	 */
-	Engine* GetLogEngine();
+	Engine* GetLogEngine(); <br />
 
 	/**
 	 * @return a const pointer to the log::Engine used by *this.
 	 */
-	const Engine* GetLogEngine() const;
+	const Engine* GetLogEngine() const; <br />
 
 	/**
 	 * @return whether or not log::Engine* has been set.
@@ -113,25 +113,25 @@ public:
 protected:
 
 	/**
-	 * VirtualBase required method. See that class for details (in common/)
+	 * VirtualBase required method. See that class for details (in common/) <br />
 	 * @param args
 	 */
 	virtual void InitializeImplementation(ByteStreams args);
 
 	/**
-	 * In case the above are too restrictive
+	 * In case the above are too restrictive <br />
 	 * @param level
 	 * @param format
 	 * @param ...
 	 */
 	void Log(
 		Level level,
-		const char* format,
+		const char* format, <br />
 		...
 	) const;
 
 private:
-	Engine* m_logEngine;
+	Engine* m_logEngine; <br />
 };
 } //log namespace
 } //bio namespace

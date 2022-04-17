@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -27,17 +27,17 @@ namespace bio {
 namespace bond_type {
 
 /**
- * Signals a bond is not pointing to anything.
+ * Signals a bond is not pointing to anything. <br />
  */
 BondType Empty();
 
 /**
- * Default if no type is specified.
+ * Default if no type is specified. <br />
  */
 BondType Unknown();
 
 /**
- * Virtual() Bonds represent a sort of pseudo-vtable where child classes can store pointers to themselves in the Atom parent such that they can be down and cross casted without RTTI.
+ * Virtual() Bonds represent a sort of pseudo-vtable where child classes can store pointers to themselves in the Atom parent such that they can be down and cross casted without RTTI. <br />
  */
 BondType Virtual();
 

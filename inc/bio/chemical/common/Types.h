@@ -28,9 +28,9 @@
 namespace bio {
 
 /**
- * The BondType of an Atom::Bond provides a simple description of the nature of the Bond.
- * This can be used to inform other systems (e.g. molecular) of how to treat the Bonded Wave.
- * NOTE: Atoms can Bond things that are not Atoms. The only requirement is that they are Wave.
+ * The BondType of an Atom::Bond provides a simple description of the nature of the Bond. <br />
+ * This can be used to inform other systems (e.g. molecular) of how to treat the Bonded Wave. <br />
+ * NOTE: Atoms can Bond things that are not Atoms. The only requirement is that they are Wave. <br />
  */
 BIO_STRONG_TYPEDEF(uint8_t,
 	BondType,
@@ -40,7 +40,7 @@ BIO_PERSPECTIVE_SINGLETON(BondTypePerspective,
 	BondType)
 
 /**
- * Mainly used for inserting children into Nested classes.
+ * Mainly used for inserting children into Nested classes. <br />
  */
 typedef enum
 {
@@ -57,17 +57,17 @@ namespace bio {
 namespace chemical {
 
 /**
- * Valence defines how many Bonds an Atom (e.g. Substance) can have.
- * The max of valence is essentially the max number of parents a child class can have.
- * Valence can be any size up to the size of Index (used by physical::Arrangements).
- * For now, we set Valence to the max possible size and may optimize later.
+ * Valence defines how many Bonds an Atom (e.g. Substance) can have. <br />
+ * The max of valence is essentially the max number of parents a child class can have. <br />
+ * Valence can be any size up to the size of Index (used by physical::Arrangements). <br />
+ * For now, we set Valence to the max possible size and may optimize later. <br />
  */
 typedef Index Valence;
 
 /**
- * The AtomicNumber tracks class definitions.
- * The StandardDimension can be used to track object configurations as well class definitions, so there is some overlap. However, the AtomicNumber should only ever have 1 Perspective: the PeriodicTable.
- * See PeriodicTable.h for more info
+ * The AtomicNumber tracks class definitions. <br />
+ * The StandardDimension can be used to track object configurations as well class definitions, so there is some overlap. However, the AtomicNumber should only ever have 1 Perspective: the PeriodicTable. <br />
+ * See PeriodicTable.h for more info <br />
  */
 typedef uint16_t AtomicNumber;
 
@@ -76,7 +76,7 @@ BIO_PERSPECTIVE_SINGLETON(ReactionPerspective,
 
 class Substance;
 
-typedef std::vector< Substance* > Substances;
+typedef std::vector< Substance* > Substances; <br />
 
 BIO_PERSPECTIVE_SINGLETON(SubstancePerspective,
 	StandardDimension)

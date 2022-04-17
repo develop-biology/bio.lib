@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -31,12 +31,12 @@ Plasmid::~Plasmid()
 
 }
 
-molecular::Protein* Plasmid::GetRNAPolymerase()
+molecular::Protein* Plasmid::GetRNAPolymerase() <br />
 {
 	return GetProtein();
 }
 
-const molecular::Protein* Plasmid::GetRNAPolymerase() const
+const molecular::Protein* Plasmid::GetRNAPolymerase() const <br />
 {
 	return GetProtein();
 }
@@ -46,12 +46,12 @@ void Plasmid::CtorCommon()
 	m_protein = new RNAPolymerase(this);
 }
 
-RNA* Plasmid::TranscribeFor(Expressor* expressor) const
+RNA* Plasmid::TranscribeFor(Expressor* expressor) const <br />
 {
 	std::string rnaName = "mRNA_";
 	rnaName += GetName();
-	RNA* ret = new RNA(rnaName.c_str());
-	molecular::Protein* polymerase = ForceCast< molecular::Protein* >(GetRNAPolymerase()->Clone());
+	RNA* ret = new RNA(rnaName.c_str()); <br />
+	molecular::Protein* polymerase = ForceCast< molecular::Protein* >(GetRNAPolymerase()->Clone()); <br />
 	StandardDimension bindingSite = polymerase->GetIdFromName("RNA Binding Site");
 	polymerase->RecruitChaperones(expressor);
 	polymerase->Fold();

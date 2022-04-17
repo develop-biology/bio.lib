@@ -24,14 +24,14 @@
 #include "bio/chemical/macros/Macros.h"
 
 /**
- * Get all virtual methods defined by molecular::Class.
+ * Get all virtual methods defined by molecular::Class. <br />
  * @return function signatures for use in BIO_DISAMBIGUATE_REQUIRED_CLASS_METHODS
  */
 #define BIO_GET_REQUIRED_CLASS_METHODS_FOR_molecular()                         \
     BIO_GET_REQUIRED_CLASS_METHODS_FOR_chemical()
 
 /**
- * Get all virtual methods defined by molecular::Class.
+ * Get all virtual methods defined by molecular::Class. <br />
  * @return function signatures for use in BIO_DISAMBIGUATE_OPTIONAL_CLASS_METHODS
  */
 #define BIO_GET_OPTIONAL_CLASS_METHODS_FOR_molecular()                         \

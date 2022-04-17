@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -51,12 +51,12 @@ Code FetchPlasmid::Activate()
 
 	if (boundName)
 	{
-		RotateTo(mc_returnSite)->Bind(PlasmidPerspective::Instance().GetTypeFromIdAs< Plasmid* >(boundId));
+		RotateTo(mc_returnSite)->Bind(PlasmidPerspective::Instance().GetTypeFromIdAs< Plasmid* >(boundId)); <br />
 		ret = code::Success();
 	}
 	else if (boundId)
 	{
-		RotateTo(mc_returnSite)->Bind(PlasmidPerspective::Instance().GetTypeFromIdAs< Plasmid* >(boundId));
+		RotateTo(mc_returnSite)->Bind(PlasmidPerspective::Instance().GetTypeFromIdAs< Plasmid* >(boundId)); <br />
 		ret = code::Success();
 	}
 

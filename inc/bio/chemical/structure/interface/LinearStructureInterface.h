@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -29,7 +29,7 @@ namespace chemical {
 class ExcitationBase;
 
 /**
- * Interface methods for all LinearMotif classes.
+ * Interface methods for all LinearMotif classes. <br />
  */
 class LinearStructureInterface :
 	virtual public ThreadSafe,
@@ -51,8 +51,8 @@ public:
 	}
 
 	/**
-	 * Inserts toAdd into *this at then indicated position.
-	 * Removes any conflicting Contents of the same Id as toAdd.
+	 * Inserts toAdd into *this at then indicated position. <br />
+	 * Removes any conflicting Contents of the same Id as toAdd. <br />
 	 * @tparam T the type of Content
 	 * @param toAdd what to add.
 	 * @param position where toAdd is inserted (e.g. the TOP or BOTTOM).
@@ -69,7 +69,7 @@ public:
 	{
 		Code ret = code::GeneralFailure();
 		LockThread();
-		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
+		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >(); <br />
 		if (implementer)
 		{
 			ret = implementer->InsertImplementation(
@@ -84,7 +84,7 @@ public:
 	}
 
 	/**
-	 * Gets a T* by its id.
+	 * Gets a T* by its id. <br />
 	 * @tparam T
 	 * @param id
 	 * @return a T of the given id or NULL; NULL if T is invalid.
@@ -94,7 +94,7 @@ public:
 	{
 		T ret = NULL;
 		LockThread();
-		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
+		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >(); <br />
 		if (implementer)
 		{
 			ret = implementer->GetByIdImplementation(
@@ -106,7 +106,7 @@ public:
 	}
 
 	/**
-	 * Gets a const T* by its id.
+	 * Gets a const T* by its id. <br />
 	 * @tparam T
 	 * @param id
 	 * @return a T of the given id or NULL; NULL if T is invalid.
@@ -118,7 +118,7 @@ public:
 	{
 		T ret = NULL;
 		LockThread();
-		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
+		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >(); <br />
 		if (implementer)
 		{
 			ret = implementer->GetByIdImplementation(
@@ -130,7 +130,7 @@ public:
 	}
 
 	/**
-	 * Gets a T* by its name.
+	 * Gets a T* by its name. <br />
 	 * @tparam T
 	 * @param name
 	 * @return a T of the given id or NULL; NULL if T is invalid.
@@ -142,7 +142,7 @@ public:
 	{
 		T ret = NULL;
 		LockThread();
-		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
+		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >(); <br />
 		if (implementer)
 		{
 			ret = implementer->GetByNameImplementation(
@@ -154,7 +154,7 @@ public:
 	}
 
 	/**
-	 * Gets a const T* by its name.
+	 * Gets a const T* by its name. <br />
 	 * @tparam T
 	 * @param name
 	 * @return a T of the given id or NULL; NULL if T is invalid.
@@ -166,7 +166,7 @@ public:
 	{
 		T ret = NULL;
 		LockThread();
-		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
+		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >(); <br />
 		if (implementer)
 		{
 			ret = implementer->GetByNameImplementation(
@@ -178,10 +178,10 @@ public:
 	}
 
 	/**
-	 * Tries to find a Content of the given id in *this and, optionally, the Contents beneath.
-	 * If such an object doesn't exist, one is created from its Wave.
+	 * Tries to find a Content of the given id in *this and, optionally, the Contents beneath. <br />
+	 * If such an object doesn't exist, one is created from its Wave. <br />
 	 * @tparam T
-	 * @param id
+	 * @param id <br />
 	 * @return A T* of the given id; NULL if T is invalid.
 	 */
 	template < typename T >
@@ -191,7 +191,7 @@ public:
 	{
 		T ret = NULL;
 		LockThread();
-		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
+		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >(); <br />
 		if (implementer)
 		{
 			ret = implementer->GetOrCreateByIdImplementation(
@@ -203,8 +203,8 @@ public:
 	}
 
 	/**
-	 * Tries to find a Content of the given name in *this and, optionally, the Contents beneath.
-	 * If such an object doesn't exist, one is created from its Wave.
+	 * Tries to find a Content of the given name in *this and, optionally, the Contents beneath. <br />
+	 * If such an object doesn't exist, one is created from its Wave. <br />
 	 * @tparam T
 	 * @param name
 	 * @return A T* of the given id; NULL if T is invalid.
@@ -216,7 +216,7 @@ public:
 	{
 		T ret = NULL;
 		LockThread();
-		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
+		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >(); <br />
 		if (implementer)
 		{
 			ret = implementer->GetOrCreateByNameImplementation(
@@ -229,17 +229,17 @@ public:
 
 
 	/**
-	 * Performs the given Reaction on all contents.
+	 * Performs the given Reaction on all contents. <br />
 	 * @param excitation
 	 */
 	template < typename T >
 	Emission ForEach(
-		ExcitationBase* excitation
+		ExcitationBase* excitation <br />
 	)
 	{
 		Emission ret;
 		LockThread();
-		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
+		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >(); <br />
 		if (implementer)
 		{
 			ret = implementer->ForEachImplementation(excitation);

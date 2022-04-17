@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -43,12 +43,12 @@ DNA::~DNA()
 	}
 }
 
-Protein* DNA::GetProtein()
+Protein* DNA::GetProtein() <br />
 {
 	return m_protein;
 }
 
-const Protein* DNA::GetProtein() const
+const Protein* DNA::GetProtein() const <br />
 {
 	return m_protein;
 }
@@ -70,7 +70,7 @@ void DNA::SetVersion(Version newVersion)
 	m_version = newVersion;
 }
 
-void DNA::SetProtein(Protein* protein)
+void DNA::SetProtein(Protein* protein) <br />
 {
 	m_protein = protein;
 }

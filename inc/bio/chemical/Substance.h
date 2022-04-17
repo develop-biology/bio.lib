@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -34,9 +34,9 @@ namespace bio {
 namespace chemical {
 
 /**
- * A chemical::Substance is just about everything.
- * Substances have Properties and States and that's it.
- * Substances start Enable()d.
+ * A chemical::Substance is just about everything. <br />
+ * Substances have Properties and States and that's it. <br />
+ * Substances start Enable()d. <br />
  */
 class Substance :
 	virtual public Structure,
@@ -52,7 +52,7 @@ public:
 		filter::Chemical())
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical,
 		Substance)
@@ -62,8 +62,8 @@ public:
 	 * @param states
 	 */
 	Substance(
-		const typename UnorderedMotif< Property >::Contents* properties,
-		const typename UnorderedMotif< State >::Contents* states
+		const typename UnorderedMotif< Property >::Contents* properties, <br />
+		const typename UnorderedMotif< State >::Contents* states <br />
 	);
 
 	/**
@@ -72,20 +72,20 @@ public:
 	virtual ~Substance();
 
 	/**
-	 * Helper method for setting the Enabled() State.
-	 * May be overridden to add custom behavior.
+	 * Helper method for setting the Enabled() State. <br />
+	 * May be overridden to add custom behavior. <br />
 	 */
 	virtual void Enable();
 
 	/**
-	 * Helper method for removing the Enabled() State.
-	 * May be overridden to add custom behavior.
+	 * Helper method for removing the Enabled() State. <br />
+	 * May be overridden to add custom behavior. <br />
 	 */
 	virtual void Disable();
 
 	/**
-	 * Helper method for checking the Enabled() State.
-	 * May be overridden to add custom checks.
+	 * Helper method for checking the Enabled() State. <br />
+	 * May be overridden to add custom checks. <br />
 	 * @return whether or not *this has the Enabled() State.
 	 */
 	virtual bool IsEnabled() const;

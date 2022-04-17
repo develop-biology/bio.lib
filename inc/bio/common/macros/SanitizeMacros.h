@@ -25,20 +25,20 @@
 
 
 /**
- * BIO_SANITIZE evaluates the current BIO_SAFETY_LEVEL and performs the appropriate checks.
- * A lower BIO_SAFETY_LEVEL will mean faster run speed but a higher chance of crashing.
- * NOTE: "auto" in the examples below is only available after c++11 and should be substituted with the appropriate type.
+ * BIO_SANITIZE evaluates the current BIO_SAFETY_LEVEL and performs the appropriate checks. <br />
+ * A lower BIO_SAFETY_LEVEL will mean faster run speed but a higher chance of crashing. <br />
+ * NOTE: "auto" in the examples below is only available after c++11 and should be substituted with the appropriate type. <br />
  *
- * This is basically (test) ? (success) : (failure)
+ * This is basically (test) ? (success) : (failure) <br />
  *
- * IMPORTANT: Do not declare variables within any statement (test, success, & failure).
- * Any variables declared will go out of scope and won't be accessible to you.
+ * IMPORTANT: Do not declare variables within any statement (test, success, & failure). <br />
+ * Any variables declared will go out of scope and won't be accessible to you. <br />
  *
- * BIO_SANITIZE should be usable in the following ways (and the variations thereof):
- * BIO_SANITIZE(some_test(), some_test()->do_something(), )
- * BIO_SANITIZE(myVar, myVar->do_something(), do_something_else())
- * auto myVar; BIO_SANITIZE(some_test(), myVar = some_test(), myVar = 0)
- * auto myOtherVar; BIO_SANITIZE(myVar, myOtherVar = myVar->do_something(), myOtherVar = 0)
+ * BIO_SANITIZE should be usable in the following ways (and the variations thereof): <br />
+ * BIO_SANITIZE(some_test(), some_test()->do_something(), ) <br />
+ * BIO_SANITIZE(myVar, myVar->do_something(), do_something_else()) <br />
+ * auto myVar; BIO_SANITIZE(some_test(), myVar = some_test(), myVar = 0) <br />
+ * auto myOtherVar; BIO_SANITIZE(myVar, myOtherVar = myVar->do_something(), myOtherVar = 0) <br />
  */
 #define BIO_SANITIZE_AT_SAFETY_LEVEL_0(test, success, failure)                 \
 {                                                                              \
@@ -72,24 +72,24 @@ else                                                                           \
 //@formatter:on
 
 /**
- * For more intensive tests, the result can be cached in a variable called RESULT of the given type.
+ * For more intensive tests, the result can be cached in a variable called RESULT of the given type. <br />
  *
- * You can access the cached result of TEST in the variable RESULT.
- *               THIS CAN GO HORRIBLY WRONG!!!!!
- * C++11 is safe and should throw compiler errors if you mess up but C++98 requires the use of a ByteStream hack around the auto keyword. This should be safe when using built in types and pointers but THE BEHAVIOR OF ANYTHING ELSE IS UNDEFINED.
+ * You can access the cached result of TEST in the variable RESULT. <br />
+ *               THIS CAN GO HORRIBLY WRONG!!!!! <br />
+ * C++11 is safe and should throw compiler errors if you mess up but C++98 requires the use of a ByteStream hack around the auto keyword. This should be safe when using built in types and pointers but THE BEHAVIOR OF ANYTHING ELSE IS UNDEFINED. <br />
 
- * To make sure this is safe, do the following:
- *     1. Make sure your success and/or failure expressions treat RESULT as the return type of your test expression.
- *     2. Do not use a test expression that returns a non-basic type if you are using C++98. Pointers are okay.
+ * To make sure this is safe, do the following: <br />
+ *     1. Make sure your success and/or failure expressions treat RESULT as the return type of your test expression. <br />
+ *     2. Do not use a test expression that returns a non-basic type if you are using C++98. Pointers are okay. <br />
  *
- * The above examples can be rewritten as:
- * BIO_SANITIZE_WITH_CACHE(some_test(), RESULT->do_something(), );
- * BIO_SANITIZE_WITH_CACHE(myVar, myVar->do_something(), do_something_else());
- * auto myVar; BIO_SANITIZE_WITH_CACHE(some_test(), myVar = RESULT, myVar = 0);
- * auto myOtherVar; BIO_SANITIZE_WITH_CACHE(myVar, myOtherVar = myVar->do_something(), myOtherVar = 0);
+ * The above examples can be rewritten as: <br />
+ * BIO_SANITIZE_WITH_CACHE(some_test(), RESULT->do_something(), ); <br />
+ * BIO_SANITIZE_WITH_CACHE(myVar, myVar->do_something(), do_something_else()); <br />
+ * auto myVar; BIO_SANITIZE_WITH_CACHE(some_test(), myVar = RESULT, myVar = 0); <br />
+ * auto myOtherVar; BIO_SANITIZE_WITH_CACHE(myVar, myOtherVar = myVar->do_something(), myOtherVar = 0); <br />
  *
- * Just as with BIO_SANITIZE, "auto" may only be used with c++11 or greater and should be replaced with the appropriate type.
- * NOTE: when using myVar->methods(), we don't use RESULT so that any mutating (i.e. non-const) operations are applied to myVar and not lost when RESULT goes out of scope.
+ * Just as with BIO_SANITIZE, "auto" may only be used with c++11 or greater and should be replaced with the appropriate type. <br />
+ * NOTE: when using myVar->methods(), we don't use RESULT so that any mutating (i.e. non-const) operations are applied to myVar and not lost when RESULT goes out of scope. <br />
  */
 #define BIO_SANITIZE_WITH_CACHE(test, success, failure)                        \
 {                                                                              \

@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -31,66 +31,66 @@ namespace bio {
 namespace molecular {
 
 /**
- * As a combination of relativistic Waves and chemical Bonds, Molecules are rather complicated. They're kinda like viewing particle physics from mathematical topology.
- * I'm not sure I have the english words to describe this view of the world adequately, so looking at the code might be better.
- * Still, I'll try to describe the idea as an imagination exercise:
+ * As a combination of relativistic Waves and chemical Bonds, Molecules are rather complicated. They're kinda like viewing particle physics from mathematical topology. <br />
+ * I'm not sure I have the english words to describe this view of the world adequately, so looking at the code might be better. <br />
+ * Still, I'll try to describe the idea as an imagination exercise: <br />
  *
- * Imagine a Quantum Wave (aka a built-in type, like bool or int) as a sphere. These quantum balls are the maximum resolution we can see any Molecule through (it doesn't get any more basic than built-in types).
- * Next, imagine a collection of these spheres as some kind of glob. This represents a collection of basic types and would be akin to a class or struct. However, these globs can take whatever form we want and do not have to map into any hard-coded structure. We call these globular constructs a Surface.
- * Most of the time, Surfaces will be singular globs, with a 1 to 1 Surface to primitive type correspondence. However, they can be arbitrarily knobby.
- * Now imagine 10 or so of these Surfaces all stuck together as a Molecule. So, a Molecule is just a big globby mass.
- * Surfaces do not (usually) overlap. They are, instead,  distinct, identifiable (Identifiable<StandardDimension>) regions on a Molecule.
- * Imagine identical 2 Molecules that have 1 globby collection (Surface) that differs between them. That kind of comparative difference helps us Identify the Surfaces from the otherwise indistinguishable mass of globs.
- * Next, imagine 2 Molecules bumping into each other so that 1 or more of their Surfaces touch.
- * When Surfaces interact in this manner, they can change each other. In computer science, we can just conjure change whenever, however, and wherever we want. However, in the real world, the idea that matter / energy is conserved requires that matter / energy be moved between the interacting surfaces in order to effect change.
- * This same concept has been modeled here (see Transfer..., etc., below); though we can still do whatever the **** we want cause computers.
+ * Imagine a Quantum Wave (aka a built-in type, like bool or int) as a sphere. These quantum balls are the maximum resolution we can see any Molecule through (it doesn't get any more basic than built-in types). <br />
+ * Next, imagine a collection of these spheres as some kind of glob. This represents a collection of basic types and would be akin to a class or struct. However, these globs can take whatever form we want and do not have to map into any hard-coded structure. We call these globular constructs a Surface. <br />
+ * Most of the time, Surfaces will be singular globs, with a 1 to 1 Surface to primitive type correspondence. However, they can be arbitrarily knobby. <br />
+ * Now imagine 10 or so of these Surfaces all stuck together as a Molecule. So, a Molecule is just a big globby mass. <br />
+ * Surfaces do not (usually) overlap. They are, instead,  distinct, identifiable (Identifiable<StandardDimension>) regions on a Molecule. <br />
+ * Imagine identical 2 Molecules that have 1 globby collection (Surface) that differs between them. That kind of comparative difference helps us Identify the Surfaces from the otherwise indistinguishable mass of globs. <br />
+ * Next, imagine 2 Molecules bumping into each other so that 1 or more of their Surfaces touch. <br />
+ * When Surfaces interact in this manner, they can change each other. In computer science, we can just conjure change whenever, however, and wherever we want. However, in the real world, the idea that matter / energy is conserved requires that matter / energy be moved between the interacting surfaces in order to effect change. <br />
+ * This same concept has been modeled here (see Transfer..., etc., below); though we can still do whatever the **** we want cause computers. <br />
  *
- * You can create Surfaces in 1 Molecule and then Transfer them to another. However, doing so may change (or break) the Molecules' interactions with other Molecules and systems. This would be like transferring variables between objects at runtime.
- * This Transfer system is why Molecules are Perspectives. The Id of Surfaces in 1 Molecule may not hold within another Molecule and we don't want to enforce a global Surface labeling at this time.
- * You can think of Surface::Ids as numbered variables. When an class (Molecule) is instantiated, we go through and number its member variables. Members can then be added or removed throughout the life of the object and each one will have a number that is unique to that Molecule. In other words, there is no absolutely right number for "MyVar"; instead, "MyVar" can be an int in one Molecule and a bool in another.
+ * You can create Surfaces in 1 Molecule and then Transfer them to another. However, doing so may change (or break) the Molecules' interactions with other Molecules and systems. This would be like transferring variables between objects at runtime. <br />
+ * This Transfer system is why Molecules are Perspectives. The Id of Surfaces in 1 Molecule may not hold within another Molecule and we don't want to enforce a global Surface labeling at this time. <br />
+ * You can think of Surface::Ids as numbered variables. When an class (Molecule) is instantiated, we go through and number its member variables. Members can then be added or removed throughout the life of the object and each one will have a number that is unique to that Molecule. In other words, there is no absolutely right number for "MyVar"; instead, "MyVar" can be an int in one Molecule and a bool in another. <br />
  *
- * The ability to Transfer Surfaces between Molecules is just one advantage that comes from this member abstraction. Another advantage is Symmetry (i.e. reflection into other languages, like json). Beyond this point, Spin() and Reify(), which are native to physical::Waves, should no longer require definition, as we will be able to use the Biology structures we've created to determine those implementations dynamically.
+ * The ability to Transfer Surfaces between Molecules is just one advantage that comes from this member abstraction. Another advantage is Symmetry (i.e. reflection into other languages, like json). Beyond this point, Spin() and Reify(), which are native to physical::Waves, should no longer require definition, as we will be able to use the Biology structures we've created to determine those implementations dynamically. <br />
  *
- * Lastly, Surfaces also give us the ability to store methods via Proteins. See Protein.h for more on that.
+ * Lastly, Surfaces also give us the ability to store methods via Proteins. See Protein.h for more on that. <br />
  *
- * In order realize the behavior described above, we have to employ a non-native, Biology-specific syntax. In short, Define<>() creates a member and RotateTo gets a member.
- * For example:
- * MyType myVar = SomeFunction(); => Define<MyType>("myVar", SomeFunction());
- * MyType another = myVar; => Define<MyType>("another", RotateTo("myVar"));
- * Of course, in order to avoid slower string lookups, you can cache the Id of "myVar" within a Molecule by calling GetIdFromName("myVar"), which can then be used with RotateTo(...).
+ * In order realize the behavior described above, we have to employ a non-native, Biology-specific syntax. In short, Define<>() creates a member and RotateTo gets a member. <br />
+ * For example: <br />
+ * MyType myVar = SomeFunction(); => Define<MyType>("myVar", SomeFunction()); <br />
+ * MyType another = myVar; => Define<MyType>("another", RotateTo("myVar")); <br />
+ * Of course, in order to avoid slower string lookups, you can cache the Id of "myVar" within a Molecule by calling GetIdFromName("myVar"), which can then be used with RotateTo(...). <br />
  *
- * You can think of members as globs on the surface of our Molecule and we rotate this globby mass until the side we want is facing us. This allows us to interact with our desired Surface.
- * In order to set a member, you would do something like:
- * RotateTo("myVar")->operator=(*RotateTo("another"));
- * or, more simply,
- * (*RotateTo("myVar")) = (*RotateTo("another"))
- * NOTE: if "myVar" or "another" don't exist in the Molecule, this will segfault. To avoid crashing, you may want to use BIO_SANITIZE() (from bio/common/Macros.h)
- * This can be done because Surfaces can be treated as the values they are Bonded to.
+ * You can think of members as globs on the surface of our Molecule and we rotate this globby mass until the side we want is facing us. This allows us to interact with our desired Surface. <br />
+ * In order to set a member, you would do something like: <br />
+ * RotateTo("myVar")->operator=(*RotateTo("another")); <br />
+ * or, more simply, <br />
+ * (*RotateTo("myVar")) = (*RotateTo("another")) <br />
+ * NOTE: if "myVar" or "another" don't exist in the Molecule, this will segfault. To avoid crashing, you may want to use BIO_SANITIZE() (from bio/common/Macros.h) <br />
+ * This can be done because Surfaces can be treated as the values they are Bonded to. <br />
  *
- * Lastly, if you want to create a Molecule from a hard-coded data structure, you can call Use() instead of Define<>(), which will create a Surface from a (member) pointer. Surfaces created with Use will not be Transferable.
+ * Lastly, if you want to create a Molecule from a hard-coded data structure, you can call Use() instead of Define<>(), which will create a Surface from a (member) pointer. Surfaces created with Use will not be Transferable. <br />
  */
 class Molecule :
 	public Class< Molecule >,
 	public physical::Perspective< StandardDimension >,
-	public chemical::LinearMotif< Surface* >
+	public chemical::LinearMotif< Surface* > <br />
 {
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular,
 		Molecule)
 
 	/**
-	 * Standard ctors.
+	 * Standard ctors. <br />
 	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(molecular,
 		Molecule,
 		&MoleculePerspective::Instance(),
 		filter::Molecular())
 
 	/**
-	 * Copying a Molecule will duplicate all Surfaces of toCopy.
+	 * Copying a Molecule will duplicate all Surfaces of toCopy. <br />
 	 * @param toCopy
 	 */
 	Molecule(const Molecule& toCopy);
@@ -101,8 +101,8 @@ public:
 	virtual ~Molecule();
 
 	/**
-	 * Create a Surface from an existing (member) variable.
-	 * Will fail if varName already exists within *this.
+	 * Create a Surface from an existing (member) variable. <br />
+	 * Will fail if varName already exists within *this. <br />
 	 * @tparam T
 	 * @param varName
 	 * @param varPtr
@@ -111,24 +111,24 @@ public:
 	template < typename T >
 	StandardDimension Use(
 		Name varName,
-		T* varPtr
+		T* varPtr <br />
 	)
 	{
 		BIO_SANITIZE(!RotateTo(varName), ,
 			return InvalidId());
-		Surface* toAdd = new Surface(
+		Surface* toAdd = new Surface( <br />
 			varName,
 			this
 		);
 		toAdd->Use(varPtr);
-		Add< Surface* >(toAdd);
+		Add< Surface* >(toAdd); <br />
 		return toAdd->GetId();
 	}
 
 	/**
-	 * Create a new variable within *this, the Biology way.
-	 * The created variable will have no type set upon creation.
-	 * Will fail if varName already exists within *this.
+	 * Create a new variable within *this, the Biology way. <br />
+	 * The created variable will have no type set upon creation. <br />
+	 * Will fail if varName already exists within *this. <br />
 	 * @param varName
 	 * @return the Id of the Surface created or InvalidId().
 	 */
@@ -136,17 +136,17 @@ public:
 	{
 		BIO_SANITIZE(!RotateTo(varName), ,
 			return InvalidId());
-		Surface* toAdd = new Surface(
+		Surface* toAdd = new Surface( <br />
 			varName,
 			this
 		);
-		Add< Surface* >(toAdd);
+		Add< Surface* >(toAdd); <br />
 		return toAdd->GetId();
 	}
 
 	/**
-	 * Create a new variable within *this, the Biology way.
-	 * Will fail if varName already exists within *this.
+	 * Create a new variable within *this, the Biology way. <br />
+	 * Will fail if varName already exists within *this. <br />
 	 * @tparam T
 	 * @param varName
 	 * @return the Id of the Surface created or InvalidId().
@@ -156,19 +156,19 @@ public:
 	{
 		BIO_SANITIZE(!RotateTo(varName), ,
 			return InvalidId());
-		Surface* toAdd = new Surface(
+		Surface* toAdd = new Surface( <br />
 			varName,
 			this
 		);
 		toAdd->Manage(new T());
-		Add< Surface* >(toAdd);
+		Add< Surface* >(toAdd); <br />
 		return toAdd->GetId();
 	}
 
 	/**
-	 * Create a new variable within *this, the Biology way.
-	 * Assigns the new variable to the value provided.
-	 * Will fail if varName already exists within *this.
+	 * Create a new variable within *this, the Biology way. <br />
+	 * Assigns the new variable to the value provided. <br />
+	 * Will fail if varName already exists within *this. <br />
 	 * @tparam T
 	 * @param varName
 	 * @param assignment
@@ -182,33 +182,33 @@ public:
 	{
 		BIO_SANITIZE(!RotateTo(varName), ,
 			return InvalidId());
-		Surface* toAdd = new Surface(
+		Surface* toAdd = new Surface( <br />
 			varName,
 			this
 		);
 		toAdd->Manage(new T(assignment));
-		Add< Surface* >(toAdd);
+		Add< Surface* >(toAdd); <br />
 		return toAdd->GetId();
 	}
 
 	/**
-	 * Get a variable from within *this.
-	 * Use for getting and/or setting.
-	 * REMINDER: use this->GetIdFromName("someName") to get the Id of a Surface with the given Name.
+	 * Get a variable from within *this. <br />
+	 * Use for getting and/or setting. <br />
+	 * REMINDER: use this->GetIdFromName("someName") to get the Id of a Surface with the given Name. <br />
 	 * @param surfaceId
 	 * @return a Surface with the given Id, as defined by *this, or NULL.
 	 */
-	virtual Surface* RotateTo(StandardDimension surfaceId);
+	virtual Surface* RotateTo(StandardDimension surfaceId); <br />
 
 	/**
-	 * const version of RotateTo
+	 * const version of RotateTo <br />
 	 * @param surfaceId
 	 * @return a const Surface with the given Id, as defined by *this, or NULL.
 	 */
-	virtual const Surface* RotateTo(StandardDimension surfaceId) const;
+	virtual const Surface* RotateTo(StandardDimension surfaceId) const; <br />
 
 	/**
-	 * Ease of use methods for getting variables as the desired type.
+	 * Ease of use methods for getting variables as the desired type. <br />
 	 * @tparam T
 	 * @return a Surface from *this casted to T.
 	 */
@@ -219,22 +219,22 @@ public:
 	}
 
 	/**
- 	* Get a variable from within *this.
-	 * Use for getting and/or setting.
+ 	* Get a variable from within *this. <br />
+	 * Use for getting and/or setting. <br />
 	 * @param surfaceName
 	 * @return a Surface with the given Name from *this.
 	 */
-	virtual Surface* RotateTo(Name surfaceName);
+	virtual Surface* RotateTo(Name surfaceName); <br />
 
 	/**
-	 * const version of RotateTo
+	 * const version of RotateTo <br />
 	 * @param surfaceName
 	 * @return a const Surface with the given Name from *this.
 	 */
-	virtual const Surface* RotateTo(Name surfaceName) const;
+	virtual const Surface* RotateTo(Name surfaceName) const; <br />
 
 	/**
-	 * Ease of use methods for getting variables as the desired type.
+	 * Ease of use methods for getting variables as the desired type. <br />
 	 * @tparam T
 	 * @return a Surface from *this casted to T.
 	 */
@@ -245,101 +245,101 @@ public:
 	}
 
 	/**
-	 * Copy a Surface from another Molecule into *this.
+	 * Copy a Surface from another Molecule into *this. <br />
 	 * @param source
 	 * @param surface
 	 * @return whether or not the operation succeeded.
 	 */
 	virtual bool DuplicateFrom(
-		Molecule* source,
+		Molecule* source, <br />
 		Name surface
 	);
 
 	/**
-	 * Move a Surface from another Molecule into *this.
+	 * Move a Surface from another Molecule into *this. <br />
 	 * @param source
 	 * @param surface
 	 * @return whether or not the operation succeeded.
 	 */
 	virtual bool TransferFrom(
-		Molecule* source,
+		Molecule* source, <br />
 		Name surface
 	);
 
 	/**
-	 * Required method from Wave. See that class for details.
+	 * Required method from Wave. See that class for details. <br />
 	 * @return a Symmetrical image of *this
 	 */
-	virtual physical::Symmetry* Spin() const;
+	virtual physical::Symmetry* Spin() const; <br />
 
 	/**
-	 * Required method from Wave. See that class for details.
-	 * Reconstruct *this from the given Symmetry.
+	 * Required method from Wave. See that class for details. <br />
+	 * Reconstruct *this from the given Symmetry. <br />
 	 * @param symmetry
 	 */
-	virtual Code Reify(physical::Symmetry* symmetry);
+	virtual Code Reify(physical::Symmetry* symmetry); <br />
 
 	/**
-	 * operator wrappers around RotateTo
+	 * operator wrappers around RotateTo <br />
 	 * @param surfaceId
 	 * @return RotateTo(...)
 	 * @{
 	 */
-	virtual Surface* operator()(StandardDimension surfaceId);
+	virtual Surface* operator()(StandardDimension surfaceId); <br />
 
-	virtual const Surface* operator()(StandardDimension surfaceId) const;
+	virtual const Surface* operator()(StandardDimension surfaceId) const; <br />
 
 	template < typename T >
-	Surface* operator()(StandardDimension surfaceId)
+	Surface* operator()(StandardDimension surfaceId) <br />
 	{
 		return ChemicalCast< T >(RotateTo(surfaceId));
 	}
 
-	virtual Surface* operator()(Name name);
+	virtual Surface* operator()(Name name); <br />
 
-	virtual const Surface* operator()(Name name) const;
+	virtual const Surface* operator()(Name name) const; <br />
 
 	template < typename T >
-	Surface* operator()(Name surfaceName)
+	Surface* operator()(Name surfaceName) <br />
 	{
 		return ChemicalCast< T >(RotateTo(surfaceName));
 	}
 	/**@}*/
 
 	/**
-	 * Surface move operation.
-	 * Moves a Surface onto *this.
+	 * Surface move operation. <br />
+	 * Moves a Surface onto *this. <br />
 	 * @param source
 	 * @return this
 	 */
-	virtual Molecule* operator<<(Surface* source);
+	virtual Molecule* operator<<(Surface* source); <br />
 
 	/**
-	 * Surface move operation.
-	 * Places *this in a Surface.
-	 * NOTE: There is no check that *this is not in multiple Surfaces.
+	 * Surface move operation. <br />
+	 * Places *this in a Surface. <br />
+	 * NOTE: There is no check that *this is not in multiple Surfaces. <br />
 	 * @param target
 	 * @return target
 	 *
 	 */
-	virtual Surface* operator>>(Surface* target);
+	virtual Surface* operator>>(Surface* target); <br />
 
 	/**
-	 * Molecule copy operation.
-	 * Copies all Surfaces on the source Molecule onto *this.
+	 * Molecule copy operation. <br />
+	 * Copies all Surfaces on the source Molecule onto *this. <br />
 	 * @param source
 	 * @return this
 	 */
-	virtual Molecule* operator<<(Molecule* source);
+	virtual Molecule* operator<<(Molecule* source); <br />
 
 	/**
-	 * Molecule move operation.
-	 * Moves all Surfaces on *this onto the target Molecule.
-	 * This REMOVES all Surfaces from *this.
+	 * Molecule move operation. <br />
+	 * Moves all Surfaces on *this onto the target Molecule. <br />
+	 * This REMOVES all Surfaces from *this. <br />
 	 * @param target
 	 * @return target
 	 */
-	virtual Molecule* operator>>(Molecule* target);
+	virtual Molecule* operator>>(Molecule* target); <br />
 };
 
 

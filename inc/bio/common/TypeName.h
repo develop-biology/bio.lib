@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -27,7 +27,7 @@
 namespace bio {
 
 /**
- * FORWARD DECLARATION
+ * FORWARD DECLARATION <br />
  * @tparam T
  * @return Just T as a string.
  */
@@ -44,13 +44,13 @@ inline const std::string TypeName< void >()
 }
 
 /**
- * Used to determine magic numbers in extracting symbols as type.
+ * Used to determine magic numbers in extracting symbols as type. <br />
  */
 typedef void TypeNameProber;
 
 /**
- * Converts the T symbol to a string.
- * Only supported on a limited number of compilers.
+ * Converts the T symbol to a string. <br />
+ * Only supported on a limited number of compilers. <br />
  * @tparam T
  * @return T as a string with wrapping symbols.
  */
@@ -69,7 +69,7 @@ static const std::string WrappedTypeName()
 }
 
 /**
- * Used to trim leading characters from symbol string.
+ * Used to trim leading characters from symbol string. <br />
  * @return magic number for prefix length.
  */
 static const std::size_t WrappedTypeNamePrefixLength()
@@ -78,7 +78,7 @@ static const std::size_t WrappedTypeNamePrefixLength()
 }
 
 /**
- * Used to trim trailing characters from symbol string.
+ * Used to trim trailing characters from symbol string. <br />
  * @return magic number for suffix length.
  */
 static const std::size_t WrappedTypeNameSuffixLength()
@@ -87,7 +87,7 @@ static const std::size_t WrappedTypeNameSuffixLength()
 }
 
 /**
- * Converts the T symbol to a string.
+ * Converts the T symbol to a string. <br />
  * @tparam T
  * @return Just T as a string.
  */
@@ -105,7 +105,7 @@ static const std::string TypeName()
 }
 
 /**
- * Converts the T symbol to a string.
+ * Converts the T symbol to a string. <br />
  * @tparam T
  * @param t used for auto type determination.
  * @return Just T as a string.

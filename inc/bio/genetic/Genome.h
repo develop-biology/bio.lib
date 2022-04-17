@@ -27,12 +27,12 @@ namespace bio {
 namespace genetic {
 
 /**
- * The Genome is a system for managing Plasmids.
- * This is the Biology package manager.
- * While not implemented here, there is an official Plasmid that adds online repository integration to the Genome, which allows you to specify Plasmids by Name and at run time.
- * See: [TODO: TO BE DETERMINED]
+ * The Genome is a system for managing Plasmids. <br />
+ * This is the Biology package manager. <br />
+ * While not implemented here, there is an official Plasmid that adds online repository integration to the Genome, which allows you to specify Plasmids by Name and at run time. <br />
+ * See: [TODO: TO BE DETERMINED] <br />
  *
- * The Genome is a singleton to match the PlasmidPerspective it manages.
+ * The Genome is a singleton to match the PlasmidPerspective it manages. <br />
  */
 class GenomeImplementation :
 	public Class< GenomeImplementation >,
@@ -41,7 +41,7 @@ class GenomeImplementation :
 {
 public:
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(genetic,
 		GenomeImplementation)
@@ -51,35 +51,35 @@ public:
 	virtual ~GenomeImplementation();
 
 	/**
-	 * Adds caching for Protein-backed methods.
-	 * See Expressor for docs.
+	 * Adds caching for Protein-backed methods. <br />
+	 * See Expressor for docs. <br />
 	 */
 	virtual void CacheProteins();
 
 	/**
-	 * Adds a Plasmid to the PlasmidPerspective.
+	 * Adds a Plasmid to the PlasmidPerspective. <br />
 	 * @param toRegister
 	 * @return the Id of the Registered Plasmid.
 	 */
-	virtual StandardDimension RegisterPlasmid(Plasmid* toRegister);
+	virtual StandardDimension RegisterPlasmid(Plasmid* toRegister); <br />
 
 	/**
-	 * Get a Plasmid!
+	 * Get a Plasmid! <br />
 	 * @param plasmidId
 	 * @return a shared Plasmid*. Should become const in a future release.
 	 */
-	virtual Plasmid* FetchPlasmid(StandardDimension plasmidId);
+	virtual Plasmid* FetchPlasmid(StandardDimension plasmidId); <br />
 
 	/**
-	 * Get a Plasmid!
+	 * Get a Plasmid! <br />
 	 * @param plasmidName
 	 * @return a shared Plasmid*. Should become const in a future release.
 	 */
-	virtual Plasmid* FetchPlasmid(Name plasmidName);
+	virtual Plasmid* FetchPlasmid(Name plasmidName); <br />
 
 protected:
-	molecular::Protein* mc_registerPlasmid;
-	molecular::Protein* mc_fetchPlasmid;
+	molecular::Protein* mc_registerPlasmid; <br />
+	molecular::Protein* mc_fetchPlasmid; <br />
 	StandardDimension mc_registrationSite;
 	StandardDimension mc_nameSite;
 	StandardDimension mc_idSite;

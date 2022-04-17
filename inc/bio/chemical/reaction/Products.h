@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -28,10 +28,10 @@ namespace bio {
 namespace chemical {
 
 /**
- * Products are the result of a chemical::Reaction.
- * As such, they include Substances (in order to chain Reactions)
- * And they include a Code, indicating the result of the reaction.
- * They can be treated as either Substances or a Code.
+ * Products are the result of a chemical::Reaction. <br />
+ * As such, they include Substances (in order to chain Reactions) <br />
+ * And they include a Code, indicating the result of the reaction. <br />
+ * They can be treated as either Substances or a Code. <br />
  */
 class Products
 {
@@ -48,16 +48,16 @@ public:
 	Products(Code result);
 
 	/**
-	 * Assume m_result Success(), since we're given a value and no error to report.
+	 * Assume m_result Success(), since we're given a value and no error to report. <br />
 	 * @param substances
 	 */
-	Products(const Substances* substances);
+	Products(const Substances* substances); <br />
 
 	/**
-	 * Assume m_result Success(), since we're given a value and no error to report.
+	 * Assume m_result Success(), since we're given a value and no error to report. <br />
 	 * @param reactants
 	 */
-	Products(const Reactants* reactants);
+	Products(const Reactants* reactants); <br />
 
 	/**
 	 * @param result
@@ -65,7 +65,7 @@ public:
 	 */
 	Products(
 		Code result,
-		const Substances* substances
+		const Substances* substances <br />
 	);
 
 	/**
@@ -96,7 +96,7 @@ public:
 	operator Substances();
 
 	/**
-	 * see molecular::Pathway for use.
+	 * see molecular::Pathway for use. <br />
 	 * @return *this as Reactants
 	 */
 	operator Reactants();

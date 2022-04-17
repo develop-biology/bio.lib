@@ -37,9 +37,9 @@
     BIO_CREATE_EXCITATION_CLASS(wave, ret, num, __VA_ARGS__)
 
 /**
- * Work around for C++ < 17, where variadic macros are supported but variadic template parameters are not.
- * This will work with all versions of C++ (see undef below).
- * NOTE: only a small number of arguments is currently supported with C++ < 17. For more arguments, you must either extend this macro by creating your own Excitation and defining BIO_EXCITATION_N, etc. or use at least C++17.
+ * Work around for C++ < 17, where variadic macros are supported but variadic template parameters are not. <br />
+ * This will work with all versions of C++ (see undef below). <br />
+ * NOTE: only a small number of arguments is currently supported with C++ < 17. For more arguments, you must either extend this macro by creating your own Excitation and defining BIO_EXCITATION_N, etc. or use at least C++17. <br />
  * @param wave a class deriving from physical::Wave* (a class, not an object)
  * @param ret the return type of the function to call
  * @param ... any arguments to the function

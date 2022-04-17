@@ -34,10 +34,10 @@ namespace chemical {
 class Substance;
 
 /**
- * A chemical::Class is an Identifiable Atom with logging capabilities.
- * This will FormBond() with the provided T.
- * Class in other namespaces will grow to include more complex, templated logic.
- * This pattern prevents you from having to define virtual methods each of your child classes, so long as you always derive from the appropriate Class<T>.
+ * A chemical::Class is an Identifiable Atom with logging capabilities. <br />
+ * This will FormBond() with the provided T. <br />
+ * Class in other namespaces will grow to include more complex, templated logic. <br />
+ * This pattern prevents you from having to define virtual methods each of your child classes, so long as you always derive from the appropriate Class<T>. <br />
  * @tparam T
  */
 template < typename T >
@@ -63,21 +63,21 @@ private:
 
 public:
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
 		T)
 
 	/**
-	 * For when we know the Perspective but not ourselves.
+	 * For when we know the Perspective but not ourselves. <br />
 	 * @param object
 	 * @param perspective
 	 * @param filter
 	 * @param symmetryType
 	 */
 	Class(
-		T* object,
-		physical::Perspective< StandardDimension >* perspective = NULL,
+		T* object, <br />
+		physical::Perspective< StandardDimension >* perspective = NULL, <br />
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
@@ -99,9 +99,9 @@ public:
 	 * @param filter
 	 */
 	Class(
-		T* object,
+		T* object, <br />
 		Name name,
-		physical::Perspective< StandardDimension >* perspective = NULL,
+		physical::Perspective< StandardDimension >* perspective = NULL, <br />
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
@@ -134,9 +134,9 @@ public:
 	 * @param filter
 	 */
 	Class(
-		T* object,
+		T* object, <br />
 		StandardDimension id,
-		physical::Perspective< StandardDimension >* perspective = NULL,
+		physical::Perspective< StandardDimension >* perspective = NULL, <br />
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
@@ -171,9 +171,9 @@ public:
 	}
 
 	/**
-	 * Using the PeriodicTable, we can reliably implement Wave::GetProperties without having to store m_properties internally.
-	 * NOTE: You must still record the Properties of T elsewhere. See Elementary.h for an easy means of doing this.
-	 * @return the Properties of T that have been Registered with the PeriodicTable.
+	 * Using the PeriodicTable, we can reliably implement Wave::GetProperties without having to store m_properties internally. <br />
+	 * NOTE: You must still record the Properties of T elsewhere. See Elementary.h for an easy means of doing this. <br />
+	 * @return the Properties of T that have been Registered with the PeriodicTable. <br />
 	 */
 	virtual Properties GetProperties() const
 	{
@@ -181,39 +181,39 @@ public:
 	}
 
 	/**
-	 * From Wave. See that class for details.
+	 * From Wave. See that class for details. <br />
 	 * @return this as an Atom.
 	 */
-	virtual Atom* AsAtom()
+	virtual Atom* AsAtom() <br />
 	{
 		return this;
 	}
 
 	/**
-	 * From Wave. See that class for details.
+	 * From Wave. See that class for details. <br />
 	 * @return this as an Atom.
 	 */
-	virtual const Atom* AsAtom() const
+	virtual const Atom* AsAtom() const <br />
 	{
 		return this;
 	}
 
 	/**
-	 * Disambiguate Wave method. See that class for details.
+	 * Disambiguate Wave method. See that class for details. <br />
 	 * @param other
 	 * @return result of Wave::Attenuation.
 	 */
-	virtual Code Attenuate(const physical::Wave* other)
+	virtual Code Attenuate(const physical::Wave* other) <br />
 	{
 		return physical::Class< T >::Attenuate(other);
 	}
 
 	/**
-	 * Disambiguate Wave method. See that class for details.
+	 * Disambiguate Wave method. See that class for details. <br />
 	 * @param other
 	 * @return result of Wave::Disattenuation.
 	 */
-	virtual Code Disattenuate(const physical::Wave* other)
+	virtual Code Disattenuate(const physical::Wave* other) <br />
 	{
 		return physical::Class< T >::Disattenuate(other);
 	}

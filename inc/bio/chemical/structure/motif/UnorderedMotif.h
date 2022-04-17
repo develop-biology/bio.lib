@@ -33,8 +33,8 @@ namespace bio {
 namespace chemical {
 
 /**
- * UnorderedMotif classes have Content classes stored within them.
- * They are simple containers.
+ * UnorderedMotif classes have Content classes stored within them. <br />
+ * They are simple containers. <br />
  */
 template < typename CONTENT_TYPE >
 class UnorderedMotif :
@@ -46,7 +46,7 @@ public:
 	typedef physical::Arrangement< CONTENT_TYPE > Contents;
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical,
 		UnorderedMotif< CONTENT_TYPE >)
@@ -64,7 +64,7 @@ public:
 	/**
 	 * @param contents
 	 */
-	UnorderedMotif(const Contents* contents)
+	UnorderedMotif(const Contents* contents) <br />
 		:
 		chemical::Class< UnorderedMotif< CONTENT_TYPE > >(this) //TODO: Define Symmetry.
 	{
@@ -74,7 +74,7 @@ public:
 	/**
 	 * @param toCopy
 	 */
-	UnorderedMotif(const UnorderedMotif< CONTENT_TYPE >* toCopy)
+	UnorderedMotif(const UnorderedMotif< CONTENT_TYPE >* toCopy) <br />
 		:
 		chemical::Class< UnorderedMotif< CONTENT_TYPE > >(this) //TODO: Define Symmetry.
 	{
@@ -90,7 +90,7 @@ public:
 	}
 
 	/**
-	 * Clears the contents of *this.
+	 * Clears the contents of *this. <br />
 	 */
 	virtual void ClearImplementation()
 	{
@@ -98,7 +98,7 @@ public:
 	}
 
 	/**
-	 * Implementation for counting Contents.
+	 * Implementation for counting Contents. <br />
 	 * @return the number of Contents in *this.
 	 */
 	virtual unsigned long GetCountImplementation() const
@@ -107,7 +107,7 @@ public:
 	}
 
 	/**
-	 * Adds content to *this.
+	 * Adds content to *this. <br />
 	 * @param content
 	 * @return the added content or 0.
 	 */
@@ -118,7 +118,7 @@ public:
 	}
 
 	/**
-	 * Removes content from *this and deletes it.
+	 * Removes content from *this and deletes it. <br />
 	 * @param content
 	 */
 	virtual CONTENT_TYPE RemoveImplementation(const CONTENT_TYPE content)
@@ -130,7 +130,7 @@ public:
 	}
 
 	/**
-	 * Check for content.
+	 * Check for content. <br />
 	 * @param content
 	 * @return whether or not the given content exists in *this
 	 */
@@ -140,10 +140,10 @@ public:
 	}
 
 	/**
-	 * Copy the contents of another container into *this.
+	 * Copy the contents of another container into *this. <br />
 	 * @param other
 	 */
-	virtual void ImportImplementation(const UnorderedMotif< CONTENT_TYPE >* other)
+	virtual void ImportImplementation(const UnorderedMotif< CONTENT_TYPE >* other) <br />
 	{
 		BIO_SANITIZE(other, ,
 			return);
@@ -152,11 +152,11 @@ public:
 	}
 
 	/**
-	 * Gives the number of matching contents between *this & other.
+	 * Gives the number of matching contents between *this & other. <br />
 	 * @param other
 	 * @return quantity overlap with other.
 	 */
-	virtual unsigned int GetNumMatchingImplementation(const Container* other) const
+	virtual unsigned int GetNumMatchingImplementation(const Container* other) const <br />
 	{
 		BIO_SANITIZE(other, ,
 			return 0);
@@ -177,11 +177,11 @@ public:
 	}
 
 	/**
-	 * Check for all contents
+	 * Check for all contents <br />
 	 * @param contents
 	 * @return whether or not the given contents exists in *this
 	 */
-	virtual bool HasAllImplementation(const Container* contents) const
+	virtual bool HasAllImplementation(const Container* contents) const <br />
 	{
 		BIO_SANITIZE(contents, ,
 			return false);
@@ -189,7 +189,7 @@ public:
 	}
 
 	/**
-	 * Get the Contents of *this as a string.
+	 * Get the Contents of *this as a string. <br />
 	 * @param separator e.g. ", ", the default, or just " ".
 	 * @return the Contents of *this as a string.
 	 */

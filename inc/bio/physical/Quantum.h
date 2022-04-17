@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -31,10 +31,10 @@ namespace bio {
 namespace physical {
 
 /**
- * Quanta are simple Waves intended for built-in types.
- * They allow anything to be treated as a Biological Wave.
- * Iff you cannot derive from Wave, use Quantum<> instead.
- * Each Quantum<T> will store a pointer to a T which it will new on creation and delete on destruction.
+ * Quanta are simple Waves intended for built-in types. <br />
+ * They allow anything to be treated as a Biological Wave. <br />
+ * Iff you cannot derive from Wave, use Quantum<> instead. <br />
+ * Each Quantum<T> will store a pointer to a T which it will new on creation and delete on destruction. <br />
  * @tparam T
  */
 template < typename T >
@@ -44,7 +44,7 @@ class Quantum :
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
 		Quantum< T >)
@@ -102,7 +102,7 @@ public:
 	}
 
 	/**
-	 * *this can be treated as a T* directly.
+	 * *this can be treated as a T* directly. <br />
 	 * @return *this as a T*.
 	 */
 	operator T*()
@@ -111,8 +111,8 @@ public:
 	}
 
 	/**
-	 * Read only access to the value of *this.
-	 * For ease of use.
+	 * Read only access to the value of *this. <br />
+	 * For ease of use. <br />
 	 * @return *this as a T.
 	 */
 	operator T() const
@@ -123,21 +123,21 @@ public:
 	}
 
 	/**
-	 * Required method from Wave. See that class for details.
+	 * Required method from Wave. See that class for details. <br />
 	 * @return a Symmetrical image of *this
 	 */
-	virtual Symmetry* Spin() const
+	virtual Symmetry* Spin() const <br />
 	{
 		this->m_symmetry->AccessValue()->Set(*this->m_quantized);
 		return this->Wave::Spin();
 	}
 
 	/**
-	 * Required method from Wave. See that class for details.
-	 * Reconstruct *this from the given Symmetry.
+	 * Required method from Wave. See that class for details. <br />
+	 * Reconstruct *this from the given Symmetry. <br />
 	 * @param symmetry
 	 */
-	virtual Code Reify(Symmetry* symmetry)
+	virtual Code Reify(Symmetry* symmetry) <br />
 	{
 		BIO_SANITIZE(symmetry, ,
 			return code::BadArgument1());
@@ -147,7 +147,7 @@ public:
 	}
 
 protected:
-	T* m_quantized;
+	T* m_quantized; <br />
 };
 
 } //physical namespace

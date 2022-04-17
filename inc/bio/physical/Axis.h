@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -44,48 +44,48 @@ public:
 	virtual ~Axis();
 
 	/**
-	 * Used as a bad return value by other methods.
+	 * Used as a bad return value by other methods. <br />
 	 * @return "FAILED"
 	 */
 	static std::string Failed();
 
 	/**
-	 * Express the given Symmetry into something intelligible by another system.
+	 * Express the given Symmetry into something intelligible by another system. <br />
 	 * @param symmetry
 	 * @return text, possibly a command (like mysql), structured values (like json), an entire program (like python), etc. or Failed().
 	 */
-	virtual std::string Rotate(Symmetry* symmetry) const;
+	virtual std::string Rotate(Symmetry* symmetry) const; <br />
 
 	/**
-	 * Express the given text into something intelligible by this system.
+	 * Express the given text into something intelligible by this system. <br />
 	 * @return Symmetry* which can be Reified or NULL.
 	 */
-	virtual Symmetry* Rotate(std::string) const;
+	virtual Symmetry* Rotate(std::string) const; <br />
 
 	/**
-	 * jsonAxis | myWave
+	 * jsonAxis | myWave <br />
 	 * @param particle
 	 * @return Rotate(particle->Spin()) or Failed().
 	 */
-	virtual std::string operator|(Wave* particle) const;
+	virtual std::string operator|(Wave* particle) const; <br />
 
 	/**
-	 * (*myWave) | jsonAxis("...");
+	 * (*myWave) | jsonAxis("..."); <br />
 	 * @param encoded
 	 * @return Rotate(encoded) or NULL.
 	 */
-	virtual Symmetry* operator()(std::string encoded) const;
+	virtual Symmetry* operator()(std::string encoded) const; <br />
 
 protected:
 
 	/**
-	 * Encode a single Symmetry
-	 * Override this to add handlers (e.g. a switch(symmetry->GetId()) for your own SymmetryTypes, then call the parent method to handle other SymmetryTypes.
-	 * Decoding is not so easy and requires overloading Rotate(std::string) directly (if we know which parts of the string are which Symmetries, then there would be no need to decode at the Axis level).
+	 * Encode a single Symmetry <br />
+	 * Override this to add handlers (e.g. a switch(symmetry->GetId()) for your own SymmetryTypes, then call the parent method to handle other SymmetryTypes. <br />
+	 * Decoding is not so easy and requires overloading Rotate(std::string) directly (if we know which parts of the string are which Symmetries, then there would be no need to decode at the Axis level). <br />
 	 * @param symmetry
 	 * @return the text corresponding to the given, singular Symmetry or Failed().
 	 */
-	virtual std::string Encode(Symmetry* symmetry) const;
+	virtual std::string Encode(Symmetry* symmetry) const; <br />
 
 };
 

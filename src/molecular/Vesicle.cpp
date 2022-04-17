@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -27,47 +27,47 @@ namespace molecular {
 
 Vesicle::Vesicle(const Vesicle& toCopy) :
 	molecular::Class<Vesicle>(this, toCopy.GetId(), toCopy.GetPerspective(), toCopy.GetFilter()),
-	LinearMotif< Molecule* >(toCopy)
+	LinearMotif< Molecule* >(toCopy) <br />
 {
-	LinearMotif< Molecule* >::m_perspective = this;
+	LinearMotif< Molecule* >::m_perspective = this; <br />
 }
 
 Vesicle::~Vesicle()
 {
 }
 
-Molecule* Vesicle::operator[](StandardDimension moleculeId)
+Molecule* Vesicle::operator[](StandardDimension moleculeId) <br />
 {
-	return GetById< Molecule* >(moleculeId);
+	return GetById< Molecule* >(moleculeId); <br />
 }
 
-const Molecule* Vesicle::operator[](StandardDimension moleculeId) const
+const Molecule* Vesicle::operator[](StandardDimension moleculeId) const <br />
 {
-	return GetById< Molecule* >(moleculeId);
+	return GetById< Molecule* >(moleculeId); <br />
 }
 
-Molecule* Vesicle::operator[](Name moleculeName)
+Molecule* Vesicle::operator[](Name moleculeName) <br />
 {
-	return GetByName< Molecule* >(moleculeName);
+	return GetByName< Molecule* >(moleculeName); <br />
 }
 
-const Molecule* Vesicle::operator[](Name moleculeName) const
+const Molecule* Vesicle::operator[](Name moleculeName) const <br />
 {
-	return GetByName< Molecule* >(moleculeName);
+	return GetByName< Molecule* >(moleculeName); <br />
 }
 
-Vesicle* Vesicle::operator<<=(Vesicle* source)
+Vesicle* Vesicle::operator<<=(Vesicle* source) <br />
 {
 	BIO_SANITIZE(source,,return NULL)
-	Import< Molecule* >(source);
+	Import< Molecule* >(source); <br />
 	return this;
 }
 
-Vesicle* Vesicle::operator>>=(Vesicle* target)
+Vesicle* Vesicle::operator>>=(Vesicle* target) <br />
 {
 	BIO_SANITIZE(target,,return NULL)
-	target->Import< Molecule* >(this);
-	this->Clear< Molecule* >();
+	target->Import< Molecule* >(this); <br />
+	this->Clear< Molecule* >(); <br />
 	return target;
 }
 

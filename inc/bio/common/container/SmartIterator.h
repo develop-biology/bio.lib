@@ -30,42 +30,42 @@ class Container;
 class Iterator;
 
 /**
- * SmartIterators wrap our iterator interface to provide a consistent means of access.
- * Everything is const so that we don't need to worry about const_iterator vs iterator nonsense.
+ * SmartIterators wrap our iterator interface to provide a consistent means of access. <br />
+ * Everything is const so that we don't need to worry about const_iterator vs iterator nonsense. <br />
  */
 class SmartIterator
 {
 public:
 
 	/**
-	 * Sets m_index to container->GetEndIndex().
+	 * Sets m_index to container->GetEndIndex(). <br />
 	 * @param container
 	 */
-	SmartIterator(const Container* container);
+	SmartIterator(const Container* container); <br />
 
 	/**
 	 * @param container
 	 * @param index
 	 */
 	SmartIterator(
-		const Container* container,
+		const Container* container, <br />
 		Index index
 	);
 
 	/**
-	 * Not virtual
+	 * Not virtual <br />
 	 */
 	~SmartIterator();
 
 	/**
 	 * @return the interface used by *this.
 	 */
-	Iterator* GetImplementation();
+	Iterator* GetImplementation(); <br />
 
 	/**
 	 * @return the interface used by *this.
 	 */
-	const Iterator* GetImplementation() const;
+	const Iterator* GetImplementation() const; <br />
 
 	/**
 	 * @return the index *this is currently at.
@@ -73,7 +73,7 @@ public:
 	Index GetIndex() const;
 
 	/**
-	 * Make *this point somewhere else;
+	 * Make *this point somewhere else; <br />
 	 * @param index
 	 * @return whether or not *this was moved.
 	 */
@@ -90,19 +90,19 @@ public:
 	bool IsAtEnd() const;
 
 	/**
-	 * Dereferencing gives the datum *this is currently pointing to.
+	 * Dereferencing gives the datum *this is currently pointing to. <br />
 	 * @return a ByteStream containing the datum requested.
 	 */
 	virtual ByteStream operator*();
 
 	/**
-	 * Dereferencing gives the datum *this is currently pointing to.
+	 * Dereferencing gives the datum *this is currently pointing to. <br />
 	 * @return a ByteStream containing the datum requested.
 	 */
 	virtual const ByteStream operator*() const;
 
 	/**
-	 * Convenient casting wrapper.
+	 * Convenient casting wrapper. <br />
 	 * @tparam T
 	 * @return *this casted to the given value.
 	 */
@@ -113,7 +113,7 @@ public:
 	}
 
 	/**
-	 * Convenient casting wrapper.
+	 * Convenient casting wrapper. <br />
 	 * @tparam T
 	 * @return *this casted to the given value.
 	 */
@@ -124,7 +124,7 @@ public:
 	}
 
 	/**
-	 * Convenient casting wrapper.
+	 * Convenient casting wrapper. <br />
 	 * @tparam T
 	 * @return *this casted to the given value.
 	 */
@@ -135,7 +135,7 @@ public:
 	}
 
 	/**
-	 * Convenient casting wrapper.
+	 * Convenient casting wrapper. <br />
 	 * @tparam T
 	 * @return *this casted to the given value.
 	 */
@@ -167,9 +167,9 @@ public:
 
 protected:
 	/**
-	 * Whatever. Make it mutable. I don't care.
+	 * Whatever. Make it mutable. I don't care. <br />
 	 */
-	mutable Iterator* m_implementation;
+	mutable Iterator* m_implementation; <br />
 };
 
 } //bio namespace

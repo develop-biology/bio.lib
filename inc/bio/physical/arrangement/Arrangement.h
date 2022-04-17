@@ -28,7 +28,7 @@ namespace bio {
 namespace physical {
 
 /**
- * Arrangements provide a more memory-efficient interface of the Container interface for a single type.
+ * Arrangements provide a more memory-efficient interface of the Container interface for a single type. <br />
  * @tparam TYPE
  */
 template < typename TYPE >
@@ -66,7 +66,7 @@ public:
 			return InvalidIndex())
 		TYPE toAdd = content;
 		std::memcpy(
-			&this->m_store[ret * sizeof(TYPE)],
+			&this->m_store[ret * sizeof(TYPE)], <br />
 			&toAdd,
 			sizeof(TYPE));
 		return ret;
@@ -76,10 +76,10 @@ public:
 	{
 		BIO_SANITIZE(this->IsAllocated(index), ,
 			return NULL)
-		TYPE* ret;
+		TYPE* ret; <br />
 		std::memcpy(
 			ret,
-			&this->m_store[index * sizeof(TYPE)],
+			&this->m_store[index * sizeof(TYPE)], <br />
 			sizeof(TYPE));
 		return *ret;
 	}
@@ -88,10 +88,10 @@ public:
 	{
 		BIO_SANITIZE(this->IsAllocated(index), ,
 			return NULL)
-		TYPE* ret;
+		TYPE* ret; <br />
 		std::memcpy(
 			ret,
-			&this->m_store[index * sizeof(TYPE)],
+			&this->m_store[index * sizeof(TYPE)], <br />
 			sizeof(TYPE));
 		return *ret;
 	}
@@ -100,10 +100,10 @@ public:
 	{
 		BIO_SANITIZE(this->IsAllocated(index), ,
 			return false)
-		TYPE* toDelete;
+		TYPE* toDelete; <br />
 		std::memcpy(
 			toDelete,
-			&this->m_store[index * sizeof(TYPE)],
+			&this->m_store[index * sizeof(TYPE)], <br />
 			sizeof(TYPE));
 		delete toDelete;
 		this->m_deallocated.push_back(index);
@@ -121,7 +121,7 @@ public:
 	}
 
 	/**
-	 * Convenience wrapper for accessing without casting.
+	 * Convenience wrapper for accessing without casting. <br />
 	 * @param index
 	 * @return the given position in *this as a TYPE.
 	 */
@@ -131,7 +131,7 @@ public:
 	}
 
 	/**
-	 * Convenience wrapper for accessing without casting.
+	 * Convenience wrapper for accessing without casting. <br />
 	 * @param index
 	 * @return the given position in *this as a TYPE.
 	 */
@@ -141,7 +141,7 @@ public:
 	}
 
 	/**
-	 * Please override this to return the size of the type your Container interface is working with.
+	 * Please override this to return the size of the type your Container interface is working with. <br />
 	 * @return the size of the data type stored in *this.
 	 */
 	virtual const std::size_t GetStepSize() const

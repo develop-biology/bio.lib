@@ -30,15 +30,15 @@ namespace genetic {
 
 GenomeDefault::GenomeDefault()
 {
-	Gene* registerPlasmid = new Gene("Register Plasmid Default");
+	Gene* registerPlasmid = new Gene("Register Plasmid Default"); <br />
 	registerPlasmid->SetProtein(new RegisterPlasmid());
 	registerPlasmid->Add< TranscriptionFactor >(transcription_factor::Genome());
-	Add< Gene* >(registerPlasmid);
+	Add< Gene* >(registerPlasmid); <br />
 
-	Gene* fetchPlasmid = new Gene("Fetch Plasmid Default");
+	Gene* fetchPlasmid = new Gene("Fetch Plasmid Default"); <br />
 	fetchPlasmid->SetProtein(new FetchPlasmid());
 	fetchPlasmid->Add< TranscriptionFactor >(transcription_factor::Genome());
-	Add< Gene* >(fetchPlasmid);
+	Add< Gene* >(fetchPlasmid); <br />
 }
 
 GenomeDefault::~GenomeDefault()

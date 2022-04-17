@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -30,7 +30,7 @@ namespace bio {
 namespace physical {
 
 Wave::Wave(
-	Symmetry* symmetry
+	Symmetry* symmetry <br />
 )
 	:
 	m_symmetry(
@@ -49,20 +49,20 @@ Wave::~Wave()
 		m_symmetry = NULL,);
 }
 
-Wave* Wave::Clone() const
+Wave* Wave::Clone() const <br />
 {
 	return new Wave(
 		*this
 	);
 }
 
-Symmetry* Wave::Spin() const
+Symmetry* Wave::Spin() const <br />
 {
 	return m_symmetry;
 }
 
 Code Wave::Reify(
-	Symmetry* symmetry
+	Symmetry* symmetry <br />
 )
 {
 	(*m_symmetry) = *symmetry;
@@ -70,7 +70,7 @@ Code Wave::Reify(
 }
 
 void Wave::operator|(
-	Symmetry* symmetry
+	Symmetry* symmetry <br />
 )
 {
 	Reify(
@@ -78,36 +78,36 @@ void Wave::operator|(
 	);
 }
 
-Code Wave::Attenuate(const Wave* other)
+Code Wave::Attenuate(const Wave* other) <br />
 {
 	return code::NotImplemented();
 }
 
-Code Wave::Disattenuate(const Wave* other)
+Code Wave::Disattenuate(const Wave* other) <br />
 {
 	return code::NotImplemented();
 }
 
-Wave* Wave::Modulate(
-	Wave* signal
+Wave* Wave::Modulate( <br />
+	Wave* signal <br />
 )
 {
 	m_signal = signal;
 	return this;
 }
 
-Wave* Wave::Demodulate()
+Wave* Wave::Demodulate() <br />
 {
 	return m_signal;
 }
 
-const Wave* Wave::Demodulate() const
+const Wave* Wave::Demodulate() const <br />
 {
 	return m_signal;
 }
 
-Wave* Wave::operator*(
-	Wave* signal
+Wave* Wave::operator*( <br />
+	Wave* signal <br />
 )
 {
 	return Modulate(
@@ -115,25 +115,25 @@ Wave* Wave::operator*(
 	);
 }
 
-Wave* Wave::operator*()
+Wave* Wave::operator*() <br />
 {
 	return Demodulate();
 }
 
-const Wave* Wave::operator*() const
+const Wave* Wave::operator*() const <br />
 {
 	return Demodulate();
 }
 
 void Wave::operator+(
-	const Wave* other
+	const Wave* other <br />
 )
 {
 	Attenuate(other);
 }
 
 void Wave::operator-(
-	const Wave* other
+	const Wave* other <br />
 )
 {
 	Disattenuate(other);
@@ -146,7 +146,7 @@ Properties Wave::GetProperties() const
 }
 
 /*static*/ Properties Wave::GetResonanceBetween(
-	const Wave* wave,
+	const Wave* wave, <br />
 	const Properties& properties
 )
 {
@@ -176,7 +176,7 @@ Properties Wave::GetProperties() const
 	waves.push_back(
 		wave
 	);
-	TempWave* twave = new TempWave(properties);
+	TempWave* twave = new TempWave(properties); <br />
 	waves.push_back(
 		twave
 	);
@@ -190,8 +190,8 @@ Properties Wave::GetProperties() const
 }
 
 /*static*/ Properties Wave::GetResonanceBetween(
-	const Wave* wave1,
-	const Wave* wave2
+	const Wave* wave1, <br />
+	const Wave* wave2 <br />
 )
 {
 	ConstWaves waves;

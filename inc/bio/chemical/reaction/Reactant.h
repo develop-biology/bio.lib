@@ -27,9 +27,9 @@ namespace bio {
 namespace chemical {
 
 /**
- * A Reactant is a Substance that has a type.
- * Reactants are intended to be used in Reactions.
- * In order to ensure the Substances provided to a Reaction are the proper types, we override the equality operator. This ensures that the compared value can be cast as the type recorded in *this.
+ * A Reactant is a Substance that has a type. <br />
+ * Reactants are intended to be used in Reactions. <br />
+ * In order to ensure the Substances provided to a Reaction are the proper types, we override the equality operator. This ensures that the compared value can be cast as the type recorded in *this. <br />
  */
 class Reactant :
 	public Substance,
@@ -38,7 +38,7 @@ class Reactant :
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical,
 		Reactant)
@@ -54,7 +54,7 @@ public:
 	 */
 	Reactant(
 		Name typeName,
-		const Substance* substance
+		const Substance* substance <br />
 	);
 
 	/**
@@ -64,8 +64,8 @@ public:
 	 */
 	Reactant(
 		Name typeName,
-		const typename UnorderedMotif< Property >::Contents* properties,
-		const typename UnorderedMotif< State >::Contents* states
+		const typename UnorderedMotif< Property >::Contents* properties, <br />
+		const typename UnorderedMotif< State >::Contents* states <br />
 	);
 
 	/**

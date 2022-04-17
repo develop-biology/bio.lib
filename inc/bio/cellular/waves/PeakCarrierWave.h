@@ -31,7 +31,7 @@ namespace bio {
 namespace cellular {
 
 /**
- * The PeakCarrierWave will propagate Peak Excitations to all LinearMotifs
+ * The PeakCarrierWave will propagate Peak Excitations to all LinearMotifs <br />
  */
 class PeakCarrierWave :
 	public physical::Wave
@@ -49,7 +49,7 @@ public:
 	virtual ~PeakCarrierWave();
 
 	/**
-	 * Makes *this compatible with Motifs by copying the Properties of AbstractMotif.
+	 * Makes *this compatible with Motifs by copying the Properties of AbstractMotif. <br />
 	 * @return { Linear(), AbstractMotif::GetClassProperties() }
 	 */
 	virtual Properties GetProperties() const;

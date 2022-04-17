@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -38,7 +38,7 @@ Writer::Writer()
 }
 
 Writer::Writer(
-	Engine* logEngine,
+	Engine* logEngine, <br />
 	Filter filter
 )
 	:
@@ -54,17 +54,17 @@ Writer::~Writer()
 
 }
 
-void Writer::SetLogEngine(Engine* logEngine)
+void Writer::SetLogEngine(Engine* logEngine) <br />
 {
 	m_logEngine = logEngine;
 }
 
-Engine* Writer::GetLogEngine()
+Engine* Writer::GetLogEngine() <br />
 {
 	return m_logEngine;
 }
 
-const Engine* Writer::GetLogEngine() const
+const Engine* Writer::GetLogEngine() const <br />
 {
 	return m_logEngine;
 }
@@ -76,7 +76,7 @@ bool Writer::HasLogEngine() const
 
 void Writer::Log(
 	Level level,
-	const char* format,
+	const char* format, <br />
 	...
 ) const
 {
@@ -106,7 +106,7 @@ void Writer::Log(
 void Writer::ExternalLog(
 	Filter filter,
 	Level level,
-	const char* format,
+	const char* format, <br />
 	...
 ) const
 {

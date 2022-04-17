@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -36,18 +36,18 @@ Axis::~Axis()
 
 }
 
-std::string Axis::Rotate(Symmetry* symmetry) const
+std::string Axis::Rotate(Symmetry* symmetry) const <br />
 {
 	std::string ret = "";
 	ret += Encode(symmetry);
-	Container* toRotate = symmetry->GetAll< Symmetry* >();
+	Container* toRotate = symmetry->GetAll< Symmetry* >(); <br />
 	for (
 		SmartIterator sym = toRotate->Begin();
 		!sym.IsAtEnd();
 		++sym
 		)
 	{
-		ret += Rotate(sym.As< Symmetry* >());
+		ret += Rotate(sym.As< Symmetry* >()); <br />
 	}
 
 	return ret;

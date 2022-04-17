@@ -3,7 +3,7 @@ __Programming Life__
 
 ![build](https://github.com/develop-biology/lib_bio/actions/workflows/ebbs-pr.yml/badge.svg)
 
-** THIS CODE IS PRE-ALPHA **
+** THIS CODE IS PRE-ALPHA ** <br />
 We'll be releasing the alpha version as soon as we can!
 
 As a part of eons, we follow all [eons conventions](https://eons.llc/convention/).
@@ -43,10 +43,10 @@ So, you can say
 ```
 
 To recap, extendable types should follow these rules:
-* Type is defined in bio namespace.
-* Type is UpperCamelCase.
-* Corresponding namespace is defined in bio namespace.
-* Corresponding namespace is lower_snake_case.
+* Type is defined in bio namespace. <br />
+* Type is UpperCamelCase. <br />
+* Corresponding namespace is defined in bio namespace. <br />
+* Corresponding namespace is lower_snake_case. <br />
 
 ### Templates
 
@@ -85,9 +85,9 @@ Documentation is available [on the Develop Biology website](https://develop.bio/
 ## Branding
 
 ### Colors
-* Dark Blue: #5ca3ff rgb(92, 163, 255)
-* Cyan: #13f4ef rgb(19, 244, 239)
-* Green: #68ff00 rgb(104, 255, 0)
-* Yellow: #faff00 rgb(250, 255, 0)
-* Orange: #ffbf00 rgb(255, 191, 0)
-* Magenta: #ff5794 rgb(255, 87, 148)
+* Dark Blue: #5ca3ff rgb(92, 163, 255) <br />
+* Cyan: #13f4ef rgb(19, 244, 239) <br />
+* Green: #68ff00 rgb(104, 255, 0) <br />
+* Yellow: #faff00 rgb(250, 255, 0) <br />
+* Orange: #ffbf00 rgb(255, 191, 0) <br />
+* Magenta: #ff5794 rgb(255, 87, 148) <br />

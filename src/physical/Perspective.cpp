@@ -25,12 +25,12 @@
 namespace bio {
 namespace physical {
 
-Wave* PerspectiveUtilities::Clone(const Wave* toClone)
+Wave* PerspectiveUtilities::Clone(const Wave* toClone) <br />
 {
 	return toClone->Clone();
 }
 
-void PerspectiveUtilities::Delete(bio::physical::Wave* toDelete)
+void PerspectiveUtilities::Delete(bio::physical::Wave* toDelete) <br />
 {
 	delete toDelete;
 	toDelete = NULL;

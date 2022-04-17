@@ -24,14 +24,14 @@
 #include "bio/genetic/macros/Macros.h"
 
 /**
- * Get all virtual methods defined by cellular::Class.
+ * Get all virtual methods defined by cellular::Class. <br />
  * @return function signatures for use in BIO_DISAMBIGUATE_REQUIRED_CLASS_METHODS
  */
 #define BIO_GET_REQUIRED_CLASS_METHODS_FOR_cellular()                          \
     BIO_GET_REQUIRED_CLASS_METHODS_FOR_genetic()
 
 /**
- * Get all virtual methods defined by cellular::Class.
+ * Get all virtual methods defined by cellular::Class. <br />
  * @return function signatures for use in BIO_DISAMBIGUATE_OPTIONAL_CLASS_METHODS
  */
 #define BIO_GET_OPTIONAL_CLASS_METHODS_FOR_cellular()                          \

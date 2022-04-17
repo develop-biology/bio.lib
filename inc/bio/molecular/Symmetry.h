@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -25,9 +25,9 @@ namespace bio {
 namespace physical {
 
 /**
- * physical::Symmetry only contains a Name, a type, and a value.
- * See SymmetryTypes.h for what types of Symmetry are available on a physical level.
- * Both Symmetry and SymmetryTypes are intended to grow with each namespace, as the complexity of what is being Rotated grows.
+ * physical::Symmetry only contains a Name, a type, and a value. <br />
+ * See SymmetryTypes.h for what types of Symmetry are available on a physical level. <br />
+ * Both Symmetry and SymmetryTypes are intended to grow with each namespace, as the complexity of what is being Rotated grows. <br />
  */
 class Symmetry :
 	public Identifiable< SymmetryType >
@@ -53,7 +53,7 @@ public:
 	SetValue(const ByteStream& bytes);
 
 	AddSymmetry(Symmetry
-	* symmetry);
+	* symmetry); <br />
 
 protected:
 	Name m_name;

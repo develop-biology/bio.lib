@@ -48,12 +48,12 @@ AbstractMotif::~AbstractMotif()
 	}
 }
 
-Container* AbstractMotif::GetAllImplementation()
+Container* AbstractMotif::GetAllImplementation() <br />
 {
 	return this->m_contents;
 }
 
-const Container* AbstractMotif::GetAllImplementation() const
+const Container* AbstractMotif::GetAllImplementation() const <br />
 {
 	return this->m_contents;
 }

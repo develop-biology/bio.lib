@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -31,13 +31,13 @@ namespace molecular {
 class Protein;
 
 /**
- * DNA allows Proteins to be stored as variables and be Transcribed and Translated later.
- * In order to improve debugging, Proteins store a pointer to their encoding DNA (similar to how a RISC-like mechanism might identify similar mRNA to that with produced the Protein in order to down-regulate its production; for more info, look into RNA Interference).
- * Because Proteins will point back to their parent DNA, we also provide a name and version for each DNA Molecule. This helps to identify Proteins that might be otherwise indistinguishable.
- * NOTE: genetic/Gene.h has most of the DNA interface.
+ * DNA allows Proteins to be stored as variables and be Transcribed and Translated later. <br />
+ * In order to improve debugging, Proteins store a pointer to their encoding DNA (similar to how a RISC-like mechanism might identify similar mRNA to that with produced the Protein in order to down-regulate its production; for more info, look into RNA Interference). <br />
+ * Because Proteins will point back to their parent DNA, we also provide a name and version for each DNA Molecule. This helps to identify Proteins that might be otherwise indistinguishable. <br />
+ * NOTE: genetic/Gene.h has most of the DNA interface. <br />
  *
- * Also note that, in reality, a single allele (Protein*) may result in the production of multiple proteins. That is true here as well; however, that logic is abstracted to a Protein's sub-proteins.
- * In other words if you want 1 DNA Molecule to produce several Proteins, you must Add<Protein*>() those to the Protein in *this.
+ * Also note that, in reality, a single allele (Protein*) may result in the production of multiple proteins. That is true here as well; however, that logic is abstracted to a Protein's sub-proteins. <br />
+ * In other words if you want 1 DNA Molecule to produce several Proteins, you must Add<Protein*>() those to the Protein in *this. <br />
  */
 class DNA :
 	public Class< DNA >,
@@ -46,17 +46,17 @@ class DNA :
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular,
 		DNA)
 
 	/**
-	 * Standard ctors.
-	 * These are easy to use but require setting the Version after instantiation.
-	 * For example:
-	 * 		DNA myAllele = DNA("MyGene");
-	 * 		myAllele.SetVersion(1.0);
+	 * Standard ctors. <br />
+	 * These are easy to use but require setting the Version after instantiation. <br />
+	 * For example: <br />
+	 * 		DNA myAllele = DNA("MyGene"); <br />
+	 * 		myAllele.SetVersion(1.0); <br />
 	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(molecular,
 		DNA,
 		&DNAPerspective::Instance(),
@@ -68,22 +68,22 @@ public:
 	virtual ~DNA();
 
 	/**
-	 * See classes in the genetic namespace for proper Translation of Protein.
+	 * See classes in the genetic namespace for proper Translation of Protein. <br />
 	 * @return the Protein in *this.
 	 */
-	virtual Protein* GetProtein();
+	virtual Protein* GetProtein(); <br />
 
 	/**
-	 * See classes in the genetic namespace for proper Translation of Protein.
+	 * See classes in the genetic namespace for proper Translation of Protein. <br />
 	 * @return the Protein in *this.
 	 */
-	virtual const Protein* GetProtein() const;
+	virtual const Protein* GetProtein() const; <br />
 
 	/**
-	 * Change what *this encodes.
+	 * Change what *this encodes. <br />
 	 * @param protein
 	 */
-	virtual void SetProtein(Protein* protein);
+	virtual void SetProtein(Protein* protein); <br />
 
 	/**
 	 * @return the Id of the Protein *this encodes.
@@ -96,18 +96,18 @@ public:
 	virtual Version GetVersion();
 
 	/**
-	 * Set the Version of *this.
+	 * Set the Version of *this. <br />
 	 * @param newVersion
 	 */
 	virtual void SetVersion(Version newVersion);
 
 protected:
-	Protein* m_protein;
+	Protein* m_protein; <br />
 	Version m_version;
 
 private:
 	/**
-	 * common constructor code.
+	 * common constructor code. <br />
 	 */
 	void CtorCommon();
 };

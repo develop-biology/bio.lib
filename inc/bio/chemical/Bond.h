@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -34,11 +34,11 @@ class Wave;
 namespace chemical {
 
 /**
- * Bonds are used by Atom to form relationships to Waves.
- * These can be thought of as edges in a directed graph.
- * See Atom.h for more info.
+ * Bonds are used by Atom to form relationships to Waves. <br />
+ * These can be thought of as edges in a directed graph. <br />
+ * See Atom.h for more info. <br />
  *
- * NOTE: Bonds may currently only be of a single BondType. This may change in a future release.
+ * NOTE: Bonds may currently only be of a single BondType. This may change in a future release. <br />
  */
 class Bond
 {
@@ -55,7 +55,7 @@ public:
 	 */
 	Bond(
 		AtomicNumber id,
-		physical::Wave* bonded,
+		physical::Wave* bonded, <br />
 		BondType type = bond_type::Unknown());
 
 	/**
@@ -76,8 +76,8 @@ public:
 	bool operator==(const Bond& other) const;
 
 	/**
-	 * Update the contents of *this.
-	 * Only works if *this IsEmpty().
+	 * Update the contents of *this. <br />
+	 * Only works if *this IsEmpty(). <br />
 	 * @param id
 	 * @param bonded
 	 * @param type
@@ -85,7 +85,7 @@ public:
 	 */
 	bool Form(
 		AtomicNumber id,
-		physical::Wave* bonded,
+		physical::Wave* bonded, <br />
 		BondType type = bond_type::Unknown());
 
 	/**
@@ -96,12 +96,12 @@ public:
 	/**
 	 * @return the m_bonded of *this.
 	 */
-	physical::Wave* GetBonded();
+	physical::Wave* GetBonded(); <br />
 
 	/**
 	 * @return the m_bonded of *this.
 	 */
-	const physical::Wave* GetBonded() const;
+	const physical::Wave* GetBonded() const; <br />
 
 	/**
 	 * @return the m_type of *this.
@@ -114,17 +114,17 @@ public:
 	bool IsEmpty() const;
 
 	/**
-	 * Empties the contents of *this.
+	 * Empties the contents of *this. <br />
 	 */
 	void Break();
 
 private:
 	AtomicNumber m_id;
-	physical::Wave* m_bonded;
+	physical::Wave* m_bonded; <br />
 	BondType m_type;
 };
 
-typedef physical::Arrangement< Bond* > Bonds;
+typedef physical::Arrangement< Bond* > Bonds; <br />
 
 } //chemical namespace
 } //bio namespace

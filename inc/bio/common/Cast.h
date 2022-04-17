@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -24,8 +24,8 @@
 namespace bio {
 
 /**
- * Simple casting wrapper.
- * It continues to function when RTTI is disabled.
+ * Simple casting wrapper. <br />
+ * It continues to function when RTTI is disabled. <br />
  * @tparam TO
  * @tparam FROM Dynamically determined template type.
  * @param toCast a FROM.
@@ -43,15 +43,15 @@ TO Cast(FROM toCast)
 }
 
 /**
- * DANGEROUS!!!
+ * DANGEROUS!!! <br />
  *
- * DO NOT USE THIS UNLESS YOU KNOW WHAT YOU ARE DOING!
+ * DO NOT USE THIS UNLESS YOU KNOW WHAT YOU ARE DOING! <br />
  *
- * THIS DOES NO ERROR CHECKING AND WILL BREAK YOUR CODE IF MISUSED!
+ * THIS DOES NO ERROR CHECKING AND WILL BREAK YOUR CODE IF MISUSED! <br />
  *
- * Example use case:
- * void* toCast = new MyClass(); //void* might be an ambiguous base class but MyClass is the same for toCast and casted.
- * MyClass* casted = ForceCast<MyClass*>(toCast);
+ * Example use case: <br />
+ * void* toCast = new MyClass(); //void* might be an ambiguous base class but MyClass is the same for toCast and casted. <br />
+ * MyClass* casted = ForceCast<MyClass*>(toCast); <br />
  * @tparam TO
  * @tparam FROM Dynamically determined template type.
  * @param toCast a FROM.
@@ -64,8 +64,8 @@ TO ForceCast(FROM toCast)
 }
 
 /**
- * DANGEROUS!!!
- * Same as ForceCast, except uses a dummy parameter to automatically determine an intermediate type.
+ * DANGEROUS!!! <br />
+ * Same as ForceCast, except uses a dummy parameter to automatically determine an intermediate type. <br />
  * @tparam TO Dynamically determined by autoTo dummy parameter.
  * @tparam FROM Dynamically determined template type.
  * @param toCast a FROM.
@@ -75,7 +75,7 @@ TO ForceCast(FROM toCast)
 template < typename TO_FINAL, typename TO_1, typename FROM >
 TO_FINAL DoubleForceCast(
 	FROM toCast,
-	TO_1* autoTo
+	TO_1* autoTo <br />
 )
 {
 	return (TO_FINAL)(TO_1)(void*)(toCast);

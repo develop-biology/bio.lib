@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -29,34 +29,34 @@ namespace bio {
 namespace molecular {
 
 /**
- * A Pathway is a series chemical::Reactions that accomplishes some larger goal.
- * Pathways, are themselves Reactions and can be invoked using the same calls (e.g. chemical::Reaction::Initiate<MyPathway>.
- * NOTE: in real life, pathways often include protein-catalyzed reactions. You can do that here too!
+ * A Pathway is a series chemical::Reactions that accomplishes some larger goal. <br />
+ * Pathways, are themselves Reactions and can be invoked using the same calls (e.g. chemical::Reaction::Initiate<MyPathway>. <br />
+ * NOTE: in real life, pathways often include protein-catalyzed reactions. You can do that here too! <br />
  *
- * NOTE: while Pathways are Reactions, they should not have any Requirements / Reactants nor should they perform any Process of their own. Instead, they should rely entirely on the Reactions added to them.
- * With the above stated, Pathways can be treated like Reactions for the purpose of being added to other Pathways ;)
+ * NOTE: while Pathways are Reactions, they should not have any Requirements / Reactants nor should they perform any Process of their own. Instead, they should rely entirely on the Reactions added to them. <br />
+ * With the above stated, Pathways can be treated like Reactions for the purpose of being added to other Pathways ;) <br />
  *
- * Pathways are First-In-First-Out (FIFO) ordered.
- * The first call to Add<Reaction*>() will be the first Reaction run by *this and the Reaction that determines the required Reactants to even begin *this Process.
- * The last call to Add<Reaction*>() will be the last Reaction called and will determine the ultimate Products returned by *this Process, should it successfully run to completion.
- * i.e. return last(middle(first(reactants)));
+ * Pathways are First-In-First-Out (FIFO) ordered. <br />
+ * The first call to Add<Reaction*>() will be the first Reaction run by *this and the Reaction that determines the required Reactants to even begin *this Process. <br />
+ * The last call to Add<Reaction*>() will be the last Reaction called and will determine the ultimate Products returned by *this Process, should it successfully run to completion. <br />
+ * i.e. return last(middle(first(reactants))); <br />
  *
- * TODO: Add switching logic for Products Code.
+ * TODO: Add switching logic for Products Code. <br />
  */
 class Pathway :
 	public chemical::Class< Pathway >,
 	public chemical::Reaction,
-	public chemical::LinearMotif< chemical::Reaction* >
+	public chemical::LinearMotif< chemical::Reaction* > <br />
 {
 public:
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical,
 		Pathway)
 
 	/**
-	 * Standard ctors.
+	 * Standard ctors. <br />
 	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(chemical,
 		Pathway,
 		&chemical::ReactionPerspective::Instance(),
@@ -68,19 +68,19 @@ public:
 	virtual ~Pathway();
 
 	/**
-	 * The Process of a Pathway is the series of Reactions it includes.
-	 * This is FIFO ordering (see class description for details).
+	 * The Process of a Pathway is the series of Reactions it includes. <br />
+	 * This is FIFO ordering (see class description for details). <br />
 	 * @param reactants
 	 * @return the Products from the last Reaction or a code::FailedReaction(), if any step did not succeed.
 	 */
-	virtual chemical::Products Process(chemical::Reactants* reactants);
+	virtual chemical::Products Process(chemical::Reactants* reactants); <br />
 
 	/**
-	 * *this shouldn't have an Requirements / Reactants, so instead we check the first Reaction in *this.
+	 * *this shouldn't have an Requirements / Reactants, so instead we check the first Reaction in *this. <br />
 	 * @param toCheck
 	 * @return whether or not the first Reaction in *this can use the given Substances.
 	 */
-	virtual bool ReactantsMeetRequirements(const chemical::Reactants* toCheck) const;
+	virtual bool ReactantsMeetRequirements(const chemical::Reactants* toCheck) const; <br />
 };
 
 } //molecular namespace

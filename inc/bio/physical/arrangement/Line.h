@@ -28,9 +28,9 @@ namespace bio {
 namespace physical {
 
 /**
- * Lines are Linear Arrangements.
+ * Lines are Linear Arrangements. <br />
  *
- * NOTE: We reserve Position 0 as invalid.
+ * NOTE: We reserve Position 0 as invalid. <br />
  *
  * @tparam STORE
  */
@@ -50,35 +50,35 @@ public:
 	virtual ~Line();
 
 	/**
-	 * Get the position of an Identifiable< StandardDimension >* with the given name in *this.
+	 * Get the position of an Identifiable< StandardDimension >* with the given name in *this. <br />
 	 * @param name
 	 * @return an Index matching the given name or InvalidIndex().
 	 */
 	virtual Index SeekToName(Name name);
 
 	/**
-	 * Get the position of an Identifiable< StandardDimension >* with the given id in *this.
+	 * Get the position of an Identifiable< StandardDimension >* with the given id in *this. <br />
 	 * @param id
 	 * @return an Index matching the given id or InvalidIndex().
 	 */
 	virtual Index SeekToId(StandardDimension id);
 
 	/**
-	 * We want to return an Identifiable< StandardDimension >*, not a Linear.
+	 * We want to return an Identifiable< StandardDimension >*, not a Linear. <br />
 	 * @param index
 	 * @return an Identifiable< StandardDimension >* from the Linear at the given Index.
 	 */
 	ByteStream Access(const Index index);
 
 	/**
-	 * We want to return an Identifiable< StandardDimension >*, not a Linear.
+	 * We want to return an Identifiable< StandardDimension >*, not a Linear. <br />
 	 * @param index
 	 * @return an Identifiable< StandardDimension >* from the Linear at the given Index.
 	 */
 	const ByteStream Access(const Index index) const;
 
 	/**
-	 * Since we operate on Identifiable< StandardDimension >*, not Linears, we want to treat the external datum as Identifiable< StandardDimension >*.
+	 * Since we operate on Identifiable< StandardDimension >*, not Linears, we want to treat the external datum as Identifiable< StandardDimension >*. <br />
 	 * @param internal
 	 * @param external
 	 * @return whether or not the Linear at the given Index is equal to the provided Identifiable< StandardDimension >*.
@@ -89,18 +89,18 @@ public:
 	) const;
 
 	/**
-	 * Convenience wrapper around OptimizedAccess.
+	 * Convenience wrapper around OptimizedAccess. <br />
 	 * @param index
 	 * @return the given position casted to an Identifiable< StandardDimension >*
 	 */
-	virtual Identifiable< StandardDimension >* LinearAccess(Index index);
+	virtual Identifiable< StandardDimension >* LinearAccess(Index index); <br />
 
 	/**
-	 * Convenience wrapper around OptimizedAccess.
+	 * Convenience wrapper around OptimizedAccess. <br />
 	 * @param index
 	 * @return the given position casted to an Identifiable< StandardDimension >*
 	 */
-	virtual const Identifiable< StandardDimension >* LinearAccess(Index index) const;
+	virtual const Identifiable< StandardDimension >* LinearAccess(Index index) const; <br />
 };
 
 } //physical namespace

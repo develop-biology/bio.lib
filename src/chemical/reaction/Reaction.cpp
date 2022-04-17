@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -29,7 +29,7 @@ namespace chemical {
 
 Reaction::Reaction(
 	Name name,
-	const Reactants* reactants
+	const Reactants* reactants <br />
 )
 	:
 	chemical::Class< Reaction >(
@@ -42,14 +42,14 @@ Reaction::Reaction(
 {
 }
 
-void Reaction::Require(Reactant* reactant)
+void Reaction::Require(Reactant* reactant) <br />
 {
-	m_requiredReactants.Add< Substance* >(reactant);
+	m_requiredReactants.Add< Substance* >(reactant); <br />
 }
 
 void Reaction::Require(
 	Name typeName,
-	const Substance* substance
+	const Substance* substance <br />
 )
 {
 	Require(
@@ -61,8 +61,8 @@ void Reaction::Require(
 
 void Reaction::Require(
 	Name typeName,
-	const UnorderedMotif< Property >::Contents* properties,
-	const UnorderedMotif< State >::Contents* states
+	const UnorderedMotif< Property >::Contents* properties, <br />
+	const UnorderedMotif< State >::Contents* states <br />
 )
 {
 	Require(
@@ -74,19 +74,19 @@ void Reaction::Require(
 }
 
 
-bool Reaction::ReactantsMeetRequirements(const Reactants* toCheck) const
+bool Reaction::ReactantsMeetRequirements(const Reactants* toCheck) const <br />
 {
-	return toCheck->HasAll< Substance* >(m_requiredReactants.GetAll< Substance* >());
+	return toCheck->HasAll< Substance* >(m_requiredReactants.GetAll< Substance* >()); <br />
 }
 
-/*static*/ const Reaction* Reaction::Initiate(StandardDimension id)
+/*static*/ const Reaction* Reaction::Initiate(StandardDimension id) <br />
 {
-	BIO_SANITIZE_WITH_CACHE(ReactionPerspective::Instance().GetTypeFromIdAs< Reaction* >(id),
-		return *(Cast< const Reaction** >(RESULT)),
+	BIO_SANITIZE_WITH_CACHE(ReactionPerspective::Instance().GetTypeFromIdAs< Reaction* >(id), <br />
+		return *(Cast< const Reaction** >(RESULT)), <br />
 		return NULL);
 }
 
-Products Reaction::operator()(Reactants* reactants) const
+Products Reaction::operator()(Reactants* reactants) const <br />
 {
 	//Always level 2, even if the user wants more (i.e. never less).
 	BIO_SANITIZE_AT_SAFETY_LEVEL_2(ReactantsMeetRequirements(reactants),

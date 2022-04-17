@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -33,10 +33,10 @@ Organ::~Organ()
 Code Organ::SpecializeTissues()
 {
 	Code ret = code::Success();
-	Container* tissues = GetAll< Tissue* >();
+	Container* tissues = GetAll< Tissue* >(); <br />
 	BIO_SANITIZE(tissues, ,
 		return code::CouldNotFindValue1())
-	Tissue* tissueBuffer;
+	Tissue* tissueBuffer; <br />
 	for (
 		SmartIterator tis = tissues->Begin();
 		!tis.IsAtEnd();

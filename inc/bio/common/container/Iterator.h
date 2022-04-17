@@ -29,25 +29,25 @@ namespace bio {
 class Container;
 
 /**
- * An Iterator is the preferred means of accessing the elements stored in an Container.
- * Please use increment and decrement operators to move through these elements.
- * While untested, it is likely that starting at the end and decrementing will be faster than starting at the beginning and incrementing, due to removing the overhead of having to keep track of where the end is.
+ * An Iterator is the preferred means of accessing the elements stored in an Container. <br />
+ * Please use increment and decrement operators to move through these elements. <br />
+ * While untested, it is likely that starting at the end and decrementing will be faster than starting at the beginning and incrementing, due to removing the overhead of having to keep track of where the end is. <br />
  *
- * NOTE: There are no checks to guard against being given a bad Container*. These have been neglected to increase performance.
+ * NOTE: There are no checks to guard against being given a bad Container*. These have been neglected to increase performance. <br />
  */
 class Iterator
 {
 public:
 
 	/**
-	 * Constructor is only built with a const Container*.
-	 * We cast away the cv and keep only the mutable pointer.
-	 * This is done in order to avoid having a separate class for const access (as is in the standard library).
+	 * Constructor is only built with a const Container*. <br />
+	 * We cast away the cv and keep only the mutable pointer. <br />
+	 * This is done in order to avoid having a separate class for const access (as is in the standard library). <br />
 	 * @param container
 	 * @param index
 	 */
 	Iterator(
-		const Container* container,
+		const Container* container, <br />
 		const Index index = InvalidIndex());
 
 	/**
@@ -61,7 +61,7 @@ public:
 	Index GetIndex() const;
 
 	/**
-	 * Make *this point somewhere else;
+	 * Make *this point somewhere else; <br />
 	 * @param index
 	 * @return whether or not *this was moved.
 	 */
@@ -78,31 +78,31 @@ public:
 	virtual bool IsAtEnd() const;
 
 	/**
-	 * Move *this up a Index
+	 * Move *this up a Index <br />
 	 * @return *this after incrementing.
 	 */
-	virtual Iterator* Increment();
+	virtual Iterator* Increment(); <br />
 
 	/**
-	 * Move *this down a Index.
+	 * Move *this down a Index. <br />
 	 * @return *this following decrementing.
 	 */
-	virtual Iterator* Decrement();
+	virtual Iterator* Decrement(); <br />
 
 	/**
-	 * Dereferencing gives the datum *this is currently pointing to.
+	 * Dereferencing gives the datum *this is currently pointing to. <br />
 	 * @return a ByteStream containing the datum requested.
 	 */
 	virtual ByteStream operator*();
 
 	/**
-	 * Dereferencing gives the datum *this is currently pointing to.
+	 * Dereferencing gives the datum *this is currently pointing to. <br />
 	 * @return a ByteStream containing the datum requested.
 	 */
 	virtual const ByteStream operator*() const;
 
 protected:
-	mutable Container* m_container;
+	mutable Container* m_container; <br />
 	Index m_index;
 }; //Iterator class.
 

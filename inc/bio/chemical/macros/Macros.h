@@ -27,7 +27,7 @@
 #include "bio/physical/macros/Macros.h"
 
 /**
- * Get all virtual methods defined by chemical::Class.
+ * Get all virtual methods defined by chemical::Class. <br />
  * @return function signatures for use in BIO_DISAMBIGUATE_ALL_CLASS_METHODS
  */
 #define BIO_GET_REQUIRED_CLASS_METHODS_FOR_chemical()                          \
@@ -37,7 +37,7 @@
         GetProperties()                                                        \
     ),                                                                         \
     (                                                                          \
-        virtual ::bio::chemical::Atom* AsAtom(),                               \
+        virtual ::bio::chemical::Atom* AsAtom(),                               \ <br />
         AsAtom()                                                               \
     ),                                                                         \
     (                                                                          \
@@ -45,21 +45,21 @@
         template As< AS >()                                                    \
     ),                                                                         \
     (                                                                          \
-        virtual const ::bio::chemical::Atom* AsAtom() const,                   \
+        virtual const ::bio::chemical::Atom* AsAtom() const,                   \ <br />
         AsAtom()                                                               \
     )
 /**
- * Get all virtual methods defined by chemical::Class.
+ * Get all virtual methods defined by chemical::Class. <br />
  * @return function signatures for use in BIO_DISAMBIGUATE_ALL_CLASS_METHODS
  */
 #define BIO_GET_OPTIONAL_CLASS_METHODS_FOR_chemical()                          \
     BIO_GET_OPTIONAL_CLASS_METHODS_FOR_physical(),                             \
     (                                                                          \
-        virtual Code Attenuate(const ::bio::physical::Wave* other),            \
+        virtual Code Attenuate(const ::bio::physical::Wave* other),            \ <br />
         Attenuate(other)                                                       \
     ),                                                                         \
     (                                                                          \
-        virtual Code Disattenuate(const ::bio::physical::Wave* other),         \
+        virtual Code Disattenuate(const ::bio::physical::Wave* other),         \ <br />
         Disattenuate(other)                                                    \
     )
 

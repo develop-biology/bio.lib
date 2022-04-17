@@ -28,7 +28,7 @@ namespace bio {
 namespace genetic {
 
 Insertion::Insertion(
-	chemical::Substance* toInsert,
+	chemical::Substance* toInsert, <br />
 	Site site,
 	Name name
 )
@@ -48,7 +48,7 @@ Insertion::~Insertion()
 
 }
 
-chemical::Substance* Insertion::Seek(chemical::Substance* insertIn) const
+chemical::Substance* Insertion::Seek(chemical::Substance* insertIn) const <br />
 {
 	insertIn = ResolvePrevious(insertIn);
 
@@ -63,7 +63,7 @@ chemical::Substance* Insertion::Seek(chemical::Substance* insertIn) const
 	BIO_SANITIZE(mc_method, ,
 		return NULL)
 	ByteStream insertion(m_toInsert);
-	(const_cast< chemical::ExcitationBase* >(mc_method))->EditArg(
+	(const_cast< chemical::ExcitationBase* >(mc_method))->EditArg( <br />
 		0,
 		insertion
 	);
@@ -72,7 +72,7 @@ chemical::Substance* Insertion::Seek(chemical::Substance* insertIn) const
 		insertIn->AsWave(),
 		result
 	);
-	chemical::Substance* insert = ChemicalCast< chemical::Substance* >(Cast< physical::Wave* >(result.IKnowWhatImDoing())); //This is about as safe as we can get right now.
+	chemical::Substance* insert = ChemicalCast< chemical::Substance* >(Cast< physical::Wave* >(result.IKnowWhatImDoing())); //This is about as safe as we can get right now. <br />
 	BIO_SANITIZE(insert, ,
 		return NULL)
 	return insert;
@@ -82,15 +82,15 @@ void Insertion::SetSite(Site site)
 {
 	//Assume Sites & Sites always match exactly.
 	m_site = site;
-	mc_method = InsertionSitePerspective::Instance().GetNewObjectFromIdAs< chemical::ExcitationBase* >(m_site);
+	mc_method = InsertionSitePerspective::Instance().GetNewObjectFromIdAs< chemical::ExcitationBase* >(m_site); <br />
 }
 
-void Insertion::InsertThis(chemical::Substance* toInsert)
+void Insertion::InsertThis(chemical::Substance* toInsert) <br />
 {
 	m_toInsert = toInsert;
 }
 
-chemical::Substance* Insertion::GetWhatWillBeInserted()
+chemical::Substance* Insertion::GetWhatWillBeInserted() <br />
 {
 	return m_toInsert;
 }

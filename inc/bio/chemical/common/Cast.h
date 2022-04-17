@@ -34,7 +34,7 @@ TO ChemicalCast(FROM toCast)
 }
 
 /**
- * Ease of use method for Cloning.
+ * Ease of use method for Cloning. <br />
  * @tparam T
  * @return a Clone of T casted to back to T.
  */
@@ -42,7 +42,7 @@ template < typename T >
 T CloneAndCast(const T toClone)
 {
 	//Dereference here might be dangerous & need sanitization.
-	return ChemicalCast< T, ::bio::physical::Wave* >(toClone->Clone()->AsWave());
+	return ChemicalCast< T, ::bio::physical::Wave* >(toClone->Clone()->AsWave()); <br />
 }
 
 

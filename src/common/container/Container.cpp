@@ -35,7 +35,7 @@ Container::Container(
 	m_size(expectedSize + 1),
 	m_tempItt(NULL)
 {
-	m_store = (unsigned char*)std::malloc(m_size * stepSize);
+	m_store = (unsigned char*)std::malloc(m_size * stepSize); <br />
 	BIO_ASSERT(m_store)
 }
 
@@ -45,7 +45,7 @@ Container::Container(const Container& other)
 	m_size(other.m_size),
 	m_tempItt(NULL)
 {
-	m_store = (unsigned char*)std::malloc(m_size * other.GetStepSize());
+	m_store = (unsigned char*)std::malloc(m_size * other.GetStepSize()); <br />
 	BIO_ASSERT(m_store)
 	Import(&other); // <- NOT VIRTUAL (in ctor).
 }
@@ -113,14 +113,14 @@ void Container::Expand()
 {
 	BIO_SANITIZE(m_size < std::numeric_limits< Index >::max(), ,
 		return)
-	Index targetSize = m_size * m_size; //squared.
+	Index targetSize = m_size * m_size; //squared. <br />
 	if (targetSize < m_size)
 	{
 		targetSize = std::numeric_limits< Index >::max();
 	}
 	m_store = (unsigned char*)std::realloc(
 		m_store,
-		targetSize * GetStepSize());
+		targetSize * GetStepSize()); <br />
 	BIO_SANITIZE(m_store, ,
 		return)
 	m_size = targetSize;
@@ -132,7 +132,7 @@ Index Container::Add(const ByteStream content)
 	BIO_SANITIZE(ret, ,
 		return ret)
 	std::memcpy(
-		&m_store[ret * sizeof(ByteStream)],
+		&m_store[ret * sizeof(ByteStream)], <br />
 		content,
 		sizeof(ByteStream));
 	return ret;
@@ -159,9 +159,9 @@ Index Container::Insert(
 
 	//move all memory down 1.
 	std::memcpy(
-		&m_store[index * GetStepSize()],
-		&m_store[(index + 1) * GetStepSize()],
-		(m_firstFree - index) * GetStepSize());
+		&m_store[index * GetStepSize()], <br />
+		&m_store[(index + 1) * GetStepSize()], <br />
+		(m_firstFree - index) * GetStepSize()); <br />
 
 	//adjust all deallocated positions.
 	std::deque< Index > adjustedDeallocations;
@@ -186,10 +186,10 @@ ByteStream Container::Access(const Index index)
 {
 	BIO_SANITIZE(IsAllocated(index), ,
 		return NULL)
-	ByteStream* ret;
+	ByteStream* ret; <br />
 	std::memcpy(
 		ret,
-		&m_store[index * sizeof(ByteStream)],
+		&m_store[index * sizeof(ByteStream)], <br />
 		sizeof(ByteStream));
 	return *ret;
 }
@@ -198,10 +198,10 @@ const ByteStream Container::Access(const Index index) const
 {
 	BIO_SANITIZE(IsAllocated(index), ,
 		return NULL)
-	ByteStream* ret;
+	ByteStream* ret; <br />
 	std::memcpy(
 		ret,
-		&m_store[index * sizeof(ByteStream)],
+		&m_store[index * sizeof(ByteStream)], <br />
 		sizeof(ByteStream));
 	return *ret;
 }
@@ -238,21 +238,21 @@ bool Container::Erase(const Index index)
 {
 	BIO_SANITIZE(IsAllocated(index), ,
 		return false)
-	ByteStream* toDelete;
+	ByteStream* toDelete; <br />
 	std::memcpy(
 		toDelete,
-		&m_store[index * sizeof(ByteStream)],
+		&m_store[index * sizeof(ByteStream)], <br />
 		sizeof(ByteStream));
 	delete toDelete;
 	m_deallocated.push_back(index);
 	return true;
 }
 
-void Container::Import(const Container* other)
+void Container::Import(const Container* other) <br />
 {
 	BIO_SANITIZE(other, ,
 		return)
-	Iterator* otr = other->End();
+	Iterator* otr = other->End(); <br />
 	for (
 		; !otr->IsAtBeginning();
 		--otr
@@ -282,7 +282,7 @@ void Container::Clear()
 	m_deallocated.clear();
 }
 
-Iterator* Container::ConstructClassIterator(const Index index) const
+Iterator* Container::ConstructClassIterator(const Index index) const <br />
 {
 	BIO_SANITIZE(IsAllocated(index), ,
 		return NULL)

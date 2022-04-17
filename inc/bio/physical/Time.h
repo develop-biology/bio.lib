@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -22,8 +22,8 @@
 #pragma once
 
 /**
- * WARNING: THIS FILE USES C++11 for cross platform time management.
- * TODO: add C++98 compatibility for popular operating systems.
+ * WARNING: THIS FILE USES C++11 for cross platform time management. <br />
+ * TODO: add C++98 compatibility for popular operating systems. <br />
 */
 
 // #define BIO_FAKE_SYSTEM_TIME //DEVELOPMENT ONLY!!!
@@ -34,16 +34,16 @@ namespace bio {
 namespace physical {
 
 #ifdef BIO_FAKE_SYSTEM_TIME
-/** 
- * Because mocking global functions is such a pain, this method has been provided FOR TESTING PURPOSES ONLY
- * Use of this method requires that the bio library be compiled with BIO_FAKE_SYSTEM_TIME
+/**  <br />
+ * Because mocking global functions is such a pain, this method has been provided FOR TESTING PURPOSES ONLY <br />
+ * Use of this method requires that the bio library be compiled with BIO_FAKE_SYSTEM_TIME <br />
  * @param newTime the time that will be returned by GetCurrentTimestamp().
  */
 void SetFakeTime(const Timestamp newTime);
 #endif
 
 /**
- * Uses std::chrono to return the time since epoch.
+ * Uses std::chrono to return the time since epoch. <br />
  * @return the current time as a Timestamp.
  */
 Timestamp GetCurrentTimestamp();

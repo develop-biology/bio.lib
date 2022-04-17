@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -43,7 +43,7 @@ namespace utility {
 //@formatter:on
 
 /**
- * Check whether or not T is a pointer
+ * Check whether or not T is a pointer <br />
  * @tparam T
  * @return whether or not T is a pointer.
  */
@@ -60,7 +60,7 @@ inline bool IsPointer()
 }
 
 /**
- * Ease of use method for passing T as arg.
+ * Ease of use method for passing T as arg. <br />
  * @tparam T
  * @param t
  * @return whether or not T is a pointer.
@@ -72,8 +72,8 @@ inline bool IsPointer(const T t)
 }
 
 /**
- * Maybe a helper method?
- * This is currently unused.
+ * Maybe a helper method? <br />
+ * This is currently unused. <br />
  * @tparam T
  * @param t
  * @return T
@@ -85,14 +85,14 @@ inline T& Dereference(T& t)
 }
 
 /**
- * Maybe a helper method?
- * This is currently unused.
+ * Maybe a helper method? <br />
+ * This is currently unused. <br />
  * @tparam T
  * @param t
  * @return *T
  */
 template < typename T >
-inline T& Dereference(T* t)
+inline T& Dereference(T* t) <br />
 {
 	return *t;
 }

@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -27,8 +27,8 @@ namespace bio {
 namespace genetic {
 
 /**
- * Used by the Genome to get a Plasmid.
- * Takes a Plasmid's Name in "Name Binding Site" or a StandardDimension Id in the "Id Binding Site" and gives the result in "Return Site".
+ * Used by the Genome to get a Plasmid. <br />
+ * Takes a Plasmid's Name in "Name Binding Site" or a StandardDimension Id in the "Id Binding Site" and gives the result in "Return Site". <br />
  */
 class FetchPlasmid :
 	public molecular::Protein
@@ -46,7 +46,7 @@ public:
 
 
 	/**
-	 * Do the Fetch stuff.
+	 * Do the Fetch stuff. <br />
 	 */
 	virtual Code Activate();
 

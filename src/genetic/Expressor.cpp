@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -34,7 +34,7 @@ Expressor::~Expressor()
 Code Expressor::Activate(StandardDimension proteinId)
 {
 	Code ret = code::Success();
-	molecular::Protein* toActivate = GetById< molecular::Protein* >(proteinId);
+	molecular::Protein* toActivate = GetById< molecular::Protein* >(proteinId); <br />
 	BIO_SANITIZE(toActivate, ,
 		return false);
 	return toActivate->Activate();
@@ -47,10 +47,10 @@ Code Expressor::Activate(Name proteinName)
 
 Code Expressor::ExpressGenes()
 {
-	Plasmid* plasmidBuffer;
+	Plasmid* plasmidBuffer; <br />
 	Code ret = code::Success();
 	for (
-		SmartIterator dna = GetAll< Plasmid* >()->Begin();
+		SmartIterator dna = GetAll< Plasmid* >()->Begin(); <br />
 		!dna.IsAtEnd();
 		++dna
 		)
@@ -75,7 +75,7 @@ Code Expressor::ExpressGenes()
 	return ret;
 }
 
-Code Expressor::AddToTranscriptome(const RNA* toExpress)
+Code Expressor::AddToTranscriptome(const RNA* toExpress) <br />
 {
 	BIO_SANITIZE(toExpress, ,
 		return code::BadArgument1());
@@ -83,14 +83,14 @@ Code Expressor::AddToTranscriptome(const RNA* toExpress)
 	return code::Success();
 }
 
-Code Expressor::Translate(const RNA* mRNA)
+Code Expressor::Translate(const RNA* mRNA) <br />
 {
 	BIO_SANITIZE(mRNA, ,
 		code::BadArgument1());
 
 	Code ret = code::Success();
 
-	Gene* geneBuffer;
+	Gene* geneBuffer; <br />
 	for (
 		Transcriptome::const_iterator rna = m_transcriptome.begin();
 		rna != m_transcriptome.end();
@@ -98,7 +98,7 @@ Code Expressor::Translate(const RNA* mRNA)
 		)
 	{
 		for (
-			SmartIterator gen = (*rna)->GetAll< Gene* >()->Begin();
+			SmartIterator gen = (*rna)->GetAll< Gene* >()->Begin(); <br />
 			!gen.IsAtEnd();
 			++gen
 			)

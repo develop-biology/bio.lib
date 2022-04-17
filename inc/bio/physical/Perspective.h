@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -43,28 +43,28 @@ namespace physical {
 class Wave;
 
 /**
- * Wave is incomplete here due to circular inheritance.
- * To provide the complete type, we provide this Utilities class which is defined in a non-templated compilation unit.
+ * Wave is incomplete here due to circular inheritance. <br />
+ * To provide the complete type, we provide this Utilities class which is defined in a non-templated compilation unit. <br />
  */
 struct PerspectiveUtilities
 {
-	static Wave* Clone(const Wave* toClone);
+	static Wave* Clone(const Wave* toClone); <br />
 
-	static void Delete(Wave* toDelete);
+	static void Delete(Wave* toDelete); <br />
 };
 
 /**
- * A Perspective keeps track of Names and Ids for a certain set of objects within a DIMENSION and ensures a unique Id <-> Name pairing for all objects it "observes".
- * A DIMENSION is a numeric space in which objects may be defined. The size of the space determines how many objects may be "observed" (i.e. kept track of) by a single Perspective.
- * Together, a Perspective and DIMENSION can be thought to define the "size" of the "lens" used to "observe" "objects", if you'll permit the physical analogy of what is purely imaginative.
- * Only objects that share a DIMENSION may be derived from, combined, etc. You cannot have a child class that derives from 2 different Identifiable templates (without solving diamond inheritance and some other caveats).
- * Thus, functionally, you can think of each DIMENSION as a different library, with its source code hidden, such that only objects within that library, that DIMENSION, may inherit from each other.
- * An example DIMENSION would be uint32_t, with up to 4,294,967,295 unique object names per perspective.
+ * A Perspective keeps track of Names and Ids for a certain set of objects within a DIMENSION and ensures a unique Id <-> Name pairing for all objects it "observes". <br />
+ * A DIMENSION is a numeric space in which objects may be defined. The size of the space determines how many objects may be "observed" (i.e. kept track of) by a single Perspective. <br />
+ * Together, a Perspective and DIMENSION can be thought to define the "size" of the "lens" used to "observe" "objects", if you'll permit the physical analogy of what is purely imaginative. <br />
+ * Only objects that share a DIMENSION may be derived from, combined, etc. You cannot have a child class that derives from 2 different Identifiable templates (without solving diamond inheritance and some other caveats). <br />
+ * Thus, functionally, you can think of each DIMENSION as a different library, with its source code hidden, such that only objects within that library, that DIMENSION, may inherit from each other. <br />
+ * An example DIMENSION would be uint32_t, with up to 4,294,967,295 unique object names per perspective. <br />
  *
- * An example use case can be seen with Neurons and Synapses. Both are distinct objects and both can be tracked through different Perspectives. This means a Neuron of Id 1 can have the name "MyNeuron" and a Synapse of Id 1 can have the name "MySynapse".
- * However, Neurons and Synapses share a lot of code and should exist within the same DIMENSION (e.g. in case you wanted to make some strange Neuron/Synapse hybrid). If your DIMENSION is a uint8_t, you could have 255 Neurons and 255 Synapses using a different Perspective for each. Using a single Respective, you could only have 255 uniquely identified Neurons OR Connections, total.
- * Therefore, you'd likely want multiple Perspectives and a much larger DIMENSION (uint32_t, for instance) in order to accommodate a more total objects.
- * See below for a macro for creating singleton of Perspectives.
+ * An example use case can be seen with Neurons and Synapses. Both are distinct objects and both can be tracked through different Perspectives. This means a Neuron of Id 1 can have the name "MyNeuron" and a Synapse of Id 1 can have the name "MySynapse". <br />
+ * However, Neurons and Synapses share a lot of code and should exist within the same DIMENSION (e.g. in case you wanted to make some strange Neuron/Synapse hybrid). If your DIMENSION is a uint8_t, you could have 255 Neurons and 255 Synapses using a different Perspective for each. Using a single Respective, you could only have 255 uniquely identified Neurons OR Connections, total. <br />
+ * Therefore, you'd likely want multiple Perspectives and a much larger DIMENSION (uint32_t, for instance) in order to accommodate a more total objects. <br />
+ * See below for a macro for creating singleton of Perspectives. <br />
  */
 template < typename DIMENSION >
 class Perspective :
@@ -75,8 +75,8 @@ public:
 	typedef std::vector< Id > Ids;
 
 	/**
-	 * What a single point in space contains.
-	 * Dimensions are Nuit ∴ ∴
+	 * What a single point in space contains. <br />
+	 * Dimensions are Nuit ∴ ∴ <br />
 	 */
 	class Hadit
 	{
@@ -84,7 +84,7 @@ public:
 		Hadit(
 			Id id,
 			Name name,
-			Wave* type
+			Wave* type <br />
 		)
 			:
 			m_id(id),
@@ -95,7 +95,7 @@ public:
 
 		Id m_id;
 		Name m_name;
-		Wave* m_type;
+		Wave* m_type; <br />
 	};
 
 	typedef std::vector< Hadit > Hadits;
@@ -137,7 +137,7 @@ public:
 	}
 
 	/**
-	 * When overloading other methods of *this, make sure to check your inputs for invalid Ids. See the functions below for examples.
+	 * When overloading other methods of *this, make sure to check your inputs for invalid Ids. See the functions below for examples. <br />
 	 * @return 0.
 	 */
 	static Id InvalidId()
@@ -146,7 +146,7 @@ public:
 	}
 
 	/**
-	 * When overloading other methods of *this, make sure to check your inputs for invalid Names. See the functions below for examples.
+	 * When overloading other methods of *this, make sure to check your inputs for invalid Names. See the functions below for examples. <br />
 	 * @return "INVALID_NAME".
 	 */
 	static Name InvalidName()
@@ -155,7 +155,7 @@ public:
 	}
 
 	/**
-	 * Gives an iterator fos the given id.
+	 * Gives an iterator fos the given id. <br />
 	 * @param id
 	 * @return a Hadits::iterator or m_hadits.end();
 	 */
@@ -180,7 +180,7 @@ public:
 	}
 
 	/**
-	 * Gives an iterator fos the given id.
+	 * Gives an iterator fos the given id. <br />
 	 * @param id
 	 * @return a Hadits::const_iterator or m_hadits.end();
 	 */
@@ -205,7 +205,7 @@ public:
 
 
 	/**
-	 * This will create a new Id for the given name if one does not exist.
+	 * This will create a new Id for the given name if one does not exist. <br />
 	 * @param name
 	 * @return the Id associated with the given name
 	 */
@@ -246,7 +246,7 @@ public:
 
 
 	/**
-	 * This requires that the Id has been previously associated with the name, perhaps from a call to GetIdFromName.
+	 * This requires that the Id has been previously associated with the name, perhaps from a call to GetIdFromName. <br />
 	 * @param id
 	 * @return the Name associated with the given Id
 	 */
@@ -267,7 +267,7 @@ public:
 
 
 	/**
-	 * There can be up to 256 additional names.
+	 * There can be up to 256 additional names. <br />
 	 * @param name
 	 * @return a new Id for the given Name. However, the Name associated with the returned Id may not be the one provided. For example, consider: GetNameFromId(GetUniqueIdFor("MyName")); //Returns "MyName" GetNameFromId(GetUniqueIdFor("MyName")); //Returns "MyName_1"
 	 */
@@ -303,7 +303,7 @@ public:
 
 
 	/**
-	 * the same as GetIdFromName but will RETURN 0 instead of making a new association, if name is not found.
+	 * the same as GetIdFromName but will RETURN 0 instead of making a new association, if name is not found. <br />
 	 * @param name
 	 * @return the Id associated with name else InvalidId().
 	 */
@@ -344,16 +344,16 @@ public:
 
 
 	/**
-	 * Associates the given Wave type with the given id.
-	 * This is only necessary if you want to use GetTypeFromId later on.
-	 * NOTE: There is no GetIdFromType(). For that behavior, see chemical::PeriodicTable and chemical::Atom.
+	 * Associates the given Wave type with the given id. <br />
+	 * This is only necessary if you want to use GetTypeFromId later on. <br />
+	 * NOTE: There is no GetIdFromType(). For that behavior, see chemical::PeriodicTable and chemical::Atom. <br />
 	 * @param id
 	 * @param type
 	 * @return true if the association completed successfully else false
 	 */
 	virtual bool AssociateType(
 		Id id,
-		Wave* type
+		Wave* type <br />
 	)
 	{
 		typename Hadits::iterator hdt = Find(id);
@@ -372,7 +372,7 @@ public:
 	}
 
 	/**
-	 * Removes the type association created by AssociateType().
+	 * Removes the type association created by AssociateType(). <br />
 	 * @param id
 	 * @return true if the association was removed else false.
 	 */
@@ -395,11 +395,11 @@ public:
 
 
 	/**
-	 * Only works if AssociateType has been called with the given id.
+	 * Only works if AssociateType has been called with the given id. <br />
 	 * @param id
 	 * @return the pointer to the Wave type associated with the given id else NULL.
 	 */
-	virtual const Wave* GetTypeFromId(Id id) const
+	virtual const Wave* GetTypeFromId(Id id) const <br />
 	{
 		BIO_SANITIZE(id == InvalidId(), ,
 			return NULL)
@@ -413,23 +413,23 @@ public:
 	}
 
 	/**
-	 * Only works if AssociateType has been called with the given id.
+	 * Only works if AssociateType has been called with the given id. <br />
 	 * @param name
 	 * @return the pointer to the Wave type associated with the given id else NULL.
 	 */
-	virtual const Wave* GetTypeFromName(Name name) const
+	virtual const Wave* GetTypeFromName(Name name) const <br />
 	{
 		return GetTypeFromId(GetIdWithoutCreation(name));
 	}
 
 	/**
-	 * Creates a new object by Clone()ing the associated type.
+	 * Creates a new object by Clone()ing the associated type. <br />
 	 * @param id
 	 * @return a Clone() of the Wave* associated with the given id else NULL.
 	 */
-	virtual Wave* GetNewObjectFromId(Id id) const
+	virtual Wave* GetNewObjectFromId(Id id) const <br />
 	{
-		const Wave* ret = GetTypeFromId(id);
+		const Wave* ret = GetTypeFromId(id); <br />
 		if (ret)
 		{
 			return PerspectiveUtilities::Clone(ret);
@@ -438,17 +438,17 @@ public:
 	}
 
 	/**
-	 * Creates a new object by Clone()ing the associated type.
+	 * Creates a new object by Clone()ing the associated type. <br />
 	 * @param name
 	 * @return a Clone() of the Wave* associated with the given name else NULL.
 	 */
-	virtual Wave* GetNewObjectFromName(Name name)
+	virtual Wave* GetNewObjectFromName(Name name) <br />
 	{
 		return this->GetNewObjectFromId(this->GetIdFromName(name));
 	}
 
 	/**
-	 * Ease of access method for casting the result of GetTypeFromId().
+	 * Ease of access method for casting the result of GetTypeFromId(). <br />
 	 * @tparam T
 	 * @param id
 	 * @return a T* associated with the given name id NULL.
@@ -457,12 +457,12 @@ public:
 	const T GetTypeFromIdAs(Id id) const
 	{
 		BIO_SANITIZE_WITH_CACHE(GetTypeFromId(id),
-			BIO_SINGLE_ARG(return ForceCast< T, const Wave* >(RESULT)),
+			BIO_SINGLE_ARG(return ForceCast< T, const Wave* >(RESULT)), <br />
 			return NULL);
 	}
 
 	/**
-	 * Ease of access method for casting the result of GetTypeFromId().
+	 * Ease of access method for casting the result of GetTypeFromId(). <br />
 	 * @tparam T
 	 * @param name
 	 * @return a T* associated with the given name id NULL.
@@ -471,12 +471,12 @@ public:
 	const T GetTypeFromNameAs(Name name) const
 	{
 		BIO_SANITIZE_WITH_CACHE(GetTypeFromName(name),
-			BIO_SINGLE_ARG(return ForceCast< T, const Wave* >(RESULT)),
+			BIO_SINGLE_ARG(return ForceCast< T, const Wave* >(RESULT)), <br />
 			return NULL);
 	}
 
 	/**
-	 * Ease of use method for casting the result of GetNewObjectFromId()
+	 * Ease of use method for casting the result of GetNewObjectFromId() <br />
 	 * @tparam T
 	 * @param id
 	 * @return a new T* from Clone()ing the type associated with the given id else NULL.
@@ -485,12 +485,12 @@ public:
 	T GetNewObjectFromIdAs(Id id)
 	{
 		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromId(id),
-			BIO_SINGLE_ARG(return ForceCast< T, Wave* >(RESULT)),
+			BIO_SINGLE_ARG(return ForceCast< T, Wave* >(RESULT)), <br />
 			return NULL);
 	}
 
 	/**
-	 * Ease of access method for casting the result of GetNewObjectFromName()
+	 * Ease of access method for casting the result of GetNewObjectFromName() <br />
 	 * @tparam T
 	 * @param name
 	 * @return a new T* from Clone()ing the type associated with the given name else NULL.
@@ -499,7 +499,7 @@ public:
 	T GetNewObjectFromNameAs(Name name)
 	{
 		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromName(name),
-			BIO_SINGLE_ARG(return ForceCast< T, Wave* >(RESULT)),
+			BIO_SINGLE_ARG(return ForceCast< T, Wave* >(RESULT)), <br />
 			return NULL);
 	}
 

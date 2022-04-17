@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -46,15 +46,15 @@ Atom::~Atom()
 
 }
 
-Code Atom::Attenuate(const physical::Wave* other)
+Code Atom::Attenuate(const physical::Wave* other) <br />
 {
 	BIO_SANITIZE(other, ,
 		return code::BadArgument1())
 
-	const physical::Wave* demodulated = other->Demodulate();
+	const physical::Wave* demodulated = other->Demodulate(); <br />
 	Code ret = code::Success();
 
-	Bond* bondBuffer;
+	Bond* bondBuffer; <br />
 	for (
 		SmartIterator bnd = m_bonds.End();
 		!bnd.IsAtBeginning();
@@ -80,15 +80,15 @@ Code Atom::Attenuate(const physical::Wave* other)
 	return ret;
 }
 
-Code Atom::Disattenuate(const physical::Wave* other)
+Code Atom::Disattenuate(const physical::Wave* other) <br />
 {
 	BIO_SANITIZE(other, ,
 		return code::BadArgument1())
 
-	const physical::Wave* demodulated = other->Demodulate();
+	const physical::Wave* demodulated = other->Demodulate(); <br />
 	Code ret = code::Success();
 
-	Bond* bondBuffer;
+	Bond* bondBuffer; <br />
 	for (
 		SmartIterator bnd = m_bonds.End();
 		!bnd.IsAtBeginning();
@@ -115,7 +115,7 @@ Code Atom::Disattenuate(const physical::Wave* other)
 }
 
 bool Atom::FormBondImplementation(
-	Wave* toBond,
+	Wave* toBond, <br />
 	AtomicNumber id,
 	BondType type
 )
@@ -124,7 +124,7 @@ bool Atom::FormBondImplementation(
 		return false);
 
 	Valence position = GetBondPosition(id);
-	Bond* bondBuffer;
+	Bond* bondBuffer; <br />
 	if (m_bonds.IsAllocated(position))
 	{
 		bondBuffer = m_bonds.OptimizedAccess(position);
@@ -146,7 +146,7 @@ bool Atom::FormBondImplementation(
 }
 
 bool Atom::BreakBondImplementation(
-	Wave* toBreak,
+	Wave* toBreak, <br />
 	AtomicNumber id,
 	BondType type
 )
@@ -195,38 +195,38 @@ BondType Atom::GetBondType(Valence position) const
 	return m_bonds.OptimizedAccess(position)->GetId();
 }
 
-physical::Symmetry* Atom::Spin() const
+physical::Symmetry* Atom::Spin() const <br />
 {
 	//TODO...
 	return Wave::Spin();
 }
 
-Code Atom::Reify(physical::Symmetry* symmetry)
+Code Atom::Reify(physical::Symmetry* symmetry) <br />
 {
 	//TODO...
 	return Wave::Reify(symmetry);
 }
 
-physical::Wave* Atom::GetBonded(Valence position)
+physical::Wave* Atom::GetBonded(Valence position) <br />
 {
 	BIO_SANITIZE(m_bonds.IsAllocated(position), ,
 		return NULL)
 	return m_bonds.OptimizedAccess(position)->GetBonded();
 }
 
-const physical::Wave* Atom::GetBonded(Valence position) const
+const physical::Wave* Atom::GetBonded(Valence position) const <br />
 {
 	BIO_SANITIZE(m_bonds.IsAllocated(position), ,
 		return NULL)
 	return m_bonds.OptimizedAccess(position)->GetBonded();
 }
 
-Bonds* Atom::GetAllBonds()
+Bonds* Atom::GetAllBonds() <br />
 {
 	return &m_bonds;
 }
 
-const Bonds* Atom::GetAllBonds() const
+const Bonds* Atom::GetAllBonds() const <br />
 {
 	return &m_bonds;
 }

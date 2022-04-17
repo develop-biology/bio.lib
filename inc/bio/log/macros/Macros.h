@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -24,9 +24,9 @@
 #define BIO_LOG_PRINTF_MAX_LINE_SIZE 2000 //(+1 for \0)
 
 /**
- * To make defining log Levels easier, use this macro to define the function body of your Level Function().
- * This will assign a value to a string that is identical to your FunctionName (e.g. log::LevelPerspective::Instance().GetNameFromId(MySpecialInformation()) would give "MySpecialInformation")
- * Necessitates that functionName be a part of the log namespace and that any other namespaces are already specified (e.g. using namespace)
+ * To make defining log Levels easier, use this macro to define the function body of your Level Function(). <br />
+ * This will assign a value to a string that is identical to your FunctionName (e.g. log::LevelPerspective::Instance().GetNameFromId(MySpecialInformation()) would give "MySpecialInformation") <br />
+ * Necessitates that functionName be a part of the log namespace and that any other namespaces are already specified (e.g. using namespace) <br />
  */
 #define BIO_LOG_LEVEL_FUNCTION_BODY(functionName)                              \
 BIO_ID_FUNCTION_BODY(                                                          \

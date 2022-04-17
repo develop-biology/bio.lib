@@ -31,19 +31,19 @@ namespace bio {
 namespace chemical {
 
 /**
- * chemical::Symmetry adds a recursive structure to physical::Symmetry. This enables nesting and complex structures to form.
- * Primarily, chemical::Symmetry allows for lists (chemical::Structures) and basic operations (chemical::Reactions) to be Rotated.
+ * chemical::Symmetry adds a recursive structure to physical::Symmetry. This enables nesting and complex structures to form. <br />
+ * Primarily, chemical::Symmetry allows for lists (chemical::Structures) and basic operations (chemical::Reactions) to be Rotated. <br />
  */
 class Symmetry :
 	public physical::Symmetry,
-	public LinearMotif< Symmetry* >,
+	public LinearMotif< Symmetry* >, <br />
 	public chemical::Class< Symmetry >,
 	virtual public Structure
 {
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical,
 		Symmetry)

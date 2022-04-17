@@ -37,16 +37,16 @@ namespace bio {
 namespace chemical {
 
 /**
- * LinearMotif objects contain pointers to chemical::Classes.
+ * LinearMotif objects contain pointers to chemical::Classes. <br />
  *
- * IMPORTANT: CONTENT_TYPE MUST BE A chemical::Class* (which is in the StandardDimension).
- * YOU CANNOT USE LinearMotif WITH TYPES THAT ARE NOT POINTERS TO CHILDREN OF chemical::Class (i.e. a physical::Identifiable<StandardDimension>)
- * Other Dimensions may be supported in a future release.
- * physical::Line and physical::Linear for why.
+ * IMPORTANT: CONTENT_TYPE MUST BE A chemical::Class* (which is in the StandardDimension). <br />
+ * YOU CANNOT USE LinearMotif WITH TYPES THAT ARE NOT POINTERS TO CHILDREN OF chemical::Class (i.e. a physical::Identifiable<StandardDimension>) <br />
+ * Other Dimensions may be supported in a future release. <br />
+ * physical::Line and physical::Linear for why. <br />
  *
- * NOTE: CONTENT_TYPE cannot be "const".
- * cv qualifiers may be supported in a future release but for now, all CONTENT_TYPEs must have the option of being modified.
- * For more on this, see Linear.h.
+ * NOTE: CONTENT_TYPE cannot be "const". <br />
+ * cv qualifiers may be supported in a future release but for now, all CONTENT_TYPEs must have the option of being modified. <br />
+ * For more on this, see Linear.h. <br />
  *
  * @tparam CONTENT_TYPE a pointer type to a child of chemical::Class
  */
@@ -59,13 +59,13 @@ class LinearMotif :
 public:
 
 	/**
-	 * For cleaner code, we redefine Contents.
+	 * For cleaner code, we redefine Contents. <br />
 	 */
 	typedef typename physical::Line Contents;
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
-	 * We want to define our own Attenuate & Disattenuate, so we have to ignore the optional class methods for the chemical class.
+	 * Ensure virtual methods point to Class implementations. <br />
+	 * We want to define our own Attenuate & Disattenuate, so we have to ignore the optional class methods for the chemical class. <br />
 	 */
 	BIO_DISAMBIGUATE_REQUIRED_CLASS_METHODS(chemical,
 		LinearMotif< CONTENT_TYPE >)
@@ -74,7 +74,7 @@ public:
 		LinearMotif< CONTENT_TYPE >)
 
 	/**
-	 * Add property::Linear() to what is given by AbstractMotif.
+	 * Add property::Linear() to what is given by AbstractMotif. <br />
 	 * @return {Structural(), Linear()}
 	 */
 	static Properties GetClassProperties()
@@ -87,7 +87,7 @@ public:
 	/**
 	 * @param perspective
 	 */
-	explicit LinearMotif(physical::Perspective< StandardDimension >* perspective = NULL)
+	explicit LinearMotif(physical::Perspective< StandardDimension >* perspective = NULL) <br />
 		:
 		Elementary< LinearMotif< CONTENT_TYPE > >(GetClassProperties()),
 		chemical::Class< LinearMotif< CONTENT_TYPE > >(this),
@@ -102,8 +102,8 @@ public:
 	 * @param perspective
 	 */
 	explicit LinearMotif(
-		const Contents* contents,
-		physical::Perspective< StandardDimension >* perspective = NULL
+		const Contents* contents, <br />
+		physical::Perspective< StandardDimension >* perspective = NULL <br />
 	)
 		:
 		Elementary< LinearMotif< CONTENT_TYPE > >(GetClassProperties()),
@@ -115,8 +115,8 @@ public:
 	}
 
 	/**
-	 * Copying a LinearMotif will Clone all contents in toCopy into *this.
-	 * Keep in mind that dtor will delete the contents of *this.
+	 * Copying a LinearMotif will Clone all contents in toCopy into *this. <br />
+	 * Keep in mind that dtor will delete the contents of *this. <br />
 	 * @param toCopy
 	 */
 	LinearMotif(const LinearMotif< CONTENT_TYPE >& toCopy)
@@ -130,9 +130,9 @@ public:
 	}
 
 	/**
-	 * Deletes all the Contents in *this.
-	 * NOTE: this uses delete, not delete[].
-	 * The only way to avoid this is by Clear()ing *this yourself first.
+	 * Deletes all the Contents in *this. <br />
+	 * NOTE: this uses delete, not delete[]. <br />
+	 * The only way to avoid this is by Clear()ing *this yourself first. <br />
 	 */
 	virtual ~LinearMotif()
 	{
@@ -140,16 +140,16 @@ public:
 	}
 
 	/**
-	 * Each LinearMotif may use a different Perspective for identifying its contents.
-	 * This Perspective will be used for Name <-> Id matching, Wave->Clone()ing, etc.
-	 * See bio/physical/Perspective.h for more details.
+	 * Each LinearMotif may use a different Perspective for identifying its contents. <br />
+	 * This Perspective will be used for Name <-> Id matching, Wave->Clone()ing, etc. <br />
+	 * See bio/physical/Perspective.h for more details. <br />
 	 */
-	physical::Perspective< StandardDimension >* m_perspective;
+	physical::Perspective< StandardDimension >* m_perspective; <br />
 
 	/**
 	 * @return the m_perspective used by *this.
 	 */
-	physical::Perspective< StandardDimension >* GetStructuralPerspective()
+	physical::Perspective< StandardDimension >* GetStructuralPerspective() <br />
 	{
 		return m_perspective;
 	}
@@ -157,27 +157,27 @@ public:
 	/**
 	 * @return the m_perspective used by *this.
 	 */
-	const physical::Perspective< StandardDimension >* GetStructuralPerspective() const
+	const physical::Perspective< StandardDimension >* GetStructuralPerspective() const <br />
 	{
 		return m_perspective;
 	}
 
 	/**
-	 * Adds content to *this.
+	 * Adds content to *this. <br />
 	 * @param content
 	 * @return t or NULL.
 	 */
 	virtual CONTENT_TYPE AddImplementation(CONTENT_TYPE content)
 	{
-		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(this->m_contents->Add(content)));
+		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(this->m_contents->Add(content))); <br />
 	}
 
 	/**
-	 * Adds a Content in *this at the indicated position.
-	 * Multiple contents of the same id will cause the previously existing Content to be removed.
+	 * Adds a Content in *this at the indicated position. <br />
+	 * Multiple contents of the same id will cause the previously existing Content to be removed. <br />
 	 *
-	 * NOTE: THIS DESTROYS INDEX INTEGRITY.
-	 * Indices will be rearranged to accommodate the insertion, making any cached Index invalid.
+	 * NOTE: THIS DESTROYS INDEX INTEGRITY. <br />
+	 * Indices will be rearranged to accommodate the insertion, making any cached Index invalid. <br />
 	 *
 	 * @param toAdd what to add. IMPORTANT: This must not already be in a LinearMotif (i.e. create a clone() before adding it to another destination).
 	 * @param position determines where in *this the Content is added.
@@ -233,7 +233,7 @@ public:
 				CONTENT_TYPE toReplaceCasted = toReplace.template As< CONTENT_TYPE >();
 				//addition->ImportAll(toReplaceCasted); //<- inaccessible, so we replicate the function here.
 
-				Bond* bondBuffer;
+				Bond* bondBuffer; <br />
 				for (
 					SmartIterator bnd = addition->AsAtom()->GetAllBonds()->End();
 					!bnd.IsAtBeginning();
@@ -251,8 +251,8 @@ public:
 					{
 						continue;
 					}
-					const physical::Wave* otherBond = toReplaceCasted->AsAtom()->GetBonded(toReplaceCasted->AsAtom()->GetBondPosition(bondBuffer->GetId()));
-					Cast< AbstractMotif* >(bondBuffer->GetBonded())->ImportImplementation(otherBond); //actual work
+					const physical::Wave* otherBond = toReplaceCasted->AsAtom()->GetBonded(toReplaceCasted->AsAtom()->GetBondPosition(bondBuffer->GetId())); <br />
+					Cast< AbstractMotif* >(bondBuffer->GetBonded())->ImportImplementation(otherBond); //actual work <br />
 				}
 			}
 			this->m_contents->Erase(toReplace);
@@ -269,12 +269,12 @@ public:
 			}
 			case BEFORE:
 			{
-				Index placement = Cast< physical::Line* >(this->m_contents)->SeekToId(optionalPositionArg);
+				Index placement = Cast< physical::Line* >(this->m_contents)->SeekToId(optionalPositionArg); <br />
 				if (!placement)
 				{
 					return code::GeneralFailure();
 				}
-				BIO_SANITIZE(Cast< physical::Line* >(this->m_contents)->LinearAccess(placement)->GetPerspective() == addition->GetPerspective(), ,
+				BIO_SANITIZE(Cast< physical::Line* >(this->m_contents)->LinearAccess(placement)->GetPerspective() == addition->GetPerspective(), , <br />
 					return code::GeneralFailure());
 
 				this->m_contents->Insert(
@@ -285,12 +285,12 @@ public:
 			}
 			case AFTER:
 			{
-				Index placement = Cast< physical::Line* >(this->m_contents)->SeekToId(optionalPositionArg);
+				Index placement = Cast< physical::Line* >(this->m_contents)->SeekToId(optionalPositionArg); <br />
 				if (!placement)
 				{
 					return code::GeneralFailure();
 				}
-				BIO_SANITIZE(Cast< physical::Line* >(this->m_contents)->LinearAccess(placement)->GetPerspective() == addition->GetPerspective(), ,
+				BIO_SANITIZE(Cast< physical::Line* >(this->m_contents)->LinearAccess(placement)->GetPerspective() == addition->GetPerspective(), , <br />
 					return code::GeneralFailure());
 
 				this->m_contents->Insert(
@@ -317,7 +317,7 @@ public:
 	}
 
 	/**
-	 * Implementation for getting by id.
+	 * Implementation for getting by id. <br />
 	 * @param id
 	 * @return a Content of the given id or NULL.
 	 */
@@ -325,15 +325,15 @@ public:
 		StandardDimension id
 	)
 	{
-		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToId(id);
+		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToId(id); <br />
 		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
 			return NULL) //level 2 for GetOrCreate.
 
-		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret));
+		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret)); <br />
 	}
 
 	/**
-	* const interface for getting by id.
+	* const interface for getting by id. <br />
 	* @param id
 	* @return a Content of the given id or NULL.
 	*/
@@ -341,16 +341,16 @@ public:
 		StandardDimension id
 	) const
 	{
-		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToId(id);
+		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToId(id); <br />
 		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
 			return NULL) //level 2 for GetOrCreate.
 
-		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret));
+		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret)); <br />
 	}
 
 
 	/**
-	 * Implementation for getting by name.
+	 * Implementation for getting by name. <br />
 	 * @param name
 	 * @return a CONTENT_TYPE of the given name or NULL.
 	 */
@@ -358,15 +358,15 @@ public:
 		Name name
 	)
 	{
-		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToName(name);
+		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToName(name); <br />
 		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
 			return NULL) //level 2 for GetOrCreate.
 
-		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret));
+		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret)); <br />
 	}
 
 	/**
-	 * Implementation for getting by name.
+	 * Implementation for getting by name. <br />
 	 * @param name
 	 * @return a CONTENT_TYPE of the given name or NULL.
 	 */
@@ -374,17 +374,17 @@ public:
 		Name name
 	) const
 	{
-		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToName(name);
+		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToName(name); <br />
 		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
 			return NULL) //level 2 for GetOrCreate.
 
-		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret));
+		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret)); <br />
 	}
 
 	/**
-	 * Create a CONTENT_TYPE from a given Id and adds it to *this.
-	 * Clones the Wave associated with the given Id.
-	 * This requires a valid Perspective in *this and for that Perspective to have an Wave registered with the given Id.
+	 * Create a CONTENT_TYPE from a given Id and adds it to *this. <br />
+	 * Clones the Wave associated with the given Id. <br />
+	 * This requires a valid Perspective in *this and for that Perspective to have an Wave registered with the given Id. <br />
 	 * @param id
 	 * @return a newly created CONTENT_TYPE else NULL.
 	 */
@@ -398,8 +398,8 @@ public:
 	}
 
 	/**
-	 * Tries to find a Content of the given id in *this and, optionally, the Contents beneath.
-	 * If such an object doesn't exist, one is created from its Wave.
+	 * Tries to find a Content of the given id in *this and, optionally, the Contents beneath. <br />
+	 * If such an object doesn't exist, one is created from its Wave. <br />
 	 * @param id
 	 * @return A CONTENT_TYPE of the given id.
 	 */
@@ -418,8 +418,8 @@ public:
 	}
 
 	/**
-	 * Tries to find a Content of the given id in *this and, optionally, the Contents beneath.
-	 * If such an object doesn't exist, one is created from its Wave.
+	 * Tries to find a Content of the given id in *this and, optionally, the Contents beneath. <br />
+	 * If such an object doesn't exist, one is created from its Wave. <br />
 	 * @param name
 	 * @return A CONTENT_TYPE of the given id.
 	 */
@@ -440,8 +440,8 @@ public:
 	}
 
 	/**
-	 * Check for content.
-	 * Dereferences content (i.e. prevents pointer comparison (unless**)).
+	 * Check for content. <br />
+	 * Dereferences content (i.e. prevents pointer comparison (unless**)). <br />
 	 * @param content
 	 * @return whether or not the given content exists in *this
 	 */
@@ -451,11 +451,11 @@ public:
 	}
 
 	/**
-	 * Copy the contents of another container into *this.
-	 * Clone()s each element.
+	 * Copy the contents of another container into *this. <br />
+	 * Clone()s each element. <br />
 	 * @param other
 	 */
-	virtual void ImportImplementation(const LinearMotif< CONTENT_TYPE >* other)
+	virtual void ImportImplementation(const LinearMotif< CONTENT_TYPE >* other) <br />
 	{
 		BIO_SANITIZE(other, ,
 			return);
@@ -464,18 +464,18 @@ public:
 	}
 
 	/**
-	 * Override of Wave method. See that class for details.
-	 * If other is an Excitation, call ForEach instead.
+	 * Override of Wave method. See that class for details. <br />
+	 * If other is an Excitation, call ForEach instead. <br />
 	 * @param other
 	 * @return the result of all Attenuations.
 	 */
-	virtual Code Attenuate(const physical::Wave* other)
+	virtual Code Attenuate(const physical::Wave* other) <br />
 	{
 		if (physical::Wave::GetResonanceBetween(
 			other,
 			ExcitationBase::GetClassProperties()).size())
 		{
-			ForEachImplementation(ChemicalCast< ExcitationBase* >(other));
+			ForEachImplementation(ChemicalCast< ExcitationBase* >(other)); <br />
 			return code::Success();
 		}
 
@@ -486,7 +486,7 @@ public:
 			--cnt
 			)
 		{
-			if (cnt.template As< physical::Identifiable< StandardDimension >* >()->Attenuate(other) != code::Success())
+			if (cnt.template As< physical::Identifiable< StandardDimension >* >()->Attenuate(other) != code::Success()) <br />
 			{
 				ret = code::UnknownError();
 			}
@@ -495,11 +495,11 @@ public:
 	}
 
 	/**
-	 * Override of Wave method. See that class for details.
+	 * Override of Wave method. See that class for details. <br />
 	 * @param other
 	 * @return the result of all Disattenuations.
 	 */
-	virtual Code Disattenuate(const physical::Wave* other)
+	virtual Code Disattenuate(const physical::Wave* other) <br />
 	{
 		Code ret = code::Success();
 		for (
@@ -508,7 +508,7 @@ public:
 			--cnt
 			)
 		{
-			if (cnt.template As< physical::Identifiable< StandardDimension >* >()->Disattenuate(other) != code::Success())
+			if (cnt.template As< physical::Identifiable< StandardDimension >* >()->Disattenuate(other) != code::Success()) <br />
 			{
 				ret = code::UnknownError();
 			}
@@ -518,11 +518,11 @@ public:
 
 
 	/**
-	 * Performs the given Excitation on all contents.
+	 * Performs the given Excitation on all contents. <br />
 	 * @param excitation
 	 */
 	virtual Emission ForEachImplementation(
-		ExcitationBase* excitation
+		ExcitationBase* excitation <br />
 	)
 	{
 		Emission ret;
@@ -534,7 +534,7 @@ public:
 		{
 			ByteStream result;
 			excitation->CallDown(
-				cnt.template As< physical::Identifiable< StandardDimension >* >()->AsWave(),
+				cnt.template As< physical::Identifiable< StandardDimension >* >()->AsWave(), <br />
 				&result
 			);
 			ret.push_back(result);
@@ -543,7 +543,7 @@ public:
 	}
 
 	/**
-	 * Gets the Names of all Contents and puts them into a string.
+	 * Gets the Names of all Contents and puts them into a string. <br />
 	 * @param separator e.g. ", ", the default, or just " ".
 	 * @return the Contents of *this as a string.
 	 */
@@ -559,7 +559,7 @@ public:
 			++cnt
 			)
 		{
-			ret += cnt.template As< physical::Identifiable< StandardDimension >* >()->GetName();
+			ret += cnt.template As< physical::Identifiable< StandardDimension >* >()->GetName(); <br />
 			if (cnt.GetIndex() != this->m_contents->GetEndIndex() - 1)
 			{
 				ret += separator;
@@ -569,8 +569,8 @@ public:
 	}
 
 	/**
-	 * Deletes & clears the contents of *this.
-	 * NOTE: this uses delete, not delete[].
+	 * Deletes & clears the contents of *this. <br />
+	 * NOTE: this uses delete, not delete[]. <br />
 	 */
 	virtual void ClearImplementation()
 	{
@@ -581,7 +581,7 @@ public:
 private:
 
 	/**
-	 * Common constructor code.
+	 * Common constructor code. <br />
 	 */
 	void CtorCommon()
 	{
@@ -590,7 +590,7 @@ private:
 //		BIO_ASSERT(std::is_base_of<Substance, CONTENT_TYPE>::value);
 //		#else
 //		CONTENT_TYPE ct;
-//		BIO_ASSERT(Cast< Substance* >(&ct) != NULL);
+//		BIO_ASSERT(Cast< Substance* >(&ct) != NULL); <br />
 //		#endif
 
 		if (this->m_contents)

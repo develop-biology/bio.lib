@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -37,7 +37,7 @@ Bond::Bond()
 
 Bond::Bond(
 	AtomicNumber id,
-	physical::Wave* bonded,
+	physical::Wave* bonded, <br />
 	BondType type
 )
 	:
@@ -54,7 +54,7 @@ Bond::~Bond()
 
 bool Bond::Form(
 	AtomicNumber id,
-	physical::Wave* bonded,
+	physical::Wave* bonded, <br />
 	BondType type
 )
 {
@@ -71,12 +71,12 @@ AtomicNumber Bond::GetId() const
 	return m_id;
 }
 
-physical::Wave* Bond::GetBonded()
+physical::Wave* Bond::GetBonded() <br />
 {
 	return m_bonded;
 }
 
-const physical::Wave* Bond::GetBonded() const
+const physical::Wave* Bond::GetBonded() const <br />
 {
 	return m_bonded;
 }

@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -32,16 +32,16 @@ namespace bio {
 namespace genetic {
 
 /**
- * Genes are responsible for creating Proteins in cells. Genes do this by recognizing TranscriptionFactors that the Cells express and cloning a Protein into the given m_insertion.
+ * Genes are responsible for creating Proteins in cells. Genes do this by recognizing TranscriptionFactors that the Cells express and cloning a Protein into the given m_insertion. <br />
  *
- * If a Cell has the indicated TranscriptionFactors, insert the given protein at the insertion.
- * For more info, see Expressor and localization/*.h
+ * If a Cell has the indicated TranscriptionFactors, insert the given protein at the insertion. <br />
+ * For more info, see Expressor and localization/*.h <br />
  *
- * NOTE: for simplicity, Genes are considered mRNA.
- * There is currently no need to create a new object to more closely mimic transcription.
+ * NOTE: for simplicity, Genes are considered mRNA. <br />
+ * There is currently no need to create a new object to more closely mimic transcription. <br />
  *
- * Genes are treated more like a struct than a Class.
- * Members should be accessed directly.
+ * Genes are treated more like a struct than a Class. <br />
+ * Members should be accessed directly. <br />
  */
 class Gene :
 	public Class< Gene >,
@@ -50,14 +50,14 @@ class Gene :
 {
 public:
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(genetic,
 		Gene)
 
 	/**
-	 * Standard ctors.
-	 * These are easy to use but require setting member variables manually.
+	 * Standard ctors. <br />
+	 * These are easy to use but require setting member variables manually. <br />
 	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(genetic,
 		Gene,
 		&molecular::DNAPerspective::Instance(),
@@ -69,16 +69,16 @@ public:
 	virtual ~Gene();
 
 	/**
-	 * The insertion is the Name and type of Site that corresponds to the Vesicle, Molecule, Surface, etc. that *this should to be added to.
-	 * This is a functional equivalent to proteins being moved around a cell after being folded. The resulting sub-cellular localization puts certain proteins in closer proximity to each other such that they might affect (or, in this case, effect) each other's activity.
-	 * This also enables protein encapsulation, excretion, etc. by making the Proteins in a Vesicle stay in the Vesicle as it's Transferred between other Vesicles, etc.
-	 * For more info, see Localization.h and Insertion.h
+	 * The insertion is the Name and type of Site that corresponds to the Vesicle, Molecule, Surface, etc. that *this should to be added to. <br />
+	 * This is a functional equivalent to proteins being moved around a cell after being folded. The resulting sub-cellular localization puts certain proteins in closer proximity to each other such that they might affect (or, in this case, effect) each other's activity. <br />
+	 * This also enables protein encapsulation, excretion, etc. by making the Proteins in a Vesicle stay in the Vesicle as it's Transferred between other Vesicles, etc. <br />
+	 * For more info, see Localization.h and Insertion.h <br />
 	 */
 	Insertion m_insertion;
 
 private:
 	/**
-	 * common constructor code
+	 * common constructor code <br />
 	 */
 	void CtorCommon();
 };

@@ -39,7 +39,7 @@ Products::Products(Code result)
 
 }
 
-Products::Products(const Substances* substances)
+Products::Products(const Substances* substances) <br />
 	:
 	m_result(code::Success()),
 	m_substances(*substances)
@@ -47,17 +47,17 @@ Products::Products(const Substances* substances)
 
 }
 
-Products::Products(const Reactants* reactants)
+Products::Products(const Reactants* reactants) <br />
 	:
 	m_result(code::Success()),
-	m_substances(reactants->GetAllAsVector< Substance* >())
+	m_substances(reactants->GetAllAsVector< Substance* >()) <br />
 {
 
 }
 
 Products::Products(
 	Code result,
-	const Substances* substances
+	const Substances* substances <br />
 )
 	:
 	m_result(result),

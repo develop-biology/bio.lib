@@ -27,9 +27,9 @@ namespace bio {
 namespace molecular {
 
 /**
- * Versioning is major.minor with no patch.
- * Makes things easy ;)
- * Used by DNA.
+ * Versioning is major.minor with no patch. <br />
+ * Makes things easy ;) <br />
+ * Used by DNA. <br />
  */
 typedef float Version;
 

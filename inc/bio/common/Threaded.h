@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -40,14 +40,14 @@
 namespace bio {
 
 /**
- * Threaded classes are a wrapper around whatever thread interface the system is using.
- * This class moves whatever Work() you need to do into a new thread with a simple wrapper that is OS & c++ version independent.
+ * Threaded classes are a wrapper around whatever thread interface the system is using. <br />
+ * This class moves whatever Work() you need to do into a new thread with a simple wrapper that is OS & c++ version independent. <br />
  *
- * NOTE: we're currently only supporting threading on c++11 and greater and on linux using c++98 on.
- * We may or may not ever support c++98 threading on windows, etc.
- * TODO: does pthread work on Apple and BSD?
+ * NOTE: we're currently only supporting threading on c++11 and greater and on linux using c++98 on. <br />
+ * We may or may not ever support c++98 threading on windows, etc. <br />
+ * TODO: does pthread work on Apple and BSD? <br />
  *
- * NOTE: YOU MUST CALL STOP BEFORE DESTROYING *this!!!!
+ * NOTE: YOU MUST CALL STOP BEFORE DESTROYING *this!!!! <br />
  */
 class Threaded :
 	virtual public ThreadSafe
@@ -68,7 +68,7 @@ public:
 	}
 
 	/**
-	 * YOU MUST CALL STOP BEFORE DESTROYING *this!!!!
+	 * YOU MUST CALL STOP BEFORE DESTROYING *this!!!! <br />
 	 */
 	Threaded();
 
@@ -80,10 +80,10 @@ public:
 	virtual ~Threaded();
 
 	/**
-	 * Does the actual work.
-	 * Will be called repeatedly until either: Stop() is called OR this method returns false.
-	 * So, just return false when you want to stop being a thread.
-	 * You may want to Sleep() (below) after you Work() ;)
+	 * Does the actual work. <br />
+	 * Will be called repeatedly until either: Stop() is called OR this method returns false. <br />
+	 * So, just return false when you want to stop being a thread. <br />
+	 * You may want to Sleep() (below) after you Work() ;) <br />
 	 * @return false when you want to stop; true if you want to run until Stop()ed.
 	 */
 	virtual bool Work()
@@ -98,13 +98,13 @@ public:
 	virtual ThreadId GetThreadId();
 
 	/**
-	 * Starts our thread, which will continuously call Work() until Stop()ed (or Work() exits).
+	 * Starts our thread, which will continuously call Work() until Stop()ed (or Work() exits). <br />
 	 * @return whether or not our thread was successfully created.
 	 */
 	virtual bool Start();
 
 	/**
-	 * Instructs our thread to stop calling Work() and joins our thread.
+	 * Instructs our thread to stop calling Work() and joins our thread. <br />
 	 * @return whether or not our thread was successfully joined.
 	 */
 	virtual bool Stop();
@@ -115,7 +115,7 @@ public:
 	virtual bool IsRunning();
 
 	/**
-	 * Release thread processing for us microseconds.
+	 * Release thread processing for us microseconds. <br />
 	 * @param us
 	 */
 	virtual void Sleep(TimeUS us);
@@ -129,12 +129,12 @@ protected:
 		#endif
 		ThreadId m_id;
 	#else
-		std::thread* m_thread;
+		std::thread* m_thread; <br />
 	#endif
 	//@formatter:on
 
 	/**
-	 * Sets m_stopRequested to true.
+	 * Sets m_stopRequested to true. <br />
 	 */
 	virtual void RequestStop();
 
@@ -146,7 +146,7 @@ protected:
 	 * @param arg a Threaded*
 	 * @return NULL
 	 */
-	static void* Worker(void* arg);
+	static void* Worker(void* arg); <br />
 };
 
 } //bio namespace

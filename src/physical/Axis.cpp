@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -41,29 +41,29 @@ Axis::~Axis()
 	return "FAILED";
 }
 
-std::string Axis::Rotate(Symmetry* symmetry) const
+std::string Axis::Rotate(Symmetry* symmetry) const <br />
 {
 	return Encode(symmetry);
 }
 
-Symmetry* Axis::Rotate(std::string) const
+Symmetry* Axis::Rotate(std::string) const <br />
 {
 	return NULL;
 }
 
-std::string Axis::operator|(Wave* particle) const
+std::string Axis::operator|(Wave* particle) const <br />
 {
 	BIO_SANITIZE(particle, ,
 		return Failed());
 	return Rotate(particle->Spin());
 }
 
-Symmetry* Axis::operator()(std::string encoded) const
+Symmetry* Axis::operator()(std::string encoded) const <br />
 {
 	return Rotate(encoded);
 }
 
-std::string Axis::Encode(Symmetry* symmetry) const
+std::string Axis::Encode(Symmetry* symmetry) const <br />
 {
 	return Failed();
 }

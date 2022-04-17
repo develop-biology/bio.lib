@@ -29,9 +29,9 @@ namespace bio {
 namespace genetic {
 
 /**
- * A genetic::Class extends molecular::Class
- * Class in other namespaces will grow to include more complex, templated logic.
- * This pattern prevents you from having to define virtual methods each of your child classes, so long as you always derive from the appropriate Class<T>.
+ * A genetic::Class extends molecular::Class <br />
+ * Class in other namespaces will grow to include more complex, templated logic. <br /> <br />
+ * This pattern prevents you from having to define virtual methods each of your child classes, so long as you always derive from the appropriate Class<T>. <br />
  * @tparam T
  */
 template < typename T >
@@ -45,13 +45,13 @@ public:
 		T)
 
 	/**
-	 * Providing just the object should not Initialize anything.
-	 * For default constructors of virtually inherited classes.
+	 * Providing just the object should not Initialize anything. <br />
+	 * For default constructors of virtually inherited classes. <br />
 	 * @param object
 	 */
 	Class(
-		T* object,
-		physical::Perspective< StandardDimension >* perspective = NULL,
+		T* object, <br />
+		physical::Perspective< StandardDimension >* perspective = NULL, <br />
 		Filter filter = filter::Default())
 		:
 		molecular::Class< T >(
@@ -70,9 +70,9 @@ public:
 		 * @param filter
 		 */
 	Class(
-		T* object,
+		T* object, <br />
 		Name name,
-		physical::Perspective< StandardDimension >* perspective = NULL,
+		physical::Perspective< StandardDimension >* perspective = NULL, <br />
 		Filter filter = filter::Default())
 		:
 		molecular::Class< T >(
@@ -92,9 +92,9 @@ public:
 	 * @param filter
 	 */
 	Class(
-		T* object,
+		T* object, <br />
 		StandardDimension id,
-		physical::Perspective< StandardDimension >* perspective = NULL,
+		physical::Perspective< StandardDimension >* perspective = NULL, <br />
 		Filter filter = filter::Default())
 		:
 		molecular::Class< T >(

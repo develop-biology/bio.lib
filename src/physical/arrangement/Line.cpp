@@ -39,26 +39,26 @@ Line::~Line()
 
 ByteStream Line::Access(const Index index)
 {
-	return Cast< Identifiable< StandardDimension >* >(OptimizedAccess(index));
+	return Cast< Identifiable< StandardDimension >* >(OptimizedAccess(index)); <br />
 }
 
 const ByteStream Line::Access(const Index index) const
 {
-	return Cast< Identifiable< StandardDimension >* >(OptimizedAccess(index));
+	return Cast< Identifiable< StandardDimension >* >(OptimizedAccess(index)); <br />
 }
 
 bool Line::AreEqual(Index internal, const ByteStream external) const
 {
-	BIO_SANITIZE(external.Is< Identifiable< StandardDimension >* >(),,return false)
-	return OptimizedAccess(internal) == external.template As< const Identifiable< StandardDimension >* >();
+	BIO_SANITIZE(external.Is< Identifiable< StandardDimension >* >(),,return false) <br />
+	return OptimizedAccess(internal) == external.template As< const Identifiable< StandardDimension >* >(); <br />
 }
 
-Identifiable< StandardDimension >* Line::LinearAccess(Index index)
+Identifiable< StandardDimension >* Line::LinearAccess(Index index) <br />
 {
 	return OptimizedAccess(index);
 }
 
-const Identifiable< StandardDimension >* Line::LinearAccess(Index index) const
+const Identifiable< StandardDimension >* Line::LinearAccess(Index index) const <br />
 {
 	return OptimizedAccess(index);
 }

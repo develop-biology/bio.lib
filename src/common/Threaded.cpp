@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -73,9 +73,9 @@ void Threaded::RequestStop()
 	UnlockThread();
 }
 
-/*static*/ void* Threaded::Worker(void* arg)
+/*static*/ void* Threaded::Worker(void* arg) <br />
 {
-	Threaded* threaded = Cast< Threaded* >(arg);
+	Threaded* threaded = Cast< Threaded* >(arg); <br />
 	BIO_SANITIZE(threaded, ,
 		return NULL);
 
@@ -148,7 +148,7 @@ bool Threaded::Stop()
 	#if BIO_CPP_VERSION < 11
 		m_stopRequested = true;
 		#ifdef BIO_OS_IS_LINUX
-            void** threadReturn;
+            void** threadReturn; <br />
 			int result = pthread_join(m_thread, threadReturn);
 		#endif
 		RequestStop();
