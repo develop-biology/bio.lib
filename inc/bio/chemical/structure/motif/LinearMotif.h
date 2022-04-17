@@ -585,12 +585,13 @@ private:
 	 */
 	void CtorCommon()
 	{
-		#if BIO_CPP_VERSION >= 11
-		BIO_ASSERT(std::is_base_of<Substance, CONTENT_TYPE>::value);
-		#else
-		CONTENT_TYPE ct;
-		BIO_ASSERT(Cast< Substance* >(&ct) != NULL);
-		#endif
+		//TODO: This needs work.
+//		#if BIO_CPP_VERSION >= 11
+//		BIO_ASSERT(std::is_base_of<Substance, CONTENT_TYPE>::value);
+//		#else
+//		CONTENT_TYPE ct;
+//		BIO_ASSERT(Cast< Substance* >(&ct) != NULL);
+//		#endif
 
 		if (this->m_contents)
 		{

@@ -21,44 +21,13 @@
 
 #pragma once
 
+#include "bio/cellular/waves/PeakCarrierWave.h"
 #include "bio/genetic/common/Class.h"
 #include "bio/molecular/Vesicle.h"
 #include "bio/physical/Periodic.h"
 
 namespace bio {
 namespace cellular {
-
-/**
- * The PeakCarrierWave will propagate Peak Excitations to all LinearMotifs
- */
-class PeakCarrierWave :
-	public physical::Wave
-{
-public:
-	PeakCarrierWave()
-		:
-		m_peakExcitation(&physical::Periodic::Peak)
-	{
-		Modulate(m_peakExcitation);
-	}
-
-	virtual ~PeakCarrierWave()
-	{
-	}
-
-	virtual Properties GetProperties() const
-	{
-		Properties ret = chemical::AbstractMotif::GetClassProperties();
-		ret.push_back(property::Linear());
-		return ret;
-	}
-
-protected:
-	BIO_EXCITATION_CLASS(physical::Periodic,
-		Code) m_peakExcitation;
-};
-
-static PeakCarrierWave g_peakCarrierWave;
 
 /**
  * A cellular::Class extends genetic::Class
@@ -155,6 +124,7 @@ public:
 
 	Code Peak()
 	{
+		static PeakCarrierWave g_peakCarrierWave;
 		return Attenuate(&g_peakCarrierWave);
 	}
 
