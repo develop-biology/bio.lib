@@ -71,9 +71,9 @@ public:                                                                        \
     type operator/=(const type& t) {return m_t /= t;}                          \
     type operator*=(const name& other) {return m_t *= other.m_t;}              \
     type operator/=(const name& other) {return m_t /= other.m_t;}              \
-    type operator*(const type& t) const {return m_t * t;}                      \ <br />
+    type operator*(const type& t) const {return m_t * t;}                      \
     type operator/(const type& t) const {return m_t / t;}                      \
-    type operator*(const name& other) const {return m_t * other.m_t;}          \ <br />
+    type operator*(const name& other) const {return m_t * other.m_t;}          \
     type operator/(const name& other) const {return m_t / other.m_t;}          \
     friend std::ostream& operator <<(std::ostream& out, const name& t)         \
     {                                                                          \

@@ -53,7 +53,7 @@ public:
 	SetValue(const ByteStream& bytes);
 
 	AddSymmetry(Symmetry
-	* symmetry); <br />
+	* symmetry);
 
 protected:
 	Name m_name;

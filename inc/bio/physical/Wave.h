@@ -48,7 +48,7 @@ typedef std::vector< Symmetry* > Symmetries;
 class Wave;
 
 typedef std::vector< Wave* > Waves; 
-typedef std::vector< const Wave* > ConstWaves; <br /> 
+typedef std::vector< const Wave* > ConstWaves;
 
 /**
  * A Wave is a base class for all Biology objects. <br />

@@ -66,7 +66,7 @@ public:
 			return InvalidIndex())
 		TYPE toAdd = content;
 		std::memcpy(
-			&this->m_store[ret * sizeof(TYPE)], <br />
+			&this->m_store[ret * sizeof(TYPE)],
 			&toAdd,
 			sizeof(TYPE));
 		return ret;
@@ -79,7 +79,7 @@ public:
 		TYPE* ret; 
 		std::memcpy(
 			ret,
-			&this->m_store[index * sizeof(TYPE)], <br />
+			&this->m_store[index * sizeof(TYPE)],
 			sizeof(TYPE));
 		return *ret;
 	}
@@ -91,7 +91,7 @@ public:
 		TYPE* ret; 
 		std::memcpy(
 			ret,
-			&this->m_store[index * sizeof(TYPE)], <br />
+			&this->m_store[index * sizeof(TYPE)],
 			sizeof(TYPE));
 		return *ret;
 	}
@@ -103,7 +103,7 @@ public:
 		TYPE* toDelete; 
 		std::memcpy(
 			toDelete,
-			&this->m_store[index * sizeof(TYPE)], <br />
+			&this->m_store[index * sizeof(TYPE)],
 			sizeof(TYPE));
 		delete toDelete;
 		this->m_deallocated.push_back(index);
