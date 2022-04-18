@@ -178,7 +178,7 @@ public:
 		#if BIO_CPP_VERSION < 11
 		return AsBondedQuantum< T >();
 		#else
-		if (IsPrimitive< T >())
+		if (utility::IsPrimitive< T >())
 		{
 			return AsBondedQuantum< T >();
 		}
@@ -201,7 +201,7 @@ public:
 		#if BIO_CPP_VERSION < 11
 		return AsBondedQuantum< T >();
 		#else
-		if (IsPrimitive< T >())
+		if (utility::IsPrimitive< T >())
 		{
 			return AsBondedQuantum< T >();
 		}
@@ -245,7 +245,7 @@ public:
 			type
 		);
 		#else
-		if (IsPrimitive< T >())
+		if (utility::IsPrimitive< T >())
 		{
 			AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >(); 
 			return FormBondImplementation(
@@ -286,7 +286,7 @@ public:
 			type
 		);
 		#else
-		if (IsPrimitive< T >())
+		if (utility::IsPrimitive< T >())
 		{
 			return BreakBond< physical::Quantum< T >* >(NULL, type); //T matters, toDisassociate does not. 
 		}
@@ -328,7 +328,7 @@ public:
 		#if BIO_CPP_VERSION < 11
 		return GetBondPosition(PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >()); 
 		#else
-		if (IsPrimitive< T >())
+		if (utility::IsPrimitive< T >())
 		{
 			return GetBondPosition(PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >()); 
 		}
@@ -354,7 +354,7 @@ public:
 		#if BIO_CPP_VERSION < 11
 		return GetBondType(GetBondPosition< physical::Quantum< T > >());
 		#else
-		if (IsPrimitive< T >())
+		if (utility::IsPrimitive< T >())
 		{
 			return GetBondType(GetBondPosition< physical::Quantum< T > >());
 		}

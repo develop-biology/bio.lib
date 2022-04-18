@@ -129,30 +129,30 @@ public:
 template< class WAVE, typename RETURN, typename... ARGUMENTS >
 class Excitation :
 	public ExcitationBase,
-	public physical::Class< Excitation< WAVE,RETURN,ARGUMENTS...> >
+	public physical::Class< Excitation< WAVE, RETURN, ARGUMENTS... > >
 {
 public:
 
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, BIO_SINGLE_ARG(Excitation<WAVE,RETURN,ARGUMENTS...>))
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, BIO_SINGLE_ARG(Excitation< WAVE, RETURN, ARGUMENTS... >))
 
 	/**
 	 *
 	 */
 	Excitation(RETURN(WAVE::*function)(ARGUMENTS...), const ARGUMENTS&... args)
 		:
-		physical::Class< Excitation<WAVE,RETURN,ARGUMENTS...> >(this),
+		physical::Class< Excitation< WAVE, RETURN, ARGUMENTS... > >(this),
 		m_function(function),
-		m_args(args)
+		m_args(args...)
 	{
 	}
 
 	/**
 	 *
 	 */
-	virtual Excitation()
+	virtual ~Excitation()
 	{
 
 	}
@@ -186,8 +186,8 @@ public:
 	 */
 	RETURN operator()(WAVE* wave) const 
 	{
-		std::tuple allArgs = std::tuple_cat(std::make_tuple(wave), m_args);
-		return std::apply(*m_function, allArgs);
+		std::tuple< WAVE*, ARGUMENTS... > allArgs = std::tuple_cat(std::make_tuple(wave), m_args);
+		return std::apply(m_function, allArgs);
 	}
 
 	/**
@@ -199,8 +199,8 @@ public:
 	}
 
 protected:
-	RETURN (WAVE::*m_function)(ARGUMENTS...)
-	std::tuple m_args;
+	RETURN (WAVE::*m_function)(ARGUMENTS...);
+	std::tuple< ARGUMENTS... > m_args;
 };
 
 #else

@@ -24,35 +24,35 @@
 #define BIO_LOG_PRINTF_MAX_LINE_SIZE 2000 //(+1 for \0)
 
 /**
- * To make defining log Levels easier, use this macro to define the function body of your Level Function(). <br />
- * This will assign a value to a string that is identical to your FunctionName (e.g. log::LevelPerspective::Instance().GetNameFromId(MySpecialInformation()) would give "MySpecialInformation") <br />
+ * To make defining LogLevels easier, use this macro to define the function body of your LogLevel Function(). <br />
+ * This will assign a value to a string that is identical to your FunctionName (e.g. LogLevelPerspective::Instance().GetNameFromId(MySpecialInformation()) would give "MySpecialInformation") <br />
  * Necessitates that functionName be a part of the log namespace and that any other namespaces are already specified (e.g. using namespace) <br />
  */
 #define BIO_LOG_LEVEL_FUNCTION_BODY(functionName)                              \
 BIO_ID_FUNCTION_BODY(                                                          \
     functionName,                                                              \
-    ::bio::log::LevelPerspective::Instance(),                                    \
-    ::bio::log::Level)
+    ::bio::LogLevelPerspective::Instance(),                                    \
+    ::bio::LogLevel)
 
 //@formatter:off
 
 #ifdef BIO_LOG_DISABLE_DEBUG
 	#define BIO_LOG_DEBUG(format, ...)
 #else
-	#define BIO_LOG_DEBUG(format, ...)	log(log::Level::Debug(), format, __VA_ARGS__)
+	#define BIO_LOG_DEBUG(format, ...)	log(log_level::Debug(), format, __VA_ARGS__)
 #endif
 #ifdef BIO_LOG_DISABLE_INFO
 	#define BIO_LOG_INFO(format, ...)
 #else
-	#define BIO_LOG_INFO(format, ...)	log(log::Level::Info(), format, __VA_ARGS__)
+	#define BIO_LOG_INFO(format, ...)	log(log_level::Info(), format, __VA_ARGS__)
 #endif
 #ifdef BIO_LOG_DISABLE_WARN
 	#define BIO_LOG_WARN(format, ...)
 #else
-	#define BIO_LOG_WARN(format, ...)	log(log::Level::Warn(), format, __VA_ARGS__)
+	#define BIO_LOG_WARN(format, ...)	log(log_level::Warn(), format, __VA_ARGS__)
 #endif
 #ifdef BIO_LOG_DISABLE_ERROR
 	#define BIO_LOG_ERROR(format, ...)
 #else
-	#define BIO_LOG_ERROR(format, ...)	log(log::Level::Error(), format, __VA_ARGS__)
+	#define BIO_LOG_ERROR(format, ...)	log(log_level::Error(), format, __VA_ARGS__)
 #endif

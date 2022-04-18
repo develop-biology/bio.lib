@@ -64,7 +64,12 @@ public:
 	 */
 	static ThreadId InvalidThreadId()
 	{
+		#if BIO_CPP_VERSION < 11
 		return 0;
+		#else
+		std::thread::id ret;
+		return ret;
+		#endif
 	}
 
 	/**

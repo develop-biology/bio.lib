@@ -30,6 +30,7 @@ BIO_SINGLETON(className, ::bio::physical::Perspective<dimension>)
 /**
  * Ease of use for defining Ids. <br />
  * For more on DIMENSIONs, Ids, etc., see Perspective.h and Identifiable.h <br />
+ * NOTE: this method MUST be called from the ::bio namespace (see BIO_STRONG_TYPEDEF for why). <br />
  */
 #define BIO_ID_WITH_PLURAL(className, pluralName, dimension)                   \
 BIO_STRONG_TYPEDEF(dimension, className, 0)                                    \
@@ -37,6 +38,7 @@ typedef std::vector<className> pluralName;
 
 /**
  * Define a BIO_ID with "classNames" as plural (e.g. StandardDimensions) <br />
+ * NOTE: this method MUST be called from the ::bio namespace (see BIO_STRONG_TYPEDEF for why). <br />
  */
 #define BIO_ID(className, dimension)                                           \
 BIO_ID_WITH_PLURAL(className, className##s, dimension)
@@ -55,6 +57,7 @@ dimension functionName()                                                       \
 
 /**
  * This is the preferred design pattern if using singletons and a custom dimension <br />
+ * NOTE: this method MUST be called from the ::bio namespace (see BIO_STRONG_TYPEDEF for why). <br />
  */
 #define BIO_ID_WITH_PERSPECTIVE(className, dimension)                          \
 BIO_ID(className, dimension)                                                   \
@@ -62,6 +65,7 @@ BIO_PERSPECTIVE_SINGLETON(className##Perspective, className);
 
 /**
  * For when the plural of className isn't "classNames" (e.g. Properties or Axes) <br />
+ * NOTE: this method MUST be called from the ::bio namespace (see BIO_STRONG_TYPEDEF for why). <br />
  */
 #define BIO_ID_WITH_PERSPECTIVE_WITH_PLURAL(className, pluralName, dimension)  \
 BIO_ID_WITH_PLURAL(className, pluralName, dimension)                           \

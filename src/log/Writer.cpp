@@ -75,7 +75,7 @@ bool Writer::HasLogEngine() const
 }
 
 void Writer::Log(
-	Level level,
+	LogLevel level,
 	const char* format, 
 	...
 ) const
@@ -105,7 +105,7 @@ void Writer::Log(
 
 void Writer::ExternalLog(
 	Filter filter,
-	Level level,
+	LogLevel level,
 	const char* format, 
 	...
 ) const

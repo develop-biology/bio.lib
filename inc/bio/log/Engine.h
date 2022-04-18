@@ -65,7 +65,7 @@ public:
 	 */
 	void Log(
 		Filter filter,
-		Level level,
+		LogLevel level,
 		const char* format, 
 		va_list args
 	);
@@ -80,7 +80,7 @@ public:
 	 */
 	void Log(
 		Filter filter,
-		Level level,
+		LogLevel level,
 		const char* format, 
 		...
 	);
@@ -92,7 +92,7 @@ public:
 	 */
 	bool FilterPass(
 		Filter filter,
-		Level level
+		LogLevel level
 	) const;
 
 	/**
@@ -103,7 +103,7 @@ public:
 	 */
 	bool FilterSet(
 		Filter filter,
-		Level level
+		LogLevel level
 	);
 
 	/**
@@ -121,7 +121,7 @@ public:
 	 * @param filter
 	 * @return Current level for the given filter.
 	 */
-	Level FilterGet(Filter filter) const;
+	LogLevel FilterGet(Filter filter) const;
 
 protected:
 	/**
@@ -136,7 +136,7 @@ private:
 	 * Only log if level is >= value loaded in this vector <br />
 	 * the index in the vector is the Filter <br />
 	 */
-	std::vector< Level > m_levelFilter;
+	std::vector< LogLevel > m_levelFilter;
 };
 } //log namespace
 } //bio namespace

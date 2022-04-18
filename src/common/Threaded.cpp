@@ -130,7 +130,7 @@ bool Threaded::Start()
 	#else
 		BIO_SANITIZE(m_thread,,return false)
 		m_thread = new std::thread(&Threaded::Worker, this);
-		m_created = true
+		m_created = true;
 	#endif
 	//@formatter:on
 	return m_created;
@@ -175,7 +175,7 @@ void Threaded::Sleep(TimeUS us)
 			usleep(us);
 		#endif
 	#else
-		std::this_thread::sleep_for (std::chrono::microseconds(ms));
+		std::this_thread::sleep_for (std::chrono::microseconds(us));
 	#endif
 	//@formatter:on
 }

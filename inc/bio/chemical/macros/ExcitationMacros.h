@@ -55,8 +55,8 @@
 //@formatter:off
 #if BIO_CPP_VERSION >= 17
 	#undef BIO_EXCITATION_CLASS
-	#define BIO_EXCITATION_CLASS(wave, ret ...)                                \
-		::bio::chemical::Excitation< wave, ret, ... >
+	#define BIO_EXCITATION_CLASS(wave, ...)                                    \
+			::bio::chemical::Excitation< wave, __VA_ARGS__ >
 #endif
 //@formatter:on
 

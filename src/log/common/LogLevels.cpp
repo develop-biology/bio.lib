@@ -19,23 +19,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include "Types.h"
+#include "bio/log/common/LogLevels.h"
+#include "bio/log/macros/Macros.h"
 
 namespace bio {
-namespace log {
-namespace level {
+namespace log_level {
+BIO_LOG_LEVEL_FUNCTION_BODY(Debug)
 
-//IMPORTANT: ORDER MATTERS HERE!
-Level Debug(); // low
+BIO_LOG_LEVEL_FUNCTION_BODY(Info)
 
-Level Info();
+BIO_LOG_LEVEL_FUNCTION_BODY(Warn)
 
-Level Warn();
-
-Level Error(); // high
-
-} //level namespace
-} //log namespace
+BIO_LOG_LEVEL_FUNCTION_BODY(Error)
+} //log_level namespace
 } //bio namespace

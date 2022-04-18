@@ -23,6 +23,7 @@
 
 #include "bio/common/Types.h"
 #include "bio/physical/macros/Macros.h"
+#include "bio/common/IsPrimitive.h"
 
 namespace bio {
 

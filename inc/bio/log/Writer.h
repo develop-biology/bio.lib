@@ -25,7 +25,7 @@
 #include "bio/physical/Filterable.h"
 #include "bio/physical/common/Filters.h"
 #include "bio/log/common/Types.h"
-#include "bio/log/common/Levels.h"
+#include "bio/log/common/LogLevels.h"
 #include "bio/log/macros/Macros.h"
 
 namespace bio {
@@ -80,7 +80,7 @@ public:
 	 */
 	void ExternalLog(
 		Filter logFilter,
-		Level level,
+		LogLevel level,
 		const char* format, 
 		...
 	) const;
@@ -125,7 +125,7 @@ protected:
 	 * @param ...
 	 */
 	void Log(
-		Level level,
+		LogLevel level,
 		const char* format, 
 		...
 	) const;

@@ -23,6 +23,25 @@
 
 //since we use these here, we might as well include them.
 #include <ostream>
+//#include "bio/common/IsPrimitive.h" //Cannot be included due to circular dependency. YOU MUST INCLUDE THIS WHERE USING BIO_STRONG_TYPEDEF
+
+/**
+ * Apparently, we cannot use fully qualified names to define structs yet. <br />
+ * See: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=66892 <br />
+ * Until this is patched, we must use a separate macro to define any sibling namespace symbols. <br />
+ * THIS MUST BE CALLED IN THE bio NAMESPACE! <br />
+ * name and type must both also be FULLY QUALIFIED past the ::bio namespace! <br />
+ */
+#define BIO_STRONG_TYPEDEF_BIO_NAMESPACE_DEFINITIONS(type, name, defaultValue) \
+/*Forward primitive name to type.*/                                            \
+namespace utility {                                                            \
+template <>                                                                    \
+struct IsPrimitiveImplementation< name >                                       \
+{                                                                              \
+    static const bool m_value = IsPrimitive< type >();                         \
+};                                                                             \
+} /*utility namespace*/                                                        \
+
 
 /**
  * Another problem with C++: the "typedef" keyword does not create a distinct type, only an alias. Thus 2 identical typedefs of different names become merged into the same symbol at compile time. <br />
@@ -33,6 +52,10 @@
  * If you know of a better solution to this problem, please make a pull request. <br />
  *
  * This wrapper is currently not virtual and cannot be inherited from. This may change in a future release. <br />
+ *
+ * NOTE: THIS MUST BE CALLED FROM THE ::bio NAMESPACE! <br />
+ * Until the bug in gcc that necessitates BIO_STRONG_TYPEDEF_BIO_NAMESPACE_DEFINITIONS is fixed, we cannot support namespaced types. <br />
+ * :( <br />
  */
 #define BIO_STRONG_TYPEDEF(type, name, defaultValue)                           \
 class name                                                                     \
@@ -85,4 +108,8 @@ public:                                                                        \
 /*public because we need to treat this as type when we don't know the type.*/  \
 public:                                                                        \
     type m_t;                                                                  \
-};
+};                                                                             \
+BIO_STRONG_TYPEDEF_BIO_NAMESPACE_DEFINITIONS(                                  \
+	BIO_SINGLE_ARG(type),                                                      \
+	name,                                                                      \
+	BIO_SINGLE_ARG(defaultValue))

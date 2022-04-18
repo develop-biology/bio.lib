@@ -20,7 +20,7 @@
  */
 
 #include "bio/log/Engine.h"
-#include "bio/log/common/Levels.h"
+#include "bio/log/common/LogLevels.h"
 #include "bio/common/macros/Macros.h"
 #include "bio/common/macros/OSMacros.h"
 #include "bio/physical/common/Types.h"
@@ -39,7 +39,7 @@ Engine::Engine()
 	//Set all filters to only log if level is >= Info
 	m_levelFilter.assign(
 		FilterPerspective::Instance().GetNumUsedIds(),
-		level::Info());
+		log_level::Info());
 }
 
 Engine::~Engine()
@@ -49,7 +49,7 @@ Engine::~Engine()
 
 void Engine::Log(
 	Filter filter,
-	Level level,
+	LogLevel level,
 	const char* format, 
 	va_list args
 )
@@ -74,13 +74,13 @@ void Engine::Log(
 	m_logMessage.clear();
 	m_logMessage.str(""); //TODO: is seekp good enough? what is faster?
 
-	m_logMessage << physical::GetCurrentTimestamp() << " " << FilterPerspective::Instance().GetNameFromId(filter) << " " << LevelPerspective::Instance().GetNameFromId(level) << ": " << str << "\n";
+	m_logMessage << physical::GetCurrentTimestamp() << " " << FilterPerspective::Instance().GetNameFromId(filter) << " " << LogLevelPerspective::Instance().GetNameFromId(level) << ": " << str << "\n";
 	Output(m_logMessage.str());
 }
 
 void Engine::Log(
 	Filter filter,
-	Level level,
+	LogLevel level,
 	const char* format, 
 	...
 )
@@ -107,7 +107,7 @@ void Engine::Log(
 
 bool Engine::FilterPass(
 	Filter filter,
-	Level level
+	LogLevel level
 ) const
 {
 	return level >= m_levelFilter[filter];
@@ -115,7 +115,7 @@ bool Engine::FilterPass(
 
 bool Engine::FilterSet(
 	Filter filter,
-	Level level
+	LogLevel level
 )
 {
 	m_levelFilter[filter] = level;
@@ -129,10 +129,10 @@ bool Engine::FilterSet(
 {
 	return FilterSet(
 		FilterPerspective::Instance().GetIdFromName(filter),
-		LevelPerspective::Instance().GetIdFromName(level));
+		LogLevelPerspective::Instance().GetIdFromName(level));
 }
 
-Level Engine::FilterGet(Filter filter) const
+LogLevel Engine::FilterGet(Filter filter) const
 {
 	return m_levelFilter[filter];
 }

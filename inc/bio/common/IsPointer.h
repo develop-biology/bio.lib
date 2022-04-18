@@ -48,7 +48,8 @@ namespace utility {
  * @return whether or not T is a pointer.
  */
 template < typename T >
-inline bool IsPointer()
+BIO_CONSTEXPR
+bool IsPointer()
 {
 	//@formatter:off
 	#if BIO_CPP_VERSION >= 11
@@ -66,7 +67,8 @@ inline bool IsPointer()
  * @return whether or not T is a pointer.
  */
 template < typename T >
-inline bool IsPointer(const T t)
+BIO_CONSTEXPR
+bool IsPointer(const T t)
 {
 	return IsPointer< T >();
 }

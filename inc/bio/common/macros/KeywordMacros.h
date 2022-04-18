@@ -18,14 +18,16 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 #pragma once
 
-#include "bio/physical/common/Types.h"
-
-namespace bio {
-
-BIO_ID_WITH_PERSPECTIVE(LogLevel,
-	uint8_t)
-
-} //bio namespace
+/**
+ * Because we support c++98 but also want to take advantage of later c++ features, we have to make our own wrappers around some keywords. <br />
+ * Here, we define the "constexpr" keyword for only c++11 and beyond. <br />
+ */
+//@formatter:off
+#if BIO_CPP_VERSION < 11
+	#define BIO_CONSTEXPR
+#else
+	#define BIO_CONSTEXPR constexpr
+#endif
+//@formatter:on

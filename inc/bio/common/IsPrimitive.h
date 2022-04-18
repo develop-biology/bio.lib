@@ -39,11 +39,38 @@ namespace bio {
 namespace utility {
 
 //@formatter:off
-#if BIO_CPP_VERSION < 11
-	template<typename T>
-	struct IsPrimitiveImplementation {static const bool m_value = false;};
-#endif
+template<typename T>
+struct IsPrimitiveImplementation {static const bool m_value = false;};
 //@formatter:on
+
+/**
+ * IsPrimitive without an arg is the same as that with, except no automatic pointer dereferencing can be done. <br />
+ * If we're using C++98 and don't have an interface for T, we'll try looking for std:: in its typename. <br />
+ * @tparam T
+ * @return whether or not T is a built-in type or a Biology class, which should, except for a few exceptions, always mean a child of physical::Wave; false by default.
+ */
+template < typename T >
+BIO_CONSTEXPR
+bool IsPrimitive()
+{
+	if (IsPointer< T >())
+	{
+		return false;
+	}
+
+	//We need to make sure we include our custom overrides of what IsPrimitive.
+	if (IsPrimitiveImplementation< T >::m_value)
+	{
+		return true;
+	}
+	//@formatter:off
+	#if BIO_CPP_VERSION < 11
+		return IsPrimitiveImplementation< T >::m_value;
+	#else
+		return std::is_fundamental<T>::value;
+	#endif
+	//@formatter:on
+}
 
 /**
  * IsPrimitive is a bit more complex than it might need to be but the features, while slow, should be robust. <br />
@@ -59,35 +86,7 @@ bool IsPrimitive(const T t)
 	BIO_SANITIZE_AT_SAFETY_LEVEL_2(!IsPointer< T >(), ,
 		return IsPrimitive(*t));
 
-	//@formatter:off
-	#if BIO_CPP_VERSION < 11
-		return IsPrimitiveImplementation< T >::m_value;
-	#else
-		return std::is_fundamental<T>::value;
-	#endif
-	//@formatter:on
-}
-
-/**
- * IsPrimitive without an arg is the same as that with, except no automatic pointer dereferencing can be done. <br />
- * If we're using C++98 and don't have an interface for T, we'll try looking for std:: in its typename. <br />
- * @tparam T
- * @return whether or not T is a built-in type or a Biology class, which should, except for a few exceptions, always mean a child of physical::Wave; false by default.
- */
-template < typename T >
-bool IsPrimitive()
-{
-	if (IsPointer< T >())
-	{
-		return false;
-	}
-	//@formatter:off
-	#if BIO_CPP_VERSION < 11
-		return IsPrimitiveImplementation< T >::m_value;
-	#else
-		return std::is_fundamental<T>::value;
-	#endif
-	//@formatter:on
+	return IsPrimitive< T >();
 }
 
 #if BIO_CPP_VERSION < 11
