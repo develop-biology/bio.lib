@@ -1,1 +1,74 @@
-{"cpp_version": 98, "name": "bio", "type": "lib", "clear_build_path": true}
+{
+  "clear_build_path" : true,
+  "ebbs_next": [
+    {
+      "build" : "in_container",
+      "config" : {
+        "image" : "eons/img_generic-builder",
+        "copy_env" : [
+          "version",
+          "visibility"
+        ],
+        "ebbs_next" : [
+          {
+            "clear_build_path" : false,
+            "build" : "cpp",
+            "build_in" : "build",
+            "copy" : [
+              {"../../inc/" : "inc/"},
+              {"../../src/" : "src/"}
+            ],
+            "config" : {
+              "file_name" : "libbio.so",
+              "output_dir" : "lib_x86_64_bio",
+              "cpp_version" : 98,
+              "ebbs_next" : [
+                {
+                  "build": "publish",
+                  "run_when" : [
+                    "release"
+                  ],
+                  "clear_build_path" : false,
+                  "build_in" : "lib_x86_64_bio"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "build" : "in_container",
+      "run_when" : [
+        "release"
+      ],
+      "config" : {
+        "image" : "eons/img_doxygen",
+        "copy_env" : [
+          "version",
+          "visibility"
+        ],
+        "ebbs_next" : [
+          {
+            "clear_build_path" : false,
+            "build" : "doxygen",
+            "build_in" : "doc",
+            "copy" : [
+              {"../../inc/" : "inc/"},
+              {"../../src/" : "src/"}
+            ],
+            "config" : {
+              "style" : "biology_documentation",
+              "ebbs_next" : [
+                {
+                  "build": "publish",
+                  "path" : "doc"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
