@@ -45,7 +45,7 @@ Code Protein::Fold()
 	return ret;
 }
 
-Code Protein::RecruitChaperones(Vesicle* environment) <br />
+Code Protein::RecruitChaperones(Vesicle* environment) 
 {
 	SetEnvironment(environment);
 	BIO_EXCITATION_CLASS(Protein, Code, Vesicle*) recruitChaperones(&Protein::RecruitChaperones, environment);
@@ -69,13 +69,13 @@ Code Protein::operator()()
 	return Activate();
 }
 
-Code Protein::SetSource(const DNA* source) <br />
+Code Protein::SetSource(const DNA* source) 
 {
 	m_source = source;
 	return code::Success();
 }
 
-const DNA* Protein::GetSource() const <br />
+const DNA* Protein::GetSource() const 
 {
 	return m_source;
 }

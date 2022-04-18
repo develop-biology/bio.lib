@@ -39,7 +39,7 @@ namespace chemical {
 /**
  * LinearMotif objects contain pointers to chemical::Classes. <br />
  *
- * IMPORTANT: CONTENT_TYPE MUST BE A chemical::Class* (which is in the StandardDimension). <br />
+ * IMPORTANT: CONTENT_TYPE MUST BE A chemical::Class* (which is in the StandardDimension). 
  * YOU CANNOT USE LinearMotif WITH TYPES THAT ARE NOT POINTERS TO CHILDREN OF chemical::Class (i.e. a physical::Identifiable<StandardDimension>) <br />
  * Other Dimensions may be supported in a future release. <br />
  * physical::Line and physical::Linear for why. <br />
@@ -87,7 +87,7 @@ public:
 	/**
 	 * @param perspective
 	 */
-	explicit LinearMotif(physical::Perspective< StandardDimension >* perspective = NULL) <br />
+	explicit LinearMotif(physical::Perspective< StandardDimension >* perspective = NULL) 
 		:
 		Elementary< LinearMotif< CONTENT_TYPE > >(GetClassProperties()),
 		chemical::Class< LinearMotif< CONTENT_TYPE > >(this),
@@ -102,8 +102,8 @@ public:
 	 * @param perspective
 	 */
 	explicit LinearMotif(
-		const Contents* contents, <br />
-		physical::Perspective< StandardDimension >* perspective = NULL <br />
+		const Contents* contents, 
+		physical::Perspective< StandardDimension >* perspective = NULL 
 	)
 		:
 		Elementary< LinearMotif< CONTENT_TYPE > >(GetClassProperties()),
@@ -144,12 +144,12 @@ public:
 	 * This Perspective will be used for Name <-> Id matching, Wave->Clone()ing, etc. <br />
 	 * See bio/physical/Perspective.h for more details. <br />
 	 */
-	physical::Perspective< StandardDimension >* m_perspective; <br />
+	physical::Perspective< StandardDimension >* m_perspective; 
 
 	/**
 	 * @return the m_perspective used by *this.
 	 */
-	physical::Perspective< StandardDimension >* GetStructuralPerspective() <br />
+	physical::Perspective< StandardDimension >* GetStructuralPerspective() 
 	{
 		return m_perspective;
 	}
@@ -157,7 +157,7 @@ public:
 	/**
 	 * @return the m_perspective used by *this.
 	 */
-	const physical::Perspective< StandardDimension >* GetStructuralPerspective() const <br />
+	const physical::Perspective< StandardDimension >* GetStructuralPerspective() const 
 	{
 		return m_perspective;
 	}
@@ -169,7 +169,7 @@ public:
 	 */
 	virtual CONTENT_TYPE AddImplementation(CONTENT_TYPE content)
 	{
-		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(this->m_contents->Add(content))); <br />
+		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(this->m_contents->Add(content))); 
 	}
 
 	/**
@@ -233,7 +233,7 @@ public:
 				CONTENT_TYPE toReplaceCasted = toReplace.template As< CONTENT_TYPE >();
 				//addition->ImportAll(toReplaceCasted); //<- inaccessible, so we replicate the function here.
 
-				Bond* bondBuffer; <br />
+				Bond* bondBuffer; 
 				for (
 					SmartIterator bnd = addition->AsAtom()->GetAllBonds()->End();
 					!bnd.IsAtBeginning();
@@ -251,8 +251,8 @@ public:
 					{
 						continue;
 					}
-					const physical::Wave* otherBond = toReplaceCasted->AsAtom()->GetBonded(toReplaceCasted->AsAtom()->GetBondPosition(bondBuffer->GetId())); <br />
-					Cast< AbstractMotif* >(bondBuffer->GetBonded())->ImportImplementation(otherBond); //actual work <br />
+					const physical::Wave* otherBond = toReplaceCasted->AsAtom()->GetBonded(toReplaceCasted->AsAtom()->GetBondPosition(bondBuffer->GetId())); 
+					Cast< AbstractMotif* >(bondBuffer->GetBonded())->ImportImplementation(otherBond); //actual work 
 				}
 			}
 			this->m_contents->Erase(toReplace);
@@ -269,12 +269,12 @@ public:
 			}
 			case BEFORE:
 			{
-				Index placement = Cast< physical::Line* >(this->m_contents)->SeekToId(optionalPositionArg); <br />
+				Index placement = Cast< physical::Line* >(this->m_contents)->SeekToId(optionalPositionArg); 
 				if (!placement)
 				{
 					return code::GeneralFailure();
 				}
-				BIO_SANITIZE(Cast< physical::Line* >(this->m_contents)->LinearAccess(placement)->GetPerspective() == addition->GetPerspective(), , <br />
+				BIO_SANITIZE(Cast< physical::Line* >(this->m_contents)->LinearAccess(placement)->GetPerspective() == addition->GetPerspective(), , 
 					return code::GeneralFailure());
 
 				this->m_contents->Insert(
@@ -285,12 +285,12 @@ public:
 			}
 			case AFTER:
 			{
-				Index placement = Cast< physical::Line* >(this->m_contents)->SeekToId(optionalPositionArg); <br />
+				Index placement = Cast< physical::Line* >(this->m_contents)->SeekToId(optionalPositionArg); 
 				if (!placement)
 				{
 					return code::GeneralFailure();
 				}
-				BIO_SANITIZE(Cast< physical::Line* >(this->m_contents)->LinearAccess(placement)->GetPerspective() == addition->GetPerspective(), , <br />
+				BIO_SANITIZE(Cast< physical::Line* >(this->m_contents)->LinearAccess(placement)->GetPerspective() == addition->GetPerspective(), , 
 					return code::GeneralFailure());
 
 				this->m_contents->Insert(
@@ -325,11 +325,11 @@ public:
 		StandardDimension id
 	)
 	{
-		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToId(id); <br />
+		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToId(id); 
 		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
 			return NULL) //level 2 for GetOrCreate.
 
-		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret)); <br />
+		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret)); 
 	}
 
 	/**
@@ -341,11 +341,11 @@ public:
 		StandardDimension id
 	) const
 	{
-		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToId(id); <br />
+		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToId(id); 
 		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
 			return NULL) //level 2 for GetOrCreate.
 
-		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret)); <br />
+		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret)); 
 	}
 
 
@@ -358,11 +358,11 @@ public:
 		Name name
 	)
 	{
-		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToName(name); <br />
+		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToName(name); 
 		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
 			return NULL) //level 2 for GetOrCreate.
 
-		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret)); <br />
+		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret)); 
 	}
 
 	/**
@@ -374,11 +374,11 @@ public:
 		Name name
 	) const
 	{
-		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToName(name); <br />
+		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToName(name); 
 		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
 			return NULL) //level 2 for GetOrCreate.
 
-		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret)); <br />
+		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret)); 
 	}
 
 	/**
@@ -455,7 +455,7 @@ public:
 	 * Clone()s each element. <br />
 	 * @param other
 	 */
-	virtual void ImportImplementation(const LinearMotif< CONTENT_TYPE >* other) <br />
+	virtual void ImportImplementation(const LinearMotif< CONTENT_TYPE >* other) 
 	{
 		BIO_SANITIZE(other, ,
 			return);
@@ -469,13 +469,13 @@ public:
 	 * @param other
 	 * @return the result of all Attenuations.
 	 */
-	virtual Code Attenuate(const physical::Wave* other) <br />
+	virtual Code Attenuate(const physical::Wave* other) 
 	{
 		if (physical::Wave::GetResonanceBetween(
 			other,
 			ExcitationBase::GetClassProperties()).size())
 		{
-			ForEachImplementation(ChemicalCast< ExcitationBase* >(other)); <br />
+			ForEachImplementation(ChemicalCast< ExcitationBase* >(other)); 
 			return code::Success();
 		}
 
@@ -486,7 +486,7 @@ public:
 			--cnt
 			)
 		{
-			if (cnt.template As< physical::Identifiable< StandardDimension >* >()->Attenuate(other) != code::Success()) <br />
+			if (cnt.template As< physical::Identifiable< StandardDimension >* >()->Attenuate(other) != code::Success()) 
 			{
 				ret = code::UnknownError();
 			}
@@ -499,7 +499,7 @@ public:
 	 * @param other
 	 * @return the result of all Disattenuations.
 	 */
-	virtual Code Disattenuate(const physical::Wave* other) <br />
+	virtual Code Disattenuate(const physical::Wave* other) 
 	{
 		Code ret = code::Success();
 		for (
@@ -508,7 +508,7 @@ public:
 			--cnt
 			)
 		{
-			if (cnt.template As< physical::Identifiable< StandardDimension >* >()->Disattenuate(other) != code::Success()) <br />
+			if (cnt.template As< physical::Identifiable< StandardDimension >* >()->Disattenuate(other) != code::Success()) 
 			{
 				ret = code::UnknownError();
 			}
@@ -522,7 +522,7 @@ public:
 	 * @param excitation
 	 */
 	virtual Emission ForEachImplementation(
-		ExcitationBase* excitation <br />
+		ExcitationBase* excitation 
 	)
 	{
 		Emission ret;
@@ -534,7 +534,7 @@ public:
 		{
 			ByteStream result;
 			excitation->CallDown(
-				cnt.template As< physical::Identifiable< StandardDimension >* >()->AsWave(), <br />
+				cnt.template As< physical::Identifiable< StandardDimension >* >()->AsWave(), 
 				&result
 			);
 			ret.push_back(result);
@@ -559,7 +559,7 @@ public:
 			++cnt
 			)
 		{
-			ret += cnt.template As< physical::Identifiable< StandardDimension >* >()->GetName(); <br />
+			ret += cnt.template As< physical::Identifiable< StandardDimension >* >()->GetName(); 
 			if (cnt.GetIndex() != this->m_contents->GetEndIndex() - 1)
 			{
 				ret += separator;
@@ -590,7 +590,7 @@ private:
 //		BIO_ASSERT(std::is_base_of<Substance, CONTENT_TYPE>::value);
 //		#else
 //		CONTENT_TYPE ct;
-//		BIO_ASSERT(Cast< Substance* >(&ct) != NULL); <br />
+//		BIO_ASSERT(Cast< Substance* >(&ct) != NULL); 
 //		#endif
 
 		if (this->m_contents)

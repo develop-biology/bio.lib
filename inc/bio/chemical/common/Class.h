@@ -76,8 +76,8 @@ public:
 	 * @param symmetryType
 	 */
 	Class(
-		T* object, <br />
-		physical::Perspective< StandardDimension >* perspective = NULL, <br />
+		T* object, 
+		physical::Perspective< StandardDimension >* perspective = NULL, 
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
@@ -99,9 +99,9 @@ public:
 	 * @param filter
 	 */
 	Class(
-		T* object, <br />
+		T* object, 
 		Name name,
-		physical::Perspective< StandardDimension >* perspective = NULL, <br />
+		physical::Perspective< StandardDimension >* perspective = NULL, 
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
@@ -134,9 +134,9 @@ public:
 	 * @param filter
 	 */
 	Class(
-		T* object, <br />
+		T* object, 
 		StandardDimension id,
-		physical::Perspective< StandardDimension >* perspective = NULL, <br />
+		physical::Perspective< StandardDimension >* perspective = NULL, 
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
@@ -184,7 +184,7 @@ public:
 	 * From Wave. See that class for details. <br />
 	 * @return this as an Atom.
 	 */
-	virtual Atom* AsAtom() <br />
+	virtual Atom* AsAtom() 
 	{
 		return this;
 	}
@@ -193,7 +193,7 @@ public:
 	 * From Wave. See that class for details. <br />
 	 * @return this as an Atom.
 	 */
-	virtual const Atom* AsAtom() const <br />
+	virtual const Atom* AsAtom() const 
 	{
 		return this;
 	}
@@ -203,7 +203,7 @@ public:
 	 * @param other
 	 * @return result of Wave::Attenuation.
 	 */
-	virtual Code Attenuate(const physical::Wave* other) <br />
+	virtual Code Attenuate(const physical::Wave* other) 
 	{
 		return physical::Class< T >::Attenuate(other);
 	}
@@ -213,7 +213,7 @@ public:
 	 * @param other
 	 * @return result of Wave::Disattenuation.
 	 */
-	virtual Code Disattenuate(const physical::Wave* other) <br />
+	virtual Code Disattenuate(const physical::Wave* other) 
 	{
 		return physical::Class< T >::Disattenuate(other);
 	}

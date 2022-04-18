@@ -40,8 +40,8 @@ namespace string {
  * @return true on success, false if s is not an integer
  */
 bool ToBool(
-	const char* s, <br />
-	bool* returned <br />
+	const char* s, 
+	bool* returned 
 );
 
 /**
@@ -51,8 +51,8 @@ bool ToBool(
  * @return true on success, false if s is not an integer
  */
 bool ToInt(
-	const char* s, <br />
-	int32_t* returned <br />
+	const char* s, 
+	int32_t* returned 
 );
 
 /**
@@ -62,8 +62,8 @@ bool ToInt(
  * @return true on success, false if s is not an unsigned integer
  */
 bool ToUInt(
-	const char* s, <br />
-	uint32_t* returned <br />
+	const char* s, 
+	uint32_t* returned 
 );
 
 /**
@@ -73,8 +73,8 @@ bool ToUInt(
  * @return true on success, false if s is not a float.
  */
 bool ToFloat(
-	const char* s, <br />
-	float* returned <br />
+	const char* s, 
+	float* returned 
 );
 
 /**
@@ -146,12 +146,12 @@ CharStrings ToCharStrings(const StdStrings& strings);
 StdStrings ToStdStrings(const CharStrings& strings);
 
 /**
- * Copies the contents of source into a new const char* and sets target to point to the new value. <br />
+ * Copies the contents of source into a new const char* and sets target to point to the new value. 
  * @param source
  * @param target
  */
 void CloneInto(
-	const char* source, <br />
+	const char* source, 
 	const char*& target
 );
 
@@ -160,7 +160,7 @@ void CloneInto(
  */
 struct Echelon
 {
-	const char* string; <br />
+	const char* string; 
 	unsigned int echelon;
 };
 typedef std::vector< Echelon > Echelons;

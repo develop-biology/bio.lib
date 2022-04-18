@@ -34,7 +34,7 @@ Expressor::~Expressor()
 Code Expressor::Activate(StandardDimension proteinId)
 {
 	Code ret = code::Success();
-	molecular::Protein* toActivate = GetById< molecular::Protein* >(proteinId); <br />
+	molecular::Protein* toActivate = GetById< molecular::Protein* >(proteinId); 
 	BIO_SANITIZE(toActivate, ,
 		return false);
 	return toActivate->Activate();
@@ -47,10 +47,10 @@ Code Expressor::Activate(Name proteinName)
 
 Code Expressor::ExpressGenes()
 {
-	Plasmid* plasmidBuffer; <br />
+	Plasmid* plasmidBuffer; 
 	Code ret = code::Success();
 	for (
-		SmartIterator dna = GetAll< Plasmid* >()->Begin(); <br />
+		SmartIterator dna = GetAll< Plasmid* >()->Begin(); 
 		!dna.IsAtEnd();
 		++dna
 		)
@@ -75,7 +75,7 @@ Code Expressor::ExpressGenes()
 	return ret;
 }
 
-Code Expressor::AddToTranscriptome(const RNA* toExpress) <br />
+Code Expressor::AddToTranscriptome(const RNA* toExpress) 
 {
 	BIO_SANITIZE(toExpress, ,
 		return code::BadArgument1());
@@ -83,14 +83,14 @@ Code Expressor::AddToTranscriptome(const RNA* toExpress) <br />
 	return code::Success();
 }
 
-Code Expressor::Translate(const RNA* mRNA) <br />
+Code Expressor::Translate(const RNA* mRNA) 
 {
 	BIO_SANITIZE(mRNA, ,
 		code::BadArgument1());
 
 	Code ret = code::Success();
 
-	Gene* geneBuffer; <br />
+	Gene* geneBuffer; 
 	for (
 		Transcriptome::const_iterator rna = m_transcriptome.begin();
 		rna != m_transcriptome.end();
@@ -98,7 +98,7 @@ Code Expressor::Translate(const RNA* mRNA) <br />
 		)
 	{
 		for (
-			SmartIterator gen = (*rna)->GetAll< Gene* >()->Begin(); <br />
+			SmartIterator gen = (*rna)->GetAll< Gene* >()->Begin(); 
 			!gen.IsAtEnd();
 			++gen
 			)

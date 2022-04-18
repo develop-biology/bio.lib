@@ -127,7 +127,7 @@ const ByteStream& Symmetry::GetValue() const
 	return m_value;
 }
 
-ByteStream* Symmetry::AccessValue() <br />
+ByteStream* Symmetry::AccessValue() 
 {
 	return &m_value;
 }

@@ -234,7 +234,7 @@ public:
 	 * Copy the contents of other into *this. <br />
 	 * @param other
 	 */
-	virtual void Import(const Container* other); <br />
+	virtual void Import(const Container* other); 
 
 	/**
 	 * Ease of use wrapper around Access. <br />
@@ -273,7 +273,7 @@ public:
 	 * @param index
 	 * @return a new Iterator pointing to the given Index in *this or NULL.
 	 */
-	virtual Iterator* ConstructClassIterator(const Index index = InvalidIndex()) const; <br />
+	virtual Iterator* ConstructClassIterator(const Index index = InvalidIndex()) const; 
 
 	/**
 	 * NOTE: This does not need to be overridden if you've already defined ConstructClassIterator(). <br />
@@ -335,9 +335,9 @@ protected:
 	) const;
 
 	/**
-	 * cannot be void* as we need an object type for pointer arithmetic. <br />
+	 * cannot be void* as we need an object type for pointer arithmetic. 
 	 */
-	unsigned char* m_store; <br />
+	unsigned char* m_store; 
 
 	Index m_size;
 	Index m_firstFree;
@@ -347,7 +347,7 @@ protected:
 	 * An iterator for use in loops. <br />
 	 * Matches lifecycle of object for better performance. <br />
 	 */
-	mutable Iterator* m_tempItt; <br />
+	mutable Iterator* m_tempItt; 
 };
 
 } //bio namespace

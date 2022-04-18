@@ -102,7 +102,7 @@ public:
 	}
 
 	/**
-	 * *this can be treated as a T* directly. <br />
+	 * *this can be treated as a T* directly. 
 	 * @return *this as a T*.
 	 */
 	operator T*()
@@ -126,7 +126,7 @@ public:
 	 * Required method from Wave. See that class for details. <br />
 	 * @return a Symmetrical image of *this
 	 */
-	virtual Symmetry* Spin() const <br />
+	virtual Symmetry* Spin() const 
 	{
 		this->m_symmetry->AccessValue()->Set(*this->m_quantized);
 		return this->Wave::Spin();
@@ -137,7 +137,7 @@ public:
 	 * Reconstruct *this from the given Symmetry. <br />
 	 * @param symmetry
 	 */
-	virtual Code Reify(Symmetry* symmetry) <br />
+	virtual Code Reify(Symmetry* symmetry) 
 	{
 		BIO_SANITIZE(symmetry, ,
 			return code::BadArgument1());
@@ -147,7 +147,7 @@ public:
 	}
 
 protected:
-	T* m_quantized; <br />
+	T* m_quantized; 
 };
 
 } //physical namespace

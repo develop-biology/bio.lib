@@ -54,13 +54,13 @@ Localization::~Localization()
 	}
 }
 
-chemical::Substance* Localization::ResolvePrevious(chemical::Substance* seekIn) const <br />
+chemical::Substance* Localization::ResolvePrevious(chemical::Substance* seekIn) const 
 {
 	BIO_SANITIZE(seekIn, ,
 		return seekIn);
 
 	//TODO: What if *this has been Modulated with something other than a Localization?
-	Localization* previous = ForceCast< Localization* >(Demodulate()); <br />
+	Localization* previous = ForceCast< Localization* >(Demodulate()); 
 
 	if (previous)
 	{
@@ -69,7 +69,7 @@ chemical::Substance* Localization::ResolvePrevious(chemical::Substance* seekIn) 
 	return seekIn;
 }
 
-chemical::Substance* Localization::Seek(chemical::Substance* seekIn) const <br />
+chemical::Substance* Localization::Seek(chemical::Substance* seekIn) const 
 {
 	seekIn = ResolvePrevious(seekIn);
 
@@ -84,7 +84,7 @@ chemical::Substance* Localization::Seek(chemical::Substance* seekIn) const <br /
 	BIO_SANITIZE(mc_method, ,
 		return NULL)
 	ByteStream newName(m_name);
-	(const_cast< chemical::ExcitationBase* >(mc_method))->EditArg( <br />
+	(const_cast< chemical::ExcitationBase* >(mc_method))->EditArg( 
 		0,
 		newName
 	);
@@ -93,7 +93,7 @@ chemical::Substance* Localization::Seek(chemical::Substance* seekIn) const <br /
 		seekIn->AsWave(),
 		result
 	);
-	chemical::Substance* extract = ChemicalCast< chemical::Substance* >(Cast< physical::Wave* >(result.IKnowWhatImDoing())); //This is about as safe as we can get right now. <br />
+	chemical::Substance* extract = ChemicalCast< chemical::Substance* >(Cast< physical::Wave* >(result.IKnowWhatImDoing())); //This is about as safe as we can get right now. 
 	BIO_SANITIZE(extract, ,
 		return NULL)
 	return extract;
@@ -123,7 +123,7 @@ void Localization::SetSite(Site site)
 	{
 		delete mc_method;
 	}
-	mc_method = LocalizationSitePerspective::Instance().GetNewObjectFromIdAs< chemical::ExcitationBase* >(m_site); <br />
+	mc_method = LocalizationSitePerspective::Instance().GetNewObjectFromIdAs< chemical::ExcitationBase* >(m_site); 
 }
 
 Site Localization::GetSite() const

@@ -92,7 +92,7 @@ inline T& Dereference(T& t)
  * @return *T
  */
 template < typename T >
-inline T& Dereference(T* t) <br />
+inline T& Dereference(T* t) 
 {
 	return *t;
 }

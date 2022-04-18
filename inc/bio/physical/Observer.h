@@ -45,7 +45,7 @@ public:
 	/**
 	 * @param perspective
 	 */
-	explicit Observer(Perspective* perspective = NULL) <br />
+	explicit Observer(Perspective* perspective = NULL) 
 		:
 		m_perspective(perspective)
 	{
@@ -71,7 +71,7 @@ public:
 	 * Sets the perspective for *this. <br />
 	 * @param perspective
 	 */
-	virtual void SetPerspective(Perspective* perspective) <br />
+	virtual void SetPerspective(Perspective* perspective) 
 	{
 		m_perspective = perspective;
 	}
@@ -79,7 +79,7 @@ public:
 	virtual /**
 	 * @return the perspective held by *this.
 	 */
-	Perspective* GetPerspective() const <br />
+	Perspective* GetPerspective() const 
 	{
 		return m_perspective;
 	}
@@ -97,7 +97,7 @@ protected:
 	}
 
 private:
-	Perspective* m_perspective; <br />
+	Perspective* m_perspective; 
 };
 
 } //physical namespace

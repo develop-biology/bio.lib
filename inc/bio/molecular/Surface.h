@@ -40,7 +40,7 @@ class Molecule;
  */
 class Surface :
 	public Class< Surface >,
-	public chemical::LinearMotif< Molecule* >, <br />
+	public chemical::LinearMotif< Molecule* >, 
 	public EnvironmentDependent< Molecule >
 {
 public:
@@ -56,7 +56,7 @@ public:
 	 */
 	Surface(
 		Name name,
-		Molecule* environment = NULL <br />
+		Molecule* environment = NULL 
 	);
 
 	/**
@@ -76,14 +76,14 @@ public:
 	 * Required method from Wave. See that class for details. <br />
 	 * @return a Symmetrical image of *this
 	 */
-	virtual physical::Symmetry* Spin() const; <br />
+	virtual physical::Symmetry* Spin() const; 
 
 	/**
 	 * Required method from Wave. See that class for details. <br />
 	 * Reconstruct *this from the given Symmetry. <br />
 	 * @param symmetry
 	 */
-	virtual Code Reify(physical::Symmetry* symmetry); <br />
+	virtual Code Reify(physical::Symmetry* symmetry); 
 
 	/**
 	 * Create a Manage()d Bond with the given var. <br />
@@ -143,8 +143,8 @@ public:
 	 * @param bondType
 	 * @return the previously bound Substance or NULL.
 	 */
-	virtual physical::Wave* Release( <br />
-		physical::Wave* toRelease, <br />
+	virtual physical::Wave* Release( 
+		physical::Wave* toRelease, 
 		BondType bondType = bond_type::Temporary());
 
 	/**
@@ -155,9 +155,9 @@ public:
 	 * @param bondType
 	 * @return the previously bound Substance or NULL.
 	 */
-	virtual chemical::Substance* Release( <br />
+	virtual chemical::Substance* Release( 
 		Name toRelease,
-		physical::Perspective< StandardDimension >* perspective = NULL, <br />
+		physical::Perspective< StandardDimension >* perspective = NULL, 
 		BondType bondType = bond_type::Temporary());
 
 	/**
@@ -168,9 +168,9 @@ public:
 	 * @param bondType
 	 * @return the previously bound Substance or NULL.
 	 */
-	virtual chemical::Substance* Release( <br />
+	virtual chemical::Substance* Release( 
 		StandardDimension toRelease,
-		physical::Perspective< StandardDimension >* perspective = NULL, <br />
+		physical::Perspective< StandardDimension >* perspective = NULL, 
 		BondType bondType = bond_type::Temporary());
 
 	/**
@@ -183,13 +183,13 @@ public:
 	 * Sets both the m_environment and m_perspective and updates m_id. <br />
 	 * @param environment
 	 */
-	virtual void SetEnvironment(Molecule* environment); <br />
+	virtual void SetEnvironment(Molecule* environment); 
 
 	/**
 	 * Sets both the m_environment and m_perspective and updates m_id. <br />
 	 * @param perspective a Molecule.
 	 */
-	virtual void SetPerspective(Molecule* perspective); <br />
+	virtual void SetPerspective(Molecule* perspective); 
 
 	/**
 	 * Wrapper around Bind <br />
@@ -207,21 +207,21 @@ public:
 	 * @param toRelease
 	 * @return result of Release
 	 */
-	virtual physical::Wave* operator-=(physical::Wave* toRelease); <br />
+	virtual physical::Wave* operator-=(physical::Wave* toRelease); 
 
 	/**
 	 * Wrapper around Release <br />
 	 * @param toRelease
 	 * @return result of Release
 	 */
-	virtual chemical::Substance* operator-=(Name toRelease); <br />
+	virtual chemical::Substance* operator-=(Name toRelease); 
 
 	/**
 	 * Wrapper around Release <br />
 	 * @param toRelease
 	 * @return result of Release
 	 */
-	virtual chemical::Substance* operator-=(StandardDimension toRelease); <br />
+	virtual chemical::Substance* operator-=(StandardDimension toRelease); 
 
 	/**
 	 * Wrapper around ReleaseAll <br />

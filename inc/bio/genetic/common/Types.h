@@ -57,7 +57,7 @@ namespace genetic {
 
 class RNA;
 
-typedef std::vector< const RNA* > Transcriptome; <br />
+typedef std::vector< const RNA* > Transcriptome; 
 
 BIO_PERSPECTIVE_SINGLETON(RNAPerspective,
 	StandardDimension)

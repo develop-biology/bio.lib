@@ -29,7 +29,7 @@ namespace chemical {
 
 Reaction::Reaction(
 	Name name,
-	const Reactants* reactants <br />
+	const Reactants* reactants 
 )
 	:
 	chemical::Class< Reaction >(
@@ -42,14 +42,14 @@ Reaction::Reaction(
 {
 }
 
-void Reaction::Require(Reactant* reactant) <br />
+void Reaction::Require(Reactant* reactant) 
 {
-	m_requiredReactants.Add< Substance* >(reactant); <br />
+	m_requiredReactants.Add< Substance* >(reactant); 
 }
 
 void Reaction::Require(
 	Name typeName,
-	const Substance* substance <br />
+	const Substance* substance 
 )
 {
 	Require(
@@ -61,8 +61,8 @@ void Reaction::Require(
 
 void Reaction::Require(
 	Name typeName,
-	const UnorderedMotif< Property >::Contents* properties, <br />
-	const UnorderedMotif< State >::Contents* states <br />
+	const UnorderedMotif< Property >::Contents* properties, 
+	const UnorderedMotif< State >::Contents* states 
 )
 {
 	Require(
@@ -74,19 +74,19 @@ void Reaction::Require(
 }
 
 
-bool Reaction::ReactantsMeetRequirements(const Reactants* toCheck) const <br />
+bool Reaction::ReactantsMeetRequirements(const Reactants* toCheck) const 
 {
-	return toCheck->HasAll< Substance* >(m_requiredReactants.GetAll< Substance* >()); <br />
+	return toCheck->HasAll< Substance* >(m_requiredReactants.GetAll< Substance* >()); 
 }
 
-/*static*/ const Reaction* Reaction::Initiate(StandardDimension id) <br />
+/*static*/ const Reaction* Reaction::Initiate(StandardDimension id) 
 {
-	BIO_SANITIZE_WITH_CACHE(ReactionPerspective::Instance().GetTypeFromIdAs< Reaction* >(id), <br />
-		return *(Cast< const Reaction** >(RESULT)), <br />
+	BIO_SANITIZE_WITH_CACHE(ReactionPerspective::Instance().GetTypeFromIdAs< Reaction* >(id), 
+		return *(Cast< const Reaction** >(RESULT)), 
 		return NULL);
 }
 
-Products Reaction::operator()(Reactants* reactants) const <br />
+Products Reaction::operator()(Reactants* reactants) const 
 {
 	//Always level 2, even if the user wants more (i.e. never less).
 	BIO_SANITIZE_AT_SAFETY_LEVEL_2(ReactantsMeetRequirements(reactants),

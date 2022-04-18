@@ -65,13 +65,13 @@ Filter Filterable::GetFilter() const
 	return m_filter;
 }
 
-Symmetry* Filterable::Spin() const <br />
+Symmetry* Filterable::Spin() const 
 {
 	m_symmetry->AccessValue()->Set(m_filter);
 	return Wave::Spin();
 }
 
-Code Filterable::Reify(Symmetry* symmetry) <br />
+Code Filterable::Reify(Symmetry* symmetry) 
 {
 	BIO_SANITIZE(symmetry, ,
 		return code::BadArgument1());

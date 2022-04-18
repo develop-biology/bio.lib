@@ -61,7 +61,7 @@ public:
 	 * @param logFilter
 	 */
 	Writer(
-		Engine* logEngine, <br />
+		Engine* logEngine, 
 		Filter logFilter
 	);
 
@@ -81,29 +81,29 @@ public:
 	void ExternalLog(
 		Filter logFilter,
 		Level level,
-		const char* format, <br />
+		const char* format, 
 		...
 	) const;
 
 	/**
-	 * Set the log::Engine* for *this. <br />
+	 * Set the log::Engine* for *this. 
 	 * Propagate logEngine to any and all related classes that should receive the change. <br />
 	 * if *this contains member LoggerObjects, these may be overridden to pass the call along to those objects as well. <br />
-	 * It should be assumed (and is true for bio classes) that the creation of any Writer within another Writer will have its m_logEngine* set by the owner object AND that calling SetLogEngine on an owner object will also call SetLogEngine on all objects owned by it. <br />
+	 * It should be assumed (and is true for bio classes) that the creation of any Writer within another Writer will have its m_logEngine* set by the owner object AND that calling SetLogEngine on an owner object will also call SetLogEngine on all objects owned by it. 
 	 * This is not true for SetFilter, as each class may use a different filter <br />
 	 * @param logEngine
 	 */
-	virtual void SetLogEngine(Engine* logEngine); <br />
+	virtual void SetLogEngine(Engine* logEngine); 
 
 	/**
 	 * @return a pointer to the log::Engine used by *this.
 	 */
-	Engine* GetLogEngine(); <br />
+	Engine* GetLogEngine(); 
 
 	/**
 	 * @return a const pointer to the log::Engine used by *this.
 	 */
-	const Engine* GetLogEngine() const; <br />
+	const Engine* GetLogEngine() const; 
 
 	/**
 	 * @return whether or not log::Engine* has been set.
@@ -126,12 +126,12 @@ protected:
 	 */
 	void Log(
 		Level level,
-		const char* format, <br />
+		const char* format, 
 		...
 	) const;
 
 private:
-	Engine* m_logEngine; <br />
+	Engine* m_logEngine; 
 };
 } //log namespace
 } //bio namespace

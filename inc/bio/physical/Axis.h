@@ -54,27 +54,27 @@ public:
 	 * @param symmetry
 	 * @return text, possibly a command (like mysql), structured values (like json), an entire program (like python), etc. or Failed().
 	 */
-	virtual std::string Rotate(Symmetry* symmetry) const; <br />
+	virtual std::string Rotate(Symmetry* symmetry) const; 
 
 	/**
 	 * Express the given text into something intelligible by this system. <br />
 	 * @return Symmetry* which can be Reified or NULL.
 	 */
-	virtual Symmetry* Rotate(std::string) const; <br />
+	virtual Symmetry* Rotate(std::string) const; 
 
 	/**
 	 * jsonAxis | myWave <br />
 	 * @param particle
 	 * @return Rotate(particle->Spin()) or Failed().
 	 */
-	virtual std::string operator|(Wave* particle) const; <br />
+	virtual std::string operator|(Wave* particle) const; 
 
 	/**
 	 * (*myWave) | jsonAxis("..."); <br />
 	 * @param encoded
 	 * @return Rotate(encoded) or NULL.
 	 */
-	virtual Symmetry* operator()(std::string encoded) const; <br />
+	virtual Symmetry* operator()(std::string encoded) const; 
 
 protected:
 
@@ -85,7 +85,7 @@ protected:
 	 * @param symmetry
 	 * @return the text corresponding to the given, singular Symmetry or Failed().
 	 */
-	virtual std::string Encode(Symmetry* symmetry) const; <br />
+	virtual std::string Encode(Symmetry* symmetry) const; 
 
 };
 

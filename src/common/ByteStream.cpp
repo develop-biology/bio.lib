@@ -75,7 +75,7 @@ std::size_t ByteStream::GetSize() const
 	return m_size;
 }
 
-void* ByteStream::IKnowWhatImDoing() <br />
+void* ByteStream::IKnowWhatImDoing() 
 {
 	return m_stream;
 }

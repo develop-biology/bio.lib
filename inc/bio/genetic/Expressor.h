@@ -40,8 +40,8 @@ class Plasmid;
 class Expressor :
 	public genetic::Class< Expressor >,
 	public chemical::UnorderedMotif< TranscriptionFactor >,
-	public chemical::LinearMotif< Plasmid* >, <br />
-	public chemical::LinearMotif< molecular::Protein* >, <br />
+	public chemical::LinearMotif< Plasmid* >, 
+	public chemical::LinearMotif< molecular::Protein* >, 
 	virtual public molecular::Vesicle
 {
 public:
@@ -65,10 +65,10 @@ public:
 	virtual ~Expressor();
 
 	/**
-	 * Use this method to populate any member variable Protein* or StandardDimension Ids. <br />
+	 * Use this method to populate any member variable Protein* or StandardDimension Ids. 
 	 * You'll want to do this to speed up your code by bypassing the dynamic execution provided by Molecule. <br />
-	 * Use StandardDimension Ids when the Protein* might change (e.g. the Protein may be Transferred in or out of *this). <br />
-	 * Use a Protein* if you know & will enforce a static set of Proteins which will not be Transferred. <br />
+	 * Use StandardDimension Ids when the Protein* might change (e.g. the Protein may be Transferred in or out of *this). 
+	 * Use a Protein* if you know & will enforce a static set of Proteins which will not be Transferred. 
 	 */
 	virtual void CacheProteins()
 	{
@@ -114,7 +114,7 @@ public:
 	 * @param mRNA encoded Gene* to be expressed.
 	 * @return status of DNA::Translation + localization within *this.
 	 */
-	virtual Code Translate(const RNA* mRNA); <br />
+	virtual Code Translate(const RNA* mRNA); 
 
 	/**
 	 * Transcribes all Genes from all Plasmids in *this, iff *this has the necessary TranscriptionFactors for each Gene, populating m_transcriptome. <br />
@@ -128,7 +128,7 @@ public:
 	 * @param toExpress
 	 * @return Whether or not the Gene was added successfully.
 	 */
-	virtual Code AddToTranscriptome(const RNA* toExpress); <br />
+	virtual Code AddToTranscriptome(const RNA* toExpress); 
 
 protected:
 	Transcriptome m_transcriptome;

@@ -31,12 +31,12 @@ Plasmid::~Plasmid()
 
 }
 
-molecular::Protein* Plasmid::GetRNAPolymerase() <br />
+molecular::Protein* Plasmid::GetRNAPolymerase() 
 {
 	return GetProtein();
 }
 
-const molecular::Protein* Plasmid::GetRNAPolymerase() const <br />
+const molecular::Protein* Plasmid::GetRNAPolymerase() const 
 {
 	return GetProtein();
 }
@@ -46,12 +46,12 @@ void Plasmid::CtorCommon()
 	m_protein = new RNAPolymerase(this);
 }
 
-RNA* Plasmid::TranscribeFor(Expressor* expressor) const <br />
+RNA* Plasmid::TranscribeFor(Expressor* expressor) const 
 {
 	std::string rnaName = "mRNA_";
 	rnaName += GetName();
-	RNA* ret = new RNA(rnaName.c_str()); <br />
-	molecular::Protein* polymerase = ForceCast< molecular::Protein* >(GetRNAPolymerase()->Clone()); <br />
+	RNA* ret = new RNA(rnaName.c_str()); 
+	molecular::Protein* polymerase = ForceCast< molecular::Protein* >(GetRNAPolymerase()->Clone()); 
 	StandardDimension bindingSite = polymerase->GetIdFromName("RNA Binding Site");
 	polymerase->RecruitChaperones(expressor);
 	polymerase->Fold();

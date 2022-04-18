@@ -50,8 +50,8 @@ public:
 	 * @param object
 	 */
 	Class(
-		T* object, <br />
-		physical::Perspective< StandardDimension >* perspective = NULL, <br />
+		T* object, 
+		physical::Perspective< StandardDimension >* perspective = NULL, 
 		Filter filter = filter::Default())
 		:
 		molecular::Class< T >(
@@ -70,9 +70,9 @@ public:
 		 * @param filter
 		 */
 	Class(
-		T* object, <br />
+		T* object, 
 		Name name,
-		physical::Perspective< StandardDimension >* perspective = NULL, <br />
+		physical::Perspective< StandardDimension >* perspective = NULL, 
 		Filter filter = filter::Default())
 		:
 		molecular::Class< T >(
@@ -92,9 +92,9 @@ public:
 	 * @param filter
 	 */
 	Class(
-		T* object, <br />
+		T* object, 
 		StandardDimension id,
-		physical::Perspective< StandardDimension >* perspective = NULL, <br />
+		physical::Perspective< StandardDimension >* perspective = NULL, 
 		Filter filter = filter::Default())
 		:
 		molecular::Class< T >(

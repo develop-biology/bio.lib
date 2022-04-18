@@ -37,7 +37,7 @@ public:
 	/**
 	 * @param environment
 	 */
-	EnvironmentDependent(T* environment = NULL) <br />
+	EnvironmentDependent(T* environment = NULL) 
 		:
 		m_environment(environment)
 	{
@@ -55,7 +55,7 @@ public:
 	/**
 	 * @return The m_environment.
 	 */
-	virtual T* GetEnvironment() <br />
+	virtual T* GetEnvironment() 
 	{
 		return m_environment;
 	}
@@ -63,7 +63,7 @@ public:
 	/**
 	 * @return The m_environment as const.
 	 */
-	virtual const T* GetEnvironment() const <br />
+	virtual const T* GetEnvironment() const 
 	{
 		return m_environment;
 	}
@@ -73,13 +73,13 @@ public:
 	 * Don't let the environment go out of scope or be deleted before *this! <br />
 	 * @param environment
 	 */
-	virtual void SetEnvironment(T* environment) <br />
+	virtual void SetEnvironment(T* environment) 
 	{
 		m_environment = environment;
 	}
 
 protected:
-	T* m_environment; <br />
+	T* m_environment; 
 };
 
 } //molecular namespace

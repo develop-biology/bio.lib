@@ -30,7 +30,7 @@ namespace bio {
 namespace physical {
 
 Wave::Wave(
-	Symmetry* symmetry <br />
+	Symmetry* symmetry 
 )
 	:
 	m_symmetry(
@@ -49,20 +49,20 @@ Wave::~Wave()
 		m_symmetry = NULL,);
 }
 
-Wave* Wave::Clone() const <br />
+Wave* Wave::Clone() const 
 {
 	return new Wave(
 		*this
 	);
 }
 
-Symmetry* Wave::Spin() const <br />
+Symmetry* Wave::Spin() const 
 {
 	return m_symmetry;
 }
 
 Code Wave::Reify(
-	Symmetry* symmetry <br />
+	Symmetry* symmetry 
 )
 {
 	(*m_symmetry) = *symmetry;
@@ -70,7 +70,7 @@ Code Wave::Reify(
 }
 
 void Wave::operator|(
-	Symmetry* symmetry <br />
+	Symmetry* symmetry 
 )
 {
 	Reify(
@@ -78,36 +78,36 @@ void Wave::operator|(
 	);
 }
 
-Code Wave::Attenuate(const Wave* other) <br />
+Code Wave::Attenuate(const Wave* other) 
 {
 	return code::NotImplemented();
 }
 
-Code Wave::Disattenuate(const Wave* other) <br />
+Code Wave::Disattenuate(const Wave* other) 
 {
 	return code::NotImplemented();
 }
 
-Wave* Wave::Modulate( <br />
-	Wave* signal <br />
+Wave* Wave::Modulate( 
+	Wave* signal 
 )
 {
 	m_signal = signal;
 	return this;
 }
 
-Wave* Wave::Demodulate() <br />
+Wave* Wave::Demodulate() 
 {
 	return m_signal;
 }
 
-const Wave* Wave::Demodulate() const <br />
+const Wave* Wave::Demodulate() const 
 {
 	return m_signal;
 }
 
-Wave* Wave::operator*( <br />
-	Wave* signal <br />
+Wave* Wave::operator*( 
+	Wave* signal 
 )
 {
 	return Modulate(
@@ -115,25 +115,25 @@ Wave* Wave::operator*( <br />
 	);
 }
 
-Wave* Wave::operator*() <br />
+Wave* Wave::operator*() 
 {
 	return Demodulate();
 }
 
-const Wave* Wave::operator*() const <br />
+const Wave* Wave::operator*() const 
 {
 	return Demodulate();
 }
 
 void Wave::operator+(
-	const Wave* other <br />
+	const Wave* other 
 )
 {
 	Attenuate(other);
 }
 
 void Wave::operator-(
-	const Wave* other <br />
+	const Wave* other 
 )
 {
 	Disattenuate(other);
@@ -146,7 +146,7 @@ Properties Wave::GetProperties() const
 }
 
 /*static*/ Properties Wave::GetResonanceBetween(
-	const Wave* wave, <br />
+	const Wave* wave, 
 	const Properties& properties
 )
 {
@@ -176,7 +176,7 @@ Properties Wave::GetProperties() const
 	waves.push_back(
 		wave
 	);
-	TempWave* twave = new TempWave(properties); <br />
+	TempWave* twave = new TempWave(properties); 
 	waves.push_back(
 		twave
 	);
@@ -190,8 +190,8 @@ Properties Wave::GetProperties() const
 }
 
 /*static*/ Properties Wave::GetResonanceBetween(
-	const Wave* wave1, <br />
-	const Wave* wave2 <br />
+	const Wave* wave1, 
+	const Wave* wave2 
 )
 {
 	ConstWaves waves;

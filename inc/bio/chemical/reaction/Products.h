@@ -51,13 +51,13 @@ public:
 	 * Assume m_result Success(), since we're given a value and no error to report. <br />
 	 * @param substances
 	 */
-	Products(const Substances* substances); <br />
+	Products(const Substances* substances); 
 
 	/**
 	 * Assume m_result Success(), since we're given a value and no error to report. <br />
 	 * @param reactants
 	 */
-	Products(const Reactants* reactants); <br />
+	Products(const Reactants* reactants); 
 
 	/**
 	 * @param result
@@ -65,7 +65,7 @@ public:
 	 */
 	Products(
 		Code result,
-		const Substances* substances <br />
+		const Substances* substances 
 	);
 
 	/**

@@ -43,7 +43,7 @@ namespace molecular {
  * Imagine identical 2 Molecules that have 1 globby collection (Surface) that differs between them. That kind of comparative difference helps us Identify the Surfaces from the otherwise indistinguishable mass of globs. <br />
  * Next, imagine 2 Molecules bumping into each other so that 1 or more of their Surfaces touch. <br />
  * When Surfaces interact in this manner, they can change each other. In computer science, we can just conjure change whenever, however, and wherever we want. However, in the real world, the idea that matter / energy is conserved requires that matter / energy be moved between the interacting surfaces in order to effect change. <br />
- * This same concept has been modeled here (see Transfer..., etc., below); though we can still do whatever the **** we want cause computers. <br />
+ * This same concept has been modeled here (see Transfer..., etc., below); though we can still do whatever the **** we want cause computers. 
  *
  * You can create Surfaces in 1 Molecule and then Transfer them to another. However, doing so may change (or break) the Molecules' interactions with other Molecules and systems. This would be like transferring variables between objects at runtime. <br />
  * This Transfer system is why Molecules are Perspectives. The Id of Surfaces in 1 Molecule may not hold within another Molecule and we don't want to enforce a global Surface labeling at this time. <br />
@@ -72,7 +72,7 @@ namespace molecular {
 class Molecule :
 	public Class< Molecule >,
 	public physical::Perspective< StandardDimension >,
-	public chemical::LinearMotif< Surface* > <br />
+	public chemical::LinearMotif< Surface* > 
 {
 public:
 
@@ -111,17 +111,17 @@ public:
 	template < typename T >
 	StandardDimension Use(
 		Name varName,
-		T* varPtr <br />
+		T* varPtr 
 	)
 	{
 		BIO_SANITIZE(!RotateTo(varName), ,
 			return InvalidId());
-		Surface* toAdd = new Surface( <br />
+		Surface* toAdd = new Surface( 
 			varName,
 			this
 		);
 		toAdd->Use(varPtr);
-		Add< Surface* >(toAdd); <br />
+		Add< Surface* >(toAdd); 
 		return toAdd->GetId();
 	}
 
@@ -136,11 +136,11 @@ public:
 	{
 		BIO_SANITIZE(!RotateTo(varName), ,
 			return InvalidId());
-		Surface* toAdd = new Surface( <br />
+		Surface* toAdd = new Surface( 
 			varName,
 			this
 		);
-		Add< Surface* >(toAdd); <br />
+		Add< Surface* >(toAdd); 
 		return toAdd->GetId();
 	}
 
@@ -156,12 +156,12 @@ public:
 	{
 		BIO_SANITIZE(!RotateTo(varName), ,
 			return InvalidId());
-		Surface* toAdd = new Surface( <br />
+		Surface* toAdd = new Surface( 
 			varName,
 			this
 		);
 		toAdd->Manage(new T());
-		Add< Surface* >(toAdd); <br />
+		Add< Surface* >(toAdd); 
 		return toAdd->GetId();
 	}
 
@@ -182,12 +182,12 @@ public:
 	{
 		BIO_SANITIZE(!RotateTo(varName), ,
 			return InvalidId());
-		Surface* toAdd = new Surface( <br />
+		Surface* toAdd = new Surface( 
 			varName,
 			this
 		);
 		toAdd->Manage(new T(assignment));
-		Add< Surface* >(toAdd); <br />
+		Add< Surface* >(toAdd); 
 		return toAdd->GetId();
 	}
 
@@ -198,14 +198,14 @@ public:
 	 * @param surfaceId
 	 * @return a Surface with the given Id, as defined by *this, or NULL.
 	 */
-	virtual Surface* RotateTo(StandardDimension surfaceId); <br />
+	virtual Surface* RotateTo(StandardDimension surfaceId); 
 
 	/**
 	 * const version of RotateTo <br />
 	 * @param surfaceId
 	 * @return a const Surface with the given Id, as defined by *this, or NULL.
 	 */
-	virtual const Surface* RotateTo(StandardDimension surfaceId) const; <br />
+	virtual const Surface* RotateTo(StandardDimension surfaceId) const; 
 
 	/**
 	 * Ease of use methods for getting variables as the desired type. <br />
@@ -224,14 +224,14 @@ public:
 	 * @param surfaceName
 	 * @return a Surface with the given Name from *this.
 	 */
-	virtual Surface* RotateTo(Name surfaceName); <br />
+	virtual Surface* RotateTo(Name surfaceName); 
 
 	/**
 	 * const version of RotateTo <br />
 	 * @param surfaceName
 	 * @return a const Surface with the given Name from *this.
 	 */
-	virtual const Surface* RotateTo(Name surfaceName) const; <br />
+	virtual const Surface* RotateTo(Name surfaceName) const; 
 
 	/**
 	 * Ease of use methods for getting variables as the desired type. <br />
@@ -251,7 +251,7 @@ public:
 	 * @return whether or not the operation succeeded.
 	 */
 	virtual bool DuplicateFrom(
-		Molecule* source, <br />
+		Molecule* source, 
 		Name surface
 	);
 
@@ -262,7 +262,7 @@ public:
 	 * @return whether or not the operation succeeded.
 	 */
 	virtual bool TransferFrom(
-		Molecule* source, <br />
+		Molecule* source, 
 		Name surface
 	);
 
@@ -270,14 +270,14 @@ public:
 	 * Required method from Wave. See that class for details. <br />
 	 * @return a Symmetrical image of *this
 	 */
-	virtual physical::Symmetry* Spin() const; <br />
+	virtual physical::Symmetry* Spin() const; 
 
 	/**
 	 * Required method from Wave. See that class for details. <br />
 	 * Reconstruct *this from the given Symmetry. <br />
 	 * @param symmetry
 	 */
-	virtual Code Reify(physical::Symmetry* symmetry); <br />
+	virtual Code Reify(physical::Symmetry* symmetry); 
 
 	/**
 	 * operator wrappers around RotateTo <br />
@@ -285,22 +285,22 @@ public:
 	 * @return RotateTo(...)
 	 * @{
 	 */
-	virtual Surface* operator()(StandardDimension surfaceId); <br />
+	virtual Surface* operator()(StandardDimension surfaceId); 
 
-	virtual const Surface* operator()(StandardDimension surfaceId) const; <br />
+	virtual const Surface* operator()(StandardDimension surfaceId) const; 
 
 	template < typename T >
-	Surface* operator()(StandardDimension surfaceId) <br />
+	Surface* operator()(StandardDimension surfaceId) 
 	{
 		return ChemicalCast< T >(RotateTo(surfaceId));
 	}
 
-	virtual Surface* operator()(Name name); <br />
+	virtual Surface* operator()(Name name); 
 
-	virtual const Surface* operator()(Name name) const; <br />
+	virtual const Surface* operator()(Name name) const; 
 
 	template < typename T >
-	Surface* operator()(Name surfaceName) <br />
+	Surface* operator()(Name surfaceName) 
 	{
 		return ChemicalCast< T >(RotateTo(surfaceName));
 	}
@@ -312,7 +312,7 @@ public:
 	 * @param source
 	 * @return this
 	 */
-	virtual Molecule* operator<<(Surface* source); <br />
+	virtual Molecule* operator<<(Surface* source); 
 
 	/**
 	 * Surface move operation. <br />
@@ -322,7 +322,7 @@ public:
 	 * @return target
 	 *
 	 */
-	virtual Surface* operator>>(Surface* target); <br />
+	virtual Surface* operator>>(Surface* target); 
 
 	/**
 	 * Molecule copy operation. <br />
@@ -330,7 +330,7 @@ public:
 	 * @param source
 	 * @return this
 	 */
-	virtual Molecule* operator<<(Molecule* source); <br />
+	virtual Molecule* operator<<(Molecule* source); 
 
 	/**
 	 * Molecule move operation. <br />
@@ -339,7 +339,7 @@ public:
 	 * @param target
 	 * @return target
 	 */
-	virtual Molecule* operator>>(Molecule* target); <br />
+	virtual Molecule* operator>>(Molecule* target); 
 };
 
 

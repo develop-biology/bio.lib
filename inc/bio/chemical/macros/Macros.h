@@ -37,7 +37,7 @@
         GetProperties()                                                        \
     ),                                                                         \
     (                                                                          \
-        virtual ::bio::chemical::Atom* AsAtom(),                               \ <br />
+        virtual ::bio::chemical::Atom* AsAtom(),                               \ 
         AsAtom()                                                               \
     ),                                                                         \
     (                                                                          \
@@ -45,7 +45,7 @@
         template As< AS >()                                                    \
     ),                                                                         \
     (                                                                          \
-        virtual const ::bio::chemical::Atom* AsAtom() const,                   \ <br />
+        virtual const ::bio::chemical::Atom* AsAtom() const,                   \ 
         AsAtom()                                                               \
     )
 /**
@@ -55,11 +55,11 @@
 #define BIO_GET_OPTIONAL_CLASS_METHODS_FOR_chemical()                          \
     BIO_GET_OPTIONAL_CLASS_METHODS_FOR_physical(),                             \
     (                                                                          \
-        virtual Code Attenuate(const ::bio::physical::Wave* other),            \ <br />
+        virtual Code Attenuate(const ::bio::physical::Wave* other),            \ 
         Attenuate(other)                                                       \
     ),                                                                         \
     (                                                                          \
-        virtual Code Disattenuate(const ::bio::physical::Wave* other),         \ <br />
+        virtual Code Disattenuate(const ::bio::physical::Wave* other),         \ 
         Disattenuate(other)                                                    \
     )
 

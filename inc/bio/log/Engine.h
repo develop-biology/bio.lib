@@ -66,7 +66,7 @@ public:
 	void Log(
 		Filter filter,
 		Level level,
-		const char* format, <br />
+		const char* format, 
 		va_list args
 	);
 
@@ -81,7 +81,7 @@ public:
 	void Log(
 		Filter filter,
 		Level level,
-		const char* format, <br />
+		const char* format, 
 		...
 	);
 

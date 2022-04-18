@@ -76,7 +76,7 @@ BIO_PERSPECTIVE_SINGLETON(ReactionPerspective,
 
 class Substance;
 
-typedef std::vector< Substance* > Substances; <br />
+typedef std::vector< Substance* > Substances; 
 
 BIO_PERSPECTIVE_SINGLETON(SubstancePerspective,
 	StandardDimension)

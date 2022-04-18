@@ -107,8 +107,8 @@ public:
 	 * @param ret
 	 */
 	virtual void CallDown(
-		physical::Wave* wave, <br />
-		ByteStream* ret <br />
+		physical::Wave* wave, 
+		ByteStream* ret 
 	) const
 	{
 		//nop
@@ -184,7 +184,7 @@ public:
 	 * @param args any arguments given to m_function. Only applicable for C++11 and onward.
 	 * @return RETURN, whatever that is for *this; the result of calling m_function from wave.
 	 */
-	RETURN operator()(WAVE* wave) const <br />
+	RETURN operator()(WAVE* wave) const 
 	{
 		std::tuple allArgs = std::tuple_cat(std::make_tuple(wave), m_args);
 		return std::apply(*m_function, allArgs);
@@ -193,7 +193,7 @@ public:
 	/**
 	 * Override of ExcitationBase; see above. <br />
 	 */
-	virtual void CallDown(physical::Wave* wave, ByteStream* ret) const <br />
+	virtual void CallDown(physical::Wave* wave, ByteStream* ret) const 
 	{
 		ret->Set(this->operator()(ForceCast<WAVE*>(wave)));
 	}
@@ -261,7 +261,7 @@ public:
 	 * @param wave the caller of m_function.
 	 * @return RETURN, whatever that is for *this; the result of calling m_function from wave.
 	 */
-	RETURN operator()(WAVE* wave) const <br />
+	RETURN operator()(WAVE* wave) const 
 	{
 		return (wave->*m_function)();
 	}
@@ -270,11 +270,11 @@ public:
 	 * Override of ExcitationBase; see above. <br />
 	 */
 	virtual void CallDown(
-		physical::Wave* wave, <br />
-		ByteStream* ret <br />
+		physical::Wave* wave, 
+		ByteStream* ret 
 	) const
 	{
-		ret->Set(this->operator()(ForceCast< WAVE* >(wave))); <br />
+		ret->Set(this->operator()(ForceCast< WAVE* >(wave))); 
 	}
 
 protected:
@@ -357,7 +357,7 @@ public:
 	 * @param wave the caller of m_function.
 	 * @return RETURN, whatever that is for *this; the result of calling m_function from wave.
 	 */
-	RETURN operator()(WAVE* wave) const <br />
+	RETURN operator()(WAVE* wave) const 
 	{
 		return (wave->*m_function)(m_arg);
 	}
@@ -366,11 +366,11 @@ public:
 	 * Override of ExcitationBase; see above. <br />
 	 */
 	virtual void CallDown(
-		physical::Wave* wave, <br />
-		ByteStream* ret <br />
+		physical::Wave* wave, 
+		ByteStream* ret 
 	) const
 	{
-		ret->Set(this->operator()(ForceCast< WAVE* >(wave))); <br />
+		ret->Set(this->operator()(ForceCast< WAVE* >(wave))); 
 	}
 
 protected:
@@ -467,7 +467,7 @@ public:
 	 * @param wave the caller of m_function.
 	 * @return RETURN, whatever that is for *this; the result of calling m_function from wave.
 	 */
-	RETURN operator()(WAVE* wave) const <br />
+	RETURN operator()(WAVE* wave) const 
 	{
 		return (wave->*m_function)(
 			m_arg1,
@@ -479,11 +479,11 @@ public:
 	 * Override of ExcitationBase; see above. <br />
 	 */
 	virtual void CallDown(
-		physical::Wave* wave, <br />
-		ByteStream* ret <br />
+		physical::Wave* wave, 
+		ByteStream* ret 
 	) const
 	{
-		ret->Set(this->operator()(ForceCast< WAVE* >(wave))); <br />
+		ret->Set(this->operator()(ForceCast< WAVE* >(wave))); 
 	}
 
 protected:

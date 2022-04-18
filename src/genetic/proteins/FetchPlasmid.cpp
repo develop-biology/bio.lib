@@ -51,12 +51,12 @@ Code FetchPlasmid::Activate()
 
 	if (boundName)
 	{
-		RotateTo(mc_returnSite)->Bind(PlasmidPerspective::Instance().GetTypeFromIdAs< Plasmid* >(boundId)); <br />
+		RotateTo(mc_returnSite)->Bind(PlasmidPerspective::Instance().GetTypeFromIdAs< Plasmid* >(boundId)); 
 		ret = code::Success();
 	}
 	else if (boundId)
 	{
-		RotateTo(mc_returnSite)->Bind(PlasmidPerspective::Instance().GetTypeFromIdAs< Plasmid* >(boundId)); <br />
+		RotateTo(mc_returnSite)->Bind(PlasmidPerspective::Instance().GetTypeFromIdAs< Plasmid* >(boundId)); 
 		ret = code::Success();
 	}
 

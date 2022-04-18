@@ -43,10 +43,10 @@ namespace bio {
 /**
  * Names are used in NameTracker<>s but are defined here for simplicity. <br />
  */
-typedef const char* Name; <br />
+typedef const char* Name; 
 typedef std::vector< Name > Names;
 
-typedef std::vector< const char* > CharStrings; <br />
+typedef std::vector< const char* > CharStrings; 
 typedef std::vector< std::string > StdStrings;
 
 typedef std::vector< ByteStream > ByteStreams;

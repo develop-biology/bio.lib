@@ -85,7 +85,7 @@ public:
 	 * @param seekIn
 	 * @return a Substance somewhere within the Substance provided or NULL.
 	 */
-	virtual chemical::Substance* Seek(chemical::Substance* seekIn) const; <br />
+	virtual chemical::Substance* Seek(chemical::Substance* seekIn) const; 
 
 	/**
 	 * Get m_site. <br />
@@ -117,12 +117,12 @@ protected:
 	 * @param seekIn
 	 * @return the result of Seeking through all Modulated Localizations.
 	 */
-	chemical::Substance* ResolvePrevious(chemical::Substance* seekIn) const; <br />
+	chemical::Substance* ResolvePrevious(chemical::Substance* seekIn) const; 
 
 	Site m_site;
 	Name m_name;
-	Localization* m_previous; <br />
-	chemical::ExcitationBase* mc_method; //cached pointer to site-associated function pointer. <br />
+	Localization* m_previous; 
+	chemical::ExcitationBase* mc_method; //cached pointer to site-associated function pointer. 
 };
 
 } //genetic namespace

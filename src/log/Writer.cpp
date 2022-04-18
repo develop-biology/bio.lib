@@ -38,7 +38,7 @@ Writer::Writer()
 }
 
 Writer::Writer(
-	Engine* logEngine, <br />
+	Engine* logEngine, 
 	Filter filter
 )
 	:
@@ -54,17 +54,17 @@ Writer::~Writer()
 
 }
 
-void Writer::SetLogEngine(Engine* logEngine) <br />
+void Writer::SetLogEngine(Engine* logEngine) 
 {
 	m_logEngine = logEngine;
 }
 
-Engine* Writer::GetLogEngine() <br />
+Engine* Writer::GetLogEngine() 
 {
 	return m_logEngine;
 }
 
-const Engine* Writer::GetLogEngine() const <br />
+const Engine* Writer::GetLogEngine() const 
 {
 	return m_logEngine;
 }
@@ -76,7 +76,7 @@ bool Writer::HasLogEngine() const
 
 void Writer::Log(
 	Level level,
-	const char* format, <br />
+	const char* format, 
 	...
 ) const
 {
@@ -106,7 +106,7 @@ void Writer::Log(
 void Writer::ExternalLog(
 	Filter filter,
 	Level level,
-	const char* format, <br />
+	const char* format, 
 	...
 ) const
 {

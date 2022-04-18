@@ -44,7 +44,7 @@ class DNA;
 class Protein :
 	virtual public Molecule,
 	public Class< Protein >,
-	public chemical::LinearMotif< Protein* >, <br />
+	public chemical::LinearMotif< Protein* >, 
 	public EnvironmentDependent< Vesicle >
 {
 public:
@@ -79,7 +79,7 @@ public:
 	 * It is recommended to call the parent method AFTER your own checks, which will call RecruitChaperones for all sub-Proteins. <br />
 	 *
 	 * For example: <br />
-	 * virtual Code RecruitChaperones(Vesicle* environment) <br />
+	 * virtual Code RecruitChaperones(Vesicle* environment) 
 	 * { <br />
 	 *     BIO_SANITIZE(MyChecks(),,return code::GeneralFailure()) <br />
 	 *     return Protein::RecruitChaperones(environment); <br />
@@ -90,7 +90,7 @@ public:
 	 * @param environment
 	 * @return result of chaperone recruitment & whether or not Fold should be called.
 	*/
-	virtual Code RecruitChaperones(Vesicle* environment); <br />
+	virtual Code RecruitChaperones(Vesicle* environment); 
 
 	/**
 	 * Fold will ensure *this is functional in the Molecular environment (Vesicle) <br />
@@ -127,17 +127,17 @@ public:
 	 * For example, Protein with name "DoMyAction" gets replaced with a "DoMyAction" from an updated Gene. Both Proteins will return true on == comparison but may have different functionality which would only be known by getting the m_source. <br />
 	 * @return the m_source of *this.
 	 */
-	virtual const DNA* GetSource() const; <br />
+	virtual const DNA* GetSource() const; 
 
 	/**
 	 * Set the m_source of *this <br />
 	 * @param source
 	 * @return the result of setting (e.g. code::Success()).
 	 */
-	virtual Code SetSource(const DNA* source); <br />
+	virtual Code SetSource(const DNA* source); 
 
 protected:
-	const DNA* m_source; <br />
+	const DNA* m_source; 
 
 private:
 	/**

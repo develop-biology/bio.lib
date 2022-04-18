@@ -48,9 +48,9 @@ class Wave;
  */
 struct PerspectiveUtilities
 {
-	static Wave* Clone(const Wave* toClone); <br />
+	static Wave* Clone(const Wave* toClone); 
 
-	static void Delete(Wave* toDelete); <br />
+	static void Delete(Wave* toDelete); 
 };
 
 /**
@@ -84,7 +84,7 @@ public:
 		Hadit(
 			Id id,
 			Name name,
-			Wave* type <br />
+			Wave* type 
 		)
 			:
 			m_id(id),
@@ -95,7 +95,7 @@ public:
 
 		Id m_id;
 		Name m_name;
-		Wave* m_type; <br />
+		Wave* m_type; 
 	};
 
 	typedef std::vector< Hadit > Hadits;
@@ -353,7 +353,7 @@ public:
 	 */
 	virtual bool AssociateType(
 		Id id,
-		Wave* type <br />
+		Wave* type 
 	)
 	{
 		typename Hadits::iterator hdt = Find(id);
@@ -399,7 +399,7 @@ public:
 	 * @param id
 	 * @return the pointer to the Wave type associated with the given id else NULL.
 	 */
-	virtual const Wave* GetTypeFromId(Id id) const <br />
+	virtual const Wave* GetTypeFromId(Id id) const 
 	{
 		BIO_SANITIZE(id == InvalidId(), ,
 			return NULL)
@@ -417,7 +417,7 @@ public:
 	 * @param name
 	 * @return the pointer to the Wave type associated with the given id else NULL.
 	 */
-	virtual const Wave* GetTypeFromName(Name name) const <br />
+	virtual const Wave* GetTypeFromName(Name name) const 
 	{
 		return GetTypeFromId(GetIdWithoutCreation(name));
 	}
@@ -427,9 +427,9 @@ public:
 	 * @param id
 	 * @return a Clone() of the Wave* associated with the given id else NULL.
 	 */
-	virtual Wave* GetNewObjectFromId(Id id) const <br />
+	virtual Wave* GetNewObjectFromId(Id id) const 
 	{
-		const Wave* ret = GetTypeFromId(id); <br />
+		const Wave* ret = GetTypeFromId(id); 
 		if (ret)
 		{
 			return PerspectiveUtilities::Clone(ret);
@@ -442,7 +442,7 @@ public:
 	 * @param name
 	 * @return a Clone() of the Wave* associated with the given name else NULL.
 	 */
-	virtual Wave* GetNewObjectFromName(Name name) <br />
+	virtual Wave* GetNewObjectFromName(Name name) 
 	{
 		return this->GetNewObjectFromId(this->GetIdFromName(name));
 	}
@@ -457,7 +457,7 @@ public:
 	const T GetTypeFromIdAs(Id id) const
 	{
 		BIO_SANITIZE_WITH_CACHE(GetTypeFromId(id),
-			BIO_SINGLE_ARG(return ForceCast< T, const Wave* >(RESULT)), <br />
+			BIO_SINGLE_ARG(return ForceCast< T, const Wave* >(RESULT)), 
 			return NULL);
 	}
 
@@ -471,7 +471,7 @@ public:
 	const T GetTypeFromNameAs(Name name) const
 	{
 		BIO_SANITIZE_WITH_CACHE(GetTypeFromName(name),
-			BIO_SINGLE_ARG(return ForceCast< T, const Wave* >(RESULT)), <br />
+			BIO_SINGLE_ARG(return ForceCast< T, const Wave* >(RESULT)), 
 			return NULL);
 	}
 
@@ -485,7 +485,7 @@ public:
 	T GetNewObjectFromIdAs(Id id)
 	{
 		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromId(id),
-			BIO_SINGLE_ARG(return ForceCast< T, Wave* >(RESULT)), <br />
+			BIO_SINGLE_ARG(return ForceCast< T, Wave* >(RESULT)), 
 			return NULL);
 	}
 
@@ -499,7 +499,7 @@ public:
 	T GetNewObjectFromNameAs(Name name)
 	{
 		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromName(name),
-			BIO_SINGLE_ARG(return ForceCast< T, Wave* >(RESULT)), <br />
+			BIO_SINGLE_ARG(return ForceCast< T, Wave* >(RESULT)), 
 			return NULL);
 	}
 

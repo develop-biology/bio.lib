@@ -85,14 +85,14 @@ public:
 	 * Required method from Wave. See that class for details. <br />
 	 * @return a Symmetrical image of *this
 	 */
-	virtual Symmetry* Spin() const; <br />
+	virtual Symmetry* Spin() const; 
 
 	/**
 	 * Required method from Wave. See that class for details. <br />
 	 * Reconstruct *this from the given Symmetry. <br />
 	 * @param symmetry
 	 */
-	virtual Code Reify(Symmetry* symmetry); <br />
+	virtual Code Reify(Symmetry* symmetry); 
 
 protected:
 	Filter m_filter;

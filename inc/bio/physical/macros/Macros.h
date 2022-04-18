@@ -35,15 +35,15 @@
  */
 #define BIO_GET_REQUIRED_CLASS_METHODS_FOR_physical()                          \
     (                                                                          \
-		virtual ::bio::physical::Wave* Clone() const,                          \ <br />
+		virtual ::bio::physical::Wave* Clone() const,                          \ 
 		Clone()                                                                \
 	),                                                                         \
     (                                                                          \
-		virtual ::bio::physical::Wave* AsWave(),                               \ <br />
+		virtual ::bio::physical::Wave* AsWave(),                               \ 
 		AsWave()                                                               \
 	),                                                                         \
     (                                                                          \
-		virtual const ::bio::physical::Wave* AsWave() const,                   \ <br />
+		virtual const ::bio::physical::Wave* AsWave() const,                   \ 
 		AsWave()                                                               \
 	),                                                                         \
 	(                                                                          \
@@ -57,15 +57,15 @@
  */
 #define BIO_GET_OPTIONAL_CLASS_METHODS_FOR_physical()                          \
 	(                                                                          \
-		virtual ::bio::physical::Wave* Modulate(::bio::physical::Wave* signal),\ <br />
+		virtual ::bio::physical::Wave* Modulate(::bio::physical::Wave* signal),\ 
 		Modulate(signal)                                                       \
 	),                                                                         \
 	(                                                                          \
-		virtual ::bio::physical::Wave* Demodulate(),                           \ <br />
+		virtual ::bio::physical::Wave* Demodulate(),                           \ 
 		Demodulate()                                                           \
 	),                                                                         \
 	(                                                                          \
-		virtual const ::bio::physical::Wave* Demodulate() const,               \ <br />
+		virtual const ::bio::physical::Wave* Demodulate() const,               \ 
 		Demodulate()                                                           \
 	)
 

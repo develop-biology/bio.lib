@@ -65,7 +65,7 @@ public:
 	/**
 	 * @param perspective
 	 */
-	explicit Identifiable(Perspective< DIMENSION >* perspective = NULL) <br />
+	explicit Identifiable(Perspective< DIMENSION >* perspective = NULL) 
 		:
 		physical::Class< Identifiable< DIMENSION > >(this),
 		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
@@ -86,7 +86,7 @@ public:
 	 */
 	explicit Identifiable(
 		Name name,
-		Perspective< DIMENSION >* perspective = NULL <br />
+		Perspective< DIMENSION >* perspective = NULL 
 	)
 		:
 		physical::Class< Identifiable< DIMENSION > >(this),
@@ -114,7 +114,7 @@ public:
 	 */
 	explicit Identifiable(
 		Id id,
-		Perspective< DIMENSION >* perspective = NULL <br />
+		Perspective< DIMENSION >* perspective = NULL 
 	)
 		:
 		physical::Class< Identifiable< DIMENSION > >(this),
@@ -316,7 +316,7 @@ public:
 	 * Sets the perspective for *this. <br />
 	 * @param perspective
 	 */
-	virtual void SetPerspective(Perspective< DIMENSION >* perspective) <br />
+	virtual void SetPerspective(Perspective< DIMENSION >* perspective) 
 	{
 		this->SetPerspective(perspective);
 
@@ -358,7 +358,7 @@ public:
 	 * Because Symmetry is Identifiable, it cannot be #included here. We rely on children of Identifiable (primarily chemical:: objects to implement Spin()). <br />
 	 * @return a Symmetrical image of *this
 	 */
-	virtual Symmetry* Spin() const <br />
+	virtual Symmetry* Spin() const 
 	{
 		return NULL;
 	}
@@ -369,7 +369,7 @@ public:
 	 * Because Symmetry is Identifiable, it cannot be #included here. We rely on children of Identifiable (primarily chemical:: objects to implement Reify()). <br />
 	 * @param symmetry
 	 */
-	virtual Code Reify(Symmetry* symmetry) <br />
+	virtual Code Reify(Symmetry* symmetry) 
 	{
 		//nop
 	}
@@ -384,7 +384,7 @@ protected:
 	{
 		if (args.size() == 2)
 		{
-			if (args[1].Is< Perspective< DIMENSION >* >()) <br />
+			if (args[1].Is< Perspective< DIMENSION >* >()) 
 			{
 				Observer< Perspective< DIMENSION > >::Initialize(args[1]);
 			}

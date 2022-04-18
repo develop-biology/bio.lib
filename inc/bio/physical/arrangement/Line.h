@@ -50,14 +50,14 @@ public:
 	virtual ~Line();
 
 	/**
-	 * Get the position of an Identifiable< StandardDimension >* with the given name in *this. <br />
+	 * Get the position of an Identifiable< StandardDimension >* with the given name in *this. 
 	 * @param name
 	 * @return an Index matching the given name or InvalidIndex().
 	 */
 	virtual Index SeekToName(Name name);
 
 	/**
-	 * Get the position of an Identifiable< StandardDimension >* with the given id in *this. <br />
+	 * Get the position of an Identifiable< StandardDimension >* with the given id in *this. 
 	 * @param id
 	 * @return an Index matching the given id or InvalidIndex().
 	 */
@@ -93,14 +93,14 @@ public:
 	 * @param index
 	 * @return the given position casted to an Identifiable< StandardDimension >*
 	 */
-	virtual Identifiable< StandardDimension >* LinearAccess(Index index); <br />
+	virtual Identifiable< StandardDimension >* LinearAccess(Index index); 
 
 	/**
 	 * Convenience wrapper around OptimizedAccess. <br />
 	 * @param index
 	 * @return the given position casted to an Identifiable< StandardDimension >*
 	 */
-	virtual const Identifiable< StandardDimension >* LinearAccess(Index index) const; <br />
+	virtual const Identifiable< StandardDimension >* LinearAccess(Index index) const; 
 };
 
 } //physical namespace

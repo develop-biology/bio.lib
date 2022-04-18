@@ -69,7 +69,7 @@ public:
 	{
 		Code ret = code::GeneralFailure();
 		LockThread();
-		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >(); <br />
+		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >(); 
 		if (implementer)
 		{
 			ret = implementer->InsertImplementation(
@@ -84,7 +84,7 @@ public:
 	}
 
 	/**
-	 * Gets a T* by its id. <br />
+	 * Gets a T* by its id. 
 	 * @tparam T
 	 * @param id
 	 * @return a T of the given id or NULL; NULL if T is invalid.
@@ -94,7 +94,7 @@ public:
 	{
 		T ret = NULL;
 		LockThread();
-		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >(); <br />
+		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >(); 
 		if (implementer)
 		{
 			ret = implementer->GetByIdImplementation(
@@ -106,7 +106,7 @@ public:
 	}
 
 	/**
-	 * Gets a const T* by its id. <br />
+	 * Gets a const T* by its id. 
 	 * @tparam T
 	 * @param id
 	 * @return a T of the given id or NULL; NULL if T is invalid.
@@ -118,7 +118,7 @@ public:
 	{
 		T ret = NULL;
 		LockThread();
-		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >(); <br />
+		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >(); 
 		if (implementer)
 		{
 			ret = implementer->GetByIdImplementation(
@@ -130,7 +130,7 @@ public:
 	}
 
 	/**
-	 * Gets a T* by its name. <br />
+	 * Gets a T* by its name. 
 	 * @tparam T
 	 * @param name
 	 * @return a T of the given id or NULL; NULL if T is invalid.
@@ -142,7 +142,7 @@ public:
 	{
 		T ret = NULL;
 		LockThread();
-		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >(); <br />
+		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >(); 
 		if (implementer)
 		{
 			ret = implementer->GetByNameImplementation(
@@ -154,7 +154,7 @@ public:
 	}
 
 	/**
-	 * Gets a const T* by its name. <br />
+	 * Gets a const T* by its name. 
 	 * @tparam T
 	 * @param name
 	 * @return a T of the given id or NULL; NULL if T is invalid.
@@ -166,7 +166,7 @@ public:
 	{
 		T ret = NULL;
 		LockThread();
-		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >(); <br />
+		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >(); 
 		if (implementer)
 		{
 			ret = implementer->GetByNameImplementation(
@@ -191,7 +191,7 @@ public:
 	{
 		T ret = NULL;
 		LockThread();
-		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >(); <br />
+		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >(); 
 		if (implementer)
 		{
 			ret = implementer->GetOrCreateByIdImplementation(
@@ -216,7 +216,7 @@ public:
 	{
 		T ret = NULL;
 		LockThread();
-		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >(); <br />
+		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >(); 
 		if (implementer)
 		{
 			ret = implementer->GetOrCreateByNameImplementation(
@@ -234,12 +234,12 @@ public:
 	 */
 	template < typename T >
 	Emission ForEach(
-		ExcitationBase* excitation <br />
+		ExcitationBase* excitation 
 	)
 	{
 		Emission ret;
 		LockThread();
-		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >(); <br />
+		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >(); 
 		if (implementer)
 		{
 			ret = implementer->ForEachImplementation(excitation);

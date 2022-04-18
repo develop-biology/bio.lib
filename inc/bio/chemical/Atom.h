@@ -79,42 +79,42 @@ public:
 	 * Required method from Wave. See that class for details. <br />
 	 * @return a Symmetrical image of *this
 	 */
-	virtual physical::Symmetry* Spin() const; <br />
+	virtual physical::Symmetry* Spin() const; 
 
 	/**
 	 * Required method from Wave. See that class for details. <br />
 	 * Reconstruct *this from the given Symmetry. <br />
 	 * @param symmetry
 	 */
-	virtual Code Reify(physical::Symmetry* symmetry); <br />
+	virtual Code Reify(physical::Symmetry* symmetry); 
 
 	/**
 	 * If the given Wave Resonates with any Bonded Wave in *this, the given Wave will be Demodulated and Attenuated by the Bonded Wave. <br />
 	 * Attenuation here operates slightly differently from the real world concept. Because we have a continuous flow of electrons providing the power to run this code, doing work is essentially free (or at least abstracted and we don't HAVE to worry about it), Attenuation is more like amplification, where flux, in terms of work, is generated, rather than dispersed. However, if we treat some desired state as flux and any deviation from that state as offering resistance, "information flux" is lost as the desired state is approached, making Attenuation technically correct. <br />
 	 * @param other
 	 */
-	virtual Code Attenuate(const Wave* other); <br />
+	virtual Code Attenuate(const Wave* other); 
 
 	/**
 	 * If the given Wave Resonates with any Bonded Wave in *this, the given Wave will be Demodulated and Disattenuated by the Bonded Wave. <br />
 	 * This is the opposite of Attenuation (above). <br />
 	 * @param other
 	 */
-	virtual Code Disattenuate(const Wave* other); <br />
+	virtual Code Disattenuate(const Wave* other); 
 
 	/**
 	 * Simply get a bond. <br />
 	 * @param position
 	 * @return the Bonded Wave*
 	 */
-	Wave* GetBonded(Valence position); <br />
+	Wave* GetBonded(Valence position); 
 
 	/**
 	 * Simply get a bond. <br />
 	 * @param position
 	 * @return the Bonded Wave*
 	 */
-	const Wave* GetBonded(Valence position) const; <br />
+	const Wave* GetBonded(Valence position) const; 
 
 	/**
 	 * Gets the bond to an bonded of type T from *this, then casts the Bond()ed Wave to T*. <br />
@@ -153,7 +153,7 @@ public:
 	template < typename T >
 	T AsBondedQuantum()
 	{
-		return Cast< T >(AsBonded< physical::Quantum< T >* >()); <br />
+		return Cast< T >(AsBonded< physical::Quantum< T >* >()); 
 	}
 
 	/**
@@ -164,7 +164,7 @@ public:
 	template < typename T >
 	const T AsBondedQuantum() const
 	{
-		return *AsBonded< physical::Quantum< T >* >(); <br />
+		return *AsBonded< physical::Quantum< T >* >(); 
 	}
 
 	/**
@@ -239,7 +239,7 @@ public:
 		BondType type = bond_type::Unknown())
 	{
 		#if BIO_CPP_VERSION < 11
-		AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >(); <br />
+		AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >(); 
 		return FormBondImplementation((new physical::Quantum< T >(toBond))->AsWave(),
 			bondedId,
 			type
@@ -247,7 +247,7 @@ public:
 		#else
 		if (IsPrimitive< T >())
 		{
-			AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >(); <br />
+			AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >(); 
 			return FormBondImplementation(
 				(new physical::Quantum< T >(toBond))->AsWave(),
 				bondedId,
@@ -281,14 +281,14 @@ public:
 		BondType type = bond_type::Unknown())
 	{
 		#if BIO_CPP_VERSION < 11
-		return BreakBond< physical::Quantum< T >* >( <br />
+		return BreakBond< physical::Quantum< T >* >( 
 			NULL,
 			type
 		);
 		#else
 		if (IsPrimitive< T >())
 		{
-			return BreakBond< physical::Quantum< T >* >(NULL, type); //T matters, toDisassociate does not. <br />
+			return BreakBond< physical::Quantum< T >* >(NULL, type); //T matters, toDisassociate does not. 
 		}
 
 		AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< T >();
@@ -326,11 +326,11 @@ public:
 	Valence GetBondPosition() const
 	{
 		#if BIO_CPP_VERSION < 11
-		return GetBondPosition(PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >()); <br />
+		return GetBondPosition(PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >()); 
 		#else
 		if (IsPrimitive< T >())
 		{
-			return GetBondPosition(PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >()); <br />
+			return GetBondPosition(PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >()); 
 		}
 		return GetBondPosition(PeriodicTable::Instance().GetIdFromType< T >());
 		#endif
@@ -366,13 +366,13 @@ public:
 	 * DANGEROUS! <br />
 	 * @return a pointer to the Bonds in *this.
 	 */
-	Bonds* GetAllBonds(); <br />
+	Bonds* GetAllBonds(); 
 
 	/**
 	 * DANGEROUS! (but slightly less so). <br />
 	 * @return a pointer to the Bonds in *this.
 	 */
-	const Bonds* GetAllBonds() const; <br />
+	const Bonds* GetAllBonds() const; 
 
 protected:
 	Bonds m_bonds;
@@ -384,7 +384,7 @@ protected:
 	 * @param type
 	 */
 	virtual bool FormBondImplementation(
-		Wave* toBond, <br />
+		Wave* toBond, 
 		AtomicNumber id,
 		BondType type
 	);
@@ -397,7 +397,7 @@ protected:
 	 * @return
 	 */
 	virtual bool BreakBondImplementation(
-		Wave* toDisassociate, <br />
+		Wave* toDisassociate, 
 		AtomicNumber id,
 		BondType type
 	);

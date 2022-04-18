@@ -42,7 +42,7 @@ template < typename T >
 T CloneAndCast(const T toClone)
 {
 	//Dereference here might be dangerous & need sanitization.
-	return ChemicalCast< T, ::bio::physical::Wave* >(toClone->Clone()->AsWave()); <br />
+	return ChemicalCast< T, ::bio::physical::Wave* >(toClone->Clone()->AsWave()); 
 }
 
 

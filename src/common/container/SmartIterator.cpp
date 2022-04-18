@@ -25,7 +25,7 @@
 
 namespace bio {
 
-SmartIterator::SmartIterator(const Container* container) <br />
+SmartIterator::SmartIterator(const Container* container) 
 	:
 	m_implementation(container->ConstructClassIterator(container->GetEndIndex()))
 {
@@ -33,7 +33,7 @@ SmartIterator::SmartIterator(const Container* container) <br />
 }
 
 SmartIterator::SmartIterator(
-	const Container* container, <br />
+	const Container* container, 
 	Index index
 )
 	:
@@ -47,12 +47,12 @@ SmartIterator::~SmartIterator()
 	delete m_implementation;
 }
 
-Iterator* SmartIterator::GetImplementation() <br />
+Iterator* SmartIterator::GetImplementation() 
 {
 	return m_implementation;
 }
 
-const Iterator* SmartIterator::GetImplementation() const <br />
+const Iterator* SmartIterator::GetImplementation() const 
 {
 	return m_implementation;
 }
@@ -90,7 +90,7 @@ const ByteStream SmartIterator::operator*() const
 SmartIterator& SmartIterator::operator++() const
 {
 	m_implementation->Increment();
-	return *const_cast< SmartIterator* >(this); <br />
+	return *const_cast< SmartIterator* >(this); 
 }
 
 SmartIterator SmartIterator::operator++(int) const
@@ -103,7 +103,7 @@ SmartIterator SmartIterator::operator++(int) const
 SmartIterator& SmartIterator::operator--() const
 {
 	m_implementation->Decrement();
-	return *const_cast< SmartIterator* >(this); <br />
+	return *const_cast< SmartIterator* >(this); 
 }
 
 SmartIterator SmartIterator::operator--(int) const

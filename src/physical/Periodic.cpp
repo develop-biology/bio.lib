@@ -86,7 +86,7 @@ void Periodic::SetLastPeakTimestamp(Timestamp lastPeak)
 	m_lastPeakTimestamp = lastPeak;
 }
 
-Symmetry* Periodic::Spin() const <br />
+Symmetry* Periodic::Spin() const 
 {
 	m_symmetry->AccessValue()->Set(
 		m_interval
@@ -94,7 +94,7 @@ Symmetry* Periodic::Spin() const <br />
 	return Wave::Spin();
 }
 
-Code Periodic::Reify(Symmetry* symmetry) <br />
+Code Periodic::Reify(Symmetry* symmetry) 
 {
 	BIO_SANITIZE(symmetry, ,
 		return code::BadArgument1());

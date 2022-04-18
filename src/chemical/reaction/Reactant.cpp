@@ -43,8 +43,8 @@ Reactant::Reactant(Name typeName)
 
 Reactant::Reactant(
 	Name typeName,
-	const typename UnorderedMotif< Property >::Contents* properties, <br />
-	const typename UnorderedMotif< State >::Contents* states <br />
+	const typename UnorderedMotif< Property >::Contents* properties, 
+	const typename UnorderedMotif< State >::Contents* states 
 )
 	:
 	Class< Reactant >(this),
@@ -58,7 +58,7 @@ Reactant::Reactant(
 
 Reactant::Reactant(
 	Name typeName,
-	const Substance* substance <br />
+	const Substance* substance 
 )
 	:
 	Class< Reactant >(this),

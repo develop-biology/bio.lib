@@ -48,7 +48,7 @@ class Organelle;
  */
 class Cell :
 	public Class< Cell >,
-	public chemical::LinearMotif< Organelle* >, <br />
+	public chemical::LinearMotif< Organelle* >, 
 	public molecular::EnvironmentDependent< cellular::Tissue >,
 	virtual public genetic::Expressor
 {

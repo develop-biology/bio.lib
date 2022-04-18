@@ -125,7 +125,7 @@ public:
 	 * Get the m_value of *this for direct editing. <br />
 	 * @return m_value for writing.
 	 */
-	virtual ByteStream* AccessValue(); <br />
+	virtual ByteStream* AccessValue(); 
 
 protected:
 	Name m_name;

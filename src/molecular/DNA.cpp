@@ -43,12 +43,12 @@ DNA::~DNA()
 	}
 }
 
-Protein* DNA::GetProtein() <br />
+Protein* DNA::GetProtein() 
 {
 	return m_protein;
 }
 
-const Protein* DNA::GetProtein() const <br />
+const Protein* DNA::GetProtein() const 
 {
 	return m_protein;
 }
@@ -70,7 +70,7 @@ void DNA::SetVersion(Version newVersion)
 	m_version = newVersion;
 }
 
-void DNA::SetProtein(Protein* protein) <br />
+void DNA::SetProtein(Protein* protein) 
 {
 	m_protein = protein;
 }

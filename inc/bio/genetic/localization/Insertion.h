@@ -52,7 +52,7 @@ public:
 	 * @param name
 	 */
 	explicit Insertion(
-		chemical::Substance* whatToInsert = NULL, <br />
+		chemical::Substance* whatToInsert = NULL, 
 		Site site = InsertionSitePerspective::InvalidId(),
 		Name name = NULL
 	);
@@ -69,18 +69,18 @@ public:
 	 * @param insertIn
 	 * @return a Substance somewhere within the Substance provided or NULL.
 	 */
-	virtual chemical::Substance* Seek(chemical::Substance* insertIn) const; <br />
+	virtual chemical::Substance* Seek(chemical::Substance* insertIn) const; 
 
 	/**
 	 * Tells *this to insert toInsert in its Localization. <br />
 	 * @param toInsert
 	 */
-	virtual void InsertThis(chemical::Substance* toInsert); <br />
+	virtual void InsertThis(chemical::Substance* toInsert); 
 
 	/**
 	 * @return what *this will try to insert in its Localization
 	 */
-	virtual chemical::Substance* GetWhatWillBeInserted(); <br />
+	virtual chemical::Substance* GetWhatWillBeInserted(); 
 
 	/**
 	 * Set m_site. <br />
@@ -89,7 +89,7 @@ public:
 	virtual void SetSite(Site site);
 
 protected:
-	chemical::Substance* m_toInsert; <br />
+	chemical::Substance* m_toInsert; 
 };
 
 } //genetic namespace

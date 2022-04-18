@@ -71,19 +71,19 @@ public:
 	 * See classes in the genetic namespace for proper Translation of Protein. <br />
 	 * @return the Protein in *this.
 	 */
-	virtual Protein* GetProtein(); <br />
+	virtual Protein* GetProtein(); 
 
 	/**
 	 * See classes in the genetic namespace for proper Translation of Protein. <br />
 	 * @return the Protein in *this.
 	 */
-	virtual const Protein* GetProtein() const; <br />
+	virtual const Protein* GetProtein() const; 
 
 	/**
 	 * Change what *this encodes. <br />
 	 * @param protein
 	 */
-	virtual void SetProtein(Protein* protein); <br />
+	virtual void SetProtein(Protein* protein); 
 
 	/**
 	 * @return the Id of the Protein *this encodes.
@@ -102,7 +102,7 @@ public:
 	virtual void SetVersion(Version newVersion);
 
 protected:
-	Protein* m_protein; <br />
+	Protein* m_protein; 
 	Version m_version;
 
 private:

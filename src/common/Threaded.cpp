@@ -73,9 +73,9 @@ void Threaded::RequestStop()
 	UnlockThread();
 }
 
-/*static*/ void* Threaded::Worker(void* arg) <br />
+/*static*/ void* Threaded::Worker(void* arg) 
 {
-	Threaded* threaded = Cast< Threaded* >(arg); <br />
+	Threaded* threaded = Cast< Threaded* >(arg); 
 	BIO_SANITIZE(threaded, ,
 		return NULL);
 
@@ -148,7 +148,7 @@ bool Threaded::Stop()
 	#if BIO_CPP_VERSION < 11
 		m_stopRequested = true;
 		#ifdef BIO_OS_IS_LINUX
-            void** threadReturn; <br />
+            void** threadReturn; 
 			int result = pthread_join(m_thread, threadReturn);
 		#endif
 		RequestStop();

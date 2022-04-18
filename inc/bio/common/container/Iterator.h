@@ -47,7 +47,7 @@ public:
 	 * @param index
 	 */
 	Iterator(
-		const Container* container, <br />
+		const Container* container, 
 		const Index index = InvalidIndex());
 
 	/**
@@ -81,13 +81,13 @@ public:
 	 * Move *this up a Index <br />
 	 * @return *this after incrementing.
 	 */
-	virtual Iterator* Increment(); <br />
+	virtual Iterator* Increment(); 
 
 	/**
 	 * Move *this down a Index. <br />
 	 * @return *this following decrementing.
 	 */
-	virtual Iterator* Decrement(); <br />
+	virtual Iterator* Decrement(); 
 
 	/**
 	 * Dereferencing gives the datum *this is currently pointing to. <br />
@@ -102,7 +102,7 @@ public:
 	virtual const ByteStream operator*() const;
 
 protected:
-	mutable Container* m_container; <br />
+	mutable Container* m_container; 
 	Index m_index;
 }; //Iterator class.
 

@@ -64,7 +64,7 @@ public:
 	/**
 	 * @param contents
 	 */
-	UnorderedMotif(const Contents* contents) <br />
+	UnorderedMotif(const Contents* contents) 
 		:
 		chemical::Class< UnorderedMotif< CONTENT_TYPE > >(this) //TODO: Define Symmetry.
 	{
@@ -74,7 +74,7 @@ public:
 	/**
 	 * @param toCopy
 	 */
-	UnorderedMotif(const UnorderedMotif< CONTENT_TYPE >* toCopy) <br />
+	UnorderedMotif(const UnorderedMotif< CONTENT_TYPE >* toCopy) 
 		:
 		chemical::Class< UnorderedMotif< CONTENT_TYPE > >(this) //TODO: Define Symmetry.
 	{
@@ -143,7 +143,7 @@ public:
 	 * Copy the contents of another container into *this. <br />
 	 * @param other
 	 */
-	virtual void ImportImplementation(const UnorderedMotif< CONTENT_TYPE >* other) <br />
+	virtual void ImportImplementation(const UnorderedMotif< CONTENT_TYPE >* other) 
 	{
 		BIO_SANITIZE(other, ,
 			return);
@@ -156,7 +156,7 @@ public:
 	 * @param other
 	 * @return quantity overlap with other.
 	 */
-	virtual unsigned int GetNumMatchingImplementation(const Container* other) const <br />
+	virtual unsigned int GetNumMatchingImplementation(const Container* other) const 
 	{
 		BIO_SANITIZE(other, ,
 			return 0);
@@ -181,7 +181,7 @@ public:
 	 * @param contents
 	 * @return whether or not the given contents exists in *this
 	 */
-	virtual bool HasAllImplementation(const Container* contents) const <br />
+	virtual bool HasAllImplementation(const Container* contents) const 
 	{
 		BIO_SANITIZE(contents, ,
 			return false);

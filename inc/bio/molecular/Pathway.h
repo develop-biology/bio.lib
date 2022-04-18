@@ -46,7 +46,7 @@ namespace molecular {
 class Pathway :
 	public chemical::Class< Pathway >,
 	public chemical::Reaction,
-	public chemical::LinearMotif< chemical::Reaction* > <br />
+	public chemical::LinearMotif< chemical::Reaction* > 
 {
 public:
 	/**
@@ -73,14 +73,14 @@ public:
 	 * @param reactants
 	 * @return the Products from the last Reaction or a code::FailedReaction(), if any step did not succeed.
 	 */
-	virtual chemical::Products Process(chemical::Reactants* reactants); <br />
+	virtual chemical::Products Process(chemical::Reactants* reactants); 
 
 	/**
 	 * *this shouldn't have an Requirements / Reactants, so instead we check the first Reaction in *this. <br />
 	 * @param toCheck
 	 * @return whether or not the first Reaction in *this can use the given Substances.
 	 */
-	virtual bool ReactantsMeetRequirements(const chemical::Reactants* toCheck) const; <br />
+	virtual bool ReactantsMeetRequirements(const chemical::Reactants* toCheck) const; 
 };
 
 } //molecular namespace

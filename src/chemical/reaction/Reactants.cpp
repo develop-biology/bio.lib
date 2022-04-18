@@ -41,7 +41,7 @@ Reactants::Reactants(Substances& substances)
 		++sub
 		)
 	{
-		Add< Substance* >(*sub); <br />
+		Add< Substance* >(*sub); 
 	}
 }
 
@@ -52,7 +52,7 @@ Reactants::~Reactants()
 
 Reactants::operator Substances()
 {
-	return GetAll< Substance* >()->AsVector< Substance* >(); <br />
+	return GetAll< Substance* >()->AsVector< Substance* >(); 
 }
 
 } //chemical namespace

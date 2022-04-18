@@ -27,7 +27,7 @@ namespace bio {
 namespace genetic {
 
 /**
- * Takes a Plasmid* in the "Plasmid Binding Site" and stores it in the PlasmidPerspective. <br />
+ * Takes a Plasmid* in the "Plasmid Binding Site" and stores it in the PlasmidPerspective. 
  */
 class RegisterPlasmid :
 	public molecular::Protein

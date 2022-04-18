@@ -50,7 +50,7 @@ Engine::~Engine()
 void Engine::Log(
 	Filter filter,
 	Level level,
-	const char* format, <br />
+	const char* format, 
 	va_list args
 )
 {
@@ -81,7 +81,7 @@ void Engine::Log(
 void Engine::Log(
 	Filter filter,
 	Level level,
-	const char* format, <br />
+	const char* format, 
 	...
 )
 {

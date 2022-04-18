@@ -34,7 +34,7 @@ namespace bio {
 namespace physical {
 
 #ifdef BIO_FAKE_SYSTEM_TIME
-/**  <br />
+/**  
  * Because mocking global functions is such a pain, this method has been provided FOR TESTING PURPOSES ONLY <br />
  * Use of this method requires that the bio library be compiled with BIO_FAKE_SYSTEM_TIME <br />
  * @param newTime the time that will be returned by GetCurrentTimestamp().

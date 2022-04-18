@@ -30,7 +30,7 @@
 namespace bio {
 
 /**
- * Generic byte stream class. Kinda like a void* that you can save and cast later. <br />
+ * Generic byte stream class. Kinda like a void* that you can save and cast later. 
  * Work around for c++98 auto keyword and other wonky problems. <br />
  *
  *******************************************************************************
@@ -89,7 +89,7 @@ public:
 	T As()
 	{
 		BIO_ASSERT(Is< T >());
-		T* ret; <br />
+		T* ret; 
 		std::memcpy(
 			ret,
 			m_stream,
@@ -106,7 +106,7 @@ public:
 	const T As() const
 	{
 		BIO_ASSERT(Is< T >());
-		T* ret; <br />
+		T* ret; 
 		std::memcpy(
 			ret,
 			m_stream,
@@ -164,7 +164,7 @@ public:
 	 * Frees the memory *this was Holding. <br />
 	 * Nop if *this was not holding anything. <br />
 	 * NOTE: This does not call any destructors. You must do that yourself. <br />
-	 * (i.e. there is no typename -> new type* -> union -> delete; delete) <br />
+	 * (i.e. there is no typename -> new type* -> union -> delete; delete) 
 	 */
 	void Release();
 
@@ -212,10 +212,10 @@ public:
 	 * Please don't use this. <br />
 	 * @return the data in *this
 	 */
-	void* IKnowWhatImDoing(); <br />
+	void* IKnowWhatImDoing(); 
 
 protected:
-	void* m_stream; <br />
+	void* m_stream; 
 	std::string m_typeName;
 	std::size_t m_size;
 	bool m_holding;

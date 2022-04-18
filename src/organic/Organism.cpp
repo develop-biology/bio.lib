@@ -31,10 +31,10 @@ Organism::~Organism()
 Code Organism::Morphogenesis()
 {
 	Code ret = code::Success();
-	Container* organSystems = GetAll< cellular::OrganSystem* >(); <br />
+	Container* organSystems = GetAll< cellular::OrganSystem* >(); 
 	BIO_SANITIZE(organSystems, ,
 		return code::CouldNotFindValue1())
-	cellular::OrganSystem* systemBuffer; <br />
+	cellular::OrganSystem* systemBuffer; 
 	for (
 		SmartIterator sys = organSystems->Begin();
 		!sys.IsAtEnd();

@@ -52,8 +52,8 @@ public:
 	 * @param object
 	 */
 	Class(
-		T* object, <br />
-		physical::Perspective< StandardDimension >* perspective = NULL, <br />
+		T* object, 
+		physical::Perspective< StandardDimension >* perspective = NULL, 
 		Filter filter = filter::Default())
 		:
 		genetic::Class< T >(
@@ -73,9 +73,9 @@ public:
 	 * @param interval
 	 */
 	Class(
-		T* object, <br />
+		T* object, 
 		Name name,
-		physical::Perspective< StandardDimension >* perspective = NULL, <br />
+		physical::Perspective< StandardDimension >* perspective = NULL, 
 		Filter filter = filter::Default(),
 		TimeUS interval = GetDefaultInterval())
 		:
@@ -97,9 +97,9 @@ public:
 	 * @param interval
 	 */
 	Class(
-		T* object, <br />
+		T* object, 
 		StandardDimension id,
-		physical::Perspective< StandardDimension >* perspective = NULL, <br />
+		physical::Perspective< StandardDimension >* perspective = NULL, 
 		Filter filter = filter::Default(),
 		TimeUS interval = GetDefaultInterval())
 		:

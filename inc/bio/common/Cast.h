@@ -50,8 +50,8 @@ TO Cast(FROM toCast)
  * THIS DOES NO ERROR CHECKING AND WILL BREAK YOUR CODE IF MISUSED! <br />
  *
  * Example use case: <br />
- * void* toCast = new MyClass(); //void* might be an ambiguous base class but MyClass is the same for toCast and casted. <br />
- * MyClass* casted = ForceCast<MyClass*>(toCast); <br />
+ * void* toCast = new MyClass(); //void* might be an ambiguous base class but MyClass is the same for toCast and casted. 
+ * MyClass* casted = ForceCast<MyClass*>(toCast); 
  * @tparam TO
  * @tparam FROM Dynamically determined template type.
  * @param toCast a FROM.
@@ -75,7 +75,7 @@ TO ForceCast(FROM toCast)
 template < typename TO_FINAL, typename TO_1, typename FROM >
 TO_FINAL DoubleForceCast(
 	FROM toCast,
-	TO_1* autoTo <br />
+	TO_1* autoTo 
 )
 {
 	return (TO_FINAL)(TO_1)(void*)(toCast);

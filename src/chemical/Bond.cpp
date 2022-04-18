@@ -37,7 +37,7 @@ Bond::Bond()
 
 Bond::Bond(
 	AtomicNumber id,
-	physical::Wave* bonded, <br />
+	physical::Wave* bonded, 
 	BondType type
 )
 	:
@@ -54,7 +54,7 @@ Bond::~Bond()
 
 bool Bond::Form(
 	AtomicNumber id,
-	physical::Wave* bonded, <br />
+	physical::Wave* bonded, 
 	BondType type
 )
 {
@@ -71,12 +71,12 @@ AtomicNumber Bond::GetId() const
 	return m_id;
 }
 
-physical::Wave* Bond::GetBonded() <br />
+physical::Wave* Bond::GetBonded() 
 {
 	return m_bonded;
 }
 
-const physical::Wave* Bond::GetBonded() const <br />
+const physical::Wave* Bond::GetBonded() const 
 {
 	return m_bonded;
 }

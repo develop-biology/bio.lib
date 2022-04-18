@@ -76,7 +76,7 @@ public:
 	{
 		BIO_SANITIZE(this->IsAllocated(index), ,
 			return NULL)
-		TYPE* ret; <br />
+		TYPE* ret; 
 		std::memcpy(
 			ret,
 			&this->m_store[index * sizeof(TYPE)], <br />
@@ -88,7 +88,7 @@ public:
 	{
 		BIO_SANITIZE(this->IsAllocated(index), ,
 			return NULL)
-		TYPE* ret; <br />
+		TYPE* ret; 
 		std::memcpy(
 			ret,
 			&this->m_store[index * sizeof(TYPE)], <br />
@@ -100,7 +100,7 @@ public:
 	{
 		BIO_SANITIZE(this->IsAllocated(index), ,
 			return false)
-		TYPE* toDelete; <br />
+		TYPE* toDelete; 
 		std::memcpy(
 			toDelete,
 			&this->m_store[index * sizeof(TYPE)], <br />

@@ -20,7 +20,7 @@
  */
 
 #pragma once
-/**  <br />
+/**  
  * Description: assert definition. Will get more complicated as we support more target environments <br />
  */
 

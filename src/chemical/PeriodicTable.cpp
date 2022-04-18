@@ -26,10 +26,10 @@ namespace bio {
 namespace chemical {
 
 /**
- * Elements track the Properties of items in the PeriodicTable. <br />
- * This is a Substance for ease of use but can be changed later. <br />
- * We also want to use Element as a Substance here as we can store the Properties of classes which are not Substances (e.g. Symmetry) <br />
- * NOTE, this is not chemical::Elementary<T>, which is used to define these Elements. <br />
+ * Elements track the Properties of items in the PeriodicTable. 
+ * This is a Substance for ease of use but can be changed later. 
+ * We also want to use Element as a Substance here as we can store the Properties of classes which are not Substances (e.g. Symmetry) 
+ * NOTE, this is not chemical::Elementary<T>, which is used to define these Elements. 
  */
 class Element :
 	public Substance
@@ -46,10 +46,10 @@ public:
 	}
 
 	/**
-	 * Optional type association. <br />
-	 * This can be used for casting, etc. <br />
+	 * Optional type association. 
+	 * This can be used for casting, etc. 
 	 */
-	physical::Wave* m_type; <br />
+	physical::Wave* m_type; 
 };
 
 PeriodicTableImplementation::PeriodicTableImplementation()
@@ -65,7 +65,7 @@ PeriodicTableImplementation::~PeriodicTableImplementation()
 const Properties PeriodicTableImplementation::GetPropertiesOf(AtomicNumber id) const
 {
 	Properties ret;
-	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id)); <br />
+	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id)); 
 	BIO_SANITIZE(element, ,
 		return ret);
 	LockThread();
@@ -113,7 +113,7 @@ AtomicNumber PeriodicTableImplementation::RecordPropertiesOf(
 		return InvalidId());
 
 	LockThread();
-	Element* element = ForceCast< Element* >(hdt->m_type); <br />
+	Element* element = ForceCast< Element* >(hdt->m_type); 
 	if (!element)
 	{
 		element = new Element();
@@ -135,9 +135,9 @@ AtomicNumber PeriodicTableImplementation::RecordPropertiesOf(
 	);
 }
 
-const physical::Wave* PeriodicTableImplementation::GetTypeFromId(AtomicNumber id) const <br />
+const physical::Wave* PeriodicTableImplementation::GetTypeFromId(AtomicNumber id) const 
 {
-	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id)); <br />
+	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id)); 
 	BIO_SANITIZE(element, ,
 		return NULL);
 	return element->m_type;
@@ -145,10 +145,10 @@ const physical::Wave* PeriodicTableImplementation::GetTypeFromId(AtomicNumber id
 
 bool PeriodicTableImplementation::AssociateType(
 	AtomicNumber id,
-	physical::Wave* type <br />
+	physical::Wave* type 
 )
 {
-	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id)); <br />
+	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id)); 
 	BIO_SANITIZE(element, ,
 		return false);
 	LockThread();
@@ -159,7 +159,7 @@ bool PeriodicTableImplementation::AssociateType(
 
 bool PeriodicTableImplementation::DisassociateType(AtomicNumber id)
 {
-	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id)); <br />
+	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id)); 
 	BIO_SANITIZE(element, ,
 		return false);
 	LockThread();

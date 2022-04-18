@@ -129,7 +129,7 @@ protected:
 		#endif
 		ThreadId m_id;
 	#else
-		std::thread* m_thread; <br />
+		std::thread* m_thread; 
 	#endif
 	//@formatter:on
 
@@ -146,7 +146,7 @@ protected:
 	 * @param arg a Threaded*
 	 * @return NULL
 	 */
-	static void* Worker(void* arg); <br />
+	static void* Worker(void* arg); 
 };
 
 } //bio namespace

@@ -36,7 +36,7 @@ namespace molecular {
 class Vesicle :
 	virtual public Molecule,
 	public Class< Vesicle >,
-	public chemical::LinearMotif< Molecule* > <br />
+	public chemical::LinearMotif< Molecule* > 
 {
 public:
 
@@ -64,29 +64,29 @@ public:
 	virtual ~Vesicle();
 
 	/**
-	 * operator wrappers around GetBy____< Molecule* > <br />
+	 * operator wrappers around GetBy____< Molecule* > 
 	 * @param moleculeId
 	 * @return Extract(...)
 	 * @{
 	 */
-	virtual Molecule* operator[](StandardDimension moleculeId); <br />
+	virtual Molecule* operator[](StandardDimension moleculeId); 
 
-	virtual const Molecule* operator[](StandardDimension moleculeId) const; <br />
+	virtual const Molecule* operator[](StandardDimension moleculeId) const; 
 
 	template < typename T >
-	Molecule* operator[](StandardDimension moleculeId) <br />
+	Molecule* operator[](StandardDimension moleculeId) 
 	{
-		return ChemicalCast< T >(GetById< Molecule* >(moleculeId)); <br />
+		return ChemicalCast< T >(GetById< Molecule* >(moleculeId)); 
 	}
 
-	virtual Molecule* operator[](Name moleculeName); <br />
+	virtual Molecule* operator[](Name moleculeName); 
 
-	virtual const Molecule* operator[](Name moleculeName) const; <br />
+	virtual const Molecule* operator[](Name moleculeName) const; 
 
 	template < typename T >
-	Molecule* operator[](Name moleculeName) <br />
+	Molecule* operator[](Name moleculeName) 
 	{
-		return ChemicalCast< T >(GetByName< Molecule* >(moleculeName)); <br />
+		return ChemicalCast< T >(GetByName< Molecule* >(moleculeName)); 
 	}
 	/**@}*/
 
@@ -96,7 +96,7 @@ public:
 	 * @param source
 	 * @return this
 	 */
-	virtual Vesicle* operator<<=(Vesicle* source); <br />
+	virtual Vesicle* operator<<=(Vesicle* source); 
 
 	/**
 	 * Vesicle move operation. <br />
@@ -105,7 +105,7 @@ public:
 	 * @param target
 	 * @return target
 	 */
-	virtual Vesicle* operator>>=(Vesicle* target); <br />
+	virtual Vesicle* operator>>=(Vesicle* target); 
 };
 
 } //molecular namespace

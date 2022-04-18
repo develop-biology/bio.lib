@@ -54,7 +54,7 @@ public:
 	 * @param symmetry
 	 * @return text, possibly a command (like mysql), structured values (like json), an entire program (like python), etc. or Failed().
 	 */
-	virtual std::string Rotate(Symmetry* symmetry) const; <br />
+	virtual std::string Rotate(Symmetry* symmetry) const; 
 
 };
 

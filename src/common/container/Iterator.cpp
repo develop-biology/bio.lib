@@ -25,11 +25,11 @@
 namespace bio {
 
 Iterator::Iterator(
-	const Container* container, <br />
+	const Container* container, 
 	const Index index
 )
 	:
-	m_container(const_cast< Container* >(container)), <br />
+	m_container(const_cast< Container* >(container)), 
 	m_index(index)
 {
 
@@ -65,7 +65,7 @@ bool Iterator::IsAtEnd() const
 	return m_index == m_container->GetAllocatedSize();
 }
 
-Iterator* Iterator::Increment() <br />
+Iterator* Iterator::Increment() 
 {
 	if (m_index >= m_container->GetAllocatedSize())
 	{
@@ -79,7 +79,7 @@ Iterator* Iterator::Increment() <br />
 	return this;
 }
 
-Iterator* Iterator::Decrement() <br />
+Iterator* Iterator::Decrement() 
 {
 	if (!m_index)
 	{

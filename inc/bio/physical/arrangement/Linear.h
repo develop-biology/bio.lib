@@ -55,7 +55,7 @@ public:
 	 * @param shared
 	 */
 	Linear(
-		Identifiable< StandardDimension >* component, <br />
+		Identifiable< StandardDimension >* component, 
 		bool shared = false
 	);
 
@@ -69,7 +69,7 @@ public:
 	 * @param component
 	 * @return whether the component of *this matches the given component.
 	 */
-	bool operator==(const Identifiable< StandardDimension >* component) const; <br />
+	bool operator==(const Identifiable< StandardDimension >* component) const; 
 
 	/**
 	 * NOTE: Comparison should be handled by Identifiable, i.e. by Id. <br />
@@ -101,15 +101,15 @@ public:
 	/**
 	 * @return m_component
 	 */
-	Identifiable< StandardDimension >* operator->(); <br />
+	Identifiable< StandardDimension >* operator->(); 
 
 	/**
 	 * @return m_component
 	 */
-	const Identifiable< StandardDimension >* operator->() const; <br />
+	const Identifiable< StandardDimension >* operator->() const; 
 
 protected:
-	Identifiable< StandardDimension >* m_component; <br />
+	Identifiable< StandardDimension >* m_component; 
 	bool m_shared;
 };
 

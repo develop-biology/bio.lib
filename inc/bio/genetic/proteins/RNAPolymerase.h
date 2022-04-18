@@ -41,7 +41,7 @@ public:
 	/**
 	 * @param toTranscribe
 	 */
-	RNAPolymerase(Plasmid* toTranscribe); <br />
+	RNAPolymerase(Plasmid* toTranscribe); 
 
 	/**
 	 *

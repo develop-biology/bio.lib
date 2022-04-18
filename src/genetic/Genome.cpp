@@ -44,21 +44,21 @@ GenomeImplementation::~GenomeImplementation()
 
 void GenomeImplementation::CacheProteins()
 {
-	mc_registerPlasmid = RotateTo< molecular::Protein* >("RegisterPlasmid"); <br />
-	mc_fetchPlasmid = RotateTo< molecular::Protein* >("FetchPlasmid"); <br />
+	mc_registerPlasmid = RotateTo< molecular::Protein* >("RegisterPlasmid"); 
+	mc_fetchPlasmid = RotateTo< molecular::Protein* >("FetchPlasmid"); 
 	mc_registrationSite = mc_registerPlasmid->GetIdWithoutCreation("Plasmid Binding Site");
 	mc_nameSite = mc_fetchPlasmid->GetIdWithoutCreation("Name Binding Site");
 	mc_idSite = mc_fetchPlasmid->GetIdWithoutCreation("Id Binding Site");
 	mc_fetchSite = mc_fetchPlasmid->GetIdWithoutCreation("Return Site");
 }
 
-StandardDimension GenomeImplementation::RegisterPlasmid(Plasmid* toRegister) <br />
+StandardDimension GenomeImplementation::RegisterPlasmid(Plasmid* toRegister) 
 {
 	BIO_SANITIZE(toRegister, ,
 		return PlasmidPerspective::InvalidId())
 	StandardDimension ret = PlasmidPerspective::InvalidId();
 	LockThread();
-	mc_registerPlasmid->RotateTo(mc_registrationSite)->Bind(ChemicalCast< chemical::Substance* >(toRegister)); <br />
+	mc_registerPlasmid->RotateTo(mc_registrationSite)->Bind(ChemicalCast< chemical::Substance* >(toRegister)); 
 	if (mc_registerPlasmid->Activate() == code::Success())
 	{
 		ret = toRegister->GetId();
@@ -67,25 +67,25 @@ StandardDimension GenomeImplementation::RegisterPlasmid(Plasmid* toRegister) <br
 	return ret;
 }
 
-Plasmid* GenomeImplementation::FetchPlasmid(StandardDimension plasmidId) <br />
+Plasmid* GenomeImplementation::FetchPlasmid(StandardDimension plasmidId) 
 {
-	Plasmid* ret = NULL; <br />
+	Plasmid* ret = NULL; 
 	LockThread();
 	mc_fetchPlasmid->RotateTo(mc_idSite)->Bind(plasmidId);
 	mc_fetchPlasmid->Activate();
-	ret = mc_fetchPlasmid->RotateTo< Plasmid* >(mc_fetchSite); <br />
+	ret = mc_fetchPlasmid->RotateTo< Plasmid* >(mc_fetchSite); 
 	UnlockThread();
 	return ret;
 
 }
 
-Plasmid* GenomeImplementation::FetchPlasmid(Name plasmidName) <br />
+Plasmid* GenomeImplementation::FetchPlasmid(Name plasmidName) 
 {
-	Plasmid* ret = NULL; <br />
+	Plasmid* ret = NULL; 
 	LockThread();
 	mc_fetchPlasmid->RotateTo(mc_nameSite)->Bind(plasmidName);
 	mc_fetchPlasmid->Activate();
-	ret = mc_fetchPlasmid->RotateTo< Plasmid* >(mc_fetchSite); <br />
+	ret = mc_fetchPlasmid->RotateTo< Plasmid* >(mc_fetchSite); 
 	UnlockThread();
 	return ret;
 }

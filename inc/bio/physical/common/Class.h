@@ -44,8 +44,8 @@ public:
 	 * @param symmetry
 	 */
 	Class(
-		T* object, <br />
-		Symmetry* symmetry = NULL <br />
+		T* object, 
+		Symmetry* symmetry = NULL 
 	)
 		:
 		Wave(symmetry),
@@ -76,9 +76,9 @@ public:
 	 * @param wave
 	 * @return the
 	 */
-	T* Convert(Wave* wave) <br />
+	T* Convert(Wave* wave) 
 	{
-		return Cast< T* >(wave); <br />
+		return Cast< T* >(wave); 
 	}
 
 
@@ -86,17 +86,17 @@ public:
 	 * Template override for Clone so we don't have to define it everywhere. <br />
 	 * @return a new T (and a new *this).
 	 */
-	virtual Wave* Clone() const <br />
+	virtual Wave* Clone() const 
 	{
-		T* ret = new T(*m_object); <br />
-		return Cast< Class< T >* >(ret); //2-step cast: 1st explicitly cast to *this; 2nd implicitly cast to Wave. <br />
+		T* ret = new T(*m_object); 
+		return Cast< Class< T >* >(ret); //2-step cast: 1st explicitly cast to *this; 2nd implicitly cast to Wave. 
 	}
 
 	/**
 	 * Used for resolving ambiguous inheritance without the need to explicitly derive from Wave. <br />
 	 * @return this
 	 */
-	virtual Wave* AsWave() <br />
+	virtual Wave* AsWave() 
 	{
 		return this;
 	}
@@ -105,7 +105,7 @@ public:
 	 * Used for resolving ambiguous inheritance without the need to explicitly derive from Wave. <br />
 	 * @return this
 	 */
-	virtual const Wave* AsWave() const <br />
+	virtual const Wave* AsWave() const 
 	{
 		return this;
 	}
@@ -121,7 +121,7 @@ public:
 	}
 
 protected:
-	T* m_object; <br />
+	T* m_object; 
 };
 
 } //physical namespace

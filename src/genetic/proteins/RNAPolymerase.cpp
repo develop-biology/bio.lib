@@ -28,7 +28,7 @@
 namespace bio {
 namespace genetic {
 
-RNAPolymerase::RNAPolymerase(Plasmid* toTranscribe) <br />
+RNAPolymerase::RNAPolymerase(Plasmid* toTranscribe) 
 	:
 	molecular::Protein(chemical::PeriodicTable::Instance().GetNameFromType(*this))
 {
@@ -43,17 +43,17 @@ RNAPolymerase::~RNAPolymerase()
 
 Code RNAPolymerase::Activate()
 {
-	Expressor* expressor = ChemicalCast< Expressor* >(GetEnvironment()); <br />
+	Expressor* expressor = ChemicalCast< Expressor* >(GetEnvironment()); 
 	BIO_SANITIZE(expressor, ,
 		return code::BadArgument1());
-	RNA* boundRNA = RotateTo< RNA* >(mc_rna); <br />
+	RNA* boundRNA = RotateTo< RNA* >(mc_rna); 
 	BIO_SANITIZE(mc_rna, ,
 		return code::BadArgument2());
 
-	Gene* geneBuffer; <br />
+	Gene* geneBuffer; 
 	bool shouldTranscribe = false;
 	for (
-		SmartIterator gen = m_source->GetAll< Gene* >()->Begin(); <br />
+		SmartIterator gen = m_source->GetAll< Gene* >()->Begin(); 
 		!gen.IsAtEnd();
 		++gen
 		)
@@ -65,7 +65,7 @@ Code RNAPolymerase::Activate()
 		{
 			continue;
 		}
-		boundRNA->Add< Gene* >(geneBuffer); <br />
+		boundRNA->Add< Gene* >(geneBuffer); 
 	}
 	return code::Success();
 }
