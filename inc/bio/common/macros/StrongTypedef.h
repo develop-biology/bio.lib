@@ -40,7 +40,7 @@ struct IsPrimitiveImplementation< name >                                       \
 {                                                                              \
     static const bool m_value = IsPrimitive< type >();                         \
 };                                                                             \
-} /*utility namespace*/                                                        \
+} /*utility namespace*/
 
 
 /**
@@ -98,7 +98,7 @@ public:                                                                        \
     type operator/(const type& t) const {return m_t / t;}                      \
     type operator*(const name& other) const {return m_t * other.m_t;}          \
     type operator/(const name& other) const {return m_t / other.m_t;}          \
-    friend std::ostream& operator <<(std::ostream& out, const name& t)         \
+    friend ::std::ostream& operator <<(std::ostream& out, const name& t)         \
     {                                                                          \
         out << t.m_t;                                                          \
         return out;                                                            \

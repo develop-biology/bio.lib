@@ -25,7 +25,7 @@
  * Here, we define the "constexpr" keyword for only c++11 and beyond. <br />
  */
 //@formatter:off
-#if BIO_CPP_VERSION < 11
+#if BIO_CPP_VERSION < 14
 	#define BIO_CONSTEXPR
 #else
 	#define BIO_CONSTEXPR constexpr

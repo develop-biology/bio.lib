@@ -45,7 +45,7 @@ Timestamp GetCurrentTimestamp()
 	#elif BIO_CPP_VERSION < 11
 	return 0; //TODO...
 	#else
-	using namespace std::chrono;
+	using namespace ::std::chrono;
 	auto now = time_point_cast<milliseconds>(system_clock::now());
 	return now.time_since_epoch().count();
 	#endif

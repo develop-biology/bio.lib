@@ -193,7 +193,7 @@ public:
 	 * @param separator e.g. ", ", the default, or just " ".
 	 * @return the Contents of *this as a string.
 	 */
-	virtual std::string GetStringFromImplementation(std::string separator = ", ")
+	virtual ::std::string GetStringFromImplementation(std::string separator = ", ")
 	{
 		std::string ret = "";
 		SmartIterator cnt = this->m_contents->Begin();

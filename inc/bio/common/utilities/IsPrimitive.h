@@ -44,10 +44,11 @@ struct IsPrimitiveImplementation {static const bool m_value = false;};
 //@formatter:on
 
 /**
- * IsPrimitive without an arg is the same as that with, except no automatic pointer dereferencing can be done. <br />
- * If we're using C++98 and don't have an interface for T, we'll try looking for std:: in its typename. <br />
+ * IsPrimitive will return whether or not the given type is built in. <br />
+ * If the type provided is a pointer and we can dereference it, we will (c++11 and above). <br />
+ * For Biology classes, this should, with few exceptions, always mean a child of physical::Wave. <br />
  * @tparam T
- * @return whether or not T is a built-in type or a Biology class, which should, except for a few exceptions, always mean a child of physical::Wave; false by default.
+ * @return whether or not T is a built-in type or a custom class; false by default.
  */
 template < typename T >
 BIO_CONSTEXPR
@@ -55,7 +56,13 @@ bool IsPrimitive()
 {
 	if (IsPointer< T >())
 	{
-		return false;
+		//@formatter:off
+		#if BIO_CPP_VERSION < 11
+			return false;
+		#else
+			return IsPrimitive< typename ::std::remove_pointer< T >::type >();
+		#endif
+		//@formatter:on
 	}
 
 	//We need to make sure we include our custom overrides of what IsPrimitive.
@@ -63,30 +70,14 @@ bool IsPrimitive()
 	{
 		return true;
 	}
+
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
 		return IsPrimitiveImplementation< T >::m_value;
 	#else
-		return std::is_fundamental<T>::value;
+		return ::std::is_fundamental< T >::value;
 	#endif
 	//@formatter:on
-}
-
-/**
- * IsPrimitive is a bit more complex than it might need to be but the features, while slow, should be robust. <br />
- * First, if T is a pointer, we'll dereference it and try again until it is not. <br />
- * Second, if we're using C++98 and don't have an interface for T, we'll try looking for std:: in its typename. <br />
- * @tparam T
- * @param t
- * @return whether or not T is a built-in type or a Biology class, which should, except for a few exceptions, always mean a child of physical::Wave; false by default.
- */
-template < typename T >
-bool IsPrimitive(const T t)
-{
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(!IsPointer< T >(), ,
-		return IsPrimitive(*t));
-
-	return IsPrimitive< T >();
 }
 
 #if BIO_CPP_VERSION < 11
@@ -114,7 +105,7 @@ struct IsPrimitiveImplementation< double >
 //struct IsPrimitiveImplementation< char > {static const bool m_value = true;};
 
 template <>
-struct IsPrimitiveImplementation< std::string >
+struct IsPrimitiveImplementation< ::std::string >
 {
 	static const bool m_value = true;
 };

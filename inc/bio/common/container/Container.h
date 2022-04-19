@@ -33,16 +33,16 @@ class Iterator;
 
 /**
  * Containers are the singular Biology container construct. <br />
- * Essentially we need a generic, non-template std::vector<> base class, so we'll make our own. <br />
- * Different containers (e.g. the corollaries to std::set vs std::map vs std::vector) are all children of *this and we use typical inheritance to modify the behavior of each specialization. <br />
- * By using inheritance for our Containers, we can pass Container*s around and use a standard interface to manipulate the contents. In other words, we can treat std::sets like std::vectors or even treat std::maps like std::queues, all by overriding virtual methods and handling inputs consistently (obviously containers with key value pairs will need to pull a new piece of information from somewhere if given only a key or only a value). <br />
+ * Essentially we need a generic, non-template ::std::vector<> base class, so we'll make our own. <br />
+ * Different containers (e.g. the corollaries to ::std::set vs ::std::map vs ::std::vector) are all children of *this and we use typical inheritance to modify the behavior of each specialization. <br />
+ * By using inheritance for our Containers, we can pass Container*s around and use a standard interface to manipulate the contents. In other words, we can treat ::std::sets like ::std::vectors or even treat ::std::maps like ::std::queues, all by overriding virtual methods and handling inputs consistently (obviously containers with key value pairs will need to pull a new piece of information from somewhere if given only a key or only a value). <br />
  *  <br />
  * NOTE: we still use stl containers where the additional features of *this class are not needed. Those usages may be changed to implement *this in a future release. <br />
  *
  * You can think of Containers as our own internal RAM. <br />
  * We allocated a block of bytes and manipulate them as necessary. <br />
  * By default, we use ByteStreams to store arbitrary data in our allocated memory. <br />
- * ByteStreams can be wasteful though (e.g. a whole extra std::string for every Index); so, overrides of *this can use the same internal memory block but store other data structures for more efficient memory usage. <br />
+ * ByteStreams can be wasteful though (e.g. a whole extra ::std::string for every Index); so, overrides of *this can use the same internal memory block but store other data structures for more efficient memory usage. <br />
  * We maintain ByteStreams as our data conversion type, as they are flexible but safer than a void*. <br />
  *
  * When using Containers, we make no guarantees regarding the type of data stored. <br />
@@ -51,7 +51,7 @@ class Iterator;
  *
  * When using an Iterator, you will be given a SmartIterator which dynamically determines its implementation. Thus, we allow for full inheritance of *this base class. <br />
  *
- * There is another tradeoff here that we are leaning into: our interface does not make for easy use of std:: containers under-the-hood. By enforcing consistency on access, we've made the system less flexible. This may be changed in a major release down the road but its what we're sticking with for now. <br />
+ * There is another tradeoff here that we are leaning into: our interface does not make for easy use of ::std:: containers under-the-hood. By enforcing consistency on access, we've made the system less flexible. This may be changed in a major release down the road but its what we're sticking with for now. <br />
  *
  * When using Containers there are a few guidelines we recommend: <br />
  * 1. If you need direct access to the memory stored, store a pointer. Keep it simple. <br />
@@ -288,10 +288,10 @@ public:
 	virtual SmartIterator End() const;
 
 	/**
-	 * Ease of use wrapper around casting *this to a std::vector. <br />
+	 * Ease of use wrapper around casting *this to a ::std::vector. <br />
 	 * Since template methods are not virtual, you must make sure to properly implement Access() and make sure that *this contains the given type. <br />
 	 * @tparam T
-	 * @return a std::vector containing the contents from *this.
+	 * @return a ::std::vector containing the contents from *this.
 	 */
 	template < typename T >
 	std::vector< T > AsVector() const
@@ -314,7 +314,7 @@ protected:
 	 * Please override this to return the size of the type your Container interface is working with. <br />
 	 * @return the size of the data type stored in *this.
 	 */
-	virtual const std::size_t GetStepSize() const;
+	virtual const ::std::size_t GetStepSize() const;
 
 	/**
 	 * For ease of use when Add()ing. <br />

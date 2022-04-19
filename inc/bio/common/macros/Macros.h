@@ -114,6 +114,6 @@ private:                                                                       \
  * Create a consistent map and pair. <br />
  */
 #define BIO_DEFINE_MAP(mapName, keyType, valueType)                            \
-typedef std::map<keyType, valueType> mapName;                                  \
-typedef std::pair<keyType, valueType> mapName##Pair;
+typedef ::std::map<keyType, valueType> mapName;                                  \
+typedef ::std::pair<keyType, valueType> mapName##Pair;
 

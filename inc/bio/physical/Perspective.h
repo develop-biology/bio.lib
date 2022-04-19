@@ -72,7 +72,7 @@ class Perspective :
 {
 public:
 	typedef DIMENSION Id;
-	typedef std::vector< Id > Ids;
+	typedef ::std::vector< Id > Ids;
 
 	/**
 	 * What a single point in space contains. <br />
@@ -98,7 +98,7 @@ public:
 		Wave* m_type; 
 	};
 
-	typedef std::vector< Hadit > Hadits;
+	typedef ::std::vector< Hadit > Hadits;
 
 	/**
 	 *

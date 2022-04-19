@@ -18,51 +18,24 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+#pragma once
 
-#include "bio/common/Random.h"
-
-#if BIO_CPP_VERSION >= 11
-	#include <random>
-#endif
+#include "bio/common/utilities/IsPrimitive.h"
 
 namespace bio {
+namespace utility {
 
-#if BIO_CPP_VERSION >= 11
-static ::std::random_device rd;
-static ::std::mt19937 gen(rd());
-#endif
-
-float random::NormalFloat(
-	float mean,
-	float standardDeviation
-)
+/**
+ * @tparam T
+ * @return whether or not the given T derives from physical::Wave.
+ */
+template < typename T >
+BIO_CONSTEXPR
+bool IsWave()
 {
-	#if BIO_CPP_VERSION >= 11
-	std::normal_distribution<float> dist
-		{
-			mean,
-			standardDeviation
-		};
-	return dist(gen);
-	#else
-	return 0;
-	#endif
+	//TODO: Actually determine inheritance.
+	return !IsPrimitive< T >();
 }
 
-float random::UniformFloat(
-	float min,
-	float max
-)
-{
-	#if BIO_CPP_VERSION >= 11
-	std::uniform_real_distribution<float> dist(
-		min,
-		max
-	);
-	return dist(gen);
-	#else
-	return 0;
-	#endif
-}
-
+} //utility namespace
 } //bio namespace

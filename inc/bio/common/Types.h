@@ -44,12 +44,12 @@ namespace bio {
  * Names are used in NameTracker<>s but are defined here for simplicity. <br />
  */
 typedef const char* Name; 
-typedef std::vector< Name > Names;
+typedef ::std::vector< Name > Names;
 
-typedef std::vector< const char* > CharStrings; 
-typedef std::vector< std::string > StdStrings;
+typedef ::std::vector< const char* > CharStrings;
+typedef ::std::vector< ::std::string > StdStrings;
 
-typedef std::vector< ByteStream > ByteStreams;
+typedef ::std::vector< ByteStream > ByteStreams;
 
 /**
  * Indices are used by Arrangements to manage and manipulate what they store. <br />
@@ -66,7 +66,7 @@ const Index InvalidIndex();
  * milliseconds (ms for short) <br />
  */
 typedef uint32_t Timestamp;
-typedef std::vector< Timestamp > Timestamps;
+typedef ::std::vector< Timestamp > Timestamps;
 
 /**
  * microseconds (us for short) <br />

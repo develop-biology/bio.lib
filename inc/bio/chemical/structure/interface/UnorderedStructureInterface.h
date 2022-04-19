@@ -121,10 +121,10 @@ public:
 	 * @param other
 	 */
 	template < typename T >
-	void Import(const std::vector< T >& other)
+	void Import(const ::std::vector< T >& other)
 	{
 		for (
-			typename std::vector< T >::const_iterator otr = other.begin();
+			typename ::std::vector< T >::const_iterator otr = other.begin();
 			otr != other.end();
 			++otr
 			)
@@ -330,9 +330,9 @@ public:
 	}
 
 	/**
-	 * Ease of use wrapper around casting the contents of *this as a std::vector. <br />
+	 * Ease of use wrapper around casting the contents of *this as a ::std::vector. <br />
 	 * @tparam T
-	 * @return the contents of *this casted to an std::vector.
+	 * @return the contents of *this casted to an ::std::vector.
 	 */
 	template < typename T >
 	std::vector< T > GetAllAsVector()
@@ -342,12 +342,12 @@ public:
 	}
 
 	/**
-	 * Ease of use wrapper around casting the contents of *this as a std::vector. <br />
+	 * Ease of use wrapper around casting the contents of *this as a ::std::vector. <br />
 	 * @tparam T
-	 * @return the contents of *this casted to an std::vector.
+	 * @return the contents of *this casted to an ::std::vector.
 	 */
 	template < typename T >
-	const std::vector< T > GetAllAsVector() const
+	const ::std::vector< T > GetAllAsVector() const
 	{
 		return this->template GetAll< T >()->
 			template AsVector< T >();

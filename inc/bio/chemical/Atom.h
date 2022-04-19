@@ -23,7 +23,7 @@
 
 #include "bio/common/Cast.h"
 #include "bio/common/macros/Macros.h"
-#include "bio/common/IsPrimitive.h"
+#include "bio/physical/utilities/IsWave.h"
 #include "bio/common/macros/OSMacros.h"
 #include "bio/physical/Quantum.h"
 #include "bio/physical/common/Class.h"
@@ -45,7 +45,7 @@ class Symmetry;
  * Unlike real chemistry, the actual valence of a Atom changes to accommodate new Bonds. <br />
  * NOTE: m_bonds[0] is always empty. This may change in a future release. <br />
  *
- * NOTE: iff using a C++ version below 11, only Quantum<> Bonds are supported. This is due to an inability to evaluate IsPrimitive<>() expressions at compile time and the compiler following all "possible" execution paths, which are necessarily incompatible. <br />
+ * NOTE: iff using a C++ version below 14, only Quantum<> Bonds are supported. This is due to an inability to evaluate IsPrimitive<>() expressions at compile time and the compiler following all "possible" execution paths, which are necessarily incompatible. <br />
  */
 class Atom :
 	public physical::Class< Atom >
@@ -175,10 +175,10 @@ public:
 	template < typename T >
 	T As()
 	{
-		#if BIO_CPP_VERSION < 11
+		#if BIO_CPP_VERSION < 14
 		return AsBondedQuantum< T >();
 		#else
-		if (utility::IsPrimitive< T >())
+		if constexpr(!utility::IsWave< T >())
 		{
 			return AsBondedQuantum< T >();
 		}
@@ -198,10 +198,10 @@ public:
 	template < typename T >
 	const T As() const
 	{
-		#if BIO_CPP_VERSION < 11
+		#if BIO_CPP_VERSION < 14
 		return AsBondedQuantum< T >();
 		#else
-		if (utility::IsPrimitive< T >())
+		if constexpr(!utility::IsWave< T >())
 		{
 			return AsBondedQuantum< T >();
 		}
@@ -238,14 +238,14 @@ public:
 		T toBond,
 		BondType type = bond_type::Unknown())
 	{
-		#if BIO_CPP_VERSION < 11
+		#if BIO_CPP_VERSION < 14
 		AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >(); 
 		return FormBondImplementation((new physical::Quantum< T >(toBond))->AsWave(),
 			bondedId,
 			type
 		);
 		#else
-		if (utility::IsPrimitive< T >())
+		if constexpr(!utility::IsWave< T >())
 		{
 			AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >(); 
 			return FormBondImplementation(
@@ -280,13 +280,13 @@ public:
 		T toDisassociate,
 		BondType type = bond_type::Unknown())
 	{
-		#if BIO_CPP_VERSION < 11
+		#if BIO_CPP_VERSION < 14
 		return BreakBond< physical::Quantum< T >* >( 
 			NULL,
 			type
 		);
 		#else
-		if (utility::IsPrimitive< T >())
+		if constexpr(!utility::IsWave< T >())
 		{
 			return BreakBond< physical::Quantum< T >* >(NULL, type); //T matters, toDisassociate does not. 
 		}
@@ -325,10 +325,10 @@ public:
 	template < typename T >
 	Valence GetBondPosition() const
 	{
-		#if BIO_CPP_VERSION < 11
+		#if BIO_CPP_VERSION < 14
 		return GetBondPosition(PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >()); 
 		#else
-		if (utility::IsPrimitive< T >())
+		if constexpr(!utility::IsWave< T >())
 		{
 			return GetBondPosition(PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >()); 
 		}
@@ -351,10 +351,10 @@ public:
 	template < typename T >
 	BondType GetBondType() const
 	{
-		#if BIO_CPP_VERSION < 11
+		#if BIO_CPP_VERSION < 14
 		return GetBondType(GetBondPosition< physical::Quantum< T > >());
 		#else
-		if (utility::IsPrimitive< T >())
+		if constexpr(!utility::IsWave< T >())
 		{
 			return GetBondType(GetBondPosition< physical::Quantum< T > >());
 		}

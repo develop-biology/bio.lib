@@ -53,7 +53,7 @@ class Identifiable :
 {
 public:
 	typedef DIMENSION Id;
-	typedef std::vector< Id > Ids;
+	typedef ::std::vector< Id > Ids;
 
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />

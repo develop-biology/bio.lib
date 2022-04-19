@@ -26,6 +26,13 @@
 #include "bio/chemical/common/Properties.h"
 #include "bio/chemical/PeriodicTable.h"
 
+#if BIO_CPP_VERSION >= 17
+
+	#include <tuple>
+	#include <functional>
+
+#endif
+
 namespace bio {
 namespace chemical {
 
@@ -107,8 +114,8 @@ public:
 	 * @param ret
 	 */
 	virtual void CallDown(
-		physical::Wave* wave, 
-		ByteStream* ret 
+		physical::Wave* wave,
+		ByteStream* ret
 	) const
 	{
 		//nop
@@ -117,16 +124,13 @@ public:
 
 #if BIO_CPP_VERSION >= 17
 
-	#include <tuple>
-	#include <functional>
-
 /**
  * See ExcitationBase for docs. <br />
  * @tparam WAVE
  * @tparam RETURN
  * @tparam ARGUMENTS
  */
-template< class WAVE, typename RETURN, typename... ARGUMENTS >
+template < class WAVE, typename RETURN, typename... ARGUMENTS >
 class Excitation :
 	public ExcitationBase,
 	public physical::Class< Excitation< WAVE, RETURN, ARGUMENTS... > >
@@ -136,12 +140,16 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, BIO_SINGLE_ARG(Excitation< WAVE, RETURN, ARGUMENTS... >))
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
+		BIO_SINGLE_ARG(Excitation< WAVE, RETURN, ARGUMENTS... >))
 
 	/**
 	 *
 	 */
-	Excitation(RETURN(WAVE::*function)(ARGUMENTS...), const ARGUMENTS&... args)
+	Excitation(
+		RETURN(WAVE::*function)(ARGUMENTS...),
+		const ARGUMENTS& ... args
+	)
 		:
 		physical::Class< Excitation< WAVE, RETURN, ARGUMENTS... > >(this),
 		m_function(function),
@@ -165,7 +173,10 @@ public:
 	virtual Properties GetProperties() const
 	{
 		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
-		ret.insert(ret.end(), ExcitationBase::GetClassProperties().begin(), ExcitationBase::GetClassProperties().end());
+		ret.insert(
+			ret.end(),
+			ExcitationBase::GetClassProperties().begin(),
+			ExcitationBase::GetClassProperties().end());
 		return ret;
 	}
 
@@ -174,7 +185,10 @@ public:
 	 * @param position
 	 * @param newVal
 	 */
-	virtual void EditArg(uint8_t position, ByteStream& newVal)
+	virtual void EditArg(
+		uint8_t position,
+		ByteStream& newVal
+	)
 	{
 		//TODO...
 	}
@@ -184,22 +198,32 @@ public:
 	 * @param args any arguments given to m_function. Only applicable for C++11 and onward.
 	 * @return RETURN, whatever that is for *this; the result of calling m_function from wave.
 	 */
-	RETURN operator()(WAVE* wave) const 
+	RETURN operator()(WAVE* wave) const
 	{
-		std::tuple< WAVE*, ARGUMENTS... > allArgs = std::tuple_cat(std::make_tuple(wave), m_args);
-		return std::apply(m_function, allArgs);
+		std::tuple< WAVE*, ARGUMENTS... > allArgs = ::std::tuple_cat(
+			std::make_tuple(wave),
+			m_args
+		);
+		return ::std::apply(
+			m_function,
+			allArgs
+		);
 	}
 
 	/**
 	 * Override of ExcitationBase; see above. <br />
 	 */
-	virtual void CallDown(physical::Wave* wave, ByteStream* ret) const 
+	virtual void CallDown(
+		physical::Wave* wave,
+		ByteStream* ret
+	) const
 	{
-		ret->Set(this->operator()(ForceCast<WAVE*>(wave)));
+		ret->Set(this->operator()(ForceCast< WAVE* >(wave)));
 	}
 
 protected:
 	RETURN (WAVE::*m_function)(ARGUMENTS...);
+
 	std::tuple< ARGUMENTS... > m_args;
 };
 

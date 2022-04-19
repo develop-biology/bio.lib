@@ -29,7 +29,7 @@ ThreadSafe::ThreadSafe()
     #else
         :
 		m_mutex(),
-		m_lock(m_mutex, std::defer_lock)
+		m_lock(m_mutex, ::std::defer_lock)
 	#endif
 	//@formatter:on
 {
@@ -52,7 +52,7 @@ ThreadSafe::ThreadSafe(const ThreadSafe& toCopy)
     #else
         :
 		m_mutex(),
-		m_lock(m_mutex, std::defer_lock)
+		m_lock(m_mutex, ::std::defer_lock)
 	#endif
 	//@formatter:on
 {

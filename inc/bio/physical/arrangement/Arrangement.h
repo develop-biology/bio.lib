@@ -144,7 +144,7 @@ public:
 	 * Please override this to return the size of the type your Container interface is working with. <br />
 	 * @return the size of the data type stored in *this.
 	 */
-	virtual const std::size_t GetStepSize() const
+	virtual const ::std::size_t GetStepSize() const
 	{
 		return sizeof(TYPE);
 	}

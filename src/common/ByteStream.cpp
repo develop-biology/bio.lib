@@ -82,7 +82,7 @@ void* ByteStream::IKnowWhatImDoing()
 
 void ByteStream::Set(const ByteStream& other)
 {
-	m_stream = std::malloc(other.m_size);
+	m_stream = ::std::malloc(other.m_size);
 	memcpy(
 		m_stream,
 		other.m_stream,

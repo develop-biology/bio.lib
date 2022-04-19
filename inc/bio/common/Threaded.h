@@ -56,7 +56,7 @@ public:
 	#if BIO_CPP_VERSION < 11
 	typedef pid_t ThreadId;
 	#else
-	typedef std::thread::id ThreadId;
+	typedef ::std::thread::id ThreadId;
 	#endif
 
 	/**

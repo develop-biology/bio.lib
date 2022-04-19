@@ -53,7 +53,7 @@ bool IsPointer()
 {
 	//@formatter:off
 	#if BIO_CPP_VERSION >= 11
-		return std::is_pointer<T>::value;
+		return ::std::is_pointer<T>::value;
 	#else
 		return IsPointerImplementation< T >::m_value;
 	#endif
@@ -67,36 +67,9 @@ bool IsPointer()
  * @return whether or not T is a pointer.
  */
 template < typename T >
-BIO_CONSTEXPR
 bool IsPointer(const T t)
 {
 	return IsPointer< T >();
-}
-
-/**
- * Maybe a helper method? <br />
- * This is currently unused. <br />
- * @tparam T
- * @param t
- * @return T
- */
-template < typename T >
-inline T& Dereference(T& t)
-{
-	return t;
-}
-
-/**
- * Maybe a helper method? <br />
- * This is currently unused. <br />
- * @tparam T
- * @param t
- * @return *T
- */
-template < typename T >
-inline T& Dereference(T* t) 
-{
-	return *t;
 }
 
 } //utility namespace

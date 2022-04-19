@@ -146,7 +146,7 @@ public:
 	template < typename T >
 	void Set(T in)
 	{
-		m_stream = std::malloc(sizeof(T));
+		m_stream = ::std::malloc(sizeof(T));
 		std::memcpy(
 			m_stream,
 			&in,

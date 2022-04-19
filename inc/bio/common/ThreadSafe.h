@@ -80,7 +80,7 @@ public:
 		#endif
 	#else
 		std::mutex m_mutex;
-		mutable std::unique_lock<std::mutex> m_lock;
+		mutable ::std::unique_lock<std::mutex> m_lock;
 	#endif
 	//@formatter:on
 };

@@ -95,7 +95,7 @@ bool string::ToFloat(
 }
 
 StdStrings string::Parse(
-	const std::string& s,
+	const ::std::string& s,
 	char delimiter,
 	bool trimLeadingSpaces
 )
@@ -116,7 +116,7 @@ StdStrings string::Parse(
 		{
 			//trim leading spaces from substring
 			size_t firstcharpos = substring.find_first_not_of(' ');
-			if (firstcharpos != std::string::npos)
+			if (firstcharpos != ::std::string::npos)
 			{
 				substring = substring.substr(firstcharpos);
 			}
@@ -147,7 +147,7 @@ std::string string::FromVectorOfStrings(
 		{
 			//trim leading spaces from substring
 			size_t firstcharpos = substring.find_first_not_of(' ');
-			if (firstcharpos != std::string::npos)
+			if (firstcharpos != ::std::string::npos)
 			{
 				substring = substring.substr(firstcharpos);
 			}
@@ -185,7 +185,7 @@ std::string string::FromVectorOfStrings(
 		{
 			//trim leading spaces from substring
 			size_t firstcharpos = substring.find_first_not_of(' ');
-			if (firstcharpos != std::string::npos)
+			if (firstcharpos != ::std::string::npos)
 			{
 				substring = substring.substr(firstcharpos);
 			}

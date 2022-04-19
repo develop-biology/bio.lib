@@ -23,7 +23,7 @@
 
 #include "bio/common/Types.h"
 #include "bio/physical/macros/Macros.h"
-#include "bio/common/IsPrimitive.h"
+#include "bio/common/utilities/IsPrimitive.h"
 
 namespace bio {
 
@@ -74,7 +74,7 @@ namespace bio {
 namespace physical {
 
 class Symmetry;
-//typedef std::vector<Symmetry*> Symmetries; //From Wave.h
+//typedef ::std::vector<Symmetry*> Symmetries; //From Wave.h
 BIO_PERSPECTIVE_SINGLETON(SymmetryPerspective,
 	StandardDimension)
 

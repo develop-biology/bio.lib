@@ -53,7 +53,7 @@ public:
 	 * logString will include a newline (\n) character. <br />
 	 * @param logString fully prepared text to be logged.
 	 */
-	virtual void Output(const std::string& logString) = 0;
+	virtual void Output(const ::std::string& logString) = 0;
 
 	/**
 	 * Generates a log string and calls Output <br />

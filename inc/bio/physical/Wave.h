@@ -43,12 +43,12 @@ namespace physical {
 
 class Symmetry;
 
-typedef std::vector< Symmetry* > Symmetries; 
+typedef ::std::vector< Symmetry* > Symmetries;
 
 class Wave;
 
-typedef std::vector< Wave* > Waves; 
-typedef std::vector< const Wave* > ConstWaves;
+typedef ::std::vector< Wave* > Waves;
+typedef ::std::vector< const Wave* > ConstWaves;
 
 /**
  * A Wave is a base class for all Biology objects. <br />

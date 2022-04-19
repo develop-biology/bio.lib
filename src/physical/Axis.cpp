@@ -36,7 +36,7 @@ Axis::~Axis()
 
 }
 
-/*static*/ std::string Axis::Failed()
+/*static*/ ::std::string Axis::Failed()
 {
 	return "FAILED";
 }

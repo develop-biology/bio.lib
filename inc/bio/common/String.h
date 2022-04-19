@@ -100,7 +100,7 @@ std::string From(const T& value)
  * @return vector of substrings.
  */
 StdStrings Parse(
-	const std::string& s,
+	const ::std::string& s,
 	char delimiter = ',',
 	bool trimLeadingSpaces = true
 );
@@ -132,14 +132,14 @@ std::string FromVectorOfStrings(
 );
 
 /**
- * Takes a vector of std::strings and converts it to a vector of const char*. <br />
+ * Takes a vector of ::std::strings and converts it to a vector of const char*. <br />
  * @param strings
  * @return strings as CharStrings.
  */
 CharStrings ToCharStrings(const StdStrings& strings);
 
 /**
- * Takes a vector of const char*s and converts it to a vector of std::strings. <br />
+ * Takes a vector of const char*s and converts it to a vector of ::std::strings. <br />
  * @param strings
  * @return strings as StdStrings
  */
@@ -163,7 +163,7 @@ struct Echelon
 	const char* string; 
 	unsigned int echelon;
 };
-typedef std::vector< Echelon > Echelons;
+typedef ::std::vector< Echelon > Echelons;
 
 
 } //string namespace

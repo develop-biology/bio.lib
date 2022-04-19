@@ -97,7 +97,7 @@ bool Container::IsFree(Index index) const
 	{
 		return true;
 	}
-	return std::find(
+	return ::std::find(
 		m_deallocated.begin(),
 		m_deallocated.end(),
 		index
@@ -111,12 +111,12 @@ bool Container::IsAllocated(const Index index) const
 
 void Container::Expand()
 {
-	BIO_SANITIZE(m_size < std::numeric_limits< Index >::max(), ,
+	BIO_SANITIZE(m_size < ::std::numeric_limits< Index >::max(), ,
 		return)
 	Index targetSize = m_size * m_size; //squared. 
 	if (targetSize < m_size)
 	{
-		targetSize = std::numeric_limits< Index >::max();
+		targetSize = ::std::numeric_limits< Index >::max();
 	}
 	m_store = (unsigned char*)std::realloc(
 		m_store,
@@ -350,7 +350,7 @@ bool Container::AreEqual(
 	return Access(internal) == external;
 }
 
-const std::size_t Container::GetStepSize() const
+const ::std::size_t Container::GetStepSize() const
 {
 	return sizeof(ByteStream);
 }

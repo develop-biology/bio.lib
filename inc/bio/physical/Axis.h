@@ -47,14 +47,14 @@ public:
 	 * Used as a bad return value by other methods. <br />
 	 * @return "FAILED"
 	 */
-	static std::string Failed();
+	static ::std::string Failed();
 
 	/**
 	 * Express the given Symmetry into something intelligible by another system. <br />
 	 * @param symmetry
 	 * @return text, possibly a command (like mysql), structured values (like json), an entire program (like python), etc. or Failed().
 	 */
-	virtual std::string Rotate(Symmetry* symmetry) const; 
+	virtual ::std::string Rotate(Symmetry* symmetry) const;
 
 	/**
 	 * Express the given text into something intelligible by this system. <br />
@@ -67,7 +67,7 @@ public:
 	 * @param particle
 	 * @return Rotate(particle->Spin()) or Failed().
 	 */
-	virtual std::string operator|(Wave* particle) const; 
+	virtual ::std::string operator|(Wave* particle) const;
 
 	/**
 	 * (*myWave) | jsonAxis("..."); <br />
@@ -85,7 +85,7 @@ protected:
 	 * @param symmetry
 	 * @return the text corresponding to the given, singular Symmetry or Failed().
 	 */
-	virtual std::string Encode(Symmetry* symmetry) const; 
+	virtual ::std::string Encode(Symmetry* symmetry) const;
 
 };
 

@@ -129,7 +129,7 @@ bool Threaded::Start()
 		m_created = result == 0;
 	#else
 		BIO_SANITIZE(m_thread,,return false)
-		m_thread = new std::thread(&Threaded::Worker, this);
+		m_thread = new ::std::thread(&Threaded::Worker, this);
 		m_created = true;
 	#endif
 	//@formatter:on
