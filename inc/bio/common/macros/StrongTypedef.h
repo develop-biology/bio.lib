@@ -31,7 +31,19 @@
  * Until this is patched, we must use a separate macro to define any sibling namespace symbols. <br />
  * THIS MUST BE CALLED IN THE bio NAMESPACE! <br />
  * name and type must both also be FULLY QUALIFIED past the ::bio namespace! <br />
+ * NOTE: If using c++11 or below, this is hard-coded to as Primitive. If you desire behavior otherwise, either duplicate this code or selectively undef and redefine it. <br />
  */
+#if BIO_CPP_VERSION < 14
+#define BIO_STRONG_TYPEDEF_BIO_NAMESPACE_DEFINITIONS(type, name, defaultValue) \
+/*Forward primitive name to type.*/                                            \
+namespace utility {                                                            \
+template <>                                                                    \
+struct IsPrimitiveImplementation< name >                                       \
+{                                                                              \
+    static const bool m_value = true;                                          \
+};                                                                             \
+} /*utility namespace*/
+#else
 #define BIO_STRONG_TYPEDEF_BIO_NAMESPACE_DEFINITIONS(type, name, defaultValue) \
 /*Forward primitive name to type.*/                                            \
 namespace utility {                                                            \
@@ -41,7 +53,7 @@ struct IsPrimitiveImplementation< name >                                       \
     static const bool m_value = IsPrimitive< type >();                         \
 };                                                                             \
 } /*utility namespace*/
-
+#endif
 
 /**
  * Another problem with C++: the "typedef" keyword does not create a distinct type, only an alias. Thus 2 identical typedefs of different names become merged into the same symbol at compile time. <br />
