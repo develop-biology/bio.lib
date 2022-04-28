@@ -27,7 +27,7 @@
 #define BIO_SITE_FUNCTION(perspective, site, type, function, typeTuple, argTuple)\
     bool g_##site##Registered =                                                \
         ::bio::perspective::Instance().AssociateType(                          \
-            g_##site,                                                          \
+            ::bio::perspective::Instance().GetIdFromName(#site),               \
             (                                                                  \
                 new BIO_EXCITATION_CLASS(                                      \
                     ::bio::chemical::LinearMotif< type >,                      \

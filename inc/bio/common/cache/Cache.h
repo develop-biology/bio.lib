@@ -52,7 +52,7 @@ public:
 	/**
 	 *
 	 */
-	virtual ~Cached();
+	virtual ~Cache();
 
 	/**
 	 * Flushes all Cached objects, causing them to be looked up again. <br />

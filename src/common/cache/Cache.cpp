@@ -20,6 +20,7 @@
  */
 
 #include "bio/common/cache/Cache.h"
+#include "bio/common/cache/AbstractCached.h"
 
 namespace bio {
 
@@ -28,7 +29,7 @@ Cache::Cache()
 
 }
 
-Cache::~Cached()
+Cache::~Cache()
 {
 
 }

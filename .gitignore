@@ -50,3 +50,5 @@ language.settings.xml
 #build
 build/**/
 /.idea/
+/local/
+build.json

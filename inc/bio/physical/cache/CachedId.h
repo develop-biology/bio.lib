@@ -30,8 +30,9 @@ namespace bio {
  * CachedId<> extends the Cache system by making it possible to store the Perspective* from which to fetch the Id of the given Name. <br />
  * @tparam ID_TYPE 
  */
-template < typename ID_TYPE>
-class CachedId : public Cached< ID_TYPE, Name >
+template < typename ID_TYPE >
+class CachedId :
+	public Cached< ID_TYPE, Name, ID_TYPE (physical::Perspective< ID_TYPE >::*)(Name) >
 {
 public:
 
@@ -39,11 +40,19 @@ public:
 	 * @param lookup
 	 * @param perspective
 	 */
-	CachedId(Name lookup, Perspective< ID_TYPE >* perspective) :
-		Cached< ID_TYPE, Name >(lookup, 0, &Perspective< ID_TYPE >::GetNameFromId),
+	CachedId(
+		Name lookup,
+		physical::Perspective< ID_TYPE >& perspective
+	)
+		:
+		Cached< ID_TYPE, Name, ID_TYPE (physical::Perspective< ID_TYPE >::*)(Name) >(
+			lookup,
+			0,
+			&physical::Perspective< ID_TYPE >::GetIdFromName
+		),
 		m_perspective(perspective)
 	{
-		
+
 	}
 
 	/**
@@ -51,7 +60,7 @@ public:
 	 */
 	virtual ~CachedId()
 	{
-		
+
 	}
 
 	/**
@@ -59,7 +68,7 @@ public:
 	 */
 	virtual void Flush()
 	{
-		this->m_t = (this->m_perspective->*(this->m_LookupFunction))(this->m_lookup);
+		this->m_t = (this->m_perspective.*(this->m_LookupFunction))(this->m_lookup);
 	}
 
 	/**
@@ -69,14 +78,17 @@ public:
 	 * @param t
 	 * @return out
 	 */
-	friend ::std::ostream& operator <<(std::ostream& out, const Cached& t)
+	friend ::std::ostream& operator<<(
+		std::ostream& out,
+		const CachedId& t
+	)
 	{
 		out << t.m_t;
 		return out;
 	}
 
 protected:
-	Perspective< ID_TYPE >* m_perspective;
+	physical::Perspective< ID_TYPE >& m_perspective;
 };
 
 } //bio namespace

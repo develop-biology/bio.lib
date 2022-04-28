@@ -31,19 +31,16 @@ namespace bio {
  * These objects must be provided a lookup function as well as what to lookup. <br />
  * @tparam STORE_TYPE 
  */
-template < typename STORE_TYPE, typename LOOKUP_TYPE >
+template < typename STORE_TYPE, typename LOOKUP_TYPE, typename LOOKUP_FUNCTION >
 class Cached : public AbstractCached, public TransparentWrapper< STORE_TYPE >
 {
 public:
-	
-	typedef STORE_TYPE (*LookupFunction)(LOOKUP_TYPE);
-
 	/**
 	 * @param lookup
 	 * @param invalidValue
 	 * @param LookupFunction
 	 */
-	Cached(LOOKUP_TYPE lookup, STORE_TYPE invalidValue, LookupFunction LookupFunction) :
+	Cached(LOOKUP_TYPE lookup, STORE_TYPE invalidValue, LOOKUP_FUNCTION LookupFunction) :
 		TransparentWrapper< STORE_TYPE >(invalidValue),
 		m_lookup(lookup),
 		m_LookupFunction(LookupFunction)
@@ -60,11 +57,14 @@ public:
 	}
 
 	/**
-	 * Remove whatever *this has cached and re-look up the newest value.
+	 * Remove whatever *this has cached and re-look up the newest value. <br />
+	 * THIS MUST BE IMPLEMENTED BY CHILDREN. <br />
+	 * Issue: Singleton methods are incompatible with global functions, since we don't know which we're using, we can't implement even a default, apparently. <br />
+	 * This should be changed in a future release. Right now, *this is abstract. <br />
 	 */
 	virtual void Flush()
 	{
-		this->m_t = (*m_LookupFunction)(m_lookup);
+		//nop
 	}
 
 	/**
@@ -82,7 +82,7 @@ public:
 
 protected:
 	LOOKUP_TYPE m_lookup;
-	LookupFunction m_LookupFunction;
+	LOOKUP_FUNCTION m_LookupFunction;
 };
 
 } //bio namespace

@@ -22,7 +22,6 @@
 #pragma once
 
 #include "bio/common/macros/Macros.h"
-#include "CacheMacros.h"
 
 /**
  * For ease of use for defining Singleton Perspectives. <br />
@@ -54,8 +53,7 @@ BIO_ID_WITH_PLURAL(className, className##s, dimension)
 #define BIO_ID_FUNCTION_BODY(functionName, perspective, dimension)             \
 dimension functionName()                                                       \
 {                                                                              \
-	static BIO_CACHED_ID_TYPE(BIO_SINGLE_ARG(dimension)) s_##functionName =    \
-		CachedId< dimension >(functionName, perspective);                      \
+	static CachedId< dimension > s_##functionName(#functionName, perspective); \
     return s_##functionName;                                                   \
 }
 
