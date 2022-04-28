@@ -59,7 +59,7 @@ namespace chemical {
 /**
  * Valence defines how many Bonds an Atom (e.g. Substance) can have. <br />
  * The max of valence is essentially the max number of parents a child class can have. <br />
- * Valence can be any size up to the size of Index (used by physical::Arrangements). <br />
+ * Valence can be any size up to the size of Index (used by  Arrangements). <br />
  * For now, we set Valence to the max possible size and may optimize later. <br />
  */
 typedef Index Valence;

@@ -19,13 +19,32 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "bio/common/cache/AbstractCached.h"
+#include "bio/common/cache/Cache.h"
 
-#if BIO_CPP_VERSION < 11
-	#define BIO_BYTESTREAM_CACHE(expression)                                   \
-    ::bio::ByteStream RESULT;                                                  \
-    RESULT.Set(expression);
-#else
-	#define BIO_BYTESTREAM_CACHE(expression)                                   \
-	auto RESULT = (expression);
-#endif
+namespace bio {
+
+AbstractCached::AbstractCached()
+{
+	Register(); //CAREFUL! This is NOT VIRTUAL!
+}
+
+AbstractCached::~AbstractCached()
+{
+	Deregister(); //CAREFUL! This is NOT VIRTUAL!
+}
+
+void AbstractCached::Register()
+{
+	BIO_SANITIZE(!GlobalCache::Instance().Has(this),,return)
+	GlobalCache::Instance().Add(this);
+}
+
+void AbstractCached::Deregister()
+{
+	Index indexOfThis = GlobalCache::Instance().SeekTo(this);
+	BIO_SANITIZE(indexOfThis,,return)
+	GlobalCache::Instance().Erase(indexOfThis);
+}
+
+} //bio namespace

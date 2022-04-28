@@ -48,11 +48,5 @@ language.settings.xml
 #*
 
 #build
-/build/
-/generated/
-/generated/*
-/ebbs/
-/eons/
+build/**/
 /.idea/
-/doc/out/
-/doc/run.log

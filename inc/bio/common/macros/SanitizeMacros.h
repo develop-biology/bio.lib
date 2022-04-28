@@ -93,7 +93,7 @@ else                                                                           \
  */
 #define BIO_SANITIZE_WITH_CACHE(test, success, failure)                        \
 {                                                                              \
-    BIO_CACHE(test)                                                            \
+    BIO_BYTESTREAM_CACHE(test)                                                            \
     BIO_SANITIZE(                                                              \
         RESULT,                                                                \
         BIO_SINGLE_ARG(success),                                               \
@@ -102,7 +102,7 @@ else                                                                           \
 
 #define BIO_SANITIZE_WITH_CACHE_AT_SAFETY_LEVEL_0(test, success, failure)      \
 {                                                                              \
-    BIO_CACHE(test)                                                            \
+    BIO_BYTESTREAM_CACHE(test)                                                            \
     BIO_SANITIZE_AT_SAFETY_LEVEL_0(                                            \
         RESULT,                                                                \
         BIO_SINGLE_ARG(success),                                               \
@@ -111,7 +111,7 @@ else                                                                           \
 
 #define BIO_SANITIZE_WITH_CACHE_AT_SAFETY_LEVEL_1(test, success, failure)      \
 {                                                                              \
-    BIO_CACHE(test)                                                            \
+    BIO_BYTESTREAM_CACHE(test)                                                            \
     BIO_SANITIZE_AT_SAFETY_LEVEL_1(                                            \
         RESULT,                                                                \
         BIO_SINGLE_ARG(success),                                               \
@@ -120,7 +120,7 @@ else                                                                           \
 
 #define BIO_SANITIZE_WITH_CACHE_AT_SAFETY_LEVEL_2(test, success, failure)      \
 {                                                                              \
-    BIO_CACHE(test)                                                            \
+    BIO_BYTESTREAM_CACHE(test)                                                            \
     BIO_SANITIZE_AT_SAFETY_LEVEL_2(                                            \
         RESULT,                                                                \
         BIO_SINGLE_ARG(success),                                               \

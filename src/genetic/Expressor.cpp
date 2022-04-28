@@ -86,7 +86,7 @@ Code Expressor::AddToTranscriptome(const RNA* toExpress)
 Code Expressor::Translate(const RNA* mRNA) 
 {
 	BIO_SANITIZE(mRNA, ,
-		code::BadArgument1());
+		code::BadArgument1())
 
 	Code ret = code::Success();
 

@@ -22,10 +22,9 @@
 #pragma once
 
 #include "bio/common/container/Container.h"
-#include "bio/physical/macros/Macros.h"
+#include "bio/common/macros/Macros.h"
 
 namespace bio {
-namespace physical {
 
 /**
  * Arrangements provide a more memory-efficient interface of the Container interface for a single type. <br />
@@ -150,5 +149,4 @@ public:
 	}
 };
 
-} //physical namespace
 } //bio namespace

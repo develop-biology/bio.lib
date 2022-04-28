@@ -19,13 +19,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "bio/common/cache/Cache.h"
 
-#if BIO_CPP_VERSION < 11
-	#define BIO_BYTESTREAM_CACHE(expression)                                   \
-    ::bio::ByteStream RESULT;                                                  \
-    RESULT.Set(expression);
-#else
-	#define BIO_BYTESTREAM_CACHE(expression)                                   \
-	auto RESULT = (expression);
-#endif
+namespace bio {
+
+Cache::Cache()
+{
+
+}
+
+Cache::~Cached()
+{
+
+}
+
+void Cache::Flush()
+{
+	for (SmartIterator chd = End(); !chd.IsAtBeginning(); --chd)
+	{
+		chd.As< AbstractCached* >()->Flush();
+	}
+}
+
+} //bio namespace

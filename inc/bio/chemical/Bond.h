@@ -23,7 +23,7 @@
 
 #include "bio/chemical/common/Types.h"
 #include "bio/chemical/common/BondTypes.h"
-#include "bio/physical/arrangement/Arrangement.h"
+#include "bio/common/container/Arrangement.h"
 
 namespace bio {
 
@@ -124,7 +124,7 @@ private:
 	BondType m_type;
 };
 
-typedef physical::Arrangement< Bond* > Bonds; 
+typedef  Arrangement< Bond* > Bonds;
 
 } //chemical namespace
 } //bio namespace

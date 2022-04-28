@@ -21,6 +21,9 @@
 
 #pragma once
 
+#include "bio/common/macros/Macros.h"
+#include "CacheMacros.h"
+
 /**
  * For ease of use for defining Singleton Perspectives. <br />
  */
@@ -49,10 +52,11 @@ BIO_ID_WITH_PLURAL(className, className##s, dimension)
  * Necessitates that functionName be a part of any namespaces are already specified (e.g. using namespace somewhere above a call to this macro). <br />
  */
 #define BIO_ID_FUNCTION_BODY(functionName, perspective, dimension)             \
-dimension g_##functionName = (perspective).GetIdFromName(#functionName);       \
 dimension functionName()                                                       \
 {                                                                              \
-    return g_##functionName;                                                   \
+	static BIO_CACHED_ID_TYPE(BIO_SINGLE_ARG(dimension)) s_##functionName =    \
+		CachedId< dimension >(functionName, perspective);                      \
+    return s_##functionName;                                                   \
 }
 
 /**

@@ -21,11 +21,43 @@
 
 #pragma once
 
-#if BIO_CPP_VERSION < 11
-	#define BIO_BYTESTREAM_CACHE(expression)                                   \
-    ::bio::ByteStream RESULT;                                                  \
-    RESULT.Set(expression);
-#else
-	#define BIO_BYTESTREAM_CACHE(expression)                                   \
-	auto RESULT = (expression);
-#endif
+namespace bio {
+
+/**
+ * AbstractCached is a base class for all Cached objects.  <br />
+ * NOTE: *this will Register on construction and Deregister on destruction. Because these functions are called in ?tors, they cannot be virtual. This may change in a future release.
+ */
+class AbstractCached
+{
+public:
+	/**
+	 *
+	 */
+	AbstractCached();
+
+	/**
+	 *
+	 */
+	virtual ~AbstractCached();
+	
+	/**
+	 * Remove whatever *this has cached and re-look up the newest value.
+	 */
+	virtual void Flush()
+	{
+		//nop
+	}
+
+	/**
+	 * Register *this with the global Cache
+	 */
+	void Register();
+
+	/**
+	 * Remove *this from the global Cache's register.
+	 */
+	void Deregister();
+};
+
+
+} //bio namespace

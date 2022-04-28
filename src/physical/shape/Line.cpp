@@ -19,7 +19,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/physical/arrangement/Line.h"
+#include "bio/physical/shape/Line.h"
 #include "bio/common/container/Iterator.h"
 
 namespace bio {

@@ -1,6 +1,6 @@
 {
   "clear_build_path" : true,
-  "ebbs_next": [
+  "next": [
     {
       "build" : "in_container",
       "config" : {
@@ -9,7 +9,7 @@
           "version",
           "visibility"
         ],
-        "ebbs_next" : [
+        "next" : [
           {
             "clear_build_path" : false,
             "build" : "cpp",
@@ -22,7 +22,7 @@
               "file_name" : "bio",
               "output_dir" : "lib_x86_64_cpp98_bio",
               "cpp_version" : 98,
-              "ebbs_next" : [
+              "next" : [
                 {
                   "build": "publish",
                   "run_when" : [
@@ -42,7 +42,7 @@
               "file_name" : "bio",
               "output_dir" : "lib_x86_64_cpp11_bio",
               "cpp_version" : 11,
-              "ebbs_next" : [
+              "next" : [
                 {
                   "build": "publish",
                   "run_when" : [
@@ -62,7 +62,7 @@
               "file_name" : "bio",
               "output_dir" : "lib_x86_64_cpp17_bio",
               "cpp_version" : 17,
-              "ebbs_next" : [
+              "next" : [
                 {
                   "build": "publish",
                   "run_when" : [
@@ -82,7 +82,7 @@
               "file_name" : "bio",
               "output_dir" : "lib_x86_64_cpp20_bio",
               "cpp_version" : 20,
-              "ebbs_next" : [
+              "next" : [
                 {
                   "build": "publish",
                   "run_when" : [
@@ -108,7 +108,7 @@
           "version",
           "visibility"
         ],
-        "ebbs_next" : [
+        "next" : [
           {
             "clear_build_path" : false,
             "build" : "doxygen",
@@ -119,7 +119,7 @@
             ],
             "config" : {
               "style" : "biology_documentation",
-              "ebbs_next" : [
+              "next" : [
                 {
                   "build": "publish",
                   "path" : "doc"

@@ -24,6 +24,7 @@
 //since we use these here, we might as well include them.
 #include <ostream>
 //#include "bio/common/IsPrimitive.h" //Cannot be included due to circular dependency. YOU MUST INCLUDE THIS WHERE USING BIO_STRONG_TYPEDEF
+#include "bio/common/TransparentWrapper.h"
 
 /**
  * Apparently, we cannot use fully qualified names to define structs yet. <br />
@@ -57,69 +58,24 @@ struct IsPrimitiveImplementation< name >                                       \
 
 /**
  * Another problem with C++: the "typedef" keyword does not create a distinct type, only an alias. Thus 2 identical typedefs of different names become merged into the same symbol at compile time. <br />
- *
  * Here, we work around this bug by creating a wrapper class that does nothing but contain another value. <br />
- * Unfortunately, operator type() alone is not sufficient to treat this new class as the type it holds and we must instead forward all operations to the contained type. <br />
- * ugh. <br />
- * If you know of a better solution to this problem, please make a pull request. <br />
- *
- * This wrapper is currently not virtual and cannot be inherited from. This may change in a future release. <br />
  *
  * NOTE: THIS MUST BE CALLED FROM THE ::bio NAMESPACE! <br />
  * Until the bug in gcc that necessitates BIO_STRONG_TYPEDEF_BIO_NAMESPACE_DEFINITIONS is fixed, we cannot support namespaced types. <br />
  * :( <br />
  */
 #define BIO_STRONG_TYPEDEF(type, name, defaultValue)                           \
-class name                                                                     \
+class name : public TransparentWrapper< type >                                 \
 {                                                                              \
 public:                                                                        \
-    name(type t = defaultValue) :                                              \
-        m_t(t)                                                                 \
-    {}                                                                         \
-    ~name() {}                                                                 \
-    operator type() {return m_t;}                                              \
-    bool operator==(const type& t) const  {return m_t == t;}                   \
-    bool operator!=(const type& t) const  {return m_t != t;}                   \
-    bool operator<=(const type& t) const  {return m_t <= t;}                   \
-    bool operator>=(const type& t) const  {return m_t >= t;}                   \
-    bool operator<(const type& t) const {return m_t < t;}                      \
-    bool operator>(const type& t) const {return m_t > t;}                      \
-    bool operator==(const name& other) const {return m_t == other.m_t;}        \
-    bool operator!=(const name& other) const {return m_t != other.m_t;}        \
-    bool operator<=(const name& other) const {return m_t <= other.m_t;}        \
-    bool operator>=(const name& other) const {return m_t >= other.m_t;}        \
-    bool operator<(const name& other) const {return m_t < other.m_t;}          \
-    bool operator>(const name& other) const {return m_t > other.m_t;}          \
-    type& operator++() {return ++m_t;}                                         \
-    type operator++(int) {return m_t++;}                                       \
-    type& operator--() {return --m_t;}                                         \
-    type operator--(int) {return m_t--;}                                       \
-    type operator+=(const type& t) {return m_t += t;}                          \
-    type operator-=(const type& t) {return m_t -= t;}                          \
-    type operator+=(const name& other) {return m_t += other.m_t;}              \
-    type operator-=(const name& other) {return m_t -= other.m_t;}              \
-    type operator+(const type& t) const {return m_t + t;}                      \
-    type operator-(const type& t) const {return m_t - t;}                      \
-    type operator+(const name& other) const {return m_t + other.m_t;}          \
-    type operator-(const name& other) const {return m_t - other.m_t;}          \
-    type operator*=(const type& t) {return m_t *= t;}                          \
-    type operator/=(const type& t) {return m_t /= t;}                          \
-    type operator*=(const name& other) {return m_t *= other.m_t;}              \
-    type operator/=(const name& other) {return m_t /= other.m_t;}              \
-    type operator*(const type& t) const {return m_t * t;}                      \
-    type operator/(const type& t) const {return m_t / t;}                      \
-    type operator*(const name& other) const {return m_t * other.m_t;}          \
-    type operator/(const name& other) const {return m_t / other.m_t;}          \
-    friend ::std::ostream& operator <<(std::ostream& out, const name& t)         \
-    {                                                                          \
-        out << t.m_t;                                                          \
-        return out;                                                            \
-    }                                                                          \
-    /*that's all we're doing for now. Please add to this list as necessary*/   \
-                                                                               \
-/*public because we need to treat this as type when we don't know the type.*/  \
-public:                                                                        \
-    type m_t;                                                                  \
+	name(type t = defaultValue) : TransparentWrapper< type >(t) {}             \
+	~name() {}                                                                 \
+    /*All other operators in TransparentWrapper*/                              \
+	friend ::std::ostream& operator <<(std::ostream& out, const name& t)       \
+	{                                                                          \
+		out << t.m_t;                                                          \
+		return out;                                                            \
+	}                                                                          \
 };                                                                             \
 BIO_STRONG_TYPEDEF_BIO_NAMESPACE_DEFINITIONS(                                  \
 	BIO_SINGLE_ARG(type),                                                      \

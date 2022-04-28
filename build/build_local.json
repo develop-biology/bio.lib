@@ -1,0 +1,16 @@
+{
+	"name" : "bio",
+	"type" : "lib",
+	"clear_build_path" : false,
+	"build_in" : "../",
+	"next" : [
+    	{
+			"clear_build_path" : false,
+			"build" : "cpp",
+			"build_in": "local",
+			"config" : {
+				"cpp_version" : 20
+			}
+    	}
+  	]
+}

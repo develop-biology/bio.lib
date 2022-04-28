@@ -27,7 +27,7 @@
 #include "bio/chemical/common/Properties.h"
 #include "bio/chemical/Elementary.h"
 #include "bio/chemical/reaction/Excitation.h"
-#include "bio/physical/arrangement/Line.h"
+#include "bio/physical/shape/Line.h"
 
 #if BIO_CPP_VERSION >= 11
 	#include <type_traits>

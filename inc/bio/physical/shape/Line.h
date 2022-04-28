@@ -22,7 +22,7 @@
 #pragma once
 
 #include "Linear.h"
-#include "Arrangement.h"
+#include "bio/common/container/Arrangement.h"
 
 namespace bio {
 namespace physical {

@@ -19,7 +19,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/physical/arrangement/Linear.h"
+#include "bio/physical/shape/Linear.h"
 
 namespace bio {
 namespace physical {

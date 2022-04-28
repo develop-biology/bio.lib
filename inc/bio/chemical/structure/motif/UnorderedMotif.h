@@ -25,7 +25,7 @@
 #include "bio/chemical/macros/Macros.h"
 #include "bio/chemical/common/Class.h"
 #include "bio/physical/common/Filters.h"
-#include "bio/physical/arrangement/Arrangement.h"
+#include "bio/common/container/Arrangement.h"
 #include <vector>
 #include <algorithm>
 
@@ -43,7 +43,7 @@ class UnorderedMotif :
 {
 public:
 
-	typedef physical::Arrangement< CONTENT_TYPE > Contents;
+	typedef  Arrangement< CONTENT_TYPE > Contents;
 
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
