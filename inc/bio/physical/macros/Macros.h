@@ -77,7 +77,7 @@
 */
 #define BIO_CODE_FUNCTION_BODY(functionName)                                   \
 BIO_ID_FUNCTION_BODY(                                                          \
-    functionName##Code,                                                        \
+    functionName,                                                              \
     ::bio::CodePerspective::Instance(),                                        \
     ::bio::Code)
 
@@ -88,7 +88,7 @@ BIO_ID_FUNCTION_BODY(                                                          \
  */
 #define BIO_STATE_FUNCTION_BODY(functionName)                                  \
 BIO_ID_FUNCTION_BODY(                                                          \
-    functionName##State,                                                       \
+    functionName,                                                              \
     ::bio::StatePerspective::Instance(),                                       \
     ::bio::State)
 
@@ -100,7 +100,7 @@ BIO_ID_FUNCTION_BODY(                                                          \
  */
 #define BIO_PROPERTY_FUNCTION_BODY(functionName)                               \
 BIO_ID_FUNCTION_BODY(                                                          \
-    functionName##Property,                                                    \
+    functionName,                                                              \
     ::bio::PropertyPerspective::Instance(),                                    \
     ::bio::Property)
 
@@ -111,7 +111,7 @@ BIO_ID_FUNCTION_BODY(                                                          \
  */
 #define BIO_SYMMETRY_TYPE_FUNCTION_BODY(functionName)                          \
 BIO_ID_FUNCTION_BODY(                                                          \
-    functionName##SymmetryType,                                                \
+    functionName,                                                              \
     ::bio::SymmetryTypePerspective::Instance(),                                \
     ::bio::SymmetryType)
 
@@ -122,7 +122,7 @@ BIO_ID_FUNCTION_BODY(                                                          \
  */
 #define BIO_FILTER_FUNCTION_BODY(functionName)                                 \
 BIO_ID_FUNCTION_BODY(                                                          \
-    functionName##Filter,                                                      \
+    functionName,                                                              \
     ::bio::FilterPerspective::Instance(),                                      \
     ::bio::Filter)
 

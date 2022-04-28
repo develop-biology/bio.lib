@@ -51,22 +51,18 @@ template < typename T >
 class Elementary
 {
 public:
-
-	/**
-	 * Ensure we only Record the Properties of T once. They should always be the same. <br />
-	 */
-	static bool hasRegistered;
-
 	/**
 	 * Records the given Properties as those for the type T within the PeriodicTable. <br />
+	 * Also ensures we only Record the Properties of T once. They should always be the same. <br />
 	 * @param properties
 	 */
 	void RegisterProperties(const Properties properties)
 	{
-		if (!hasRegistered)
+		static bool canRegister = true;
+		if (canRegister)
 		{
 			PeriodicTable::Instance().RecordPropertiesOf< T >(properties);
-
+			canRegister = false;
 		}
 	}
 

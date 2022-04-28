@@ -69,6 +69,6 @@ This will assign a value to a string that is identical to your FunctionName e.g.
 */
 #define BIO_CHEMICAL_BOND_TYPE_FUNCTION_BODY(functionName)                     \
 BIO_ID_FUNCTION_BODY(                                                          \
-    functionName##BondType,                                                    \
+    functionName,                                                              \
     ::bio::BondTypePerspective::Instance(),                                    \
     ::bio::BondType)

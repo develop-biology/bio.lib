@@ -1,54 +1,7 @@
-# Prerequisites
-*.d
-
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Compiled Static libraries
-*.a
-*.lib
-
-# Fortran module files
-*.mod
-*.smod
-
-# Executables
-*.exe
-*.out
-*.app
-
-# Visual Studio
-*.user
-*.tlog
-*.log
-*.recipe
-.vs/
-ARM/
-ARM64/
-x86/
-x64/
-
-# Eclipse language settings
-language.settings.xml
-
-# Temp files
-~*
-#*
-
 #build
 build/**/
-/.idea/
 /local/
 build.json
+
+#intellij
+/.idea/

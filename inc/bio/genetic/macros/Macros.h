@@ -45,6 +45,6 @@ Macro for defining TranscriptionFactors.
 */
 #define BIO_TRANSCRIPTION_FACTOR_FUNCTION_BODY(functionName)                   \
 BIO_ID_FUNCTION_BODY(                                                          \
-    functionName##TranscriptionFactor,                                         \
+    functionName,                                                              \
     ::bio::TranscriptionFactorPerspective::Instance(),                         \
     ::bio::TranscriptionFactor)

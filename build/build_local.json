@@ -5,7 +5,7 @@
 	"build_in" : "../",
 	"next" : [
     	{
-			"clear_build_path" : false,
+			"clear_build_path" : true,
 			"build" : "cpp",
 			"build_in": "local",
 			"config" : {

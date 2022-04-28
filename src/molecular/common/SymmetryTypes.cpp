@@ -26,6 +26,8 @@
 namespace bio {
 namespace symmetry_type {
 
+BIO_SYMMETRY_TYPE_FUNCTION_BODY(Variable);
+
 BIO_SYMMETRY_TYPE_FUNCTION_BODY(StartFunction);
 
 BIO_SYMMETRY_TYPE_FUNCTION_BODY(QualifyFunction);
