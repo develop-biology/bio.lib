@@ -23,8 +23,9 @@
 
 #include <string>
 
-//Modified from: https://stackoverflow.com/questions/35941045/can-i-obtain-c-type-names-in-a-constexpr-way
 namespace bio {
+
+//Modified from: https://stackoverflow.com/questions/35941045/can-i-obtain-c-type-names-in-a-constexpr-way
 
 /**
  * FORWARD DECLARATION <br />
