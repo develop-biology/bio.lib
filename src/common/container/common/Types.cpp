@@ -19,7 +19,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/common/Types.h"
+#include "bio/common/container/common/Types.h"
 
 namespace bio {
 

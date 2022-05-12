@@ -27,7 +27,6 @@
 #include "IdAndPerspectiveMacros.h"
 #include "ClassMethodMacros.h"
 #include "bio/common/macros/Macros.h"
-#include "bio/physical/Perspective.h"
 
 /**
  * Get all virtual methods defined by physical::Class. <br />

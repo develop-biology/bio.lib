@@ -21,11 +21,12 @@
 
 #pragma once
 
-#include "bio/common/macros/AssertMacros.h"
+#include "bio/common/macros/Macros.h"
 #include "TypeName.h"
 #include <cstddef>
 #include <cstdlib>
 #include <cstring>
+#include <assert.h>
 
 namespace bio {
 

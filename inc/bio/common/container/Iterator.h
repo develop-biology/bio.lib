@@ -21,8 +21,8 @@
 
 #pragma once
 
-#include "bio/physical/common/Types.h"
-#include "bio/physical/macros/Macros.h"
+#include "bio/common/container/common/Types.h"
+#include "bio/common/macros/Macros.h"
 
 namespace bio {
 

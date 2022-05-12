@@ -22,55 +22,65 @@
 #pragma once
 
 #include "bio/common/macros/Macros.h"
+#include "bio/common/utilities/IsPrimitive.h"
+#include "ByteStream.h"
+#include "TransparentWrapper.h"
+
+#include <vector>
+#include <map>
+#include <string>
+#include <ostream>
 
 //@formatter:off
-#if BIO_CPP_VERSION >= 11
-	#include <type_traits>
+#if BIO_CPP_VERSION < 11
+	#include <stdint.h>
+#else
+	#include <cstdint>
 #endif
 //@formatter:on
 
 namespace bio {
 namespace utility {
 
-//@formatter:off
-#if BIO_CPP_VERSION < 11
-	template<typename T>
-	struct IsPointerImplementation {static const bool sValue = false;};
-
-	template<typename T>
-	struct IsPointerImplementation<T*> {static const bool sValue = true;};
-#endif
-//@formatter:on
-
 /**
- * Check whether or not T is a pointer <br />
+ * All Transparent wrappers should derive their Primitive nature from the type they wrap. <br />
+ * On C++ versions below 14, this defaults to true: assuming TransparentWrapper ONLY wraps Primitive types.
  * @tparam T
- * @return whether or not T is a pointer.
+ * @return IsPrimitive< T >(), stripping away TransparentWrapper
  */
 template < typename T >
-BIO_CONSTEXPR
-bool IsPointer()
+struct IsPrimitiveImplementation< TransparentWrapper< T > >
 {
 	//@formatter:off
-	#if BIO_CPP_VERSION >= 11
-		return ::std::is_pointer<T>::value;
+	#if BIO_CPP_VERSION < 14
+		static const bool sValue = true;
 	#else
-		return IsPointerImplementation< T >::sValue;
+		static const bool sValue = IsPrimitive< T >();
 	#endif
 	//@formatter:on
-}
+};
 
-/**
- * Ease of use method for passing T as arg. <br />
- * @tparam T
- * @param t
- * @return whether or not T is a pointer.
- */
-template < typename T >
-bool IsPointer(const T t)
-{
-	return IsPointer< T >();
-}
+#if BIO_CPP_VERSION < 11
+
+BIO_SET_PRIMITIVE(bool)
+BIO_SET_PRIMITIVE(float)
+BIO_SET_PRIMITIVE(double)
+
+//This is int8_t & may cause compiler errors.
+//BIO_SET_PRIMITIVE(char)
+
+BIO_SET_PRIMITIVE(::std::string)
+
+BIO_SET_PRIMITIVE(int8_t)
+BIO_SET_PRIMITIVE(int16_t)
+BIO_SET_PRIMITIVE(int32_t)
+BIO_SET_PRIMITIVE(int64_t)
+BIO_SET_PRIMITIVE(uint8_t)
+BIO_SET_PRIMITIVE(uint16_t)
+BIO_SET_PRIMITIVE(uint32_t)
+BIO_SET_PRIMITIVE(uint64_t)
+
+#endif
 
 } //utility namespace
 } //bio namespace

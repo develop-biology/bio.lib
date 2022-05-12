@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/common/Types.h"
+#include "bio/common/container/common/Types.h"
 
 namespace bio {
 

@@ -23,34 +23,10 @@
 
 /**
  * Makes IsPrimitive< type >() return true. <br />
- * This only works on c++11 and above. <br />
  */
-#if BIO_CPP_VERSION < 11
-#define BIO_SET_PRIMITIVE(type) /* nop */
-#else
 #define BIO_SET_PRIMITIVE(type)                                                \
 template <>                                                                    \
-BIO_CONSTEXPR                                                                  \
-bool ::bio::utility::IsPrimitiveImplementation< type >()                       \
+struct IsPrimitiveImplementation< type >()                                     \
 {                                                                              \
-	return true;                                                               \
-}
-#endif
-
-/**
- * Causes calls to IsPrimitive< type >() to return the result of IsPrimitive< forwardTo >() <br />
- * This only works on c++14 and above; on c++11, it compiles but is not constexpr. <br />
- */
-#if BIO_CPP_VERSION < 11
-#define BIO_FORWARD_PRIMITIVE(type, forwardTo) /*nop*/
-#else
-#define BIO_FORWARD_PRIMITIVE(type, forwardTo)                                 \
-/*Forward primitive name to type.*/                                            \
-                                                                               \
-template <>                                                                    \
-BIO_CONSTEXPR                                                                  \
-bool ::bio::utility::IsPrimitiveImplementation< type >()                       \
-{                                                                              \
-    return ::bio::utility::IsPrimitive< forwardTo >();                         \
+	static const bool sValue = true;                                           \
 };
-#endif

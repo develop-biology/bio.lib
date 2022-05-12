@@ -21,17 +21,12 @@
 
 #pragma once
 
-#include "bio/common/macros/LanguageMacros.h"
 #include "bio/common/macros/Macros.h"
 #include "IsPointer.h"
 
 //@formatter:off
-#if BIO_CPP_VERSION < 11
-	#include <string>
-	#include <stdint.h>
-#else
+#if BIO_CPP_VERSION >= 11
 	#include <type_traits>
-	#include <cstdint>
 #endif
 //@formatter:on
 
@@ -40,22 +35,16 @@ namespace utility {
 
 /**
  * Defines which types return true when called with IsPrimitive(). <br />
- * This implementation is finicky and support of c++ versions less than 11 would damage the sanity of our API. <br />
- * Thus, if using a c++ version less than 11, EVERYTHING is considered Primitive. <br />
+ * This implementation is finicky and cannot be reliably extended beyond the confines of this library. <br />
+ * THERE IS NO SUPPORT FOR SPECIALIZING THIS IN DOWNSTREAM CODE.
  * @tparam T
  * @return whether or not T is a built in type.
  */
 template < typename T >
-BIO_CONSTEXPR bool IsPrimitiveImplementation()
+struct IsPrimitiveImplementation
 {
-	//@formatter:off
-	#if BIO_CPP_VERSION < 11
-		return true;
-	#else
-		return false;
-	#endif
-	//@formatter:on
-}
+	static const bool sValue = false;
+};
 
 /**
  * IsPrimitive will return whether or not the given type is built in. <br />
@@ -80,10 +69,10 @@ BIO_CONSTEXPR bool IsPrimitive()
 
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
-		return IsPrimitiveImplementation< T >();
+		return IsPrimitiveImplementation< T >::sValue;
 	#else
 		//We need to make sure we include our custom overrides of what IsPrimitive.
-		if (IsPrimitiveImplementation< T >())
+		if (IsPrimitiveImplementation< T >::sValue)
 		{
 			return true;
 		}
@@ -94,28 +83,3 @@ BIO_CONSTEXPR bool IsPrimitive()
 
 } //utility namespace
 } //bio namespace
-
-
-#if BIO_CPP_VERSION < 11
-
-//NOTE: These are vestigial at the moment: if BIO_CPP_VERSION < 11, ALL types are Primitive.
-
-BIO_SET_PRIMITIVE(bool)
-BIO_SET_PRIMITIVE(float)
-BIO_SET_PRIMITIVE(double)
-
-//This is int8_t & may cause compiler errors.
-//BIO_SET_PRIMITIVE(char)
-
-BIO_SET_PRIMITIVE(::std::string)
-
-BIO_SET_PRIMITIVE(int8_t)
-BIO_SET_PRIMITIVE(int16_t)
-BIO_SET_PRIMITIVE(int32_t)
-BIO_SET_PRIMITIVE(int64_t)
-BIO_SET_PRIMITIVE(uint8_t)
-BIO_SET_PRIMITIVE(uint16_t)
-BIO_SET_PRIMITIVE(uint32_t)
-BIO_SET_PRIMITIVE(uint64_t)
-
-#endif

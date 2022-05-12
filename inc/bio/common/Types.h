@@ -20,28 +20,12 @@
  */
 
 #pragma once
-/**
- * File of common types used across many classes. <br />
- */
 
 #include <assert.h>
-#include <cstddef> //for NULL
-#include <vector>
-#include <map>
-#include <string>
-#include <ostream>
 #include "ByteStream.h"
-#include "TransparentWrapper.h"
+#include "Primitives.h"
 #include "bio/common/macros/Macros.h"
-
-//@formatter:off
-#if BIO_CPP_VERSION < 11
-	#include <stdint.h>
-#else
-	#include <cstdint>
-#endif
-//@formatter:on
-
+#include "bio/common/container/Arrangement.h"
 
 namespace bio {
 
@@ -55,17 +39,6 @@ typedef ::std::vector< const char* > CharStrings;
 typedef ::std::vector< ::std::string > StdStrings;
 
 typedef ::std::vector< ByteStream > ByteStreams;
-
-/**
- * Indices are used by Arrangements to manage and manipulate what they store. <br />
- */
-typedef uint32_t Index;
-
-/**
- * We sacrifice our first index for the ability to do error checking. <br />
- * @return a Index that holds no content.
- */
-const Index InvalidIndex();
 
 /**
  * milliseconds (ms for short) <br />

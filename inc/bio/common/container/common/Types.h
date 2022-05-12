@@ -21,56 +21,19 @@
 
 #pragma once
 
-#include "bio/common/macros/Macros.h"
-
-//@formatter:off
-#if BIO_CPP_VERSION >= 11
-	#include <type_traits>
-#endif
-//@formatter:on
+#include "bio/common/Primitives.h"
 
 namespace bio {
-namespace utility {
-
-//@formatter:off
-#if BIO_CPP_VERSION < 11
-	template<typename T>
-	struct IsPointerImplementation {static const bool sValue = false;};
-
-	template<typename T>
-	struct IsPointerImplementation<T*> {static const bool sValue = true;};
-#endif
-//@formatter:on
 
 /**
- * Check whether or not T is a pointer <br />
- * @tparam T
- * @return whether or not T is a pointer.
+ * Indices are used by Arrangements to manage and manipulate what they store. <br />
  */
-template < typename T >
-BIO_CONSTEXPR
-bool IsPointer()
-{
-	//@formatter:off
-	#if BIO_CPP_VERSION >= 11
-		return ::std::is_pointer<T>::value;
-	#else
-		return IsPointerImplementation< T >::sValue;
-	#endif
-	//@formatter:on
-}
+typedef uint32_t Index;
 
 /**
- * Ease of use method for passing T as arg. <br />
- * @tparam T
- * @param t
- * @return whether or not T is a pointer.
+ * We sacrifice our first index for the ability to do error checking. <br />
+ * @return a Index that holds no content.
  */
-template < typename T >
-bool IsPointer(const T t)
-{
-	return IsPointer< T >();
-}
+const Index InvalidIndex();
 
-} //utility namespace
 } //bio namespace
