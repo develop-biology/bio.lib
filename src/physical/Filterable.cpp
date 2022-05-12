@@ -81,7 +81,7 @@ Code Filterable::Reify(Symmetry* symmetry)
 
 void Filterable::InitializeImplementation(ByteStreams args)
 {
-	BIO_SANITIZE(args.size() == 1 && args[0].Is(m_filter), ,
+	BIO_SANITIZE(args.Size() == 1 && args[0].Is(m_filter), ,
 		return);
 	m_filter = args[0];
 }

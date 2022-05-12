@@ -28,7 +28,7 @@ namespace chemical {
 /*static*/ Properties AbstractMotif::GetClassProperties()
 {
 	Properties ret;
-	ret.push_back(property::Structural());
+	ret.Add(property::Structural());
 	return ret;
 }
 

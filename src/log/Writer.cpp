@@ -127,7 +127,7 @@ void Writer::ExternalLog(
 
 void Writer::InitializeImplementation(ByteStreams args)
 {
-	if (args.size() == 2)
+	if (args.Size() == 2)
 	{
 		if (args[1].Is(m_logEngine))
 		{
@@ -135,7 +135,7 @@ void Writer::InitializeImplementation(ByteStreams args)
 		}
 		args.pop_back();
 	}
-	if (args.size() == 1 && args[0].Is< Filter >())
+	if (args.Size() == 1 && args[0].Is< Filter >())
 	{
 		Filterable::InitializeImplementation(args);
 	}

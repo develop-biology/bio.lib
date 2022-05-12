@@ -69,7 +69,7 @@ Code Atom::Attenuate(const physical::Wave* other)
 		if (physical::Wave::GetResonanceBetween(
 			bondBuffer->GetBonded(),
 			other
-		).size())
+		).Size())
 		{
 			if (bondBuffer->GetBonded()->Attenuate(demodulated) != code::Success())
 			{
@@ -103,7 +103,7 @@ Code Atom::Disattenuate(const physical::Wave* other)
 		if (physical::Wave::GetResonanceBetween(
 			bondBuffer->GetBonded(),
 			other
-		).size())
+		).Size())
 		{
 			if (bondBuffer->GetBonded()->Disattenuate(demodulated) != code::Success())
 			{

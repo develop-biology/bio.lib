@@ -62,8 +62,8 @@ Code Expressor::ExpressGenes()
 		}
 	}
 	for (
-		Transcriptome::const_iterator rna = m_transcriptome.begin();
-		rna != m_transcriptome.end();
+		SmartIterator rna = m_transcriptome.Begin();
+		!rna.IsAtEnd();
 		++rna
 		)
 	{
@@ -79,7 +79,7 @@ Code Expressor::AddToTranscriptome(const RNA* toExpress)
 {
 	BIO_SANITIZE(toExpress, ,
 		return code::BadArgument1());
-	m_transcriptome.push_back(toExpress);
+	m_transcriptome.Add(toExpress);
 	return code::Success();
 }
 
@@ -92,8 +92,8 @@ Code Expressor::Translate(const RNA* mRNA)
 
 	Gene* geneBuffer; 
 	for (
-		Transcriptome::const_iterator rna = m_transcriptome.begin();
-		rna != m_transcriptome.end();
+		SmartIterator rna = m_transcriptome.Begin();
+		!rna.IsAtEnd();
 		++rna
 		)
 	{

@@ -85,7 +85,7 @@ AtomicNumber PeriodicTableImplementation::RecordPropertyOf(
 )
 {
 	Properties properties;
-	properties.push_back(property);
+	properties.Add(property);
 	return RecordPropertiesOf(
 		id,
 		properties
@@ -108,7 +108,7 @@ AtomicNumber PeriodicTableImplementation::RecordPropertiesOf(
 	Properties properties
 )
 {
-	typename Hadits::iterator hdt = Find(id);
+	SmartIterator hdt = Find(id);
 	BIO_SANITIZE_AT_SAFETY_LEVEL_2(hdt == this->m_hadits.end(), ,
 		return InvalidId());
 

@@ -58,6 +58,18 @@ public:
 	~SmartIterator();
 
 	/**
+	 * Can check if *this is valid through multiple heuristics (e.g. Index() == InvalidIndex())
+	 * @return if *this points to a usable Index.
+	 */
+	bool IsValid() const;
+
+	/**
+	 * Makes IsValid return false.
+	 * i.e. MoveTo(InvalidIndex()).
+	 */
+	void Invalidate();
+
+	/**
 	 * @return the interface used by *this.
 	 */
 	Iterator* GetImplementation(); 

@@ -80,7 +80,7 @@ public:
 	static Properties GetClassProperties()
 	{
 		Properties ret = AbstractMotif::GetClassProperties();
-		ret.push_back(property::Linear());
+		ret.Add(property::Linear());
 		return ret;
 	}
 
@@ -136,7 +136,7 @@ public:
 	 */
 	virtual ~LinearMotif()
 	{
-		this->m_contents->Clear();
+		this->m_contents-Clear;
 	}
 
 	/**
@@ -247,7 +247,7 @@ public:
 					}
 					if (physical::Wave::GetResonanceBetween(
 						bondBuffer->GetBonded(),
-						AbstractMotif::GetClassProperties()).size() == 0)
+						AbstractMotif::GetClassProperties()).Size() == 0)
 					{
 						continue;
 					}
@@ -473,7 +473,7 @@ public:
 	{
 		if (physical::Wave::GetResonanceBetween(
 			other,
-			ExcitationBase::GetClassProperties()).size())
+			ExcitationBase::GetClassProperties()).Size())
 		{
 			ForEachImplementation(ChemicalCast< ExcitationBase* >(other)); 
 			return code::Success();
@@ -537,7 +537,7 @@ public:
 				cnt.template As< physical::Identifiable< StandardDimension >* >()->AsWave(), 
 				&result
 			);
-			ret.push_back(result);
+			ret.Add(result);
 		}
 		return ret;
 	}
@@ -575,7 +575,7 @@ public:
 	virtual void ClearImplementation()
 	{
 		//No need to delete anything, since our Linear wrapper handles that for us.
-		this->m_contents->Clear();
+		this->m_contents-Clear;
 	}
 
 private:

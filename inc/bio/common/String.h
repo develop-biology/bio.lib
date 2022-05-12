@@ -163,7 +163,7 @@ struct Echelon
 	const char* string; 
 	unsigned int echelon;
 };
-typedef ::std::vector< Echelon > Echelons;
+typedef Arrangement< Echelon > Echelons;
 
 
 } //string namespace

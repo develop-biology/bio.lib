@@ -36,8 +36,8 @@ Reactants::Reactants(Substances& substances)
 	chemical::Class< Reactants >(this)
 {
 	for (
-		Substances::const_iterator sub = substances.begin();
-		sub != substances.end();
+		SmartIterator sub = substances.Begin();
+		!sub.IsAtEnd();
 		++sub
 		)
 	{

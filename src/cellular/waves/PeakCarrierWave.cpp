@@ -39,7 +39,7 @@ PeakCarrierWave::~PeakCarrierWave()
 Properties PeakCarrierWave::GetProperties() const
 {
 	Properties ret = chemical::AbstractMotif::GetClassProperties();
-	ret.push_back(property::Linear());
+	ret.Add(property::Linear());
 	return ret;
 }
 

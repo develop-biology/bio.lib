@@ -75,7 +75,7 @@ namespace bio {
 namespace physical {
 
 class Symmetry;
-//typedef ::std::vector<Symmetry*> Symmetries; //From Wave.h
+//typedef ::bio::Arrangement<Symmetry*> Symmetries; //From Wave.h
 BIO_PERSPECTIVE_SINGLETON(SymmetryPerspective,
 	StandardDimension)
 

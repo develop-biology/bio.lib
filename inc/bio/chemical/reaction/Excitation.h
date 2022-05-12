@@ -80,7 +80,7 @@ public:
 	static Properties GetClassProperties()
 	{
 		Properties ret;
-		ret.push_back(property::Excitatory());
+		ret.Add(property::Excitatory());
 		return ret;
 	}
 
@@ -175,7 +175,7 @@ public:
 		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
 		ret.insert(
 			ret.end(),
-			ExcitationBase::GetClassProperties().begin(),
+			ExcitationBase::GetClassProperties().Begin(),
 			ExcitationBase::GetClassProperties().end());
 		return ret;
 	}
@@ -275,7 +275,7 @@ public:
 		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
 		ret.insert(
 			ret.end(),
-			ExcitationBase::GetClassProperties().begin(),
+			ExcitationBase::GetClassProperties().Begin(),
 			ExcitationBase::GetClassProperties().end());
 		return ret;
 	}
@@ -357,7 +357,7 @@ public:
 		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
 		ret.insert(
 			ret.end(),
-			ExcitationBase::GetClassProperties().begin(),
+			ExcitationBase::GetClassProperties().Begin(),
 			ExcitationBase::GetClassProperties().end());
 		return ret;
 	}
@@ -461,7 +461,7 @@ public:
 		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
 		ret.insert(
 			ret.end(),
-			ExcitationBase::GetClassProperties().begin(),
+			ExcitationBase::GetClassProperties().Begin(),
 			ExcitationBase::GetClassProperties().end());
 		return ret;
 	}

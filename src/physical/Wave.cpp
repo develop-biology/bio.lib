@@ -30,7 +30,7 @@ namespace bio {
 namespace physical {
 
 Wave::Wave(
-	Symmetry* symmetry 
+	Symmetry* symmetry
 )
 	:
 	m_symmetry(
@@ -49,20 +49,20 @@ Wave::~Wave()
 		m_symmetry = NULL,);
 }
 
-Wave* Wave::Clone() const 
+Wave* Wave::Clone() const
 {
 	return new Wave(
 		*this
 	);
 }
 
-Symmetry* Wave::Spin() const 
+Symmetry* Wave::Spin() const
 {
 	return m_symmetry;
 }
 
 Code Wave::Reify(
-	Symmetry* symmetry 
+	Symmetry* symmetry
 )
 {
 	(*m_symmetry) = *symmetry;
@@ -70,7 +70,7 @@ Code Wave::Reify(
 }
 
 void Wave::operator|(
-	Symmetry* symmetry 
+	Symmetry* symmetry
 )
 {
 	Reify(
@@ -78,36 +78,36 @@ void Wave::operator|(
 	);
 }
 
-Code Wave::Attenuate(const Wave* other) 
+Code Wave::Attenuate(const Wave* other)
 {
 	return code::NotImplemented();
 }
 
-Code Wave::Disattenuate(const Wave* other) 
+Code Wave::Disattenuate(const Wave* other)
 {
 	return code::NotImplemented();
 }
 
-Wave* Wave::Modulate( 
-	Wave* signal 
+Wave* Wave::Modulate(
+	Wave* signal
 )
 {
 	m_signal = signal;
 	return this;
 }
 
-Wave* Wave::Demodulate() 
+Wave* Wave::Demodulate()
 {
 	return m_signal;
 }
 
-const Wave* Wave::Demodulate() const 
+const Wave* Wave::Demodulate() const
 {
 	return m_signal;
 }
 
-Wave* Wave::operator*( 
-	Wave* signal 
+Wave* Wave::operator*(
+	Wave* signal
 )
 {
 	return Modulate(
@@ -115,25 +115,25 @@ Wave* Wave::operator*(
 	);
 }
 
-Wave* Wave::operator*() 
+Wave* Wave::operator*()
 {
 	return Demodulate();
 }
 
-const Wave* Wave::operator*() const 
+const Wave* Wave::operator*() const
 {
 	return Demodulate();
 }
 
 void Wave::operator+(
-	const Wave* other 
+	const Wave* other
 )
 {
 	Attenuate(other);
 }
 
 void Wave::operator-(
-	const Wave* other 
+	const Wave* other
 )
 {
 	Disattenuate(other);
@@ -146,7 +146,7 @@ Properties Wave::GetProperties() const
 }
 
 /*static*/ Properties Wave::GetResonanceBetween(
-	const Wave* wave, 
+	const Wave* wave,
 	const Properties& properties
 )
 {
@@ -173,13 +173,9 @@ Properties Wave::GetProperties() const
 	};
 
 	ConstWaves waves;
-	waves.push_back(
-		wave
-	);
-	TempWave* twave = new TempWave(properties); 
-	waves.push_back(
-		twave
-	);
+	waves.Add(wave);
+	TempWave* twave = new TempWave(properties);
+	waves.Add(twave);
 
 	Properties ret = GetResonanceBetween(
 		waves
@@ -190,15 +186,15 @@ Properties Wave::GetProperties() const
 }
 
 /*static*/ Properties Wave::GetResonanceBetween(
-	const Wave* wave1, 
-	const Wave* wave2 
+	const Wave* wave1,
+	const Wave* wave2
 )
 {
 	ConstWaves waves;
-	waves.push_back(
+	waves.Add(
 		wave1
 	);
-	waves.push_back(
+	waves.Add(
 		wave2
 	);
 	return GetResonanceBetween(
@@ -211,50 +207,29 @@ Properties Wave::GetProperties() const
 )
 {
 	Properties overlap;
-	BIO_SANITIZE(waves.size() && waves[0], ,
+	BIO_SANITIZE(waves.Size() && waves[0], ,
 		return overlap);
 	overlap = waves[0]->GetProperties();
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(waves.size() > 1, ,
+	BIO_SANITIZE_AT_SAFETY_LEVEL_2(waves.Size() > 1, ,
 		return overlap);
-	std::vector< Properties::iterator > remBuffer;
 
 	for (
-		ConstWaves::const_iterator wav = waves.begin()++;
-		wav != waves.end();
+		SmartIterator wav = waves.Begin()++;
+		!wav.IsAtEnd();
 		++wav
 		)
 	{
-		BIO_SANITIZE(*wav, ,
-			continue);
-
-		Properties wavProperties = (*wav)->GetProperties();
-		remBuffer.clear();
+		Properties wavProperties = wav.As< Wave* >()->GetProperties();
 		for (
-			Properties::iterator prp = overlap.begin();
-			prp != overlap.end();
+			SmartIterator prp = overlap.Begin();
+			!prp.IsAtEnd();
 			++prp
 			)
 		{
-			if (std::find(
-				wavProperties.begin(),
-				wavProperties.end(),
-				*prp
-			) != wavProperties.end())
+			if (!wavProperties.Has(prp.As< Property >())
 			{
-				remBuffer.push_back(
-					prp
-				);
+				overlap.Erase(prp);
 			}
-		}
-		for (
-			std::vector< Properties::iterator >::iterator rem = remBuffer.begin();
-			rem != remBuffer.end();
-			++rem
-			)
-		{
-			overlap.erase(
-				*rem
-			);
 		}
 	}
 	return overlap;

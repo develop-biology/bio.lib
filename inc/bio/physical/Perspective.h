@@ -72,7 +72,7 @@ class Perspective :
 {
 public:
 	typedef DIMENSION Id;
-	typedef ::std::vector< Id > Ids;
+	typedef Arrangement< Id > Ids;
 
 	/**
 	 * What a single point in space contains. <br />
@@ -98,7 +98,7 @@ public:
 		Wave* m_type; 
 	};
 
-	typedef ::std::vector< Hadit > Hadits;
+	typedef Arrangement< Hadit* > Hadits;
 
 	/**
 	 *
@@ -115,24 +115,28 @@ public:
 	virtual ~Perspective()
 	{
 		LockThread();
+		Hadit* haditBuffer;
 		for (
-			typename Hadits::iterator itt = m_hadits.begin();
-			itt != m_hadits.end();
-			++itt
+			SmartIterator hdt = m_hadits.Begin();
+			!hdt.IsAtEnd();
+			++hdt
 			)
 		{
-			if (itt->m_name)
+			haditBuffer = hdt;
+			if (haditBuffer->m_name)
 			{
-				delete[] itt->m_name;
-				itt->m_name = NULL;
+				delete[] haditBuffer->m_name;
+				haditBuffer->m_name = NULL;
 			}
-			if (itt->m_type)
+			if (haditBuffer->m_type)
 			{
-				PerspectiveUtilities::Delete(itt->m_type);
-				itt->m_type = NULL;
+				PerspectiveUtilities::Delete(haditBuffer->m_type);
+				haditBuffer->m_type = NULL;
 			}
+			delete haditBuffer;
+			haditBuffer = NULL;
 		}
-		m_hadits.clear();
+		m_hadits.Clear();
 		UnlockThread();
 	}
 
@@ -157,24 +161,25 @@ public:
 	/**
 	 * Gives an iterator fos the given id. <br />
 	 * @param id
-	 * @return a Hadits::iterator or m_hadits.end();
+	 * @return a SmartIterator pointing to the Hadit desired, if it IsValid.
 	 */
-	typename Hadits::iterator Find(Id id)
+	SmartIterator Find(Id id)
 	{
 
 		LockThread();
-		typename Hadits::iterator hdt = m_hadits.begin();
+		SmartIterator hdt = m_hadits.Begin();
 		for (
-			; hdt != m_hadits.end();
+			; !hdt.IsAtEnd();
 			++hdt
 			)
 		{
-			if (hdt->m_id == id)
+			if (hdt.As< Hadit* >()->m_id == id)
 			{
 				UnlockThread();
 				return hdt;
 			}
 		}
+		hdt.Invalidate();
 		UnlockThread();
 		return hdt;
 	}
@@ -182,23 +187,24 @@ public:
 	/**
 	 * Gives an iterator fos the given id. <br />
 	 * @param id
-	 * @return a Hadits::const_iterator or m_hadits.end();
+	 * @return a SmartIterator pointing to the Hadit desired, if it IsValid.
 	 */
-	typename Hadits::const_iterator Find(Id id) const
+	SmartIterator Find(Id id) const
 	{
 		LockThread();
-		typename Hadits::const_iterator hdt = m_hadits.begin();
+		SmartIterator hdt = m_hadits.Begin();
 		for (
-			; hdt != m_hadits.end();
+			; !hdt.IsAtEnd();
 			++hdt
 			)
 		{
-			if (hdt->m_id == id)
+			if (hdt.As< Hadit* >()->m_id == id)
 			{
 				UnlockThread();
 				return hdt;
 			}
 		}
+		hdt.Invalidate();
 		UnlockThread();
 		return hdt;
 	}
@@ -233,8 +239,8 @@ public:
 
 		LockThread();
 		ret = m_nextId++;
-		m_hadits.push_back(
-			Hadit(
+		m_hadits.Add(
+			new Hadit(
 				ret,
 				usedName,
 				NULL
@@ -257,12 +263,12 @@ public:
 			return InvalidName();
 		}
 
-		typename Hadits::const_iterator result = Find(id);
-		if (result == m_hadits.end())
+		SmartIterator result = Find(id);
+		if (!result.IsValid())
 		{
 			return InvalidName();
 		}
-		return result->m_name;
+		return result.As< Hadit* >()->m_name;
 	}
 
 
@@ -317,18 +323,21 @@ public:
 			return InvalidId();
 		}
 
-		typename Hadits::const_iterator itt = m_hadits.begin();
+		Hadit* haditBuffer;
+		SmartIterator hdt = m_hadits.Begin();
 		for (
-			; itt != m_hadits.end();
-			++itt
+			; !hdt.IsAtEnd();
+			++hdt
 			)
 		{
+			haditBuffer = hdt;
+			
 			if (!strcmp(
-				itt->m_name,
+				haditBuffer->m_name,
 				name
 			))
 			{
-				return itt->m_id;
+				return haditBuffer->m_id;
 			}
 		}
 		return InvalidId();
@@ -356,16 +365,17 @@ public:
 		Wave* type 
 	)
 	{
-		typename Hadits::iterator hdt = Find(id);
-		if (hdt == m_hadits.end() || hdt->m_type)
+		SmartIterator hdt = Find(id);
+		if (!hdt.IsValid())
 		{
 			return false;
 		}
-
+		Hadit* haditBuffer = hdt;
+		
 		LockThread();
 		BIO_SANITIZE(type,
-			hdt->m_type = PerspectiveUtilities::Clone(type),
-			hdt->m_type = type);
+			haditBuffer->m_type = PerspectiveUtilities::Clone(type),
+			haditBuffer->m_type = type);
 		UnlockThread();
 
 		return true;
@@ -378,16 +388,18 @@ public:
 	 */
 	virtual bool DisassociateType(Id id)
 	{
-		typename Hadits::iterator hdt = Find(id);
-		if (hdt == m_hadits.end())
+		SmartIterator hdt = Find(id);
+		if (!hdt.IsValid())
 		{
 			return false;
 		}
 
+		Hadit* haditBuffer = hdt;
+
 		LockThread();
-		BIO_SANITIZE_AT_SAFETY_LEVEL_2(hdt->m_type,
-			PerspectiveUtilities::Delete(hdt->m_type),);
-		hdt->m_type = NULL;
+		BIO_SANITIZE_AT_SAFETY_LEVEL_2(haditBuffer->m_type,
+			PerspectiveUtilities::Delete(haditBuffer->m_type),);
+		haditBuffer->m_type = NULL;
 		UnlockThread();
 
 		return true;
@@ -404,12 +416,12 @@ public:
 		BIO_SANITIZE(id == InvalidId(), ,
 			return NULL)
 
-		typename Hadits::const_iterator result = Find(id);
-		if (result == m_hadits.end())
+		SmartIterator result = Find(id);
+		if (!result.IsValid())
 		{
 			return NULL;
 		}
-		return result->m_type;
+		return result.As< Hadit* >()->m_type;
 	}
 
 	/**

@@ -47,6 +47,16 @@ SmartIterator::~SmartIterator()
 	delete m_implementation;
 }
 
+bool SmartIterator::IsValid() const
+{
+	return GetIndex != InvalidIndex();
+}
+
+void SmartIterator::Invalidate()
+{
+	m_index = InvalidIndex();
+}
+
 Iterator* SmartIterator::GetImplementation() 
 {
 	return m_implementation;

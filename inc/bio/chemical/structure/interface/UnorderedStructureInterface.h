@@ -121,11 +121,11 @@ public:
 	 * @param other
 	 */
 	template < typename T >
-	void Import(const ::std::vector< T >& other)
+	void Import(const ::bio::Arrangement< T >& other)
 	{
 		for (
-			typename ::std::vector< T >::const_iterator otr = other.begin();
-			otr != other.end();
+			SmartIterator otr = other.Begin();
+			!otr.IsAtEnd();
 			++otr
 			)
 		{
@@ -161,7 +161,7 @@ public:
 			}
 			if (physical::Wave::GetResonanceBetween(
 				bondBuffer->GetBonded(),
-				AbstractMotif::GetClassProperties()).size() == 0)
+				AbstractMotif::GetClassProperties()).Size() == 0)
 			{
 				continue;
 			}
@@ -330,9 +330,9 @@ public:
 	}
 
 	/**
-	 * Ease of use wrapper around casting the contents of *this as a ::std::vector. <br />
+	 * Ease of use wrapper around casting the contents of *this as a ::bio::Arrangement. <br />
 	 * @tparam T
-	 * @return the contents of *this casted to an ::std::vector.
+	 * @return the contents of *this casted to an ::bio::Arrangement.
 	 */
 	template < typename T >
 	std::vector< T > GetAllAsVector()
@@ -342,12 +342,12 @@ public:
 	}
 
 	/**
-	 * Ease of use wrapper around casting the contents of *this as a ::std::vector. <br />
+	 * Ease of use wrapper around casting the contents of *this as a ::bio::Arrangement. <br />
 	 * @tparam T
-	 * @return the contents of *this casted to an ::std::vector.
+	 * @return the contents of *this casted to an ::bio::Arrangement.
 	 */
 	template < typename T >
-	const ::std::vector< T > GetAllAsVector() const
+	const ::bio::Arrangement< T > GetAllAsVector() const
 	{
 		return this->template GetAll< T >()->
 			template AsVector< T >();

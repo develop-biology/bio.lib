@@ -76,12 +76,12 @@ BIO_PERSPECTIVE_SINGLETON(ReactionPerspective,
 
 class Substance;
 
-typedef ::std::vector< Substance* > Substances;
+typedef ::bio::Arrangement< Substance* > Substances;
 
 BIO_PERSPECTIVE_SINGLETON(SubstancePerspective,
 	StandardDimension)
 
-typedef ::std::vector< ByteStream > Emission;
+typedef ::bio::Arrangement< ByteStream > Emission;
 
 } //chemical namespace
 } //bio namespace

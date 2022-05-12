@@ -91,7 +91,7 @@ protected:
 	 */
 	virtual void InitializeImplementation(ByteStreams args)
 	{
-		BIO_SANITIZE(args.size() == 1 && args[0].Is(m_perspective), ,
+		BIO_SANITIZE(args.Size() == 1 && args[0].Is(m_perspective), ,
 			return);
 		m_perspective = args[0];
 	}

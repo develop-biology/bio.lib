@@ -53,7 +53,7 @@ class Identifiable :
 {
 public:
 	typedef DIMENSION Id;
-	typedef ::std::vector< Id > Ids;
+	typedef ::bio::Arrangement< Id > Ids;
 
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
@@ -382,7 +382,7 @@ protected:
 	 */
 	virtual void InitializeImplementation(ByteStreams args)
 	{
-		if (args.size() == 2)
+		if (args.Size() == 2)
 		{
 			if (args[1].Is< Perspective< DIMENSION >* >()) 
 			{
@@ -390,7 +390,7 @@ protected:
 			}
 			args.pop_back();
 		}
-		if (args.size() == 1)
+		if (args.Size() == 1)
 		{
 			if (args[0].Is(m_id))
 			{

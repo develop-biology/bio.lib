@@ -36,7 +36,7 @@ namespace physical {
 Properties Periodic::GetClassProperties()
 {
 	Properties ret;
-	ret.push_back(
+	ret.Add(
 		property::Periodic());
 	return ret;
 }
@@ -104,7 +104,7 @@ Code Periodic::Reify(Symmetry* symmetry)
 
 void Periodic::InitializeImplementation(ByteStreams args)
 {
-	BIO_SANITIZE(args.size() == 1 && args[0].Is(
+	BIO_SANITIZE(args.Size() == 1 && args[0].Is(
 		m_interval
 	), ,
 		return);

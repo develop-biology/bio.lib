@@ -143,7 +143,7 @@ public:
 	{
 		Properties empty;
 		States enabled;
-		enabled.push_back(state::Enabled());
+		enabled.Add(state::Enabled());
 		Require(
 			TypeName< T >(),
 			empty,
@@ -286,9 +286,9 @@ public:
 	)
 	{
 		Substances substances;
-		substances.push_back(reactant1);
-		substances.push_back(reactant2);
-		substances.push_back(reactant3);
+		substances.Add(reactant1);
+		substances.Add(reactant2);
+		substances.Add(reactant3);
 		Reactants reactants(substances);
 		return Attempt< T >(&reactants);
 	}

@@ -217,7 +217,7 @@ physical::Waves Surface::ReleaseAll(BondType bondType)
 		bondBuffer = bnd;
 		if (bondBuffer->GetType() == bondType)
 		{
-			ret.push_back(ChemicalCast< physical::Wave* >(bondBuffer->GetBonded())); 
+			ret.Add(ChemicalCast< physical::Wave* >(bondBuffer->GetBonded())); 
 			bondBuffer->Break();
 		}
 	}

@@ -26,25 +26,31 @@
 #include "Primitives.h"
 #include "bio/common/macros/Macros.h"
 #include "bio/common/container/Arrangement.h"
+#include "bio/common/container/SmartIterator.h"
 
 namespace bio {
+
+/**
+ * Arrangements of Iterators can be used in buffers, etc.
+ */
+typedef Arrangement< SmartIterator > SmartIterators;
 
 /**
  * Names are used in NameTracker<>s but are defined here for simplicity. <br />
  */
 typedef const char* Name; 
-typedef ::std::vector< Name > Names;
+typedef Arrangement< Name > Names;
 
-typedef ::std::vector< const char* > CharStrings;
-typedef ::std::vector< ::std::string > StdStrings;
+typedef Arrangement< const char* > CharStrings;
+typedef Arrangement< ::std::string > StdStrings;
 
-typedef ::std::vector< ByteStream > ByteStreams;
+typedef Arrangement< ByteStream > ByteStreams;
 
 /**
  * milliseconds (ms for short) <br />
  */
 typedef uint32_t Timestamp;
-typedef ::std::vector< Timestamp > Timestamps;
+typedef Arrangement< Timestamp > Timestamps;
 
 /**
  * microseconds (us for short) <br />
