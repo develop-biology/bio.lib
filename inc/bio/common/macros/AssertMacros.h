@@ -24,6 +24,6 @@
  * Description: assert definition. Will get more complicated as we support more target environments <br />
  */
 
-#include <assert.h>
+//#include <assert.h> //YOU MUST INCLUDE THIS WHERE USING BIO_ASSERT
 
 #define BIO_ASSERT(cond)    assert(cond);

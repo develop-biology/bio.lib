@@ -24,19 +24,24 @@
  * File of common types used across many classes. <br />
  */
 
-#if BIO_CPP_VERSION < 11
-
-	#include <stdint.h>
-
-#else
-	#include <cstdint>
-#endif
-
+#include <assert.h>
 #include <cstddef> //for NULL
 #include <vector>
 #include <map>
 #include <string>
+#include <ostream>
 #include "ByteStream.h"
+#include "TransparentWrapper.h"
+#include "bio/common/macros/Macros.h"
+
+//@formatter:off
+#if BIO_CPP_VERSION < 11
+	#include <stdint.h>
+#else
+	#include <cstdint>
+#endif
+//@formatter:on
+
 
 namespace bio {
 

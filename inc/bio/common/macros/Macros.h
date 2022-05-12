@@ -34,7 +34,7 @@
 #include "SanitizeMacros.h"
 #include "StrongTypedef.h"
 #include "KeywordMacros.h"
-#include "bio/common/ByteStream.h"
+#include "UtilityHelperMacros.h"
 
 /**
  * Wrapping macros is used to evaluate them within other macros, rather than being passed as a string. <br />

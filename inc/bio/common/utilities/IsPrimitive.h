@@ -38,10 +38,24 @@
 namespace bio {
 namespace utility {
 
-//@formatter:off
-template<typename T>
-struct IsPrimitiveImplementation {static const bool m_value = false;};
-//@formatter:on
+/**
+ * Defines which types return true when called with IsPrimitive(). <br />
+ * This implementation is finicky and support of c++ versions less than 11 would damage the sanity of our API. <br />
+ * Thus, if using a c++ version less than 11, EVERYTHING is considered Primitive. <br />
+ * @tparam T
+ * @return whether or not T is a built in type.
+ */
+template < typename T >
+BIO_CONSTEXPR bool IsPrimitiveImplementation()
+{
+	//@formatter:off
+	#if BIO_CPP_VERSION < 11
+		return true;
+	#else
+		return false;
+	#endif
+	//@formatter:on
+}
 
 /**
  * IsPrimitive will return whether or not the given type is built in. <br />
@@ -51,8 +65,7 @@ struct IsPrimitiveImplementation {static const bool m_value = false;};
  * @return whether or not T is a built-in type or a custom class; false by default.
  */
 template < typename T >
-BIO_CONSTEXPR
-bool IsPrimitive()
+BIO_CONSTEXPR bool IsPrimitive()
 {
 	if (IsPointer< T >())
 	{
@@ -65,100 +78,44 @@ bool IsPrimitive()
 		//@formatter:on
 	}
 
-	//We need to make sure we include our custom overrides of what IsPrimitive.
-	if (IsPrimitiveImplementation< T >::m_value)
-	{
-		return true;
-	}
-
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
-		return IsPrimitiveImplementation< T >::m_value;
+		return IsPrimitiveImplementation< T >();
 	#else
+		//We need to make sure we include our custom overrides of what IsPrimitive.
+		if (IsPrimitiveImplementation< T >())
+		{
+			return true;
+		}
 		return ::std::is_fundamental< T >::value;
 	#endif
 	//@formatter:on
 }
 
-#if BIO_CPP_VERSION < 11
-
-template <>
-struct IsPrimitiveImplementation< bool >
-{
-	static const bool m_value = true;
-};
-
-template <>
-struct IsPrimitiveImplementation< float >
-{
-	static const bool m_value = true;
-};
-
-template <>
-struct IsPrimitiveImplementation< double >
-{
-	static const bool m_value = true;
-};
-
-//This is int8_t & may cause compiler errors.
-//template <>
-//struct IsPrimitiveImplementation< char > {static const bool m_value = true;};
-
-template <>
-struct IsPrimitiveImplementation< ::std::string >
-{
-	static const bool m_value = true;
-};
-
-template <>
-struct IsPrimitiveImplementation< int8_t >
-{
-	static const bool m_value = true;
-};
-
-template <>
-struct IsPrimitiveImplementation< int16_t >
-{
-	static const bool m_value = true;
-};
-
-template <>
-struct IsPrimitiveImplementation< int32_t >
-{
-	static const bool m_value = true;
-};
-
-template <>
-struct IsPrimitiveImplementation< int64_t >
-{
-	static const bool m_value = true;
-};
-
-template <>
-struct IsPrimitiveImplementation< uint8_t >
-{
-	static const bool m_value = true;
-};
-
-template <>
-struct IsPrimitiveImplementation< uint16_t >
-{
-	static const bool m_value = true;
-};
-
-template <>
-struct IsPrimitiveImplementation< uint32_t >
-{
-	static const bool m_value = true;
-};
-
-template <>
-struct IsPrimitiveImplementation< uint64_t >
-{
-	static const bool m_value = true;
-};
-
-#endif
-
 } //utility namespace
 } //bio namespace
+
+
+#if BIO_CPP_VERSION < 11
+
+//NOTE: These are vestigial at the moment: if BIO_CPP_VERSION < 11, ALL types are Primitive.
+
+BIO_SET_PRIMITIVE(bool)
+BIO_SET_PRIMITIVE(float)
+BIO_SET_PRIMITIVE(double)
+
+//This is int8_t & may cause compiler errors.
+//BIO_SET_PRIMITIVE(char)
+
+BIO_SET_PRIMITIVE(::std::string)
+
+BIO_SET_PRIMITIVE(int8_t)
+BIO_SET_PRIMITIVE(int16_t)
+BIO_SET_PRIMITIVE(int32_t)
+BIO_SET_PRIMITIVE(int64_t)
+BIO_SET_PRIMITIVE(uint8_t)
+BIO_SET_PRIMITIVE(uint16_t)
+BIO_SET_PRIMITIVE(uint32_t)
+BIO_SET_PRIMITIVE(uint64_t)
+
+#endif

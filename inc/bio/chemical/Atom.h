@@ -175,7 +175,7 @@ public:
 	template < typename T >
 	T As()
 	{
-		#if BIO_CPP_VERSION < 14
+		#if BIO_CPP_VERSION < 17
 		return AsBondedQuantum< T >();
 		#else
 		if constexpr(!utility::IsWave< T >())
@@ -198,7 +198,7 @@ public:
 	template < typename T >
 	const T As() const
 	{
-		#if BIO_CPP_VERSION < 14
+		#if BIO_CPP_VERSION < 17
 		return AsBondedQuantum< T >();
 		#else
 		if constexpr(!utility::IsWave< T >())
@@ -238,7 +238,7 @@ public:
 		T toBond,
 		BondType type = bond_type::Unknown())
 	{
-		#if BIO_CPP_VERSION < 14
+		#if BIO_CPP_VERSION < 17
 		AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >(); 
 		return FormBondImplementation((new physical::Quantum< T >(toBond))->AsWave(),
 			bondedId,
@@ -280,7 +280,7 @@ public:
 		T toDisassociate,
 		BondType type = bond_type::Unknown())
 	{
-		#if BIO_CPP_VERSION < 14
+		#if BIO_CPP_VERSION < 17
 		return BreakBond< physical::Quantum< T >* >( 
 			NULL,
 			type
@@ -325,7 +325,7 @@ public:
 	template < typename T >
 	Valence GetBondPosition() const
 	{
-		#if BIO_CPP_VERSION < 14
+		#if BIO_CPP_VERSION < 17
 		return GetBondPosition(PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >()); 
 		#else
 		if constexpr(!utility::IsWave< T >())
@@ -351,7 +351,7 @@ public:
 	template < typename T >
 	BondType GetBondType() const
 	{
-		#if BIO_CPP_VERSION < 14
+		#if BIO_CPP_VERSION < 17
 		return GetBondType(GetBondPosition< physical::Quantum< T > >());
 		#else
 		if constexpr(!utility::IsWave< T >())

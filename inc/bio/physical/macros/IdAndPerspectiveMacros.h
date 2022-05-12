@@ -21,8 +21,6 @@
 
 #pragma once
 
-#include "bio/common/macros/Macros.h"
-
 /**
  * For ease of use for defining Singleton Perspectives. <br />
  */
