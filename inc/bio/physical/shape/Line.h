@@ -40,9 +40,17 @@ class Line :
 public:
 
 	/**
+	 * Like Containers, Lines may only be constructed explicitly to avoid ambiguity when passing numbers to a function with 1 or many argument signatures.
 	 * @param expectedSize
 	 */
-	Line(Index expectedSize = 2);
+	explicit Line(Index expectedSize = 2);
+
+	/**
+	 * Copy ctor for pointers. <br />
+	 * Dereferences other then Imports all contents from other into *this. <br />
+	 * @param other
+	 */
+	Line(const Container* other);
 
 	/**
 	 *

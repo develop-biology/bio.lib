@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <ostream>
+
 namespace bio {
 
 //@formatter:off

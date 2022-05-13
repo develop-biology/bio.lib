@@ -47,7 +47,18 @@ Container::Container(const Container& other)
 {
 	m_store = (unsigned char*)std::malloc(m_size * other.GetStepSize()); 
 	BIO_ASSERT(m_store)
-	Import(&other); // <- NOT VIRTUAL (in ctor).
+	Import(other); // <- NOT VIRTUAL (in ctor).
+}
+
+Container::Container(const Container* other)
+	:
+	m_firstFree(other->m_firstFree),
+	m_size(other->m_size),
+	m_tempItt(NULL)
+{
+	m_store = (unsigned char*)std::malloc(m_size * other->GetStepSize());
+	BIO_ASSERT(m_store)
+	Import(other); // <- NOT VIRTUAL (in ctor).
 }
 
 Container::~Container()
@@ -248,18 +259,22 @@ bool Container::Erase(const Index index)
 	return true;
 }
 
-void Container::Import(const Container* other) 
+void Container::Import(const Container& other)
 {
-	BIO_SANITIZE(other, ,
-		return)
-	Iterator* otr = other->End(); 
-	for (
-		; !otr->IsAtBeginning();
+	for (SmartIterator otr = other.End();
+		!otr.IsAtBeginning();
 		--otr
 		)
 	{
-		Add(**otr);
+		Add(*otr);
 	}
+}
+
+void Container::Import(const Container* other)
+{
+	BIO_SANITIZE(other, ,
+		return)
+	Import(*other);
 }
 
 void Container::Clear()

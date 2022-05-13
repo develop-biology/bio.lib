@@ -49,12 +49,12 @@ SmartIterator::~SmartIterator()
 
 bool SmartIterator::IsValid() const
 {
-	return GetIndex != InvalidIndex();
+	return m_implementation->IsValid();
 }
 
 void SmartIterator::Invalidate()
 {
-	m_index = InvalidIndex();
+	m_implementation->Invalidate();
 }
 
 Iterator* SmartIterator::GetImplementation() 

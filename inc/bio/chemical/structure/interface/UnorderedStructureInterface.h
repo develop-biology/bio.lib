@@ -347,10 +347,9 @@ public:
 	 * @return the contents of *this casted to an ::bio::Arrangement.
 	 */
 	template < typename T >
-	const ::bio::Arrangement< T > GetAllAsVector() const
+	const ::std::vector< T > GetAllAsVector() const
 	{
-		return this->template GetAll< T >()->
-			template AsVector< T >();
+		return this->template GetAll< T >()->template AsVector< T >();
 	}
 };
 

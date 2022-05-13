@@ -22,7 +22,16 @@
 #pragma once
 
 #include "bio/common/macros/Macros.h"
+#include "bio/common/TransparentWrapper.h"
 #include "IsPointer.h"
+
+//@formatter:off
+#if BIO_CPP_VERSION < 11
+	#include <stdint.h>
+#else
+	#include <cstdint>
+#endif
+//@formatter:on
 
 //@formatter:off
 #if BIO_CPP_VERSION >= 11
@@ -31,7 +40,65 @@
 //@formatter:on
 
 namespace bio {
+
+class StandardDimension;
+
 namespace utility {
+
+/**
+ * Helper for IsPrimitiveImplementation.
+ * @tparam T
+ * @return whether or not T derives from a TransparentWrapper of a hard-coded primitive type.
+ */
+template < typename T >
+BIO_CONSTEXPR bool IsWrappedPrimitive()
+{
+	if (::std::is_base_of< TransparentWrapper< bool >, T >::value)
+	{
+		return true;
+	}
+	if (::std::is_base_of< TransparentWrapper< float >, T >::value)
+	{
+		return true;
+	}
+	if (::std::is_base_of< TransparentWrapper< double >, T >::value)
+	{
+		return true;
+	}
+	if (::std::is_base_of< TransparentWrapper< int8_t >, T >::value)
+	{
+		return true;
+	}
+	if (::std::is_base_of< TransparentWrapper< int16_t >, T >::value)
+	{
+		return true;
+	}
+	if (::std::is_base_of< TransparentWrapper< int32_t >, T >::value)
+	{
+		return true;
+	}
+	if (::std::is_base_of< TransparentWrapper< int64_t >, T >::value)
+	{
+		return true;
+	}
+	if (::std::is_base_of< TransparentWrapper< uint8_t >, T >::value)
+	{
+		return true;
+	}
+	if (::std::is_base_of< TransparentWrapper< uint16_t >, T >::value)
+	{
+		return true;
+	}
+	if (::std::is_base_of< TransparentWrapper< uint32_t >, T >::value)
+	{
+		return true;
+	}
+	if (::std::is_base_of< TransparentWrapper< uint64_t >, T >::value)
+	{
+		return true;
+	}
+	return false;
+}
 
 /**
  * Defines which types return true when called with IsPrimitive(). <br />
@@ -43,7 +110,13 @@ namespace utility {
 template < typename T >
 struct IsPrimitiveImplementation
 {
-	static const bool sValue = false;
+	//@formatter:off
+	#if BIO_CPP_VERSION < 11
+		static const bool sValue = false;
+	#else
+		static const bool sValue = IsWrappedPrimitive< T >();
+	#endif
+	//@formatter:on
 };
 
 /**

@@ -209,7 +209,7 @@ Properties Wave::GetProperties() const
 	Properties overlap;
 	BIO_SANITIZE(waves.Size() && waves[0], ,
 		return overlap);
-	overlap = waves[0]->GetProperties();
+	overlap = waves[0].As< Wave* >()->GetProperties();
 	BIO_SANITIZE_AT_SAFETY_LEVEL_2(waves.Size() > 1, ,
 		return overlap);
 
@@ -226,7 +226,7 @@ Properties Wave::GetProperties() const
 			++prp
 			)
 		{
-			if (!wavProperties.Has(prp.As< Property >())
+			if (!wavProperties.Has(prp.As< Property >()))
 			{
 				overlap.Erase(prp);
 			}

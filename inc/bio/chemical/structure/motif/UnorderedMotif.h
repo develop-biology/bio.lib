@@ -94,7 +94,7 @@ public:
 	 */
 	virtual void ClearImplementation()
 	{
-		this->m_contents-Clear;
+		this->m_contents->Clear();
 	}
 
 	/**

@@ -388,7 +388,7 @@ protected:
 			{
 				Observer< Perspective< DIMENSION > >::Initialize(args[1]);
 			}
-			args.pop_back();
+			args.Erase(1);
 		}
 		if (args.Size() == 1)
 		{

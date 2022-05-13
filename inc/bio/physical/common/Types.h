@@ -22,6 +22,7 @@
 #pragma once
 
 #include "bio/common/Types.h"
+#include "bio/common/utilities/IsPrimitive.h"
 #include "bio/physical/cache/CachedId.h"
 #include "bio/physical/macros/Macros.h"
 #include "bio/physical/Perspective.h"

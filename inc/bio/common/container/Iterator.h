@@ -101,6 +101,18 @@ public:
 	 */
 	virtual const ByteStream operator*() const;
 
+	/**
+	 * Can check if *this is valid through multiple heuristics (e.g. Index() == InvalidIndex())
+	 * @return if *this points to a usable Index.
+	 */
+	bool IsValid() const;
+
+	/**
+	 * Makes IsValid return false.
+	 * i.e. MoveTo(InvalidIndex()).
+	 */
+	virtual void Invalidate();
+
 protected:
 	mutable Container* m_container; 
 	Index m_index;

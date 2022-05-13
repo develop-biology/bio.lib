@@ -136,7 +136,7 @@ public:
 	 */
 	virtual ~LinearMotif()
 	{
-		this->m_contents-Clear;
+		this->m_contents->Clear();
 	}
 
 	/**
@@ -575,7 +575,7 @@ public:
 	virtual void ClearImplementation()
 	{
 		//No need to delete anything, since our Linear wrapper handles that for us.
-		this->m_contents-Clear;
+		this->m_contents->Clear();
 	}
 
 private:

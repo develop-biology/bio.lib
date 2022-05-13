@@ -52,7 +52,7 @@ Reactants::~Reactants()
 
 Reactants::operator Substances()
 {
-	return GetAll< Substance* >()->AsVector< Substance* >(); 
+	return GetAll< Substance* >();
 }
 
 } //chemical namespace

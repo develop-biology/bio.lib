@@ -26,7 +26,7 @@
  */
 #define BIO_SET_PRIMITIVE(type)                                                \
 template <>                                                                    \
-struct IsPrimitiveImplementation< type >()                                     \
+struct IsPrimitiveImplementation< type >                                       \
 {                                                                              \
 	static const bool sValue = true;                                           \
 };

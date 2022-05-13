@@ -63,9 +63,10 @@ class Container
 public:
 
 	/**
+	 * Containers may only be constructed explicitly to avoid ambiguity when passing numbers to a function with 1 or many argument signatures.
 	 * NOTE: We cannot use GetStepSize() here as virtual functions are not available to ctors. <br />
 	 */
-	Container(
+	explicit Container(
 		const Index expectedSize = 2,
 		std::size_t stepSize = sizeof(ByteStream));
 
@@ -75,6 +76,13 @@ public:
 	 * @param other
 	 */
 	Container(const Container& other);
+
+	/**
+	 * Copy ctor for pointers. <br />
+	 * Dereferences other then Imports all contents from other into *this. <br />
+	 * @param other
+	 */
+	Container(const Container* other);
 
 	/**
 	 *
@@ -107,6 +115,16 @@ public:
 	 * @return the number of elements in *this.
 	 */
 	virtual Index GetNumberOfElements() const;
+
+	/**
+	 * Ease of use method. <br />
+	 * This is what we usually mean by "Size" without the pedantic minutia. <br />
+	 * @return GetNumberOfElements()
+	 */
+	inline Index Size() const
+	{
+		return GetNumberOfElements();
+	}
 
 	/**
 	 * Checks if the given Index is available to be allocated, i.e. the Index should not be used. <br />
@@ -150,6 +168,7 @@ public:
 	 * To make implementing your own Containers easier, this method simply hacks the GetNextAvailableIndex method to return the desired index and then calls Add. Thus, by implementing Add, you also implement Insert. <br />
 	 *
 	 * @param content
+	 * @param index
 	 * @return the Index of the added content.
 	 */
 	virtual Index Insert(
@@ -234,7 +253,14 @@ public:
 	 * Copy the contents of other into *this. <br />
 	 * @param other
 	 */
-	virtual void Import(const Container* other); 
+	virtual void Import(const Container& other);
+
+	/**
+	 * Copy the contents of other into *this. <br />
+	 * Just dereferences other & calls the above Import(). <br />
+	 * @param other
+	 */
+	virtual void Import(const Container* other);
 
 	/**
 	 * Ease of use wrapper around Access. <br />

@@ -122,7 +122,7 @@ StdStrings string::Parse(
 			}
 		} //else: don't alter substring
 
-		result.push_back(substring);
+		result.Add(substring);
 	}
 
 	return result;
@@ -136,8 +136,8 @@ std::string string::FromVectorOfStrings(
 {
 	std::string result;
 	for (
-		StdStrings::const_iterator iter = v.begin();
-		iter != v.end();
+		SmartIterator iter = v.Begin();
+		!iter.IsAtEnd();
 		++iter
 		)
 	{
@@ -174,8 +174,8 @@ std::string string::FromVectorOfStrings(
 {
 	std::string result;
 	for (
-		CharStrings::const_iterator iter = v.begin();
-		iter != v.end();
+		SmartIterator iter = v.Begin();
+		!iter.IsAtEnd();
 		++iter
 		)
 	{
@@ -208,12 +208,12 @@ CharStrings string::ToCharStrings(const StdStrings& strings)
 {
 	CharStrings ret;
 	for (
-		StdStrings::const_iterator str = strings.begin();
-		str != strings.end();
+		SmartIterator str = strings.Begin();
+		!str.IsAtEnd();
 		++str
 		)
 	{
-		ret.push_back(str->c_str());
+		ret.Add(str.As< char* >());
 	}
 	return ret;
 }
@@ -222,13 +222,12 @@ StdStrings string::ToStdStrings(const CharStrings& strings)
 {
 	StdStrings ret;
 	for (
-		CharStrings::const_iterator chr = strings.begin();
-		chr != strings.end();
+		SmartIterator chr = strings.Begin();
+		!chr.IsAtEnd();
 		++chr
 		)
 	{
-		std::string str(*chr);
-		ret.push_back(str);
+		ret.Add(chr.As< std::string >());
 	}
 	return ret;
 }

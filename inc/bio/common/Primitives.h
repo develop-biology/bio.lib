@@ -24,25 +24,17 @@
 #include "bio/common/macros/Macros.h"
 #include "bio/common/utilities/IsPrimitive.h"
 #include "ByteStream.h"
-#include "TransparentWrapper.h"
 
 #include <vector>
 #include <map>
 #include <string>
 #include <ostream>
 
-//@formatter:off
-#if BIO_CPP_VERSION < 11
-	#include <stdint.h>
-#else
-	#include <cstdint>
-#endif
-//@formatter:on
-
 namespace bio {
 namespace utility {
 
 /**
+ * This specialization shouldn't be necessary. See IsWrappedPrimitive for more info. <br />
  * All Transparent wrappers should derive their Primitive nature from the type they wrap. <br />
  * On C++ versions below 14, this defaults to true: assuming TransparentWrapper ONLY wraps Primitive types.
  * @tparam T

@@ -37,13 +37,25 @@ class Arrangement :
 public:
 
 	/**
+	 * Like Containers, Arguments may only be constructed explicitly to avoid ambiguity when passing numbers to a function with 1 or many argument signatures.
 	 * @param expectedSize
 	 */
-	Arrangement(const Index expectedSize = 2)
+	explicit Arrangement(const Index expectedSize = 2)
 		:
 		Container(
 			expectedSize,
 			sizeof(TYPE))
+	{
+
+	}
+
+	/**
+	 * Copy ctor for pointers. <br />
+	 * Dereferences other then Imports all contents from other into *this. <br />
+	 * @param other
+	 */
+	Arrangement(const Container* other) :
+		Container(other)
 	{
 
 	}

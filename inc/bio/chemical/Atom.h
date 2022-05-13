@@ -141,7 +141,7 @@ public:
 		Valence position = GetBondPosition< T >();
 
 		BIO_SANITIZE(position, ,
-			return NULL);
+			return 0);
 		return ForceCast< const T >(m_bonds.OptimizedAccess(position)->GetBonded());
 	}
 

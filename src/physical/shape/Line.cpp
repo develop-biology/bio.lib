@@ -32,6 +32,12 @@ Line::Line(Index expectedSize)
 
 }
 
+Line::Line(const Container* other) :
+	Arrangement< Linear >(other)
+{
+
+}
+
 Line::~Line()
 {
 

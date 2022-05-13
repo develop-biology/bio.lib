@@ -102,4 +102,13 @@ const ByteStream Iterator::operator*() const
 	return m_container->Access(m_index);
 }
 
+bool Iterator::IsValid() const
+{
+	return GetIndex() != InvalidIndex();
+}
+
+void Iterator::Invalidate()
+{
+	m_index = InvalidIndex();
+}
 } //bio namespace

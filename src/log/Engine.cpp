@@ -71,7 +71,7 @@ void Engine::Log(
 	va_end(args);
 	str[BIO_LOG_PRINTF_MAX_LINE_SIZE] = '\0';
 
-	m_logMessage.Clear();
+	m_logMessage.clear();
 	m_logMessage.str(""); //TODO: is seekp good enough? what is faster?
 
 	m_logMessage << physical::GetCurrentTimestamp() << " " << FilterPerspective::Instance().GetNameFromId(filter) << " " << LogLevelPerspective::Instance().GetNameFromId(level) << ": " << str << "\n";

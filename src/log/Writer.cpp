@@ -133,7 +133,7 @@ void Writer::InitializeImplementation(ByteStreams args)
 		{
 			m_logEngine = args[1];
 		}
-		args.pop_back();
+		args.Erase(1);
 	}
 	if (args.Size() == 1 && args[0].Is< Filter >())
 	{

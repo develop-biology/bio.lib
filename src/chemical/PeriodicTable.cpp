@@ -69,7 +69,7 @@ const Properties PeriodicTableImplementation::GetPropertiesOf(AtomicNumber id) c
 	BIO_SANITIZE(element, ,
 		return ret);
 	LockThread();
-	ret = element->GetAllAsVector< Property >();
+	ret = element->GetAll< Property >();
 	UnlockThread();
 	return ret;
 }
@@ -109,15 +109,16 @@ AtomicNumber PeriodicTableImplementation::RecordPropertiesOf(
 )
 {
 	SmartIterator hdt = Find(id);
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(hdt == this->m_hadits.end(), ,
+	BIO_SANITIZE_AT_SAFETY_LEVEL_2(hdt.IsValid(), ,
 		return InvalidId());
 
+	Hadit* hadit = hdt;
 	LockThread();
-	Element* element = ForceCast< Element* >(hdt->m_type); 
+	Element* element = ForceCast< Element* >(hadit->m_type);
 	if (!element)
 	{
 		element = new Element();
-		hdt->m_type = element->AsWave();
+		hadit->m_type = element->AsWave();
 	}
 	element->Import< Property >(properties);
 	UnlockThread();

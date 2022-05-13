@@ -22,6 +22,7 @@
 #pragma once
 
 #include "Types.h"
+#include "bio/common/container/Arrangement.h"
 
 namespace bio {
 

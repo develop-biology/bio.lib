@@ -50,7 +50,7 @@ Products::Products(const Substances* substances)
 Products::Products(const Reactants* reactants) 
 	:
 	m_result(code::Success()),
-	m_substances(reactants->GetAllAsVector< Substance* >()) 
+	m_substances(reactants->GetAll< Substance* >())
 {
 
 }
