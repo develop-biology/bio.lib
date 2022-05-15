@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -32,8 +32,8 @@ namespace cellular {
 class Cell;
 
 /**
- * Organelles are functionally grouped sets of Proteins.
- * Create an Organelle for your Cells if you have complex behavior that you would like to isolate, conserve, and/or transport across your system.
+ * Organelles are functionally grouped sets of Proteins. <br />
+ * Create an Organelle for your Cells if you have complex behavior that you would like to isolate, conserve, and/or transport across your system. <br />
  */
 class Organelle :
 	public Class< Organelle >,
@@ -42,13 +42,13 @@ class Organelle :
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular,
 		Organelle)
 
 	/**
-	 * Standard ctors.
+	 * Standard ctors. <br />
 	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
 		Organelle,
 		&OrganellePerspective::Instance(),
@@ -60,15 +60,15 @@ public:
 	virtual ~Organelle();
 
 	/**
-	 * Peak()s occur at Periodic::m_intervals.
-	 * Define your main Periodic logic here.
-	 * This method must be fast:
-	 *	* do not read slow hardware here
-	 *	* do not block for a long time
-	 *	* do not sleep
-	 * If derived classes must do slow work to oscillate, that slow logic MUST BE placed in a separate thread.
-	 * This method would then get the data stored by that thread and returns the data *quickly*. MAKE SURE that the thread never causes a long mutex wait as a side-effect in this Peak method.
-	 * Please call this method when you're done :)
+	 * Peak()s occur at Periodic::mIntervals. <br />
+	 * Define your main Periodic logic here. <br />
+	 * This method must be fast: <br />
+	 *	* do not read slow hardware here <br />
+	 *	* do not block for a long time <br />
+	 *	* do not sleep <br />
+	 * If derived classes must do slow work to oscillate, that slow logic MUST BE placed in a separate thread. <br />
+	 * This method would then get the data stored by that thread and returns the data *quickly*. MAKE SURE that the thread never causes a long mutex wait as a side-effect in this Peak method. <br />
+	 * Please call this method when you're done :) <br />
 	 */
 	virtual Code Peak()
 	{

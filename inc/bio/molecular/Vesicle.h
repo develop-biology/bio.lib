@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -29,9 +29,9 @@ namespace bio {
 namespace molecular {
 
 /**
- * Vesicles define an inside / outside dichotomy between the Molecules on the "outside" of *this and the Molecules on the inside of *this.
- * NOTE: The Molecules inside *this can, themselves, be Vesicles (thought they don't have to be).
- * Another way to think of Vesicles is as a "vacuum" whereby Molecules can exist in an isolated context (which is probably not true of any real system). For example think of 1 Molecules on one side of a room and another on the other side; the Vesicle would be the Room and what is ultimately responsible for defining the scale by which the Molecule's separation can be measured.
+ * Vesicles define an inside / outside dichotomy between the Molecules on the "outside" of *this and the Molecules on the inside of *this. <br />
+ * NOTE: The Molecules inside *this can, themselves, be Vesicles (thought they don't have to be). <br />
+ * Another way to think of Vesicles is as a "vacuum" whereby Molecules can exist in an isolated context (which is probably not true of any real system). For example think of 1 Molecules on one side of a room and another on the other side; the Vesicle would be the Room and what is ultimately responsible for defining the scale by which the Molecule's separation can be measured. <br />
  */
 class Vesicle :
 	virtual public Molecule,
@@ -41,13 +41,13 @@ class Vesicle :
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular,
 		Vesicle)
 
 	/**
-	 * Standard ctors.
+	 * Standard ctors. <br />
 	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(molecular,
 		Vesicle,
 		&VesiclePerspective::Instance(),
@@ -64,7 +64,7 @@ public:
 	virtual ~Vesicle();
 
 	/**
-	 * operator wrappers around GetBy____< Molecule* >
+	 * operator wrappers around GetBy____< Molecule* > 
 	 * @param moleculeId
 	 * @return Extract(...)
 	 * @{
@@ -91,17 +91,17 @@ public:
 	/**@}*/
 
 	/**
-	 * Vesicle copy operation.
-	 * Copies all Molecules in the source Vesicle into *this.
+	 * Vesicle copy operation. <br />
+	 * Copies all Molecules in the source Vesicle into *this. <br />
 	 * @param source
 	 * @return this
 	 */
 	virtual Vesicle* operator<<=(Vesicle* source);
 
 	/**
-	 * Vesicle move operation.
-	 * Moves all Molecules in *this into the target Vesicle.
-	 * This REMOVES all Molecules from *this.
+	 * Vesicle move operation. <br />
+	 * Moves all Molecules in *this into the target Vesicle. <br />
+	 * This REMOVES all Molecules from *this. <br />
 	 * @param target
 	 * @return target
 	 */

@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -32,7 +32,7 @@ Writer::Writer()
 	:
 	physical::Class< Writer >(this),
 	physical::Filterable(filter::Default()),
-	m_logEngine(NULL)
+	mLogEngine(NULL)
 {
 
 }
@@ -44,7 +44,7 @@ Writer::Writer(
 	:
 	physical::Class< Writer >(this),
 	physical::Filterable(filter::Default()),
-	m_logEngine(logEngine)
+	mLogEngine(logEngine)
 {
 
 }
@@ -56,37 +56,37 @@ Writer::~Writer()
 
 void Writer::SetLogEngine(Engine* logEngine)
 {
-	m_logEngine = logEngine;
+	mLogEngine = logEngine;
 }
 
 Engine* Writer::GetLogEngine()
 {
-	return m_logEngine;
+	return mLogEngine;
 }
 
 const Engine* Writer::GetLogEngine() const
 {
-	return m_logEngine;
+	return mLogEngine;
 }
 
 bool Writer::HasLogEngine() const
 {
-	return m_logEngine != NULL;
+	return mLogEngine != NULL;
 }
 
 void Writer::Log(
-	Level level,
+	LogLevel level,
 	const char* format,
 	...
 ) const
 {
 
-	BIO_SANITIZE(m_logEngine, ,
+	BIO_SANITIZE(mLogEngine, ,
 		return);
 
 	//Check if filter is on
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(m_logEngine->FilterPass(
-		m_filter,
+	BIO_SANITIZE_AT_SAFETY_LEVEL_2(mLogEngine->FilterPass(
+		mFilter,
 		level
 	), ,
 		return);
@@ -94,8 +94,8 @@ void Writer::Log(
 	va_list args;
 	va_start(args,
 		format);
-	m_logEngine->Log(
-		m_filter,
+	mLogEngine->Log(
+		mFilter,
 		level,
 		format,
 		args
@@ -105,18 +105,18 @@ void Writer::Log(
 
 void Writer::ExternalLog(
 	Filter filter,
-	Level level,
+	LogLevel level,
 	const char* format,
 	...
 ) const
 {
-	BIO_SANITIZE(m_logEngine, ,
+	BIO_SANITIZE(mLogEngine, ,
 		return);
 
 	va_list args;
 	va_start(args,
 		format);
-	m_logEngine->Log(
+	mLogEngine->Log(
 		filter,
 		level,
 		format,
@@ -127,15 +127,15 @@ void Writer::ExternalLog(
 
 void Writer::InitializeImplementation(ByteStreams args)
 {
-	if (args.size() == 2)
+	if (args.Size() == 2)
 	{
-		if (args[1].Is(m_logEngine))
+		if (args[1].Is(mLogEngine))
 		{
-			m_logEngine = args[1];
+			mLogEngine = args[1];
 		}
-		args.pop_back();
+		args.Erase(1);
 	}
-	if (args.size() == 1 && args[0].Is< Filter >())
+	if (args.Size() == 1 && args[0].Is< Filter >())
 	{
 		Filterable::InitializeImplementation(args);
 	}

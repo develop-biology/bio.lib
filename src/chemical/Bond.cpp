@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -29,9 +29,9 @@ namespace chemical {
 
 Bond::Bond()
 	:
-	m_id(PeriodicTable::InvalidId()),
-	m_bonded(NULL),
-	m_type(bond_type::Empty())
+	mId(PeriodicTable::InvalidId()),
+	mBonded(NULL),
+	mType(bond_type::Empty())
 {
 }
 
@@ -41,9 +41,9 @@ Bond::Bond(
 	BondType type
 )
 	:
-	m_id(id),
-	m_bonded(bonded),
-	m_type(type)
+	mId(id),
+	mBonded(bonded),
+	mType(type)
 {
 }
 
@@ -60,52 +60,52 @@ bool Bond::Form(
 {
 	BIO_SANITIZE(bonded, ,
 		return false);
-	m_id = id;
-	m_bonded = bonded;
-	m_type = type;
+	mId = id;
+	mBonded = bonded;
+	mType = type;
 	return true;
 }
 
 AtomicNumber Bond::GetId() const
 {
-	return m_id;
+	return mId;
 }
 
 physical::Wave* Bond::GetBonded()
 {
-	return m_bonded;
+	return mBonded;
 }
 
 const physical::Wave* Bond::GetBonded() const
 {
-	return m_bonded;
+	return mBonded;
 }
 
 BondType Bond::GetType() const
 {
-	return m_type;
+	return mType;
 }
 
 bool Bond::IsEmpty() const
 {
-	return m_bonded == NULL && m_type == bond_type::Empty();
+	return mBonded == NULL && mType == bond_type::Empty();
 }
 
 void Bond::Break()
 {
-	//leave m_id intact.
-	m_bonded = NULL;
-	m_type = bond_type::Empty();
+	//leave mId intact.
+	mBonded = NULL;
+	mType = bond_type::Empty();
 }
 
 bool Bond::operator==(const AtomicNumber id) const
 {
-	return m_id == id;
+	return mId == id;
 }
 
 bool Bond::operator==(const Bond& other) const
 {
-	return m_id == other.m_id;
+	return mId == other.mId;
 }
 
 } //chemical namespace

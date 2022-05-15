@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -43,7 +43,7 @@ const molecular::Protein* Plasmid::GetRNAPolymerase() const
 
 void Plasmid::CtorCommon()
 {
-	m_protein = new RNAPolymerase(this);
+	mProtein = new RNAPolymerase(this);
 }
 
 RNA* Plasmid::TranscribeFor(Expressor* expressor) const

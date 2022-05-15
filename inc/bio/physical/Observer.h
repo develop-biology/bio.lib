@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -29,11 +29,11 @@ namespace bio {
 namespace physical {
 
 /**
- * An Observer class is one that has a PERSPECTIVE.
- * This is intended for Identifiable classes (see Identifiable.h) and any other classes that manage or work with Identifiable classes.
+ * An Observer class is one that has a PERSPECTIVE. <br />
+ * This is intended for Identifiable classes (see Identifiable.h) and any other classes that manage or work with Identifiable classes. <br />
  *
- * NOTE: At this time we do not currently support viewing objects from multiple Perspectives. This is because if you can get the object's Id, you should also be able to get it's Perspective (i.e observer->GetPerspective).
- * By not allowing objects to be duplicated across perspectives, we reduce our overall memory footprint.
+ * NOTE: At this time we do not currently support viewing objects from multiple Perspectives. This is because if you can get the object's Id, you should also be able to get it's Perspective (i.e observer->GetPerspective). <br />
+ * By not allowing objects to be duplicated across perspectives, we reduce our overall memory footprint. <br />
 */
 template < typename PERSPECTIVE >
 class Observer :
@@ -47,7 +47,7 @@ public:
 	 */
 	explicit Observer(Perspective* perspective = NULL)
 		:
-		m_perspective(perspective)
+		mPerspective(perspective)
 	{
 	}
 
@@ -56,7 +56,7 @@ public:
 	 */
 	Observer(const Observer& other)
 		:
-		m_perspective(other.m_perspective)
+		mPerspective(other.mPerspective)
 	{
 	}
 
@@ -68,12 +68,12 @@ public:
 	}
 
 	/**
-	 * Sets the perspective for *this.
+	 * Sets the perspective for *this. <br />
 	 * @param perspective
 	 */
 	virtual void SetPerspective(Perspective* perspective)
 	{
-		m_perspective = perspective;
+		mPerspective = perspective;
 	}
 
 	virtual /**
@@ -81,23 +81,23 @@ public:
 	 */
 	Perspective* GetPerspective() const
 	{
-		return m_perspective;
+		return mPerspective;
 	}
 
 protected:
 	/**
-	 * VirtualBase required method. See that class for details (in common/)
+	 * VirtualBase required method. See that class for details (in common/) <br />
 	 * @param args
 	 */
 	virtual void InitializeImplementation(ByteStreams args)
 	{
-		BIO_SANITIZE(args.size() == 1 && args[0].Is(m_perspective), ,
+		BIO_SANITIZE(args.Size() == 1 && args[0].Is(mPerspective), ,
 			return);
-		m_perspective = args[0];
+		mPerspective = args[0];
 	}
 
 private:
-	Perspective* m_perspective;
+	Perspective* mPerspective;
 };
 
 } //physical namespace

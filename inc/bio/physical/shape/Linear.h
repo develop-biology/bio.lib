@@ -27,25 +27,25 @@ namespace bio {
 namespace physical {
 
 /**
- * Linear is a ____pointer interface for Biology.
+ * Linear is a ____pointer interface for Biology. <br />
  *
- * This class is used by Line and chemical::LinearMotifs, see those classes for more info.
+ * This class is used by Line and chemical::LinearMotifs, see those classes for more info. <br />
  *
- * Lines contain logic for handling their CONTENT_TYPE by Id, Name, and other aspects innate to the Identifiable<StandardDimension>. The term "linear" comes from the idea that instead of a 0 dimensional pile of objects, as are Arrangements, *this can be ordered along at least 1 dimension (i.e. the StandardDimension).
+ * Lines contain logic for handling their CONTENT_TYPE by Id, Name, and other aspects innate to the Identifiable<StandardDimension>. The term "linear" comes from the idea that instead of a 0 dimensional pile of objects, as are Arrangements, *this can be ordered along at least 1 dimension (i.e. the StandardDimension). <br />
  *
- * Current features:
- * 1. Shared: determines whether or not m_component will be deleted with *this.
+ * Current features: <br />
+ * 1. Shared: determines whether or not mComponent will be deleted with *this. <br />
  *
- * Future features:
- * 1. Const: determines whether or not *this can be changed.
+ * Future features: <br />
+ * 1. Const: determines whether or not *this can be changed. <br />
  *
- * NOTE: Linear is NOT VIRTUAL!
- * This is done to save space in lists. Because we do not need a vtable, we shan't have one!
+ * NOTE: Linear is NOT VIRTUAL! <br />
+ * This is done to save space in lists. Because we do not need a vtable, we shan't have one! <br />
  *
- * NOTE: we should support Dimensions other than the StandardDimension. However, the limitations of chemical::Atom::Bonds prevent us from indexing more than 1 template variable from ____Interfaces (e.g. Structure).
- * StandardDimension here, mirrors what is used by chemical::Class and does not require any additional template specialization.
- * Plus, not supporting other Dimensions makes for cleaner inheritance / downstream code.
- * Support for other Dimensions may be added in a future release.
+ * NOTE: we should support Dimensions other than the StandardDimension. However, the limitations of chemical::Atom::Bonds prevent us from indexing more than 1 template variable from ____Interfaces (e.g. Structure). <br />
+ * StandardDimension here, mirrors what is used by chemical::Class and does not require any additional template specialization. <br />
+ * Plus, not supporting other Dimensions makes for cleaner inheritance / downstream code. <br />
+ * Support for other Dimensions may be added in a future release. <br />
  */
 class Linear
 {
@@ -60,57 +60,57 @@ public:
 	);
 
 	/**
-	 * Will delete m_component iff !m_shared.
+	 * Will delete mComponent iff !mShared. <br />
 	 */
 	~Linear();
 
 	/**
-	 * NOTE: Comparison should be handled by Identifiable, i.e. by Id.
+	 * NOTE: Comparison should be handled by Identifiable, i.e. by Id. <br />
 	 * @param component
 	 * @return whether the component of *this matches the given component.
 	 */
 	bool operator==(const Identifiable< StandardDimension >* component) const;
 
 	/**
-	 * NOTE: Comparison should be handled by Identifiable, i.e. by Id.
+	 * NOTE: Comparison should be handled by Identifiable, i.e. by Id. <br />
 	 * @param other
 	 * @return whether the other's component matches that of *this.
 	 */
 	bool operator==(const Linear& other) const;
 
 	/**
-	 * @return m_component
+	 * @return mComponent
 	 */
 	operator Identifiable< StandardDimension >*();
 
 	/**
-	 * @return m_component
+	 * @return mComponent
 	 */
 	operator const Identifiable< StandardDimension >*() const;
 
 	/**
-	 * @return m_component
+	 * @return mComponent
 	 */
 	Identifiable< StandardDimension >& operator*();
 
 	/**
-	 * @return m_component
+	 * @return mComponent
 	 */
 	const Identifiable< StandardDimension >& operator*() const;
 
 	/**
-	 * @return m_component
+	 * @return mComponent
 	 */
 	Identifiable< StandardDimension >* operator->();
 
 	/**
-	 * @return m_component
+	 * @return mComponent
 	 */
 	const Identifiable< StandardDimension >* operator->() const;
 
 protected:
-	Identifiable< StandardDimension >* m_component;
-	bool m_shared;
+	Identifiable< StandardDimension >* mComponent;
+	bool mShared;
 };
 
 } //physical namespace

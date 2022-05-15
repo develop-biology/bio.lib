@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -29,14 +29,14 @@ namespace chemical {
 Atom::Atom()
 	:
 	physical::Class< Atom >(this),
-	m_bonds(4)
+	mBonds(4)
 {
 }
 
 Atom::Atom(const Atom& other)
 	:
 	physical::Class< Atom >(this),
-	m_bonds(other.m_bonds.GetCapacity())
+	mBonds(other.mBonds.GetCapacity())
 {
 
 }
@@ -56,7 +56,7 @@ Code Atom::Attenuate(const physical::Wave* other)
 
 	Bond* bondBuffer;
 	for (
-		SmartIterator bnd = m_bonds.End();
+		SmartIterator bnd = mBonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
@@ -69,7 +69,7 @@ Code Atom::Attenuate(const physical::Wave* other)
 		if (physical::Wave::GetResonanceBetween(
 			bondBuffer->GetBonded(),
 			other
-		).size())
+		).Size())
 		{
 			if (bondBuffer->GetBonded()->Attenuate(demodulated) != code::Success())
 			{
@@ -90,7 +90,7 @@ Code Atom::Disattenuate(const physical::Wave* other)
 
 	Bond* bondBuffer;
 	for (
-		SmartIterator bnd = m_bonds.End();
+		SmartIterator bnd = mBonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
@@ -103,7 +103,7 @@ Code Atom::Disattenuate(const physical::Wave* other)
 		if (physical::Wave::GetResonanceBetween(
 			bondBuffer->GetBonded(),
 			other
-		).size())
+		).Size())
 		{
 			if (bondBuffer->GetBonded()->Disattenuate(demodulated) != code::Success())
 			{
@@ -125,9 +125,9 @@ bool Atom::FormBondImplementation(
 
 	Valence position = GetBondPosition(id);
 	Bond* bondBuffer;
-	if (m_bonds.IsAllocated(position))
+	if (mBonds.IsAllocated(position))
 	{
-		bondBuffer = m_bonds.OptimizedAccess(position);
+		bondBuffer = mBonds.OptimizedAccess(position);
 		BIO_SANITIZE(!bondBuffer->IsEmpty(), ,
 			return false)
 		return bondBuffer->Form(
@@ -137,7 +137,7 @@ bool Atom::FormBondImplementation(
 		);
 	}
 	//implicitly cast the addition index to a bool.
-	return m_bonds.Add(
+	return mBonds.Add(
 		Bond(
 			id,
 			toBond,
@@ -155,10 +155,10 @@ bool Atom::BreakBondImplementation(
 
 	BIO_SANITIZE(id && position, ,
 		return false);
-	BIO_SANITIZE(m_bonds.IsAllocated(position), ,
+	BIO_SANITIZE(mBonds.IsAllocated(position), ,
 		return false);
 
-	m_bonds.OptimizedAccess(position)->Break();
+	mBonds.OptimizedAccess(position)->Break();
 	//Let dtor cleanup.
 
 	return true;
@@ -170,7 +170,7 @@ Valence Atom::GetBondPosition(AtomicNumber bondedId) const
 	BIO_SANITIZE(bondedId, ,
 		return 0);
 	for (
-		SmartIterator bnd = m_bonds.End();
+		SmartIterator bnd = mBonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
@@ -190,9 +190,9 @@ Valence Atom::GetBondPosition(Name typeName) const
 
 BondType Atom::GetBondType(Valence position) const
 {
-	BIO_SANITIZE(m_bonds.IsAllocated(position), ,
+	BIO_SANITIZE(mBonds.IsAllocated(position), ,
 		return BondTypePerspective::InvalidId());
-	return m_bonds.OptimizedAccess(position)->GetId();
+	return mBonds.OptimizedAccess(position)->GetId();
 }
 
 physical::Symmetry* Atom::Spin() const
@@ -209,26 +209,26 @@ Code Atom::Reify(physical::Symmetry* symmetry)
 
 physical::Wave* Atom::GetBonded(Valence position)
 {
-	BIO_SANITIZE(m_bonds.IsAllocated(position), ,
+	BIO_SANITIZE(mBonds.IsAllocated(position), ,
 		return NULL)
-	return m_bonds.OptimizedAccess(position)->GetBonded();
+	return mBonds.OptimizedAccess(position)->GetBonded();
 }
 
 const physical::Wave* Atom::GetBonded(Valence position) const
 {
-	BIO_SANITIZE(m_bonds.IsAllocated(position), ,
+	BIO_SANITIZE(mBonds.IsAllocated(position), ,
 		return NULL)
-	return m_bonds.OptimizedAccess(position)->GetBonded();
+	return mBonds.OptimizedAccess(position)->GetBonded();
 }
 
 Bonds* Atom::GetAllBonds()
 {
-	return &m_bonds;
+	return &mBonds;
 }
 
 const Bonds* Atom::GetAllBonds() const
 {
-	return &m_bonds;
+	return &mBonds;
 }
 
 

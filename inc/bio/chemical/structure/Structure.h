@@ -28,12 +28,12 @@ namespace bio {
 namespace chemical {
 
 /**
- * Chemical structures can have Motifs.
- * Here, we implement all the necessary interfaces for adding Motifs to your classes.
+ * Chemical structures can have Motifs. <br />
+ * Here, we implement all the necessary interfaces for adding Motifs to your classes. <br />
  *
- * This class should be virtually inherited.
+ * This class should be virtually inherited. <br />
  *
- * Motifs should be inherited (but can be added through Bonding). The reason that we break the "has a motif" idea and instead go for "is a motif" inheritance style is that chemical compositions define the identity of chemical structures. So if a chemical substance would change its identity by containing different motifs, it makes sense that the motifs define the class structure of the substance.
+ * Motifs should be inherited (but can be added through Bonding). The reason that we break the "has a motif" idea and instead go for "is a motif" inheritance style is that chemical compositions define the identity of chemical structures. So if a chemical substance would change its identity by containing different motifs, it makes sense that the motifs define the class structure of the substance. <br />
  */
 class Structure :
 	public UnorderedStructureInterface,

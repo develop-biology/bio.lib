@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -34,17 +34,17 @@ namespace bio {
 namespace physical {
 
 /**
- * An Identifiable class has a name and a numeric identifier (Id).
- * Names are used for debugging and human interaction, while Ids are used for run-time processing.
- * Identifiable classes require a Perspective<DIMENSION> to maintain a mapping of Id <-> Name pairs.
- * The Id exists within a DIMENSION, i.e. an int type (almost always unsigned), like uint32_t.
- * For more on DIMENSIONs, see Perspective.h
+ * An Identifiable class has a name and a numeric identifier (Id). <br />
+ * Names are used for debugging and human interaction, while Ids are used for run-time processing. <br />
+ * Identifiable classes require a Perspective<DIMENSION> to maintain a mapping of Id <-> Name pairs. <br />
+ * The Id exists within a DIMENSION, i.e. an int type (almost always unsigned), like uint32_t. <br />
+ * For more on DIMENSIONs, see Perspective.h <br />
  *
  *The reason this class is templated is so that less numerous classes can use a smaller ID type, which decreases memory footprint and increases processing speed (less bits to check).
- * Unfortunately, inheritance reveals a problem with this design: Identifiable classes cannot change their ID type.
- * For example, if you have one class that you expect a small number of and then derive from that class, expecting a larger number of children, you either must derive from Identifiable twice, indulging in diamond inheritance, or increase the size of Id to encompass all possible uses.
- * For this reason, the default DIMENSION (StandardDimension, from Types.h) should be used in nearly all cases, unless you want to ensure either your class is not derived from or that it remains separated from other code.
- * An example of using a non-StandardDimension can be found in Codes. Codes have their own DIMENSION, as they should not be inherited from but may still be expanded upon through user-defined values (simply additional name <-> id definitions).
+ * Unfortunately, inheritance reveals a problem with this design: Identifiable classes cannot change their ID type. <br />
+ * For example, if you have one class that you expect a small number of and then derive from that class, expecting a larger number of children, you either must derive from Identifiable twice, indulging in diamond inheritance, or increase the size of Id to encompass all possible uses. <br />
+ * For this reason, the default DIMENSION (StandardDimension, from Types.h) should be used in nearly all cases, unless you want to ensure either your class is not derived from or that it remains separated from other code. <br />
+ * An example of using a non-StandardDimension can be found in Codes. Codes have their own DIMENSION, as they should not be inherited from but may still be expanded upon through user-defined values (simply additional name <-> id definitions). <br />
 */
 template < typename DIMENSION >
 class Identifiable :
@@ -53,10 +53,10 @@ class Identifiable :
 {
 public:
 	typedef DIMENSION Id;
-	typedef std::vector< Id > Ids;
+	typedef ::bio::Arrangement< Id > Ids;
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
 		Identifiable< DIMENSION >)
@@ -69,9 +69,9 @@ public:
 		:
 		physical::Class< Identifiable< DIMENSION > >(this),
 		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-		m_name(NULL),
+		mName(NULL),
 		#endif
-		m_id(Perspective< DIMENSION >::InvalidId())
+		mId(Perspective< DIMENSION >::InvalidId())
 	{
 		CloneIntoName(Perspective< DIMENSION >::InvalidName());
 		if (perspective)
@@ -91,20 +91,20 @@ public:
 		:
 		physical::Class< Identifiable< DIMENSION > >(this),
 		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-		m_name(NULL),
+		mName(NULL),
 		#endif
-		m_id(Perspective< DIMENSION >::InvalidId())
+		mId(Perspective< DIMENSION >::InvalidId())
 	{
 		CloneIntoName(name);
 		if (perspective)
 		{
 			Observer< Perspective< DIMENSION > >::Initialize(perspective);
-			m_id = this->GetPerspective()->GetIdFromName(m_name);
+			mId = this->GetPerspective()->GetIdFromName(mName);
 			this->MakeWave();
 		}
 		else
 		{
-			m_id = Perspective< DIMENSION >::InvalidId();
+			mId = Perspective< DIMENSION >::InvalidId();
 		}
 	}
 
@@ -119,9 +119,9 @@ public:
 		:
 		physical::Class< Identifiable< DIMENSION > >(this),
 		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-		m_name(NULL),
+		mName(NULL),
 		#endif
-		m_id(Perspective< DIMENSION >::InvalidId())
+		mId(Perspective< DIMENSION >::InvalidId())
 	{
 		if (perspective)
 		{
@@ -131,7 +131,7 @@ public:
 		}
 		else
 		{
-			m_id = Perspective< DIMENSION >::InvalidId();
+			mId = Perspective< DIMENSION >::InvalidId();
 			CloneIntoName(Perspective< DIMENSION >::InvalidName());
 		}
 	}
@@ -143,9 +143,9 @@ public:
 		:
 		physical::Class< Identifiable< DIMENSION > >(this),
 		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-		m_name(NULL),
+		mName(NULL),
 		#endif
-		m_id(other.m_id)
+		mId(other.mId)
 	{
 		Observer< Perspective< DIMENSION > >::Initialize(other.GetPerspective());
 		CloneIntoName(other.GetName());
@@ -157,7 +157,7 @@ public:
 	virtual ~Identifiable()
 	{
 		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-		delete[] m_name;
+		delete[] mName;
 		#endif
 	}
 
@@ -166,7 +166,7 @@ public:
 	 */
 	virtual operator DIMENSION() const
 	{
-		return m_id;
+		return mId;
 	}
 
 	/**
@@ -179,7 +179,7 @@ public:
 		{
 			return false;
 		}
-		if (!this->GetId() == id.m_t)
+		if (!this->GetId() == id.mT)
 		{
 			return false;
 		}
@@ -231,9 +231,9 @@ public:
 	virtual Name GetName() const
 	{
 		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-		return m_name;
+		return mName;
 		#else
-		return BIO_SANITIZE_WITH_CACHE(this->GetPerspective(), RESULT->GetNameFromId(m_id), return "INVALID_NAME");
+		return BIO_SANITIZE_WITH_CACHE(this->GetPerspective(), RESULT->GetNameFromId(mId), return "INVALID_NAME");
 		#endif
 	}
 
@@ -242,12 +242,12 @@ public:
 	 */
 	virtual Id GetId() const
 	{
-		return m_id;
+		return mId;
 	}
 
 	/**
-	 * Sets the name and updates the type to the given name.
-	 * Has no effect if perspective is null.
+	 * Sets the name and updates the type to the given name. <br />
+	 * Has no effect if perspective is null. <br />
 	 * @param name
 	 */
 	virtual void SetName(Name name)
@@ -260,12 +260,12 @@ public:
 		}
 		CloneIntoName(name);
 
-		m_id = this->GetPerspective()->GetIdFromName(m_name);
+		mId = this->GetPerspective()->GetIdFromName(mName);
 	}
 
 	/**
-	 * Sets the id and updates the name to the given id.
-	 * Has no effect if perspective is null.
+	 * Sets the id and updates the name to the given id. <br />
+	 * Has no effect if perspective is null. <br />
 	 * @param id
 	 */
 	virtual void SetId(Id id)
@@ -274,14 +274,14 @@ public:
 		{
 			return;
 		}
-		m_id = id;
+		mId = id;
 
-		CloneIntoName(this->GetPerspective()->GetNameFromId(m_id));
+		CloneIntoName(this->GetPerspective()->GetNameFromId(mId));
 	}
 
 	/**
-	 * This is preferred to GetName() == ... because == may not exist for the Name type and/or the Name type may change in a later release.
-	 * Case Sensitive.
+	 * This is preferred to GetName() == ... because == may not exist for the Name type and/or the Name type may change in a later release. <br />
+	 * Case Sensitive. <br />
 	 * @param name
 	 * @return a comparison operation on the given name with the name of *this.
 	 */
@@ -309,11 +309,11 @@ public:
 	 */
 	virtual bool IsId(Id id) const
 	{
-		return id == m_id;
+		return id == mId;
 	}
 
 	/**
-	 * Sets the perspective for *this.
+	 * Sets the perspective for *this. <br />
 	 * @param perspective
 	 */
 	virtual void SetPerspective(Perspective< DIMENSION >* perspective)
@@ -322,16 +322,16 @@ public:
 
 		if (IsName(Perspective< DIMENSION >::InvalidName()) && !IsId(Perspective< DIMENSION >::InvalidId()))
 		{
-			CloneIntoName(this->GetPerspective()->GetNameFromId(m_id));
+			CloneIntoName(this->GetPerspective()->GetNameFromId(mId));
 		}
 		else if (!IsName(Perspective< DIMENSION >::InvalidName()) && IsId(Perspective< DIMENSION >::InvalidId()))
 		{
-			m_id = this->GetPerspective()->GetIdFromName(GetName());
+			mId = this->GetPerspective()->GetIdFromName(GetName());
 		}
 	}
 
 	/**
-	 * Records *this as the archetypal Wave for the id of *this.
+	 * Records *this as the archetypal Wave for the id of *this. <br />
 	 * @param force
 	 */
 	virtual void MakeWave(bool force = false)
@@ -342,10 +342,10 @@ public:
 		}
 		if (force)
 		{
-			this->GetPerspective()->DisassociateType(m_id);
+			this->GetPerspective()->DisassociateType(mId);
 		}
 		this->GetPerspective()->AssociateType(
-			m_id,
+			mId,
 			this
 		);
 	}
@@ -354,22 +354,22 @@ public:
 	//No need to compile these nops.
 
 	/**
-	 * Required method from Wave. See that class for details.
-	 * Because Symmetry is Identifiable, it cannot be #included here. We rely on children of Identifiable (primarily chemical:: objects to implement Spin()).
+	 * Required method from Wave. See that class for details. <br />
+	 * Because Symmetry is Identifiable, it cannot be #included here. We rely on children of Identifiable (primarily chemical:: objects to implement Spin()). <br />
 	 * @return a Symmetrical image of *this
 	 */
-	virtual Symmetry* Spin() const
+	virtual Symmetry* Spin() const 
 	{
 		return NULL;
 	}
 
 	/**
-	 * Required method from Wave. See that class for details.
-	 * Reconstruct *this from the given Symmetry.
-	 * Because Symmetry is Identifiable, it cannot be #included here. We rely on children of Identifiable (primarily chemical:: objects to implement Reify()).
+	 * Required method from Wave. See that class for details. <br />
+	 * Reconstruct *this from the given Symmetry. <br />
+	 * Because Symmetry is Identifiable, it cannot be #included here. We rely on children of Identifiable (primarily chemical:: objects to implement Reify()). <br />
 	 * @param symmetry
 	 */
-	virtual Code Reify(Symmetry* symmetry)
+	virtual Code Reify(Symmetry* symmetry) 
 	{
 		//nop
 	}
@@ -377,26 +377,26 @@ public:
 
 protected:
 	/**
-	 * VirtualBase required method. See that class for details (in common/)
+	 * VirtualBase required method. See that class for details (in common/) <br />
 	 * @param args
 	 */
 	virtual void InitializeImplementation(ByteStreams args)
 	{
-		if (args.size() == 2)
+		if (args.Size() == 2)
 		{
 			if (args[1].Is< Perspective< DIMENSION >* >())
 			{
 				Observer< Perspective< DIMENSION > >::Initialize(args[1]);
 			}
-			args.pop_back();
+			args.Erase(1);
 		}
-		if (args.size() == 1)
+		if (args.Size() == 1)
 		{
-			if (args[0].Is(m_id))
+			if (args[0].Is(mId))
 			{
-				m_id = args[0];
+				mId = args[0];
 			}
-			else if (args[0].Is(m_name))
+			else if (args[0].Is(mName))
 			{
 				CloneIntoName(args[0]);
 			}
@@ -405,21 +405,21 @@ protected:
 
 private:
 	#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-	Name m_name;
+	Name mName;
 	#endif
 
-	Id m_id;
+	Id mId;
 
 	void CloneIntoName(Name name)
 	{
 		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-		if (m_name)
+		if (mName)
 		{
-			delete[] m_name;
+			delete[] mName;
 		}
 		string::CloneInto(
 			name,
-			m_name
+			mName
 		);
 		#endif
 	}

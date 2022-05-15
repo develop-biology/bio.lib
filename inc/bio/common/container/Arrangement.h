@@ -21,14 +21,13 @@
 
 #pragma once
 
-#include "bio/common/container/Container.h"
-#include "bio/physical/macros/Macros.h"
+#include "Container.h"
+#include "bio/common/macros/Macros.h"
 
 namespace bio {
-namespace physical {
 
 /**
- * Arrangements provide a more memory-efficient interface of the Container interface for a single type.
+ * Arrangements provide a more memory-efficient interface of the Container interface for a single type. <br />
  * @tparam TYPE
  */
 template < typename TYPE >
@@ -38,13 +37,26 @@ class Arrangement :
 public:
 
 	/**
+	 * Like Containers, Arguments may only be constructed explicitly to avoid ambiguity when passing numbers to a function with 1 or many argument signatures.
 	 * @param expectedSize
 	 */
-	Arrangement(const Index expectedSize = 2)
+	explicit Arrangement(const Index expectedSize = 2)
 		:
 		Container(
 			expectedSize,
 			sizeof(TYPE))
+	{
+
+	}
+
+	/**
+	 * Copy ctor for pointers. <br />
+	 * Dereferences other then Imports all contents from other into *this. <br />
+	 * @param other
+	 */
+	Arrangement(const Container* other)
+		:
+		Container(other)
 	{
 
 	}
@@ -66,7 +78,7 @@ public:
 			return InvalidIndex())
 		TYPE toAdd = content;
 		std::memcpy(
-			&this->m_store[ret * sizeof(TYPE)],
+			&this->mStore[ret * sizeof(TYPE)],
 			&toAdd,
 			sizeof(TYPE));
 		return ret;
@@ -79,7 +91,7 @@ public:
 		TYPE* ret;
 		std::memcpy(
 			ret,
-			&this->m_store[index * sizeof(TYPE)],
+			&this->mStore[index * sizeof(TYPE)],
 			sizeof(TYPE));
 		return *ret;
 	}
@@ -91,7 +103,7 @@ public:
 		TYPE* ret;
 		std::memcpy(
 			ret,
-			&this->m_store[index * sizeof(TYPE)],
+			&this->mStore[index * sizeof(TYPE)],
 			sizeof(TYPE));
 		return *ret;
 	}
@@ -103,10 +115,10 @@ public:
 		TYPE* toDelete;
 		std::memcpy(
 			toDelete,
-			&this->m_store[index * sizeof(TYPE)],
+			&this->mStore[index * sizeof(TYPE)],
 			sizeof(TYPE));
 		delete toDelete;
-		this->m_deallocated.push_back(index);
+		this->mDeallocated.push_back(index);
 		return true;
 	}
 
@@ -121,7 +133,7 @@ public:
 	}
 
 	/**
-	 * Convenience wrapper for accessing without casting.
+	 * Convenience wrapper for accessing without casting. <br />
 	 * @param index
 	 * @return the given position in *this as a TYPE.
 	 */
@@ -131,7 +143,7 @@ public:
 	}
 
 	/**
-	 * Convenience wrapper for accessing without casting.
+	 * Convenience wrapper for accessing without casting. <br />
 	 * @param index
 	 * @return the given position in *this as a TYPE.
 	 */
@@ -141,14 +153,13 @@ public:
 	}
 
 	/**
-	 * Please override this to return the size of the type your Container interface is working with.
+	 * Please override this to return the size of the type your Container interface is working with. <br />
 	 * @return the size of the data type stored in *this.
 	 */
-	virtual const std::size_t GetStepSize() const
+	virtual const ::std::size_t GetStepSize() const
 	{
 		return sizeof(TYPE);
 	}
 };
 
-} //physical namespace
 } //bio namespace

@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -62,8 +62,8 @@ Code Expressor::ExpressGenes()
 		}
 	}
 	for (
-		Transcriptome::const_iterator rna = m_transcriptome.begin();
-		rna != m_transcriptome.end();
+		SmartIterator rna = mTranscriptome.Begin();
+		!rna.IsAtEnd();
 		++rna
 		)
 	{
@@ -79,32 +79,32 @@ Code Expressor::AddToTranscriptome(const RNA* toExpress)
 {
 	BIO_SANITIZE(toExpress, ,
 		return code::BadArgument1());
-	m_transcriptome.push_back(toExpress);
+	mTranscriptome.Add(toExpress);
 	return code::Success();
 }
 
 Code Expressor::Translate(const RNA* mRNA)
 {
 	BIO_SANITIZE(mRNA, ,
-		code::BadArgument1());
+		code::BadArgument1())
 
 	Code ret = code::Success();
 
 	Gene* geneBuffer;
 	for (
-		Transcriptome::const_iterator rna = m_transcriptome.begin();
-		rna != m_transcriptome.end();
+		SmartIterator rna = mTranscriptome.Begin();
+		!rna.IsAtEnd();
 		++rna
 		)
 	{
 		for (
-			SmartIterator gen = (*rna)->GetAll< Gene* >()->Begin();
+			SmartIterator gen = rna.As< const RNA* >()->GetAll< Gene* >()->Begin();
 			!gen.IsAtEnd();
 			++gen
 			)
 		{
 			geneBuffer = gen;
-			if (!geneBuffer->m_insertion.Seek(this))
+			if (!geneBuffer->mInsertion.Seek(this))
 			{
 				ret = code::UnknownError();
 			}

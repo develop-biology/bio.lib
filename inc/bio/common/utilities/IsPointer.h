@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/common/macros/LanguageMacros.h"
+#include "bio/common/macros/Macros.h"
 
 //@formatter:off
 #if BIO_CPP_VERSION >= 11
@@ -30,69 +30,46 @@
 //@formatter:on
 
 namespace bio {
+namespace utility {
 
 //@formatter:off
 #if BIO_CPP_VERSION < 11
 	template<typename T>
-	struct IsPointerImplementation {static const bool m_value = false;};
+	struct IsPointerImplementation {static const bool sValue = false;};
 
 	template<typename T>
-	struct IsPointerImplementation<T*> {static const bool m_value = true;};
+	struct IsPointerImplementation<T*> {static const bool sValue = true;};
 #endif
 //@formatter:on
 
 /**
- * Check whether or not T is a pointer
+ * Check whether or not T is a pointer <br />
  * @tparam T
  * @return whether or not T is a pointer.
  */
 template < typename T >
-inline bool IsPointer()
+BIO_CONSTEXPR bool IsPointer()
 {
 	//@formatter:off
 	#if BIO_CPP_VERSION >= 11
-		return std::is_pointer<T>::value;
+		return ::std::is_pointer<T>::value;
 	#else
-		return IsPointerImplementation< T >::m_value;
+		return IsPointerImplementation< T >::sValue;
 	#endif
 	//@formatter:on
 }
 
 /**
- * Ease of use method for passing T as arg.
+ * Ease of use method for passing T as arg. <br />
  * @tparam T
  * @param t
  * @return whether or not T is a pointer.
  */
 template < typename T >
-inline bool IsPointer(const T t)
+bool IsPointer(const T t)
 {
 	return IsPointer< T >();
 }
 
-/**
- * Maybe a helper method?
- * This is currently unused.
- * @tparam T
- * @param t
- * @return T
- */
-template < typename T >
-inline T& Dereference(T& t)
-{
-	return t;
-}
-
-/**
- * Maybe a helper method?
- * This is currently unused.
- * @tparam T
- * @param t
- * @return *T
- */
-template < typename T >
-inline T& Dereference(T* t)
-{
-	return *t;
-}
+} //utility namespace
 } //bio namespace

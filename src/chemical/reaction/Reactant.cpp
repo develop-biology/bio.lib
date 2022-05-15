@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -29,7 +29,7 @@ void Reactant::CtorCommon(Name typeName)
 {
 	string::CloneInto(
 		typeName,
-		m_typeName
+		mTypeName
 	);
 }
 
@@ -70,12 +70,12 @@ Reactant::Reactant(
 
 Reactant::~Reactant()
 {
-	delete[] m_typeName;
+	delete[] mTypeName;
 }
 
 bool Reactant::operator==(const Substance& other) const
 {
-	return Substance::operator==(other) && other.GetBondPosition(m_typeName) != 0;
+	return Substance::operator==(other) && other.GetBondPosition(mTypeName) != 0;
 }
 
 } //chemical namespace

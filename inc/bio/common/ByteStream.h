@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -21,39 +21,42 @@
 
 #pragma once
 
-#include "bio/common/macros/AssertMacros.h"
+#include "bio/common/macros/Macros.h"
 #include "TypeName.h"
 #include <cstddef>
 #include <cstdlib>
 #include <cstring>
+#include <assert.h>
 
 namespace bio {
 
 /**
- * Generic byte stream class. Kinda like a void* that you can save and cast later.
- * Work around for c++98 auto keyword and other wonky problems.
+ * Generic byte stream class. Kinda like a void* that you can save and cast later. 
+ * Work around for c++98 auto keyword and other wonky problems. <br />
  *
  *******************************************************************************
- *                    DO NOT USE THIS IMPROPERLY!!
+ *                    DO NOT USE THIS IMPROPERLY!! <br />
  *******************************************************************************
  *
- * If you don't understand what this does and how it CAN GO HORRIBLY WRONG,
- * DO NOT USE THIS CLASS!
+ * If you don't understand what this does and how it CAN GO HORRIBLY WRONG, <br />
+ * DO NOT USE THIS CLASS! <br />
  *
- * This is used by BIO_SANITIZE_WITH_CACHE and Containers.
+ * This is used by BIO_SANITIZE_WITH_CACHE and Containers. <br />
  *
- * NOTE: ByteStreams are not virtual to save what space we can. This may change in a future release if we decide we somehow need more hacky, abstract storage.
+ * NOTE: ByteStreams are not virtual to save what space we can. This may change in a future release if we decide we somehow need more hacky, abstract storage. <br />
  */
 class ByteStream
 {
 public:
 	/**
-	 * DON'T USE THIS UNLESS YOU KNOW WHAT YOU'RE DOING
+	 * DON'T USE THIS UNLESS YOU KNOW WHAT YOU'RE DOING <br />
 	 */
 	ByteStream();
 
 	template < typename T >
 	ByteStream(T in)
+		:
+		mHolding(false)
 	{
 		Set(in);
 	}
@@ -74,14 +77,14 @@ public:
 	void operator=(const ByteStream& other);
 
 	/**
-	 * Compares the memory contained in both *this and other.
+	 * Compares the memory contained in both *this and other. <br />
 	 * @param other
 	 * @return whether or not other holds the same bits as *this.
 	 */
 	bool operator==(const ByteStream& other) const;
 
 	/**
-	 * Casts stored data to T.
+	 * Casts stored data to T. <br />
 	 * @tparam T
 	 * @return stored bytes as T.
 	 */
@@ -89,16 +92,11 @@ public:
 	T As()
 	{
 		BIO_ASSERT(Is< T >());
-		T* ret;
-		std::memcpy(
-			ret,
-			m_stream,
-			sizeof(T));
-		return *ret;
+		return *(T*)mStream;
 	}
 
 	/**
-	 * Casts stored data to T.
+	 * Casts stored data to T. <br />
 	 * @tparam T
 	 * @return stored bytes as T.
 	 */
@@ -106,16 +104,11 @@ public:
 	const T As() const
 	{
 		BIO_ASSERT(Is< T >());
-		T* ret;
-		std::memcpy(
-			ret,
-			m_stream,
-			sizeof(T));
-		return *ret;
+		return *(T*)mStream;
 	}
 
 	/**
-	 * Casts stored data to T.
+	 * Casts stored data to T. <br />
 	 * @tparam T
 	 * @return stored bytes as T.
 	 */
@@ -126,7 +119,7 @@ public:
 	}
 
 	/**
-	 * Casts stored data to T.
+	 * Casts stored data to T. <br />
 	 * @tparam T
 	 * @return stored bytes as T.
 	 */
@@ -137,56 +130,57 @@ public:
 	}
 
 	/**
-	 * Copies the data given to a new memory location.
-	 * This should be used if the provided "in" is expected to go out of scope but the value still be valid.
-	 * Make sure you Release *this to delete the stored content.
+	 * Copies the data given to a new memory location. <br />
+	 * This should be used if the provided "in" is expected to go out of scope but the value still be valid. <br />
+	 * Make sure you Release *this to delete the stored content. <br />
 	 * @tparam T
 	 * @param in data to store
 	 */
 	template < typename T >
 	void Set(T in)
 	{
-		m_stream = std::malloc(sizeof(T));
+		Release();
+		mStream = ::std::malloc(sizeof(T));
 		std::memcpy(
-			m_stream,
+			mStream,
 			&in,
 			sizeof(T));
-		m_size = sizeof(T);
-		m_typeName = TypeName< T >();
+		mSize = sizeof(T);
+		mTypeName = TypeName< T >();
 	}
 
 	/**
-	 * Copies the data from an other into *this and Holds it.
+	 * Copies the data from an other into *this and Holds it. <br />
 	 */
 	void Set(const ByteStream& other);
 
 	/**
-	 * Frees the memory *this was Holding.
-	 * Nop if *this was not holding anything.
-	 * NOTE: This does not call any destructors. You must do that yourself.
-	 * (i.e. there is no typename -> new type* -> union -> delete; delete)
+	 * Frees the memory *this was Holding. <br />
+	 * Nop if *this was not holding anything. <br />
+	 * NOTE: This does not call any destructors. You must do that yourself. <br />
+	 * (i.e. there is no typename -> new type* -> union -> delete; delete) 
 	 */
 	void Release();
 
 	/**
-	 * Check if *this has been Set.
+	 * Check if *this has been Set. <br />
 	 * @return Whether or not *this points to any possibly valid data.
 	 */
 	bool IsEmpty() const;
 
 	/**
-	 * Check if Set was called with T.
+	 * Check if Set was called with T. <br />
 	 * @tparam T
 	 * @return whether or not *this should be pointing to data of type T.
 	 */
 	template < typename T >
 	bool Is() const
 	{
-		return sizeof(T) == m_size && TypeName< T >() == m_typeName;
+		return sizeof(T) == mSize && TypeName< T >() == mTypeName;
 	}
 
 	/**
-	 * Auto template determining version of Is<T>().
+	 * Auto template determining version of Is<T>(). <br />
 	 * @tparam T
 	 * @param t only used for automatically determining T.
 	 * @return whether or not *this should be pointing to data of type T.
@@ -208,16 +202,16 @@ public:
 	std::size_t GetSize() const;
 
 	/**
-	 * Assume the caller knows something we don't.
-	 * Please don't use this.
+	 * Assume the caller knows something we don't. <br />
+	 * Please don't use this. <br />
 	 * @return the data in *this
 	 */
-	void* IKnowWhatImDoing();
+	void* DirectAccess();
 
 protected:
-	void* m_stream;
-	std::string m_typeName;
-	std::size_t m_size;
-	bool m_holding;
+	mutable void* mStream;
+	std::string mTypeName;
+	std::size_t mSize;
+	bool mHolding;
 };
 } //bio namespace

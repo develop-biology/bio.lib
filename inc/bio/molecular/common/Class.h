@@ -28,9 +28,9 @@ namespace bio {
 namespace molecular {
 
 /**
- * A molecular::Class extends chemical::Class
- * Class in other namespaces will grow to include more complex, templated logic.
- * This pattern prevents you from having to define virtual methods each of your child classes, so long as you always derive from the appropriate Class<T>.
+ * A molecular::Class extends chemical::Class <br />
+ * Class in other namespaces will grow to include more complex, templated logic. <br />
+ * This pattern prevents you from having to define virtual methods each of your child classes, so long as you always derive from the appropriate Class<T>. <br />
  * @tparam T
  */
 template < typename T >
@@ -44,8 +44,8 @@ public:
 		T)
 
 	/**
-	 * Providing just the object should not Initialize anything.
-	 * For default constructors of virtually inherited classes.
+	 * Providing just the object should not Initialize anything. <br />
+	 * For default constructors of virtually inherited classes. <br />
 	 * @param object
 	 * @param perspective
 	 * @param filter

@@ -31,7 +31,7 @@ class AbstractMotif
 public:
 
 	/**
-	 * See physical::Wave for more info on Resonance and how to use Properties.
+	 * See physical::Wave for more info on Resonance and how to use Properties. <br />
 	 * @return {property::Structural()}
 	 */
 	static Properties GetClassProperties();
@@ -47,19 +47,19 @@ public:
 	virtual ~AbstractMotif();
 
 	/**
-	 * Implementation for accessing all Contents.
+	 * Implementation for accessing all Contents. <br />
 	 * @return all Contents in *this.
 	 */
 	virtual Container* GetAllImplementation();
 
 	/**
-	 * Const interface for accessing all Contents.
+	 * Const interface for accessing all Contents. <br />
 	 * @return all Contents in *this.
 	 */
 	virtual const Container* GetAllImplementation() const;
 
 	/**
-	 * Clears the contents of *this.
+	 * Clears the contents of *this. <br />
 	 */
 	virtual void ClearImplementation()
 	{
@@ -67,7 +67,7 @@ public:
 	}
 
 	/**
-	 * Implementation for counting Contents.
+	 * Implementation for counting Contents. <br />
 	 * @return the number of Contents in *this.
 	 */
 	virtual unsigned long GetCountImplementation() const
@@ -76,8 +76,8 @@ public:
 	}
 
 	/**
-	 * Copy the contents of another container into *this.
-	 * void* used to avoid ambiguous implicit casting.
+	 * Copy the contents of another container into *this. <br />
+	 * void* used to avoid ambiguous implicit casting. 
 	 * @param other
 	 */
 	virtual void ImportImplementation(const void* other)
@@ -86,17 +86,17 @@ public:
 	}
 
 	/**
-	 * Get the Contents of *this as a string.
+	 * Get the Contents of *this as a string. <br />
 	 * @param separator e.g. ", ", the default, or just " ".
 	 * @return the Contents of *this as a string.
 	 */
-	virtual std::string GetStringFromImplementation(std::string separator = ", ")
+	virtual ::std::string GetStringFromImplementation(std::string separator = ", ")
 	{
 		return "";
 	}
 
 protected:
-	mutable Container* m_contents;
+	mutable Container* mContents;
 };
 
 } //chemical namespace

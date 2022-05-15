@@ -37,9 +37,9 @@ namespace cellular {
 class Cell;
 
 /**
- * Tissues are a container for storing and manipulating many cells at once
- * Tissues can hold other Tissues, so create them in any structure you need.
- * Once a group of Tissues is functioning as desired, it is recommended that you package them into an Organ.
+ * Tissues are a container for storing and manipulating many cells at once <br />
+ * Tissues can hold other Tissues, so create them in any structure you need. <br />
+ * Once a group of Tissues is functioning as desired, it is recommended that you package them into an Organ. <br />
  */
 class Tissue :
 	public Class< Tissue >,
@@ -51,13 +51,13 @@ class Tissue :
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular,
 		Tissue)
 
 	/**
-	 * Standard ctors.
+	 * Standard ctors. <br />
 	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
 		Tissue,
 		&TissuePerspective::Instance(),
@@ -70,10 +70,10 @@ public:
 	virtual ~Tissue();
 
 	/**
-	 * For all Cells & sub-Tissues in *this:
-	 *     1. Injects all Plasmid*s from *this
-	 *     2. Transcribes & Translates all Genes
-	 *     3. Folds all Proteins.
+	 * For all Cells & sub-Tissues in *this: <br />
+	 *     1. Injects all Plasmid*s from *this <br />
+	 *     2. Transcribes & Translates all Genes <br />
+	 *     3. Folds all Proteins. <br />
 	 */
 	virtual Code DifferentiateCells();
 

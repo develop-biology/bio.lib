@@ -20,9 +20,9 @@
  */
 
 /**
- * This file contains all common preprocessor macros.
- * Additional macros may be specified in files they more specifically pertain to
- * All bio macros start with BIO_
+ * This file contains all common preprocessor macros. <br />
+ * Additional macros may be specified in files they more specifically pertain to <br />
+ * All bio macros start with BIO_ <br />
 */
 #pragma once
 
@@ -33,42 +33,43 @@
 #include "OSMacros.h"
 #include "SanitizeMacros.h"
 #include "StrongTypedef.h"
-#include "bio/common/ByteStream.h"
+#include "KeywordMacros.h"
+#include "UtilityHelperMacros.h"
 
 /**
- * Wrapping macros is used to evaluate them within other macros, rather than being passed as a string.
+ * Wrapping macros is used to evaluate them within other macros, rather than being passed as a string. <br />
  */
 #define BIO_WRAP_MACRO(macro) macro
 
 /**
- * Used to remove fhe parentheses from around an expression.
- * Should be invoked as: BIO_EXPAND_TUPLE tuple
- * where tuple is (something, like, this)
- * which expands to BIO_EXPAND_TUPLE (something, like, this) => something, like, this
+ * Used to remove fhe parentheses from around an expression. <br />
+ * Should be invoked as: BIO_EXPAND_TUPLE tuple <br />
+ * where tuple is (something, like, this) <br />
+ * which expands to BIO_EXPAND_TUPLE (something, like, this) => something, like, this <br />
  */
 #define BIO_EXPAND_TUPLE(...) __VA_ARGS__
 
 /**
- * Encapsulates an expression containing commas, allowing it to be safely passed as a single macro argument.
- * Should be invoked as:
- * 		SOME_OTHER_MACRO(
- * 			BIO_SINGLE_ARG(
- * 				something,
- * 				that,
- * 				would,
- * 				normally,
- * 				be,
- * 				many,
- * 				args
- * 			), whatever, other, arguments, are, needed)
- * While this is currently exactly the same as BIO_EXPAND_TUPLE, the use case is different, so duplicate code is maintained.
+ * Encapsulates an expression containing commas, allowing it to be safely passed as a single macro argument. <br />
+ * Should be invoked as: <br />
+ * 		SOME_OTHER_MACRO( <br />
+ * 			BIO_SINGLE_ARG( <br />
+ * 				something, <br />
+ * 				that, <br />
+ * 				would, <br />
+ * 				normally, <br />
+ * 				be, <br />
+ * 				many, <br />
+ * 				args <br />
+ * 			), whatever, other, arguments, are, needed) <br />
+ * While this is currently exactly the same as BIO_EXPAND_TUPLE, the use case is different, so duplicate code is maintained. <br />
  */
 #define BIO_SINGLE_ARG(...) __VA_ARGS__
 
 /**
- * Calls a namespaced macro.
- * NOTE: These deviate from the traditional naming scheme because namespaces are lowercase and, for ease of use, we will not require the namespace be written in both capitals and lower case.
- * Will expand MY_MACRO, cellular to MY_MACRO_cellular(...)
+ * Calls a namespaced macro. <br />
+ * NOTE: These deviate from the traditional naming scheme because namespaces are lowercase and, for ease of use, we will not require the namespace be written in both capitals and lower case. <br />
+ * Will expand MY_MACRO, cellular to MY_MACRO_cellular(...) <br />
  * @param macroName the name of the macro to call
  * @param ns the namespace in which to call the macro.
  */
@@ -76,8 +77,8 @@
     macroName##_##ns(__VA_ARGS__)
 
 /**
- * Call a macro-based loop. These are hard-coded with a certain iteration count.
- * Expands loopName from something like MY_LOOP with iterations of, say, 5 to MY_LOOP_5(...). Requires that MY_LOOP_5 be implemented.
+ * Call a macro-based loop. These are hard-coded with a certain iteration count. <br />
+ * Expands loopName from something like MY_LOOP with iterations of, say, 5 to MY_LOOP_5(...). Requires that MY_LOOP_5 be implemented. <br />
  * @param loopName the base name of the macro to call
  * @param iterations the number of times to call the given macro
  * @param ... all arguments to give to the loop, including iterations.
@@ -86,8 +87,8 @@
     loopName##_##iterations(__VA_ARGS__)
 
 /**
- * Singleton interface makes the constructor private so that there is only one instance ever created, which is by Instance()
- * we also override default copy constructor and assignment operator so that nobody can make a copy of the singleton  (otherwise it wouldn't be a singleton). We don't define them, so these methods will give a link error if used.
+ * Singleton interface makes the constructor private so that there is only one instance ever created, which is by Instance() <br />
+ * we also override default copy constructor and assignment operator so that nobody can make a copy of the singleton  (otherwise it wouldn't be a singleton). We don't define them, so these methods will give a link error if used. <br />
  * @param className the name of the new singleton
  * @param baseClass the name of the class the new singleton will inherit from (i.e. what to make into a singleton).
 */
@@ -110,9 +111,9 @@ private:                                                                       \
 };
 
 /**
- * Create a consistent map and pair.
+ * Create a consistent map and pair. <br />
  */
 #define BIO_DEFINE_MAP(mapName, keyType, valueType)                            \
-typedef std::map<keyType, valueType> mapName;                                  \
-typedef std::pair<keyType, valueType> mapName##Pair;
+typedef ::std::map<keyType, valueType> mapName;                                  \
+typedef ::std::pair<keyType, valueType> mapName##Pair;
 

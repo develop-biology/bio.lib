@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -28,8 +28,8 @@ ThreadSafe::ThreadSafe()
 	#if BIO_CPP_VERSION < 11
     #else
         :
-		m_mutex(),
-		m_lock(m_mutex, std::defer_lock)
+		mMutex(),
+		mLock(mMutex, ::std::defer_lock)
 	#endif
 	//@formatter:on
 {
@@ -39,7 +39,7 @@ ThreadSafe::ThreadSafe()
 			pthread_mutexattr_t mutexattr;
 			pthread_mutexattr_init(&mutexattr);
 			pthread_mutexattr_settype(&mutexattr, PTHREAD_MUTEX_RECURSIVE);
-			pthread_mutex_init(&m_lock, &mutexattr);
+			pthread_mutex_init(&mLock, &mutexattr);
 		#endif
 	#else
 	#endif
@@ -51,8 +51,8 @@ ThreadSafe::ThreadSafe(const ThreadSafe& toCopy)
 	#if BIO_CPP_VERSION < 11
     #else
         :
-		m_mutex(),
-		m_lock(m_mutex, std::defer_lock)
+		mMutex(),
+		mLock(mMutex, ::std::defer_lock)
 	#endif
 	//@formatter:on
 {
@@ -62,7 +62,7 @@ ThreadSafe::ThreadSafe(const ThreadSafe& toCopy)
 			pthread_mutexattr_t mutexattr;
 			pthread_mutexattr_init(&mutexattr);
 			pthread_mutexattr_settype(&mutexattr, PTHREAD_MUTEX_RECURSIVE);
-			pthread_mutex_init(&m_lock, &mutexattr);
+			pthread_mutex_init(&mLock, &mutexattr);
 		#endif
 	#else
 	#endif
@@ -74,7 +74,7 @@ ThreadSafe::~ThreadSafe()
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
 		#ifdef BIO_OS_IS_LINUX
-			pthread_mutex_destroy(&m_lock);
+			pthread_mutex_destroy(&mLock);
 		#endif
 	#else
 	#endif
@@ -86,10 +86,10 @@ void ThreadSafe::LockThread() const
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
 		#ifdef BIO_OS_IS_LINUX
-			pthread_mutex_lock(&m_lock);
+			pthread_mutex_lock(&mLock);
 		#endif
 	#else
-		m_lock.lock();
+		mLock.lock();
 	#endif
 	//@formatter:on
 }
@@ -99,10 +99,10 @@ void ThreadSafe::UnlockThread() const
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
 		#ifdef BIO_OS_IS_LINUX
-			pthread_mutex_unlock(&m_lock);
+			pthread_mutex_unlock(&mLock);
 		#endif
 	#else
-		m_lock.unlock();
+		mLock.unlock();
 	#endif
 	//@formatter:on
 }

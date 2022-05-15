@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -21,68 +21,28 @@
 
 #pragma once
 
-//since we use these here, we might as well include them.
-#include <ostream>
+//#include <ostream> //YOU MUST INCLUDE THIS WHERE USING BIO_STRONG_TYPEDEF
+//#include "bio/common/TransparentWrapper.h" //YOU MUST INCLUDE THIS WHERE USING BIO_STRONG_TYPEDEF
+//#include "bio/common/IsPrimitive.h" //Cannot be included due to circular dependency. YOU MUST INCLUDE THIS WHERE USING BIO_STRONG_TYPEDEF
+//#include "bio/common/macros/KeywordMacros.h"
+//#include "bio/common/macros/LanguageMacros.h"
 
 /**
- * Another problem with C++: the "typedef" keyword does not create a distinct type, only an alias. Thus 2 identical typedefs of different names become merged into the same symbol at compile time.
- *
- * Here, we work around this bug by creating a wrapper class that does nothing but contain another value.
- * Unfortunately, operator type() alone is not sufficient to treat this new class as the type it holds and we must instead forward all operations to the contained type.
- * ugh.
- * If you know of a better solution to this problem, please make a pull request.
- *
- * This wrapper is currently not virtual and cannot be inherited from. This may change in a future release.
+ * In C++, the "typedef" keyword does not create a distinct type, only an alias. Thus 2 identical typedefs of different names become merged into the same symbol at compile time. <br />
+ * Here, we work around this bug by creating a wrapper class that does nothing but contain another value. <br />
+ * When declaring a StrongTypedef, we also want to make sure the class is appropriately declared as Primitive (i.e. IsPrimitive< SomeStrongTypedef >() returns the appropriate value). <br />
+ * NOTE: If using a C++ version below 14, this will be treated as Primitive (c++14 and above treats this as if it were the given type). See Primitives.h for more info. <br />
  */
 #define BIO_STRONG_TYPEDEF(type, name, defaultValue)                           \
-class name                                                                     \
+class name : public ::bio::TransparentWrapper< type >                          \
 {                                                                              \
 public:                                                                        \
-    name(type t = defaultValue) :                                              \
-        m_t(t)                                                                 \
-    {}                                                                         \
+    name(type t = defaultValue) : ::bio::TransparentWrapper< type >(t) {}      \
     ~name() {}                                                                 \
-    operator type() {return m_t;}                                              \
-    bool operator==(const type& t) const  {return m_t == t;}                   \
-    bool operator!=(const type& t) const  {return m_t != t;}                   \
-    bool operator<=(const type& t) const  {return m_t <= t;}                   \
-    bool operator>=(const type& t) const  {return m_t >= t;}                   \
-    bool operator<(const type& t) const {return m_t < t;}                      \
-    bool operator>(const type& t) const {return m_t > t;}                      \
-    bool operator==(const name& other) const {return m_t == other.m_t;}        \
-    bool operator!=(const name& other) const {return m_t != other.m_t;}        \
-    bool operator<=(const name& other) const {return m_t <= other.m_t;}        \
-    bool operator>=(const name& other) const {return m_t >= other.m_t;}        \
-    bool operator<(const name& other) const {return m_t < other.m_t;}          \
-    bool operator>(const name& other) const {return m_t > other.m_t;}          \
-    type& operator++() {return ++m_t;}                                         \
-    type operator++(int) {return m_t++;}                                       \
-    type& operator--() {return --m_t;}                                         \
-    type operator--(int) {return m_t--;}                                       \
-    type operator+=(const type& t) {return m_t += t;}                          \
-    type operator-=(const type& t) {return m_t -= t;}                          \
-    type operator+=(const name& other) {return m_t += other.m_t;}              \
-    type operator-=(const name& other) {return m_t -= other.m_t;}              \
-    type operator+(const type& t) const {return m_t + t;}                      \
-    type operator-(const type& t) const {return m_t - t;}                      \
-    type operator+(const name& other) const {return m_t + other.m_t;}          \
-    type operator-(const name& other) const {return m_t - other.m_t;}          \
-    type operator*=(const type& t) {return m_t *= t;}                          \
-    type operator/=(const type& t) {return m_t /= t;}                          \
-    type operator*=(const name& other) {return m_t *= other.m_t;}              \
-    type operator/=(const name& other) {return m_t /= other.m_t;}              \
-    type operator*(const type& t) const {return m_t * t;}                      \
-    type operator/(const type& t) const {return m_t / t;}                      \
-    type operator*(const name& other) const {return m_t * other.m_t;}          \
-    type operator/(const name& other) const {return m_t / other.m_t;}          \
-    friend std::ostream& operator <<(std::ostream& out, const name& t)         \
+    /*All other operators in TransparentWrapper*/                              \
+    friend ::std::ostream& operator <<(::std::ostream& out, const name& t)     \
     {                                                                          \
-        out << t.m_t;                                                          \
+        out << t.mT;                                                          \
         return out;                                                            \
     }                                                                          \
-    /*that's all we're doing for now. Please add to this list as necessary*/   \
-                                                                               \
-/*public because we need to treat this as type when we don't know the type.*/  \
-public:                                                                        \
-    type m_t;                                                                  \
 };

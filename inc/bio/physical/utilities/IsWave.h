@@ -18,14 +18,23 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+#pragma once
 
-#include "bio/common/Types.h"
+#include "bio/common/utilities/IsPrimitive.h"
 
 namespace bio {
+namespace utility {
 
-const Index InvalidIndex()
+/**
+ * @tparam T
+ * @return whether or not the given T derives from physical::Wave.
+ */
+template < typename T >
+BIO_CONSTEXPR bool IsWave()
 {
-	return 0;
+	//TODO: Actually determine inheritance.
+	return !IsPrimitive< T >();
 }
 
+} //utility namespace
 } //bio namespace

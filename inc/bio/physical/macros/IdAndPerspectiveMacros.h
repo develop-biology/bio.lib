@@ -22,46 +22,51 @@
 #pragma once
 
 /**
- * For ease of use for defining Singleton Perspectives.
+ * For ease of use for defining Singleton Perspectives. <br />
  */
 #define BIO_PERSPECTIVE_SINGLETON(className, dimension)                        \
 BIO_SINGLETON(className, ::bio::physical::Perspective<dimension>)
 
 /**
- * Ease of use for defining Ids.
- * For more on DIMENSIONs, Ids, etc., see Perspective.h and Identifiable.h
+ * Ease of use for defining Ids. <br />
+ * For more on DIMENSIONs, Ids, etc., see Perspective.h and Identifiable.h <br />
+ * NOTE: this method MUST be called from the ::bio namespace (see BIO_STRONG_TYPEDEF for why). <br />
  */
 #define BIO_ID_WITH_PLURAL(className, pluralName, dimension)                   \
 BIO_STRONG_TYPEDEF(dimension, className, 0)                                    \
-typedef std::vector<className> pluralName;
+typedef ::bio::Arrangement<className> pluralName;
 
 /**
- * Define a BIO_ID with "classNames" as plural (e.g. StandardDimensions)
+ * Define a BIO_ID with "classNames" as plural (e.g. StandardDimensions) <br />
+ * NOTE: this method MUST be called from the ::bio namespace (see BIO_STRONG_TYPEDEF for why). <br />
  */
 #define BIO_ID(className, dimension)                                           \
 BIO_ID_WITH_PLURAL(className, className##s, dimension)
 
 /**
- * To make defining ids easier, use this macro to define the function body of your Id Function().
- * This will assign a value to a string that is identical to your FunctionName e.g. MyPerspective::Instance().GetNameFromId(Value()) would give "Value".
- * Necessitates that functionName be a part of any namespaces are already specified (e.g. using namespace somewhere above a call to this macro).
+ * To make defining ids easier, use this macro to define the function body of your Id Function(). <br />
+ * This will assign a value to a string that is identical to your FunctionName e.g. MyPerspective::Instance().GetNameFromId(Value()) would give "Value". <br />
+ * Necessitates that functionName be a part of any namespaces are already specified (e.g. using namespace somewhere above a call to this macro). <br />
  */
 #define BIO_ID_FUNCTION_BODY(functionName, perspective, dimension)             \
-dimension g_##functionName = (perspective).GetIdFromName(#functionName);       \
 dimension functionName()                                                       \
 {                                                                              \
-    return g_##functionName;                                                   \
+    static ::bio::CachedId< dimension >                                        \
+        s_##functionName(#functionName, perspective);                          \
+    return s_##functionName;                                                   \
 }
 
 /**
- * This is the preferred design pattern if using singletons and a custom dimension
+ * This is the preferred design pattern if using singletons and a custom dimension <br />
+ * NOTE: this method MUST be called from the ::bio namespace (see BIO_STRONG_TYPEDEF for why). <br />
  */
 #define BIO_ID_WITH_PERSPECTIVE(className, dimension)                          \
 BIO_ID(className, dimension)                                                   \
 BIO_PERSPECTIVE_SINGLETON(className##Perspective, className);
 
 /**
- * For when the plural of className isn't "classNames" (e.g. Properties or Axes)
+ * For when the plural of className isn't "classNames" (e.g. Properties or Axes) <br />
+ * NOTE: this method MUST be called from the ::bio namespace (see BIO_STRONG_TYPEDEF for why). <br />
  */
 #define BIO_ID_WITH_PERSPECTIVE_WITH_PLURAL(className, pluralName, dimension)  \
 BIO_ID_WITH_PLURAL(className, pluralName, dimension)                           \

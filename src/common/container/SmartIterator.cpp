@@ -27,7 +27,7 @@ namespace bio {
 
 SmartIterator::SmartIterator(const Container* container)
 	:
-	m_implementation(container->ConstructClassIterator(container->GetEndIndex()))
+	mImplementation(container->ConstructClassIterator(container->GetEndIndex()))
 {
 
 }
@@ -37,79 +37,89 @@ SmartIterator::SmartIterator(
 	Index index
 )
 	:
-	m_implementation(container->ConstructClassIterator(index))
+	mImplementation(container->ConstructClassIterator(index))
 {
 
 }
 
 SmartIterator::~SmartIterator()
 {
-	delete m_implementation;
+	delete mImplementation;
+}
+
+bool SmartIterator::IsValid() const
+{
+	return mImplementation->IsValid();
+}
+
+void SmartIterator::Invalidate()
+{
+	mImplementation->Invalidate();
 }
 
 Iterator* SmartIterator::GetImplementation()
 {
-	return m_implementation;
+	return mImplementation;
 }
 
 const Iterator* SmartIterator::GetImplementation() const
 {
-	return m_implementation;
+	return mImplementation;
 }
 
 Index SmartIterator::GetIndex() const
 {
-	return m_implementation->GetIndex();
+	return mImplementation->GetIndex();
 }
 
 bool SmartIterator::MoveTo(Index index) const
 {
-	return m_implementation->MoveTo(index);
+	return mImplementation->MoveTo(index);
 }
 
 bool SmartIterator::IsAtBeginning() const
 {
-	return m_implementation->IsAtBeginning();
+	return mImplementation->IsAtBeginning();
 }
 
 bool SmartIterator::IsAtEnd() const
 {
-	return m_implementation->IsAtEnd();
+	return mImplementation->IsAtEnd();
 }
 
 ByteStream SmartIterator::operator*()
 {
-	return **m_implementation;
+	return **mImplementation;
 }
 
 const ByteStream SmartIterator::operator*() const
 {
-	return **m_implementation;
+	return **mImplementation;
 }
 
 SmartIterator& SmartIterator::operator++() const
 {
-	m_implementation->Increment();
+	mImplementation->Increment();
 	return *const_cast< SmartIterator* >(this);
 }
 
 SmartIterator SmartIterator::operator++(int) const
 {
 	SmartIterator ret = *this;
-	m_implementation->Increment();
+	mImplementation->Increment();
 	return ret;
 }
 
 SmartIterator& SmartIterator::operator--() const
 {
-	m_implementation->Decrement();
+	mImplementation->Decrement();
 	return *const_cast< SmartIterator* >(this);
 }
 
 SmartIterator SmartIterator::operator--(int) const
 {
 	SmartIterator ret = *this;
-	m_implementation->Decrement();
+	mImplementation->Decrement();
 	return ret;
 }
 

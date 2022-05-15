@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -25,11 +25,16 @@
 namespace bio {
 namespace molecular {
 
-Vesicle::Vesicle(const Vesicle& toCopy) :
-	molecular::Class<Vesicle>(this, toCopy.GetId(), toCopy.GetPerspective(), toCopy.GetFilter()),
+Vesicle::Vesicle(const Vesicle& toCopy)
+	:
+	molecular::Class< Vesicle >(
+		this,
+		toCopy.GetId(),
+		toCopy.GetPerspective(),
+		toCopy.GetFilter()),
 	LinearMotif< Molecule* >(toCopy)
 {
-	LinearMotif< Molecule* >::m_perspective = this;
+	LinearMotif< Molecule* >::mPerspective = this;
 }
 
 Vesicle::~Vesicle()
@@ -58,14 +63,16 @@ const Molecule* Vesicle::operator[](Name moleculeName) const
 
 Vesicle* Vesicle::operator<<=(Vesicle* source)
 {
-	BIO_SANITIZE(source,,return NULL)
+	BIO_SANITIZE(source, ,
+		return NULL)
 	Import< Molecule* >(source);
 	return this;
 }
 
 Vesicle* Vesicle::operator>>=(Vesicle* target)
 {
-	BIO_SANITIZE(target,,return NULL)
+	BIO_SANITIZE(target, ,
+		return NULL)
 	target->Import< Molecule* >(this);
 	this->Clear< Molecule* >();
 	return target;

@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -95,7 +95,7 @@ bool string::ToFloat(
 }
 
 StdStrings string::Parse(
-	const std::string& s,
+	const ::std::string& s,
 	char delimiter,
 	bool trimLeadingSpaces
 )
@@ -116,13 +116,13 @@ StdStrings string::Parse(
 		{
 			//trim leading spaces from substring
 			size_t firstcharpos = substring.find_first_not_of(' ');
-			if (firstcharpos != std::string::npos)
+			if (firstcharpos != ::std::string::npos)
 			{
 				substring = substring.substr(firstcharpos);
 			}
 		} //else: don't alter substring
 
-		result.push_back(substring);
+		result.Add(substring);
 	}
 
 	return result;
@@ -136,8 +136,8 @@ std::string string::FromVectorOfStrings(
 {
 	std::string result;
 	for (
-		StdStrings::const_iterator iter = v.begin();
-		iter != v.end();
+		SmartIterator iter = v.Begin();
+		!iter.IsAtEnd();
 		++iter
 		)
 	{
@@ -147,7 +147,7 @@ std::string string::FromVectorOfStrings(
 		{
 			//trim leading spaces from substring
 			size_t firstcharpos = substring.find_first_not_of(' ');
-			if (firstcharpos != std::string::npos)
+			if (firstcharpos != ::std::string::npos)
 			{
 				substring = substring.substr(firstcharpos);
 			}
@@ -174,18 +174,18 @@ std::string string::FromVectorOfStrings(
 {
 	std::string result;
 	for (
-		CharStrings::const_iterator iter = v.begin();
-		iter != v.end();
+		SmartIterator iter = v.Begin();
+		!iter.IsAtEnd();
 		++iter
 		)
 	{
-		std::string substring(*iter);
+		std::string substring(Cast< const char* >(iter));
 
 		if (trimLeadingSpaces)
 		{
 			//trim leading spaces from substring
 			size_t firstcharpos = substring.find_first_not_of(' ');
-			if (firstcharpos != std::string::npos)
+			if (firstcharpos != ::std::string::npos)
 			{
 				substring = substring.substr(firstcharpos);
 			}
@@ -208,12 +208,12 @@ CharStrings string::ToCharStrings(const StdStrings& strings)
 {
 	CharStrings ret;
 	for (
-		StdStrings::const_iterator str = strings.begin();
-		str != strings.end();
+		SmartIterator str = strings.Begin();
+		!str.IsAtEnd();
 		++str
 		)
 	{
-		ret.push_back(str->c_str());
+		ret.Add(str.As< char* >());
 	}
 	return ret;
 }
@@ -222,13 +222,12 @@ StdStrings string::ToStdStrings(const CharStrings& strings)
 {
 	StdStrings ret;
 	for (
-		CharStrings::const_iterator chr = strings.begin();
-		chr != strings.end();
+		SmartIterator chr = strings.Begin();
+		!chr.IsAtEnd();
 		++chr
 		)
 	{
-		std::string str(*chr);
-		ret.push_back(str);
+		ret.Add(chr.As< std::string >());
 	}
 	return ret;
 }

@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -36,7 +36,7 @@ namespace physical {
 Properties Periodic::GetClassProperties()
 {
 	Properties ret;
-	ret.push_back(
+	ret.Add(
 		property::Periodic());
 	return ret;
 }
@@ -46,12 +46,12 @@ Periodic::Periodic(TimeUS interval)
 	Class(
 		this,
 		new Symmetry(
-			"m_interval",
+			"mInterval",
 			symmetry_type::DefineVariable())),
-	m_interval(
+	mInterval(
 		interval
 	),
-	m_lastPeakTimestamp(
+	mLastPeakTimestamp(
 		0
 	)
 {
@@ -63,33 +63,33 @@ Periodic::~Periodic()
 
 void Periodic::SetInterval(TimeUS interval)
 {
-	m_interval = interval;
+	mInterval = interval;
 }
 
 TimeUS Periodic::GetInterval() const
 {
-	return m_interval;
+	return mInterval;
 }
 
 Timestamp Periodic::GetTimeLastPeaked() const
 {
-	return m_lastPeakTimestamp;
+	return mLastPeakTimestamp;
 }
 
 float Periodic::GetIntervalInSeconds() const
 {
-	return (static_cast<float>(m_interval)) / 1000000.0f;
+	return (static_cast<float>(mInterval)) / 1000000.0f;
 }
 
 void Periodic::SetLastPeakTimestamp(Timestamp lastPeak)
 {
-	m_lastPeakTimestamp = lastPeak;
+	mLastPeakTimestamp = lastPeak;
 }
 
 Symmetry* Periodic::Spin() const
 {
-	m_symmetry->AccessValue()->Set(
-		m_interval
+	mSymmetry->AccessValue()->Set(
+		mInterval
 	);
 	return Wave::Spin();
 }
@@ -98,17 +98,17 @@ Code Periodic::Reify(Symmetry* symmetry)
 {
 	BIO_SANITIZE(symmetry, ,
 		return code::BadArgument1());
-	m_interval = symmetry->GetValue();
+	mInterval = symmetry->GetValue();
 	return code::Success();
 }
 
 void Periodic::InitializeImplementation(ByteStreams args)
 {
-	BIO_SANITIZE(args.size() == 1 && args[0].Is(
-		m_interval
+	BIO_SANITIZE(args.Size() == 1 && args[0].Is(
+		mInterval
 	), ,
 		return);
-	m_interval = args[0];
+	mInterval = args[0];
 }
 
 Properties Periodic::GetProperties() const

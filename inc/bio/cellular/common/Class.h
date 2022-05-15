@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "bio/cellular/waves/PeakCarrierWave.h"
 #include "bio/genetic/common/Class.h"
 #include "bio/molecular/Vesicle.h"
 #include "bio/physical/Periodic.h"
@@ -29,41 +30,9 @@ namespace bio {
 namespace cellular {
 
 /**
- * The PeakCarrierWave will propagate Peak Excitations to all LinearMotifs
- */
-class PeakCarrierWave :
-	public physical::Wave
-{
-public:
-	PeakCarrierWave()
-		:
-		m_peakExcitation(&physical::Periodic::Peak)
-	{
-		Modulate(m_peakExcitation);
-	}
-
-	virtual ~PeakCarrierWave()
-	{
-	}
-
-	virtual Properties GetProperties() const
-	{
-		Properties ret = chemical::AbstractMotif::GetClassProperties();
-		ret.push_back(property::Linear());
-		return ret;
-	}
-
-protected:
-	BIO_EXCITATION_CLASS(physical::Periodic,
-		Code) m_peakExcitation;
-};
-
-static PeakCarrierWave g_peakCarrierWave;
-
-/**
- * A cellular::Class extends genetic::Class
- * Class in other namespaces will grow to include more complex, templated logic.
- * This pattern prevents you from having to define virtual methods each of your child classes, so long as you always derive from the appropriate Class<T>.
+ * A cellular::Class extends genetic::Class <br />
+ * Class in other namespaces will grow to include more complex, templated logic. <br />
+ * This pattern prevents you from having to define virtual methods each of your child classes, so long as you always derive from the appropriate Class<T>. <br />
  * @tparam T
  */
 template < typename T >
@@ -78,8 +47,8 @@ public:
 		T)
 
 	/**
-	 * Providing just the object should not Initialize anything.
-	 * For default constructors of virtually inherited classes.
+	 * Providing just the object should not Initialize anything. <br />
+	 * For default constructors of virtually inherited classes. <br />
 	 * @param object
 	 */
 	Class(
@@ -155,7 +124,8 @@ public:
 
 	Code Peak()
 	{
-		return Attenuate(&g_peakCarrierWave);
+		static PeakCarrierWave sPeakCarrierWave;
+		return Attenuate(&sPeakCarrierWave);
 	}
 
 };

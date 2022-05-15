@@ -26,14 +26,14 @@
 #include "bio/genetic/macros/SiteMacros.h"
 
 /**
- * Get all virtual methods defined by genetic::Class.
+ * Get all virtual methods defined by genetic::Class. <br />
  * @return function signatures for use in BIO_DISAMBIGUATE_REQUIRED_CLASS_METHODS
  */
 #define BIO_GET_REQUIRED_CLASS_METHODS_FOR_genetic()                           \
     BIO_GET_REQUIRED_CLASS_METHODS_FOR_molecular()
 
 /**
- * Get all virtual methods defined by genetic::Class.
+ * Get all virtual methods defined by genetic::Class. <br />
  * @return function signatures for use in BIO_DISAMBIGUATE_OPTIONAL_CLASS_METHODS
  */
 #define BIO_GET_OPTIONAL_CLASS_METHODS_FOR_genetic()                           \
@@ -45,6 +45,6 @@ Macro for defining TranscriptionFactors.
 */
 #define BIO_TRANSCRIPTION_FACTOR_FUNCTION_BODY(functionName)                   \
 BIO_ID_FUNCTION_BODY(                                                          \
-    functionName##TranscriptionFactor,                                         \
+    functionName,                                                              \
     ::bio::TranscriptionFactorPerspective::Instance(),                         \
     ::bio::TranscriptionFactor)

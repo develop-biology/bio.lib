@@ -27,7 +27,7 @@
 #include "bio/physical/macros/Macros.h"
 
 /**
- * Get all virtual methods defined by chemical::Class.
+ * Get all virtual methods defined by chemical::Class. <br />
  * @return function signatures for use in BIO_DISAMBIGUATE_ALL_CLASS_METHODS
  */
 #define BIO_GET_REQUIRED_CLASS_METHODS_FOR_chemical()                          \
@@ -49,7 +49,7 @@
         AsAtom()                                                               \
     )
 /**
- * Get all virtual methods defined by chemical::Class.
+ * Get all virtual methods defined by chemical::Class. <br />
  * @return function signatures for use in BIO_DISAMBIGUATE_ALL_CLASS_METHODS
  */
 #define BIO_GET_OPTIONAL_CLASS_METHODS_FOR_chemical()                          \
@@ -69,6 +69,6 @@ This will assign a value to a string that is identical to your FunctionName e.g.
 */
 #define BIO_CHEMICAL_BOND_TYPE_FUNCTION_BODY(functionName)                     \
 BIO_ID_FUNCTION_BODY(                                                          \
-    functionName##BondType,                                                    \
+    functionName,                                                              \
     ::bio::BondTypePerspective::Instance(),                                    \
     ::bio::BondType)

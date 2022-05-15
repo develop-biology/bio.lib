@@ -22,15 +22,15 @@
 #pragma once
 
 /**
- * Defines constructors for classes deriving from chemical::Class and beyond.
- * These will allow you to construct your object with either a name or an id.
- * We also define the empty constructor for when neither name nor id are supplied.
+ * Defines constructors for classes deriving from chemical::Class and beyond. <br />
+ * These will allow you to construct your object with either a name or an id. <br />
+ * We also define the empty constructor for when neither name nor id are supplied. <br />
  *
- * IMPORTANT: despite using __VA_ARGS__, this will fail if nothing more than the namespace and class are provided.
- * At a minimum, you MUST ALSO INCLUDE THE Perspective AFTER class!
- * e.g. BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(my_namespace, MyClass, &MyClassPerspective::Instance())
+ * IMPORTANT: despite using __VA_ARGS__, this will fail if nothing more than the namespace and class are provided. <br />
+ * At a minimum, you MUST ALSO INCLUDE THE Perspective AFTER class! <br />
+ * e.g. BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(my_namespace, MyClass, &MyClassPerspective::Instance()) <br />
  *
- * NOTE: if your class has multiple template args or otherwise uses commas in its name, you must enclose it in BIO_SINGLE_ARG() so as to not have it be considered part of the __VA_ARGS__.
+ * NOTE: if your class has multiple template args or otherwise uses commas in its name, you must enclose it in BIO_SINGLE_ARG() so as to not have it be considered part of the __VA_ARGS__. <br />
  * @param ns the namespace of the class
  * @param class the name of the class
  * @param ... all arguments to the ns::Class<class>(...) constructor.
@@ -47,16 +47,16 @@ explicit class(StandardDimension id) :                                         \
 {}
 
 /**
- * Defines constructors for classes deriving from chemical::Class and beyond.
- * All constructors call a CtorCommon() method with no args.
- * These will allow you to construct your object with either a name or an id.
- * We also define the empty constructor for when neither name nor id are supplied.
+ * Defines constructors for classes deriving from chemical::Class and beyond. <br />
+ * All constructors call a CtorCommon() method with no args. <br />
+ * These will allow you to construct your object with either a name or an id. <br />
+ * We also define the empty constructor for when neither name nor id are supplied. <br />
  *
- * IMPORTANT: despite using __VA_ARGS__, this will fail if nothing more than the namespace and class are provided.
- * At a minimum, you MUST ALSO INCLUDE THE Perspective AFTER class!
- * e.g. BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(my_namespace, MyClass, &MyClassPerspective::Instance())
+ * IMPORTANT: despite using __VA_ARGS__, this will fail if nothing more than the namespace and class are provided. <br />
+ * At a minimum, you MUST ALSO INCLUDE THE Perspective AFTER class! <br />
+ * e.g. BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(my_namespace, MyClass, &MyClassPerspective::Instance()) <br />
  *
- * NOTE: if your class has multiple template args or otherwise uses commas in its name, you must enclose it in BIO_SINGLE_ARG() so as to not have it be considered part of the __VA_ARGS__.
+ * NOTE: if your class has multiple template args or otherwise uses commas in its name, you must enclose it in BIO_SINGLE_ARG() so as to not have it be considered part of the __VA_ARGS__. <br />
  *
  * @param ns the namespace of the class
  * @param class the name of the class

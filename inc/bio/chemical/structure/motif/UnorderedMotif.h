@@ -25,7 +25,7 @@
 #include "bio/chemical/macros/Macros.h"
 #include "bio/chemical/common/Class.h"
 #include "bio/physical/common/Filters.h"
-#include "bio/physical/arrangement/Arrangement.h"
+#include "bio/common/container/Arrangement.h"
 #include <vector>
 #include <algorithm>
 
@@ -33,8 +33,8 @@ namespace bio {
 namespace chemical {
 
 /**
- * UnorderedMotif classes have Content classes stored within them.
- * They are simple containers.
+ * UnorderedMotif classes have Content classes stored within them. <br />
+ * They are simple containers. <br />
  */
 template < typename CONTENT_TYPE >
 class UnorderedMotif :
@@ -43,10 +43,10 @@ class UnorderedMotif :
 {
 public:
 
-	typedef physical::Arrangement< CONTENT_TYPE > Contents;
+	typedef Arrangement< CONTENT_TYPE > Contents;
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical,
 		UnorderedMotif< CONTENT_TYPE >)
@@ -58,7 +58,7 @@ public:
 		:
 		chemical::Class< UnorderedMotif< CONTENT_TYPE > >(this) //TODO: Define Symmetry.
 	{
-		this->m_contents = new Contents(4);
+		this->mContents = new Contents(4);
 	}
 
 	/**
@@ -68,7 +68,7 @@ public:
 		:
 		chemical::Class< UnorderedMotif< CONTENT_TYPE > >(this) //TODO: Define Symmetry.
 	{
-		this->m_contents = new Contents(*contents);
+		this->mContents = new Contents(*contents);
 	}
 
 	/**
@@ -78,7 +78,7 @@ public:
 		:
 		chemical::Class< UnorderedMotif< CONTENT_TYPE > >(this) //TODO: Define Symmetry.
 	{
-		this->m_contents = new Contents(*toCopy->m_contents);
+		this->mContents = new Contents(*toCopy->mContents);
 	}
 
 	/**
@@ -86,61 +86,61 @@ public:
 	 */
 	virtual ~UnorderedMotif()
 	{
-		//NOTE: Children are responsible for clearing m_contents (e.g. through ClearImplementation()).
+		//NOTE: Children are responsible for clearing mContents (e.g. through ClearImplementation()).
 	}
 
 	/**
-	 * Clears the contents of *this.
+	 * Clears the contents of *this. <br />
 	 */
 	virtual void ClearImplementation()
 	{
-		this->m_contents->Clear();
+		this->mContents->Clear();
 	}
 
 	/**
-	 * Implementation for counting Contents.
+	 * Implementation for counting Contents. <br />
 	 * @return the number of Contents in *this.
 	 */
 	virtual unsigned long GetCountImplementation() const
 	{
-		return this->m_contents->GetNumberOfElements();
+		return this->mContents->GetNumberOfElements();
 	}
 
 	/**
-	 * Adds content to *this.
+	 * Adds content to *this. <br />
 	 * @param content
 	 * @return the added content or 0.
 	 */
 	virtual CONTENT_TYPE AddImplementation(const CONTENT_TYPE content)
 	{
-		CONTENT_TYPE ret = this->m_contents->Access(this->m_contents->Add(content));
+		CONTENT_TYPE ret = this->mContents->Access(this->mContents->Add(content));
 		return ret;
 	}
 
 	/**
-	 * Removes content from *this and deletes it.
+	 * Removes content from *this and deletes it. <br />
 	 * @param content
 	 */
 	virtual CONTENT_TYPE RemoveImplementation(const CONTENT_TYPE content)
 	{
-		Index toErase = this->m_contents->SeekTo(content);
-		CONTENT_TYPE ret = this->m_contents->Access(toErase);
-		this->m_contents->Erase(toErase);
+		Index toErase = this->mContents->SeekTo(content);
+		CONTENT_TYPE ret = this->mContents->Access(toErase);
+		this->mContents->Erase(toErase);
 		return ret;
 	}
 
 	/**
-	 * Check for content.
+	 * Check for content. <br />
 	 * @param content
 	 * @return whether or not the given content exists in *this
 	 */
 	virtual bool HasImplementation(const CONTENT_TYPE content) const
 	{
-		return this->m_contents->Has(content);
+		return this->mContents->Has(content);
 	}
 
 	/**
-	 * Copy the contents of another container into *this.
+	 * Copy the contents of another container into *this. <br />
 	 * @param other
 	 */
 	virtual void ImportImplementation(const UnorderedMotif< CONTENT_TYPE >* other)
@@ -148,11 +148,11 @@ public:
 		BIO_SANITIZE(other, ,
 			return);
 
-		this->m_contents->Import(other->GetAllImplementation());
+		this->mContents->Import(other->GetAllImplementation());
 	}
 
 	/**
-	 * Gives the number of matching contents between *this & other.
+	 * Gives the number of matching contents between *this & other. <br />
 	 * @param other
 	 * @return quantity overlap with other.
 	 */
@@ -177,8 +177,8 @@ public:
 	}
 
 	/**
-	 * Check for all contents
-	 * @param content
+	 * Check for all contents <br />
+	 * @param contents
 	 * @return whether or not the given contents exists in *this
 	 */
 	virtual bool HasAllImplementation(const Container* contents) const
@@ -189,14 +189,14 @@ public:
 	}
 
 	/**
-	 * Get the Contents of *this as a string.
+	 * Get the Contents of *this as a string. <br />
 	 * @param separator e.g. ", ", the default, or just " ".
 	 * @return the Contents of *this as a string.
 	 */
-	virtual std::string GetStringFromImplementation(std::string separator = ", ")
+	virtual ::std::string GetStringFromImplementation(std::string separator = ", ")
 	{
 		std::string ret = "";
-		SmartIterator cnt = this->m_contents->Begin();
+		SmartIterator cnt = this->mContents->Begin();
 		while (true)
 		{
 			ret += string::From< CONTENT_TYPE >(*cnt);

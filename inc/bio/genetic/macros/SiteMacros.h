@@ -22,12 +22,12 @@
 #pragma once
 
 /**
- * This is not for you.
+ * This is not for you. <br />
  */
 #define BIO_SITE_FUNCTION(perspective, site, type, function, typeTuple, argTuple)\
     bool g_##site##Registered =                                                \
         ::bio::perspective::Instance().AssociateType(                          \
-            g_##site,                                                          \
+            ::bio::perspective::Instance().GetIdFromName(#site),               \
             (                                                                  \
                 new BIO_EXCITATION_CLASS(                                      \
                     ::bio::chemical::LinearMotif< type >,                      \
@@ -41,10 +41,10 @@
         );
 
 /**
- * To make defining Sites easier, use this macro to define the function body of your Site Function().
- * This will assign a value to a string that is identical to your FunctionName e.g. LocalizationSitePerspective::Instance().GetNameFromId(Value()) would give "Value".
- * This will also help you define the required extraction method (chemical::Excitation*) required for accessing your Site.
- * REMINDER: Your Site Function()s should be in the ::bio::localization_site namespace.
+ * To make defining Sites easier, use this macro to define the function body of your Site Function(). <br />
+ * This will assign a value to a string that is identical to your FunctionName e.g. LocalizationSitePerspective::Instance().GetNameFromId(Value()) would give "Value". <br />
+ * This will also help you define the required extraction method (chemical::Excitation*) required for accessing your Site. <br />
+ * REMINDER: Your Site Function()s should be in the ::bio::site namespace. <br />
  */
 #define BIO_LOCALIZATION_SITE_FUNCTION_BODY(functionName, toExtract)           \
     BIO_ID_FUNCTION_BODY(                                                      \
@@ -54,10 +54,10 @@
     BIO_SITE_FUNCTION(LocalizationSitePerspective, functionName##LocalizationSite, toExtract, GetByNameImplementation, (Name), (NULL))
 
 /**
- * To make defining Sites easier, use this macro to define the function body of your Site Function().
- * This will assign a value to a string that is identical to your FunctionName e.g. InsertionSitePerspective::Instance().GetNameFromId(Value()) would give "Value".
- * This will also help you define the required insertion method (chemical::Excitation*) required for using your Site.
- * REMINDER: Your Site Function()s should be in the ::bio::insertion_site namespace.
+ * To make defining Sites easier, use this macro to define the function body of your Site Function(). <br />
+ * This will assign a value to a string that is identical to your FunctionName e.g. InsertionSitePerspective::Instance().GetNameFromId(Value()) would give "Value". <br />
+ * This will also help you define the required insertion method (chemical::Excitation*) required for using your Site. <br />
+ * REMINDER: Your Site Function()s should be in the ::bio::site namespace. <br />
  */
 #define BIO_INSERTION_SITE_FUNCTION_BODY(functionName, toInsert)               \
     BIO_ID_FUNCTION_BODY(                                                      \
@@ -67,7 +67,7 @@
     BIO_SITE_FUNCTION(InsertionSitePerspective, functionName##InsertionSite, toInsert, AddImplementation, (toInsert), (NULL))
 
 /**
- * Ease of use method for declaring all kinds of sites at once.
+ * Ease of use method for declaring all kinds of sites at once. <br />
  */
 #define BIO_SITE(functionName)                                                 \
     namespace site {                                                           \
@@ -75,7 +75,7 @@
     }
 
 /**
- * Ease of use method of defining all kinds of sites at once.
+ * Ease of use method of defining all kinds of sites at once. <br />
  */
 #define BIO_SITE_FUNCTION_BODY(functionName, type)                             \
     namespace site {                                                           \

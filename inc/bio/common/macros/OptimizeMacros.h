@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -22,46 +22,46 @@
 #pragma once
 
 /**
- * BIO_SAFETY_LEVEL dictates how fast vs safe *this should be.
- * A lower level means faster runtime and a higher chance of crashing.
- * A higher level means slower runtime and a smaller chance of crashing.
- * Values generally range from 0 to 4 (unless you make your own code dependent on the BIO_SAFETY_LEVEL).
+ * BIO_SAFETY_LEVEL dictates how fast vs safe *this should be. <br />
+ * A lower level means faster runtime and a higher chance of crashing. <br />
+ * A higher level means slower runtime and a smaller chance of crashing. <br />
+ * Values generally range from 0 to 4 (unless you make your own code dependent on the BIO_SAFETY_LEVEL). <br />
  */
 #ifndef BIO_SAFETY_LEVEL
 	#define BIO_SAFETY_LEVEL 2
 #endif
 
 /**
- * Certain places in the bio framework afford easy toggling between storing fewer variables and calculating the values only when needed or caching the values and only calculating them once (or as necessary).
- * BIO_MEMORY_OPTIMIZE_LEVEL controls this tradeoff.
- * At a lower value, BIO_MEMORY_OPTIMIZE_LEVEL will cause more memory to be cached, saving cpu.
- * At a higher value, BIO_MEMORY_OPTIMIZE_LEVEL will cause less memory to be cached, costing cpu.
- * Values generally range from 0 to 1 (on or off, for the time being).
+ * Certain places in the bio framework afford easy toggling between storing fewer variables and calculating the values only when needed or caching the values and only calculating them once (or as necessary). <br />
+ * BIO_MEMORY_OPTIMIZE_LEVEL controls this tradeoff. <br />
+ * At a lower value, BIO_MEMORY_OPTIMIZE_LEVEL will cause more memory to be cached, saving cpu. <br />
+ * At a higher value, BIO_MEMORY_OPTIMIZE_LEVEL will cause less memory to be cached, costing cpu. <br />
+ * Values generally range from 0 to 1 (on or off, for the time being). <br />
  */
 #ifndef BIO_MEMORY_OPTIMIZE_LEVEL
 	#define BIO_MEMORY_OPTIMIZE_LEVEL 0
 #endif
 
 /**
- * The symmetry system is somewhat costly, especially on memory.
- * If you do not need any of the features offered by Symmetry,
- * #define BIO_ENABLE_REFLECTION 0.
- * Please do not #undef this. Just set it to 0.
- * See the following for more info (all in bio/physical):
- * Symmetry.h
- * Axis.h
- * Wave.h
- * and all the classes in bio/molecular.
+ * The symmetry system is somewhat costly, especially on memory. <br />
+ * If you do not need any of the features offered by Symmetry, <br />
+ * #define BIO_ENABLE_REFLECTION 0. <br />
+ * Please do not #undef this. Just set it to 0. <br />
+ * See the following for more info (all in bio/physical): <br />
+ * Symmetry.h <br />
+ * Axis.h <br />
+ * Wave.h <br />
+ * and all the classes in bio/molecular. <br />
  */
 #ifndef BIO_ENABLE_REFLECTION
 	#define BIO_ENABLE_REFLECTION 1
 #endif
 
 /**
- * Thread locking & unlocking is unnecessary on single-threaded builds.
- * If you do not intend on using threads at all,
- * #define BIO_ENABLE_THREADING 0
- * Doing so will make all thread related operations into nops and save you some cpu cycles.
+ * Thread locking & unlocking is unnecessary on single-threaded builds. <br />
+ * If you do not intend on using threads at all, <br />
+ * #define BIO_ENABLE_THREADING 0 <br />
+ * Doing so will make all thread related operations into nops and save you some cpu cycles. <br />
  */
 #ifndef BIO_ENABLE_THREADING
 	#define BIO_ENABLE_THREADING 1

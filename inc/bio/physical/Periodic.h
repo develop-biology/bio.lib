@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -29,7 +29,7 @@ namespace bio {
 namespace physical {
 
 /**
- * Periodic objects do work at regular intervals.
+ * Periodic objects do work at regular intervals. <br />
  */
 class Periodic :
 	public physical::Class< Periodic >,
@@ -38,19 +38,19 @@ class Periodic :
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
 		Periodic)
 
 	/**
-	 * Currently default is set to 200 milliseconds (200000 microseconds).
+	 * Currently default is set to 200 milliseconds (200000 microseconds). <br />
 	 * @return a default value for Periodic constructors.
 	 */
 	static TimeUS GetDefaultInterval();
 
 	/**
-	 * All Periodic objects share the "Periodic" Property.
+	 * All Periodic objects share the "Periodic" Property. <br />
 	 * @return {property::Periodic()}
 	 */
 	static Properties GetClassProperties();
@@ -66,20 +66,20 @@ public:
 	virtual ~Periodic();
 
 	/**
-	 * VirtualBase required method. See that class for details (in common/)
+	 * VirtualBase required method. See that class for details (in common/) <br />
 	 * @param args
 	 */
 	virtual void InitializeImplementation(ByteStreams args);
 
 	/**
-	 * Peak()s occur at Periodic::m_intervals.
-	 * Define your main Periodic logic here.
-	 * This method must be fast:
-	 *	* do not read slow hardware here
-	 *	* do not block for a long time
-	 *	* do not sleep
-	 * If derived classes must do slow work to oscillate, that slow logic MUST BE placed in a separate thread.
-	 * This method would then get the data stored by that thread and returns the data *quickly*. MAKE SURE that the thread never causes a long mutex wait as a side-effect in this Peak method.
+	 * Peak()s occur at Periodic::mIntervals. <br />
+	 * Define your main Periodic logic here. <br />
+	 * This method must be fast: <br />
+	 *	* do not read slow hardware here <br />
+	 *	* do not block for a long time <br />
+	 *	* do not sleep <br />
+	 * If derived classes must do slow work to oscillate, that slow logic MUST BE placed in a separate thread. <br />
+	 * This method would then get the data stored by that thread and returns the data *quickly*. MAKE SURE that the thread never causes a long mutex wait as a side-effect in this Peak method. <br />
 	 */
 	virtual Code Peak()
 	{
@@ -90,13 +90,13 @@ public:
 	}
 
 	/**
-	 * Checks the current time & calls Peak, if a long enough interval has passed.
-	 * Call this method regularly (i.e. on a clock).
+	 * Checks the current time & calls Peak, if a long enough interval has passed. <br />
+	 * Call this method regularly (i.e. on a clock). <br />
 	 */
 	virtual void CheckIn();
 
 	/**
-	 * Set how quickly *this should Peak()
+	 * Set how quickly *this should Peak() <br />
 	 * @param interval
 	 */
 	virtual void SetInterval(TimeUS interval);
@@ -117,34 +117,34 @@ public:
 	float GetIntervalInSeconds() const;
 
 	/**
-	 * Sets the timestamp of the last time *this Peaked.
-	 * USE WITH CAUTION!
+	 * Sets the timestamp of the last time *this Peaked. <br />
+	 * USE WITH CAUTION! <br />
 	 * @param lastPeak
 	 */
 	virtual void SetLastPeakTimestamp(Timestamp lastPeak);
 
 	/**
-	 * Required method from Wave. See that class for details.
+	 * Required method from Wave. See that class for details. <br />
 	 * @return a Symmetrical image of *this
 	 */
 	virtual Symmetry* Spin() const;
 
 	/**
-	 * Required method from Wave. See that class for details.
-	 * Reconstruct *this from the given Symmetry.
+	 * Required method from Wave. See that class for details. <br />
+	 * Reconstruct *this from the given Symmetry. <br />
 	 * @param symmetry
 	 */
 	virtual Code Reify(Symmetry* symmetry);
 
 	/**
-	 * Wave method. See that class for details.
+	 * Wave method. See that class for details. <br />
 	 * @return Periodic::GetClassProperties()
 	 */
 	virtual Properties GetProperties() const;
 
 protected:
-	TimeUS m_interval;
-	Timestamp m_lastPeakTimestamp;
+	TimeUS mInterval;
+	Timestamp mLastPeakTimestamp;
 };
 
 } //physical namespace

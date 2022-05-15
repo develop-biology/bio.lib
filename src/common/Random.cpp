@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -28,8 +28,8 @@
 namespace bio {
 
 #if BIO_CPP_VERSION >= 11
-static std::random_device rd;
-static std::mt19937 gen(rd());
+static ::std::random_device rd;
+static ::std::mt19937 gen(rd());
 #endif
 
 float random::NormalFloat(

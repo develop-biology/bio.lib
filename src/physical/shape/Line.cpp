@@ -19,7 +19,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/physical/arrangement/Line.h"
+#include "bio/physical/shape/Line.h"
 #include "bio/common/container/Iterator.h"
 
 namespace bio {
@@ -32,6 +32,13 @@ Line::Line(Index expectedSize)
 
 }
 
+Line::Line(const Container* other)
+	:
+	Arrangement< Linear >(other)
+{
+
+}
+
 Line::~Line()
 {
 
@@ -39,17 +46,21 @@ Line::~Line()
 
 ByteStream Line::Access(const Index index)
 {
-	return Cast< Identifiable< StandardDimension >* >(OptimizedAccess(index));
+	return OptimizedAccess(index).operator Identifiable< StandardDimension >*();
 }
 
 const ByteStream Line::Access(const Index index) const
 {
-	return Cast< Identifiable< StandardDimension >* >(OptimizedAccess(index));
+	return OptimizedAccess(index).operator const Identifiable< StandardDimension >*();
 }
 
-bool Line::AreEqual(Index internal, const ByteStream external) const
+bool Line::AreEqual(
+	Index internal,
+	const ByteStream external
+) const
 {
-	BIO_SANITIZE(external.Is< Identifiable< StandardDimension >* >(),,return false)
+	BIO_SANITIZE(external.Is< Identifiable< StandardDimension >* >(), ,
+		return false)
 	return OptimizedAccess(internal) == external.template As< const Identifiable< StandardDimension >* >();
 }
 
@@ -65,16 +76,19 @@ const Identifiable< StandardDimension >* Line::LinearAccess(Index index) const
 
 Index Line::SeekToName(Name name)
 {
-	if (!m_tempItt)
+	if (!mTempItt)
 	{
-		m_tempItt = ConstructClassIterator();
+		mTempItt = ConstructClassIterator();
 	}
-	m_tempItt->MoveTo(GetEndIndex());
-	for (; !m_tempItt->IsAtBeginning(); --m_tempItt)
+	mTempItt->MoveTo(GetEndIndex());
+	for (
+		; !mTempItt->IsAtBeginning();
+		--mTempItt
+		)
 	{
-		if (LinearAccess(m_tempItt->GetIndex())->IsName(name))
+		if (LinearAccess(mTempItt->GetIndex())->IsName(name))
 		{
-			return m_tempItt->GetIndex();
+			return mTempItt->GetIndex();
 		}
 	}
 	return InvalidIndex();
@@ -82,16 +96,19 @@ Index Line::SeekToName(Name name)
 
 Index Line::SeekToId(StandardDimension id)
 {
-	if (!m_tempItt)
+	if (!mTempItt)
 	{
-		m_tempItt = ConstructClassIterator();
+		mTempItt = ConstructClassIterator();
 	}
-	m_tempItt->MoveTo(GetEndIndex());
-	for (; !m_tempItt->IsAtBeginning(); --m_tempItt)
+	mTempItt->MoveTo(GetEndIndex());
+	for (
+		; !mTempItt->IsAtBeginning();
+		--mTempItt
+		)
 	{
-		if (LinearAccess(m_tempItt->GetIndex())->IsId(id))
+		if (LinearAccess(mTempItt->GetIndex())->IsId(id))
 		{
-			return m_tempItt->GetIndex();
+			return mTempItt->GetIndex();
 		}
 	}
 	return InvalidIndex();

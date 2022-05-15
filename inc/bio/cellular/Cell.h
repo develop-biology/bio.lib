@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -39,12 +39,12 @@ namespace cellular {
 class Organelle;
 
 /**
- * A Cell is the basic unit of function-driven organization within Biology.
- * Cells use Proteins & Organelles to accomplish tasks. You can think of each Protein as a stand-in for a class method except, instead of hard-coding your classes, you instead code in (hard or soft) the TranscriptionFactors and Plasmids present in a Cell. The Cell then determines its functionality at runtime.
+ * A Cell is the basic unit of function-driven organization within Biology. <br />
+ * Cells use Proteins & Organelles to accomplish tasks. You can think of each Protein as a stand-in for a class method except, instead of hard-coding your classes, you instead code in (hard or soft) the TranscriptionFactors and Plasmids present in a Cell. The Cell then determines its functionality at runtime. <br />
  *
- * In order to simplify the arbitrarily complex behavior that a Cell can perform, Cells are made to Peak, allowing their main function to be called on a clock at a regular interval.
- * Programming a Cell this way is similar to programming an Arduino with a main loop.
- * Of course, you are allowed to modify this behavior in any way you'd like ;)
+ * In order to simplify the arbitrarily complex behavior that a Cell can perform, Cells are made to Peak, allowing their main function to be called on a clock at a regular interval. <br />
+ * Programming a Cell this way is similar to programming an Arduino with a main loop. <br />
+ * Of course, you are allowed to modify this behavior in any way you'd like ;) <br />
  */
 class Cell :
 	public Class< Cell >,
@@ -55,13 +55,13 @@ class Cell :
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular,
 		Cell)
 
 	/**
-	 * Standard ctors.
+	 * Standard ctors. <br />
 	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
 		Cell,
 		&CellPerspective::Instance(),
@@ -73,20 +73,20 @@ public:
 	virtual ~Cell();
 
 	/**
-	 * Peak()s occur at Periodic::m_intervals.
-	 * Define your main Periodic logic here.
-	 * This method must be fast:
-	 *	* do not read slow hardware here
-	 *	* do not block for a long time
-	 *	* do not sleep
-	 * If derived classes must do slow work to oscillate, that slow logic MUST BE placed in a separate thread.
-	 * This method would then get the data stored by that thread and returns the data *quickly*. MAKE SURE that the thread never causes a long mutex wait as a side-effect in this Peak method.
-	 * Please call this method when you're done :)
+	 * Peak()s occur at Periodic::mIntervals. <br />
+	 * Define your main Periodic logic here. <br />
+	 * This method must be fast: <br />
+	 *	* do not read slow hardware here <br />
+	 *	* do not block for a long time <br />
+	 *	* do not sleep <br />
+	 * If derived classes must do slow work to oscillate, that slow logic MUST BE placed in a separate thread. <br />
+	 * This method would then get the data stored by that thread and returns the data *quickly*. MAKE SURE that the thread never causes a long mutex wait as a side-effect in this Peak method. <br />
+	 * Please call this method when you're done :) <br />
 	 */
 	virtual Code Peak()
 	{
 
-		//     YOU CODE GOES HERE!
+		//     YOUR CODE GOES HERE!
 
 		return cellular::Class< Cell >::Peak();
 	}

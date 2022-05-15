@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -21,7 +21,7 @@
 
 #pragma once
 /**
- * Common string operations
+ * Common string operations <br />
  */
 
 #include "bio/common/Types.h"
@@ -33,9 +33,10 @@
 namespace bio {
 namespace string {
 /**
- * Convert "true" or "false" to bool
- * Case sensitive. TODO: make insensitive.
+ * Convert "true" or "false" to bool <br />
+ * Case sensitive. TODO: make insensitive. <br />
  * @param s
+ * @param returned
  * @return true on success, false if s is not an integer
  */
 bool ToBool(
@@ -44,7 +45,7 @@ bool ToBool(
 );
 
 /**
- * convert string s to an integer and return result in value
+ * convert string s to an integer and return result in value <br />
  * @param s
  * @param returned
  * @return true on success, false if s is not an integer
@@ -55,10 +56,10 @@ bool ToInt(
 );
 
 /**
- * convert string s to an unsigned integer and return result in value
- * @param s 
+ * convert string s to an unsigned integer and return result in value <br />
+ * @param s
  * @param returned
- * @return true on success, false if s is not an unsigned integer 
+ * @return true on success, false if s is not an unsigned integer
  */
 bool ToUInt(
 	const char* s,
@@ -66,8 +67,8 @@ bool ToUInt(
 );
 
 /**
- * convert string s to a float and return result in value.
- * @param s 
+ * convert string s to a float and return result in value. <br />
+ * @param s
  * @param returned
  * @return true on success, false if s is not a float.
  */
@@ -77,9 +78,9 @@ bool ToFloat(
 );
 
 /**
- * Converts the given value to a string.
- * This is slower than the To____ methods but is more flexible.
- * @param value 
+ * Converts the given value to a string. <br />
+ * This is slower than the To____ methods but is more flexible. <br />
+ * @param value
  * @return value as a string.
  */
 template < typename T >
@@ -91,21 +92,21 @@ std::string From(const T& value)
 }
 
 /**
- * Convert a string containing substrings separated by delimiter to vector of substrings
- * Example: s is "1,abc,3000"   Results will be vector of 3 strings:   "1" "abc" "3000"
+ * Convert a string containing substrings separated by delimiter to vector of substrings <br />
+ * Example: s is "1,abc,3000"   Results will be vector of 3 strings:   "1" "abc" "3000" <br />
  * @param s the string with substrings separated by delimiter.
  * @param delimiter item separator (e.g. ',').
  * @param trimLeadingSpaces if true, removes leading spaces from substrings.
  * @return vector of substrings.
  */
 StdStrings Parse(
-	const std::string& s,
+	const ::std::string& s,
 	char delimiter = ',',
 	bool trimLeadingSpaces = true
 );
 
 /**
- * Take a vector of strings and output as a single string with delimiter separating the strings.
+ * Take a vector of strings and output as a single string with delimiter separating the strings. <br />
  * @param v vector of .
  * @param delimiter item separator (e.g. ',').
  * @param trimLeadingSpaces if true, removes leading spaces from substrings.
@@ -118,7 +119,7 @@ std::string FromVectorOfStrings(
 );
 
 /**
- * Take a vector of char*s and outputs a single string with delimiter separating the strings.
+ * Take a vector of char*s and outputs a single string with delimiter separating the strings. <br />
  * @param v
  * @param delimiter
  * @param trimLeadingSpaces
@@ -131,21 +132,21 @@ std::string FromVectorOfStrings(
 );
 
 /**
- * Takes a vector of std::strings and converts it to a vector of const char*.
+ * Takes a vector of ::std::strings and converts it to a vector of const char*. <br />
  * @param strings
  * @return strings as CharStrings.
  */
 CharStrings ToCharStrings(const StdStrings& strings);
 
 /**
- * Takes a vector of const char*s and converts it to a vector of std::strings.
+ * Takes a vector of const char*s and converts it to a vector of ::std::strings. <br />
  * @param strings
  * @return strings as StdStrings
  */
 StdStrings ToStdStrings(const CharStrings& strings);
 
 /**
- * Copies the contents of source into a new const char* and sets target to point to the new value.
+ * Copies the contents of source into a new const char* and sets target to point to the new value. 
  * @param source
  * @param target
  */
@@ -155,14 +156,14 @@ void CloneInto(
 );
 
 /**
- * A string at a level.
+ * A string at a level. <br />
  */
 struct Echelon
 {
 	const char* string;
 	unsigned int echelon;
 };
-typedef std::vector< Echelon > Echelons;
+typedef Arrangement< Echelon > Echelons;
 
 
 } //string namespace

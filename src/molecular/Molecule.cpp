@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -38,7 +38,7 @@ Molecule::Molecule(const Molecule& toCopy)
 	physical::Perspective< StandardDimension >(toCopy),
 	chemical::LinearMotif< Surface* >(toCopy)
 {
-	chemical::LinearMotif< Surface* >::m_perspective = this;
+	chemical::LinearMotif< Surface* >::mPerspective = this;
 }
 
 Molecule::~Molecule()

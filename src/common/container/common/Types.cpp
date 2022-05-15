@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,23 +19,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include "Types.h"
+#include "bio/common/container/common/Types.h"
 
 namespace bio {
-namespace log {
-namespace level {
 
-//IMPORTANT: ORDER MATTERS HERE!
-Level Debug(); // low
+const Index InvalidIndex()
+{
+	return 0;
+}
 
-Level Info();
-
-Level Warn();
-
-Level Error(); // high
-
-} //level namespace
-} //log namespace
 } //bio namespace

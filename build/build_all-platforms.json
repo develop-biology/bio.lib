@@ -1,0 +1,134 @@
+{
+  "clear_build_path" : true,
+  "next": [
+    {
+      "build" : "in_container",
+      "config" : {
+        "image" : "eons/img_generic-builder",
+        "copy_env" : [
+          "version",
+          "visibility"
+        ],
+        "next" : [
+          {
+            "clear_build_path" : false,
+            "build" : "cpp",
+            "build_in" : "lib_x86_64_cpp98_bio",
+            "copy" : [
+              {"../../inc/" : "inc/"},
+              {"../../src/" : "src/"}
+            ],
+            "config" : {
+              "file_name" : "bio",
+              "output_dir" : "lib_x86_64_cpp98_bio",
+              "cpp_version" : 98,
+              "next" : [
+                {
+                  "build": "publish",
+                  "run_when" : [
+                    "release"
+                  ],
+                  "clear_build_path" : false,
+                  "build_in" : "lib_x86_64_cpp98_bio"
+                }
+              ]
+            }
+          },
+          {
+            "clear_build_path" : false,
+            "build" : "cpp",
+            "build_in" : "lib_x86_64_cpp11_bio",
+            "config" : {
+              "file_name" : "bio",
+              "output_dir" : "lib_x86_64_cpp11_bio",
+              "cpp_version" : 11,
+              "next" : [
+                {
+                  "build": "publish",
+                  "run_when" : [
+                    "release"
+                  ],
+                  "clear_build_path" : false,
+                  "build_in" : "lib_x86_64_cpp11_bio"
+                }
+              ]
+            }
+          },
+          {
+            "clear_build_path" : false,
+            "build" : "cpp",
+            "build_in" : "lib_x86_64_cpp17_bio",
+            "config" : {
+              "file_name" : "bio",
+              "output_dir" : "lib_x86_64_cpp17_bio",
+              "cpp_version" : 17,
+              "next" : [
+                {
+                  "build": "publish",
+                  "run_when" : [
+                    "release"
+                  ],
+                  "clear_build_path" : false,
+                  "build_in" : "lib_x86_64_cpp17_bio"
+                }
+              ]
+            }
+          },
+          {
+            "clear_build_path" : false,
+            "build" : "cpp",
+            "build_in" : "lib_x86_64_cpp20_bio",
+            "config" : {
+              "file_name" : "bio",
+              "output_dir" : "lib_x86_64_cpp20_bio",
+              "cpp_version" : 20,
+              "next" : [
+                {
+                  "build": "publish",
+                  "run_when" : [
+                    "release"
+                  ],
+                  "clear_build_path" : false,
+                  "build_in" : "lib_x86_64_cpp20_bio"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "build" : "in_container",
+      "run_when" : [
+        "release"
+      ],
+      "config" : {
+        "image" : "eons/img_doxygen",
+        "copy_env" : [
+          "version",
+          "visibility"
+        ],
+        "next" : [
+          {
+            "clear_build_path" : false,
+            "build" : "doxygen",
+            "build_in" : "doc",
+            "copy" : [
+              {"../../inc/" : "inc/"},
+              {"../../src/" : "src/"}
+            ],
+            "config" : {
+              "style" : "biology_documentation",
+              "next" : [
+                {
+                  "build": "publish",
+                  "path" : "doc"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

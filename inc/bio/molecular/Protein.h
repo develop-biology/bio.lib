@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -35,11 +35,11 @@ class Vesicle;
 class DNA;
 
 /**
- * Please read the documentation for Molecule.h to understand how Proteins can best be used.
- * In short, Proteins provide functions for the Biology programming syntax.
- * Proteins are Molecules and can be stored inside Surfaces. This means they will work with Define<Protein>("MyFunction", *myProtein).
- * Proteins can thus be Transferred, reflected, and treated as any other Molecule, chemical::Substance, physical::Wave, etc.
- * NOTE: Because Proteins are Molecules, they are more than just simple functors; they can store variables, facilitate in Transferring variables, and act as any other data structure.
+ * Please read the documentation for Molecule.h to understand how Proteins can best be used. <br />
+ * In short, Proteins provide functions for the Biology programming syntax. <br />
+ * Proteins are Molecules and can be stored inside Surfaces. This means they will work with Define<Protein>("MyFunction", *myProtein). <br />
+ * Proteins can thus be Transferred, reflected, and treated as any other Molecule, chemical::Substance, physical::Wave, etc. <br />
+ * NOTE: Because Proteins are Molecules, they are more than just simple functors; they can store variables, facilitate in Transferring variables, and act as any other data structure. <br />
  */
 class Protein :
 	virtual public Molecule,
@@ -50,16 +50,16 @@ class Protein :
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular,
 		Protein)
 
 	/**
-	 * These are easy to use but require setting the Source after instantiation.
-	 * For example:
-	 * 		Protein myProtein = Protein("MyProtein");
-	 * 		myProtein.SetSource(myDNA); //myDNA created sometime earlier.
+	 * These are easy to use but require setting the Source after instantiation. <br />
+	 * For example: <br />
+	 * 		Protein myProtein = Protein("MyProtein"); <br />
+	 * 		myProtein.SetSource(myDNA); //myDNA created sometime earlier. <br />
 	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(molecular,
 		Protein,
 		&ProteinPerspective::Instance(),
@@ -72,20 +72,20 @@ public:
 	virtual ~Protein();
 
 	/**
-	 * RecruitChaperones can be used to make sure that the environment has all the necessary components for *this to function before it Fold()s.
-	 * If this method returns Success, *this and its sub-Proteins will be Folded.
+	 * RecruitChaperones can be used to make sure that the environment has all the necessary components for *this to function before it Fold()s. <br />
+	 * If this method returns Success, *this and its sub-Proteins will be Folded. <br />
 	 *
-	 * Override this method to add whatever start-up checks you need.
-	 * It is recommended to call the parent method AFTER your own checks, which will call RecruitChaperones for all sub-Proteins.
+	 * Override this method to add whatever start-up checks you need. <br />
+	 * It is recommended to call the parent method AFTER your own checks, which will call RecruitChaperones for all sub-Proteins. <br />
 	 *
-	 * For example:
-	 * virtual Code RecruitChaperones(Vesicle* environment)
-	 * {
-	 *     BIO_SANITIZE(MyChecks(),,return code::GeneralFailure())
-	 *     return Protein::RecruitChaperones(environment);
-	 * }
+	 * For example: <br />
+	 * virtual Code RecruitChaperones(Vesicle* environment) 
+	 * { <br />
+	 *     BIO_SANITIZE(MyChecks(),,return code::GeneralFailure()) <br />
+	 *     return Protein::RecruitChaperones(environment); <br />
+	 * } <br />
 	 *
-	 * This also sets m_environment to the environment provided.
+	 * This also sets mEnvironment to the environment provided. <br />
 	 *
 	 * @param environment
 	 * @return result of chaperone recruitment & whether or not Fold should be called.
@@ -93,14 +93,14 @@ public:
 	virtual Code RecruitChaperones(Vesicle* environment);
 
 	/**
-	 * Fold will ensure *this is functional in the Molecular environment (Vesicle)
-	 * This means it will make sure all Molecules, Reactions, and other Proteins needed are present.
-	 * It is your responsibility to make this true for your Proteins.
+	 * Fold will ensure *this is functional in the Molecular environment (Vesicle) <br />
+	 * This means it will make sure all Molecules, Reactions, and other Proteins needed are present. <br />
+	 * It is your responsibility to make this true for your Proteins. <br />
 	 *
-	 * This is to be called ONCE on startup.
-	 * It is highly recommended, though not enforced, to call Protein::Fold at the end of any overwritten function. This will call initialize for any sub proteins. If that is not done, some proteins may not be initialized and the behavior will be undefined. (follow the RecruitChaperones example).
+	 * This is to be called ONCE on startup. <br />
+	 * It is highly recommended, though not enforced, to call Protein::Fold at the end of any overwritten function. This will call initialize for any sub proteins. If that is not done, some proteins may not be initialized and the behavior will be undefined. (follow the RecruitChaperones example). <br />
 	 *
-	 * NOTE: If RecruitChaperones does not return code::Success(), Fold will not be called at all.
+	 * NOTE: If RecruitChaperones does not return code::Success(), Fold will not be called at all. <br />
 	 *
 	 * @return result of Folding.
 	 */
@@ -108,36 +108,36 @@ public:
 
 
 	/**
-	 * This should be overwritten to add whatever functionality is desired.
-	 * It is likely desirable, though not enforced to call Protein::Activate() at the end of any overwritten functions. This will cause all sub-Proteins to be Activated.
+	 * This should be overwritten to add whatever functionality is desired. <br />
+	 * It is likely desirable, though not enforced to call Protein::Activate() at the end of any overwritten functions. This will cause all sub-Proteins to be Activated. <br />
 	 * @return result of Activation.
 	*/
 	virtual Code Activate();
 
 	/**
-	 * The () operator is the primary function that will be called when accessing *this.
-	 * Calling Protein::operator() just forwards to Activate.
+	 * The () operator is the primary function that will be called when accessing *this. <br />
+	 * Calling Protein::operator() just forwards to Activate. <br />
 	 * @return Activate()
 	 */
 	virtual Code operator()();
 
 	/**
-	 * Proteins originate from DNA.
-	 * This allows us to tell 2 otherwise identical Proteins apart.
-	 * For example, Protein with name "DoMyAction" gets replaced with a "DoMyAction" from an updated Gene. Both Proteins will return true on == comparison but may have different functionality which would only be known by getting the m_source.
-	 * @return the m_source of *this.
+	 * Proteins originate from DNA. <br />
+	 * This allows us to tell 2 otherwise identical Proteins apart. <br />
+	 * For example, Protein with name "DoMyAction" gets replaced with a "DoMyAction" from an updated Gene. Both Proteins will return true on == comparison but may have different functionality which would only be known by getting the mSource. <br />
+	 * @return the mSource of *this.
 	 */
 	virtual const DNA* GetSource() const;
 
 	/**
-	 * Set the m_source of *this
+	 * Set the mSource of *this <br />
 	 * @param source
 	 * @return the result of setting (e.g. code::Success()).
 	 */
 	virtual Code SetSource(const DNA* source);
 
 protected:
-	const DNA* m_source;
+	const DNA* mSource;
 
 private:
 	/**

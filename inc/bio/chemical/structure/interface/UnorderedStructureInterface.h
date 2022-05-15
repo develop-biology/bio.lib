@@ -29,7 +29,7 @@ namespace bio {
 namespace chemical {
 
 /**
- * Interface methods for all UnorderedMotif classes.
+ * Interface methods for all UnorderedMotif classes. <br />
  */
 class UnorderedStructureInterface :
 	virtual public ThreadSafe,
@@ -53,8 +53,8 @@ public:
 
 
 	/**
-	 * Adds to *this using the appropriate interface for T.
-	 * Does not allow duplicates.
+	 * Adds to *this using the appropriate interface for T. <br />
+	 * Does not allow duplicates. <br />
 	 * @tparam T
 	 * @param t
 	 * @return the t inserted or 0; 0 if T is invalid.
@@ -75,7 +75,7 @@ public:
 
 
 	/**
-	 * Removes t from *this using the appropriate handler for T.
+	 * Removes t from *this using the appropriate handler for T. <br />
 	 * @tparam T
 	 * @param t
 	 * @return the removed content or 0; 0 if T is invalid.
@@ -96,13 +96,13 @@ public:
 
 
 	/**
-	 * Copy the contents of another container into *this.
-	 * Does nothing if T is invalid.
+	 * Copy the contents of another container into *this. <br />
+	 * Does nothing if T is invalid. <br />
 	 * @tparam T
 	 * @param other
 	 */
 	template < typename T >
-	void Import(const UnorderedMotif <T>* other)
+	void Import(const UnorderedMotif< T >* other)
 	{
 		LockThread();
 		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
@@ -114,18 +114,18 @@ public:
 	}
 
 	/**
-	 * Copy the contents of a vector into *this.
-	 * Will only work if *this contains an UnorderedMotif of the given type.
-	 * Does nothing if T is invalid.
+	 * Copy the contents of a vector into *this. <br />
+	 * Will only work if *this contains an UnorderedMotif of the given type. <br />
+	 * Does nothing if T is invalid. <br />
 	 * @tparam T
 	 * @param other
 	 */
 	template < typename T >
-	void Import(const std::vector< T >& other)
+	void Import(const ::bio::Arrangement< T >& other)
 	{
 		for (
-			typename std::vector< T >::const_iterator otr = other.begin();
-			otr != other.end();
+			SmartIterator otr = other.Begin();
+			!otr.IsAtEnd();
 			++otr
 			)
 		{
@@ -134,9 +134,9 @@ public:
 	}
 
 	/**
-	 * This method does way more than it should reasonably be able to.
-	 * Here, we take advantage of some of the Biology features that are starting to form. Primarily, we leverage physical::Properties and Bonds (per Atom) to search through the pseudo-vtable of Atom, find all StructuralComponents in *this and attempt to Import the corresponding StructuralComponents of other.
-	 * This method side-steps the typical inheritance encapsulation in order to prevent child classes from having to override this method and account for each new UnorderedMotif they add. In other words, complexity here removes repeated code downstream.
+	 * This method does way more than it should reasonably be able to. <br />
+	 * Here, we take advantage of some of the Biology features that are starting to form. Primarily, we leverage physical::Properties and Bonds (per Atom) to search through the pseudo-vtable of Atom, find all StructuralComponents in *this and attempt to Import the corresponding StructuralComponents of other. <br />
+	 * This method side-steps the typical inheritance encapsulation in order to prevent child classes from having to override this method and account for each new UnorderedMotif they add. In other words, complexity here removes repeated code downstream. <br />
 	 * @param other
 	 */
 	Code ImportAll(const physical::Wave* other)
@@ -146,7 +146,7 @@ public:
 
 		Code ret = code::Success();
 
-		LockThread(); // in case m_bonds changes.
+		LockThread(); // in case mBonds changes.
 		Bond* bondBuffer;
 		for (
 			SmartIterator bnd = other->AsAtom()->GetAllBonds()->End();
@@ -161,12 +161,12 @@ public:
 			}
 			if (physical::Wave::GetResonanceBetween(
 				bondBuffer->GetBonded(),
-				AbstractMotif::GetClassProperties()).size() == 0)
+				AbstractMotif::GetClassProperties()).Size() == 0)
 			{
 				continue;
 			}
 			const physical::Wave* otherBond = other->AsAtom()->GetBonded(other->AsAtom()->GetBondPosition(bondBuffer->GetId()));
-			(Cast< AbstractMotif* >(bondBuffer->GetBonded()))->ImportImplementation(otherBond); //actual work
+			(Cast< AbstractMotif* >(bondBuffer->GetBonded()))->ImportImplementation(otherBond); //actual work 
 		}
 		UnlockThread();
 
@@ -174,7 +174,7 @@ public:
 	}
 
 	/**
-	 * Gives the number of T in *this
+	 * Gives the number of T in *this <br />
 	 * @tparam T
 	 * @return the size of contents; 0 if T is invalid.
 	 */
@@ -194,7 +194,7 @@ public:
 
 
 	/**
-	 * USE WITH CAUTION!!!
+	 * USE WITH CAUTION!!! <br />
 	 * @tparam T
 	 * @return A pointer to all contents in *this; 0 if T is invalid.
 	 */
@@ -214,7 +214,7 @@ public:
 
 
 	/**
-	 * Safer, const version of above.
+	 * Safer, const version of above. <br />
 	 * @tparam T
 	 * @return A pointer to all contents in *this; 0 if T is invalid.
 	 */
@@ -234,27 +234,27 @@ public:
 
 
 	/**
-	 * Check for content.
+	 * Check for content. <br />
 	 * @tparam T
 	 * @param content
 	 * @return whether or not content exists in *this; false if T is invalid.
 	 */
 	template < typename T >
-	bool Has(T t) const
+	bool Has(T content) const
 	{
 		bool ret = false;
 		LockThread();
 		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
 		if (implementer)
 		{
-			ret = implementer->HasImplementation(t);
+			ret = implementer->HasImplementation(content);
 		}
 		UnlockThread();
 		return ret;
 	}
 
 	/**
-	 * Gives the number of matching contents between *this & other.
+	 * Gives the number of matching contents between *this & other. <br />
 	 * @param other
 	 * @return quantity overlap with other; 0 if T is invalid.
 	 */
@@ -273,8 +273,8 @@ public:
 	}
 
 	/**
-	 * Check if *this contains all of the given contents
-	 * Should NOT check if the given contents contain all those of *this.
+	 * Check if *this contains all of the given contents <br />
+	 * Should NOT check if the given contents contain all those of *this. <br />
 	 * @param content
 	 * @return whether or not the given contents exists in *this
 	 */
@@ -293,9 +293,9 @@ public:
 	}
 
 	/**
-	 * Removes all T from *this.
-	 * Does not delete the contents!
-	 * Does nothing if T is invalid.
+	 * Removes all T from *this. <br />
+	 * Does not delete the contents! <br />
+	 * Does nothing if T is invalid. <br />
 	 * @tparam T
 	 */
 	template < typename T >
@@ -311,7 +311,7 @@ public:
 	}
 
 	/**
-	 * Get the Contents of *this as a string.
+	 * Get the Contents of *this as a string. <br />
 	 * @param separator e.g. ", ", the default, or just " ".
 	 * @return the Contents of *this as a string; "" if T is invalid.
 	 */
@@ -330,9 +330,9 @@ public:
 	}
 
 	/**
-	 * Ease of use wrapper around casting the contents of *this as a std::vector.
+	 * Ease of use wrapper around casting the contents of *this as a ::bio::Arrangement. <br />
 	 * @tparam T
-	 * @return the contents of *this casted to an std::vector.
+	 * @return the contents of *this casted to an ::bio::Arrangement.
 	 */
 	template < typename T >
 	std::vector< T > GetAllAsVector()
@@ -342,12 +342,12 @@ public:
 	}
 
 	/**
-	 * Ease of use wrapper around casting the contents of *this as a std::vector.
+	 * Ease of use wrapper around casting the contents of *this as a ::bio::Arrangement. <br />
 	 * @tparam T
-	 * @return the contents of *this casted to an std::vector.
+	 * @return the contents of *this casted to an ::bio::Arrangement.
 	 */
 	template < typename T >
-	const std::vector< T > GetAllAsVector() const
+	const ::std::vector< T > GetAllAsVector() const
 	{
 		return this->template GetAll< T >()->
 			template AsVector< T >();

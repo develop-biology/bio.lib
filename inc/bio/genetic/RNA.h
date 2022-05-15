@@ -27,7 +27,7 @@ namespace bio {
 namespace genetic {
 
 /**
- * RNA is responsible for interacting with Genes and making Expression possible.
+ * RNA is responsible for interacting with Genes and making Expression possible. <br />
  */
 class RNA :
 	public Class< RNA >,
@@ -35,14 +35,14 @@ class RNA :
 {
 public:
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(genetic,
 		RNA)
 
 	/**
-	 * Standard ctors.
-	 * NOTE: RNA does not always have to be Identifiable. We simply make it so for ease-of use.
+	 * Standard ctors. <br />
+	 * NOTE: RNA does not always have to be Identifiable. We simply make it so for ease-of use. <br />
 	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(genetic,
 		RNA,
 		&genetic::RNAPerspective::Instance(),

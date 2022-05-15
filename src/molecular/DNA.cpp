@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -30,49 +30,49 @@ namespace molecular {
 
 void DNA::CtorCommon()
 {
-	m_protein = NULL;
-	m_version = 0.0f;
+	mProtein = NULL;
+	mVersion = 0.0f;
 }
 
 DNA::~DNA()
 {
-	if (m_protein)
+	if (mProtein)
 	{
-		delete m_protein;
-		m_protein = NULL;
+		delete mProtein;
+		mProtein = NULL;
 	}
 }
 
 Protein* DNA::GetProtein()
 {
-	return m_protein;
+	return mProtein;
 }
 
 const Protein* DNA::GetProtein() const
 {
-	return m_protein;
+	return mProtein;
 }
 
 StandardDimension DNA::GetProteinId() const
 {
-	BIO_SANITIZE(m_protein, ,
+	BIO_SANITIZE(mProtein, ,
 		return ProteinPerspective::InvalidId());
-	return m_protein->GetId();
+	return mProtein->GetId();
 }
 
 Version DNA::GetVersion()
 {
-	return m_version;
+	return mVersion;
 }
 
 void DNA::SetVersion(Version newVersion)
 {
-	m_version = newVersion;
+	mVersion = newVersion;
 }
 
 void DNA::SetProtein(Protein* protein)
 {
-	m_protein = protein;
+	mProtein = protein;
 }
 
 } //molecular namespace

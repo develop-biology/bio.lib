@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -56,7 +56,7 @@ Surface::Surface(const Surface& toCopy)
 {
 	chemical::Bond* bondBuffer;
 	for (
-		SmartIterator bnd = toCopy.m_bonds.End();
+		SmartIterator bnd = toCopy.mBonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
@@ -77,7 +77,7 @@ Surface::~Surface()
 {
 	chemical::Bond* bondBuffer;
 	for (
-		SmartIterator bnd = m_bonds.End();
+		SmartIterator bnd = mBonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
@@ -94,7 +94,7 @@ Surface::~Surface()
 
 void Surface::SetEnvironment(Molecule* environment)
 {
-	m_environment = environment;
+	mEnvironment = environment;
 	SetId(0); //0 should always be invalid.
 	Identifiable< StandardDimension >::SetPerspective(environment);
 }
@@ -124,7 +124,7 @@ physical::Wave* Surface::Release(
 	physical::Wave* ret = NULL;
 	chemical::Bond* bondBuffer;
 	for (
-		SmartIterator bnd = m_bonds.End();
+		SmartIterator bnd = mBonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
@@ -144,14 +144,14 @@ physical::Wave* Surface::Release(
 
 chemical::Substance* Surface::Release(
 	Name toRelease,
-	physical::Perspective<StandardDimension>* perspective,
+	physical::Perspective< StandardDimension >* perspective,
 	BondType bondType
 )
 {
 	chemical::Substance* ret = NULL;
 	chemical::Bond* bondBuffer;
 	for (
-		SmartIterator bnd = m_bonds.End();
+		SmartIterator bnd = mBonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
@@ -175,14 +175,14 @@ chemical::Substance* Surface::Release(
 
 chemical::Substance* Surface::Release(
 	StandardDimension toRelease,
-	physical::Perspective<StandardDimension>* perspective,
+	physical::Perspective< StandardDimension >* perspective,
 	BondType bondType
 )
 {
 	chemical::Substance* ret = NULL;
 	chemical::Bond* bondBuffer;
 	for (
-		SmartIterator bnd = m_bonds.End();
+		SmartIterator bnd = mBonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
@@ -209,7 +209,7 @@ physical::Waves Surface::ReleaseAll(BondType bondType)
 	physical::Waves ret;
 	chemical::Bond* bondBuffer;
 	for (
-		SmartIterator bnd = m_bonds.End();
+		SmartIterator bnd = mBonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
@@ -217,7 +217,7 @@ physical::Waves Surface::ReleaseAll(BondType bondType)
 		bondBuffer = bnd;
 		if (bondBuffer->GetType() == bondType)
 		{
-			ret.push_back(ChemicalCast< physical::Wave* >(bondBuffer->GetBonded()));
+			ret.Add(ChemicalCast< physical::Wave* >(bondBuffer->GetBonded()));
 			bondBuffer->Break();
 		}
 	}

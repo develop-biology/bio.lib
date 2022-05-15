@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -33,10 +33,10 @@ Wave::Wave(
 	Symmetry* symmetry
 )
 	:
-	m_symmetry(
+	mSymmetry(
 		symmetry
 	),
-	m_signal(
+	mSignal(
 		NULL
 	)
 {
@@ -44,9 +44,9 @@ Wave::Wave(
 
 Wave::~Wave()
 {
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(m_symmetry,
-		delete m_symmetry;
-		m_symmetry = NULL,);
+	BIO_SANITIZE_AT_SAFETY_LEVEL_2(mSymmetry,
+		delete mSymmetry;
+		mSymmetry = NULL,);
 }
 
 Wave* Wave::Clone() const
@@ -58,14 +58,14 @@ Wave* Wave::Clone() const
 
 Symmetry* Wave::Spin() const
 {
-	return m_symmetry;
+	return mSymmetry;
 }
 
 Code Wave::Reify(
 	Symmetry* symmetry
 )
 {
-	(*m_symmetry) = *symmetry;
+	(*mSymmetry) = *symmetry;
 	return code::Success();
 }
 
@@ -92,18 +92,18 @@ Wave* Wave::Modulate(
 	Wave* signal
 )
 {
-	m_signal = signal;
+	mSignal = signal;
 	return this;
 }
 
 Wave* Wave::Demodulate()
 {
-	return m_signal;
+	return mSignal;
 }
 
 const Wave* Wave::Demodulate() const
 {
-	return m_signal;
+	return mSignal;
 }
 
 Wave* Wave::operator*(
@@ -156,7 +156,7 @@ Properties Wave::GetProperties() const
 	public:
 		TempWave(Properties p)
 			:
-			m_properties(p)
+			mProperties(p)
 		{
 		}
 
@@ -166,27 +166,19 @@ Properties Wave::GetProperties() const
 
 		virtual Properties GetProperties() const
 		{
-			return m_properties;
+			return mProperties;
 		}
 
-		Properties m_properties;
+		Properties mProperties;
 	};
 
 	ConstWaves waves;
-	waves.push_back(
-		wave
-	);
-	TempWave* twave = new TempWave(properties);
-	waves.push_back(
-		twave
-	);
-
-	Properties ret = GetResonanceBetween(
-		waves
-	);
-
-	delete twave;
-	return ret;
+	waves.Add(wave);
+	TempWave twave(properties);
+	ByteStream overt;
+	overt.Set< Wave* >(&twave);
+	waves.Add(overt);
+	return GetResonanceBetween(waves);
 }
 
 /*static*/ Properties Wave::GetResonanceBetween(
@@ -195,10 +187,10 @@ Properties Wave::GetProperties() const
 )
 {
 	ConstWaves waves;
-	waves.push_back(
+	waves.Add(
 		wave1
 	);
-	waves.push_back(
+	waves.Add(
 		wave2
 	);
 	return GetResonanceBetween(
@@ -211,50 +203,29 @@ Properties Wave::GetProperties() const
 )
 {
 	Properties overlap;
-	BIO_SANITIZE(waves.size() && waves[0], ,
+	BIO_SANITIZE(waves.Size() && waves[0], ,
 		return overlap);
-	overlap = waves[0]->GetProperties();
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(waves.size() > 1, ,
+	overlap = waves[0].As< Wave* >()->GetProperties();
+	BIO_SANITIZE_AT_SAFETY_LEVEL_2(waves.Size() > 1, ,
 		return overlap);
-	std::vector< Properties::iterator > remBuffer;
 
 	for (
-		ConstWaves::const_iterator wav = waves.begin()++;
-		wav != waves.end();
+		SmartIterator wav = waves.Begin()++;
+		!wav.IsAtEnd();
 		++wav
 		)
 	{
-		BIO_SANITIZE(*wav, ,
-			continue);
-
-		Properties wavProperties = (*wav)->GetProperties();
-		remBuffer.clear();
+		Properties wavProperties = wav.As< Wave* >()->GetProperties();
 		for (
-			Properties::iterator prp = overlap.begin();
-			prp != overlap.end();
+			SmartIterator prp = overlap.Begin();
+			!prp.IsAtEnd();
 			++prp
 			)
 		{
-			if (std::find(
-				wavProperties.begin(),
-				wavProperties.end(),
-				*prp
-			) != wavProperties.end())
+			if (!wavProperties.Has(prp.As< Property >()))
 			{
-				remBuffer.push_back(
-					prp
-				);
+				overlap.Erase(prp);
 			}
-		}
-		for (
-			std::vector< Properties::iterator >::iterator rem = remBuffer.begin();
-			rem != remBuffer.end();
-			++rem
-			)
-		{
-			overlap.erase(
-				*rem
-			);
 		}
 	}
 	return overlap;

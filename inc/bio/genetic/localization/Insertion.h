@@ -27,11 +27,11 @@ namespace bio {
 namespace genetic {
 
 /**
- * Insertions are a type of Insertion which, instead of just finding a place, add something to a place.
- * This is used to move Proteins to their correct position after Transcription.
- * 
- * NOTE: All Sites currently have a 1 to 1 mapping with Sites and should always be the same value.
- * i.e. Cast< Site >(mySiteId) == InsertionSitePerspective::Instance().GetIdWithoutCreation(mySiteName)
+ * Insertions are a type of Insertion which, instead of just finding a place, add something to a place. <br />
+ * This is used to move Proteins to their correct position after Transcription. <br />
+ *  <br />
+ * NOTE: All Sites currently have a 1 to 1 mapping with Sites and should always be the same value. <br />
+ * i.e. Cast< Site >(mySiteId) == InsertionSitePerspective::Instance().GetIdWithoutCreation(mySiteName) <br />
  */
 class Insertion :
 	public physical::Class< Insertion >,
@@ -40,7 +40,7 @@ class Insertion :
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
 		Insertion)
@@ -63,17 +63,17 @@ public:
 	virtual ~Insertion();
 
 	/**
-	 * Override of Localization system.
-	 * This is what does the inserting.
-	 * Will recurse upward, following m_previous for as long as possible.
+	 * Override of Localization system. <br />
+	 * This is what does the inserting. <br />
+	 * Will recurse upward, following mPrevious for as long as possible. <br />
 	 * @param insertIn
 	 * @return a Substance somewhere within the Substance provided or NULL.
 	 */
 	virtual chemical::Substance* Seek(chemical::Substance* insertIn) const;
 
 	/**
-	 * Tells *this to insert toInsert in its Localization.
-	 * @param toInsert 
+	 * Tells *this to insert toInsert in its Localization. <br />
+	 * @param toInsert
 	 */
 	virtual void InsertThis(chemical::Substance* toInsert);
 
@@ -83,13 +83,13 @@ public:
 	virtual chemical::Substance* GetWhatWillBeInserted();
 
 	/**
-	 * Set m_site.
-	 * @param site 
+	 * Set mSite. <br />
+	 * @param site
 	 */
 	virtual void SetSite(Site site);
 
 protected:
-	chemical::Substance* m_toInsert;
+	chemical::Substance* mToInsert;
 };
 
 } //genetic namespace

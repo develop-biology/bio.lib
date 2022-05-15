@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -20,66 +20,50 @@
  */
 
 #pragma once
-/**
- * File of common types used across many classes.
- */
 
-#if BIO_CPP_VERSION < 11
-
-	#include <stdint.h>
-
-#else
-	#include <cstdint>
-#endif
-
-#include <cstddef> //for NULL
-#include <vector>
-#include <map>
-#include <string>
+#include <assert.h>
 #include "ByteStream.h"
+#include "Primitives.h"
+#include "bio/common/macros/Macros.h"
+#include "bio/common/container/Arrangement.h"
+#include "bio/common/container/SmartIterator.h"
 
 namespace bio {
 
 /**
- * Names are used in NameTracker<>s but are defined here for simplicity.
+ * Arrangements of Iterators can be used in buffers, etc.
+ */
+typedef Arrangement< SmartIterator > SmartIterators;
+
+/**
+ * Names are used in NameTracker<>s but are defined here for simplicity. <br />
  */
 typedef const char* Name;
-typedef std::vector< Name > Names;
+typedef Arrangement< Name > Names;
 
-typedef std::vector< const char* > CharStrings;
-typedef std::vector< std::string > StdStrings;
+typedef Arrangement< const char* > CharStrings;
+typedef Arrangement< ::std::string > StdStrings;
 
-typedef std::vector< ByteStream > ByteStreams;
-
-/**
- * Indices are used by Arrangements to manage and manipulate what they store.
- */
-typedef uint32_t Index;
+typedef Arrangement< ByteStream > ByteStreams;
 
 /**
- * We sacrifice our first index for the ability to do error checking.
- * @return a Index that holds no content.
- */
-const Index InvalidIndex();
-
-/**
- * milliseconds (ms for short)
+ * milliseconds (ms for short) <br />
  */
 typedef uint32_t Timestamp;
-typedef std::vector< Timestamp > Timestamps;
+typedef Arrangement< Timestamp > Timestamps;
 
 /**
- * microseconds (us for short)
+ * microseconds (us for short) <br />
  */
 typedef uint32_t TimeUS;
 
 /**
- * milliseconds (ms for short)
+ * milliseconds (ms for short) <br />
  */
 typedef uint32_t TimeMS;
 
 /**
- * seconds (s or sec for short)
+ * seconds (s or sec for short) <br />
  */
 typedef uint32_t TimeSec;
 

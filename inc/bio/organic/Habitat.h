@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -28,11 +28,11 @@ namespace bio {
 namespace organic {
 
 /**
- * Habitat: Is a home!
- * Habitat: (say it with me) Is a home!
+ * Habitat: Is a home! <br />
+ * Habitat: (say it with me) Is a home! <br />
  *
- * This is where your Organisms live!
- * Each Habitat is it's own thread. Once your Organisms are Adapted to *this, you can Start() the thread and they'll come to life!
+ * This is where your Organisms live! <br />
+ * Each Habitat is it's own thread. Once your Organisms are Adapted to *this, you can Start() the thread and they'll come to life! <br />
  */
 
 class Habitat :
@@ -43,13 +43,13 @@ class Habitat :
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular,
 		Habitat)
 
 	/**
-	 * Standard ctors.
+	 * Standard ctors. <br />
 	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
 		Habitat,
 		&HabitatPerspective::Instance(),
@@ -61,7 +61,7 @@ public:
 	virtual ~Habitat();
 
 	/**
-	 * Causes each Organism to undergo Morphogenesis, after which, they will be ready to live here.
+	 * Causes each Organism to undergo Morphogenesis, after which, they will be ready to live here. <br />
 	 */
 	virtual Code AdaptInhabitants();
 };

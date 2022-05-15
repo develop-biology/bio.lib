@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -39,29 +39,29 @@ Threaded::Threaded()
 //@formatter:off
 	#if BIO_CPP_VERSION < 11
 		#ifdef BIO_OS_IS_LINUX
-			//use m_thread default ctor
+			//use mThread default ctor
 		#endif
-		m_id(InvalidThreadId()),
+		mId(InvalidThreadId()),
 	#else
-		m_thread(NULL),
+		mThread(NULL),
 	#endif
 	//@formatter:on
-	m_created(false),
-	m_running(false),
-	m_stopRequested(false)
+	mCreated(false),
+	mRunning(false),
+	mStopRequested(false)
 {
 
 }
 
 Threaded::~Threaded()
 {
-	BIO_ASSERT(!m_running);
+	BIO_ASSERT(!mRunning);
 }
 
 bool Threaded::IsRunning()
 {
 	LockThread();
-	bool ret = m_running;
+	bool ret = mRunning;
 	UnlockThread();
 	return ret;
 }
@@ -69,7 +69,7 @@ bool Threaded::IsRunning()
 void Threaded::RequestStop()
 {
 	LockThread();
-	m_stopRequested = true;
+	mStopRequested = true;
 	UnlockThread();
 }
 
@@ -80,7 +80,7 @@ void Threaded::RequestStop()
 		return NULL);
 
 	threaded->LockThread();
-	threaded->m_running = true;
+	threaded->mRunning = true;
 	threaded->UnlockThread();
 
 	bool again = true;
@@ -88,12 +88,12 @@ void Threaded::RequestStop()
 	{
 		bool again = threaded->Work();
 		threaded->LockThread();
-		again = again && threaded->m_stopRequested;
+		again = again && threaded->mStopRequested;
 		threaded->UnlockThread();
 	}
 
 	threaded->LockThread();
-	threaded->m_running = false;
+	threaded->mRunning = false;
 	threaded->UnlockThread();
 
 	return NULL;
@@ -103,10 +103,10 @@ Threaded::ThreadId Threaded::GetThreadId()
 {
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
-		return m_id;
+		return mId;
 	#else
-		BIO_SANITIZE(m_thread,,return InvalidThreadId())
-		return m_thread->get_id();
+		BIO_SANITIZE(mThread,,return InvalidThreadId())
+		return mThread->get_id();
 	#endif
 	//@formatter:on
 }
@@ -114,7 +114,7 @@ Threaded::ThreadId Threaded::GetThreadId()
 bool Threaded::Start()
 {
 	LockThread();
-	bool isStopped = !m_created && !m_running;
+	bool isStopped = !mCreated && !mRunning;
 	UnlockThread();
 	//@formatter:off
 	BIO_SANITIZE(!isStopped, ,return true)
@@ -122,45 +122,45 @@ bool Threaded::Start()
 
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
-		BIO_SANITIZE(m_running,,return false)
+		BIO_SANITIZE(mRunning,,return false)
 		#ifdef BIO_OS_IS_LINUX
-			int result = pthread_create(&m_thread, NULL, Worker, this);
+			int result = pthread_create(&mThread, NULL, Worker, this);
 		#endif
-		m_created = result == 0;
+		mCreated = result == 0;
 	#else
-		BIO_SANITIZE(m_thread,,return false)
-		m_thread = new std::thread(&Threaded::Worker, this);
-		m_created = true
+		BIO_SANITIZE(mThread,,return false)
+		mThread = new ::std::thread(&Threaded::Worker, this);
+		mCreated = true;
 	#endif
 	//@formatter:on
-	return m_created;
+	return mCreated;
 }
 
 bool Threaded::Stop()
 {
 	LockThread();
-	bool isStopped = !m_created && !m_running;
+	bool isStopped = !mCreated && !mRunning;
 	UnlockThread();
 
 	BIO_SANITIZE(isStopped, ,
 		return true)
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
-		m_stopRequested = true;
+		mStopRequested = true;
 		#ifdef BIO_OS_IS_LINUX
-            void** threadReturn;
-			int result = pthread_join(m_thread, threadReturn);
+            void** threadReturn; 
+			int result = pthread_join(mThread, threadReturn);
 		#endif
 		RequestStop();
-		m_created = false;
+		mCreated = false;
 		return result == 0;
 	#else
-		BIO_SANITIZE(m_thread,,return true)
+		BIO_SANITIZE(mThread,,return true)
 		RequestStop();
-		m_thread->join();
-		delete m_thread;
-		m_thread = NULL;
-		m_created = false;
+		mThread->join();
+		delete mThread;
+		mThread = NULL;
+		mCreated = false;
 		return true;
 	#endif
 	//@formatter:on
@@ -175,7 +175,7 @@ void Threaded::Sleep(TimeUS us)
 			usleep(us);
 		#endif
 	#else
-		std::this_thread::sleep_for (std::chrono::microseconds(ms));
+		std::this_thread::sleep_for (std::chrono::microseconds(us));
 	#endif
 	//@formatter:on
 }

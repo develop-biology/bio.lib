@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -29,9 +29,9 @@ namespace bio {
 namespace physical {
 
 /**
- * physical::Symmetry only contains a Name, a type, and a value.
- * See SymmetryTypes.h for what types of Symmetry are available on a physical level.
- * Both Symmetry and SymmetryTypes are intended to grow with each namespace, as the complexity of what is being Rotated grows.
+ * physical::Symmetry only contains a Name, a type, and a value. <br />
+ * See SymmetryTypes.h for what types of Symmetry are available on a physical level. <br />
+ * Both Symmetry and SymmetryTypes are intended to grow with each namespace, as the complexity of what is being Rotated grows. <br />
  */
 class Symmetry :
 	virtual public Identifiable< StandardDimension >,
@@ -40,7 +40,7 @@ class Symmetry :
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
 		Symmetry)
@@ -92,45 +92,45 @@ public:
 	virtual ~Symmetry();
 
 	/**
-	 * With Symmetry, we make "Type" what is Identifiable and Name ancillary.
+	 * With Symmetry, we make "Type" what is Identifiable and Name ancillary. <br />
 	 * @return The Type of *this, akan Identifiable<SymmetryType>::GetName().
 	 */
 	const Identifiable< SymmetryType >& GetType() const;
 
 	/**
-	 * Set the type of *this.
+	 * Set the type of *this. <br />
 	 * @param type
 	 */
 	void SetType(SymmetryType type);
 
 	/**
-	 * Set the type of *this.
+	 * Set the type of *this. <br />
 	 * @param type
 	 */
 	void SetType(Name type);
 
 	/**
-	 * Set the m_value of *this.
+	 * Set the mValue of *this. <br />
 	 * @param bytes
 	 */
 	virtual void SetValue(const ByteStream& bytes);
 
 	/**
-	 * Get the m_value of *this.
-	 * @return m_value for read only.
+	 * Get the mValue of *this. <br />
+	 * @return mValue for read only.
 	 */
 	virtual const ByteStream& GetValue() const;
 
 	/**
-	 * Get the m_value of *this for direct editing.
-	 * @return m_value for writing.
+	 * Get the mValue of *this for direct editing. <br />
+	 * @return mValue for writing.
 	 */
 	virtual ByteStream* AccessValue();
 
 protected:
-	Name m_name;
-	ByteStream m_value;
-	Identifiable< SymmetryType > m_type;
+	Name mName;
+	ByteStream mValue;
+	Identifiable< SymmetryType > mType;
 };
 
 } //physical namespace

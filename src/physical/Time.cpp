@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -24,29 +24,31 @@
 
 #if BIO_CPP_VERSION < 11
 #else
+
 	#include <chrono> //C++11
+
 #endif
 
 namespace bio {
 namespace physical {
 
 #ifdef BIO_FAKE_SYSTEM_TIME
-static Timestamp g_fakeTime = 0;
+static Timestamp sFakeTime = 0;
 void SetFakeTime(const Timestamp newTime)
 {
-	g_fakeTime = newTime;
+	sFakeTime = newTime;
 }
 #endif
 
 Timestamp GetCurrentTimestamp()
 {
 	#ifdef BIO_FAKE_SYSTEM_TIME
-	return g_fakeTime;
+	return sFakeTime;
 	#elif BIO_CPP_VERSION < 11
 	return 0; //TODO...
 	#else
-	using namespace std::chrono;
-	auto now = time_point_cast<milliseconds>(system_clock::now());
+	using namespace ::std::chrono;
+	auto now = time_point_cast< milliseconds >(system_clock::now());
 	return now.time_since_epoch().count();
 	#endif
 }

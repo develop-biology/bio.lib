@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -38,13 +38,13 @@ Reaction::Reaction(
 		&ReactionPerspective::Instance(),
 		filter::Chemical(),
 		symmetry_type::Operation()),
-	m_requiredReactants(*reactants)
+	mRequiredReactants(*reactants)
 {
 }
 
 void Reaction::Require(Reactant* reactant)
 {
-	m_requiredReactants.Add< Substance* >(reactant);
+	mRequiredReactants.Add< Substance* >(reactant);
 }
 
 void Reaction::Require(
@@ -76,7 +76,7 @@ void Reaction::Require(
 
 bool Reaction::ReactantsMeetRequirements(const Reactants* toCheck) const
 {
-	return toCheck->HasAll< Substance* >(m_requiredReactants.GetAll< Substance* >());
+	return toCheck->HasAll< Substance* >(mRequiredReactants.GetAll< Substance* >());
 }
 
 /*static*/ const Reaction* Reaction::Initiate(StandardDimension id)

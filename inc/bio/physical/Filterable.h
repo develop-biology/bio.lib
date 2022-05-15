@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -31,9 +31,9 @@ namespace bio {
 namespace physical {
 
 /**
- * Filterable objects have a Filter.
- * NOTE: Filterable objects only use a single Filter at a time.
- * See log::Writer for example usage.
+ * Filterable objects have a Filter. <br />
+ * NOTE: Filterable objects only use a single Filter at a time. <br />
+ * See log::Writer for example usage. <br />
  */
 class Filterable :
 	public physical::Class< Filterable >,
@@ -42,7 +42,7 @@ class Filterable :
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
 		Filterable)
@@ -64,14 +64,14 @@ public:
 	virtual ~Filterable();
 
 	/**
-	 * VirtualBase required method. See that class for details (in common/)
+	 * VirtualBase required method. See that class for details (in common/) <br />
 	 * @param args
 	 */
 	virtual void InitializeImplementation(ByteStreams args);
 
 	/**
-	 * Set the filter for *this.
-	 * Overload this to propagate Filter changes to own classes, etc.
+	 * Set the filter for *this. <br />
+	 * Overload this to propagate Filter changes to own classes, etc. <br />
 	 * @param filter
 	 */
 	virtual void SetFilter(Filter filter);
@@ -82,20 +82,20 @@ public:
 	Filter GetFilter() const;
 
 	/**
-	 * Required method from Wave. See that class for details.
+	 * Required method from Wave. See that class for details. <br />
 	 * @return a Symmetrical image of *this
 	 */
 	virtual Symmetry* Spin() const;
 
 	/**
-	 * Required method from Wave. See that class for details.
-	 * Reconstruct *this from the given Symmetry.
+	 * Required method from Wave. See that class for details. <br />
+	 * Reconstruct *this from the given Symmetry. <br />
 	 * @param symmetry
 	 */
 	virtual Code Reify(Symmetry* symmetry);
 
 protected:
-	Filter m_filter;
+	Filter mFilter;
 };
 } //physical namespace
 } //bio namespace

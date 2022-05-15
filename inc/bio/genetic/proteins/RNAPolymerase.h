@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -31,8 +31,8 @@ class Plasmid;
 class RNA;
 
 /**
- * Used for making RNA from Genes.
- * RNA Polymerase must be fed an RNA molecule to add Gene*s to prior to each Activation(). See FeedRNA(), below.
+ * Used for making RNA from Genes. <br />
+ * RNA Polymerase must be fed an RNA molecule to add Gene*s to prior to each Activation(). See FeedRNA(), below. <br />
  */
 class RNAPolymerase :
 	public molecular::Protein
@@ -50,8 +50,8 @@ public:
 
 
 	/**
-	 * Assumes the m_environment is an Expressor. If it is not, *this will fail.
-	 * Transcribes, then Translates all Genes from toTranscribe into the environment.
+	 * Assumes the mEnvironment is an Expressor. If it is not, *this will fail. <br />
+	 * Transcribes, then Translates all Genes from toTranscribe into the environment. <br />
 	 * @return result of all Transcription & Translation.
 	 */
 	virtual Code Activate();

@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -25,14 +25,16 @@ namespace bio {
 
 ByteStream::ByteStream()
 	:
-	m_stream(NULL),
-	m_typeName(""),
-	m_size(0),
-	m_holding(false)
+	mStream(NULL),
+	mTypeName(""),
+	mSize(0),
+	mHolding(false)
 {
 }
 
 ByteStream::ByteStream(const ByteStream& other)
+	:
+	mHolding(false)
 {
 	*this = other;
 }
@@ -46,75 +48,76 @@ void ByteStream::operator=(const ByteStream& other)
 {
 	Release(); //wipe old state.
 
-	if (other.m_holding)
+	if (other.mHolding)
 	{
 		//We can't free the same memory twice, so we have to allocate a new block for ourselves.
 		Set(other);
 	}
 	else
 	{
-		m_stream = other.m_stream;
-		m_typeName = other.m_typeName;
-		m_size = other.m_size;
-		m_holding = false;
+		mStream = other.mStream;
+		mTypeName = other.mTypeName;
+		mSize = other.mSize;
+		mHolding = false;
 	}
 }
 
 bool ByteStream::IsEmpty() const
 {
-	return !m_stream;
+	return !mStream;
 }
 
 std::string ByteStream::GetTypeName() const
 {
-	return m_typeName;
+	return mTypeName;
 }
 
 std::size_t ByteStream::GetSize() const
 {
-	return m_size;
+	return mSize;
 }
 
-void* ByteStream::IKnowWhatImDoing()
+void* ByteStream::DirectAccess()
 {
-	return m_stream;
+	return mStream;
 }
 
 void ByteStream::Set(const ByteStream& other)
 {
-	m_stream = std::malloc(other.m_size);
+	Release();
+	mStream = ::std::malloc(other.mSize);
 	memcpy(
-		m_stream,
-		other.m_stream,
-		other.m_size
+		mStream,
+		other.mStream,
+		other.mSize
 	);
-	m_size = other.m_size;
-	m_typeName = other.m_typeName;
-	m_holding = true;
+	mSize = other.mSize;
+	mTypeName = other.mTypeName;
+	mHolding = true;
 }
 
 void ByteStream::Release()
 {
-	if (!m_holding)
+	if (!mHolding)
 	{
 		return;
 	}
-	std::free(m_stream);
-	m_size = 0;
-	m_typeName.clear();
-	m_holding = false;
+	std::free(mStream);
+	mSize = 0;
+	mTypeName.clear();
+	mHolding = false;
 }
 
 bool ByteStream::operator==(const ByteStream& other) const
 {
-	if (m_size != other.m_size || m_typeName != other.m_typeName)
+	if (mSize != other.mSize || mTypeName != other.mTypeName)
 	{
 		return false;
 	}
 	return memcmp(
-		m_stream,
-		other.m_stream,
-		m_size
+		mStream,
+		other.mStream,
+		mSize
 	) == 0;
 }
 

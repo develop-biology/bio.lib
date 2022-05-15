@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -30,12 +30,12 @@ namespace bio {
 namespace chemical {
 
 /**
- * The PeriodicTable is a stand-in for runtime type information (RTTI).
- * Instead of having to rely on code compiled with RTTI enabled, we implement our own type tracking mechanism.
+ * The PeriodicTable is a stand-in for runtime type information (RTTI). <br />
+ * Instead of having to rely on code compiled with RTTI enabled, we implement our own type tracking mechanism. <br />
  *
- * The PeriodicTable tracks Properties of types in addition to assigning them an AtomicNumber..
- * This is done because neither static nor virtual methods will allow for the inverted inheritance necessary to make inverted-inheritance methods like Atom::CallForAll work properly.
- * See Elementary.h for a more detailed description of this system.
+ * The PeriodicTable tracks Properties of types in addition to assigning them an AtomicNumber.. <br />
+ * This is done because neither static nor virtual methods will allow for the inverted inheritance necessary to make inverted-inheritance methods like Atom::CallForAll work properly. <br />
+ * See Elementary.h for a more detailed description of this system. <br />
  */
 class PeriodicTableImplementation :
 	public physical::Perspective< AtomicNumber >
@@ -62,7 +62,7 @@ public:
 	}
 
 	/**
-	 * For auto template determination.
+	 * For auto template determination. <br />
 	 * @tparam T
 	 * @param t
 	 * @return the Name associated with the given type.
@@ -84,7 +84,7 @@ public:
 	}
 
 	/**
-	 * For auto template determination.
+	 * For auto template determination. <br />
 	 * @tparam T
 	 * @param t
 	 * @return the AtomicNumber associated with the given type.
@@ -118,7 +118,7 @@ public:
 	}
 
 	/**
-	 * Add a Property to the given type's record in *this.
+	 * Add a Property to the given type's record in *this. <br />
 	 * @param id
 	 * @param property
 	 * @return the id given.
@@ -129,7 +129,7 @@ public:
 	);
 
 	/**
-	 * Add a Property to the given type's record in *this.
+	 * Add a Property to the given type's record in *this. <br />
 	 * @param name
 	 * @param property
 	 * @return the id of the given name.
@@ -140,7 +140,7 @@ public:
 	);
 
 	/**
-	 * Add a Property to the given type's record in *this.
+	 * Add a Property to the given type's record in *this. <br />
 	 * @tparam T
 	 * @param property
 	 * @return the id of the given typo.
@@ -155,7 +155,7 @@ public:
 	}
 
 	/**
-	 * Add Properties to the given type's record in *this.
+	 * Add Properties to the given type's record in *this. <br />
 	 * @param id
 	 * @param properties
 	 * @return the given id.
@@ -166,7 +166,7 @@ public:
 	);
 
 	/**
-	 * Add Properties to the given type's record in *this.
+	 * Add Properties to the given type's record in *this. <br />
 	 * @param name
 	 * @param properties
 	 * @return the id of the given name.
@@ -177,7 +177,7 @@ public:
 	);
 
 	/**
-	 * Add Properties to the given type's record in *this.
+	 * Add Properties to the given type's record in *this. <br />
 	 * @tparam T
 	 * @param properties
 	 * @return the id of the given type.
@@ -192,16 +192,16 @@ public:
 	}
 
 	/**
-	 * Only works if AssociateType has been called with the given id.
+	 * Only works if AssociateType has been called with the given id. <br />
 	 * @param id
 	 * @return the pointer to the Wave type associated with the given id else NULL.
 	 */
 	virtual const physical::Wave* GetTypeFromId(AtomicNumber id) const;
 
 	/**
-	 * Associates the given Wave type with the given id.
-	 * This is only necessary if you want to use GetTypeFromId later on.
-	 * Associating a type with an id has no effect on the Recorded Properties.
+	 * Associates the given Wave type with the given id. <br />
+	 * This is only necessary if you want to use GetTypeFromId later on. <br />
+	 * Associating a type with an id has no effect on the Recorded Properties. <br />
 	 * @param id
 	 * @param type
 	 * @return true if the association completed successfully else false
@@ -212,8 +212,8 @@ public:
 	);
 
 	/**
-	 * Removes the type association created by AssociateType().
-	 * Disassociating a type has no effect on the Recorded Properties.
+	 * Removes the type association created by AssociateType(). <br />
+	 * Disassociating a type has no effect on the Recorded Properties. <br />
 	 * @param id
 	 * @return true if the association was removed else false.
 	 */

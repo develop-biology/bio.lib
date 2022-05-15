@@ -22,10 +22,10 @@
 #pragma once
 
 #if BIO_CPP_VERSION < 11
-	#define BIO_CACHE(expression)                                              \
+	#define BIO_BYTESTREAM_CACHE(expression)                                   \
     ::bio::ByteStream RESULT;                                                  \
     RESULT.Set(expression);
 #else
-	#define BIO_CACHE(expression)                                                  \
+	#define BIO_BYTESTREAM_CACHE(expression)                                   \
 	auto RESULT = (expression);
 #endif

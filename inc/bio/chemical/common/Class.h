@@ -34,10 +34,10 @@ namespace chemical {
 class Substance;
 
 /**
- * A chemical::Class is an Identifiable Atom with logging capabilities.
- * This will FormBond() with the provided T.
- * Class in other namespaces will grow to include more complex, templated logic.
- * This pattern prevents you from having to define virtual methods each of your child classes, so long as you always derive from the appropriate Class<T>.
+ * A chemical::Class is an Identifiable Atom with logging capabilities. <br />
+ * This will FormBond() with the provided T. <br />
+ * Class in other namespaces will grow to include more complex, templated logic. <br />
+ * This pattern prevents you from having to define virtual methods each of your child classes, so long as you always derive from the appropriate Class<T>. <br />
  * @tparam T
  */
 template < typename T >
@@ -56,20 +56,20 @@ private:
 			Filterable::Initialize(filter);
 		}
 		//Bond the class we're given, Virtually.
-		physical::Class< T >::m_object->FormBond(
-			physical::Class< T >::m_object,
+		physical::Class< T >::mObject->FormBond(
+			physical::Class< T >::mObject,
 			bond_type::Virtual());
 	}
 
 public:
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
 		T)
 
 	/**
-	 * For when we know the Perspective but not ourselves.
+	 * For when we know the Perspective but not ourselves. <br />
 	 * @param object
 	 * @param perspective
 	 * @param filter
@@ -171,9 +171,9 @@ public:
 	}
 
 	/**
-	 * Using the PeriodicTable, we can reliably implement Wave::GetProperties without having to store m_properties internally.
-	 * NOTE: You must still record the Properties of T elsewhere. See Elementary.h for an easy means of doing this.
-	 * @return the Properties of T that have been Registered with the PeriodicTable.
+	 * Using the PeriodicTable, we can reliably implement Wave::GetProperties without having to store mProperties internally. <br />
+	 * NOTE: You must still record the Properties of T elsewhere. See Elementary.h for an easy means of doing this. <br />
+	 * @return the Properties of T that have been Registered with the PeriodicTable. <br />
 	 */
 	virtual Properties GetProperties() const
 	{
@@ -181,7 +181,7 @@ public:
 	}
 
 	/**
-	 * From Wave. See that class for details.
+	 * From Wave. See that class for details. <br />
 	 * @return this as an Atom.
 	 */
 	virtual Atom* AsAtom()
@@ -190,7 +190,7 @@ public:
 	}
 
 	/**
-	 * From Wave. See that class for details.
+	 * From Wave. See that class for details. <br />
 	 * @return this as an Atom.
 	 */
 	virtual const Atom* AsAtom() const
@@ -199,7 +199,7 @@ public:
 	}
 
 	/**
-	 * Disambiguate Wave method. See that class for details.
+	 * Disambiguate Wave method. See that class for details. <br />
 	 * @param other
 	 * @return result of Wave::Attenuation.
 	 */
@@ -209,7 +209,7 @@ public:
 	}
 
 	/**
-	 * Disambiguate Wave method. See that class for details.
+	 * Disambiguate Wave method. See that class for details. <br />
 	 * @param other
 	 * @return result of Wave::Disattenuation.
 	 */

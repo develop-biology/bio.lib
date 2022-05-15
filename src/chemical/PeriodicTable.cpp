@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -26,10 +26,10 @@ namespace bio {
 namespace chemical {
 
 /**
- * Elements track the Properties of items in the PeriodicTable.
- * This is a Substance for ease of use but can be changed later.
- * We also want to use Element as a Substance here as we can store the Properties of classes which are not Substances (e.g. Symmetry)
- * NOTE, this is not chemical::Elementary<T>, which is used to define these Elements.
+ * Elements track the Properties of items in the PeriodicTable. 
+ * This is a Substance for ease of use but can be changed later. 
+ * We also want to use Element as a Substance here as we can store the Properties of classes which are not Substances (e.g. Symmetry) 
+ * NOTE, this is not chemical::Elementary<T>, which is used to define these Elements. 
  */
 class Element :
 	public Substance
@@ -37,7 +37,7 @@ class Element :
 public:
 	Element()
 		:
-		m_type(NULL)
+		mType(NULL)
 	{
 	}
 
@@ -46,10 +46,10 @@ public:
 	}
 
 	/**
-	 * Optional type association.
-	 * This can be used for casting, etc.
+	 * Optional type association. 
+	 * This can be used for casting, etc. 
 	 */
-	physical::Wave* m_type;
+	physical::Wave* mType;
 };
 
 PeriodicTableImplementation::PeriodicTableImplementation()
@@ -69,7 +69,7 @@ const Properties PeriodicTableImplementation::GetPropertiesOf(AtomicNumber id) c
 	BIO_SANITIZE(element, ,
 		return ret);
 	LockThread();
-	ret = element->GetAllAsVector< Property >();
+	ret = element->GetAll< Property >();
 	UnlockThread();
 	return ret;
 }
@@ -85,7 +85,7 @@ AtomicNumber PeriodicTableImplementation::RecordPropertyOf(
 )
 {
 	Properties properties;
-	properties.push_back(property);
+	properties.Add(property);
 	return RecordPropertiesOf(
 		id,
 		properties
@@ -108,16 +108,17 @@ AtomicNumber PeriodicTableImplementation::RecordPropertiesOf(
 	Properties properties
 )
 {
-	typename Hadits::iterator hdt = Find(id);
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(hdt == this->m_hadits.end(), ,
+	SmartIterator hdt = Find(id);
+	BIO_SANITIZE_AT_SAFETY_LEVEL_2(hdt.IsValid(), ,
 		return InvalidId());
 
+	Hadit* hadit = hdt;
 	LockThread();
-	Element* element = ForceCast< Element* >(hdt->m_type);
+	Element* element = ForceCast< Element* >(hadit->mType);
 	if (!element)
 	{
 		element = new Element();
-		hdt->m_type = element->AsWave();
+		hadit->mType = element->AsWave();
 	}
 	element->Import< Property >(properties);
 	UnlockThread();
@@ -140,7 +141,7 @@ const physical::Wave* PeriodicTableImplementation::GetTypeFromId(AtomicNumber id
 	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id));
 	BIO_SANITIZE(element, ,
 		return NULL);
-	return element->m_type;
+	return element->mType;
 }
 
 bool PeriodicTableImplementation::AssociateType(
@@ -152,7 +153,7 @@ bool PeriodicTableImplementation::AssociateType(
 	BIO_SANITIZE(element, ,
 		return false);
 	LockThread();
-	element->m_type = type;
+	element->mType = type;
 	UnlockThread();
 	return true;
 }
@@ -163,7 +164,7 @@ bool PeriodicTableImplementation::DisassociateType(AtomicNumber id)
 	BIO_SANITIZE(element, ,
 		return false);
 	LockThread();
-	element->m_type = NULL;
+	element->mType = NULL;
 	UnlockThread();
 	return true;
 }

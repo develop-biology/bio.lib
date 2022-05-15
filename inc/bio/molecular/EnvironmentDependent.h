@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -25,10 +25,10 @@ namespace bio {
 namespace molecular {
 
 /**
- * An EnvironmentDependent object is one that changes how it behaves based on where it exists.
- * This class assumes there is only ever 1 greater environment directly above the inheriting class.
- * For example, a Protein is dependent on the Cell in which it resides and a Cell is dependent on the Tissue in which it resides. However, no where is a Protein dependent on multiple Cells directly nor is any Cell dependent on more than 1 Tissue at a time. Instead, these EnvironmentDependent classes rely on their greater context to move between themselves and further contexts, whatever resources they need or produce. In other words, the immediate m_environment is a pivot point into the larger system & the larger system is often tiered, having an even larger system "above" it.
- * @tparam T what *this is dependent on (will store a T* as m_environment).
+ * An EnvironmentDependent object is one that changes how it behaves based on where it exists. <br />
+ * This class assumes there is only ever 1 greater environment directly above the inheriting class. <br />
+ * For example, a Protein is dependent on the Cell in which it resides and a Cell is dependent on the Tissue in which it resides. However, no where is a Protein dependent on multiple Cells directly nor is any Cell dependent on more than 1 Tissue at a time. Instead, these EnvironmentDependent classes rely on their greater context to move between themselves and further contexts, whatever resources they need or produce. In other words, the immediate mEnvironment is a pivot point into the larger system & the larger system is often tiered, having an even larger system "above" it. <br />
+ * @tparam T what *this is dependent on (will store a T* as mEnvironment).
  */
 template < typename T >
 class EnvironmentDependent
@@ -39,7 +39,7 @@ public:
 	 */
 	EnvironmentDependent(T* environment = NULL)
 		:
-		m_environment(environment)
+		mEnvironment(environment)
 	{
 
 	}
@@ -53,33 +53,33 @@ public:
 	}
 
 	/**
-	 * @return The m_environment.
+	 * @return The mEnvironment.
 	 */
 	virtual T* GetEnvironment()
 	{
-		return m_environment;
+		return mEnvironment;
 	}
 
 	/**
-	 * @return The m_environment as const.
+	 * @return The mEnvironment as const.
 	 */
 	virtual const T* GetEnvironment() const
 	{
-		return m_environment;
+		return mEnvironment;
 	}
 
 	/**
-	 * Sets m_environment.
-	 * Don't let the environment go out of scope or be deleted before *this!
+	 * Sets mEnvironment. <br />
+	 * Don't let the environment go out of scope or be deleted before *this! <br />
 	 * @param environment
 	 */
 	virtual void SetEnvironment(T* environment)
 	{
-		m_environment = environment;
+		mEnvironment = environment;
 	}
 
 protected:
-	T* m_environment;
+	T* mEnvironment;
 };
 
 } //molecular namespace

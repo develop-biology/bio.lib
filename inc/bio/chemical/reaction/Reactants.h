@@ -32,9 +32,9 @@ namespace chemical {
 class Reactant; //unused here but anything including Reactants will likely use Reactant*.
 
 /**
- * Reactants are a multitude of Substances, all combined into a single Wave.
- * NOTE that a Reactant is a Substance, so Reactants may (but do not have to) contain Reactant*s.
- * Reactants is intended to be the single input to a Reaction. In this way, a Reactants represents all the Reacting Substances coming together, making the job of Reaction then to pull them apart into the appropriate Products.
+ * Reactants are a multitude of Substances, all combined into a single Wave. <br />
+ * NOTE that a Reactant is a Substance, so Reactants may (but do not have to) contain Reactant*s. <br />
+ * Reactants is intended to be the single input to a Reaction. In this way, a Reactants represents all the Reacting Substances coming together, making the job of Reaction then to pull them apart into the appropriate Products. <br />
  */
 class Reactants :
 	virtual public Structure,
@@ -44,7 +44,7 @@ class Reactants :
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical,
 		Reactants)

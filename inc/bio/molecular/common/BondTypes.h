@@ -27,19 +27,19 @@ namespace bio {
 namespace bond_type {
 
 /**
- * An Manage Bond should be used for basic types by a Surface.
- * This will instruct the Surface to take ownership of the Managed Wave*, tying the Wave*s life cycle to the Managing Surface. In other words, Managed objects will be deleted by the Manager (the Atom with the Bond).
+ * An Manage Bond should be used for basic types by a Surface. <br />
+ * This will instruct the Surface to take ownership of the Managed Wave*, tying the Wave*s life cycle to the Managing Surface. In other words, Managed objects will be deleted by the Manager (the Atom with the Bond). <br />
  */
 BondType Manage();
 
 /**
- * A Use Bond serves the same purpose as a Manage Bond in that it is intended to instruct Surfaces on how to handle the Bonded Wave.
- * However, Use Bonds will not be deleted when the User is destroyed.
+ * A Use Bond serves the same purpose as a Manage Bond in that it is intended to instruct Surfaces on how to handle the Bonded Wave. <br />
+ * However, Use Bonds will not be deleted when the User is destroyed. <br />
  */
 BondType Use();
 
 /**
- * Temporary Bonds indicate that the Bonded object will be Unbound shortly. These are like van-der-waals or other weak interactions.
+ * Temporary Bonds indicate that the Bonded object will be Unbound shortly. These are like van-der-waals or other weak interactions. <br />
  */
 BondType Temporary();
 

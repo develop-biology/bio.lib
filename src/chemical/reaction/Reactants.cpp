@@ -36,8 +36,8 @@ Reactants::Reactants(Substances& substances)
 	chemical::Class< Reactants >(this)
 {
 	for (
-		Substances::const_iterator sub = substances.begin();
-		sub != substances.end();
+		SmartIterator sub = substances.Begin();
+		!sub.IsAtEnd();
 		++sub
 		)
 	{
@@ -52,7 +52,7 @@ Reactants::~Reactants()
 
 Reactants::operator Substances()
 {
-	return GetAll< Substance* >()->AsVector< Substance* >();
+	return GetAll< Substance* >();
 }
 
 } //chemical namespace

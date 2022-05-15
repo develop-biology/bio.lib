@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -34,9 +34,9 @@ namespace molecular {
 class Molecule;
 
 /**
- * Surfaces can be thought of as variables for the Biology syntax.
- * They either hold a single, Quantum  value, or are composed of a complex array of Molecules.
- * See Molecule.h for a more detailed explanation.
+ * Surfaces can be thought of as variables for the Biology syntax. <br />
+ * They either hold a single, Quantum  value, or are composed of a complex array of Molecules. <br />
+ * See Molecule.h for a more detailed explanation. <br />
  */
 class Surface :
 	public Class< Surface >,
@@ -46,7 +46,7 @@ class Surface :
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular,
 		Surface)
@@ -60,35 +60,35 @@ public:
 	);
 
 	/**
-	 * Copying a Surface generates a new set of Molecules and will Clone any Manage()d Waves from toCopy into *this.
-	 * NOTE: all Use()d Waves will be lost. Since *this does not control what it Uses, it cannot (will not) duplicate it.
-	 * Keep in mind that *this will delete all Managed Waves on destruction.
+	 * Copying a Surface generates a new set of Molecules and will Clone any Manage()d Waves from toCopy into *this. <br />
+	 * NOTE: all Use()d Waves will be lost. Since *this does not control what it Uses, it cannot (will not) duplicate it. <br />
+	 * Keep in mind that *this will delete all Managed Waves on destruction. <br />
 	 * @param toCopy
 	 */
 	Surface(const Surface& toCopy);
 
 	/**
-	 * deletes all Manage()d Bonds.
+	 * deletes all Manage()d Bonds. <br />
 	 */
 	virtual ~Surface();
 
 	/**
-	 * Required method from Wave. See that class for details.
+	 * Required method from Wave. See that class for details. <br />
 	 * @return a Symmetrical image of *this
 	 */
 	virtual physical::Symmetry* Spin() const;
 
 	/**
-	 * Required method from Wave. See that class for details.
-	 * Reconstruct *this from the given Symmetry.
+	 * Required method from Wave. See that class for details. <br />
+	 * Reconstruct *this from the given Symmetry. <br />
 	 * @param symmetry
 	 */
 	virtual Code Reify(physical::Symmetry* symmetry);
 
 	/**
-	 * Create a Manage()d Bond with the given var.
-	 * varPtr will be deleted when *this is destroyed.
-	 * See Bonds.h for more on what Manage() does.
+	 * Create a Manage()d Bond with the given var. <br />
+	 * varPtr will be deleted when *this is destroyed. <br />
+	 * See Bonds.h for more on what Manage() does. <br />
 	 * @tparam T
 	 * @param varPtr
 	 * @return
@@ -102,9 +102,9 @@ public:
 	}
 
 	/**
-	 * Create a Use()d Bond with the given var.
-	 * These will not be deleted by *this.
-	 * See Bonds.h for more on what Use() does.
+	 * Create a Use()d Bond with the given var. <br />
+	 * These will not be deleted by *this. <br />
+	 * See Bonds.h for more on what Use() does. <br />
 	 * @tparam T
 	 * @param varPtr
 	 * @return
@@ -118,10 +118,11 @@ public:
 	}
 
 	/**
-	 * Binding, as opposed to permanent Bonding, forms a temporary association with the given Substance.
-	 * Binding forms a Temporary Bond, allowing *this to be treated as the Bound Substance.
+	 * Binding, as opposed to permanent Bonding, forms a temporary association with the given Substance. <br />
+	 * Binding forms a Temporary Bond, allowing *this to be treated as the Bound Substance. <br />
 	 * @tparam T
 	 * @param toBind
+	 * @param bondType
 	 * @return the Bound type.
 	 */
 	template < typename T >
@@ -137,8 +138,9 @@ public:
 	}
 
 	/**
-	 * Breaks the Temporary Bond formed by Bind.
+	 * Breaks the Temporary Bond formed by Bind. <br />
 	 * @param toRelease
+	 * @param bondType
 	 * @return the previously bound Substance or NULL.
 	 */
 	virtual physical::Wave* Release(
@@ -146,9 +148,11 @@ public:
 		BondType bondType = bond_type::Temporary());
 
 	/**
-	 * Breaks the Temporary Bond formed by Bind.
-	 * NOTE: the given Substance could be Identifiable through some unknown Perspective, so this does actual string comparison. Unless a Perspective is given, in which case numeric comparison is done on the given Name.
+	 * Breaks the Temporary Bond formed by Bind. <br />
+	 * NOTE: the given Substance could be Identifiable through some unknown Perspective, so this does actual string comparison. Unless a Perspective is given, in which case numeric comparison is done on the given Name. <br />
 	 * @param toRelease
+	 * @param perspective
+	 * @param bondType
 	 * @return the previously bound Substance or NULL.
 	 */
 	virtual chemical::Substance* Release(
@@ -157,9 +161,11 @@ public:
 		BondType bondType = bond_type::Temporary());
 
 	/**
-	 * Breaks the Temporary Bond formed by Bind.
-	 * NOTE: the given Substance could be Identifiable through some unknown Perspective, so this does an unreliable numeric comparison. However, if a Perspective is given, we can be certain if the id we find is correct or not.
+	 * Breaks the Temporary Bond formed by Bind. <br />
+	 * NOTE: the given Substance could be Identifiable through some unknown Perspective, so this does an unreliable numeric comparison. However, if a Perspective is given, we can be certain if the id we find is correct or not. <br />
 	 * @param toRelease
+	 * @param perspective
+	 * @param bondType
 	 * @return the previously bound Substance or NULL.
 	 */
 	virtual chemical::Substance* Release(
@@ -168,25 +174,25 @@ public:
 		BondType bondType = bond_type::Temporary());
 
 	/**
-	 * Releases all Temporarily Bound Substances
+	 * Releases all Temporarily Bound Substances <br />
 	 * @return all Temporarily Bound Substances
 	 */
 	virtual physical::Waves ReleaseAll(BondType bondType = bond_type::Temporary());
 
 	/**
-	 * Sets both the m_environment and m_perspective and updates m_id.
+	 * Sets both the mEnvironment and mPerspective and updates mId. <br />
 	 * @param environment
 	 */
 	virtual void SetEnvironment(Molecule* environment);
 
 	/**
-	 * Sets both the m_environment and m_perspective and updates m_id.
+	 * Sets both the mEnvironment and mPerspective and updates mId. <br />
 	 * @param perspective a Molecule.
 	 */
 	virtual void SetPerspective(Molecule* perspective);
 
 	/**
-	 * Wrapper around Bind
+	 * Wrapper around Bind <br />
 	 * @param toBind
 	 * @return result of Bind(...)
 	 */
@@ -197,28 +203,28 @@ public:
 	}
 
 	/**
-	 * Wrapper around Release
+	 * Wrapper around Release <br />
 	 * @param toRelease
 	 * @return result of Release
 	 */
 	virtual physical::Wave* operator-=(physical::Wave* toRelease);
 
 	/**
-	 * Wrapper around Release
+	 * Wrapper around Release <br />
 	 * @param toRelease
 	 * @return result of Release
 	 */
 	virtual chemical::Substance* operator-=(Name toRelease);
 
 	/**
-	 * Wrapper around Release
+	 * Wrapper around Release <br />
 	 * @param toRelease
 	 * @return result of Release
 	 */
 	virtual chemical::Substance* operator-=(StandardDimension toRelease);
 
 	/**
-	 * Wrapper around ReleaseAll
+	 * Wrapper around ReleaseAll <br />
 	 * @return all Temporarily Bound Substances.
 	 */
 	virtual physical::Waves operator--();

@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -31,18 +31,18 @@ namespace organic {
 class Habitat;
 
 /**
- * Organisms are the basic units of "life" within Biology.
- * They are organized in a hierarchical, Cell-centric manner.
- * They grow and develop through Morphogenesis().
- * They can respond to stimuli, depending on the interface.
- * They can reproduce, if you Clone() them.
- * They can adapt to new environments, if you add in dynamic Plasmid & TranscriptionFactor rules.
- * They "metabolize" time & data into their own organization. This is the primary difference between computational and biological (proper) life and makes these Organisms more "electric" or "ethereal" than "real".
- * They do not age except perhaps through outside influences, like bitrot.
+ * Organisms are the basic units of "life" within Biology. <br />
+ * They are organized in a hierarchical, Cell-centric manner. <br />
+ * They grow and develop through Morphogenesis(). <br />
+ * They can respond to stimuli, depending on the interface. <br />
+ * They can reproduce, if you Clone() them. <br />
+ * They can adapt to new environments, if you add in dynamic Plasmid & TranscriptionFactor rules. <br />
+ * They "metabolize" time & data into their own organization. This is the primary difference between computational and biological (proper) life and makes these Organisms more "electric" or "ethereal" than "real". <br />
+ * They do not age except perhaps through outside influences, like bitrot. <br />
  *
- * Does newing an Organism create life? Does deleting end it?
- * How different are microbes from these designs? How different are we?
- * Have fun!
+ * Does newing an Organism create life? Does deleting end it? <br />
+ * How different are microbes from these designs? How different are we? <br />
+ * Have fun! <br />
  */
 class Organism :
 	public cellular::Class< Organism >,
@@ -52,13 +52,13 @@ class Organism :
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular,
 		Organism)
 
 	/**
-	 * Standard ctors.
+	 * Standard ctors. <br />
 	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
 		Organism,
 		&OrganismPerspective::Instance(),
@@ -70,7 +70,7 @@ public:
 	virtual ~Organism();
 
 	/**
-	 * new your OrganSystems here, then call the parent method (Organism::Morphogenesis()), which will handle the Organ, Tissue, & Cell Differentiation, producing a fully functional Organism.
+	 * new your OrganSystems here, then call the parent method (Organism::Morphogenesis()), which will handle the Organ, Tissue, & Cell Differentiation, producing a fully functional Organism. <br />
 	 */
 	virtual Code Morphogenesis();
 };

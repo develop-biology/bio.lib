@@ -26,27 +26,34 @@
 #include "bio/chemical/common/Properties.h"
 #include "bio/chemical/PeriodicTable.h"
 
+#if BIO_CPP_VERSION >= 17
+
+	#include <tuple>
+	#include <functional>
+
+#endif
+
 namespace bio {
 namespace chemical {
 
 /**
- * Base class for all Excitations; see below.
+ * Base class for all Excitations; see below. <br />
  *
- * Main documentation for all Excitation classes will be provided here.
+ * Main documentation for all Excitation classes will be provided here. <br />
  *
- * For the difference between Excitation and Reaction, see Reaction.h
- * The main thing Excitations can do, which Reactions can't, is be used in LinearStructureInterface::ForEach<>().
+ * For the difference between Excitation and Reaction, see Reaction.h <br />
+ * The main thing Excitations can do, which Reactions can't, is be used in LinearStructureInterface::ForEach<>(). <br />
  *
- * An Excitation is a Wave that stores a function pointer, i.e. a functor.
- * Excitations allow you to directly invoke a Wave's methods.
- * Excitations can be useful in propagating operations through Wave networks (e.g. an Atom's Bonds). Doing so will likely involve Modulating an Excitation onto a carrier Wave that dictates what the function applies to.
+ * An Excitation is a Wave that stores a function pointer, i.e. a functor. <br />
+ * Excitations allow you to directly invoke a Wave's methods. <br />
+ * Excitations can be useful in propagating operations through Wave networks (e.g. an Atom's Bonds). Doing so will likely involve Modulating an Excitation onto a carrier Wave that dictates what the function applies to. <br />
  */
 class ExcitationBase :
 	public physical::Class< ExcitationBase >
 {
 public:
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
 		ExcitationBase)
@@ -67,19 +74,19 @@ public:
 	}
 
 	/**
-	 * All Excitations share the "Excitatory" Property.
+	 * All Excitations share the "Excitatory" Property. <br />
 	 * @return {property::Excitatory()}
 	 */
 	static Properties GetClassProperties()
 	{
 		Properties ret;
-		ret.push_back(property::Excitatory());
+		ret.Add(property::Excitatory());
 		return ret;
 	}
 
 	/**
-	 * Override of Wave method. See that class for details.
-	 * NOTE: this should be overloaded to ensure *this will Resonate with WAVEs by stealing their Properties from the PeriodicTable.
+	 * Override of Wave method. See that class for details. <br />
+	 * NOTE: this should be overloaded to ensure *this will Resonate with WAVEs by stealing their Properties from the PeriodicTable. <br />
 	 * @return {property::Excitatory()}
 	 */
 	virtual Properties GetProperties() const
@@ -88,7 +95,7 @@ public:
 	}
 
 	/**
-	 * Creating a new and proper Excitation is preferred to Editing Arguments; however, we support the latter nonetheless.
+	 * Creating a new and proper Excitation is preferred to Editing Arguments; however, we support the latter nonetheless. <br />
 	 * @param position
 	 * @param newVal
 	 */
@@ -101,8 +108,8 @@ public:
 	}
 
 	/**
-	 * Invoke an Excitation, regardless of what the template parameters are.
-	 * Since we have no idea what the return value will be, we simply place it in ret as a void*.
+	 * Invoke an Excitation, regardless of what the template parameters are. <br />
+	 * Since we have no idea what the return value will be, we simply place it in ret as a void*. <br />
 	 * @param wave
 	 * @param ret
 	 */
@@ -117,96 +124,110 @@ public:
 
 #if BIO_CPP_VERSION >= 17
 
-	#include <tuple>
-	#include <functional>
-
 /**
- * See ExcitationBase for docs.
+ * See ExcitationBase for docs. <br />
  * @tparam WAVE
  * @tparam RETURN
  * @tparam ARGUMENTS
  */
-template< class WAVE, typename RETURN, typename... ARGUMENTS >
+template < class WAVE, typename RETURN, typename... ARGUMENTS >
 class Excitation :
 	public ExcitationBase,
-	public physical::Class< Excitation< WAVE,RETURN,ARGUMENTS...> >
+	public physical::Class< Excitation< WAVE, RETURN, ARGUMENTS... > >
 {
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, BIO_SINGLE_ARG(Excitation<WAVE,RETURN,ARGUMENTS...>))
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
+		BIO_SINGLE_ARG(Excitation< WAVE, RETURN, ARGUMENTS... >))
 
 	/**
 	 *
 	 */
-	Excitation(RETURN(WAVE::*function)(ARGUMENTS...), const ARGUMENTS&... args)
+	Excitation(
+		RETURN(WAVE::*function)(ARGUMENTS...),
+		const ARGUMENTS& ... args
+	)
 		:
-		physical::Class< Excitation<WAVE,RETURN,ARGUMENTS...> >(this),
-		m_function(function),
-		m_args(args)
+		physical::Class< Excitation< WAVE, RETURN, ARGUMENTS... > >(this),
+		mFunction(function),
+		mArgs(args...)
 	{
 	}
 
 	/**
 	 *
 	 */
-	virtual Excitation()
+	virtual ~Excitation()
 	{
 
 	}
 
 	/**
-	 * Override of Wave method. See that class for details.
-	 * Ensures *this will Resonate with WAVEs by stealing their Properties from the PeriodicTable.
+	 * Override of Wave method. See that class for details. <br />
+	 * Ensures *this will Resonate with WAVEs by stealing their Properties from the PeriodicTable. <br />
 	 * @return {whatever Properties WAVE has, property::Excitatory()}
 	 */
 	virtual Properties GetProperties() const
 	{
 		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
-		ret.insert(ret.end(), ExcitationBase::GetClassProperties().begin(), ExcitationBase::GetClassProperties().end());
+		ret.Import(ExcitationBase::GetClassProperties());
 		return ret;
 	}
 
 	/**
-	 * Creating a new and proper Excitation is preferred to Editing Arguments; however, we support the latter nonetheless.
+	 * Creating a new and proper Excitation is preferred to Editing Arguments; however, we support the latter nonetheless. <br />
 	 * @param position
 	 * @param newVal
 	 */
-	virtual void EditArg(uint8_t position, ByteStream& newVal)
+	virtual void EditArg(
+		uint8_t position,
+		ByteStream& newVal
+	)
 	{
 		//TODO...
 	}
 
 	/**
-	 * @param wave the caller of m_function.
-	 * @param args any arguments given to m_function. Only applicable for C++11 and onward.
-	 * @return RETURN, whatever that is for *this; the result of calling m_function from wave.
+	 * @param wave the caller of mFunction.
+	 * @param args any arguments given to mFunction. Only applicable for C++11 and onward.
+	 * @return RETURN, whatever that is for *this; the result of calling mFunction from wave.
 	 */
 	RETURN operator()(WAVE* wave) const
 	{
-		std::tuple allArgs = std::tuple_cat(std::make_tuple(wave), m_args);
-		return std::apply(*m_function, allArgs);
+		std::tuple< WAVE*, ARGUMENTS... > allArgs = ::std::tuple_cat(
+			std::make_tuple(wave),
+			mArgs
+		);
+		return ::std::apply(
+			mFunction,
+			allArgs
+		);
 	}
 
 	/**
-	 * Override of ExcitationBase; see above.
+	 * Override of ExcitationBase; see above. <br />
 	 */
-	virtual void CallDown(physical::Wave* wave, ByteStream* ret) const
+	virtual void CallDown(
+		physical::Wave* wave,
+		ByteStream* ret
+	) const
 	{
-		ret->Set(this->operator()(ForceCast<WAVE*>(wave)));
+		ret->Set(this->operator()(ForceCast< WAVE* >(wave)));
 	}
 
 protected:
-	RETURN (WAVE::*m_function)(ARGUMENTS...)
-	std::tuple m_args;
+	RETURN (WAVE::*mFunction)(ARGUMENTS...);
+
+	std::tuple< ARGUMENTS... > mArgs;
 };
 
 #else
 
 /**
- * See ExcitationBase for docs.
+ * See ExcitationBase for docs. <br />
  * @tparam WAVE
  * @tparam RETURN
  */
@@ -218,7 +239,7 @@ class ExcitationWithoutArgument :
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
 		BIO_SINGLE_ARG(ExcitationWithoutArgument< WAVE, RETURN >))
@@ -229,7 +250,7 @@ public:
 	ExcitationWithoutArgument(RETURN(WAVE::*function)())
 		:
 		physical::Class< ExcitationWithoutArgument< WAVE, RETURN > >(this),
-		m_function(function)
+		mFunction(function)
 	{
 	}
 
@@ -242,47 +263,44 @@ public:
 	}
 
 	/**
-	 * Override of Wave method. See that class for details.
-	 * Ensures *this will Resonate with WAVEs by stealing their Properties from the PeriodicTable.
+	 * Override of Wave method. See that class for details. <br />
+	 * Ensures *this will Resonate with WAVEs by stealing their Properties from the PeriodicTable. <br />
 	 * @return {whatever Properties WAVE has, property::Excitatory()}
 	 */
 	virtual Properties GetProperties() const
 	{
 		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
-		ret.insert(
-			ret.end(),
-			ExcitationBase::GetClassProperties().begin(),
-			ExcitationBase::GetClassProperties().end());
+		ret.Import(ExcitationBase::GetClassProperties());
 		return ret;
 	}
 
 
 	/**
-	 * @param wave the caller of m_function.
-	 * @return RETURN, whatever that is for *this; the result of calling m_function from wave.
+	 * @param wave the caller of mFunction.
+	 * @return RETURN, whatever that is for *this; the result of calling mFunction from wave.
 	 */
-	RETURN operator()(WAVE* wave) const
+	RETURN operator()(WAVE* wave) const 
 	{
-		return (wave->*m_function)();
+		return (wave->*mFunction)();
 	}
 
 	/**
-	 * Override of ExcitationBase; see above.
+	 * Override of ExcitationBase; see above. <br />
 	 */
 	virtual void CallDown(
-		physical::Wave* wave,
-		ByteStream* ret
+		physical::Wave* wave, 
+		ByteStream* ret 
 	) const
 	{
-		ret->Set(this->operator()(ForceCast< WAVE* >(wave)));
+		ret->Set(this->operator()(ForceCast< WAVE* >(wave))); 
 	}
 
 protected:
-	RETURN (WAVE::*m_function)();
+	RETURN (WAVE::*mFunction)();
 };
 
 /**
- * See ExcitationBase for docs
+ * See ExcitationBase for docs <br />
  * @tparam WAVE
  * @tparam RETURN
  * @tparam ARGUMENT
@@ -295,7 +313,7 @@ class ExcitationWithArgument :
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
 		BIO_SINGLE_ARG(ExcitationWithArgument< WAVE, RETURN, ARGUMENT >))
@@ -310,8 +328,8 @@ public:
 	)
 		:
 		physical::Class< ExcitationWithArgument< WAVE, RETURN, ARGUMENT > >(this),
-		m_function(function),
-		m_arg(arg)
+		mFunction(function),
+		mArg(arg)
 	{
 	}
 
@@ -324,22 +342,19 @@ public:
 	}
 
 	/**
-	 * Override of Wave method. See that class for details.
-	 * Ensures *this will Resonate with WAVEs by stealing their Properties from the PeriodicTable.
+	 * Override of Wave method. See that class for details. <br />
+	 * Ensures *this will Resonate with WAVEs by stealing their Properties from the PeriodicTable. <br />
 	 * @return {whatever Properties WAVE has, property::Excitatory()}
 	 */
 	virtual Properties GetProperties() const
 	{
 		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
-		ret.insert(
-			ret.end(),
-			ExcitationBase::GetClassProperties().begin(),
-			ExcitationBase::GetClassProperties().end());
+		ret.Import(ExcitationBase::GetClassProperties());
 		return ret;
 	}
 
 	/**
-	 * Creating a new and proper Excitation is preferred to Editing Arguments; however, we support the latter nonetheless.
+	 * Creating a new and proper Excitation is preferred to Editing Arguments; however, we support the latter nonetheless. <br />
 	 * @param position
 	 * @param newVal
 	 */
@@ -350,37 +365,37 @@ public:
 	{
 		BIO_SANITIZE(position,
 			return,);
-		m_arg = newVal;
+		mArg = newVal;
 	}
 
 	/**
-	 * @param wave the caller of m_function.
-	 * @return RETURN, whatever that is for *this; the result of calling m_function from wave.
+	 * @param wave the caller of mFunction.
+	 * @return RETURN, whatever that is for *this; the result of calling mFunction from wave.
 	 */
-	RETURN operator()(WAVE* wave) const
+	RETURN operator()(WAVE* wave) const 
 	{
-		return (wave->*m_function)(m_arg);
+		return (wave->*mFunction)(mArg);
 	}
 
 	/**
-	 * Override of ExcitationBase; see above.
+	 * Override of ExcitationBase; see above. <br />
 	 */
 	virtual void CallDown(
-		physical::Wave* wave,
-		ByteStream* ret
+		physical::Wave* wave, 
+		ByteStream* ret 
 	) const
 	{
-		ret->Set(this->operator()(ForceCast< WAVE* >(wave)));
+		ret->Set(this->operator()(ForceCast< WAVE* >(wave))); 
 	}
 
 protected:
-	RETURN (WAVE::*m_function)(ARGUMENT);
+	RETURN (WAVE::*mFunction)(ARGUMENT);
 
-	ARGUMENT m_arg;
+	ARGUMENT mArg;
 };
 
 /**
- * See ExcitationBase for docs
+ * See ExcitationBase for docs <br />
  * @tparam WAVE
  * @tparam RETURN
  * @tparam ARGUMENT1
@@ -394,7 +409,7 @@ class ExcitationWithTwoArguments :
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
 		BIO_SINGLE_ARG(ExcitationWithTwoArguments< WAVE, RETURN, ARGUMENT1, ARGUMENT2 >))
@@ -413,9 +428,9 @@ public:
 	)
 		:
 		physical::Class< ExcitationWithTwoArguments< WAVE, RETURN, ARGUMENT1, ARGUMENT2 > >(this),
-		m_function(function),
-		m_arg1(arg1),
-		m_arg2(arg2)
+		mFunction(function),
+		mArg1(arg1),
+		mArg2(arg2)
 	{
 	}
 
@@ -428,22 +443,19 @@ public:
 	}
 
 	/**
-	 * Override of Wave method. See that class for details.
-	 * Ensures *this will Resonate with WAVEs by stealing their Properties from the PeriodicTable.
+	 * Override of Wave method. See that class for details. <br />
+	 * Ensures *this will Resonate with WAVEs by stealing their Properties from the PeriodicTable. <br />
 	 * @return {whatever Properties WAVE has, property::Excitatory()}
 	 */
 	virtual Properties GetProperties() const
 	{
 		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
-		ret.insert(
-			ret.end(),
-			ExcitationBase::GetClassProperties().begin(),
-			ExcitationBase::GetClassProperties().end());
+		ret.Import(ExcitationBase::GetClassProperties());
 		return ret;
 	}
 
 	/**
-	 * Creating a new and proper Excitation is preferred to Editing Arguments; however, we support the latter nonetheless.
+	 * Creating a new and proper Excitation is preferred to Editing Arguments; however, we support the latter nonetheless. <br />
 	 * @param position
 	 * @param newVal
 	 */
@@ -455,45 +467,45 @@ public:
 		switch (position)
 		{
 			case 0:
-				m_arg1 = newVal;
+				mArg1 = newVal;
 				break;
 			case 1:
-				m_arg2 = newVal;
+				mArg2 = newVal;
 				break;
 		}
 	}
 
 	/**
-	 * @param wave the caller of m_function.
-	 * @return RETURN, whatever that is for *this; the result of calling m_function from wave.
+	 * @param wave the caller of mFunction.
+	 * @return RETURN, whatever that is for *this; the result of calling mFunction from wave.
 	 */
-	RETURN operator()(WAVE* wave) const
+	RETURN operator()(WAVE* wave) const 
 	{
-		return (wave->*m_function)(
-			m_arg1,
-			m_arg2
+		return (wave->*mFunction)(
+			mArg1,
+			mArg2
 		);
 	}
 
 	/**
-	 * Override of ExcitationBase; see above.
+	 * Override of ExcitationBase; see above. <br />
 	 */
 	virtual void CallDown(
-		physical::Wave* wave,
-		ByteStream* ret
+		physical::Wave* wave, 
+		ByteStream* ret 
 	) const
 	{
-		ret->Set(this->operator()(ForceCast< WAVE* >(wave)));
+		ret->Set(this->operator()(ForceCast< WAVE* >(wave))); 
 	}
 
 protected:
-	RETURN (WAVE::*m_function)(
+	RETURN (WAVE::*mFunction)(
 		ARGUMENT1,
 		ARGUMENT2
 	);
 
-	ARGUMENT1 m_arg1;
-	ARGUMENT2 m_arg2;
+	ARGUMENT1 mArg1;
+	ARGUMENT2 mArg2;
 };
 
 

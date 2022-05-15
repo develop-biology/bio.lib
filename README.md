@@ -3,13 +3,35 @@ __Programming Life__
 
 ![build](https://github.com/develop-biology/lib_bio/actions/workflows/ebbs-pr.yml/badge.svg)
 
-**THIS CODE IS PRE-ALPHA**
 
+**THIS CODE IS PRE-ALPHA**
 We'll be releasing the alpha version as soon as we can!
 
 As a part of eons, we follow all [eons conventions](https://eons.llc/convention/).
 
 ## Style
+
+The purpose of our coding style is to make wrong code look wrong. If something seems out of place, then it probably is. We treat style as another tool to help us write better code faster.
+
+Here are some of the rules we follow:
+1. Variables follow lowerCamelCase.
+2. Variables begin with a lowercase letter.
+3. Variables will never contain underscores.
+4. [Hungarian notation](https://en.wikipedia.org/wiki/Hungarian_notation) is reserved for variables of possibly obscure scope. For example member variables (m...) and global variables (e.g. s... for static) which are not system-wide should be decorated in a way that provides the reader with a hint to where the variable came from. If a variable is not decorated it should be a part of the local scope or, in rare cases, a system-wide global variable which is not part of our code base.
+5. Functions follow UpperCamelCase.
+6. Functions begin with a capital letter.
+7. Functions never contain underscores.
+8. Functions do not currently use Hungarian notation but there is no good reason they shouldn't.
+9. Macros are ALL_CAPS_WITH_UNDERSCORES.
+10. Macros will never have a lowercase letter.
+11. Namespaces are all_lowercase_with_underscores.
+12. Namespaces will never contain a capital letter.
+13. Classes, Structs, Enums, etc. all follow UpperSnakeCase. This means a Function() and a ClassInstantiation() will look the same but both will operate the same (i.e. returning an object of the indicated type).
+
+
+A few notable implications of this:
+1. Any &UpperSnakeCase will always be the address of a function because you cannot take the address of a class.
+2. Classes:: and namespaces:: will always be visually distinct.
 
 ### Namespaces
 Biology is broken into the following namespaces:
@@ -44,10 +66,10 @@ So, you can say
 ```
 
 To recap, extendable types should follow these rules:
-* Type is defined in bio namespace.
-* Type is UpperCamelCase.
-* Corresponding namespace is defined in bio namespace.
-* Corresponding namespace is lower_snake_case.
+* Type is defined in bio namespace. <br />
+* Type is UpperCamelCase. <br />
+* Corresponding namespace is defined in bio namespace. <br />
+* Corresponding namespace is lower_snake_case. <br />
 
 ### Templates
 
@@ -67,6 +89,8 @@ Thus, in terms of possible templates, we get either `Class<>` on its own, `Class
 
 ## Building
 
+### Code
+
 This project depends on the [eons Basic Build System](https://github.com/eons-dev/bin_ebbs), which can be installed with `pip install ebbs`.  
 With that said, this is just c++ code. Build it however you want.
 
@@ -76,3 +100,17 @@ ebbs
 ```
 
 installation instructions coming soon (need package manager / repository semantics for module delivery)
+
+### Docs
+
+Documentation is available [on the Develop Biology website](https://develop.bio/doc/libbio/index.html)
+
+## Branding
+
+### Colors
+* Dark Blue: #5ca3ff rgb(92, 163, 255) <br />
+* Cyan: #13f4ef rgb(19, 244, 239) <br />
+* Green: #68ff00 rgb(104, 255, 0) <br />
+* Yellow: #faff00 rgb(250, 255, 0) <br />
+* Orange: #ffbf00 rgb(255, 191, 0) <br />
+* Magenta: #ff5794 rgb(255, 87, 148) <br />

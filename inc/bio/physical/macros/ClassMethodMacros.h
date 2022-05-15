@@ -24,8 +24,8 @@
 #include "ClassMethodsLoopMacros.h"
 
 /**
- * Define a virtual function that forwards to a Class.
- * Currently only works for functions that have a non-void return type.
+ * Define a virtual function that forwards to a Class. <br />
+ * Currently only works for functions that have a non-void return type. <br />
  */
 #define BIO_CLASS_METHOD(\
     ns, \
@@ -42,7 +42,7 @@ functionSignature                                                              \
 
 
 /**
- * Calls a loop with the appropriate number of args
+ * Calls a loop with the appropriate number of args <br />
  * @param loopName base name of loop to call (e.g. BIO_DEFINE_CLASS_METHODS_LOOP)
  * @param iterationsMacro macro that gives the number of iterations to loop over.
  * @param ns the namespace for the given class
@@ -55,7 +55,7 @@ functionSignature                                                              \
         ns, \
         caller, \
         argsMacro                                                              \
-)                                                                          \
+)                                                                              \
     BIO_CALL_LOOP(                                                             \
         loopName,                                                              \
         iterationsMacro,                                                       \
@@ -64,8 +64,8 @@ functionSignature                                                              \
         argsMacro)
 
 /**
- * Calls the appropriate loop to define up to 99 class methods from BIO_GET_REQUIRED_CLASS_METHODS_FOR_...
- * NOTE: We call BIO_GET_REQUIRED_CLASS_METHODS_FOR_##ns() with this. ns is lowercase. This deviates from the Biology macro naming scheme but improves usability, since we don't need to provide ns in lowercase and in uppercase.
+ * Calls the appropriate loop to define up to 99 class methods from BIO_GET_REQUIRED_CLASS_METHODS_FOR_... <br />
+ * NOTE: We call BIO_GET_REQUIRED_CLASS_METHODS_FOR_##ns() with this. ns is lowercase. This deviates from the Biology macro naming scheme but improves usability, since we don't need to provide ns in lowercase and in uppercase. <br />
  * @param ns the namespace of the class.
  * @param caller the name of the class.
  */
@@ -84,8 +84,8 @@ functionSignature                                                              \
     )
 
 /**
- * Calls the appropriate loop to define up to 99 class methods from BIO_GET_CLASS_OPTIONAL_METHODS_FOR_...
- * NOTE: We call BIO_GET_OPTIONAL_CLASS_METHODS_FOR_##ns() with this. ns is lowercase. This deviates from the Biology macro naming scheme but improves usability, since we don't need to provide ns in lowercase and in uppercase.
+ * Calls the appropriate loop to define up to 99 class methods from BIO_GET_CLASS_OPTIONAL_METHODS_FOR_... <br />
+ * NOTE: We call BIO_GET_OPTIONAL_CLASS_METHODS_FOR_##ns() with this. ns is lowercase. This deviates from the Biology macro naming scheme but improves usability, since we don't need to provide ns in lowercase and in uppercase. <br />
  * @param ns the namespace of the class.
  * @param caller the name of the class.
  */
@@ -104,7 +104,7 @@ functionSignature                                                              \
     )
 
 /**
- * Ease of use wrapper for defining REQUIRED and OPTIONAL CLASS_METHODS.
+ * Ease of use wrapper for defining REQUIRED and OPTIONAL CLASS_METHODS. <br />
  * @param ns the namespace of the class.
  * @param caller the name of the class.
  */

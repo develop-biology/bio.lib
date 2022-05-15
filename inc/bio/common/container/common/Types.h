@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -21,44 +21,19 @@
 
 #pragma once
 
+#include "bio/common/Primitives.h"
+
 namespace bio {
-namespace physical {
 
 /**
- * physical::Symmetry only contains a Name, a type, and a value.
- * See SymmetryTypes.h for what types of Symmetry are available on a physical level.
- * Both Symmetry and SymmetryTypes are intended to grow with each namespace, as the complexity of what is being Rotated grows.
+ * Indices are used by Arrangements to manage and manipulate what they store. <br />
  */
-class Symmetry :
-	public Identifiable< SymmetryType >
-{
-public:
-	Symmetry(
-		Name name,
-		Name type
-	);
+typedef uint32_t Index;
 
-	Symmetry(
-		Name name,
-		SymmetryType type
-	);
+/**
+ * We sacrifice our first index for the ability to do error checking. <br />
+ * @return a Index that holds no content.
+ */
+const Index InvalidIndex();
 
-	virtual ~Symmetry();
-
-	Name GetType() const
-	{
-		return Identifiable< SymmetryType >::GetName();
-	}
-
-	SetValue(const ByteStream& bytes);
-
-	AddSymmetry(Symmetry
-	* symmetry);
-
-protected:
-	Name m_name;
-	ByteStream m_value;
-};
-
-} //physical namespace
 } //bio namespace

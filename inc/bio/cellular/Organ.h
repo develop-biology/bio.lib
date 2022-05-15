@@ -38,14 +38,14 @@ class Tissue;
 class OrganSystem;
 
 /**
- * An Organ is a collection of Tissues that can operate on its own.
- * Similar to how Plasmids are packages of Genes, Organs are packages of Tissues.
- * In this way, Organs are like pseudo-binaries that can be integrated into other binaries.
+ * An Organ is a collection of Tissues that can operate on its own. <br />
+ * Similar to how Plasmids are packages of Genes, Organs are packages of Tissues. <br />
+ * In this way, Organs are like pseudo-binaries that can be integrated into other binaries. <br />
  *
- * Organs contain all of the DNA (Plasmids) they need to create all of their Cells.
- * This means you should new the Plasmids necessary for your Organ within the BuildMobilome method.
+ * Organs contain all of the DNA (Plasmids) they need to create all of their Cells. <br />
+ * This means you should new the Plasmids necessary for your Organ within the BuildMobilome method. <br />
  *
- * Once your Organ is prepared, you can initialize it with SpecializeTissues() and run it with Peak. However, these will be done for you through the parent OrganSystem.
+ * Once your Organ is prepared, you can initialize it with SpecializeTissues() and run it with Peak. However, these will be done for you through the parent OrganSystem. <br />
  */
 class Organ :
 	public Class< Organ >,
@@ -56,13 +56,13 @@ class Organ :
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular,
 		Organ)
 
 	/**
-	 * Standard ctors.
+	 * Standard ctors. <br />
 	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
 		Organ,
 		&OrganPerspective::Instance(),
@@ -71,9 +71,9 @@ public:
 	virtual ~Organ();
 
 	/**
-	 * new all necessary Plasmids.
-	 * Does NOT distribute them. See SpecializeTissues for that.
-	 * NOTE: we pronounce "mobilome" as "mobile-lee-ome" because it's more fun.
+	 * new all necessary Plasmids. <br />
+	 * Does NOT distribute them. See SpecializeTissues for that. <br />
+	 * NOTE: we pronounce "mobilome" as "mobile-lee-ome" because it's more fun. <br />
 	 */
 	virtual Code BuildMobilome()
 	{
@@ -83,8 +83,8 @@ public:
 	}
 
 	/**
-	 * new all Tissues.
-	 * Does NOT Differentiate them. See SpecializeTissues for that.
+	 * new all Tissues. <br />
+	 * Does NOT Differentiate them. See SpecializeTissues for that. <br />
 	 */
 	virtual Code GrowTissues()
 	{
@@ -94,7 +94,7 @@ public:
 	}
 
 	/**
-	 * Differentiate all Cells in all Tissues.
+	 * Differentiate all Cells in all Tissues. <br />
 	 */
 	virtual Code SpecializeTissues();
 };

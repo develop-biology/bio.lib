@@ -35,9 +35,9 @@ namespace cellular {
 class Organ;
 
 /**
- * OrganSystems are very similar to Organs. The only difference is that they contain logic for combining multiple Organs.
- * For example, the heart relies on vasculature to move blood around the body. This requires a Heart Organ as well as integrations into all other Tissues in order to supply the BloodStream. In order to accommodate this functionality, we must invasively add functionality to other Organs.
- * Because the modification of existing Organs can lead to more errors and make debugging more difficult, it is not recommended that you take advantage of OrganSystem machinery unless you absolutely need to. However, if you do need to make system-wide modifications, these methods are available to you.
+ * OrganSystems are very similar to Organs. The only difference is that they contain logic for combining multiple Organs. <br />
+ * For example, the heart relies on vasculature to move blood around the body. This requires a Heart Organ as well as integrations into all other Tissues in order to supply the BloodStream. In order to accommodate this functionality, we must invasively add functionality to other Organs. <br />
+ * Because the modification of existing Organs can lead to more errors and make debugging more difficult, it is not recommended that you take advantage of OrganSystem machinery unless you absolutely need to. However, if you do need to make system-wide modifications, these methods are available to you. <br />
  */
 class OrganSystem :
 	Class< OrganSystem >,
@@ -46,13 +46,13 @@ class OrganSystem :
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations.
+	 * Ensure virtual methods point to Class implementations. <br />
 	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular,
 		OrganSystem)
 
 	/**
-	 * Standard ctors.
+	 * Standard ctors. <br />
 	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
 		OrganSystem,
 		&OrganSystemPerspective::Instance(),
@@ -65,8 +65,8 @@ public:
 	virtual ~OrganSystem();
 
 	/**
-	 * Create all Organs and, if necessary, link them.
-	 * Call the parent method (OrganSystem::Organogenesis()) when done to initialize all Organs (calls Organ::BuildMobilome() and Organ::SpecializeTissues()).
+	 * Create all Organs and, if necessary, link them. <br />
+	 * Call the parent method (OrganSystem::Organogenesis()) when done to initialize all Organs (calls Organ::BuildMobilome() and Organ::SpecializeTissues()). <br />
 	 */
 	virtual Code Organogenesis();
 };

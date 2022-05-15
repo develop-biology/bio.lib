@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -29,8 +29,8 @@ namespace chemical {
 class Symmetry;
 
 /**
- * chemical::Axes simplify the Axis definition process by leveraging the nested nature of chemical::Symmetry.
- * All you need to do to make an Axis using chemical::Axis is define Encode(Symmetry*) and Rotate(std::string).
+ * chemical::Axes simplify the Axis definition process by leveraging the nested nature of chemical::Symmetry. <br />
+ * All you need to do to make an Axis using chemical::Axis is define Encode(Symmetry*) and Rotate(std::string). <br />
  */
 class Axis :
 	public physical::Axis
@@ -47,14 +47,14 @@ public:
 	virtual ~Axis();
 
 	/**
-	 * Express the given Symmetry into something intelligible by another system.
-	 * Takes advantage of Encode and chemical::Symmetry to make defining Axes easier.
-	 * You shouldn't have to override this from here on out.
-	 * NOTE: this does not apply to Rotate(std::string); you'll still need to override that one.
+	 * Express the given Symmetry into something intelligible by another system. <br />
+	 * Takes advantage of Encode and chemical::Symmetry to make defining Axes easier. <br />
+	 * You shouldn't have to override this from here on out. <br />
+	 * NOTE: this does not apply to Rotate(std::string); you'll still need to override that one. <br />
 	 * @param symmetry
 	 * @return text, possibly a command (like mysql), structured values (like json), an entire program (like python), etc. or Failed().
 	 */
-	virtual std::string Rotate(Symmetry* symmetry) const;
+	virtual ::std::string Rotate(Symmetry* symmetry) const;
 
 };
 

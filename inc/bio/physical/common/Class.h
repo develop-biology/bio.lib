@@ -28,9 +28,9 @@ namespace bio {
 namespace physical {
 
 /**
- * A physical::Class is a Wave. That is all.
- * Class in other namespaces will grow to include more complex, templated logic.
- * This pattern prevents you from having to define virtual methods each of your child classes, so long as you always derive from the appropriate Class<T>.
+ * A physical::Class is a Wave. That is all. <br />
+ * Class in other namespaces will grow to include more complex, templated logic. <br />
+ * This pattern prevents you from having to define virtual methods each of your child classes, so long as you always derive from the appropriate Class<T>. <br />
  * @tparam T
  */
 template < typename T >
@@ -39,7 +39,7 @@ class Class :
 {
 public:
 	/**
-	 * NOTE: you may wish to explicitly instantiate Wave in you ctor.
+	 * NOTE: you may wish to explicitly instantiate Wave in you ctor. <br />
 	 * @param object
 	 * @param symmetry
 	 */
@@ -49,7 +49,7 @@ public:
 	)
 		:
 		Wave(symmetry),
-		m_object(object)
+		mObject(object)
 	{
 
 	}
@@ -63,16 +63,16 @@ public:
 	}
 
 	/**
-	* Make it so we can treat *this as the calling T.
-	* @return the m_object *this was created for.
+	* Make it so we can treat *this as the calling T. <br />
+	* @return the mObject *this was created for.
 	*/
 	virtual operator T*()
 	{
-		return m_object;
+		return mObject;
 	}
 
 	/**
-	 * If you have a Class object and need to convert from Wave to the furthest derived Class, use Convert.
+	 * If you have a Class object and need to convert from Wave to the furthest derived Class, use Convert. <br />
 	 * @param wave
 	 * @return the
 	 */
@@ -83,17 +83,17 @@ public:
 
 
 	/**
-	 * Template override for Clone so we don't have to define it everywhere.
+	 * Template override for Clone so we don't have to define it everywhere. <br />
 	 * @return a new T (and a new *this).
 	 */
 	virtual Wave* Clone() const
 	{
-		T* ret = new T(*m_object);
-		return Cast< Class< T >* >(ret); //2-step cast: 1st explicitly cast to *this; 2nd implicitly cast to Wave.
+		T* ret = new T(*mObject);
+		return Cast< Class< T >* >(ret); //2-step cast: 1st explicitly cast to *this; 2nd implicitly cast to Wave. 
 	}
 
 	/**
-	 * Used for resolving ambiguous inheritance without the need to explicitly derive from Wave.
+	 * Used for resolving ambiguous inheritance without the need to explicitly derive from Wave. <br />
 	 * @return this
 	 */
 	virtual Wave* AsWave()
@@ -102,7 +102,7 @@ public:
 	}
 
 	/**
-	 * Used for resolving ambiguous inheritance without the need to explicitly derive from Wave.
+	 * Used for resolving ambiguous inheritance without the need to explicitly derive from Wave. <br />
 	 * @return this
 	 */
 	virtual const Wave* AsWave() const
@@ -111,8 +111,8 @@ public:
 	}
 
 	/**
-	 * Wave conversion.
-	 * When treating an object as a Wave*, always use the nearest Class, as that will allow you to access all other Waves in the object.
+	 * Wave conversion. <br />
+	 * When treating an object as a Wave*, always use the nearest Class, as that will allow you to access all other Waves in the object. <br />
 	 * @return this.
 	 */
 	virtual operator Wave*()
@@ -121,7 +121,7 @@ public:
 	}
 
 protected:
-	T* m_object;
+	T* mObject;
 };
 
 } //physical namespace

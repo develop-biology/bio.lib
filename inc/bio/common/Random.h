@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -22,15 +22,15 @@
 #pragma once
 
 /**
- * the random namespace provides functions for generating random numbers.
- * IMPORTANT: random is currently only implemented in c++11.
- * When not using c++ >= 11, 0 is returned.
+ * the random namespace provides functions for generating random numbers. <br />
+ * IMPORTANT: random is currently only implemented in c++11. <br />
+ * When not using c++ >= 11, 0 is returned. <br />
  */
 
 namespace bio {
 namespace random {
 /**
- * x ~ Normal as float
+ * x ~ Normal as float <br />
  * @param mean
  * @param standardDeviation
  * @return a number normally distributed around mean with standardDeviation.
@@ -41,7 +41,7 @@ float NormalFloat(
 );
 
 /**
- * x ~ Uniform
+ * x ~ Uniform <br />
  * @param min
  * @param max
  * @return a value between min and max, uniformly distributed.

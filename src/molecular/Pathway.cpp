@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -35,7 +35,8 @@ Pathway::~Pathway()
 
 chemical::Products Pathway::Process(chemical::Reactants* reactants)
 {
-	BIO_SANITIZE(reactants,,return code::BadArgument1())
+	BIO_SANITIZE(reactants, ,
+		return code::BadArgument1())
 
 	chemical::Products products(reactants);
 	Reaction* reactionBuffer;
@@ -61,7 +62,8 @@ chemical::Products Pathway::Process(chemical::Reactants* reactants)
 
 bool Pathway::ReactantsMeetRequirements(const chemical::Reactants* toCheck) const
 {
-	BIO_SANITIZE(GetCount< chemical::Reaction* >(),,return false)
+	BIO_SANITIZE(GetCount< chemical::Reaction* >(), ,
+		return false)
 	return GetAll< chemical::Reaction* >()->Begin().As< chemical::Reaction* >()->ReactantsMeetRequirements(toCheck);
 }
 

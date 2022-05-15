@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2021 Séon O'Shannon & eons LLC
+ * Copyright (C) 2022 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -43,8 +43,8 @@ namespace physical {
 class Wave;
 
 /**
- * Wave is incomplete here due to circular inheritance.
- * To provide the complete type, we provide this Utilities class which is defined in a non-templated compilation unit.
+ * Wave is incomplete here due to circular inheritance. <br />
+ * To provide the complete type, we provide this Utilities class which is defined in a non-templated compilation unit. <br />
  */
 struct PerspectiveUtilities
 {
@@ -54,17 +54,17 @@ struct PerspectiveUtilities
 };
 
 /**
- * A Perspective keeps track of Names and Ids for a certain set of objects within a DIMENSION and ensures a unique Id <-> Name pairing for all objects it "observes".
- * A DIMENSION is a numeric space in which objects may be defined. The size of the space determines how many objects may be "observed" (i.e. kept track of) by a single Perspective.
- * Together, a Perspective and DIMENSION can be thought to define the "size" of the "lens" used to "observe" "objects", if you'll permit the physical analogy of what is purely imaginative.
- * Only objects that share a DIMENSION may be derived from, combined, etc. You cannot have a child class that derives from 2 different Identifiable templates (without solving diamond inheritance and some other caveats).
- * Thus, functionally, you can think of each DIMENSION as a different library, with its source code hidden, such that only objects within that library, that DIMENSION, may inherit from each other.
- * An example DIMENSION would be uint32_t, with up to 4,294,967,295 unique object names per perspective.
+ * A Perspective keeps track of Names and Ids for a certain set of objects within a DIMENSION and ensures a unique Id <-> Name pairing for all objects it "observes". <br />
+ * A DIMENSION is a numeric space in which objects may be defined. The size of the space determines how many objects may be "observed" (i.e. kept track of) by a single Perspective. <br />
+ * Together, a Perspective and DIMENSION can be thought to define the "size" of the "lens" used to "observe" "objects", if you'll permit the physical analogy of what is purely imaginative. <br />
+ * Only objects that share a DIMENSION may be derived from, combined, etc. You cannot have a child class that derives from 2 different Identifiable templates (without solving diamond inheritance and some other caveats). <br />
+ * Thus, functionally, you can think of each DIMENSION as a different library, with its source code hidden, such that only objects within that library, that DIMENSION, may inherit from each other. <br />
+ * An example DIMENSION would be uint32_t, with up to 4,294,967,295 unique object names per perspective. <br />
  *
- * An example use case can be seen with Neurons and Synapses. Both are distinct objects and both can be tracked through different Perspectives. This means a Neuron of Id 1 can have the name "MyNeuron" and a Synapse of Id 1 can have the name "MySynapse".
- * However, Neurons and Synapses share a lot of code and should exist within the same DIMENSION (e.g. in case you wanted to make some strange Neuron/Synapse hybrid). If your DIMENSION is a uint8_t, you could have 255 Neurons and 255 Synapses using a different Perspective for each. Using a single Respective, you could only have 255 uniquely identified Neurons OR Connections, total.
- * Therefore, you'd likely want multiple Perspectives and a much larger DIMENSION (uint32_t, for instance) in order to accommodate a more total objects.
- * See below for a macro for creating singleton of Perspectives.
+ * An example use case can be seen with Neurons and Synapses. Both are distinct objects and both can be tracked through different Perspectives. This means a Neuron of Id 1 can have the name "MyNeuron" and a Synapse of Id 1 can have the name "MySynapse". <br />
+ * However, Neurons and Synapses share a lot of code and should exist within the same DIMENSION (e.g. in case you wanted to make some strange Neuron/Synapse hybrid). If your DIMENSION is a uint8_t, you could have 255 Neurons and 255 Synapses using a different Perspective for each. Using a single Respective, you could only have 255 uniquely identified Neurons OR Connections, total. <br />
+ * Therefore, you'd likely want multiple Perspectives and a much larger DIMENSION (uint32_t, for instance) in order to accommodate a more total objects. <br />
+ * See below for a macro for creating singleton of Perspectives. <br />
  */
 template < typename DIMENSION >
 class Perspective :
@@ -72,11 +72,11 @@ class Perspective :
 {
 public:
 	typedef DIMENSION Id;
-	typedef std::vector< Id > Ids;
+	typedef Arrangement< Id > Ids;
 
 	/**
-	 * What a single point in space contains.
-	 * Dimensions are Nuit ∴ ∴
+	 * What a single point in space contains. <br />
+	 * Dimensions are Nuit ∴ ∴ <br />
 	 */
 	class Hadit
 	{
@@ -87,25 +87,25 @@ public:
 			Wave* type
 		)
 			:
-			m_id(id),
-			m_name(name),
-			m_type(type)
+			mId(id),
+			mName(name),
+			mType(type)
 		{
 		}
 
-		Id m_id;
-		Name m_name;
-		Wave* m_type;
+		Id mId;
+		Name mName;
+		Wave* mType;
 	};
 
-	typedef std::vector< Hadit > Hadits;
+	typedef Arrangement< Hadit* > Hadits;
 
 	/**
 	 *
 	 */
 	Perspective()
 		:
-		m_nextId(1)
+		mNextId(1)
 	{
 	}
 
@@ -115,29 +115,33 @@ public:
 	virtual ~Perspective()
 	{
 		LockThread();
+		Hadit* haditBuffer;
 		for (
-			typename Hadits::iterator itt = m_hadits.begin();
-			itt != m_hadits.end();
-			++itt
+			SmartIterator hdt = mHadits.Begin();
+			!hdt.IsAtEnd();
+			++hdt
 			)
 		{
-			if (itt->m_name)
+			haditBuffer = hdt;
+			if (haditBuffer->mName)
 			{
-				delete[] itt->m_name;
-				itt->m_name = NULL;
+				delete[] haditBuffer->mName;
+				haditBuffer->mName = NULL;
 			}
-			if (itt->m_type)
+			if (haditBuffer->mType)
 			{
-				PerspectiveUtilities::Delete(itt->m_type);
-				itt->m_type = NULL;
+				PerspectiveUtilities::Delete(haditBuffer->mType);
+				haditBuffer->mType = NULL;
 			}
+			delete haditBuffer;
+			haditBuffer = NULL;
 		}
-		m_hadits.clear();
+		mHadits.Clear();
 		UnlockThread();
 	}
 
 	/**
-	 * When overloading other methods of *this, make sure to check your inputs for invalid Ids. See the functions below for examples.
+	 * When overloading other methods of *this, make sure to check your inputs for invalid Ids. See the functions below for examples. <br />
 	 * @return 0.
 	 */
 	static Id InvalidId()
@@ -146,7 +150,7 @@ public:
 	}
 
 	/**
-	 * When overloading other methods of *this, make sure to check your inputs for invalid Names. See the functions below for examples.
+	 * When overloading other methods of *this, make sure to check your inputs for invalid Names. See the functions below for examples. <br />
 	 * @return "INVALID_NAME".
 	 */
 	static Name InvalidName()
@@ -155,57 +159,59 @@ public:
 	}
 
 	/**
-	 * Gives an iterator fos the given id.
+	 * Gives an iterator fos the given id. <br />
 	 * @param id
-	 * @return a Hadits::iterator or m_hadits.end();
+	 * @return a SmartIterator pointing to the Hadit desired, if it IsValid.
 	 */
-	typename Hadits::iterator Find(Id id)
+	SmartIterator Find(Id id)
 	{
 
 		LockThread();
-		typename Hadits::iterator hdt = m_hadits.begin();
+		SmartIterator hdt = mHadits.Begin();
 		for (
-			; hdt != m_hadits.end();
+			; !hdt.IsAtEnd();
 			++hdt
 			)
 		{
-			if (hdt->m_id == id)
+			if (hdt.As< Hadit* >()->mId == id)
 			{
 				UnlockThread();
 				return hdt;
 			}
 		}
+		hdt.Invalidate();
 		UnlockThread();
 		return hdt;
 	}
 
 	/**
-	 * Gives an iterator fos the given id.
+	 * Gives an iterator fos the given id. <br />
 	 * @param id
-	 * @return a Hadits::const_iterator or m_hadits.end();
+	 * @return a SmartIterator pointing to the Hadit desired, if it IsValid.
 	 */
-	typename Hadits::const_iterator Find(Id id) const
+	SmartIterator Find(Id id) const
 	{
 		LockThread();
-		typename Hadits::const_iterator hdt = m_hadits.begin();
+		SmartIterator hdt = mHadits.Begin();
 		for (
-			; hdt != m_hadits.end();
+			; !hdt.IsAtEnd();
 			++hdt
 			)
 		{
-			if (hdt->m_id == id)
+			if (hdt.As< Hadit* >()->mId == id)
 			{
 				UnlockThread();
 				return hdt;
 			}
 		}
+		hdt.Invalidate();
 		UnlockThread();
 		return hdt;
 	}
 
 
 	/**
-	 * This will create a new Id for the given name if one does not exist.
+	 * This will create a new Id for the given name if one does not exist. <br />
 	 * @param name
 	 * @return the Id associated with the given name
 	 */
@@ -232,9 +238,9 @@ public:
 		);
 
 		LockThread();
-		ret = m_nextId++;
-		m_hadits.push_back(
-			Hadit(
+		ret = mNextId++;
+		mHadits.Add(
+			new Hadit(
 				ret,
 				usedName,
 				NULL
@@ -246,7 +252,7 @@ public:
 
 
 	/**
-	 * This requires that the Id has been previously associated with the name, perhaps from a call to GetIdFromName.
+	 * This requires that the Id has been previously associated with the name, perhaps from a call to GetIdFromName. <br />
 	 * @param id
 	 * @return the Name associated with the given Id
 	 */
@@ -257,17 +263,17 @@ public:
 			return InvalidName();
 		}
 
-		typename Hadits::const_iterator result = Find(id);
-		if (result == m_hadits.end())
+		SmartIterator result = Find(id);
+		if (!result.IsValid())
 		{
 			return InvalidName();
 		}
-		return result->m_name;
+		return result.As< Hadit* >()->mName;
 	}
 
 
 	/**
-	 * There can be up to 256 additional names.
+	 * There can be up to 256 additional names. <br />
 	 * @param name
 	 * @return a new Id for the given Name. However, the Name associated with the returned Id may not be the one provided. For example, consider: GetNameFromId(GetUniqueIdFor("MyName")); //Returns "MyName" GetNameFromId(GetUniqueIdFor("MyName")); //Returns "MyName_1"
 	 */
@@ -303,7 +309,7 @@ public:
 
 
 	/**
-	 * the same as GetIdFromName but will RETURN 0 instead of making a new association, if name is not found.
+	 * the same as GetIdFromName but will RETURN 0 instead of making a new association, if name is not found. <br />
 	 * @param name
 	 * @return the Id associated with name else InvalidId().
 	 */
@@ -317,18 +323,21 @@ public:
 			return InvalidId();
 		}
 
-		typename Hadits::const_iterator itt = m_hadits.begin();
+		Hadit* haditBuffer;
+		SmartIterator hdt = mHadits.Begin();
 		for (
-			; itt != m_hadits.end();
-			++itt
+			; !hdt.IsAtEnd();
+			++hdt
 			)
 		{
+			haditBuffer = hdt;
+
 			if (!strcmp(
-				itt->m_name,
+				haditBuffer->mName,
 				name
 			))
 			{
-				return itt->m_id;
+				return haditBuffer->mId;
 			}
 		}
 		return InvalidId();
@@ -339,14 +348,14 @@ public:
 	 */
 	virtual Id GetNumUsedIds() const
 	{
-		return this->m_nextId - 1;
+		return this->mNextId - 1;
 	}
 
 
 	/**
-	 * Associates the given Wave type with the given id.
-	 * This is only necessary if you want to use GetTypeFromId later on.
-	 * NOTE: There is no GetIdFromType(). For that behavior, see chemical::PeriodicTable and chemical::Atom.
+	 * Associates the given Wave type with the given id. <br />
+	 * This is only necessary if you want to use GetTypeFromId later on. <br />
+	 * NOTE: There is no GetIdFromType(). For that behavior, see chemical::PeriodicTable and chemical::Atom. <br />
 	 * @param id
 	 * @param type
 	 * @return true if the association completed successfully else false
@@ -356,38 +365,41 @@ public:
 		Wave* type
 	)
 	{
-		typename Hadits::iterator hdt = Find(id);
-		if (hdt == m_hadits.end() || hdt->m_type)
+		SmartIterator hdt = Find(id);
+		if (!hdt.IsValid())
 		{
 			return false;
 		}
+		Hadit* haditBuffer = hdt;
 
 		LockThread();
 		BIO_SANITIZE(type,
-			hdt->m_type = PerspectiveUtilities::Clone(type),
-			hdt->m_type = type);
+			haditBuffer->mType = PerspectiveUtilities::Clone(type),
+			haditBuffer->mType = type);
 		UnlockThread();
 
 		return true;
 	}
 
 	/**
-	 * Removes the type association created by AssociateType().
+	 * Removes the type association created by AssociateType(). <br />
 	 * @param id
 	 * @return true if the association was removed else false.
 	 */
 	virtual bool DisassociateType(Id id)
 	{
-		typename Hadits::iterator hdt = Find(id);
-		if (hdt == m_hadits.end())
+		SmartIterator hdt = Find(id);
+		if (!hdt.IsValid())
 		{
 			return false;
 		}
 
+		Hadit* haditBuffer = hdt;
+
 		LockThread();
-		BIO_SANITIZE_AT_SAFETY_LEVEL_2(hdt->m_type,
-			PerspectiveUtilities::Delete(hdt->m_type),);
-		hdt->m_type = NULL;
+		BIO_SANITIZE_AT_SAFETY_LEVEL_2(haditBuffer->mType,
+			PerspectiveUtilities::Delete(haditBuffer->mType),);
+		haditBuffer->mType = NULL;
 		UnlockThread();
 
 		return true;
@@ -395,7 +407,7 @@ public:
 
 
 	/**
-	 * Only works if AssociateType has been called with the given id.
+	 * Only works if AssociateType has been called with the given id. <br />
 	 * @param id
 	 * @return the pointer to the Wave type associated with the given id else NULL.
 	 */
@@ -404,17 +416,17 @@ public:
 		BIO_SANITIZE(id == InvalidId(), ,
 			return NULL)
 
-		typename Hadits::const_iterator result = Find(id);
-		if (result == m_hadits.end())
+		SmartIterator result = Find(id);
+		if (!result.IsValid())
 		{
 			return NULL;
 		}
-		return result->m_type;
+		return result.As< Hadit* >()->mType;
 	}
 
 	/**
-	 * Only works if AssociateType has been called with the given id.
-	 * @param id
+	 * Only works if AssociateType has been called with the given id. <br />
+	 * @param name
 	 * @return the pointer to the Wave type associated with the given id else NULL.
 	 */
 	virtual const Wave* GetTypeFromName(Name name) const
@@ -423,7 +435,7 @@ public:
 	}
 
 	/**
-	 * Creates a new object by Clone()ing the associated type.
+	 * Creates a new object by Clone()ing the associated type. <br />
 	 * @param id
 	 * @return a Clone() of the Wave* associated with the given id else NULL.
 	 */
@@ -438,8 +450,8 @@ public:
 	}
 
 	/**
-	 * Creates a new object by Clone()ing the associated type.
-	 * @param id
+	 * Creates a new object by Clone()ing the associated type. <br />
+	 * @param name
 	 * @return a Clone() of the Wave* associated with the given name else NULL.
 	 */
 	virtual Wave* GetNewObjectFromName(Name name)
@@ -448,7 +460,7 @@ public:
 	}
 
 	/**
-	 * Ease of access method for casting the result of GetTypeFromId().
+	 * Ease of access method for casting the result of GetTypeFromId(). <br />
 	 * @tparam T
 	 * @param id
 	 * @return a T* associated with the given name id NULL.
@@ -462,9 +474,9 @@ public:
 	}
 
 	/**
-	 * Ease of access method for casting the result of GetTypeFromId().
+	 * Ease of access method for casting the result of GetTypeFromId(). <br />
 	 * @tparam T
-	 * @param id
+	 * @param name
 	 * @return a T* associated with the given name id NULL.
 	 */
 	template < typename T >
@@ -476,7 +488,7 @@ public:
 	}
 
 	/**
-	 * Ease of use method for casting the result of GetNewObjectFromId()
+	 * Ease of use method for casting the result of GetNewObjectFromId() <br />
 	 * @tparam T
 	 * @param id
 	 * @return a new T* from Clone()ing the type associated with the given id else NULL.
@@ -490,7 +502,7 @@ public:
 	}
 
 	/**
-	 * Ease of access method for casting the result of GetNewObjectFromName()
+	 * Ease of access method for casting the result of GetNewObjectFromName() <br />
 	 * @tparam T
 	 * @param name
 	 * @return a new T* from Clone()ing the type associated with the given name else NULL.
@@ -505,8 +517,8 @@ public:
 
 
 protected:
-	Hadits m_hadits;
-	Id m_nextId;
+	Hadits mHadits;
+	Id mNextId;
 };
 
 } //physical namespace
