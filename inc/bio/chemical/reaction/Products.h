@@ -48,16 +48,16 @@ public:
 	Products(Code result);
 
 	/**
-	 * Assume m_result Success(), since we're given a value and no error to report. <br />
+	 * Assume mResult Success(), since we're given a value and no error to report. <br />
 	 * @param substances
 	 */
-	Products(const Substances* substances); 
+	Products(const Substances* substances);
 
 	/**
-	 * Assume m_result Success(), since we're given a value and no error to report. <br />
+	 * Assume mResult Success(), since we're given a value and no error to report. <br />
 	 * @param reactants
 	 */
-	Products(const Reactants* reactants); 
+	Products(const Reactants* reactants);
 
 	/**
 	 * @param result
@@ -65,7 +65,7 @@ public:
 	 */
 	Products(
 		Code result,
-		const Substances* substances 
+		const Substances* substances
 	);
 
 	/**
@@ -102,8 +102,8 @@ public:
 	operator Reactants();
 
 protected:
-	Substances m_substances;
-	Code m_result;
+	Substances mSubstances;
+	Code mResult;
 };
 
 } //chemical namespace

@@ -61,25 +61,25 @@ public:
 	 * @param toRegister
 	 * @return the Id of the Registered Plasmid.
 	 */
-	virtual StandardDimension RegisterPlasmid(Plasmid* toRegister); 
+	virtual StandardDimension RegisterPlasmid(Plasmid* toRegister);
 
 	/**
 	 * Get a Plasmid! <br />
 	 * @param plasmidId
 	 * @return a shared Plasmid*. Should become const in a future release.
 	 */
-	virtual Plasmid* FetchPlasmid(StandardDimension plasmidId); 
+	virtual Plasmid* FetchPlasmid(StandardDimension plasmidId);
 
 	/**
 	 * Get a Plasmid! <br />
 	 * @param plasmidName
 	 * @return a shared Plasmid*. Should become const in a future release.
 	 */
-	virtual Plasmid* FetchPlasmid(Name plasmidName); 
+	virtual Plasmid* FetchPlasmid(Name plasmidName);
 
 protected:
-	molecular::Protein* mc_registerPlasmid; 
-	molecular::Protein* mc_fetchPlasmid; 
+	molecular::Protein* mc_registerPlasmid;
+	molecular::Protein* mc_fetchPlasmid;
 	StandardDimension mc_registrationSite;
 	StandardDimension mc_nameSite;
 	StandardDimension mc_idSite;

@@ -76,11 +76,11 @@ public:
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
 		#ifdef BIO_OS_IS_LINUX
-			mutable pthread_mutex_t m_lock;
+			mutable pthread_mutex_t mLock;
 		#endif
 	#else
-		std::mutex m_mutex;
-		mutable ::std::unique_lock<std::mutex> m_lock;
+		std::mutex mMutex;
+		mutable ::std::unique_lock<std::mutex> mLock;
 	#endif
 	//@formatter:on
 };

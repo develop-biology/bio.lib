@@ -32,7 +32,7 @@ namespace bio {
 namespace genetic {
 
 /**
- * Genes are responsible for creating Proteins in cells. Genes do this by recognizing TranscriptionFactors that the Cells express and cloning a Protein into the given m_insertion. <br />
+ * Genes are responsible for creating Proteins in cells. Genes do this by recognizing TranscriptionFactors that the Cells express and cloning a Protein into the given mInsertion. <br />
  *
  * If a Cell has the indicated TranscriptionFactors, insert the given protein at the insertion. <br />
  * For more info, see Expressor and localization/*.h <br />
@@ -74,7 +74,7 @@ public:
 	 * This also enables protein encapsulation, excretion, etc. by making the Proteins in a Vesicle stay in the Vesicle as it's Transferred between other Vesicles, etc. <br />
 	 * For more info, see Localization.h and Insertion.h <br />
 	 */
-	Insertion m_insertion;
+	Insertion mInsertion;
 
 private:
 	/**

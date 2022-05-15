@@ -48,8 +48,7 @@ namespace utility {
  * @return whether or not T is a pointer.
  */
 template < typename T >
-BIO_CONSTEXPR
-bool IsPointer()
+BIO_CONSTEXPR bool IsPointer()
 {
 	//@formatter:off
 	#if BIO_CPP_VERSION >= 11

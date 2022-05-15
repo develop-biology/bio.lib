@@ -29,7 +29,7 @@ Symmetry::Symmetry()
 	:
 	Class< Symmetry >(this),
 	Identifiable< StandardDimension >(&SymmetryPerspective::Instance()),
-	m_type(&SymmetryTypePerspective::Instance())
+	mType(&SymmetryTypePerspective::Instance())
 {
 
 }
@@ -40,14 +40,13 @@ Symmetry::Symmetry(
 )
 	:
 	Class< Symmetry >(this),
-	m_type(
+	mType(
 		type,
 		&SymmetryTypePerspective::Instance())
 {
 	Identifiable< StandardDimension >::Initialize(
 		name,
-		&SymmetryPerspective::Instance()
-	);
+		&SymmetryPerspective::Instance());
 }
 
 Symmetry::Symmetry(
@@ -56,14 +55,13 @@ Symmetry::Symmetry(
 )
 	:
 	Class< Symmetry >(this),
-	m_type(
+	mType(
 		type,
 		&SymmetryTypePerspective::Instance())
 {
 	Identifiable< StandardDimension >::Initialize(
 		name,
-		&SymmetryPerspective::Instance()
-	);
+		&SymmetryPerspective::Instance());
 }
 
 Symmetry::Symmetry(
@@ -72,14 +70,13 @@ Symmetry::Symmetry(
 )
 	:
 	Class< Symmetry >(this),
-	m_type(
+	mType(
 		type,
 		&SymmetryTypePerspective::Instance())
 {
 	Identifiable< StandardDimension >::Initialize(
 		id,
-		&SymmetryPerspective::Instance()
-	);
+		&SymmetryPerspective::Instance());
 }
 
 Symmetry::Symmetry(
@@ -88,14 +85,13 @@ Symmetry::Symmetry(
 )
 	:
 	Class< Symmetry >(this),
-	m_type(
+	mType(
 		type,
 		&SymmetryTypePerspective::Instance())
 {
 	Identifiable< StandardDimension >::Initialize(
 		id,
-		&SymmetryPerspective::Instance()
-	);
+		&SymmetryPerspective::Instance());
 }
 
 Symmetry::~Symmetry()
@@ -104,32 +100,32 @@ Symmetry::~Symmetry()
 
 const Identifiable< SymmetryType >& Symmetry::GetType() const
 {
-	return m_type;
+	return mType;
 }
 
 void Symmetry::SetType(SymmetryType type)
 {
-	m_type.SetId(type);
+	mType.SetId(type);
 }
 
 void Symmetry::SetType(Name type)
 {
-	m_type.SetName(type);
+	mType.SetName(type);
 }
 
 void Symmetry::SetValue(const ByteStream& bytes)
 {
-	m_value = bytes;
+	mValue = bytes;
 }
 
 const ByteStream& Symmetry::GetValue() const
 {
-	return m_value;
+	return mValue;
 }
 
-ByteStream* Symmetry::AccessValue() 
+ByteStream* Symmetry::AccessValue()
 {
-	return &m_value;
+	return &mValue;
 }
 
 } //physical namespace

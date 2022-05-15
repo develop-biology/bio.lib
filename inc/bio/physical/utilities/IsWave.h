@@ -30,8 +30,7 @@ namespace utility {
  * @return whether or not the given T derives from physical::Wave.
  */
 template < typename T >
-BIO_CONSTEXPR
-bool IsWave()
+BIO_CONSTEXPR bool IsWave()
 {
 	//TODO: Actually determine inheritance.
 	return !IsPrimitive< T >();

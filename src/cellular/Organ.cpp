@@ -33,10 +33,10 @@ Organ::~Organ()
 Code Organ::SpecializeTissues()
 {
 	Code ret = code::Success();
-	Container* tissues = GetAll< Tissue* >(); 
+	Container* tissues = GetAll< Tissue* >();
 	BIO_SANITIZE(tissues, ,
 		return code::CouldNotFindValue1())
-	Tissue* tissueBuffer; 
+	Tissue* tissueBuffer;
 	for (
 		SmartIterator tis = tissues->Begin();
 		!tis.IsAtEnd();

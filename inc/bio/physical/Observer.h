@@ -45,9 +45,9 @@ public:
 	/**
 	 * @param perspective
 	 */
-	explicit Observer(Perspective* perspective = NULL) 
+	explicit Observer(Perspective* perspective = NULL)
 		:
-		m_perspective(perspective)
+		mPerspective(perspective)
 	{
 	}
 
@@ -56,7 +56,7 @@ public:
 	 */
 	Observer(const Observer& other)
 		:
-		m_perspective(other.m_perspective)
+		mPerspective(other.mPerspective)
 	{
 	}
 
@@ -71,17 +71,17 @@ public:
 	 * Sets the perspective for *this. <br />
 	 * @param perspective
 	 */
-	virtual void SetPerspective(Perspective* perspective) 
+	virtual void SetPerspective(Perspective* perspective)
 	{
-		m_perspective = perspective;
+		mPerspective = perspective;
 	}
 
 	virtual /**
 	 * @return the perspective held by *this.
 	 */
-	Perspective* GetPerspective() const 
+	Perspective* GetPerspective() const
 	{
-		return m_perspective;
+		return mPerspective;
 	}
 
 protected:
@@ -91,13 +91,13 @@ protected:
 	 */
 	virtual void InitializeImplementation(ByteStreams args)
 	{
-		BIO_SANITIZE(args.Size() == 1 && args[0].Is(m_perspective), ,
+		BIO_SANITIZE(args.Size() == 1 && args[0].Is(mPerspective), ,
 			return);
-		m_perspective = args[0];
+		mPerspective = args[0];
 	}
 
 private:
-	Perspective* m_perspective; 
+	Perspective* mPerspective;
 };
 
 } //physical namespace

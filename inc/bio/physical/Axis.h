@@ -60,7 +60,7 @@ public:
 	 * Express the given text into something intelligible by this system. <br />
 	 * @return Symmetry* which can be Reified or NULL.
 	 */
-	virtual Symmetry* Rotate(std::string) const; 
+	virtual Symmetry* Rotate(std::string) const;
 
 	/**
 	 * jsonAxis | myWave <br />
@@ -74,7 +74,7 @@ public:
 	 * @param encoded
 	 * @return Rotate(encoded) or NULL.
 	 */
-	virtual Symmetry* operator()(std::string encoded) const; 
+	virtual Symmetry* operator()(std::string encoded) const;
 
 protected:
 

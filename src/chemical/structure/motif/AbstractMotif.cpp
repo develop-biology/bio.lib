@@ -34,28 +34,28 @@ namespace chemical {
 
 AbstractMotif::AbstractMotif()
 	:
-	m_contents(NULL)
+	mContents(NULL)
 {
 
 }
 
 AbstractMotif::~AbstractMotif()
 {
-	if (m_contents)
+	if (mContents)
 	{
-		delete m_contents;
-		m_contents = NULL;
+		delete mContents;
+		mContents = NULL;
 	}
 }
 
-Container* AbstractMotif::GetAllImplementation() 
+Container* AbstractMotif::GetAllImplementation()
 {
-	return this->m_contents;
+	return this->mContents;
 }
 
-const Container* AbstractMotif::GetAllImplementation() const 
+const Container* AbstractMotif::GetAllImplementation() const
 {
-	return this->m_contents;
+	return this->mContents;
 }
 
 } //chemical namespace

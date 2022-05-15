@@ -27,10 +27,10 @@
  * Define a virtual function that forwards to a Class. <br />
  * Currently only works for functions that have a non-void return type. <br />
  */
-#define BIO_CLASS_METHOD(                                                      \
-    ns,                                                                        \
-    caller,                                                                    \
-    functionSignature,                                                         \
+#define BIO_CLASS_METHOD(\
+    ns, \
+    caller, \
+    functionSignature, \
     functionCall)                                                              \
 functionSignature                                                              \
 {                                                                              \
@@ -49,11 +49,11 @@ functionSignature                                                              \
  * @param caller a tuple containing the class
  * @param argsMacro the arguments to be looped over (1 per iteration).
  */
-#define BIO_CALL_CLASS_METHOD_LOOP_WITH_MACRO(                                 \
-        loopName,                                                              \
-        iterationsMacro,                                                       \
-        ns,                                                                    \
-        caller,                                                                \
+#define BIO_CALL_CLASS_METHOD_LOOP_WITH_MACRO(\
+        loopName, \
+        iterationsMacro, \
+        ns, \
+        caller, \
         argsMacro                                                              \
 )                                                                              \
     BIO_CALL_LOOP(                                                             \

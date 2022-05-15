@@ -48,7 +48,7 @@ class Organelle;
  */
 class Cell :
 	public Class< Cell >,
-	public chemical::LinearMotif< Organelle* >, 
+	public chemical::LinearMotif< Organelle* >,
 	public molecular::EnvironmentDependent< cellular::Tissue >,
 	virtual public genetic::Expressor
 {
@@ -73,7 +73,7 @@ public:
 	virtual ~Cell();
 
 	/**
-	 * Peak()s occur at Periodic::m_intervals. <br />
+	 * Peak()s occur at Periodic::mIntervals. <br />
 	 * Define your main Periodic logic here. <br />
 	 * This method must be fast: <br />
 	 *	* do not read slow hardware here <br />

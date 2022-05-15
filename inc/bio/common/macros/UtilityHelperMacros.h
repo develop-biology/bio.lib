@@ -28,5 +28,5 @@
 template <>                                                                    \
 struct IsPrimitiveImplementation< type >                                       \
 {                                                                              \
-	static const bool sValue = true;                                           \
+    static const bool sValue = true;                                           \
 };

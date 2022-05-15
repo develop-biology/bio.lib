@@ -34,7 +34,7 @@ namespace bio {
  * ugh. <br />
  * If you know of a better solution to this problem, please make a pull request. <br />
  *
- * For example 5 + TransparentWrapper<int>(2) = 7; however, TransparentWrapper<MyClass>(myObject).m_someMember is invalid. <br />
+ * For example 5 + TransparentWrapper<int>(2) = 7; however, TransparentWrapper<MyClass>(myObject).mSomeMember is invalid. <br />
  * To use TransparentWrappers for more than operations on built-in types, you can use the pattern: <br />
  * 		MyClass* myObject; <br />
  * 		*myObject = TransparentWrapper< MyClass >(myOtherObject); <br />
@@ -52,51 +52,51 @@ template < typename T >
 class TransparentWrapper
 {
 public:
-	TransparentWrapper(T t) : m_t(t) {}
+	TransparentWrapper(T t) : mT(t) {}
     virtual ~TransparentWrapper() {}
-    operator T() {return m_t;}
-    bool operator==(const T& t) const  {return m_t == t;}
-    bool operator!=(const T& t) const  {return m_t != t;}
-    bool operator<=(const T& t) const  {return m_t <= t;}
-    bool operator>=(const T& t) const  {return m_t >= t;}
-    bool operator<(const T& t) const {return m_t < t;}
-    bool operator>(const T& t) const {return m_t > t;}
-    bool operator==(const TransparentWrapper& other) const {return m_t == other.m_t;}
-    bool operator!=(const TransparentWrapper& other) const {return m_t != other.m_t;}
-    bool operator<=(const TransparentWrapper& other) const {return m_t <= other.m_t;}
-    bool operator>=(const TransparentWrapper& other) const {return m_t >= other.m_t;}
-    bool operator<(const TransparentWrapper& other) const {return m_t < other.m_t;}
-    bool operator>(const TransparentWrapper& other) const {return m_t > other.m_t;}
-    T& operator++() {return ++m_t;}
-    T operator++(int) {return m_t++;}
-    T& operator--() {return --m_t;}
-    T operator--(int) {return m_t--;}
-    T operator+=(const T& t) {return m_t += t;}
-    T operator-=(const T& t) {return m_t -= t;}
-    T operator+=(const TransparentWrapper& other) {return m_t += other.m_t;}
-    T operator-=(const TransparentWrapper& other) {return m_t -= other.m_t;}
-    T operator+(const T& t) const {return m_t + t;}
-    T operator-(const T& t) const {return m_t - t;}
-    T operator+(const TransparentWrapper& other) const {return m_t + other.m_t;}
-    T operator-(const TransparentWrapper& other) const {return m_t - other.m_t;}
-    T operator*=(const T& t) {return m_t *= t;}
-    T operator/=(const T& t) {return m_t /= t;}
-    T operator*=(const TransparentWrapper& other) {return m_t *= other.m_t;}
-    T operator/=(const TransparentWrapper& other) {return m_t /= other.m_t;}
-    T operator*(const T& t) const {return m_t * t;}
-    T operator/(const T& t) const {return m_t / t;}
-    T operator*(const TransparentWrapper& other) const {return m_t * other.m_t;}
-    T operator/(const TransparentWrapper& other) const {return m_t / other.m_t;}
+    operator T() {return mT;}
+    bool operator==(const T& t) const  {return mT == t;}
+    bool operator!=(const T& t) const  {return mT != t;}
+    bool operator<=(const T& t) const  {return mT <= t;}
+    bool operator>=(const T& t) const  {return mT >= t;}
+    bool operator<(const T& t) const {return mT < t;}
+    bool operator>(const T& t) const {return mT > t;}
+    bool operator==(const TransparentWrapper& other) const {return mT == other.mT;}
+    bool operator!=(const TransparentWrapper& other) const {return mT != other.mT;}
+    bool operator<=(const TransparentWrapper& other) const {return mT <= other.mT;}
+    bool operator>=(const TransparentWrapper& other) const {return mT >= other.mT;}
+    bool operator<(const TransparentWrapper& other) const {return mT < other.mT;}
+    bool operator>(const TransparentWrapper& other) const {return mT > other.mT;}
+    T& operator++() {return ++mT;}
+    T operator++(int) {return mT++;}
+    T& operator--() {return --mT;}
+    T operator--(int) {return mT--;}
+    T operator+=(const T& t) {return mT += t;}
+    T operator-=(const T& t) {return mT -= t;}
+    T operator+=(const TransparentWrapper& other) {return mT += other.mT;}
+    T operator-=(const TransparentWrapper& other) {return mT -= other.mT;}
+    T operator+(const T& t) const {return mT + t;}
+    T operator-(const T& t) const {return mT - t;}
+    T operator+(const TransparentWrapper& other) const {return mT + other.mT;}
+    T operator-(const TransparentWrapper& other) const {return mT - other.mT;}
+    T operator*=(const T& t) {return mT *= t;}
+    T operator/=(const T& t) {return mT /= t;}
+    T operator*=(const TransparentWrapper& other) {return mT *= other.mT;}
+    T operator/=(const TransparentWrapper& other) {return mT /= other.mT;}
+    T operator*(const T& t) const {return mT * t;}
+    T operator/(const T& t) const {return mT / t;}
+    T operator*(const TransparentWrapper& other) const {return mT * other.mT;}
+    T operator/(const TransparentWrapper& other) const {return mT / other.mT;}
     friend ::std::ostream& operator <<(std::ostream& out, const TransparentWrapper& t)
     {
-        out << t.m_t;
+        out << t.mT;
         return out;
     }
     //that's all we're doing for now. Please add to this list as necessary
 
 	//public because we need to treat this as T when we don't know the T.
 public:
-    T m_t;
+    T mT;
 };
 //@formatter:on
 

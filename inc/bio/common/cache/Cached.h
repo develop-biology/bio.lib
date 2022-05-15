@@ -32,7 +32,9 @@ namespace bio {
  * @tparam STORE_TYPE 
  */
 template < typename STORE_TYPE, typename LOOKUP_TYPE, typename LOOKUP_FUNCTION >
-class Cached : public AbstractCached, public TransparentWrapper< STORE_TYPE >
+class Cached :
+	public AbstractCached,
+	public TransparentWrapper< STORE_TYPE >
 {
 public:
 	/**
@@ -40,12 +42,17 @@ public:
 	 * @param invalidValue
 	 * @param LookupFunction
 	 */
-	Cached(LOOKUP_TYPE lookup, STORE_TYPE invalidValue, LOOKUP_FUNCTION LookupFunction) :
+	Cached(
+		LOOKUP_TYPE lookup,
+		STORE_TYPE invalidValue,
+		LOOKUP_FUNCTION LookupFunction
+	)
+		:
 		TransparentWrapper< STORE_TYPE >(invalidValue),
-		m_lookup(lookup),
-		m_LookupFunction(LookupFunction)
+		mLookup(lookup),
+		mLookupFunction(LookupFunction)
 	{
-		
+
 	}
 
 	/**
@@ -53,7 +60,7 @@ public:
 	 */
 	virtual ~Cached()
 	{
-		
+
 	}
 
 	/**
@@ -74,15 +81,18 @@ public:
 	 * @param t
 	 * @return out
 	 */
-	friend ::std::ostream& operator <<(std::ostream& out, const Cached& t)
+	friend ::std::ostream& operator<<(
+		std::ostream& out,
+		const Cached& t
+	)
 	{
-		out << t.m_t;
+		out << t.mT;
 		return out;
 	}
 
 protected:
-	LOOKUP_TYPE m_lookup;
-	LOOKUP_FUNCTION m_LookupFunction;
+	LOOKUP_TYPE mLookup;
+	LOOKUP_FUNCTION mLookupFunction;
 };
 
 } //bio namespace

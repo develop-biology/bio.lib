@@ -299,7 +299,7 @@ public:
 	 * @param index
 	 * @return a new Iterator pointing to the given Index in *this or NULL.
 	 */
-	virtual Iterator* ConstructClassIterator(const Index index = InvalidIndex()) const; 
+	virtual Iterator* ConstructClassIterator(const Index index = InvalidIndex()) const;
 
 	/**
 	 * NOTE: This does not need to be overridden if you've already defined ConstructClassIterator(). <br />
@@ -363,17 +363,17 @@ protected:
 	/**
 	 * cannot be void* as we need an object type for pointer arithmetic. 
 	 */
-	unsigned char* m_store; 
+	unsigned char* mStore;
 
-	Index m_size;
-	Index m_firstFree;
-	std::deque< Index > m_deallocated;
+	Index mSize;
+	Index mFirstFree;
+	std::deque< Index > mDeallocated;
 
 	/**
 	 * An iterator for use in loops. <br />
 	 * Matches lifecycle of object for better performance. <br />
 	 */
-	mutable Iterator* m_tempItt; 
+	mutable Iterator* mTempItt;
 };
 
 } //bio namespace

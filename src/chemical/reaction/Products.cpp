@@ -27,41 +27,41 @@ namespace chemical {
 
 Products::Products()
 	:
-	m_result(CodePerspective::InvalidId())
+	mResult(CodePerspective::InvalidId())
 {
 
 }
 
 Products::Products(Code result)
 	:
-	m_result(result)
+	mResult(result)
 {
 
 }
 
-Products::Products(const Substances* substances) 
+Products::Products(const Substances* substances)
 	:
-	m_result(code::Success()),
-	m_substances(*substances)
+	mResult(code::Success()),
+	mSubstances(*substances)
 {
 
 }
 
-Products::Products(const Reactants* reactants) 
+Products::Products(const Reactants* reactants)
 	:
-	m_result(code::Success()),
-	m_substances(reactants->GetAll< Substance* >())
+	mResult(code::Success()),
+	mSubstances(reactants->GetAll< Substance* >())
 {
 
 }
 
 Products::Products(
 	Code result,
-	const Substances* substances 
+	const Substances* substances
 )
 	:
-	m_result(result),
-	m_substances(*substances)
+	mResult(result),
+	mSubstances(*substances)
 {
 
 }
@@ -73,27 +73,27 @@ Products::~Products()
 
 Products::operator Code()
 {
-	return m_result;
+	return mResult;
 }
 
 Products::operator Substances()
 {
-	return m_substances;
+	return mSubstances;
 }
 
 Products::operator Reactants()
 {
-	return Reactants(m_substances);
+	return Reactants(mSubstances);
 }
 
 bool Products::operator!=(const Code code) const
 {
-	return m_result != code;
+	return mResult != code;
 }
 
 bool Products::operator==(const Code code) const
 {
-	return m_result == code;
+	return mResult == code;
 }
 
 } //chemical namespace

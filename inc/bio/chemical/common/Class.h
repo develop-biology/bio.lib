@@ -56,8 +56,8 @@ private:
 			Filterable::Initialize(filter);
 		}
 		//Bond the class we're given, Virtually.
-		physical::Class< T >::m_object->FormBond(
-			physical::Class< T >::m_object,
+		physical::Class< T >::mObject->FormBond(
+			physical::Class< T >::mObject,
 			bond_type::Virtual());
 	}
 
@@ -76,8 +76,8 @@ public:
 	 * @param symmetryType
 	 */
 	Class(
-		T* object, 
-		physical::Perspective< StandardDimension >* perspective = NULL, 
+		T* object,
+		physical::Perspective< StandardDimension >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
@@ -99,9 +99,9 @@ public:
 	 * @param filter
 	 */
 	Class(
-		T* object, 
+		T* object,
 		Name name,
-		physical::Perspective< StandardDimension >* perspective = NULL, 
+		physical::Perspective< StandardDimension >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
@@ -134,9 +134,9 @@ public:
 	 * @param filter
 	 */
 	Class(
-		T* object, 
+		T* object,
 		StandardDimension id,
-		physical::Perspective< StandardDimension >* perspective = NULL, 
+		physical::Perspective< StandardDimension >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
@@ -171,7 +171,7 @@ public:
 	}
 
 	/**
-	 * Using the PeriodicTable, we can reliably implement Wave::GetProperties without having to store m_properties internally. <br />
+	 * Using the PeriodicTable, we can reliably implement Wave::GetProperties without having to store mProperties internally. <br />
 	 * NOTE: You must still record the Properties of T elsewhere. See Elementary.h for an easy means of doing this. <br />
 	 * @return the Properties of T that have been Registered with the PeriodicTable. <br />
 	 */
@@ -184,7 +184,7 @@ public:
 	 * From Wave. See that class for details. <br />
 	 * @return this as an Atom.
 	 */
-	virtual Atom* AsAtom() 
+	virtual Atom* AsAtom()
 	{
 		return this;
 	}
@@ -193,7 +193,7 @@ public:
 	 * From Wave. See that class for details. <br />
 	 * @return this as an Atom.
 	 */
-	virtual const Atom* AsAtom() const 
+	virtual const Atom* AsAtom() const
 	{
 		return this;
 	}
@@ -203,7 +203,7 @@ public:
 	 * @param other
 	 * @return result of Wave::Attenuation.
 	 */
-	virtual Code Attenuate(const physical::Wave* other) 
+	virtual Code Attenuate(const physical::Wave* other)
 	{
 		return physical::Class< T >::Attenuate(other);
 	}
@@ -213,7 +213,7 @@ public:
 	 * @param other
 	 * @return result of Wave::Disattenuation.
 	 */
-	virtual Code Disattenuate(const physical::Wave* other) 
+	virtual Code Disattenuate(const physical::Wave* other)
 	{
 		return physical::Class< T >::Disattenuate(other);
 	}

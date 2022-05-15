@@ -40,7 +40,8 @@ class AbstractCached;
  * The Biology library make heavy use of Name <-> Id pairings. Ids are faster; names are more robust. <br />
  * Any kind of speed trade off through pairing is a candidate for caching. <br />
  */
-class Cache : public Arrangement< AbstractCached* >
+class Cache :
+	public Arrangement< AbstractCached* >
 {
 public:
 
@@ -60,6 +61,7 @@ public:
 	virtual void Flush();
 };
 
-BIO_SINGLETON(GlobalCache, Cache)
+BIO_SINGLETON(GlobalCache,
+	Cache)
 
 } //bio namespace

@@ -26,7 +26,7 @@ namespace bio {
 
 VirtualBase::VirtualBase()
 	:
-	m_hasBeenInitialized(false)
+	mHasBeenInitialized(false)
 {
 
 }
@@ -39,15 +39,15 @@ VirtualBase::~VirtualBase()
 
 void VirtualBase::Initialize(ByteStreams args)
 {
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(m_hasBeenInitialized, ,
+	BIO_SANITIZE_AT_SAFETY_LEVEL_2(mHasBeenInitialized, ,
 		return);
 	InitializeImplementation(args);
-	m_hasBeenInitialized = true;
+	mHasBeenInitialized = true;
 }
 
 void VirtualBase::Initialize(ByteStream arg1)
 {
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(m_hasBeenInitialized, ,
+	BIO_SANITIZE_AT_SAFETY_LEVEL_2(mHasBeenInitialized, ,
 		return);
 	ByteStreams args;
 	args.Add(arg1);
@@ -59,7 +59,7 @@ void VirtualBase::Initialize(
 	ByteStream arg2
 )
 {
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(m_hasBeenInitialized, ,
+	BIO_SANITIZE_AT_SAFETY_LEVEL_2(mHasBeenInitialized, ,
 		return);
 	ByteStreams args;
 	args.Add(arg1);
@@ -73,7 +73,7 @@ void VirtualBase::Initialize(
 	ByteStream arg3
 )
 {
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(m_hasBeenInitialized, ,
+	BIO_SANITIZE_AT_SAFETY_LEVEL_2(mHasBeenInitialized, ,
 		return);
 	ByteStreams args;
 	args.Add(arg1);

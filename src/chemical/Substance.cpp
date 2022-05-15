@@ -25,8 +25,8 @@ namespace bio {
 namespace chemical {
 
 Substance::Substance(
-	const typename UnorderedMotif< Property >::Contents* properties, 
-	const typename UnorderedMotif< State >::Contents* states 
+	const typename UnorderedMotif< Property >::Contents* properties,
+	const typename UnorderedMotif< State >::Contents* states
 )
 	:
 	chemical::Class< Substance >(this),

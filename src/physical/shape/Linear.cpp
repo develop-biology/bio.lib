@@ -24,60 +24,65 @@
 namespace bio {
 namespace physical {
 
-Linear::Linear(Identifiable< StandardDimension >* component, bool shared) : 
-	m_component(component),
-	m_shared(false)
+Linear::Linear(
+	Identifiable< StandardDimension >* component,
+	bool shared
+)
+	:
+	mComponent(component),
+	mShared(false)
 {
 
 }
 
 Linear::~Linear()
 {
-	if (!m_shared && m_component)
+	if (!mShared && mComponent)
 	{
-		delete m_component;
+		delete mComponent;
 	}
 }
 
 Identifiable< StandardDimension >& Linear::operator*()
 {
-	return *m_component;
+	return *mComponent;
 }
 
 const Identifiable< StandardDimension >& Linear::operator*() const
 {
-	return *m_component;
+	return *mComponent;
 }
 
 Linear::operator Identifiable< StandardDimension >*()
 {
-	return m_component;
+	return mComponent;
 }
 
 Linear::operator const Identifiable< StandardDimension >*() const
 {
-	return m_component;
+	return mComponent;
 }
 
 bool Linear::operator==(const Linear& other) const
 {
-	return *m_component == *other.m_component;
+	return *mComponent == *other.mComponent;
 }
 
-bool Linear::operator==(const Identifiable< StandardDimension >* component) const 
+bool Linear::operator==(const Identifiable< StandardDimension >* component) const
 {
-	BIO_SANITIZE(component,, return false)
-	return *m_component == *component;
+	BIO_SANITIZE(component, ,
+		return false)
+	return *mComponent == *component;
 }
 
-Identifiable< StandardDimension >* Linear::operator->() 
+Identifiable< StandardDimension >* Linear::operator->()
 {
-	return m_component;
+	return mComponent;
 }
 
-const Identifiable< StandardDimension >* Linear::operator->() const 
+const Identifiable< StandardDimension >* Linear::operator->() const
 {
-	return m_component;
+	return mComponent;
 }
 
 } //physical namespace

@@ -97,7 +97,7 @@ public:
 	 */
 	explicit Reaction(
 		Name name,
-		const Reactants* reactants 
+		const Reactants* reactants
 	);
 
 	/**
@@ -106,7 +106,7 @@ public:
 	 * The order of requirements MUST be the order of arguments provided to operator(). <br />
 	 * @param reactant
 	 */
-	virtual void Require(Reactant* reactant); 
+	virtual void Require(Reactant* reactant);
 
 	/**
 	 * Wrapper around Require(Reactant*). <br />
@@ -116,7 +116,7 @@ public:
 	 */
 	void Require(
 		Name typeName,
-		const Substance* substance 
+		const Substance* substance
 	);
 
 	/**
@@ -128,8 +128,8 @@ public:
 	 */
 	void Require(
 		Name typeName,
-		const typename UnorderedMotif< Property >::Contents* properties, 
-		const typename UnorderedMotif< State >::Contents* states 
+		const typename UnorderedMotif< Property >::Contents* properties,
+		const typename UnorderedMotif< State >::Contents* states
 	);
 
 	/**
@@ -158,7 +158,7 @@ public:
 	 * @param substance the T* to use (with the *).
 	 */
 	template < typename T >
-	void Require(const T* substance) 
+	void Require(const T* substance)
 	{
 		Require(
 			TypeName< T >(),
@@ -173,8 +173,8 @@ public:
 	 */
 	template < typename T >
 	void Require(
-		const typename UnorderedMotif< Property >::Contents* properties, 
-		const typename UnorderedMotif< State >::Contents* states 
+		const typename UnorderedMotif< Property >::Contents* properties,
+		const typename UnorderedMotif< State >::Contents* states
 	)
 	{
 		Require(
@@ -190,7 +190,7 @@ public:
 	 * @param reactants
 	 * @return Products containing a Code and some set of new Substances or just the reactants. Up to you!
 	 */
-	virtual Products Process(Reactants* reactants) const 
+	virtual Products Process(Reactants* reactants) const
 	{
 
 		//        YOUR CODE GOES HERE
@@ -205,7 +205,7 @@ public:
 	 * @param toCheck
 	 * @return true if all Substances match; false otherwise.
 	 */
-	virtual bool ReactantsMeetRequirements(const Reactants* toCheck) const; 
+	virtual bool ReactantsMeetRequirements(const Reactants* toCheck) const;
 
 	/**
 	 * A Reaction takes in some Reactants and checks if they match the Reactants for *this. <br />
@@ -213,7 +213,7 @@ public:
 	 * @param reactants
 	 * @return Products of this->Process(...) or empty Products with a code::FailedReaction() Code.
 	 */
-	virtual Products operator()(Reactants* reactants) const; 
+	virtual Products operator()(Reactants* reactants) const;
 
 	/**
 	 * Get a Reaction! <br />
@@ -222,7 +222,7 @@ public:
 	 * @param id
 	 * @return a Reaction* with the given id or NULL.
 	 */
-	static const Reaction* Initiate(StandardDimension id); 
+	static const Reaction* Initiate(StandardDimension id);
 
 	/**
 	 * Get a Reaction! <br />
@@ -232,9 +232,9 @@ public:
 	 * @return a Reaction* of the given type or NULL, if no Reaction exists matching the TypeName of the given T.
 	 */
 	template < typename T >
-	static const T* Initiate() 
+	static const T* Initiate()
 	{
-		const T* ret = ReactionPerspective::Instance().template GetTypeFromNameAs< T >(TypeName< T >()); 
+		const T* ret = ReactionPerspective::Instance().template GetTypeFromNameAs< T >(TypeName< T >());
 		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret,
 			return ret,
 			return NULL);
@@ -247,10 +247,10 @@ public:
 	 * @return operator() of the given reaction; else reactants.
 	 */
 	template < typename T >
-	static Products Attempt(Reactants* reactants) 
+	static Products Attempt(Reactants* reactants)
 	{
 		BIO_SANITIZE_WITH_CACHE(Initiate< T >(),
-			return (*Cast< const T* >(RESULT))(reactants), 
+			return (*Cast< const T* >(RESULT))(reactants),
 			return Products(
 				code::NotImplemented(),
 				reactants
@@ -262,7 +262,7 @@ public:
 	{
 		Reactants reactants(substances);
 		BIO_SANITIZE_WITH_CACHE(Initiate< T >(),
-			return (*Cast< const T* >(RESULT))(&reactants), 
+			return (*Cast< const T* >(RESULT))(&reactants),
 			return Products(
 				code::NotImplemented(),
 				reactants
@@ -280,9 +280,9 @@ public:
 	 */
 	template < typename T >
 	static Products Attempt(
-		Substance* reactant1, 
-		Substance* reactant2 = NULL, 
-		Substance* reactant3 = NULL 
+		Substance* reactant1,
+		Substance* reactant2 = NULL,
+		Substance* reactant3 = NULL
 	)
 	{
 		Substances substances;
@@ -294,7 +294,7 @@ public:
 	}
 
 protected:
-	Reactants m_requiredReactants;
+	Reactants mRequiredReactants;
 };
 
 } //chemical namespace

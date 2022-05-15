@@ -28,7 +28,7 @@ namespace bio {
 namespace genetic {
 
 Insertion::Insertion(
-	chemical::Substance* toInsert, 
+	chemical::Substance* toInsert,
 	Site site,
 	Name name
 )
@@ -38,7 +38,7 @@ Insertion::Insertion(
 		0,
 		name
 	),
-	m_toInsert(toInsert)
+	mToInsert(toInsert)
 {
 	SetSite(site); //virtual means nothing to ctors; do it again.
 }
@@ -48,22 +48,22 @@ Insertion::~Insertion()
 
 }
 
-chemical::Substance* Insertion::Seek(chemical::Substance* insertIn) const 
+chemical::Substance* Insertion::Seek(chemical::Substance* insertIn) const
 {
 	insertIn = ResolvePrevious(insertIn);
 
-	BIO_SANITIZE(insertIn && m_toInsert, ,
+	BIO_SANITIZE(insertIn && mToInsert, ,
 		return insertIn);
 
-	if (m_site == InsertionSitePerspective::InvalidId())
+	if (mSite == InsertionSitePerspective::InvalidId())
 	{
 		return insertIn;
 	}
 
 	BIO_SANITIZE(mc_method, ,
 		return NULL)
-	ByteStream insertion(m_toInsert);
-	(const_cast< chemical::ExcitationBase* >(mc_method))->EditArg( 
+	ByteStream insertion(mToInsert);
+	(const_cast< chemical::ExcitationBase* >(mc_method))->EditArg(
 		0,
 		insertion
 	);
@@ -72,7 +72,7 @@ chemical::Substance* Insertion::Seek(chemical::Substance* insertIn) const
 		insertIn->AsWave(),
 		result
 	);
-	chemical::Substance* insert = ChemicalCast< chemical::Substance* >(Cast< physical::Wave* >(result.IKnowWhatImDoing())); //This is about as safe as we can get right now. 
+	chemical::Substance* insert = ChemicalCast< chemical::Substance* >(Cast< physical::Wave* >(result.DirectAccess())); //This is about as safe as we can get right now. 
 	BIO_SANITIZE(insert, ,
 		return NULL)
 	return insert;
@@ -81,18 +81,18 @@ chemical::Substance* Insertion::Seek(chemical::Substance* insertIn) const
 void Insertion::SetSite(Site site)
 {
 	//Assume Sites & Sites always match exactly.
-	m_site = site;
-	mc_method = InsertionSitePerspective::Instance().GetNewObjectFromIdAs< chemical::ExcitationBase* >(m_site); 
+	mSite = site;
+	mc_method = InsertionSitePerspective::Instance().GetNewObjectFromIdAs< chemical::ExcitationBase* >(mSite);
 }
 
-void Insertion::InsertThis(chemical::Substance* toInsert) 
+void Insertion::InsertThis(chemical::Substance* toInsert)
 {
-	m_toInsert = toInsert;
+	mToInsert = toInsert;
 }
 
-chemical::Substance* Insertion::GetWhatWillBeInserted() 
+chemical::Substance* Insertion::GetWhatWillBeInserted()
 {
-	return m_toInsert;
+	return mToInsert;
 }
 
 } //genetic namespace

@@ -50,7 +50,7 @@ public:
 			0,
 			&physical::Perspective< ID_TYPE >::GetIdFromName
 		),
-		m_perspective(perspective)
+		mPerspective(perspective)
 	{
 
 	}
@@ -68,7 +68,7 @@ public:
 	 */
 	virtual void Flush()
 	{
-		this->m_t = (this->m_perspective.*(this->m_LookupFunction))(this->m_lookup);
+		this->mT = (this->mPerspective.*(this->mLookupFunction))(this->mLookup);
 	}
 
 	/**
@@ -83,12 +83,12 @@ public:
 		const CachedId& t
 	)
 	{
-		out << t.m_t;
+		out << t.mT;
 		return out;
 	}
 
 protected:
-	physical::Perspective< ID_TYPE >& m_perspective;
+	physical::Perspective< ID_TYPE >& mPerspective;
 };
 
 } //bio namespace

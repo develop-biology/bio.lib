@@ -81,32 +81,32 @@ public:
 
 	/**
 	 * Find some place by following a chain of Localizations. <br />
-	 * Will recurse upward, following m_previous for as long as possible. <br />
+	 * Will recurse upward, following mPrevious for as long as possible. <br />
 	 * @param seekIn
 	 * @return a Substance somewhere within the Substance provided or NULL.
 	 */
-	virtual chemical::Substance* Seek(chemical::Substance* seekIn) const; 
+	virtual chemical::Substance* Seek(chemical::Substance* seekIn) const;
 
 	/**
-	 * Get m_site. <br />
-	 * @return m_site.
+	 * Get mSite. <br />
+	 * @return mSite.
 	 */
 	virtual Site GetSite() const;
 
 	/**
-	 * Set m_site. <br />
+	 * Set mSite. <br />
 	 * @param site
 	 */
 	virtual void SetSite(Site site);
 
 	/**
-	 * Get the Name to use with m_site. <br />
-	 * @return m_name.
+	 * Get the Name to use with mSite. <br />
+	 * @return mName.
 	 */
 	virtual Name GetNameOfSite() const;
 
 	/**
-	 * Set m_name. <br />
+	 * Set mName. <br />
 	 * @param name
 	 */
 	virtual void SetNameOfSite(Name name);
@@ -117,11 +117,11 @@ protected:
 	 * @param seekIn
 	 * @return the result of Seeking through all Modulated Localizations.
 	 */
-	chemical::Substance* ResolvePrevious(chemical::Substance* seekIn) const; 
+	chemical::Substance* ResolvePrevious(chemical::Substance* seekIn) const;
 
-	Site m_site;
-	Name m_name;
-	Localization* m_previous; 
+	Site mSite;
+	Name mName;
+	Localization* mPrevious;
 	chemical::ExcitationBase* mc_method; //cached pointer to site-associated function pointer. 
 };
 

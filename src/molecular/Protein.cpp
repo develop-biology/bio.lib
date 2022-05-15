@@ -29,7 +29,7 @@ namespace molecular {
 
 void Protein::CtorCommon()
 {
-	m_source = NULL;
+	mSource = NULL;
 }
 
 Protein::~Protein()
@@ -39,17 +39,23 @@ Protein::~Protein()
 Code Protein::Fold()
 {
 	Code ret = code::Success();
-	BIO_EXCITATION_CLASS(Protein, Code) fold(&Protein::Fold);
-	chemical::Emission result = ForEach<Protein*>(fold);
+	BIO_EXCITATION_CLASS(Protein,
+		Code) fold(&Protein::Fold);
+	chemical::Emission result = ForEach< Protein* >(fold);
 	//We don't care about result right now.
 	return ret;
 }
 
-Code Protein::RecruitChaperones(Vesicle* environment) 
+Code Protein::RecruitChaperones(Vesicle* environment)
 {
 	SetEnvironment(environment);
-	BIO_EXCITATION_CLASS(Protein, Code, Vesicle*) recruitChaperones(&Protein::RecruitChaperones, environment);
-	chemical::Emission result = ForEach<Protein*>(&recruitChaperones);
+	BIO_EXCITATION_CLASS(Protein,
+		Code,
+		Vesicle*) recruitChaperones(
+		&Protein::RecruitChaperones,
+		environment
+	);
+	chemical::Emission result = ForEach< Protein* >(&recruitChaperones);
 	//We don't care about result right now.
 	return code::Success();
 }
@@ -58,8 +64,9 @@ Code Protein::RecruitChaperones(Vesicle* environment)
 Code Protein::Activate()
 {
 	Code ret = code::Success();
-	BIO_EXCITATION_CLASS(Protein, Code) activate(&Protein::Activate);
-	chemical::Emission result = ForEach<Protein*>(activate);
+	BIO_EXCITATION_CLASS(Protein,
+		Code) activate(&Protein::Activate);
+	chemical::Emission result = ForEach< Protein* >(activate);
 	//We don't care about result right now.
 	return ret;
 }
@@ -69,15 +76,15 @@ Code Protein::operator()()
 	return Activate();
 }
 
-Code Protein::SetSource(const DNA* source) 
+Code Protein::SetSource(const DNA* source)
 {
-	m_source = source;
+	mSource = source;
 	return code::Success();
 }
 
-const DNA* Protein::GetSource() const 
+const DNA* Protein::GetSource() const
 {
-	return m_source;
+	return mSource;
 }
 
 } //molecular namespace

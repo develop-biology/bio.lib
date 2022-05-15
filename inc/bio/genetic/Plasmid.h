@@ -47,7 +47,7 @@ class Expressor;
  */
 class Plasmid :
 	public genetic::Class< Plasmid >,
-	public chemical::LinearMotif< Gene* >, 
+	public chemical::LinearMotif< Gene* >,
 	public molecular::DNA,
 	virtual public ThreadSafe
 {
@@ -79,9 +79,9 @@ public:
 	 * If you don't need anything fancy, leave this as is. <br />
 	 * @return A Protein* that will carry out the Transcription of *this.
 	 */
-	virtual molecular::Protein* GetRNAPolymerase(); 
+	virtual molecular::Protein* GetRNAPolymerase();
 
-	virtual const molecular::Protein* GetRNAPolymerase() const; 
+	virtual const molecular::Protein* GetRNAPolymerase() const;
 
 	/**
 	 * Transcribes *this in the context of the given Expressor. <br />
@@ -90,7 +90,7 @@ public:
 	 * @param expressor
 	 * @return a new RNA* to be Expressed.
 	 */
-	virtual RNA* TranscribeFor(Expressor* expressor) const; 
+	virtual RNA* TranscribeFor(Expressor* expressor) const;
 
 private:
 	/**

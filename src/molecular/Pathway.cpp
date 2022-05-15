@@ -33,14 +33,15 @@ Pathway::~Pathway()
 
 }
 
-chemical::Products Pathway::Process(chemical::Reactants* reactants) 
+chemical::Products Pathway::Process(chemical::Reactants* reactants)
 {
-	BIO_SANITIZE(reactants,,return code::BadArgument1())
+	BIO_SANITIZE(reactants, ,
+		return code::BadArgument1())
 
 	chemical::Products products(reactants);
-	Reaction* reactionBuffer; 
+	Reaction* reactionBuffer;
 	for (
-		SmartIterator rct = GetAll< Reaction* >()->Begin(); 
+		SmartIterator rct = GetAll< Reaction* >()->Begin();
 		!rct.IsAtEnd();
 		++rct
 		)
@@ -59,10 +60,11 @@ chemical::Products Pathway::Process(chemical::Reactants* reactants)
 	return products;
 }
 
-bool Pathway::ReactantsMeetRequirements(const chemical::Reactants* toCheck) const 
+bool Pathway::ReactantsMeetRequirements(const chemical::Reactants* toCheck) const
 {
-	BIO_SANITIZE(GetCount< chemical::Reaction* >(),,return false) 
-	return GetAll< chemical::Reaction* >()->Begin().As< chemical::Reaction* >()->ReactantsMeetRequirements(toCheck); 
+	BIO_SANITIZE(GetCount< chemical::Reaction* >(), ,
+		return false)
+	return GetAll< chemical::Reaction* >()->Begin().As< chemical::Reaction* >()->ReactantsMeetRequirements(toCheck);
 }
 
 } //molecular namespace

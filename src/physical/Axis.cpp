@@ -41,29 +41,29 @@ Axis::~Axis()
 	return "FAILED";
 }
 
-std::string Axis::Rotate(Symmetry* symmetry) const 
+std::string Axis::Rotate(Symmetry* symmetry) const
 {
 	return Encode(symmetry);
 }
 
-Symmetry* Axis::Rotate(std::string) const 
+Symmetry* Axis::Rotate(std::string) const
 {
 	return NULL;
 }
 
-std::string Axis::operator|(Wave* particle) const 
+std::string Axis::operator|(Wave* particle) const
 {
 	BIO_SANITIZE(particle, ,
 		return Failed());
 	return Rotate(particle->Spin());
 }
 
-Symmetry* Axis::operator()(std::string encoded) const 
+Symmetry* Axis::operator()(std::string encoded) const
 {
 	return Rotate(encoded);
 }
 
-std::string Axis::Encode(Symmetry* symmetry) const 
+std::string Axis::Encode(Symmetry* symmetry) const
 {
 	return Failed();
 }

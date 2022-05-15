@@ -30,7 +30,9 @@
 #include "bio/physical/shape/Line.h"
 
 #if BIO_CPP_VERSION >= 11
+
 	#include <type_traits>
+
 #endif
 
 namespace bio {
@@ -87,11 +89,11 @@ public:
 	/**
 	 * @param perspective
 	 */
-	explicit LinearMotif(physical::Perspective< StandardDimension >* perspective = NULL) 
+	explicit LinearMotif(physical::Perspective< StandardDimension >* perspective = NULL)
 		:
 		Elementary< LinearMotif< CONTENT_TYPE > >(GetClassProperties()),
 		chemical::Class< LinearMotif< CONTENT_TYPE > >(this),
-		m_perspective(perspective)
+		mPerspective(perspective)
 	{
 		CtorCommon();
 	}
@@ -102,16 +104,16 @@ public:
 	 * @param perspective
 	 */
 	explicit LinearMotif(
-		const Contents* contents, 
-		physical::Perspective< StandardDimension >* perspective = NULL 
+		const Contents* contents,
+		physical::Perspective< StandardDimension >* perspective = NULL
 	)
 		:
 		Elementary< LinearMotif< CONTENT_TYPE > >(GetClassProperties()),
 		chemical::Class< LinearMotif< CONTENT_TYPE > >(this),
-		m_perspective(perspective)
+		mPerspective(perspective)
 	{
 		CtorCommon();
-		this->m_contents->Import(contents);
+		this->mContents->Import(contents);
 	}
 
 	/**
@@ -123,10 +125,10 @@ public:
 		:
 		Elementary< LinearMotif< CONTENT_TYPE > >(toCopy.GetClassProperties()),
 		chemical::Class< LinearMotif< CONTENT_TYPE > >(this),
-		m_perspective(toCopy.m_perspective)
+		mPerspective(toCopy.mPerspective)
 	{
 		CtorCommon();
-		this->m_contents->Import(toCopy.GetAllImplementation());
+		this->mContents->Import(toCopy.GetAllImplementation());
 	}
 
 	/**
@@ -136,7 +138,7 @@ public:
 	 */
 	virtual ~LinearMotif()
 	{
-		this->m_contents->Clear();
+		this->mContents->Clear();
 	}
 
 	/**
@@ -144,22 +146,22 @@ public:
 	 * This Perspective will be used for Name <-> Id matching, Wave->Clone()ing, etc. <br />
 	 * See bio/physical/Perspective.h for more details. <br />
 	 */
-	physical::Perspective< StandardDimension >* m_perspective; 
+	physical::Perspective< StandardDimension >* mPerspective;
 
 	/**
-	 * @return the m_perspective used by *this.
+	 * @return the mPerspective used by *this.
 	 */
-	physical::Perspective< StandardDimension >* GetStructuralPerspective() 
+	physical::Perspective< StandardDimension >* GetStructuralPerspective()
 	{
-		return m_perspective;
+		return mPerspective;
 	}
 
 	/**
-	 * @return the m_perspective used by *this.
+	 * @return the mPerspective used by *this.
 	 */
-	const physical::Perspective< StandardDimension >* GetStructuralPerspective() const 
+	const physical::Perspective< StandardDimension >* GetStructuralPerspective() const
 	{
-		return m_perspective;
+		return mPerspective;
 	}
 
 	/**
@@ -169,7 +171,7 @@ public:
 	 */
 	virtual CONTENT_TYPE AddImplementation(CONTENT_TYPE content)
 	{
-		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(this->m_contents->Add(content))); 
+		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->mContents)->LinearAccess(this->mContents->Add(content)));
 	}
 
 	/**
@@ -198,12 +200,12 @@ public:
 		Code ret = code::Success();
 
 		SmartIterator toReplace(
-			this->m_contents,
+			this->mContents,
 			InvalidIndex());
 
 		//Remove conflicts
 		for (
-			SmartIterator cnt = this->m_contents->End();
+			SmartIterator cnt = this->mContents->End();
 			!cnt.IsAtBeginning();
 			--cnt
 			)
@@ -222,7 +224,7 @@ public:
 		BIO_SANITIZE(addition, ,
 			return code::GeneralFailure())
 
-		if (this->m_contents->IsAllocated(toReplace.GetIndex())) //i.e. GetIndex() != 0.
+		if (this->mContents->IsAllocated(toReplace.GetIndex())) //i.e. GetIndex() != 0.
 		{
 			if (transferSubContents)
 			{
@@ -233,7 +235,7 @@ public:
 				CONTENT_TYPE toReplaceCasted = toReplace.template As< CONTENT_TYPE >();
 				//addition->ImportAll(toReplaceCasted); //<- inaccessible, so we replicate the function here.
 
-				Bond* bondBuffer; 
+				Bond* bondBuffer;
 				for (
 					SmartIterator bnd = addition->AsAtom()->GetAllBonds()->End();
 					!bnd.IsAtBeginning();
@@ -251,33 +253,33 @@ public:
 					{
 						continue;
 					}
-					const physical::Wave* otherBond = toReplaceCasted->AsAtom()->GetBonded(toReplaceCasted->AsAtom()->GetBondPosition(bondBuffer->GetId())); 
+					const physical::Wave* otherBond = toReplaceCasted->AsAtom()->GetBonded(toReplaceCasted->AsAtom()->GetBondPosition(bondBuffer->GetId()));
 					Cast< AbstractMotif* >(bondBuffer->GetBonded())->ImportImplementation(otherBond); //actual work 
 				}
 			}
-			this->m_contents->Erase(toReplace);
+			this->mContents->Erase(toReplace);
 		}
 
 		switch (position)
 		{
 			case TOP:
 			{
-				this->m_contents->Insert(
+				this->mContents->Insert(
 					addition,
-					this->m_contents->GetBeginIndex());
+					this->mContents->GetBeginIndex());
 				break;
 			}
 			case BEFORE:
 			{
-				Index placement = Cast< physical::Line* >(this->m_contents)->SeekToId(optionalPositionArg); 
+				Index placement = Cast< physical::Line* >(this->mContents)->SeekToId(optionalPositionArg);
 				if (!placement)
 				{
 					return code::GeneralFailure();
 				}
-				BIO_SANITIZE(Cast< physical::Line* >(this->m_contents)->LinearAccess(placement)->GetPerspective() == addition->GetPerspective(), , 
+				BIO_SANITIZE(Cast< physical::Line* >(this->mContents)->LinearAccess(placement)->GetPerspective() == addition->GetPerspective(), ,
 					return code::GeneralFailure());
 
-				this->m_contents->Insert(
+				this->mContents->Insert(
 					addition,
 					placement
 				);
@@ -285,15 +287,15 @@ public:
 			}
 			case AFTER:
 			{
-				Index placement = Cast< physical::Line* >(this->m_contents)->SeekToId(optionalPositionArg); 
+				Index placement = Cast< physical::Line* >(this->mContents)->SeekToId(optionalPositionArg);
 				if (!placement)
 				{
 					return code::GeneralFailure();
 				}
-				BIO_SANITIZE(Cast< physical::Line* >(this->m_contents)->LinearAccess(placement)->GetPerspective() == addition->GetPerspective(), , 
+				BIO_SANITIZE(Cast< physical::Line* >(this->mContents)->LinearAccess(placement)->GetPerspective() == addition->GetPerspective(), ,
 					return code::GeneralFailure());
 
-				this->m_contents->Insert(
+				this->mContents->Insert(
 					addition,
 					++placement
 				);
@@ -301,14 +303,14 @@ public:
 			}
 			case BOTTOM:
 			{
-				this->m_contents->Insert(
+				this->mContents->Insert(
 					addition,
-					this->m_contents->GetEndIndex());
+					this->mContents->GetEndIndex());
 				break;
 			}
 			default:
 			{
-				this->m_contents->Add(addition);
+				this->mContents->Add(addition);
 				break;
 			}
 		} //switch
@@ -325,11 +327,11 @@ public:
 		StandardDimension id
 	)
 	{
-		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToId(id); 
+		Index ret = Cast< physical::Line* >(this->mContents)->SeekToId(id);
 		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
 			return NULL) //level 2 for GetOrCreate.
 
-		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret)); 
+		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->mContents)->LinearAccess(ret));
 	}
 
 	/**
@@ -341,11 +343,11 @@ public:
 		StandardDimension id
 	) const
 	{
-		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToId(id); 
+		Index ret = Cast< physical::Line* >(this->mContents)->SeekToId(id);
 		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
 			return NULL) //level 2 for GetOrCreate.
 
-		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret)); 
+		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->mContents)->LinearAccess(ret));
 	}
 
 
@@ -358,11 +360,11 @@ public:
 		Name name
 	)
 	{
-		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToName(name); 
+		Index ret = Cast< physical::Line* >(this->mContents)->SeekToName(name);
 		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
 			return NULL) //level 2 for GetOrCreate.
 
-		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret)); 
+		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->mContents)->LinearAccess(ret));
 	}
 
 	/**
@@ -374,11 +376,11 @@ public:
 		Name name
 	) const
 	{
-		Index ret = Cast< physical::Line* >(this->m_contents)->SeekToName(name); 
+		Index ret = Cast< physical::Line* >(this->mContents)->SeekToName(name);
 		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
 			return NULL) //level 2 for GetOrCreate.
 
-		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->m_contents)->LinearAccess(ret)); 
+		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->mContents)->LinearAccess(ret));
 	}
 
 	/**
@@ -447,7 +449,7 @@ public:
 	 */
 	virtual bool HasImplementation(const CONTENT_TYPE& content) const
 	{
-		return this->m_contents->Has(content);
+		return this->mContents->Has(content);
 	}
 
 	/**
@@ -455,12 +457,12 @@ public:
 	 * Clone()s each element. <br />
 	 * @param other
 	 */
-	virtual void ImportImplementation(const LinearMotif< CONTENT_TYPE >* other) 
+	virtual void ImportImplementation(const LinearMotif< CONTENT_TYPE >* other)
 	{
 		BIO_SANITIZE(other, ,
 			return);
 
-		this->m_contents->Import(other->m_contents);
+		this->mContents->Import(other->mContents);
 	}
 
 	/**
@@ -469,24 +471,24 @@ public:
 	 * @param other
 	 * @return the result of all Attenuations.
 	 */
-	virtual Code Attenuate(const physical::Wave* other) 
+	virtual Code Attenuate(const physical::Wave* other)
 	{
 		if (physical::Wave::GetResonanceBetween(
 			other,
 			ExcitationBase::GetClassProperties()).Size())
 		{
-			ForEachImplementation(ChemicalCast< ExcitationBase* >(other)); 
+			ForEachImplementation(ChemicalCast< ExcitationBase* >(other));
 			return code::Success();
 		}
 
 		Code ret = code::Success();
 		for (
-			SmartIterator cnt = this->m_contents;
+			SmartIterator cnt = this->mContents;
 			!cnt.IsAtBeginning();
 			--cnt
 			)
 		{
-			if (cnt.template As< physical::Identifiable< StandardDimension >* >()->Attenuate(other) != code::Success()) 
+			if (cnt.template As< physical::Identifiable< StandardDimension >* >()->Attenuate(other) != code::Success())
 			{
 				ret = code::UnknownError();
 			}
@@ -499,16 +501,16 @@ public:
 	 * @param other
 	 * @return the result of all Disattenuations.
 	 */
-	virtual Code Disattenuate(const physical::Wave* other) 
+	virtual Code Disattenuate(const physical::Wave* other)
 	{
 		Code ret = code::Success();
 		for (
-			SmartIterator cnt = this->m_contents;
+			SmartIterator cnt = this->mContents;
 			!cnt.IsAtBeginning();
 			--cnt
 			)
 		{
-			if (cnt.template As< physical::Identifiable< StandardDimension >* >()->Disattenuate(other) != code::Success()) 
+			if (cnt.template As< physical::Identifiable< StandardDimension >* >()->Disattenuate(other) != code::Success())
 			{
 				ret = code::UnknownError();
 			}
@@ -522,19 +524,19 @@ public:
 	 * @param excitation
 	 */
 	virtual Emission ForEachImplementation(
-		ExcitationBase* excitation 
+		ExcitationBase* excitation
 	)
 	{
 		Emission ret;
 		for (
-			SmartIterator cnt = this->m_contents;
+			SmartIterator cnt = this->mContents;
 			!cnt.IsAtBeginning();
 			--cnt
 			)
 		{
 			ByteStream result;
 			excitation->CallDown(
-				cnt.template As< physical::Identifiable< StandardDimension >* >()->AsWave(), 
+				cnt.template As< physical::Identifiable< StandardDimension >* >()->AsWave(),
 				&result
 			);
 			ret.Add(result);
@@ -553,14 +555,14 @@ public:
 
 		for (
 			SmartIterator cnt(
-				this->m_contents,
-				this->m_contents->GetBeginIndex());
+				this->mContents,
+				this->mContents->GetBeginIndex());
 			!cnt.IsAtEnd();
 			++cnt
 			)
 		{
-			ret += cnt.template As< physical::Identifiable< StandardDimension >* >()->GetName(); 
-			if (cnt.GetIndex() != this->m_contents->GetEndIndex() - 1)
+			ret += cnt.template As< physical::Identifiable< StandardDimension >* >()->GetName();
+			if (cnt.GetIndex() != this->mContents->GetEndIndex() - 1)
 			{
 				ret += separator;
 			}
@@ -575,7 +577,7 @@ public:
 	virtual void ClearImplementation()
 	{
 		//No need to delete anything, since our Linear wrapper handles that for us.
-		this->m_contents->Clear();
+		this->mContents->Clear();
 	}
 
 private:
@@ -586,18 +588,18 @@ private:
 	void CtorCommon()
 	{
 		//TODO: This needs work.
-//		#if BIO_CPP_VERSION >= 11
-//		BIO_ASSERT(std::is_base_of<Substance, CONTENT_TYPE>::value);
-//		#else
-//		CONTENT_TYPE ct;
-//		BIO_ASSERT(Cast< Substance* >(&ct) != NULL); 
-//		#endif
+		//		#if BIO_CPP_VERSION >= 11
+		//		BIO_ASSERT(std::is_base_of<Substance, CONTENT_TYPE>::value);
+		//		#else
+		//		CONTENT_TYPE ct;
+		//		BIO_ASSERT(Cast< Substance* >(&ct) != NULL);
+		//		#endif
 
-		if (this->m_contents)
+		if (this->mContents)
 		{
-			delete this->m_contents;
+			delete this->mContents;
 		}
-		this->m_contents = new physical::Line(4);
+		this->mContents = new physical::Line(4);
 	}
 
 };

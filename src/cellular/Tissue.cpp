@@ -33,10 +33,10 @@ Tissue::~Tissue()
 Code Tissue::DifferentiateCells()
 {
 	Code ret = code::Success();
-	Container* cells = GetAll< Cell* >(); 
+	Container* cells = GetAll< Cell* >();
 	BIO_SANITIZE(cells, ,
 		return code::CouldNotFindValue1())
-	Cell* cellBuffer; 
+	Cell* cellBuffer;
 	for (
 		SmartIterator cel = cells->Begin();
 		!cel.IsAtEnd();
@@ -45,17 +45,17 @@ Code Tissue::DifferentiateCells()
 	{
 		cellBuffer = cel;
 		cellBuffer->SetEnvironment(this);
-		cellBuffer->Import< genetic::Plasmid* >(this); 
+		cellBuffer->Import< genetic::Plasmid* >(this);
 		if (cellBuffer->ExpressGenes() != code::Success() && ret == code::Success())
 		{
 			ret = code::UnknownError();
 		}
 	}
 
-	Container* tissues = GetAll< Tissue* >(); 
+	Container* tissues = GetAll< Tissue* >();
 	BIO_SANITIZE(tissues, ,
 		return code::CouldNotFindValue1())
-	Tissue* tissueBuffer; 
+	Tissue* tissueBuffer;
 	for (
 		SmartIterator tis = tissues->Begin();
 		!tis.IsAtEnd();

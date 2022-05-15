@@ -10,6 +10,28 @@ As a part of eons, we follow all [eons conventions](https://eons.llc/convention/
 
 ## Style
 
+The purpose of our coding style is to make wrong code look wrong. If something seems out of place, then it probably is. We treat style as another tool to help us write better code faster.
+
+Here are some of the rules we follow:
+1. Variables follow lowerCamelCase.
+2. Variables begin with a lowercase letter.
+3. Variables will never contain underscores.
+4. [Hungarian notation](https://en.wikipedia.org/wiki/Hungarian_notation) is reserved for variables of possibly obscure scope. For example member variables (m...) and global variables (e.g. s... for static) which are not system-wide should be decorated in a way that provides the reader with a hint to where the variable came from. If a variable is not decorated it should be a part of the local scope or, in rare cases, a system-wide global variable which is not part of our code base.
+5. Functions follow UpperCamelCase.
+6. Functions begin with a capital letter.
+7. Functions never contain underscores.
+8. Functions do not currently use Hungarian notation but there is no good reason they shouldn't.
+9. Macros are ALL_CAPS_WITH_UNDERSCORES.
+10. Macros will never have a lowercase letter.
+11. Namespaces are all_lowercase_with_underscores.
+12. Namespaces will never contain a capital letter.
+13. Classes, Structs, Enums, etc. all follow UpperSnakeCase. This means a Function() and a ClassInstantiation() will look the same but both will operate the same (i.e. returning an object of the indicated type).
+
+
+A few notable implications of this:
+1. Any &UpperSnakeCase will always be the address of a function because you cannot take the address of a class.
+2. Classes:: and namespaces:: will always be visually distinct.
+
 ### Namespaces
 Biology is broken into the following namespaces:
 1. common (base) - the corollary to real-life mathematics; used everywhere.

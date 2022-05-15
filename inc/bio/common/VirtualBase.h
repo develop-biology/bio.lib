@@ -110,7 +110,7 @@ protected:
 	 * false until Initialize is called, then true forever more. <br />
 	 * This could be private but is left accessible to children in case hacks become necessary. <br />
 	 */
-	bool m_hasBeenInitialized;
+	bool mHasBeenInitialized;
 };
 
 } //bio namespace

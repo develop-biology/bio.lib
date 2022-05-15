@@ -42,7 +42,7 @@ public:                                                                        \
     /*All other operators in TransparentWrapper*/                              \
     friend ::std::ostream& operator <<(::std::ostream& out, const name& t)     \
     {                                                                          \
-        out << t.m_t;                                                          \
+        out << t.mT;                                                          \
         return out;                                                            \
     }                                                                          \
 };

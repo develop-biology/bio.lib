@@ -39,7 +39,7 @@ public:
 	 *
 	 */
 	virtual ~AbstractCached();
-	
+
 	/**
 	 * Remove whatever *this has cached and re-look up the newest value.
 	 */

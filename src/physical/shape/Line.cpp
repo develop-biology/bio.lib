@@ -32,7 +32,8 @@ Line::Line(Index expectedSize)
 
 }
 
-Line::Line(const Container* other) :
+Line::Line(const Container* other)
+	:
 	Arrangement< Linear >(other)
 {
 
@@ -53,34 +54,41 @@ const ByteStream Line::Access(const Index index) const
 	return OptimizedAccess(index).operator const Identifiable< StandardDimension >*();
 }
 
-bool Line::AreEqual(Index internal, const ByteStream external) const
+bool Line::AreEqual(
+	Index internal,
+	const ByteStream external
+) const
 {
-	BIO_SANITIZE(external.Is< Identifiable< StandardDimension >* >(),,return false) 
-	return OptimizedAccess(internal) == external.template As< const Identifiable< StandardDimension >* >(); 
+	BIO_SANITIZE(external.Is< Identifiable< StandardDimension >* >(), ,
+		return false)
+	return OptimizedAccess(internal) == external.template As< const Identifiable< StandardDimension >* >();
 }
 
-Identifiable< StandardDimension >* Line::LinearAccess(Index index) 
+Identifiable< StandardDimension >* Line::LinearAccess(Index index)
 {
 	return OptimizedAccess(index);
 }
 
-const Identifiable< StandardDimension >* Line::LinearAccess(Index index) const 
+const Identifiable< StandardDimension >* Line::LinearAccess(Index index) const
 {
 	return OptimizedAccess(index);
 }
 
 Index Line::SeekToName(Name name)
 {
-	if (!m_tempItt)
+	if (!mTempItt)
 	{
-		m_tempItt = ConstructClassIterator();
+		mTempItt = ConstructClassIterator();
 	}
-	m_tempItt->MoveTo(GetEndIndex());
-	for (; !m_tempItt->IsAtBeginning(); --m_tempItt)
+	mTempItt->MoveTo(GetEndIndex());
+	for (
+		; !mTempItt->IsAtBeginning();
+		--mTempItt
+		)
 	{
-		if (LinearAccess(m_tempItt->GetIndex())->IsName(name))
+		if (LinearAccess(mTempItt->GetIndex())->IsName(name))
 		{
-			return m_tempItt->GetIndex();
+			return mTempItt->GetIndex();
 		}
 	}
 	return InvalidIndex();
@@ -88,16 +96,19 @@ Index Line::SeekToName(Name name)
 
 Index Line::SeekToId(StandardDimension id)
 {
-	if (!m_tempItt)
+	if (!mTempItt)
 	{
-		m_tempItt = ConstructClassIterator();
+		mTempItt = ConstructClassIterator();
 	}
-	m_tempItt->MoveTo(GetEndIndex());
-	for (; !m_tempItt->IsAtBeginning(); --m_tempItt)
+	mTempItt->MoveTo(GetEndIndex());
+	for (
+		; !mTempItt->IsAtBeginning();
+		--mTempItt
+		)
 	{
-		if (LinearAccess(m_tempItt->GetIndex())->IsId(id))
+		if (LinearAccess(mTempItt->GetIndex())->IsId(id))
 		{
-			return m_tempItt->GetIndex();
+			return mTempItt->GetIndex();
 		}
 	}
 	return InvalidIndex();

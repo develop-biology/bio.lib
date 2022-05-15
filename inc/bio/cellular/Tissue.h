@@ -43,9 +43,9 @@ class Cell;
  */
 class Tissue :
 	public Class< Tissue >,
-	public chemical::LinearMotif< genetic::Plasmid* >, 
-	public chemical::LinearMotif< Cell* >, 
-	public chemical::LinearMotif< Tissue* >, 
+	public chemical::LinearMotif< genetic::Plasmid* >,
+	public chemical::LinearMotif< Cell* >,
+	public chemical::LinearMotif< Tissue* >,
 	public molecular::EnvironmentDependent< Tissue > //Not Organ.
 {
 public:

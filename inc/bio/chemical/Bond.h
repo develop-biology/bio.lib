@@ -55,7 +55,7 @@ public:
 	 */
 	Bond(
 		AtomicNumber id,
-		physical::Wave* bonded, 
+		physical::Wave* bonded,
 		BondType type = bond_type::Unknown());
 
 	/**
@@ -85,26 +85,26 @@ public:
 	 */
 	bool Form(
 		AtomicNumber id,
-		physical::Wave* bonded, 
+		physical::Wave* bonded,
 		BondType type = bond_type::Unknown());
 
 	/**
-	 * @return the m_id of *this.
+	 * @return the mId of *this.
 	 */
 	AtomicNumber GetId() const;
 
 	/**
-	 * @return the m_bonded of *this.
+	 * @return the mBonded of *this.
 	 */
-	physical::Wave* GetBonded(); 
+	physical::Wave* GetBonded();
 
 	/**
-	 * @return the m_bonded of *this.
+	 * @return the mBonded of *this.
 	 */
-	const physical::Wave* GetBonded() const; 
+	const physical::Wave* GetBonded() const;
 
 	/**
-	 * @return the m_type of *this.
+	 * @return the mType of *this.
 	 */
 	BondType GetType() const;
 
@@ -119,12 +119,12 @@ public:
 	void Break();
 
 private:
-	AtomicNumber m_id;
-	physical::Wave* m_bonded; 
-	BondType m_type;
+	AtomicNumber mId;
+	physical::Wave* mBonded;
+	BondType mType;
 };
 
-typedef  Arrangement< Bond* > Bonds;
+typedef Arrangement< Bond* > Bonds;
 
 } //chemical namespace
 } //bio namespace

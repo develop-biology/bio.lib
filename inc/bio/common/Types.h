@@ -38,7 +38,7 @@ typedef Arrangement< SmartIterator > SmartIterators;
 /**
  * Names are used in NameTracker<>s but are defined here for simplicity. <br />
  */
-typedef const char* Name; 
+typedef const char* Name;
 typedef Arrangement< Name > Names;
 
 typedef Arrangement< const char* > CharStrings;

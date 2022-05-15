@@ -34,7 +34,7 @@ namespace physical {
  * Lines contain logic for handling their CONTENT_TYPE by Id, Name, and other aspects innate to the Identifiable<StandardDimension>. The term "linear" comes from the idea that instead of a 0 dimensional pile of objects, as are Arrangements, *this can be ordered along at least 1 dimension (i.e. the StandardDimension). <br />
  *
  * Current features: <br />
- * 1. Shared: determines whether or not m_component will be deleted with *this. <br />
+ * 1. Shared: determines whether or not mComponent will be deleted with *this. <br />
  *
  * Future features: <br />
  * 1. Const: determines whether or not *this can be changed. <br />
@@ -55,12 +55,12 @@ public:
 	 * @param shared
 	 */
 	Linear(
-		Identifiable< StandardDimension >* component, 
+		Identifiable< StandardDimension >* component,
 		bool shared = false
 	);
 
 	/**
-	 * Will delete m_component iff !m_shared. <br />
+	 * Will delete mComponent iff !mShared. <br />
 	 */
 	~Linear();
 
@@ -69,7 +69,7 @@ public:
 	 * @param component
 	 * @return whether the component of *this matches the given component.
 	 */
-	bool operator==(const Identifiable< StandardDimension >* component) const; 
+	bool operator==(const Identifiable< StandardDimension >* component) const;
 
 	/**
 	 * NOTE: Comparison should be handled by Identifiable, i.e. by Id. <br />
@@ -79,38 +79,38 @@ public:
 	bool operator==(const Linear& other) const;
 
 	/**
-	 * @return m_component
+	 * @return mComponent
 	 */
 	operator Identifiable< StandardDimension >*();
 
 	/**
-	 * @return m_component
+	 * @return mComponent
 	 */
 	operator const Identifiable< StandardDimension >*() const;
 
 	/**
-	 * @return m_component
+	 * @return mComponent
 	 */
 	Identifiable< StandardDimension >& operator*();
 
 	/**
-	 * @return m_component
+	 * @return mComponent
 	 */
 	const Identifiable< StandardDimension >& operator*() const;
 
 	/**
-	 * @return m_component
+	 * @return mComponent
 	 */
-	Identifiable< StandardDimension >* operator->(); 
+	Identifiable< StandardDimension >* operator->();
 
 	/**
-	 * @return m_component
+	 * @return mComponent
 	 */
-	const Identifiable< StandardDimension >* operator->() const; 
+	const Identifiable< StandardDimension >* operator->() const;
 
 protected:
-	Identifiable< StandardDimension >* m_component; 
-	bool m_shared;
+	Identifiable< StandardDimension >* mComponent;
+	bool mShared;
 };
 
 } //physical namespace

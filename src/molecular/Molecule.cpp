@@ -36,53 +36,53 @@ Molecule::Molecule(const Molecule& toCopy)
 		toCopy.GetPerspective(),
 		toCopy.GetFilter()),
 	physical::Perspective< StandardDimension >(toCopy),
-	chemical::LinearMotif< Surface* >(toCopy) 
+	chemical::LinearMotif< Surface* >(toCopy)
 {
-	chemical::LinearMotif< Surface* >::m_perspective = this; 
+	chemical::LinearMotif< Surface* >::mPerspective = this;
 }
 
 Molecule::~Molecule()
 {
 }
 
-Surface* Molecule::RotateTo(StandardDimension surfaceId) 
+Surface* Molecule::RotateTo(StandardDimension surfaceId)
 {
-	BIO_SANITIZE_WITH_CACHE(GetById< Surface* >( 
+	BIO_SANITIZE_WITH_CACHE(GetById< Surface* >(
 		surfaceId
 	),
-		return *Cast< Surface** >(RESULT), 
+		return *Cast< Surface** >(RESULT),
 		return NULL);
 }
 
-const Surface* Molecule::RotateTo(StandardDimension surfaceId) const 
+const Surface* Molecule::RotateTo(StandardDimension surfaceId) const
 {
-	BIO_SANITIZE_WITH_CACHE(GetById< Surface* >( 
+	BIO_SANITIZE_WITH_CACHE(GetById< Surface* >(
 		surfaceId
 	),
-		return *Cast< const Surface** >(RESULT), 
+		return *Cast< const Surface** >(RESULT),
 		return NULL);
 }
 
-Surface* Molecule::RotateTo(Name surfaceName) 
+Surface* Molecule::RotateTo(Name surfaceName)
 {
-	BIO_SANITIZE_WITH_CACHE(GetByName< Surface* >( 
+	BIO_SANITIZE_WITH_CACHE(GetByName< Surface* >(
 		surfaceName
 	),
-		return *Cast< Surface** >(RESULT), 
+		return *Cast< Surface** >(RESULT),
 		return NULL);
 }
 
-const Surface* Molecule::RotateTo(Name surfaceName) const 
+const Surface* Molecule::RotateTo(Name surfaceName) const
 {
-	BIO_SANITIZE_WITH_CACHE(GetByName< Surface* >( 
+	BIO_SANITIZE_WITH_CACHE(GetByName< Surface* >(
 		surfaceName
 	),
-		return *Cast< const Surface** >(RESULT), 
+		return *Cast< const Surface** >(RESULT),
 		return NULL);
 }
 
 bool Molecule::DuplicateFrom(
-	Molecule* source, 
+	Molecule* source,
 	Name surface
 )
 {
@@ -92,18 +92,18 @@ bool Molecule::DuplicateFrom(
 	BIO_SANITIZE(!RotateTo(surface), ,
 		return false);
 
-	Surface* toTransfer = NULL; 
+	Surface* toTransfer = NULL;
 
 	BIO_SANITIZE_WITH_CACHE(source->RotateTo(surface),
 		toTransfer = RESULT,
 		return false);
 
-	Add< Surface* >(CloneAndCast< Surface* >(toTransfer))->SetEnvironment(this); 
+	Add< Surface* >(CloneAndCast< Surface* >(toTransfer))->SetEnvironment(this);
 	return true;
 }
 
 bool Molecule::TransferFrom(
-	Molecule* source, 
+	Molecule* source,
 	Name surface
 )
 {
@@ -113,77 +113,77 @@ bool Molecule::TransferFrom(
 	BIO_SANITIZE(!RotateTo(surface), ,
 		return false);
 
-	Surface* toTransfer = NULL; 
+	Surface* toTransfer = NULL;
 
 	BIO_SANITIZE_WITH_CACHE(source->RotateTo(surface),
 		toTransfer = RESULT,
 		return false);
 
-	Add< Surface* >(toTransfer)->SetEnvironment(this); 
-	source->Remove< Surface* >(toTransfer); 
+	Add< Surface* >(toTransfer)->SetEnvironment(this);
+	source->Remove< Surface* >(toTransfer);
 	return true;
 }
 
-Surface* Molecule::operator()(StandardDimension surfaceId) 
+Surface* Molecule::operator()(StandardDimension surfaceId)
 {
 	return RotateTo(surfaceId);
 }
 
-const Surface* Molecule::operator()(StandardDimension surfaceId) const 
+const Surface* Molecule::operator()(StandardDimension surfaceId) const
 {
 	return RotateTo(surfaceId);
 }
 
-Surface* Molecule::operator()(Name name) 
+Surface* Molecule::operator()(Name name)
 {
 	return RotateTo(name);
 }
 
-const Surface* Molecule::operator()(Name name) const 
+const Surface* Molecule::operator()(Name name) const
 {
 	return RotateTo(name);
 }
 
-Molecule* Molecule::operator<<(Surface* source) 
+Molecule* Molecule::operator<<(Surface* source)
 {
 	BIO_SANITIZE(source, ,
 		return this);
-	Add< Surface* >(source)->SetEnvironment(this); 
+	Add< Surface* >(source)->SetEnvironment(this);
 	return this;
 }
 
-Surface* Molecule::operator>>(Surface* target) 
+Surface* Molecule::operator>>(Surface* target)
 {
 	BIO_SANITIZE(target, ,
 		return target);
-	target->Add< Molecule* >(this); 
+	target->Add< Molecule* >(this);
 	return target;
 }
 
-Molecule* Molecule::operator<<(Molecule* source) 
+Molecule* Molecule::operator<<(Molecule* source)
 {
 	BIO_SANITIZE(source, ,
 		return this);
-	Import< Surface* >(source); 
+	Import< Surface* >(source);
 	return this;
 }
 
-Molecule* Molecule::operator>>(Molecule* target) 
+Molecule* Molecule::operator>>(Molecule* target)
 {
 	BIO_SANITIZE(target, ,
 		return target);
-	target->Import< Surface* >(this); 
-	Clear< Surface* >(); 
+	target->Import< Surface* >(this);
+	Clear< Surface* >();
 	return target;
 }
 
-physical::Symmetry* Molecule::Spin() const 
+physical::Symmetry* Molecule::Spin() const
 {
 	//TODO...
 	return NULL;
 }
 
-Code Molecule::Reify(physical::Symmetry* symmetry) 
+Code Molecule::Reify(physical::Symmetry* symmetry)
 {
 	//TODO...
 	return code::NotImplemented();

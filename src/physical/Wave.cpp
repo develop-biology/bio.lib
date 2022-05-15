@@ -33,10 +33,10 @@ Wave::Wave(
 	Symmetry* symmetry
 )
 	:
-	m_symmetry(
+	mSymmetry(
 		symmetry
 	),
-	m_signal(
+	mSignal(
 		NULL
 	)
 {
@@ -44,9 +44,9 @@ Wave::Wave(
 
 Wave::~Wave()
 {
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(m_symmetry,
-		delete m_symmetry;
-		m_symmetry = NULL,);
+	BIO_SANITIZE_AT_SAFETY_LEVEL_2(mSymmetry,
+		delete mSymmetry;
+		mSymmetry = NULL,);
 }
 
 Wave* Wave::Clone() const
@@ -58,14 +58,14 @@ Wave* Wave::Clone() const
 
 Symmetry* Wave::Spin() const
 {
-	return m_symmetry;
+	return mSymmetry;
 }
 
 Code Wave::Reify(
 	Symmetry* symmetry
 )
 {
-	(*m_symmetry) = *symmetry;
+	(*mSymmetry) = *symmetry;
 	return code::Success();
 }
 
@@ -92,18 +92,18 @@ Wave* Wave::Modulate(
 	Wave* signal
 )
 {
-	m_signal = signal;
+	mSignal = signal;
 	return this;
 }
 
 Wave* Wave::Demodulate()
 {
-	return m_signal;
+	return mSignal;
 }
 
 const Wave* Wave::Demodulate() const
 {
-	return m_signal;
+	return mSignal;
 }
 
 Wave* Wave::operator*(
@@ -156,7 +156,7 @@ Properties Wave::GetProperties() const
 	public:
 		TempWave(Properties p)
 			:
-			m_properties(p)
+			mProperties(p)
 		{
 		}
 
@@ -166,10 +166,10 @@ Properties Wave::GetProperties() const
 
 		virtual Properties GetProperties() const
 		{
-			return m_properties;
+			return mProperties;
 		}
 
-		Properties m_properties;
+		Properties mProperties;
 	};
 
 	ConstWaves waves;

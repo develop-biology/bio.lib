@@ -196,7 +196,7 @@ public:
 	 * @param id
 	 * @return the pointer to the Wave type associated with the given id else NULL.
 	 */
-	virtual const physical::Wave* GetTypeFromId(AtomicNumber id) const; 
+	virtual const physical::Wave* GetTypeFromId(AtomicNumber id) const;
 
 	/**
 	 * Associates the given Wave type with the given id. <br />
@@ -208,7 +208,7 @@ public:
 	 */
 	virtual bool AssociateType(
 		AtomicNumber id,
-		physical::Wave* type 
+		physical::Wave* type
 	);
 
 	/**

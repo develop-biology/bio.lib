@@ -101,14 +101,14 @@ public:
 	 * @param index
 	 * @return the given position casted to an Identifiable< StandardDimension >*
 	 */
-	virtual Identifiable< StandardDimension >* LinearAccess(Index index); 
+	virtual Identifiable< StandardDimension >* LinearAccess(Index index);
 
 	/**
 	 * Convenience wrapper around OptimizedAccess. <br />
 	 * @param index
 	 * @return the given position casted to an Identifiable< StandardDimension >*
 	 */
-	virtual const Identifiable< StandardDimension >* LinearAccess(Index index) const; 
+	virtual const Identifiable< StandardDimension >* LinearAccess(Index index) const;
 };
 
 } //physical namespace

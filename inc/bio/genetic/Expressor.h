@@ -40,8 +40,8 @@ class Plasmid;
 class Expressor :
 	public genetic::Class< Expressor >,
 	public chemical::UnorderedMotif< TranscriptionFactor >,
-	public chemical::LinearMotif< Plasmid* >, 
-	public chemical::LinearMotif< molecular::Protein* >, 
+	public chemical::LinearMotif< Plasmid* >,
+	public chemical::LinearMotif< molecular::Protein* >,
 	virtual public molecular::Vesicle
 {
 public:
@@ -114,24 +114,24 @@ public:
 	 * @param mRNA encoded Gene* to be expressed.
 	 * @return status of DNA::Translation + localization within *this.
 	 */
-	virtual Code Translate(const RNA* mRNA); 
+	virtual Code Translate(const RNA* mRNA);
 
 	/**
-	 * Transcribes all Genes from all Plasmids in *this, iff *this has the necessary TranscriptionFactors for each Gene, populating m_transcriptome. <br />
-	 * Then, Translates all mRNA from the m_transcriptome into Proteins. <br />
+	 * Transcribes all Genes from all Plasmids in *this, iff *this has the necessary TranscriptionFactors for each Gene, populating mTranscriptome. <br />
+	 * Then, Translates all mRNA from the mTranscriptome into Proteins. <br />
 	 * @return whether or not *this should be functional.
 	 */
 	virtual Code ExpressGenes();
 
 	/**
-	 * Adding RNA to the m_transcriptome will cause the encoded Genes to be Expressed in *this, yielding a Translated Protein. <br />
+	 * Adding RNA to the mTranscriptome will cause the encoded Genes to be Expressed in *this, yielding a Translated Protein. <br />
 	 * @param toExpress
 	 * @return Whether or not the Gene was added successfully.
 	 */
-	virtual Code AddToTranscriptome(const RNA* toExpress); 
+	virtual Code AddToTranscriptome(const RNA* toExpress);
 
 protected:
-	Transcriptome m_transcriptome;
+	Transcriptome mTranscriptome;
 };
 
 } //molecular namespace

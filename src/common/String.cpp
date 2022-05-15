@@ -26,8 +26,8 @@
 using namespace bio;
 
 bool string::ToBool(
-	const char* s, 
-	bool* returned 
+	const char* s,
+	bool* returned
 )
 {
 	*returned = s == "true";
@@ -39,8 +39,8 @@ bool string::ToBool(
 }
 
 bool string::ToInt(
-	const char* s, 
-	int32_t* value 
+	const char* s,
+	int32_t* value
 )
 {
 	if (strlen(s) == 0)
@@ -48,7 +48,7 @@ bool string::ToInt(
 		return false; //FAIL: empty string
 	}
 
-	char* endptr = NULL; 
+	char* endptr = NULL;
 	*value = strtol(
 		s,
 		&endptr,
@@ -58,8 +58,8 @@ bool string::ToInt(
 }
 
 bool string::ToUInt(
-	const char* s, 
-	uint32_t* value 
+	const char* s,
+	uint32_t* value
 )
 {
 	if (strlen(s) == 0)
@@ -67,7 +67,7 @@ bool string::ToUInt(
 		return false; //FAIL: empty string
 	}
 
-	char* endptr = NULL; 
+	char* endptr = NULL;
 	*value = strtoul(
 		s,
 		&endptr,
@@ -77,8 +77,8 @@ bool string::ToUInt(
 }
 
 bool string::ToFloat(
-	const char* s, 
-	float* value 
+	const char* s,
+	float* value
 )
 {
 	if (strlen(s) == 0)
@@ -86,7 +86,7 @@ bool string::ToFloat(
 		return false; //FAIL: empty string
 	}
 
-	char* endptr = NULL; 
+	char* endptr = NULL;
 	*value = strtof(
 		s,
 		&endptr
@@ -233,13 +233,13 @@ StdStrings string::ToStdStrings(const CharStrings& strings)
 }
 
 void string::CloneInto(
-	const char* source, 
+	const char* source,
 	const char*& target
 )
 {
 	//NOTE: because "new" is used here, a delete needs to be called either here or in the caller.
 	const size_t len = strlen(source);
-	char* tmpName = new char[len + 1]; 
+	char* tmpName = new char[len + 1];
 	strncpy(
 		tmpName,
 		source,

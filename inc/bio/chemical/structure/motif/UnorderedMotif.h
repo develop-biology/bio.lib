@@ -43,7 +43,7 @@ class UnorderedMotif :
 {
 public:
 
-	typedef  Arrangement< CONTENT_TYPE > Contents;
+	typedef Arrangement< CONTENT_TYPE > Contents;
 
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
@@ -58,27 +58,27 @@ public:
 		:
 		chemical::Class< UnorderedMotif< CONTENT_TYPE > >(this) //TODO: Define Symmetry.
 	{
-		this->m_contents = new Contents(4);
+		this->mContents = new Contents(4);
 	}
 
 	/**
 	 * @param contents
 	 */
-	UnorderedMotif(const Contents* contents) 
+	UnorderedMotif(const Contents* contents)
 		:
 		chemical::Class< UnorderedMotif< CONTENT_TYPE > >(this) //TODO: Define Symmetry.
 	{
-		this->m_contents = new Contents(*contents);
+		this->mContents = new Contents(*contents);
 	}
 
 	/**
 	 * @param toCopy
 	 */
-	UnorderedMotif(const UnorderedMotif< CONTENT_TYPE >* toCopy) 
+	UnorderedMotif(const UnorderedMotif< CONTENT_TYPE >* toCopy)
 		:
 		chemical::Class< UnorderedMotif< CONTENT_TYPE > >(this) //TODO: Define Symmetry.
 	{
-		this->m_contents = new Contents(*toCopy->m_contents);
+		this->mContents = new Contents(*toCopy->mContents);
 	}
 
 	/**
@@ -86,7 +86,7 @@ public:
 	 */
 	virtual ~UnorderedMotif()
 	{
-		//NOTE: Children are responsible for clearing m_contents (e.g. through ClearImplementation()).
+		//NOTE: Children are responsible for clearing mContents (e.g. through ClearImplementation()).
 	}
 
 	/**
@@ -94,7 +94,7 @@ public:
 	 */
 	virtual void ClearImplementation()
 	{
-		this->m_contents->Clear();
+		this->mContents->Clear();
 	}
 
 	/**
@@ -103,7 +103,7 @@ public:
 	 */
 	virtual unsigned long GetCountImplementation() const
 	{
-		return this->m_contents->GetNumberOfElements();
+		return this->mContents->GetNumberOfElements();
 	}
 
 	/**
@@ -113,7 +113,7 @@ public:
 	 */
 	virtual CONTENT_TYPE AddImplementation(const CONTENT_TYPE content)
 	{
-		CONTENT_TYPE ret = this->m_contents->Access(this->m_contents->Add(content));
+		CONTENT_TYPE ret = this->mContents->Access(this->mContents->Add(content));
 		return ret;
 	}
 
@@ -123,9 +123,9 @@ public:
 	 */
 	virtual CONTENT_TYPE RemoveImplementation(const CONTENT_TYPE content)
 	{
-		Index toErase = this->m_contents->SeekTo(content);
-		CONTENT_TYPE ret = this->m_contents->Access(toErase);
-		this->m_contents->Erase(toErase);
+		Index toErase = this->mContents->SeekTo(content);
+		CONTENT_TYPE ret = this->mContents->Access(toErase);
+		this->mContents->Erase(toErase);
 		return ret;
 	}
 
@@ -136,19 +136,19 @@ public:
 	 */
 	virtual bool HasImplementation(const CONTENT_TYPE content) const
 	{
-		return this->m_contents->Has(content);
+		return this->mContents->Has(content);
 	}
 
 	/**
 	 * Copy the contents of another container into *this. <br />
 	 * @param other
 	 */
-	virtual void ImportImplementation(const UnorderedMotif< CONTENT_TYPE >* other) 
+	virtual void ImportImplementation(const UnorderedMotif< CONTENT_TYPE >* other)
 	{
 		BIO_SANITIZE(other, ,
 			return);
 
-		this->m_contents->Import(other->GetAllImplementation());
+		this->mContents->Import(other->GetAllImplementation());
 	}
 
 	/**
@@ -156,7 +156,7 @@ public:
 	 * @param other
 	 * @return quantity overlap with other.
 	 */
-	virtual unsigned int GetNumMatchingImplementation(const Container* other) const 
+	virtual unsigned int GetNumMatchingImplementation(const Container* other) const
 	{
 		BIO_SANITIZE(other, ,
 			return 0);
@@ -181,7 +181,7 @@ public:
 	 * @param contents
 	 * @return whether or not the given contents exists in *this
 	 */
-	virtual bool HasAllImplementation(const Container* contents) const 
+	virtual bool HasAllImplementation(const Container* contents) const
 	{
 		BIO_SANITIZE(contents, ,
 			return false);
@@ -196,7 +196,7 @@ public:
 	virtual ::std::string GetStringFromImplementation(std::string separator = ", ")
 	{
 		std::string ret = "";
-		SmartIterator cnt = this->m_contents->Begin();
+		SmartIterator cnt = this->mContents->Begin();
 		while (true)
 		{
 			ret += string::From< CONTENT_TYPE >(*cnt);

@@ -29,7 +29,7 @@ void Reactant::CtorCommon(Name typeName)
 {
 	string::CloneInto(
 		typeName,
-		m_typeName
+		mTypeName
 	);
 }
 
@@ -43,8 +43,8 @@ Reactant::Reactant(Name typeName)
 
 Reactant::Reactant(
 	Name typeName,
-	const typename UnorderedMotif< Property >::Contents* properties, 
-	const typename UnorderedMotif< State >::Contents* states 
+	const typename UnorderedMotif< Property >::Contents* properties,
+	const typename UnorderedMotif< State >::Contents* states
 )
 	:
 	Class< Reactant >(this),
@@ -58,7 +58,7 @@ Reactant::Reactant(
 
 Reactant::Reactant(
 	Name typeName,
-	const Substance* substance 
+	const Substance* substance
 )
 	:
 	Class< Reactant >(this),
@@ -70,12 +70,12 @@ Reactant::Reactant(
 
 Reactant::~Reactant()
 {
-	delete[] m_typeName;
+	delete[] mTypeName;
 }
 
 bool Reactant::operator==(const Substance& other) const
 {
-	return Substance::operator==(other) && other.GetBondPosition(m_typeName) != 0;
+	return Substance::operator==(other) && other.GetBondPosition(mTypeName) != 0;
 }
 
 } //chemical namespace

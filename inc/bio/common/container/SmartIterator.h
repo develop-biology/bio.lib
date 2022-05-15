@@ -38,17 +38,17 @@ class SmartIterator
 public:
 
 	/**
-	 * Sets m_index to container->GetEndIndex(). <br />
+	 * Sets mIndex to container->GetEndIndex(). <br />
 	 * @param container
 	 */
-	SmartIterator(const Container* container); 
+	SmartIterator(const Container* container);
 
 	/**
 	 * @param container
 	 * @param index
 	 */
 	SmartIterator(
-		const Container* container, 
+		const Container* container,
 		Index index
 	);
 
@@ -72,12 +72,12 @@ public:
 	/**
 	 * @return the interface used by *this.
 	 */
-	Iterator* GetImplementation(); 
+	Iterator* GetImplementation();
 
 	/**
 	 * @return the interface used by *this.
 	 */
-	const Iterator* GetImplementation() const; 
+	const Iterator* GetImplementation() const;
 
 	/**
 	 * @return the index *this is currently at.
@@ -181,7 +181,7 @@ protected:
 	/**
 	 * Whatever. Make it mutable. I don't care. <br />
 	 */
-	mutable Iterator* m_implementation; 
+	mutable Iterator* mImplementation;
 };
 
 } //bio namespace

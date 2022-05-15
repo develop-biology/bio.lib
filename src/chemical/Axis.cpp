@@ -36,18 +36,18 @@ Axis::~Axis()
 
 }
 
-std::string Axis::Rotate(Symmetry* symmetry) const 
+std::string Axis::Rotate(Symmetry* symmetry) const
 {
 	std::string ret = "";
 	ret += Encode(symmetry);
-	Container* toRotate = symmetry->GetAll< Symmetry* >(); 
+	Container* toRotate = symmetry->GetAll< Symmetry* >();
 	for (
 		SmartIterator sym = toRotate->Begin();
 		!sym.IsAtEnd();
 		++sym
 		)
 	{
-		ret += Rotate(sym.As< Symmetry* >()); 
+		ret += Rotate(sym.As< Symmetry* >());
 	}
 
 	return ret;

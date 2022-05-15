@@ -68,7 +68,7 @@ public:
 	/**
 	 *
 	 */
-	Wave(Symmetry* symmetry = NULL); 
+	Wave(Symmetry* symmetry = NULL);
 
 	/**
 	 *
@@ -78,7 +78,7 @@ public:
 	/**
 	 * @return a copy of the most derived object of *this.
 	 */
-	virtual Wave* Clone() const; 
+	virtual Wave* Clone() const;
 
 	/**
 	 * Waves, depending on their behavior, can have different Properties. <br />
@@ -86,7 +86,7 @@ public:
 	 * The Properties returned dictate what a Wave can do and / or what can be done with one. <br />
 	 * If we treat Properties as fourier components of a waveform, we could restate GetProperties as GetPeriodicComponents. In this context, "what a wave can do" and "what can be done with a wave" can be expressed as "which systems resonate with the wave in question" or "which systems have comparable periodic components", which is true here as well: when 2 Waves have the same Properties (i.e. Resonate with each other) they can be treated the same in some regard (perhaps they are "numeric" and can be "added") and when 2 waves have comparable properties, they can interact with each other. <br />
 	 * It is up to you and other users of this framework to determine which Properties to use where. This is your space, so make use of it when you feel it's appropriate. <br />
-	 * NOTE: Waves do not actually have m_properties. This method MUST be implemented by children in order to work. If using any chemical::Class or beyond, this method will be implemented for you. See chemical/Class.h for more info. <br />
+	 * NOTE: Waves do not actually have mProperties. This method MUST be implemented by children in order to work. If using any chemical::Class or beyond, this method will be implemented for you. See chemical/Class.h for more info. <br />
 	 * @return the Properties of *this (empty vector unless overridden).
 	 */
 	virtual Properties GetProperties() const;
@@ -106,8 +106,8 @@ public:
 	 * @return the number of overlapping Properties between both waves given.
 	 */
 	static Properties GetResonanceBetween(
-		const Wave* wave1, 
-		const Wave* wave2 
+		const Wave* wave1,
+		const Wave* wave2
 	);
 
 	/**
@@ -117,7 +117,7 @@ public:
 	 * @return the number of overlapping Properties between the Wave and Properties given.
 	 */
 	static Properties GetResonanceBetween(
-		const Wave* wave, 
+		const Wave* wave,
 		const Properties& properties
 	);
 
@@ -127,38 +127,38 @@ public:
 	 *
 	 * You can visualize this by imagining a triangle that is then folded over to produce a polygon. Reflecting a triangle about 1 axis generates a rectangle, 2 a square, 3 a hexagon, 4 an octagon, and so on (sides = 3 + fibonacci sequence, starting at 0). Though, in this system, Axes do not overlap, so 1/2 of the polygon is discarded, once n >= 2. In this way, Spin() generates a triangle and you decide the shape by specifying how many Axes to Rotate the Symmetry about. <br />
 	 *
-	 * You should override Spin to update m_symmetry, then return the parent method. <br />
+	 * You should override Spin to update mSymmetry, then return the parent method. <br />
 	 * See Quantum.h for an example interface. <br />
-	 * @return m_symmetry.
+	 * @return mSymmetry.
 	 */
-	virtual Symmetry* Spin() const; 
+	virtual Symmetry* Spin() const;
 
 	/**
 	 * Reifying a Wave takes a Symmetry and realizes it by copying the values supplied into *this. <br />
-	 * Will update m_symmetry to the Symmetry provided but do nothing else. <br />
+	 * Will update mSymmetry to the Symmetry provided but do nothing else. <br />
 	 * You should override Reify to update the contents of *this from the given Symmetry. Calling the parent method after is optional. <br />
 	 * See Quantum.h for an example interface. <br />
 	 * @param symmetry
 	 */
-	virtual Code Reify(Symmetry* symmetry); 
+	virtual Code Reify(Symmetry* symmetry);
 
 	/**
 	 * This will overwrite any signal currently carried by *this. <br />
 	 * @return the signal Modulated.
 	 */
-	virtual Wave* Modulate(Wave* signal); 
+	virtual Wave* Modulate(Wave* signal);
 
 	/**
 	 * Treats *this as a carrier wave. <br />
 	 * @return the signal carried by *this.
 	 */
-	virtual Wave* Demodulate(); 
+	virtual Wave* Demodulate();
 
 	/**
 	 * Treats *this as a carrier wave. <br />
 	 * @return the signal carried by *this.
 	 */
-	virtual const Wave* Demodulate() const; 
+	virtual const Wave* Demodulate() const;
 
 	/**
 	 * Moves other through *this, taking something from it. <br />
@@ -166,7 +166,7 @@ public:
 	 * This is a nop unless implemented by children. <br />
 	 * @param other
 	 */
-	virtual Code Attenuate(const Wave* other); 
+	virtual Code Attenuate(const Wave* other);
 
 	/**
 	 * Pulls other out of *this, maybe giving something back? <br />
@@ -175,7 +175,7 @@ public:
 	 * This is a nop unless implemented by children. <br />
 	 * @param other
 	 */
-	virtual Code Disattenuate(const Wave* other); 
+	virtual Code Disattenuate(const Wave* other);
 
 	/**
 	 * For Upcasting. <br />
@@ -183,7 +183,7 @@ public:
 	 * NOTE: operator Wave*() and various perturbations fail to resolve ambiguous implicit upcasting. <br />
 	 * @return this
 	 */
-	virtual Wave* AsWave() 
+	virtual Wave* AsWave()
 	{
 		return this;
 	}
@@ -194,7 +194,7 @@ public:
 	 * NOTE: operator Wave*() and various perturbations fail to resolve ambiguous implicit upcasting. <br />
 	 * @return this
 	 */
-	virtual const Wave* AsWave() const 
+	virtual const Wave* AsWave() const
 	{
 		return this;
 	}
@@ -206,7 +206,7 @@ public:
 	 * For example: this->AsAtom()->As<Whatever>(). <br />
 	 * @return this as an Atom, if possible.
 	 */
-	virtual chemical::Atom* AsAtom() 
+	virtual chemical::Atom* AsAtom()
 	{
 		return NULL;
 	}
@@ -218,7 +218,7 @@ public:
 	 * For example: this->AsAtom()->As<Whatever>(). <br />
 	 * @return this as an Atom, if possible.
 	 */
-	virtual const chemical::Atom* AsAtom() const 
+	virtual const chemical::Atom* AsAtom() const
 	{
 		return NULL;
 	}
@@ -230,51 +230,51 @@ public:
 	 * (*myParticle) | jsonAxis("..."); <br />
 	 * @param symmetry
 	 */
-	virtual void operator|(Symmetry* symmetry); 
+	virtual void operator|(Symmetry* symmetry);
 
 	/**
 	 * Modulate operator (i.e. not "multiply") <br />
 	 * @param signal
 	 * @return Modulate(signal)
 	 */
-	virtual Wave* operator*(Wave* signal); 
+	virtual Wave* operator*(Wave* signal);
 
 	/**
 	 * Demodulate operator (i.e. not "dereference") <br />
 	 * @return Demodulate()
 	 */
-	virtual Wave* operator*(); 
+	virtual Wave* operator*();
 
 	/**
 	 * Demodulate operator (i.e. not "dereference") <br />
 	 * @return Demodulate()
 	 */
-	virtual const Wave* operator*() const; 
+	virtual const Wave* operator*() const;
 
 	/**
 	 * Makes other interfere with *this. <br />
 	 * Attenuates other. <br />
 	 * @param other
 	 */
-	virtual void operator+(const Wave* other); 
+	virtual void operator+(const Wave* other);
 
 	/**
 	 * Removes the interference of other from *this. <br />
 	 * Disattenuates other. <br />
 	 * @param other
 	 */
-	virtual void operator-(const Wave* other); 
+	virtual void operator-(const Wave* other);
 
 protected:
 	/**
 	 * We cache our Symmetry here to avoid excessive new & deletes when Spinning & Reifying *this. <br />
 	 */
-	Symmetry* m_symmetry; 
+	Symmetry* mSymmetry;
 
 	/**
 	 * for Modulation. <br />
 	 */
-	Wave* m_signal; 
+	Wave* mSignal;
 };
 
 } //physical namespace

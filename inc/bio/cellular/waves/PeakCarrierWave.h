@@ -56,7 +56,7 @@ public:
 
 protected:
 	BIO_EXCITATION_CLASS(physical::Periodic,
-		Code) m_peakExcitation;
+		Code) mPeakExcitation;
 };
 
 } //cellular namespace

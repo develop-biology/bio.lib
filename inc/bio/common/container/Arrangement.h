@@ -54,7 +54,8 @@ public:
 	 * Dereferences other then Imports all contents from other into *this. <br />
 	 * @param other
 	 */
-	Arrangement(const Container* other) :
+	Arrangement(const Container* other)
+		:
 		Container(other)
 	{
 
@@ -77,7 +78,7 @@ public:
 			return InvalidIndex())
 		TYPE toAdd = content;
 		std::memcpy(
-			&this->m_store[ret * sizeof(TYPE)],
+			&this->mStore[ret * sizeof(TYPE)],
 			&toAdd,
 			sizeof(TYPE));
 		return ret;
@@ -87,10 +88,10 @@ public:
 	{
 		BIO_SANITIZE(this->IsAllocated(index), ,
 			return NULL)
-		TYPE* ret; 
+		TYPE* ret;
 		std::memcpy(
 			ret,
-			&this->m_store[index * sizeof(TYPE)],
+			&this->mStore[index * sizeof(TYPE)],
 			sizeof(TYPE));
 		return *ret;
 	}
@@ -99,10 +100,10 @@ public:
 	{
 		BIO_SANITIZE(this->IsAllocated(index), ,
 			return NULL)
-		TYPE* ret; 
+		TYPE* ret;
 		std::memcpy(
 			ret,
-			&this->m_store[index * sizeof(TYPE)],
+			&this->mStore[index * sizeof(TYPE)],
 			sizeof(TYPE));
 		return *ret;
 	}
@@ -111,13 +112,13 @@ public:
 	{
 		BIO_SANITIZE(this->IsAllocated(index), ,
 			return false)
-		TYPE* toDelete; 
+		TYPE* toDelete;
 		std::memcpy(
 			toDelete,
-			&this->m_store[index * sizeof(TYPE)],
+			&this->mStore[index * sizeof(TYPE)],
 			sizeof(TYPE));
 		delete toDelete;
-		this->m_deallocated.push_back(index);
+		this->mDeallocated.push_back(index);
 		return true;
 	}
 

@@ -65,13 +65,13 @@ public:
 	/**
 	 * @param perspective
 	 */
-	explicit Identifiable(Perspective< DIMENSION >* perspective = NULL) 
+	explicit Identifiable(Perspective< DIMENSION >* perspective = NULL)
 		:
 		physical::Class< Identifiable< DIMENSION > >(this),
 		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-		m_name(NULL),
+		mName(NULL),
 		#endif
-		m_id(Perspective< DIMENSION >::InvalidId())
+		mId(Perspective< DIMENSION >::InvalidId())
 	{
 		CloneIntoName(Perspective< DIMENSION >::InvalidName());
 		if (perspective)
@@ -86,25 +86,25 @@ public:
 	 */
 	explicit Identifiable(
 		Name name,
-		Perspective< DIMENSION >* perspective = NULL 
+		Perspective< DIMENSION >* perspective = NULL
 	)
 		:
 		physical::Class< Identifiable< DIMENSION > >(this),
 		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-		m_name(NULL),
+		mName(NULL),
 		#endif
-		m_id(Perspective< DIMENSION >::InvalidId())
+		mId(Perspective< DIMENSION >::InvalidId())
 	{
 		CloneIntoName(name);
 		if (perspective)
 		{
 			Observer< Perspective< DIMENSION > >::Initialize(perspective);
-			m_id = this->GetPerspective()->GetIdFromName(m_name);
+			mId = this->GetPerspective()->GetIdFromName(mName);
 			this->MakeWave();
 		}
 		else
 		{
-			m_id = Perspective< DIMENSION >::InvalidId();
+			mId = Perspective< DIMENSION >::InvalidId();
 		}
 	}
 
@@ -114,14 +114,14 @@ public:
 	 */
 	explicit Identifiable(
 		Id id,
-		Perspective< DIMENSION >* perspective = NULL 
+		Perspective< DIMENSION >* perspective = NULL
 	)
 		:
 		physical::Class< Identifiable< DIMENSION > >(this),
 		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-		m_name(NULL),
+		mName(NULL),
 		#endif
-		m_id(Perspective< DIMENSION >::InvalidId())
+		mId(Perspective< DIMENSION >::InvalidId())
 	{
 		if (perspective)
 		{
@@ -131,7 +131,7 @@ public:
 		}
 		else
 		{
-			m_id = Perspective< DIMENSION >::InvalidId();
+			mId = Perspective< DIMENSION >::InvalidId();
 			CloneIntoName(Perspective< DIMENSION >::InvalidName());
 		}
 	}
@@ -143,9 +143,9 @@ public:
 		:
 		physical::Class< Identifiable< DIMENSION > >(this),
 		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-		m_name(NULL),
+		mName(NULL),
 		#endif
-		m_id(other.m_id)
+		mId(other.mId)
 	{
 		Observer< Perspective< DIMENSION > >::Initialize(other.GetPerspective());
 		CloneIntoName(other.GetName());
@@ -157,7 +157,7 @@ public:
 	virtual ~Identifiable()
 	{
 		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-		delete[] m_name;
+		delete[] mName;
 		#endif
 	}
 
@@ -166,7 +166,7 @@ public:
 	 */
 	virtual operator DIMENSION() const
 	{
-		return m_id;
+		return mId;
 	}
 
 	/**
@@ -179,7 +179,7 @@ public:
 		{
 			return false;
 		}
-		if (!this->GetId() == id.m_t)
+		if (!this->GetId() == id.mT)
 		{
 			return false;
 		}
@@ -231,9 +231,9 @@ public:
 	virtual Name GetName() const
 	{
 		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-		return m_name;
+		return mName;
 		#else
-		return BIO_SANITIZE_WITH_CACHE(this->GetPerspective(), RESULT->GetNameFromId(m_id), return "INVALID_NAME");
+		return BIO_SANITIZE_WITH_CACHE(this->GetPerspective(), RESULT->GetNameFromId(mId), return "INVALID_NAME");
 		#endif
 	}
 
@@ -242,7 +242,7 @@ public:
 	 */
 	virtual Id GetId() const
 	{
-		return m_id;
+		return mId;
 	}
 
 	/**
@@ -260,7 +260,7 @@ public:
 		}
 		CloneIntoName(name);
 
-		m_id = this->GetPerspective()->GetIdFromName(m_name);
+		mId = this->GetPerspective()->GetIdFromName(mName);
 	}
 
 	/**
@@ -274,9 +274,9 @@ public:
 		{
 			return;
 		}
-		m_id = id;
+		mId = id;
 
-		CloneIntoName(this->GetPerspective()->GetNameFromId(m_id));
+		CloneIntoName(this->GetPerspective()->GetNameFromId(mId));
 	}
 
 	/**
@@ -309,24 +309,24 @@ public:
 	 */
 	virtual bool IsId(Id id) const
 	{
-		return id == m_id;
+		return id == mId;
 	}
 
 	/**
 	 * Sets the perspective for *this. <br />
 	 * @param perspective
 	 */
-	virtual void SetPerspective(Perspective< DIMENSION >* perspective) 
+	virtual void SetPerspective(Perspective< DIMENSION >* perspective)
 	{
 		this->SetPerspective(perspective);
 
 		if (IsName(Perspective< DIMENSION >::InvalidName()) && !IsId(Perspective< DIMENSION >::InvalidId()))
 		{
-			CloneIntoName(this->GetPerspective()->GetNameFromId(m_id));
+			CloneIntoName(this->GetPerspective()->GetNameFromId(mId));
 		}
 		else if (!IsName(Perspective< DIMENSION >::InvalidName()) && IsId(Perspective< DIMENSION >::InvalidId()))
 		{
-			m_id = this->GetPerspective()->GetIdFromName(GetName());
+			mId = this->GetPerspective()->GetIdFromName(GetName());
 		}
 	}
 
@@ -342,10 +342,10 @@ public:
 		}
 		if (force)
 		{
-			this->GetPerspective()->DisassociateType(m_id);
+			this->GetPerspective()->DisassociateType(mId);
 		}
 		this->GetPerspective()->AssociateType(
-			m_id,
+			mId,
 			this
 		);
 	}
@@ -384,7 +384,7 @@ protected:
 	{
 		if (args.Size() == 2)
 		{
-			if (args[1].Is< Perspective< DIMENSION >* >()) 
+			if (args[1].Is< Perspective< DIMENSION >* >())
 			{
 				Observer< Perspective< DIMENSION > >::Initialize(args[1]);
 			}
@@ -392,11 +392,11 @@ protected:
 		}
 		if (args.Size() == 1)
 		{
-			if (args[0].Is(m_id))
+			if (args[0].Is(mId))
 			{
-				m_id = args[0];
+				mId = args[0];
 			}
-			else if (args[0].Is(m_name))
+			else if (args[0].Is(mName))
 			{
 				CloneIntoName(args[0]);
 			}
@@ -405,21 +405,21 @@ protected:
 
 private:
 	#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-	Name m_name;
+	Name mName;
 	#endif
 
-	Id m_id;
+	Id mId;
 
 	void CloneIntoName(Name name)
 	{
 		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-		if (m_name)
+		if (mName)
 		{
-			delete[] m_name;
+			delete[] mName;
 		}
 		string::CloneInto(
 			name,
-			m_name
+			mName
 		);
 		#endif
 	}

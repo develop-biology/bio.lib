@@ -29,7 +29,7 @@ namespace molecular {
 
 Surface::Surface(
 	Name name,
-	Molecule* environment 
+	Molecule* environment
 )
 	:
 	molecular::Class< Surface >(
@@ -51,12 +51,12 @@ Surface::Surface(const Surface& toCopy)
 		toCopy.GetPerspective(),
 		toCopy.GetFilter(),
 		symmetry_type::Variable()),
-	chemical::LinearMotif< Molecule* >(toCopy), 
+	chemical::LinearMotif< Molecule* >(toCopy),
 	EnvironmentDependent< Molecule >(toCopy)
 {
-	chemical::Bond* bondBuffer; 
+	chemical::Bond* bondBuffer;
 	for (
-		SmartIterator bnd = toCopy.m_bonds.End();
+		SmartIterator bnd = toCopy.mBonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
@@ -75,9 +75,9 @@ Surface::Surface(const Surface& toCopy)
 
 Surface::~Surface()
 {
-	chemical::Bond* bondBuffer; 
+	chemical::Bond* bondBuffer;
 	for (
-		SmartIterator bnd = m_bonds.End();
+		SmartIterator bnd = mBonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
@@ -92,39 +92,39 @@ Surface::~Surface()
 	}
 }
 
-void Surface::SetEnvironment(Molecule* environment) 
+void Surface::SetEnvironment(Molecule* environment)
 {
-	m_environment = environment;
+	mEnvironment = environment;
 	SetId(0); //0 should always be invalid.
 	Identifiable< StandardDimension >::SetPerspective(environment);
 }
 
-void Surface::SetPerspective(Molecule* perspective) 
+void Surface::SetPerspective(Molecule* perspective)
 {
 	SetEnvironment(perspective);
 }
 
-Code Surface::Reify(physical::Symmetry* symmetry) 
+Code Surface::Reify(physical::Symmetry* symmetry)
 {
 	//TODO...
 	return code::NotImplemented();
 }
 
-physical::Symmetry* Surface::Spin() const 
+physical::Symmetry* Surface::Spin() const
 {
 	//TODO...
 	return NULL;
 }
 
-physical::Wave* Surface::Release( 
-	physical::Wave* toRelease, 
+physical::Wave* Surface::Release(
+	physical::Wave* toRelease,
 	BondType bondType
 )
 {
-	physical::Wave* ret = NULL; 
-	chemical::Bond* bondBuffer; 
+	physical::Wave* ret = NULL;
+	chemical::Bond* bondBuffer;
 	for (
-		SmartIterator bnd = m_bonds.End();
+		SmartIterator bnd = mBonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
@@ -132,7 +132,7 @@ physical::Wave* Surface::Release(
 		bondBuffer = bnd;
 		if (bondBuffer->GetType() == bondType)
 		{
-			ret = ChemicalCast< physical::Wave* >(bondBuffer->GetBonded()); 
+			ret = ChemicalCast< physical::Wave* >(bondBuffer->GetBonded());
 			BIO_SANITIZE_AT_SAFETY_LEVEL_2(!ret || ret != toRelease,
 				continue,);
 			bondBuffer->Break();
@@ -142,16 +142,16 @@ physical::Wave* Surface::Release(
 	return ret;
 }
 
-chemical::Substance* Surface::Release( 
+chemical::Substance* Surface::Release(
 	Name toRelease,
-	physical::Perspective<StandardDimension>* perspective, 
+	physical::Perspective< StandardDimension >* perspective,
 	BondType bondType
 )
 {
-	chemical::Substance* ret = NULL; 
-	chemical::Bond* bondBuffer; 
+	chemical::Substance* ret = NULL;
+	chemical::Bond* bondBuffer;
 	for (
-		SmartIterator bnd = m_bonds.End();
+		SmartIterator bnd = mBonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
@@ -159,7 +159,7 @@ chemical::Substance* Surface::Release(
 		bondBuffer = bnd;
 		if (bondBuffer->GetType() == bondType)
 		{
-			ret = ChemicalCast< chemical::Substance* >(bondBuffer->GetBonded()); 
+			ret = ChemicalCast< chemical::Substance* >(bondBuffer->GetBonded());
 			BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
 				continue);
 			BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret->IsName(toRelease), ,
@@ -173,16 +173,16 @@ chemical::Substance* Surface::Release(
 	return ret;
 }
 
-chemical::Substance* Surface::Release( 
+chemical::Substance* Surface::Release(
 	StandardDimension toRelease,
-	physical::Perspective<StandardDimension>* perspective, 
+	physical::Perspective< StandardDimension >* perspective,
 	BondType bondType
 )
 {
-	chemical::Substance* ret = NULL; 
-	chemical::Bond* bondBuffer; 
+	chemical::Substance* ret = NULL;
+	chemical::Bond* bondBuffer;
 	for (
-		SmartIterator bnd = m_bonds.End();
+		SmartIterator bnd = mBonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
@@ -190,7 +190,7 @@ chemical::Substance* Surface::Release(
 		bondBuffer = bnd;
 		if (bondBuffer->GetType() == bondType)
 		{
-			ret = ChemicalCast< chemical::Substance* >(bondBuffer->GetBonded()); 
+			ret = ChemicalCast< chemical::Substance* >(bondBuffer->GetBonded());
 			BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
 				continue);
 			BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret->IsId(toRelease), ,
@@ -207,9 +207,9 @@ chemical::Substance* Surface::Release(
 physical::Waves Surface::ReleaseAll(BondType bondType)
 {
 	physical::Waves ret;
-	chemical::Bond* bondBuffer; 
+	chemical::Bond* bondBuffer;
 	for (
-		SmartIterator bnd = m_bonds.End();
+		SmartIterator bnd = mBonds.End();
 		!bnd.IsAtBeginning();
 		--bnd
 		)
@@ -217,24 +217,24 @@ physical::Waves Surface::ReleaseAll(BondType bondType)
 		bondBuffer = bnd;
 		if (bondBuffer->GetType() == bondType)
 		{
-			ret.Add(ChemicalCast< physical::Wave* >(bondBuffer->GetBonded())); 
+			ret.Add(ChemicalCast< physical::Wave* >(bondBuffer->GetBonded()));
 			bondBuffer->Break();
 		}
 	}
 	return ret;
 }
 
-physical::Wave* Surface::operator-=(physical::Wave* toRelease) 
+physical::Wave* Surface::operator-=(physical::Wave* toRelease)
 {
 	return Release(toRelease);
 }
 
-chemical::Substance* Surface::operator-=(Name toRelease) 
+chemical::Substance* Surface::operator-=(Name toRelease)
 {
 	return Release(toRelease);
 }
 
-chemical::Substance* Surface::operator-=(StandardDimension toRelease) 
+chemical::Substance* Surface::operator-=(StandardDimension toRelease)
 {
 	return Release(toRelease);
 }

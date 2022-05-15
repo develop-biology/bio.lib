@@ -40,8 +40,8 @@ namespace string {
  * @return true on success, false if s is not an integer
  */
 bool ToBool(
-	const char* s, 
-	bool* returned 
+	const char* s,
+	bool* returned
 );
 
 /**
@@ -51,8 +51,8 @@ bool ToBool(
  * @return true on success, false if s is not an integer
  */
 bool ToInt(
-	const char* s, 
-	int32_t* returned 
+	const char* s,
+	int32_t* returned
 );
 
 /**
@@ -62,8 +62,8 @@ bool ToInt(
  * @return true on success, false if s is not an unsigned integer
  */
 bool ToUInt(
-	const char* s, 
-	uint32_t* returned 
+	const char* s,
+	uint32_t* returned
 );
 
 /**
@@ -73,8 +73,8 @@ bool ToUInt(
  * @return true on success, false if s is not a float.
  */
 bool ToFloat(
-	const char* s, 
-	float* returned 
+	const char* s,
+	float* returned
 );
 
 /**
@@ -151,7 +151,7 @@ StdStrings ToStdStrings(const CharStrings& strings);
  * @param target
  */
 void CloneInto(
-	const char* source, 
+	const char* source,
 	const char*& target
 );
 
@@ -160,7 +160,7 @@ void CloneInto(
  */
 struct Echelon
 {
-	const char* string; 
+	const char* string;
 	unsigned int echelon;
 };
 typedef Arrangement< Echelon > Echelons;

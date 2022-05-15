@@ -66,7 +66,7 @@ public:
 	void Log(
 		Filter filter,
 		LogLevel level,
-		const char* format, 
+		const char* format,
 		va_list args
 	);
 
@@ -81,7 +81,7 @@ public:
 	void Log(
 		Filter filter,
 		LogLevel level,
-		const char* format, 
+		const char* format,
 		...
 	);
 
@@ -128,7 +128,7 @@ protected:
 	 * This should not need to be accessed from children, as it is passed to Output but is here for convenience. <br />
 	 * TODO: see if there is a faster data type for logging. <br />
 	 */
-	std::ostringstream m_logMessage;
+	std::ostringstream mLogMessage;
 
 private:
 	/**
@@ -136,7 +136,7 @@ private:
 	 * Only log if level is >= value loaded in this vector <br />
 	 * the index in the vector is the Filter <br />
 	 */
-	std::vector< LogLevel > m_levelFilter;
+	std::vector< LogLevel > mLevelFilter;
 };
 } //log namespace
 } //bio namespace

@@ -115,7 +115,7 @@ const TO ForceCast(const FROM& toCast)
 template < typename TO_FINAL, typename TO_1, typename FROM >
 TO_FINAL DoubleForceCast(
 	FROM& toCast,
-	TO_1* autoTo 
+	TO_1* autoTo
 )
 {
 	return (TO_FINAL)(TO_1)(void*)(toCast);

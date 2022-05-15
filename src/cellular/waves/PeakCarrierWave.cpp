@@ -27,9 +27,9 @@ namespace cellular {
 
 PeakCarrierWave::PeakCarrierWave()
 	:
-	m_peakExcitation(&physical::Periodic::Peak)
+	mPeakExcitation(&physical::Periodic::Peak)
 {
-	Modulate(m_peakExcitation);
+	Modulate(mPeakExcitation);
 }
 
 PeakCarrierWave::~PeakCarrierWave()

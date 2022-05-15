@@ -33,7 +33,7 @@ Localization::Localization(
 )
 	:
 	physical::Class< Localization >(this),
-	m_name(NULL),
+	mName(NULL),
 	mc_method(NULL)
 {
 	SetNameOfSite(name);
@@ -42,10 +42,10 @@ Localization::Localization(
 
 Localization::~Localization()
 {
-	if (m_name)
+	if (mName)
 	{
-		delete[] m_name;
-		m_name = NULL;
+		delete[] mName;
+		mName = NULL;
 	}
 	if (mc_method)
 	{
@@ -54,13 +54,13 @@ Localization::~Localization()
 	}
 }
 
-chemical::Substance* Localization::ResolvePrevious(chemical::Substance* seekIn) const 
+chemical::Substance* Localization::ResolvePrevious(chemical::Substance* seekIn) const
 {
 	BIO_SANITIZE(seekIn, ,
 		return seekIn);
 
 	//TODO: What if *this has been Modulated with something other than a Localization?
-	Localization* previous = ForceCast< Localization* >(Demodulate()); 
+	Localization* previous = ForceCast< Localization* >(Demodulate());
 
 	if (previous)
 	{
@@ -69,22 +69,22 @@ chemical::Substance* Localization::ResolvePrevious(chemical::Substance* seekIn) 
 	return seekIn;
 }
 
-chemical::Substance* Localization::Seek(chemical::Substance* seekIn) const 
+chemical::Substance* Localization::Seek(chemical::Substance* seekIn) const
 {
 	seekIn = ResolvePrevious(seekIn);
 
 	BIO_SANITIZE(seekIn, ,
 		return seekIn);
 
-	if (m_site == LocalizationSitePerspective::InvalidId())
+	if (mSite == LocalizationSitePerspective::InvalidId())
 	{
 		return seekIn;
 	}
 
 	BIO_SANITIZE(mc_method, ,
 		return NULL)
-	ByteStream newName(m_name);
-	(const_cast< chemical::ExcitationBase* >(mc_method))->EditArg( 
+	ByteStream newName(mName);
+	(const_cast< chemical::ExcitationBase* >(mc_method))->EditArg(
 		0,
 		newName
 	);
@@ -93,7 +93,7 @@ chemical::Substance* Localization::Seek(chemical::Substance* seekIn) const
 		seekIn->AsWave(),
 		result
 	);
-	chemical::Substance* extract = ChemicalCast< chemical::Substance* >(Cast< physical::Wave* >(result.IKnowWhatImDoing())); //This is about as safe as we can get right now. 
+	chemical::Substance* extract = ChemicalCast< chemical::Substance* >(Cast< physical::Wave* >(result.DirectAccess())); //This is about as safe as we can get right now. 
 	BIO_SANITIZE(extract, ,
 		return NULL)
 	return extract;
@@ -101,34 +101,34 @@ chemical::Substance* Localization::Seek(chemical::Substance* seekIn) const
 
 void Localization::SetNameOfSite(Name name)
 {
-	if (m_name)
+	if (mName)
 	{
-		delete[] m_name;
+		delete[] mName;
 	}
 	string::CloneInto(
 		name,
-		m_name
+		mName
 	);
 }
 
 Name Localization::GetNameOfSite() const
 {
-	return m_name;
+	return mName;
 }
 
 void Localization::SetSite(Site site)
 {
-	m_site = site;
+	mSite = site;
 	if (mc_method)
 	{
 		delete mc_method;
 	}
-	mc_method = LocalizationSitePerspective::Instance().GetNewObjectFromIdAs< chemical::ExcitationBase* >(m_site); 
+	mc_method = LocalizationSitePerspective::Instance().GetNewObjectFromIdAs< chemical::ExcitationBase* >(mSite);
 }
 
 Site Localization::GetSite() const
 {
-	return m_site;
+	return mSite;
 }
 
 } //genetic namespace

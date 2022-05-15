@@ -49,8 +49,8 @@ class OrganSystem;
  */
 class Organ :
 	public Class< Organ >,
-	public chemical::LinearMotif< genetic::Plasmid* >, 
-	public chemical::LinearMotif< Tissue* >, 
+	public chemical::LinearMotif< genetic::Plasmid* >,
+	public chemical::LinearMotif< Tissue* >,
 	public molecular::EnvironmentDependent< OrganSystem >
 {
 public:

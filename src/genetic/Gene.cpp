@@ -32,7 +32,7 @@ Gene::~Gene()
 
 void Gene::CtorCommon()
 {
-	m_insertion.InsertThis(ChemicalCast< chemical::Substance* >(GetProtein())); 
+	mInsertion.InsertThis(ChemicalCast< chemical::Substance* >(GetProtein()));
 }
 
 } //namespace genetic

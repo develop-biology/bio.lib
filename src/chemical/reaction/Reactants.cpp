@@ -41,7 +41,7 @@ Reactants::Reactants(Substances& substances)
 		++sub
 		)
 	{
-		Add< Substance* >(*sub); 
+		Add< Substance* >(*sub);
 	}
 }
 

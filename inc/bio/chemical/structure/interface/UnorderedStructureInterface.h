@@ -64,7 +64,7 @@ public:
 	{
 		T ret = 0;
 		LockThread();
-		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >(); 
+		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
 		if (implementer)
 		{
 			ret = implementer->AddImplementation(t);
@@ -85,7 +85,7 @@ public:
 	{
 		T ret = 0;
 		LockThread();
-		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >(); 
+		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
 		if (implementer)
 		{
 			ret = implementer->RemoveImplementation(t);
@@ -102,10 +102,10 @@ public:
 	 * @param other
 	 */
 	template < typename T >
-	void Import(const UnorderedMotif <T>* other) 
+	void Import(const UnorderedMotif< T >* other)
 	{
 		LockThread();
-		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >(); 
+		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
 		if (implementer)
 		{
 			implementer->ImportImplementation(other);
@@ -139,15 +139,15 @@ public:
 	 * This method side-steps the typical inheritance encapsulation in order to prevent child classes from having to override this method and account for each new UnorderedMotif they add. In other words, complexity here removes repeated code downstream. <br />
 	 * @param other
 	 */
-	Code ImportAll(const physical::Wave* other) 
+	Code ImportAll(const physical::Wave* other)
 	{
 		BIO_SANITIZE(other && other->AsAtom(), ,
 			return code::BadArgument1())
 
 		Code ret = code::Success();
 
-		LockThread(); // in case m_bonds changes.
-		Bond* bondBuffer; 
+		LockThread(); // in case mBonds changes.
+		Bond* bondBuffer;
 		for (
 			SmartIterator bnd = other->AsAtom()->GetAllBonds()->End();
 			!bnd.IsAtBeginning();
@@ -165,7 +165,7 @@ public:
 			{
 				continue;
 			}
-			const physical::Wave* otherBond = other->AsAtom()->GetBonded(other->AsAtom()->GetBondPosition(bondBuffer->GetId())); 
+			const physical::Wave* otherBond = other->AsAtom()->GetBonded(other->AsAtom()->GetBondPosition(bondBuffer->GetId()));
 			(Cast< AbstractMotif* >(bondBuffer->GetBonded()))->ImportImplementation(otherBond); //actual work 
 		}
 		UnlockThread();
@@ -183,7 +183,7 @@ public:
 	{
 		unsigned long ret = 0;
 		LockThread();
-		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >(); 
+		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
 		if (implementer)
 		{
 			ret = implementer->GetCountImplementation();
@@ -199,11 +199,11 @@ public:
 	 * @return A pointer to all contents in *this; 0 if T is invalid.
 	 */
 	template < typename T >
-	Container* GetAll() 
+	Container* GetAll()
 	{
-		Container* ret = 0; 
+		Container* ret = 0;
 		LockThread();
-		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >(); 
+		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
 		if (implementer)
 		{
 			ret = implementer->GetAllImplementation();
@@ -219,11 +219,11 @@ public:
 	 * @return A pointer to all contents in *this; 0 if T is invalid.
 	 */
 	template < typename T >
-	const Container* GetAll() const 
+	const Container* GetAll() const
 	{
-		Container* ret = 0; 
+		Container* ret = 0;
 		LockThread();
-		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >(); 
+		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
 		if (implementer)
 		{
 			ret = implementer->GetAllImplementation();
@@ -244,7 +244,7 @@ public:
 	{
 		bool ret = false;
 		LockThread();
-		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >(); 
+		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
 		if (implementer)
 		{
 			ret = implementer->HasImplementation(content);
@@ -259,11 +259,11 @@ public:
 	 * @return quantity overlap with other; 0 if T is invalid.
 	 */
 	template < typename T >
-	unsigned int GetNumMatching(const Container* other) const 
+	unsigned int GetNumMatching(const Container* other) const
 	{
 		unsigned int ret = 0;
 		LockThread();
-		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >(); 
+		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
 		if (implementer)
 		{
 			ret = implementer->GetNumMatchingImplementation(other);
@@ -279,11 +279,11 @@ public:
 	 * @return whether or not the given contents exists in *this
 	 */
 	template < typename T >
-	bool HasAll(const Container* contents) const 
+	bool HasAll(const Container* contents) const
 	{
 		bool ret = false;
 		LockThread();
-		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >(); 
+		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
 		if (implementer)
 		{
 			ret = implementer->HasAllImplementation(contents);
@@ -302,7 +302,7 @@ public:
 	void Clear()
 	{
 		LockThread();
-		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >(); 
+		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
 		if (implementer)
 		{
 			implementer->ClearImplementation();
@@ -320,7 +320,7 @@ public:
 	{
 		std::string ret = "";
 		LockThread();
-		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >(); 
+		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
 		if (implementer)
 		{
 			ret = implementer->GetStringFromImplementation(separator);
@@ -349,7 +349,8 @@ public:
 	template < typename T >
 	const ::std::vector< T > GetAllAsVector() const
 	{
-		return this->template GetAll< T >()->template AsVector< T >();
+		return this->template GetAll< T >()->
+			template AsVector< T >();
 	}
 };
 

@@ -37,7 +37,7 @@ class Element :
 public:
 	Element()
 		:
-		m_type(NULL)
+		mType(NULL)
 	{
 	}
 
@@ -49,7 +49,7 @@ public:
 	 * Optional type association. 
 	 * This can be used for casting, etc. 
 	 */
-	physical::Wave* m_type; 
+	physical::Wave* mType;
 };
 
 PeriodicTableImplementation::PeriodicTableImplementation()
@@ -65,7 +65,7 @@ PeriodicTableImplementation::~PeriodicTableImplementation()
 const Properties PeriodicTableImplementation::GetPropertiesOf(AtomicNumber id) const
 {
 	Properties ret;
-	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id)); 
+	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id));
 	BIO_SANITIZE(element, ,
 		return ret);
 	LockThread();
@@ -114,11 +114,11 @@ AtomicNumber PeriodicTableImplementation::RecordPropertiesOf(
 
 	Hadit* hadit = hdt;
 	LockThread();
-	Element* element = ForceCast< Element* >(hadit->m_type);
+	Element* element = ForceCast< Element* >(hadit->mType);
 	if (!element)
 	{
 		element = new Element();
-		hadit->m_type = element->AsWave();
+		hadit->mType = element->AsWave();
 	}
 	element->Import< Property >(properties);
 	UnlockThread();
@@ -136,35 +136,35 @@ AtomicNumber PeriodicTableImplementation::RecordPropertiesOf(
 	);
 }
 
-const physical::Wave* PeriodicTableImplementation::GetTypeFromId(AtomicNumber id) const 
+const physical::Wave* PeriodicTableImplementation::GetTypeFromId(AtomicNumber id) const
 {
-	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id)); 
+	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id));
 	BIO_SANITIZE(element, ,
 		return NULL);
-	return element->m_type;
+	return element->mType;
 }
 
 bool PeriodicTableImplementation::AssociateType(
 	AtomicNumber id,
-	physical::Wave* type 
+	physical::Wave* type
 )
 {
-	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id)); 
+	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id));
 	BIO_SANITIZE(element, ,
 		return false);
 	LockThread();
-	element->m_type = type;
+	element->mType = type;
 	UnlockThread();
 	return true;
 }
 
 bool PeriodicTableImplementation::DisassociateType(AtomicNumber id)
 {
-	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id)); 
+	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id));
 	BIO_SANITIZE(element, ,
 		return false);
 	LockThread();
-	element->m_type = NULL;
+	element->mType = NULL;
 	UnlockThread();
 	return true;
 }

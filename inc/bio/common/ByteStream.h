@@ -54,8 +54,9 @@ public:
 	ByteStream();
 
 	template < typename T >
-	ByteStream(T in) :
-		m_holding(false)
+	ByteStream(T in)
+		:
+		mHolding(false)
 	{
 		Set(in);
 	}
@@ -91,7 +92,7 @@ public:
 	T As()
 	{
 		BIO_ASSERT(Is< T >());
-		return *(T*)m_stream;
+		return *(T*)mStream;
 	}
 
 	/**
@@ -103,7 +104,7 @@ public:
 	const T As() const
 	{
 		BIO_ASSERT(Is< T >());
-		return *(T*)m_stream;
+		return *(T*)mStream;
 	}
 
 	/**
@@ -139,13 +140,13 @@ public:
 	void Set(T in)
 	{
 		Release();
-		m_stream = ::std::malloc(sizeof(T));
+		mStream = ::std::malloc(sizeof(T));
 		std::memcpy(
-			m_stream,
+			mStream,
 			&in,
 			sizeof(T));
-		m_size = sizeof(T);
-		m_typeName = TypeName< T >();
+		mSize = sizeof(T);
+		mTypeName = TypeName< T >();
 	}
 
 	/**
@@ -175,7 +176,7 @@ public:
 	template < typename T >
 	bool Is() const
 	{
-		return sizeof(T) == m_size && TypeName< T >() == m_typeName;
+		return sizeof(T) == mSize && TypeName< T >() == mTypeName;
 	}
 
 	/**
@@ -205,12 +206,12 @@ public:
 	 * Please don't use this. <br />
 	 * @return the data in *this
 	 */
-	void* IKnowWhatImDoing(); 
+	void* DirectAccess();
 
 protected:
-	mutable void* m_stream;
-	std::string m_typeName;
-	std::size_t m_size;
-	bool m_holding;
+	mutable void* mStream;
+	std::string mTypeName;
+	std::size_t mSize;
+	bool mHolding;
 };
 } //bio namespace

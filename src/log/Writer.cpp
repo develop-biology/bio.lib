@@ -32,19 +32,19 @@ Writer::Writer()
 	:
 	physical::Class< Writer >(this),
 	physical::Filterable(filter::Default()),
-	m_logEngine(NULL)
+	mLogEngine(NULL)
 {
 
 }
 
 Writer::Writer(
-	Engine* logEngine, 
+	Engine* logEngine,
 	Filter filter
 )
 	:
 	physical::Class< Writer >(this),
 	physical::Filterable(filter::Default()),
-	m_logEngine(logEngine)
+	mLogEngine(logEngine)
 {
 
 }
@@ -54,39 +54,39 @@ Writer::~Writer()
 
 }
 
-void Writer::SetLogEngine(Engine* logEngine) 
+void Writer::SetLogEngine(Engine* logEngine)
 {
-	m_logEngine = logEngine;
+	mLogEngine = logEngine;
 }
 
-Engine* Writer::GetLogEngine() 
+Engine* Writer::GetLogEngine()
 {
-	return m_logEngine;
+	return mLogEngine;
 }
 
-const Engine* Writer::GetLogEngine() const 
+const Engine* Writer::GetLogEngine() const
 {
-	return m_logEngine;
+	return mLogEngine;
 }
 
 bool Writer::HasLogEngine() const
 {
-	return m_logEngine != NULL;
+	return mLogEngine != NULL;
 }
 
 void Writer::Log(
 	LogLevel level,
-	const char* format, 
+	const char* format,
 	...
 ) const
 {
 
-	BIO_SANITIZE(m_logEngine, ,
+	BIO_SANITIZE(mLogEngine, ,
 		return);
 
 	//Check if filter is on
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(m_logEngine->FilterPass(
-		m_filter,
+	BIO_SANITIZE_AT_SAFETY_LEVEL_2(mLogEngine->FilterPass(
+		mFilter,
 		level
 	), ,
 		return);
@@ -94,8 +94,8 @@ void Writer::Log(
 	va_list args;
 	va_start(args,
 		format);
-	m_logEngine->Log(
-		m_filter,
+	mLogEngine->Log(
+		mFilter,
 		level,
 		format,
 		args
@@ -106,17 +106,17 @@ void Writer::Log(
 void Writer::ExternalLog(
 	Filter filter,
 	LogLevel level,
-	const char* format, 
+	const char* format,
 	...
 ) const
 {
-	BIO_SANITIZE(m_logEngine, ,
+	BIO_SANITIZE(mLogEngine, ,
 		return);
 
 	va_list args;
 	va_start(args,
 		format);
-	m_logEngine->Log(
+	mLogEngine->Log(
 		filter,
 		level,
 		format,
@@ -129,9 +129,9 @@ void Writer::InitializeImplementation(ByteStreams args)
 {
 	if (args.Size() == 2)
 	{
-		if (args[1].Is(m_logEngine))
+		if (args[1].Is(mLogEngine))
 		{
-			m_logEngine = args[1];
+			mLogEngine = args[1];
 		}
 		args.Erase(1);
 	}

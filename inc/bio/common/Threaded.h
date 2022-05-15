@@ -130,28 +130,28 @@ protected:
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
 		#ifdef BIO_OS_IS_LINUX
-			pthread_t m_thread;
+			pthread_t mThread;
 		#endif
-		ThreadId m_id;
+		ThreadId mId;
 	#else
-		std::thread* m_thread; 
+		std::thread* mThread; 
 	#endif
 	//@formatter:on
 
 	/**
-	 * Sets m_stopRequested to true. <br />
+	 * Sets mStopRequested to true. <br />
 	 */
 	virtual void RequestStop();
 
-	bool m_created;
-	bool m_running; //written by spawn; read by parent.
-	bool m_stopRequested; //written by parent; read by spawn.
+	bool mCreated;
+	bool mRunning; //written by spawn; read by parent.
+	bool mStopRequested; //written by parent; read by spawn.
 
 	/**
 	 * @param arg a Threaded*
 	 * @return NULL
 	 */
-	static void* Worker(void* arg); 
+	static void* Worker(void* arg);
 };
 
 } //bio namespace

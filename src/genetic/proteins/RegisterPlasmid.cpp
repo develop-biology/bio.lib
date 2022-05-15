@@ -41,7 +41,7 @@ RegisterPlasmid::~RegisterPlasmid()
 Code RegisterPlasmid::Activate()
 {
 	Code ret = code::BadArgument1();
-	Plasmid* boundPlasmid = RotateTo< Plasmid* >(mc_plasmidSite); 
+	Plasmid* boundPlasmid = RotateTo< Plasmid* >(mc_plasmidSite);
 	BIO_SANITIZE(boundPlasmid, ,
 		return ret)
 	PlasmidPerspective::Instance().AssociateType(

@@ -25,12 +25,12 @@
 namespace bio {
 
 Iterator::Iterator(
-	const Container* container, 
+	const Container* container,
 	const Index index
 )
 	:
-	m_container(const_cast< Container* >(container)), 
-	m_index(index)
+	mContainer(const_cast< Container* >(container)),
+	mIndex(index)
 {
 
 }
@@ -42,14 +42,14 @@ Iterator::~Iterator()
 
 Index Iterator::GetIndex() const
 {
-	return m_index;
+	return mIndex;
 }
 
 bool Iterator::MoveTo(const Index index)
 {
-	if (m_container->IsAllocated(index))
+	if (mContainer->IsAllocated(index))
 	{
-		m_index = index;
+		mIndex = index;
 		return true;
 	}
 	return false;
@@ -57,49 +57,49 @@ bool Iterator::MoveTo(const Index index)
 
 bool Iterator::IsAtBeginning() const
 {
-	return !m_index;
+	return !mIndex;
 }
 
 bool Iterator::IsAtEnd() const
 {
-	return m_index == m_container->GetAllocatedSize();
+	return mIndex == mContainer->GetAllocatedSize();
 }
 
-Iterator* Iterator::Increment() 
+Iterator* Iterator::Increment()
 {
-	if (m_index >= m_container->GetAllocatedSize())
+	if (mIndex >= mContainer->GetAllocatedSize())
 	{
-		m_index = m_container->GetAllocatedSize();
+		mIndex = mContainer->GetAllocatedSize();
 		return this;
 	}
-	while (m_container->IsFree(++m_index) && !IsAtEnd())
+	while (mContainer->IsFree(++mIndex) && !IsAtEnd())
 	{
-		continue; //avoid re-referencing m_index; see condition.
+		continue; //avoid re-referencing mIndex; see condition.
 	}
 	return this;
 }
 
-Iterator* Iterator::Decrement() 
+Iterator* Iterator::Decrement()
 {
-	if (!m_index)
+	if (!mIndex)
 	{
 		return this;
 	}
-	while (m_container->IsFree(--m_index) && !IsAtBeginning())
+	while (mContainer->IsFree(--mIndex) && !IsAtBeginning())
 	{
-		continue; //avoid re-referencing m_index; see condition.
+		continue; //avoid re-referencing mIndex; see condition.
 	}
 	return this;
 }
 
 ByteStream Iterator::operator*()
 {
-	return m_container->Access(m_index);
+	return mContainer->Access(mIndex);
 }
 
 const ByteStream Iterator::operator*() const
 {
-	return m_container->Access(m_index);
+	return mContainer->Access(mIndex);
 }
 
 bool Iterator::IsValid() const
@@ -109,6 +109,6 @@ bool Iterator::IsValid() const
 
 void Iterator::Invalidate()
 {
-	m_index = InvalidIndex();
+	mIndex = InvalidIndex();
 }
 } //bio namespace

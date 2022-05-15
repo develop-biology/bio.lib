@@ -50,13 +50,13 @@ public:
 	 * Implementation for accessing all Contents. <br />
 	 * @return all Contents in *this.
 	 */
-	virtual Container* GetAllImplementation(); 
+	virtual Container* GetAllImplementation();
 
 	/**
 	 * Const interface for accessing all Contents. <br />
 	 * @return all Contents in *this.
 	 */
-	virtual const Container* GetAllImplementation() const; 
+	virtual const Container* GetAllImplementation() const;
 
 	/**
 	 * Clears the contents of *this. <br />
@@ -80,7 +80,7 @@ public:
 	 * void* used to avoid ambiguous implicit casting. 
 	 * @param other
 	 */
-	virtual void ImportImplementation(const void* other) 
+	virtual void ImportImplementation(const void* other)
 	{
 		//nop
 	}
@@ -96,7 +96,7 @@ public:
 	}
 
 protected:
-	mutable Container* m_contents; 
+	mutable Container* mContents;
 };
 
 } //chemical namespace

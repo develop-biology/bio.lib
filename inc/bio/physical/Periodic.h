@@ -72,7 +72,7 @@ public:
 	virtual void InitializeImplementation(ByteStreams args);
 
 	/**
-	 * Peak()s occur at Periodic::m_intervals. <br />
+	 * Peak()s occur at Periodic::mIntervals. <br />
 	 * Define your main Periodic logic here. <br />
 	 * This method must be fast: <br />
 	 *	* do not read slow hardware here <br />
@@ -127,14 +127,14 @@ public:
 	 * Required method from Wave. See that class for details. <br />
 	 * @return a Symmetrical image of *this
 	 */
-	virtual Symmetry* Spin() const; 
+	virtual Symmetry* Spin() const;
 
 	/**
 	 * Required method from Wave. See that class for details. <br />
 	 * Reconstruct *this from the given Symmetry. <br />
 	 * @param symmetry
 	 */
-	virtual Code Reify(Symmetry* symmetry); 
+	virtual Code Reify(Symmetry* symmetry);
 
 	/**
 	 * Wave method. See that class for details. <br />
@@ -143,8 +143,8 @@ public:
 	virtual Properties GetProperties() const;
 
 protected:
-	TimeUS m_interval;
-	Timestamp m_lastPeakTimestamp;
+	TimeUS mInterval;
+	Timestamp mLastPeakTimestamp;
 };
 
 } //physical namespace

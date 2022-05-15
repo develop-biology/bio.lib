@@ -152,8 +152,8 @@ public:
 	)
 		:
 		physical::Class< Excitation< WAVE, RETURN, ARGUMENTS... > >(this),
-		m_function(function),
-		m_args(args...)
+		mFunction(function),
+		mArgs(args...)
 	{
 	}
 
@@ -191,18 +191,18 @@ public:
 	}
 
 	/**
-	 * @param wave the caller of m_function.
-	 * @param args any arguments given to m_function. Only applicable for C++11 and onward.
-	 * @return RETURN, whatever that is for *this; the result of calling m_function from wave.
+	 * @param wave the caller of mFunction.
+	 * @param args any arguments given to mFunction. Only applicable for C++11 and onward.
+	 * @return RETURN, whatever that is for *this; the result of calling mFunction from wave.
 	 */
 	RETURN operator()(WAVE* wave) const
 	{
 		std::tuple< WAVE*, ARGUMENTS... > allArgs = ::std::tuple_cat(
 			std::make_tuple(wave),
-			m_args
+			mArgs
 		);
 		return ::std::apply(
-			m_function,
+			mFunction,
 			allArgs
 		);
 	}
@@ -219,9 +219,9 @@ public:
 	}
 
 protected:
-	RETURN (WAVE::*m_function)(ARGUMENTS...);
+	RETURN (WAVE::*mFunction)(ARGUMENTS...);
 
-	std::tuple< ARGUMENTS... > m_args;
+	std::tuple< ARGUMENTS... > mArgs;
 };
 
 #else
@@ -250,7 +250,7 @@ public:
 	ExcitationWithoutArgument(RETURN(WAVE::*function)())
 		:
 		physical::Class< ExcitationWithoutArgument< WAVE, RETURN > >(this),
-		m_function(function)
+		mFunction(function)
 	{
 	}
 
@@ -279,12 +279,12 @@ public:
 
 
 	/**
-	 * @param wave the caller of m_function.
-	 * @return RETURN, whatever that is for *this; the result of calling m_function from wave.
+	 * @param wave the caller of mFunction.
+	 * @return RETURN, whatever that is for *this; the result of calling mFunction from wave.
 	 */
 	RETURN operator()(WAVE* wave) const 
 	{
-		return (wave->*m_function)();
+		return (wave->*mFunction)();
 	}
 
 	/**
@@ -299,7 +299,7 @@ public:
 	}
 
 protected:
-	RETURN (WAVE::*m_function)();
+	RETURN (WAVE::*mFunction)();
 };
 
 /**
@@ -331,8 +331,8 @@ public:
 	)
 		:
 		physical::Class< ExcitationWithArgument< WAVE, RETURN, ARGUMENT > >(this),
-		m_function(function),
-		m_arg(arg)
+		mFunction(function),
+		mArg(arg)
 	{
 	}
 
@@ -371,16 +371,16 @@ public:
 	{
 		BIO_SANITIZE(position,
 			return,);
-		m_arg = newVal;
+		mArg = newVal;
 	}
 
 	/**
-	 * @param wave the caller of m_function.
-	 * @return RETURN, whatever that is for *this; the result of calling m_function from wave.
+	 * @param wave the caller of mFunction.
+	 * @return RETURN, whatever that is for *this; the result of calling mFunction from wave.
 	 */
 	RETURN operator()(WAVE* wave) const 
 	{
-		return (wave->*m_function)(m_arg);
+		return (wave->*mFunction)(mArg);
 	}
 
 	/**
@@ -395,9 +395,9 @@ public:
 	}
 
 protected:
-	RETURN (WAVE::*m_function)(ARGUMENT);
+	RETURN (WAVE::*mFunction)(ARGUMENT);
 
-	ARGUMENT m_arg;
+	ARGUMENT mArg;
 };
 
 /**
@@ -434,9 +434,9 @@ public:
 	)
 		:
 		physical::Class< ExcitationWithTwoArguments< WAVE, RETURN, ARGUMENT1, ARGUMENT2 > >(this),
-		m_function(function),
-		m_arg1(arg1),
-		m_arg2(arg2)
+		mFunction(function),
+		mArg1(arg1),
+		mArg2(arg2)
 	{
 	}
 
@@ -476,23 +476,23 @@ public:
 		switch (position)
 		{
 			case 0:
-				m_arg1 = newVal;
+				mArg1 = newVal;
 				break;
 			case 1:
-				m_arg2 = newVal;
+				mArg2 = newVal;
 				break;
 		}
 	}
 
 	/**
-	 * @param wave the caller of m_function.
-	 * @return RETURN, whatever that is for *this; the result of calling m_function from wave.
+	 * @param wave the caller of mFunction.
+	 * @return RETURN, whatever that is for *this; the result of calling mFunction from wave.
 	 */
 	RETURN operator()(WAVE* wave) const 
 	{
-		return (wave->*m_function)(
-			m_arg1,
-			m_arg2
+		return (wave->*mFunction)(
+			mArg1,
+			mArg2
 		);
 	}
 
@@ -508,13 +508,13 @@ public:
 	}
 
 protected:
-	RETURN (WAVE::*m_function)(
+	RETURN (WAVE::*mFunction)(
 		ARGUMENT1,
 		ARGUMENT2
 	);
 
-	ARGUMENT1 m_arg1;
-	ARGUMENT2 m_arg2;
+	ARGUMENT1 mArg1;
+	ARGUMENT2 mArg2;
 };
 
 

@@ -44,7 +44,7 @@ class DNA;
 class Protein :
 	virtual public Molecule,
 	public Class< Protein >,
-	public chemical::LinearMotif< Protein* >, 
+	public chemical::LinearMotif< Protein* >,
 	public EnvironmentDependent< Vesicle >
 {
 public:
@@ -85,12 +85,12 @@ public:
 	 *     return Protein::RecruitChaperones(environment); <br />
 	 * } <br />
 	 *
-	 * This also sets m_environment to the environment provided. <br />
+	 * This also sets mEnvironment to the environment provided. <br />
 	 *
 	 * @param environment
 	 * @return result of chaperone recruitment & whether or not Fold should be called.
 	*/
-	virtual Code RecruitChaperones(Vesicle* environment); 
+	virtual Code RecruitChaperones(Vesicle* environment);
 
 	/**
 	 * Fold will ensure *this is functional in the Molecular environment (Vesicle) <br />
@@ -124,20 +124,20 @@ public:
 	/**
 	 * Proteins originate from DNA. <br />
 	 * This allows us to tell 2 otherwise identical Proteins apart. <br />
-	 * For example, Protein with name "DoMyAction" gets replaced with a "DoMyAction" from an updated Gene. Both Proteins will return true on == comparison but may have different functionality which would only be known by getting the m_source. <br />
-	 * @return the m_source of *this.
+	 * For example, Protein with name "DoMyAction" gets replaced with a "DoMyAction" from an updated Gene. Both Proteins will return true on == comparison but may have different functionality which would only be known by getting the mSource. <br />
+	 * @return the mSource of *this.
 	 */
-	virtual const DNA* GetSource() const; 
+	virtual const DNA* GetSource() const;
 
 	/**
-	 * Set the m_source of *this <br />
+	 * Set the mSource of *this <br />
 	 * @param source
 	 * @return the result of setting (e.g. code::Success()).
 	 */
-	virtual Code SetSource(const DNA* source); 
+	virtual Code SetSource(const DNA* source);
 
 protected:
-	const DNA* m_source; 
+	const DNA* mSource;
 
 private:
 	/**

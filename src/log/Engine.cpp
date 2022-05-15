@@ -37,7 +37,7 @@ namespace log {
 Engine::Engine()
 {
 	//Set all filters to only log if level is >= Info
-	m_levelFilter.assign(
+	mLevelFilter.assign(
 		FilterPerspective::Instance().GetNumUsedIds(),
 		log_level::Info());
 }
@@ -50,7 +50,7 @@ Engine::~Engine()
 void Engine::Log(
 	Filter filter,
 	LogLevel level,
-	const char* format, 
+	const char* format,
 	va_list args
 )
 {
@@ -71,17 +71,17 @@ void Engine::Log(
 	va_end(args);
 	str[BIO_LOG_PRINTF_MAX_LINE_SIZE] = '\0';
 
-	m_logMessage.clear();
-	m_logMessage.str(""); //TODO: is seekp good enough? what is faster?
+	mLogMessage.clear();
+	mLogMessage.str(""); //TODO: is seekp good enough? what is faster?
 
-	m_logMessage << physical::GetCurrentTimestamp() << " " << FilterPerspective::Instance().GetNameFromId(filter) << " " << LogLevelPerspective::Instance().GetNameFromId(level) << ": " << str << "\n";
-	Output(m_logMessage.str());
+	mLogMessage << physical::GetCurrentTimestamp() << " " << FilterPerspective::Instance().GetNameFromId(filter) << " " << LogLevelPerspective::Instance().GetNameFromId(level) << ": " << str << "\n";
+	Output(mLogMessage.str());
 }
 
 void Engine::Log(
 	Filter filter,
 	LogLevel level,
-	const char* format, 
+	const char* format,
 	...
 )
 {
@@ -110,7 +110,7 @@ bool Engine::FilterPass(
 	LogLevel level
 ) const
 {
-	return level >= m_levelFilter[filter];
+	return level >= mLevelFilter[filter];
 }
 
 bool Engine::FilterSet(
@@ -118,7 +118,7 @@ bool Engine::FilterSet(
 	LogLevel level
 )
 {
-	m_levelFilter[filter] = level;
+	mLevelFilter[filter] = level;
 	return true; //SUCCESS
 }
 
@@ -134,7 +134,7 @@ bool Engine::FilterSet(
 
 LogLevel Engine::FilterGet(Filter filter) const
 {
-	return m_levelFilter[filter];
+	return mLevelFilter[filter];
 }
 
 } //log namespace

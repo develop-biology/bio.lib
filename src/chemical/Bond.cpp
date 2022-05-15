@@ -29,21 +29,21 @@ namespace chemical {
 
 Bond::Bond()
 	:
-	m_id(PeriodicTable::InvalidId()),
-	m_bonded(NULL),
-	m_type(bond_type::Empty())
+	mId(PeriodicTable::InvalidId()),
+	mBonded(NULL),
+	mType(bond_type::Empty())
 {
 }
 
 Bond::Bond(
 	AtomicNumber id,
-	physical::Wave* bonded, 
+	physical::Wave* bonded,
 	BondType type
 )
 	:
-	m_id(id),
-	m_bonded(bonded),
-	m_type(type)
+	mId(id),
+	mBonded(bonded),
+	mType(type)
 {
 }
 
@@ -54,58 +54,58 @@ Bond::~Bond()
 
 bool Bond::Form(
 	AtomicNumber id,
-	physical::Wave* bonded, 
+	physical::Wave* bonded,
 	BondType type
 )
 {
 	BIO_SANITIZE(bonded, ,
 		return false);
-	m_id = id;
-	m_bonded = bonded;
-	m_type = type;
+	mId = id;
+	mBonded = bonded;
+	mType = type;
 	return true;
 }
 
 AtomicNumber Bond::GetId() const
 {
-	return m_id;
+	return mId;
 }
 
-physical::Wave* Bond::GetBonded() 
+physical::Wave* Bond::GetBonded()
 {
-	return m_bonded;
+	return mBonded;
 }
 
-const physical::Wave* Bond::GetBonded() const 
+const physical::Wave* Bond::GetBonded() const
 {
-	return m_bonded;
+	return mBonded;
 }
 
 BondType Bond::GetType() const
 {
-	return m_type;
+	return mType;
 }
 
 bool Bond::IsEmpty() const
 {
-	return m_bonded == NULL && m_type == bond_type::Empty();
+	return mBonded == NULL && mType == bond_type::Empty();
 }
 
 void Bond::Break()
 {
-	//leave m_id intact.
-	m_bonded = NULL;
-	m_type = bond_type::Empty();
+	//leave mId intact.
+	mBonded = NULL;
+	mType = bond_type::Empty();
 }
 
 bool Bond::operator==(const AtomicNumber id) const
 {
-	return m_id == id;
+	return mId == id;
 }
 
 bool Bond::operator==(const Bond& other) const
 {
-	return m_id == other.m_id;
+	return mId == other.mId;
 }
 
 } //chemical namespace

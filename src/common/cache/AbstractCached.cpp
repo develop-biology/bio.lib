@@ -36,14 +36,16 @@ AbstractCached::~AbstractCached()
 
 void AbstractCached::Register()
 {
-	BIO_SANITIZE(!GlobalCache::Instance().Has(this),,return)
+	BIO_SANITIZE(!GlobalCache::Instance().Has(this), ,
+		return)
 	GlobalCache::Instance().Add(this);
 }
 
 void AbstractCached::Deregister()
 {
 	Index indexOfThis = GlobalCache::Instance().SeekTo(this);
-	BIO_SANITIZE(indexOfThis,,return)
+	BIO_SANITIZE(indexOfThis, ,
+		return)
 	GlobalCache::Instance().Erase(indexOfThis);
 }
 

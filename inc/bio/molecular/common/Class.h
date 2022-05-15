@@ -52,8 +52,8 @@ public:
 	 * @param symmetryType
 	 */
 	Class(
-		T* object, 
-		physical::Perspective< StandardDimension >* perspective = NULL, 
+		T* object,
+		physical::Perspective< StandardDimension >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
@@ -75,9 +75,9 @@ public:
 	 * @param symmetryType
 	 */
 	Class(
-		T* object, 
+		T* object,
 		Name name,
-		physical::Perspective< StandardDimension >* perspective = NULL, 
+		physical::Perspective< StandardDimension >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
@@ -100,9 +100,9 @@ public:
 	 * @param symmetryType
 	 */
 	Class(
-		T* object, 
+		T* object,
 		StandardDimension id,
-		physical::Perspective< StandardDimension >* perspective = NULL, 
+		physical::Perspective< StandardDimension >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:

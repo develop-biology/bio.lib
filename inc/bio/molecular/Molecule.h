@@ -72,7 +72,7 @@ namespace molecular {
 class Molecule :
 	public Class< Molecule >,
 	public physical::Perspective< StandardDimension >,
-	public chemical::LinearMotif< Surface* > 
+	public chemical::LinearMotif< Surface* >
 {
 public:
 
@@ -111,17 +111,17 @@ public:
 	template < typename T >
 	StandardDimension Use(
 		Name varName,
-		T* varPtr 
+		T* varPtr
 	)
 	{
 		BIO_SANITIZE(!RotateTo(varName), ,
 			return InvalidId());
-		Surface* toAdd = new Surface( 
+		Surface* toAdd = new Surface(
 			varName,
 			this
 		);
 		toAdd->Use(varPtr);
-		Add< Surface* >(toAdd); 
+		Add< Surface* >(toAdd);
 		return toAdd->GetId();
 	}
 
@@ -136,11 +136,11 @@ public:
 	{
 		BIO_SANITIZE(!RotateTo(varName), ,
 			return InvalidId());
-		Surface* toAdd = new Surface( 
+		Surface* toAdd = new Surface(
 			varName,
 			this
 		);
-		Add< Surface* >(toAdd); 
+		Add< Surface* >(toAdd);
 		return toAdd->GetId();
 	}
 
@@ -156,12 +156,12 @@ public:
 	{
 		BIO_SANITIZE(!RotateTo(varName), ,
 			return InvalidId());
-		Surface* toAdd = new Surface( 
+		Surface* toAdd = new Surface(
 			varName,
 			this
 		);
 		toAdd->Manage(new T());
-		Add< Surface* >(toAdd); 
+		Add< Surface* >(toAdd);
 		return toAdd->GetId();
 	}
 
@@ -182,12 +182,12 @@ public:
 	{
 		BIO_SANITIZE(!RotateTo(varName), ,
 			return InvalidId());
-		Surface* toAdd = new Surface( 
+		Surface* toAdd = new Surface(
 			varName,
 			this
 		);
 		toAdd->Manage(new T(assignment));
-		Add< Surface* >(toAdd); 
+		Add< Surface* >(toAdd);
 		return toAdd->GetId();
 	}
 
@@ -198,14 +198,14 @@ public:
 	 * @param surfaceId
 	 * @return a Surface with the given Id, as defined by *this, or NULL.
 	 */
-	virtual Surface* RotateTo(StandardDimension surfaceId); 
+	virtual Surface* RotateTo(StandardDimension surfaceId);
 
 	/**
 	 * const version of RotateTo <br />
 	 * @param surfaceId
 	 * @return a const Surface with the given Id, as defined by *this, or NULL.
 	 */
-	virtual const Surface* RotateTo(StandardDimension surfaceId) const; 
+	virtual const Surface* RotateTo(StandardDimension surfaceId) const;
 
 	/**
 	 * Ease of use methods for getting variables as the desired type. <br />
@@ -224,14 +224,14 @@ public:
 	 * @param surfaceName
 	 * @return a Surface with the given Name from *this.
 	 */
-	virtual Surface* RotateTo(Name surfaceName); 
+	virtual Surface* RotateTo(Name surfaceName);
 
 	/**
 	 * const version of RotateTo <br />
 	 * @param surfaceName
 	 * @return a const Surface with the given Name from *this.
 	 */
-	virtual const Surface* RotateTo(Name surfaceName) const; 
+	virtual const Surface* RotateTo(Name surfaceName) const;
 
 	/**
 	 * Ease of use methods for getting variables as the desired type. <br />
@@ -251,7 +251,7 @@ public:
 	 * @return whether or not the operation succeeded.
 	 */
 	virtual bool DuplicateFrom(
-		Molecule* source, 
+		Molecule* source,
 		Name surface
 	);
 
@@ -262,7 +262,7 @@ public:
 	 * @return whether or not the operation succeeded.
 	 */
 	virtual bool TransferFrom(
-		Molecule* source, 
+		Molecule* source,
 		Name surface
 	);
 
@@ -270,14 +270,14 @@ public:
 	 * Required method from Wave. See that class for details. <br />
 	 * @return a Symmetrical image of *this
 	 */
-	virtual physical::Symmetry* Spin() const; 
+	virtual physical::Symmetry* Spin() const;
 
 	/**
 	 * Required method from Wave. See that class for details. <br />
 	 * Reconstruct *this from the given Symmetry. <br />
 	 * @param symmetry
 	 */
-	virtual Code Reify(physical::Symmetry* symmetry); 
+	virtual Code Reify(physical::Symmetry* symmetry);
 
 	/**
 	 * operator wrappers around RotateTo <br />
@@ -285,22 +285,22 @@ public:
 	 * @return RotateTo(...)
 	 * @{
 	 */
-	virtual Surface* operator()(StandardDimension surfaceId); 
+	virtual Surface* operator()(StandardDimension surfaceId);
 
-	virtual const Surface* operator()(StandardDimension surfaceId) const; 
+	virtual const Surface* operator()(StandardDimension surfaceId) const;
 
 	template < typename T >
-	Surface* operator()(StandardDimension surfaceId) 
+	Surface* operator()(StandardDimension surfaceId)
 	{
 		return ChemicalCast< T >(RotateTo(surfaceId));
 	}
 
-	virtual Surface* operator()(Name name); 
+	virtual Surface* operator()(Name name);
 
-	virtual const Surface* operator()(Name name) const; 
+	virtual const Surface* operator()(Name name) const;
 
 	template < typename T >
-	Surface* operator()(Name surfaceName) 
+	Surface* operator()(Name surfaceName)
 	{
 		return ChemicalCast< T >(RotateTo(surfaceName));
 	}
@@ -312,7 +312,7 @@ public:
 	 * @param source
 	 * @return this
 	 */
-	virtual Molecule* operator<<(Surface* source); 
+	virtual Molecule* operator<<(Surface* source);
 
 	/**
 	 * Surface move operation. <br />
@@ -322,7 +322,7 @@ public:
 	 * @return target
 	 *
 	 */
-	virtual Surface* operator>>(Surface* target); 
+	virtual Surface* operator>>(Surface* target);
 
 	/**
 	 * Molecule copy operation. <br />
@@ -330,7 +330,7 @@ public:
 	 * @param source
 	 * @return this
 	 */
-	virtual Molecule* operator<<(Molecule* source); 
+	virtual Molecule* operator<<(Molecule* source);
 
 	/**
 	 * Molecule move operation. <br />
@@ -339,7 +339,7 @@ public:
 	 * @param target
 	 * @return target
 	 */
-	virtual Molecule* operator>>(Molecule* target); 
+	virtual Molecule* operator>>(Molecule* target);
 };
 
 

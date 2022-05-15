@@ -59,7 +59,7 @@ public:
 			new Symmetry(
 				TypeName< T >().c_str(),
 				symmetry_type::DefineVariable())),
-		m_quantized(new T())
+		mQuantized(new T())
 	{
 
 	}
@@ -74,7 +74,7 @@ public:
 			new Symmetry(
 				TypeName< T >().c_str(),
 				symmetry_type::DefineVariable())),
-		m_quantized(new T(assignment))
+		mQuantized(new T(assignment))
 	{
 	}
 
@@ -88,7 +88,7 @@ public:
 			new Symmetry(
 				TypeName< T >().c_str(),
 				symmetry_type::DefineVariable())),
-		m_quantized(new T(other))
+		mQuantized(new T(other))
 	{
 
 	}
@@ -98,7 +98,7 @@ public:
 	 */
 	virtual ~Quantum()
 	{
-		delete this->m_quantized;
+		delete this->mQuantized;
 	}
 
 	/**
@@ -107,7 +107,7 @@ public:
 	 */
 	operator T*()
 	{
-		return this->m_quantized;
+		return this->mQuantized;
 	}
 
 	/**
@@ -117,8 +117,8 @@ public:
 	 */
 	operator T() const
 	{
-		BIO_SANITIZE(m_quantized,
-			return *this->m_quantized,
+		BIO_SANITIZE(mQuantized,
+			return *this->mQuantized,
 			return T());
 	}
 
@@ -126,9 +126,9 @@ public:
 	 * Required method from Wave. See that class for details. <br />
 	 * @return a Symmetrical image of *this
 	 */
-	virtual Symmetry* Spin() const 
+	virtual Symmetry* Spin() const
 	{
-		this->m_symmetry->AccessValue()->Set(*this->m_quantized);
+		this->mSymmetry->AccessValue()->Set(*this->mQuantized);
 		return this->Wave::Spin();
 	}
 
@@ -137,17 +137,17 @@ public:
 	 * Reconstruct *this from the given Symmetry. <br />
 	 * @param symmetry
 	 */
-	virtual Code Reify(Symmetry* symmetry) 
+	virtual Code Reify(Symmetry* symmetry)
 	{
 		BIO_SANITIZE(symmetry, ,
 			return code::BadArgument1());
 		//Wave::Reify(symmetry); //this does nothing useful.
-		*this->m_quantized = symmetry->GetValue();
+		*this->mQuantized = symmetry->GetValue();
 		return code::Success();
 	}
 
 protected:
-	T* m_quantized; 
+	T* mQuantized;
 };
 
 } //physical namespace

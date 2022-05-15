@@ -36,7 +36,11 @@ Cache::~Cache()
 
 void Cache::Flush()
 {
-	for (SmartIterator chd = End(); !chd.IsAtBeginning(); --chd)
+	for (
+		SmartIterator chd = End();
+		!chd.IsAtBeginning();
+		--chd
+		)
 	{
 		chd.As< AbstractCached* >()->Flush();
 	}

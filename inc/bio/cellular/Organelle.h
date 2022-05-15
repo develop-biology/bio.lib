@@ -60,7 +60,7 @@ public:
 	virtual ~Organelle();
 
 	/**
-	 * Peak()s occur at Periodic::m_intervals. <br />
+	 * Peak()s occur at Periodic::mIntervals. <br />
 	 * Define your main Periodic logic here. <br />
 	 * This method must be fast: <br />
 	 *	* do not read slow hardware here <br />

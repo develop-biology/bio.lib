@@ -47,7 +47,7 @@ public:
 	 * @param index
 	 */
 	Iterator(
-		const Container* container, 
+		const Container* container,
 		const Index index = InvalidIndex());
 
 	/**
@@ -81,13 +81,13 @@ public:
 	 * Move *this up a Index <br />
 	 * @return *this after incrementing.
 	 */
-	virtual Iterator* Increment(); 
+	virtual Iterator* Increment();
 
 	/**
 	 * Move *this down a Index. <br />
 	 * @return *this following decrementing.
 	 */
-	virtual Iterator* Decrement(); 
+	virtual Iterator* Decrement();
 
 	/**
 	 * Dereferencing gives the datum *this is currently pointing to. <br />
@@ -114,8 +114,8 @@ public:
 	virtual void Invalidate();
 
 protected:
-	mutable Container* m_container; 
-	Index m_index;
+	mutable Container* mContainer;
+	Index mIndex;
 }; //Iterator class.
 
 } //bio namespace

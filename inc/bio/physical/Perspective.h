@@ -48,9 +48,9 @@ class Wave;
  */
 struct PerspectiveUtilities
 {
-	static Wave* Clone(const Wave* toClone); 
+	static Wave* Clone(const Wave* toClone);
 
-	static void Delete(Wave* toDelete); 
+	static void Delete(Wave* toDelete);
 };
 
 /**
@@ -84,18 +84,18 @@ public:
 		Hadit(
 			Id id,
 			Name name,
-			Wave* type 
+			Wave* type
 		)
 			:
-			m_id(id),
-			m_name(name),
-			m_type(type)
+			mId(id),
+			mName(name),
+			mType(type)
 		{
 		}
 
-		Id m_id;
-		Name m_name;
-		Wave* m_type; 
+		Id mId;
+		Name mName;
+		Wave* mType;
 	};
 
 	typedef Arrangement< Hadit* > Hadits;
@@ -105,7 +105,7 @@ public:
 	 */
 	Perspective()
 		:
-		m_nextId(1)
+		mNextId(1)
 	{
 	}
 
@@ -117,26 +117,26 @@ public:
 		LockThread();
 		Hadit* haditBuffer;
 		for (
-			SmartIterator hdt = m_hadits.Begin();
+			SmartIterator hdt = mHadits.Begin();
 			!hdt.IsAtEnd();
 			++hdt
 			)
 		{
 			haditBuffer = hdt;
-			if (haditBuffer->m_name)
+			if (haditBuffer->mName)
 			{
-				delete[] haditBuffer->m_name;
-				haditBuffer->m_name = NULL;
+				delete[] haditBuffer->mName;
+				haditBuffer->mName = NULL;
 			}
-			if (haditBuffer->m_type)
+			if (haditBuffer->mType)
 			{
-				PerspectiveUtilities::Delete(haditBuffer->m_type);
-				haditBuffer->m_type = NULL;
+				PerspectiveUtilities::Delete(haditBuffer->mType);
+				haditBuffer->mType = NULL;
 			}
 			delete haditBuffer;
 			haditBuffer = NULL;
 		}
-		m_hadits.Clear();
+		mHadits.Clear();
 		UnlockThread();
 	}
 
@@ -167,13 +167,13 @@ public:
 	{
 
 		LockThread();
-		SmartIterator hdt = m_hadits.Begin();
+		SmartIterator hdt = mHadits.Begin();
 		for (
 			; !hdt.IsAtEnd();
 			++hdt
 			)
 		{
-			if (hdt.As< Hadit* >()->m_id == id)
+			if (hdt.As< Hadit* >()->mId == id)
 			{
 				UnlockThread();
 				return hdt;
@@ -192,13 +192,13 @@ public:
 	SmartIterator Find(Id id) const
 	{
 		LockThread();
-		SmartIterator hdt = m_hadits.Begin();
+		SmartIterator hdt = mHadits.Begin();
 		for (
 			; !hdt.IsAtEnd();
 			++hdt
 			)
 		{
-			if (hdt.As< Hadit* >()->m_id == id)
+			if (hdt.As< Hadit* >()->mId == id)
 			{
 				UnlockThread();
 				return hdt;
@@ -238,8 +238,8 @@ public:
 		);
 
 		LockThread();
-		ret = m_nextId++;
-		m_hadits.Add(
+		ret = mNextId++;
+		mHadits.Add(
 			new Hadit(
 				ret,
 				usedName,
@@ -268,7 +268,7 @@ public:
 		{
 			return InvalidName();
 		}
-		return result.As< Hadit* >()->m_name;
+		return result.As< Hadit* >()->mName;
 	}
 
 
@@ -324,20 +324,20 @@ public:
 		}
 
 		Hadit* haditBuffer;
-		SmartIterator hdt = m_hadits.Begin();
+		SmartIterator hdt = mHadits.Begin();
 		for (
 			; !hdt.IsAtEnd();
 			++hdt
 			)
 		{
 			haditBuffer = hdt;
-			
+
 			if (!strcmp(
-				haditBuffer->m_name,
+				haditBuffer->mName,
 				name
 			))
 			{
-				return haditBuffer->m_id;
+				return haditBuffer->mId;
 			}
 		}
 		return InvalidId();
@@ -348,7 +348,7 @@ public:
 	 */
 	virtual Id GetNumUsedIds() const
 	{
-		return this->m_nextId - 1;
+		return this->mNextId - 1;
 	}
 
 
@@ -362,7 +362,7 @@ public:
 	 */
 	virtual bool AssociateType(
 		Id id,
-		Wave* type 
+		Wave* type
 	)
 	{
 		SmartIterator hdt = Find(id);
@@ -371,11 +371,11 @@ public:
 			return false;
 		}
 		Hadit* haditBuffer = hdt;
-		
+
 		LockThread();
 		BIO_SANITIZE(type,
-			haditBuffer->m_type = PerspectiveUtilities::Clone(type),
-			haditBuffer->m_type = type);
+			haditBuffer->mType = PerspectiveUtilities::Clone(type),
+			haditBuffer->mType = type);
 		UnlockThread();
 
 		return true;
@@ -397,9 +397,9 @@ public:
 		Hadit* haditBuffer = hdt;
 
 		LockThread();
-		BIO_SANITIZE_AT_SAFETY_LEVEL_2(haditBuffer->m_type,
-			PerspectiveUtilities::Delete(haditBuffer->m_type),);
-		haditBuffer->m_type = NULL;
+		BIO_SANITIZE_AT_SAFETY_LEVEL_2(haditBuffer->mType,
+			PerspectiveUtilities::Delete(haditBuffer->mType),);
+		haditBuffer->mType = NULL;
 		UnlockThread();
 
 		return true;
@@ -411,7 +411,7 @@ public:
 	 * @param id
 	 * @return the pointer to the Wave type associated with the given id else NULL.
 	 */
-	virtual const Wave* GetTypeFromId(Id id) const 
+	virtual const Wave* GetTypeFromId(Id id) const
 	{
 		BIO_SANITIZE(id == InvalidId(), ,
 			return NULL)
@@ -421,7 +421,7 @@ public:
 		{
 			return NULL;
 		}
-		return result.As< Hadit* >()->m_type;
+		return result.As< Hadit* >()->mType;
 	}
 
 	/**
@@ -429,7 +429,7 @@ public:
 	 * @param name
 	 * @return the pointer to the Wave type associated with the given id else NULL.
 	 */
-	virtual const Wave* GetTypeFromName(Name name) const 
+	virtual const Wave* GetTypeFromName(Name name) const
 	{
 		return GetTypeFromId(GetIdWithoutCreation(name));
 	}
@@ -439,9 +439,9 @@ public:
 	 * @param id
 	 * @return a Clone() of the Wave* associated with the given id else NULL.
 	 */
-	virtual Wave* GetNewObjectFromId(Id id) const 
+	virtual Wave* GetNewObjectFromId(Id id) const
 	{
-		const Wave* ret = GetTypeFromId(id); 
+		const Wave* ret = GetTypeFromId(id);
 		if (ret)
 		{
 			return PerspectiveUtilities::Clone(ret);
@@ -454,7 +454,7 @@ public:
 	 * @param name
 	 * @return a Clone() of the Wave* associated with the given name else NULL.
 	 */
-	virtual Wave* GetNewObjectFromName(Name name) 
+	virtual Wave* GetNewObjectFromName(Name name)
 	{
 		return this->GetNewObjectFromId(this->GetIdFromName(name));
 	}
@@ -469,7 +469,7 @@ public:
 	const T GetTypeFromIdAs(Id id) const
 	{
 		BIO_SANITIZE_WITH_CACHE(GetTypeFromId(id),
-			BIO_SINGLE_ARG(return ForceCast< T, const Wave* >(RESULT)), 
+			BIO_SINGLE_ARG(return ForceCast< T, const Wave* >(RESULT)),
 			return NULL);
 	}
 
@@ -483,7 +483,7 @@ public:
 	const T GetTypeFromNameAs(Name name) const
 	{
 		BIO_SANITIZE_WITH_CACHE(GetTypeFromName(name),
-			BIO_SINGLE_ARG(return ForceCast< T, const Wave* >(RESULT)), 
+			BIO_SINGLE_ARG(return ForceCast< T, const Wave* >(RESULT)),
 			return NULL);
 	}
 
@@ -497,7 +497,7 @@ public:
 	T GetNewObjectFromIdAs(Id id)
 	{
 		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromId(id),
-			BIO_SINGLE_ARG(return ForceCast< T, Wave* >(RESULT)), 
+			BIO_SINGLE_ARG(return ForceCast< T, Wave* >(RESULT)),
 			return NULL);
 	}
 
@@ -511,14 +511,14 @@ public:
 	T GetNewObjectFromNameAs(Name name)
 	{
 		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromName(name),
-			BIO_SINGLE_ARG(return ForceCast< T, Wave* >(RESULT)), 
+			BIO_SINGLE_ARG(return ForceCast< T, Wave* >(RESULT)),
 			return NULL);
 	}
 
 
 protected:
-	Hadits m_hadits;
-	Id m_nextId;
+	Hadits mHadits;
+	Id mNextId;
 };
 
 } //physical namespace

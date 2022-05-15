@@ -110,27 +110,27 @@ public:
 	void SetType(Name type);
 
 	/**
-	 * Set the m_value of *this. <br />
+	 * Set the mValue of *this. <br />
 	 * @param bytes
 	 */
 	virtual void SetValue(const ByteStream& bytes);
 
 	/**
-	 * Get the m_value of *this. <br />
-	 * @return m_value for read only.
+	 * Get the mValue of *this. <br />
+	 * @return mValue for read only.
 	 */
 	virtual const ByteStream& GetValue() const;
 
 	/**
-	 * Get the m_value of *this for direct editing. <br />
-	 * @return m_value for writing.
+	 * Get the mValue of *this for direct editing. <br />
+	 * @return mValue for writing.
 	 */
-	virtual ByteStream* AccessValue(); 
+	virtual ByteStream* AccessValue();
 
 protected:
-	Name m_name;
-	ByteStream m_value;
-	Identifiable< SymmetryType > m_type;
+	Name mName;
+	ByteStream mValue;
+	Identifiable< SymmetryType > mType;
 };
 
 } //physical namespace

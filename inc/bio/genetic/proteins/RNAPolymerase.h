@@ -41,7 +41,7 @@ public:
 	/**
 	 * @param toTranscribe
 	 */
-	RNAPolymerase(Plasmid* toTranscribe); 
+	RNAPolymerase(Plasmid* toTranscribe);
 
 	/**
 	 *
@@ -50,7 +50,7 @@ public:
 
 
 	/**
-	 * Assumes the m_environment is an Expressor. If it is not, *this will fail. <br />
+	 * Assumes the mEnvironment is an Expressor. If it is not, *this will fail. <br />
 	 * Transcribes, then Translates all Genes from toTranscribe into the environment. <br />
 	 * @return result of all Transcription & Translation.
 	 */

@@ -52,7 +52,7 @@ public:
 	 * @param name
 	 */
 	explicit Insertion(
-		chemical::Substance* whatToInsert = NULL, 
+		chemical::Substance* whatToInsert = NULL,
 		Site site = InsertionSitePerspective::InvalidId(),
 		Name name = NULL
 	);
@@ -65,31 +65,31 @@ public:
 	/**
 	 * Override of Localization system. <br />
 	 * This is what does the inserting. <br />
-	 * Will recurse upward, following m_previous for as long as possible. <br />
+	 * Will recurse upward, following mPrevious for as long as possible. <br />
 	 * @param insertIn
 	 * @return a Substance somewhere within the Substance provided or NULL.
 	 */
-	virtual chemical::Substance* Seek(chemical::Substance* insertIn) const; 
+	virtual chemical::Substance* Seek(chemical::Substance* insertIn) const;
 
 	/**
 	 * Tells *this to insert toInsert in its Localization. <br />
 	 * @param toInsert
 	 */
-	virtual void InsertThis(chemical::Substance* toInsert); 
+	virtual void InsertThis(chemical::Substance* toInsert);
 
 	/**
 	 * @return what *this will try to insert in its Localization
 	 */
-	virtual chemical::Substance* GetWhatWillBeInserted(); 
+	virtual chemical::Substance* GetWhatWillBeInserted();
 
 	/**
-	 * Set m_site. <br />
+	 * Set mSite. <br />
 	 * @param site
 	 */
 	virtual void SetSite(Site site);
 
 protected:
-	chemical::Substance* m_toInsert; 
+	chemical::Substance* mToInsert;
 };
 
 } //genetic namespace

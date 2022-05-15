@@ -33,9 +33,9 @@ Filterable::Filterable()
 	Class(
 		this,
 		new Symmetry(
-			"m_filter",
+			"mFilter",
 			symmetry_type::DefineVariable())),
-	m_filter(filter::Default())
+	mFilter(filter::Default())
 {
 }
 
@@ -44,9 +44,9 @@ Filterable::Filterable(Filter filter)
 	Class(
 		this,
 		new Symmetry(
-			"m_filter",
+			"mFilter",
 			symmetry_type::DefineVariable())),
-	m_filter(filter)
+	mFilter(filter)
 {
 
 }
@@ -57,33 +57,33 @@ Filterable::~Filterable()
 
 void Filterable::SetFilter(Filter filter)
 {
-	m_filter = filter;
+	mFilter = filter;
 }
 
 Filter Filterable::GetFilter() const
 {
-	return m_filter;
+	return mFilter;
 }
 
-Symmetry* Filterable::Spin() const 
+Symmetry* Filterable::Spin() const
 {
-	m_symmetry->AccessValue()->Set(m_filter);
+	mSymmetry->AccessValue()->Set(mFilter);
 	return Wave::Spin();
 }
 
-Code Filterable::Reify(Symmetry* symmetry) 
+Code Filterable::Reify(Symmetry* symmetry)
 {
 	BIO_SANITIZE(symmetry, ,
 		return code::BadArgument1());
-	m_filter = symmetry->GetValue();
+	mFilter = symmetry->GetValue();
 	return code::Success();
 }
 
 void Filterable::InitializeImplementation(ByteStreams args)
 {
-	BIO_SANITIZE(args.Size() == 1 && args[0].Is(m_filter), ,
+	BIO_SANITIZE(args.Size() == 1 && args[0].Is(mFilter), ,
 		return);
-	m_filter = args[0];
+	mFilter = args[0];
 }
 
 } //physical namespace
