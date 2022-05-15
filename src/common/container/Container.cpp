@@ -299,12 +299,11 @@ void Container::Clear()
 
 Iterator* Container::ConstructClassIterator(const Index index) const 
 {
-	BIO_SANITIZE(IsAllocated(index), ,
-		return NULL)
-	return new Iterator(
+	Iterator* ret = new Iterator(
 		this,
 		index
 	);
+	return ret;
 }
 
 SmartIterator Container::Begin() const

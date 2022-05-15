@@ -45,12 +45,12 @@ Line::~Line()
 
 ByteStream Line::Access(const Index index)
 {
-	return Cast< Identifiable< StandardDimension >* >(OptimizedAccess(index)); 
+	return OptimizedAccess(index).operator Identifiable< StandardDimension >*();
 }
 
 const ByteStream Line::Access(const Index index) const
 {
-	return Cast< Identifiable< StandardDimension >* >(OptimizedAccess(index)); 
+	return OptimizedAccess(index).operator const Identifiable< StandardDimension >*();
 }
 
 bool Line::AreEqual(Index internal, const ByteStream external) const

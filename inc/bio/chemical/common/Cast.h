@@ -27,10 +27,32 @@ namespace physical {
 class Wave;
 }
 
+/**
+ * ChemicalCasts use chemical Bonds to change one object into anther. <br />
+ * See Atom::As<>() for more info.<br />
+ * @tparam TO
+ * @tparam FROM
+ * @param toCast
+ * @return The TO that is bonded to FROM or 0.
+ */
 template < typename TO, typename FROM >
-TO ChemicalCast(FROM toCast)
+TO ChemicalCast(FROM& toCast)
 {
 	return toCast->AsAtom()->template As< TO >();
+}
+
+/**
+ * ChemicalCasts use chemical Bonds to change one object into anther. <br />
+ * See Atom::As<>() for more info.<br />
+ * @tparam TO
+ * @tparam FROM
+ * @param toCast
+ * @return The TO that is bonded to FROM or 0.
+ */
+template < typename TO, typename FROM >
+const TO ChemicalCast(const FROM& toCast)
+{
+	return toCast->AsAtom()->template As< const TO >();
 }
 
 /**
@@ -39,7 +61,7 @@ TO ChemicalCast(FROM toCast)
  * @return a Clone of T casted to back to T.
  */
 template < typename T >
-T CloneAndCast(const T toClone)
+T CloneAndCast(const T& toClone)
 {
 	//Dereference here might be dangerous & need sanitization.
 	return ChemicalCast< T, ::bio::physical::Wave* >(toClone->Clone()->AsWave()); 

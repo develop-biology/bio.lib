@@ -32,7 +32,8 @@ ByteStream::ByteStream()
 {
 }
 
-ByteStream::ByteStream(const ByteStream& other)
+ByteStream::ByteStream(const ByteStream& other) :
+	m_holding(false)
 {
 	*this = other;
 }
@@ -82,6 +83,7 @@ void* ByteStream::IKnowWhatImDoing()
 
 void ByteStream::Set(const ByteStream& other)
 {
+	Release();
 	m_stream = ::std::malloc(other.m_size);
 	memcpy(
 		m_stream,

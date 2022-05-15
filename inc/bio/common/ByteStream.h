@@ -54,7 +54,8 @@ public:
 	ByteStream();
 
 	template < typename T >
-	ByteStream(T in)
+	ByteStream(T in) :
+		m_holding(false)
 	{
 		Set(in);
 	}
@@ -90,12 +91,7 @@ public:
 	T As()
 	{
 		BIO_ASSERT(Is< T >());
-		T* ret; 
-		std::memcpy(
-			ret,
-			m_stream,
-			sizeof(T));
-		return *ret;
+		return *(T*)m_stream;
 	}
 
 	/**
@@ -107,12 +103,7 @@ public:
 	const T As() const
 	{
 		BIO_ASSERT(Is< T >());
-		T* ret; 
-		std::memcpy(
-			ret,
-			m_stream,
-			sizeof(T));
-		return *ret;
+		return *(T*)m_stream;
 	}
 
 	/**
@@ -147,6 +138,7 @@ public:
 	template < typename T >
 	void Set(T in)
 	{
+		Release();
 		m_stream = ::std::malloc(sizeof(T));
 		std::memcpy(
 			m_stream,
@@ -216,7 +208,7 @@ public:
 	void* IKnowWhatImDoing(); 
 
 protected:
-	void* m_stream; 
+	mutable void* m_stream;
 	std::string m_typeName;
 	std::size_t m_size;
 	bool m_holding;

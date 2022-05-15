@@ -32,12 +32,31 @@ namespace bio {
  * @return toCast as a TO
  */
 template < typename TO, typename FROM >
-TO Cast(FROM toCast)
+TO Cast(FROM& toCast)
 {
 	#ifdef RTTI_ENABLED
 	return dynamic_cast<TO>(toCast);
 	#else
 	return (TO)(toCast);
+	//Is reinterpret_cast the appropriate substitute here? Need to check usages.
+	#endif
+}
+
+/**
+ * Simple casting wrapper. <br />
+ * It continues to function when RTTI is disabled. <br />
+ * @tparam TO
+ * @tparam FROM Dynamically determined template type.
+ * @param toCast a FROM.
+ * @return toCast as a TO
+ */
+template < typename TO, typename FROM >
+const TO Cast(const FROM& toCast)
+{
+	#ifdef RTTI_ENABLED
+	return dynamic_cast<const TO>(toCast));
+	#else
+	return (const TO)(toCast);
 	//Is reinterpret_cast the appropriate substitute here? Need to check usages.
 	#endif
 }
@@ -58,9 +77,30 @@ TO Cast(FROM toCast)
  * @return toCast as a TO, regardless of what it was before.
  */
 template < typename TO, typename FROM >
-TO ForceCast(FROM toCast)
+TO ForceCast(FROM& toCast)
 {
 	return (TO)(void*)(toCast);
+}
+
+/**
+ * DANGEROUS!!! <br />
+ *
+ * DO NOT USE THIS UNLESS YOU KNOW WHAT YOU ARE DOING! <br />
+ *
+ * THIS DOES NO ERROR CHECKING AND WILL BREAK YOUR CODE IF MISUSED! <br />
+ *
+ * Example use case: <br />
+ * void* toCast = new MyClass(); //void* might be an ambiguous base class but MyClass is the same for toCast and casted.
+ * MyClass* casted = ForceCast<MyClass*>(toCast);
+ * @tparam TO
+ * @tparam FROM Dynamically determined template type.
+ * @param toCast a FROM.
+ * @return toCast as a TO, regardless of what it was before.
+ */
+template < typename TO, typename FROM >
+const TO ForceCast(const FROM& toCast)
+{
+	return (const TO)(const void*)(toCast);
 }
 
 /**
@@ -74,11 +114,29 @@ TO ForceCast(FROM toCast)
  */
 template < typename TO_FINAL, typename TO_1, typename FROM >
 TO_FINAL DoubleForceCast(
-	FROM toCast,
+	FROM& toCast,
 	TO_1* autoTo 
 )
 {
 	return (TO_FINAL)(TO_1)(void*)(toCast);
+}
+
+/**
+ * DANGEROUS!!! <br />
+ * Same as ForceCast, except uses a dummy parameter to automatically determine an intermediate type. <br />
+ * @tparam TO Dynamically determined by autoTo dummy parameter.
+ * @tparam FROM Dynamically determined template type.
+ * @param toCast a FROM.
+ * @param, autoTo dummy.
+ * @return toCast as a TO, regardless of what it was before.
+ */
+template < typename TO_FINAL, typename TO_1, typename FROM >
+const TO_FINAL DoubleForceCast(
+	const FROM& toCast,
+	TO_1* autoTo
+)
+{
+	return (const TO_FINAL)(const TO_1)(const void*)(toCast);
 }
 
 } //bio namespace
