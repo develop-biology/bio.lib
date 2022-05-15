@@ -3,7 +3,8 @@ __Programming Life__
 
 ![build](https://github.com/develop-biology/lib_bio/actions/workflows/ebbs-pr.yml/badge.svg)
 
-** THIS CODE IS PRE-ALPHA ** <br />
+
+**THIS CODE IS PRE-ALPHA**
 We'll be releasing the alpha version as soon as we can!
 
 As a part of eons, we follow all [eons conventions](https://eons.llc/convention/).
