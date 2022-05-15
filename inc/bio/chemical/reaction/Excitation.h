@@ -270,10 +270,7 @@ public:
 	virtual Properties GetProperties() const
 	{
 		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
-		ret.insert(
-			ret.end(),
-			ExcitationBase::GetClassProperties().Begin(),
-			ExcitationBase::GetClassProperties().end());
+		ret.Import(ExcitationBase::GetClassProperties());
 		return ret;
 	}
 
@@ -352,10 +349,7 @@ public:
 	virtual Properties GetProperties() const
 	{
 		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
-		ret.insert(
-			ret.end(),
-			ExcitationBase::GetClassProperties().Begin(),
-			ExcitationBase::GetClassProperties().end());
+		ret.Import(ExcitationBase::GetClassProperties());
 		return ret;
 	}
 
@@ -456,10 +450,7 @@ public:
 	virtual Properties GetProperties() const
 	{
 		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
-		ret.insert(
-			ret.end(),
-			ExcitationBase::GetClassProperties().Begin(),
-			ExcitationBase::GetClassProperties().end());
+		ret.Import(ExcitationBase::GetClassProperties());
 		return ret;
 	}
 

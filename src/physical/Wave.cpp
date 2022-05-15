@@ -174,15 +174,11 @@ Properties Wave::GetProperties() const
 
 	ConstWaves waves;
 	waves.Add(wave);
-	TempWave* twave = new TempWave(properties);
-	waves.Add(twave);
-
-	Properties ret = GetResonanceBetween(
-		waves
-	);
-
-	delete twave;
-	return ret;
+	TempWave twave(properties);
+	ByteStream overt;
+	overt.Set< Wave* >(&twave);
+	waves.Add(overt);
+	return GetResonanceBetween(waves);
 }
 
 /*static*/ Properties Wave::GetResonanceBetween(

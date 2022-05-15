@@ -53,6 +53,7 @@ namespace utility {
 template < typename T >
 BIO_CONSTEXPR bool IsWrappedPrimitive()
 {
+	#if BIO_CPP_VERSION >= 11
 	if (::std::is_base_of< TransparentWrapper< bool >, T >::value)
 	{
 		return true;
@@ -97,6 +98,7 @@ BIO_CONSTEXPR bool IsWrappedPrimitive()
 	{
 		return true;
 	}
+	#endif
 	return false;
 }
 

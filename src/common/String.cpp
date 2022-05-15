@@ -179,7 +179,7 @@ std::string string::FromVectorOfStrings(
 		++iter
 		)
 	{
-		std::string substring(*iter);
+		std::string substring(Cast< const char* >(iter));
 
 		if (trimLeadingSpaces)
 		{
