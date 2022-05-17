@@ -37,22 +37,22 @@ BIO_ID_FUNCTION_BODY(                                                          \
 //@formatter:off
 
 #ifdef BIO_LOG_DISABLE_DEBUG
-	#define BIO_LOG_DEBUG(format, ...)
+	#define BIO_LOG_DEBUG(...)
 #else
-	#define BIO_LOG_DEBUG(format, ...)	log(log_level::Debug(), format, __VA_ARGS__)
+	#define BIO_LOG_DEBUG(...)	this->Log(::bio::log_level::Debug(), __VA_ARGS__);
 #endif
 #ifdef BIO_LOG_DISABLE_INFO
-	#define BIO_LOG_INFO(format, ...)
+	#define BIO_LOG_INFO(...)
 #else
-	#define BIO_LOG_INFO(format, ...)	log(log_level::Info(), format, __VA_ARGS__)
+	#define BIO_LOG_INFO(...)	this->Log(::bio::log_level::Info(), __VA_ARGS__);
 #endif
 #ifdef BIO_LOG_DISABLE_WARN
-	#define BIO_LOG_WARN(format, ...)
+	#define BIO_LOG_WARN(...)
 #else
-	#define BIO_LOG_WARN(format, ...)	log(log_level::Warn(), format, __VA_ARGS__)
+	#define BIO_LOG_WARN(...)	this->Log(::bio::log_level::Warn(), __VA_ARGS__);
 #endif
 #ifdef BIO_LOG_DISABLE_ERROR
-	#define BIO_LOG_ERROR(format, ...)
+	#define BIO_LOG_ERROR(...)
 #else
-	#define BIO_LOG_ERROR(format, ...)	log(log_level::Error(), format, __VA_ARGS__)
+	#define BIO_LOG_ERROR(...)	this->Log(::bio::log_level::Error(), __VA_ARGS__);
 #endif
