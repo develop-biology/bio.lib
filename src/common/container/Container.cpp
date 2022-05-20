@@ -32,8 +32,7 @@ Container::Container(
 )
 	:
 	mFirstFree(1),
-	mSize(expectedSize + 1),
-	mTempItt(NULL)
+	mSize(expectedSize + 1)
 {
 	mStore = (unsigned char*)std::malloc(mSize * stepSize);
 	BIO_ASSERT(mStore)
@@ -42,8 +41,7 @@ Container::Container(
 Container::Container(const Container& other)
 	:
 	mFirstFree(other.mFirstFree),
-	mSize(other.mSize),
-	mTempItt(NULL)
+	mSize(other.mSize)
 {
 	mStore = (unsigned char*)std::malloc(mSize * other.GetStepSize());
 	BIO_ASSERT(mStore)
@@ -53,8 +51,7 @@ Container::Container(const Container& other)
 Container::Container(const Container* other)
 	:
 	mFirstFree(other->mFirstFree),
-	mSize(other->mSize),
-	mTempItt(NULL)
+	mSize(other->mSize)
 {
 	mStore = (unsigned char*)std::malloc(mSize * other->GetStepSize());
 	BIO_ASSERT(mStore)
@@ -63,23 +60,43 @@ Container::Container(const Container* other)
 
 Container::~Container()
 {
-	Clear(); // <- NOT VIRTUAL (in dtor).
-	if (mTempItt)
+	//Clearing *this is currently not needed nor useful.
+	//Clear(); // <- NOT VIRTUAL (in dtor).
+	if (mStore)
 	{
-		delete mTempItt;
-		mTempItt = NULL;
+		std::free(mStore);
+		mStore = NULL;
 	}
-	std::free(mStore);
 }
 
 Index Container::GetBeginIndex() const
 {
-	return 1;
+	Index ret = 1;
+	while (IsFree(ret))
+	{
+		if (!IsInRange(++ret))
+		{
+			return InvalidIndex();
+		}
+	}
+	return ret;
 }
 
 Index Container::GetEndIndex() const
 {
-	return GetAllocatedSize();
+	Index ret = GetAllocatedSize();
+	if (!ret)
+	{
+		return InvalidIndex();
+	}
+	while (IsFree(ret))
+	{
+		if (!--ret)
+		{
+			return InvalidIndex();
+		}
+	}
+	return ret;
 }
 
 Index Container::GetCapacity() const
@@ -89,7 +106,7 @@ Index Container::GetCapacity() const
 
 Index Container::GetAllocatedSize() const
 {
-	return mFirstFree;
+	return mFirstFree - 1; //last not free.
 }
 
 Index Container::GetNumberOfElements() const
@@ -104,10 +121,17 @@ bool Container::IsInRange(const Index index) const
 
 bool Container::IsFree(Index index) const
 {
+	//InvalidIndex should always be free.
+	if (!index)
+	{
+		return true;
+	}
+
 	if (index >= mFirstFree)
 	{
 		return true;
 	}
+
 	return ::std::find(
 		mDeallocated.begin(),
 		mDeallocated.end(),
@@ -197,47 +221,37 @@ ByteStream Container::Access(const Index index)
 {
 	BIO_SANITIZE(IsAllocated(index), ,
 		return NULL)
-	ByteStream* ret;
-	std::memcpy(
-		ret,
-		&mStore[index * sizeof(ByteStream)],
-		sizeof(ByteStream));
-	return *ret;
+	return *ForceCast< ByteStream* >(&mStore[index * sizeof(ByteStream)]);
 }
 
 const ByteStream Container::Access(const Index index) const
 {
 	BIO_SANITIZE(IsAllocated(index), ,
 		return NULL)
-	ByteStream* ret;
-	std::memcpy(
-		ret,
-		&mStore[index * sizeof(ByteStream)],
-		sizeof(ByteStream));
-	return *ret;
+	return *ForceCast< ByteStream* >(&mStore[index * sizeof(ByteStream)]);
 }
 
 Index Container::SeekTo(const ByteStream content) const
 {
-	if (!mTempItt)
-	{
-		mTempItt = ConstructClassIterator();
-	}
-	mTempItt->MoveTo(GetEndIndex());
+	Index ret = InvalidIndex();
+	Iterator* itt = ConstructClassIterator();
+	itt->MoveTo(GetEndIndex());
 	for (
-		; !mTempItt->IsAtBeginning();
-		--mTempItt
+		; !itt->IsAtBeginning();
+		itt->Decrement()
 		)
 	{
 		if (AreEqual(
-			mTempItt->GetIndex(),
+			itt->GetIndex(),
 			content
 		))
 		{
-			return mTempItt->GetIndex();
+			ret = itt->GetIndex();
+			break;
 		}
 	}
-	return InvalidIndex();
+	delete itt;
+	return ret;
 }
 
 bool Container::Has(const ByteStream content) const
@@ -245,18 +259,14 @@ bool Container::Has(const ByteStream content) const
 	return SeekTo(content); //implicit cast to bool should work.
 }
 
-bool Container::Erase(const Index index)
+ByteStream Container::Erase(const Index index)
 {
-	BIO_SANITIZE(IsAllocated(index), ,
-		return false)
-	ByteStream* toDelete;
-	std::memcpy(
-		toDelete,
-		&mStore[index * sizeof(ByteStream)],
-		sizeof(ByteStream));
-	delete toDelete;
-	mDeallocated.push_back(index);
-	return true;
+	ByteStream ret;
+	BIO_SANITIZE(this->IsAllocated(index), ,
+		return ret)
+	ret = Access(index);
+	this->mDeallocated.push_back(index);
+	return ret;
 }
 
 void Container::Import(const Container& other)
@@ -280,20 +290,6 @@ void Container::Import(const Container* other)
 
 void Container::Clear()
 {
-	//Call destructors before clearing the array.
-	if (!mTempItt)
-	{
-		mTempItt = ConstructClassIterator();
-	}
-	mTempItt->MoveTo(GetEndIndex());
-	for (
-		; !mTempItt->IsAtBeginning();
-		--mTempItt
-		)
-	{
-		Erase(mTempItt->GetIndex());
-	}
-
 	mFirstFree = 1;
 	mDeallocated.clear();
 }
@@ -349,9 +345,13 @@ Index Container::GetNextAvailableIndex()
 		ret = mDeallocated.front();
 		mDeallocated.pop_front();
 	}
-	else if (mFirstFree == mSize)
+	else if (GetAllocatedSize() == GetCapacity())
 	{
 		Expand();
+		ret = mFirstFree++;
+	}
+	else
+	{
 		ret = mFirstFree++;
 	}
 	return ret;

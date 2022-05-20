@@ -27,21 +27,27 @@ namespace physical {
 
 Line::Line(Index expectedSize)
 	:
-	Arrangement< Linear >(expectedSize)
+	Arrangement< Linear >(expectedSize),
+	mTempItt(NULL)
 {
 
 }
 
 Line::Line(const Container* other)
 	:
-	Arrangement< Linear >(other)
+	Arrangement< Linear >(other),
+	mTempItt(NULL)
 {
 
 }
 
 Line::~Line()
 {
-
+	if (mTempItt)
+	{
+		delete mTempItt;
+		mTempItt = NULL;
+	}
 }
 
 ByteStream Line::Access(const Index index)
@@ -83,7 +89,7 @@ Index Line::SeekToName(Name name)
 	mTempItt->MoveTo(GetEndIndex());
 	for (
 		; !mTempItt->IsAtBeginning();
-		--mTempItt
+		mTempItt->Decrement()
 		)
 	{
 		if (LinearAccess(mTempItt->GetIndex())->IsName(name))
@@ -103,7 +109,7 @@ Index Line::SeekToId(StandardDimension id)
 	mTempItt->MoveTo(GetEndIndex());
 	for (
 		; !mTempItt->IsAtBeginning();
-		--mTempItt
+		mTempItt->Decrement()
 		)
 	{
 		if (LinearAccess(mTempItt->GetIndex())->IsId(id))

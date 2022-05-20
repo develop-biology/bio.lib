@@ -23,9 +23,10 @@
 
 #include <cstring>
 
-using namespace bio;
+namespace bio {
+namespace string {
 
-bool string::ToBool(
+bool ToBool(
 	const char* s,
 	bool* returned
 )
@@ -38,7 +39,7 @@ bool string::ToBool(
 	return true;
 }
 
-bool string::ToInt(
+bool ToInt(
 	const char* s,
 	int32_t* value
 )
@@ -57,7 +58,7 @@ bool string::ToInt(
 	return ((*endptr) == '\0');
 }
 
-bool string::ToUInt(
+bool ToUInt(
 	const char* s,
 	uint32_t* value
 )
@@ -76,7 +77,7 @@ bool string::ToUInt(
 	return ((*endptr) == '\0');
 }
 
-bool string::ToFloat(
+bool ToFloat(
 	const char* s,
 	float* value
 )
@@ -94,7 +95,7 @@ bool string::ToFloat(
 	return ((*endptr) == '\0');
 }
 
-StdStrings string::Parse(
+StdStrings Parse(
 	const ::std::string& s,
 	char delimiter,
 	bool trimLeadingSpaces
@@ -128,7 +129,7 @@ StdStrings string::Parse(
 	return result;
 }
 
-std::string string::FromVectorOfStrings(
+std::string FromVectorOfStrings(
 	const StdStrings& v,
 	char delimiter,
 	bool trimLeadingSpaces
@@ -166,7 +167,7 @@ std::string string::FromVectorOfStrings(
 	return result;
 }
 
-std::string string::FromVectorOfStrings(
+std::string FromVectorOfStrings(
 	const CharStrings& v,
 	char delimiter,
 	bool trimLeadingSpaces
@@ -204,7 +205,7 @@ std::string string::FromVectorOfStrings(
 	return result;
 }
 
-CharStrings string::ToCharStrings(const StdStrings& strings)
+CharStrings ToCharStrings(const StdStrings& strings)
 {
 	CharStrings ret;
 	for (
@@ -218,7 +219,7 @@ CharStrings string::ToCharStrings(const StdStrings& strings)
 	return ret;
 }
 
-StdStrings string::ToStdStrings(const CharStrings& strings)
+StdStrings ToStdStrings(const CharStrings& strings)
 {
 	StdStrings ret;
 	for (
@@ -232,7 +233,7 @@ StdStrings string::ToStdStrings(const CharStrings& strings)
 	return ret;
 }
 
-void string::CloneInto(
+void CloneInto(
 	const char* source,
 	const char*& target
 )
@@ -248,3 +249,11 @@ void string::CloneInto(
 	tmpName[len] = '\0';
 	target = tmpName;
 }
+
+bool AreEqual(const char* str1, const char* str2)
+{
+	return strcmp(str1, str2) == 0;
+}
+
+} //string namespace
+} //bio namespace

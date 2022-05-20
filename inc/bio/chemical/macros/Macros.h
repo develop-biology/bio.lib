@@ -55,11 +55,11 @@
 #define BIO_GET_OPTIONAL_CLASS_METHODS_FOR_chemical()                          \
     BIO_GET_OPTIONAL_CLASS_METHODS_FOR_physical(),                             \
     (                                                                          \
-        virtual Code Attenuate(const ::bio::physical::Wave* other),            \
+        virtual ::bio::Code Attenuate(const ::bio::physical::Wave* other),     \
         Attenuate(other)                                                       \
     ),                                                                         \
     (                                                                          \
-        virtual Code Disattenuate(const ::bio::physical::Wave* other),         \
+        virtual ::bio::Code Disattenuate(const ::bio::physical::Wave* other),  \
         Disattenuate(other)                                                    \
     )
 

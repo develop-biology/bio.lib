@@ -47,24 +47,27 @@ typedef Arrangement< ::std::string > StdStrings;
 typedef Arrangement< ByteStream > ByteStreams;
 
 /**
- * milliseconds (ms for short) <br />
+ * Timestamp. Usually in ms since epoch (epoch is sometimes the uptime of the kernel) <br />
  */
 typedef uint32_t Timestamp;
 typedef Arrangement< Timestamp > Timestamps;
 
 /**
- * microseconds (us for short) <br />
+ * microseconds (us for short). <br />
  */
-typedef uint32_t TimeUS;
+typedef uint32_t MicroSeconds;
+typedef MicroSeconds US;
 
 /**
- * milliseconds (ms for short) <br />
+ * milliseconds (ms for short). <br />
  */
-typedef uint32_t TimeMS;
+typedef uint32_t MilliSeconds;
+typedef MilliSeconds MS;
 
 /**
- * seconds (s or sec for short) <br />
+ * seconds (s or sec for short). <br />
  */
-typedef uint32_t TimeSec;
+typedef uint32_t Seconds;
+typedef Seconds S;
 
 } //bio namespace

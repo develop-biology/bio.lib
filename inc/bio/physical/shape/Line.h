@@ -109,6 +109,9 @@ public:
 	 * @return the given position casted to an Identifiable< StandardDimension >*
 	 */
 	virtual const Identifiable< StandardDimension >* LinearAccess(Index index) const;
+
+protected:
+	Iterator* mTempItt;
 };
 
 } //physical namespace

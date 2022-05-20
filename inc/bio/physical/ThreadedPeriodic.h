@@ -47,7 +47,7 @@ public:
 	/**
 	 *
 	 */
-	ThreadedPeriodic(TimeUS interval = GetDefaultInterval());
+	ThreadedPeriodic(MicroSeconds interval = GetDefaultInterval());
 
 	/**
 	 *

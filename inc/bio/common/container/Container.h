@@ -90,12 +90,12 @@ public:
 	virtual ~Container();
 
 	/**
-	 * @return where to start.
+	 * @return the first allocated (i.e. usable) index in *this.
 	 */
 	virtual Index GetBeginIndex() const;
 
 	/**
-	 * @return where to end.
+	 * @return the last allocated (i.e. usable) index in *this.
 	 */
 	virtual Index GetEndIndex() const;
 
@@ -129,6 +129,7 @@ public:
 	/**
 	 * Checks if the given Index is available to be allocated, i.e. the Index should not be used. <br />
 	 * NOTE: Just because a Index is not free does not necessarily mean the Index has been allocated. <br />
+	 * InvalidIndex is always Free. <br />
 	 * @param index
 	 * @return whether or not the given Index is free to use.
 	 */
@@ -229,10 +230,11 @@ public:
 
 	/**
 	 * Removes content from *this. <br />
+	 * If *this stores pointers and you don't delete them elsewhere, consider doing something like: delete myContainer.Erase(someIndex).As< MyPointerType* >();
 	 * @param index
-	 * @return whether or not the erasure was successful.
+	 * @return the content that was previously at the given index.
 	 */
-	virtual bool Erase(Index index);
+	virtual ByteStream Erase(Index index);
 
 	/**
 	 * Erase wrapper for SmartIterators. <br />
@@ -368,12 +370,6 @@ protected:
 	Index mSize;
 	Index mFirstFree;
 	std::deque< Index > mDeallocated;
-
-	/**
-	 * An iterator for use in loops. <br />
-	 * Matches lifecycle of object for better performance. <br />
-	 */
-	mutable Iterator* mTempItt;
 };
 
 } //bio namespace

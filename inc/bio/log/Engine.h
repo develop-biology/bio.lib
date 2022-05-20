@@ -88,7 +88,7 @@ public:
 	/**
 	 * @param filter
 	 * @param level
-	 * @return true if level is enabled for the filter, false if disabled; false if filter is ALL or out of range; false if level is out of range.
+	 * @return true if level is enabled for the filter, false if disabled; false if filter is All() or out of range; false if level is out of range.
 	 */
 	bool FilterPass(
 		Filter filter,
@@ -97,22 +97,22 @@ public:
 
 	/**
 	 * Change filter level for the filter <br />
-	 * @param filter what to affect; use ALL to set the level of all filters.
+	 * @param filter what to affect; use All() to set the level of all filters.
 	 * @param level value to set for the given filter (Log() calls must be >= to this to be seen).
 	 * @return true on success, false otherwise.
 	 */
-	bool FilterSet(
+	bool SetFilter(
 		Filter filter,
 		LogLevel level
 	);
 
 	/**
 	 * Change filter level for the filter <br />
-	 * @param filter what to affect; use ALL to set the level of all filters.
+	 * @param filter what to affect; use "All" to set the level of all filters.
 	 * @param level value to set for the given filter (Log() calls must be >= to this to be seen).
 	 * @return true on success, false otherwise.
 	 */
-	bool FilterSet(
+	bool SetFilter(
 		Name filter,
 		Name level
 	); //calls StringTo...
@@ -121,7 +121,7 @@ public:
 	 * @param filter
 	 * @return Current level for the given filter.
 	 */
-	LogLevel FilterGet(Filter filter) const;
+	LogLevel GetFilter(Filter filter) const;
 
 protected:
 	/**
@@ -132,9 +132,10 @@ protected:
 
 private:
 	/**
-	 * Contains enabled level for every filter <br />
-	 * Only log if level is >= value loaded in this vector <br />
-	 * the index in the vector is the Filter <br />
+	 * Contains enabled level for every filter. <br />
+	 * Only log if level is >= value loaded in this vector. <br />
+	 * The index in the vector is the Filter. <br />
+	 * We use std::vector here for the assign() mechanic. Once that is available in Arrangement<>, we can switch. <br />
 	 */
 	std::vector< LogLevel > mLevelFilter;
 };

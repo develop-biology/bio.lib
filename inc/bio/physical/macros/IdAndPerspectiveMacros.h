@@ -52,8 +52,8 @@ BIO_ID_WITH_PLURAL(className, className##s, dimension)
 dimension functionName()                                                       \
 {                                                                              \
     static ::bio::CachedId< dimension >                                        \
-        s_##functionName(#functionName, perspective);                          \
-    return s_##functionName;                                                   \
+        s##functionName(#functionName, perspective);                           \
+    return s##functionName;                                                    \
 }
 
 /**

@@ -287,7 +287,7 @@ public:
 	 */
 	virtual bool IsName(Name name) const
 	{
-		return !strcmp(
+		return string::AreEqual(
 			name,
 			this->GetName());
 	}

@@ -84,7 +84,8 @@ public:
 
 	/**
 	 * Standard ctors. <br />
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(molecular,
+	 */
+	 BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(molecular,
 		Molecule,
 		&MoleculePerspective::Instance(),
 		filter::Molecular())

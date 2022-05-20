@@ -52,7 +52,7 @@ public:
 		),
 		mPerspective(perspective)
 	{
-
+		Flush();
 	}
 
 	/**

@@ -65,31 +65,31 @@ bool Iterator::IsAtEnd() const
 	return mIndex == mContainer->GetAllocatedSize();
 }
 
-Iterator* Iterator::Increment()
+Iterator& Iterator::Increment()
 {
 	if (mIndex >= mContainer->GetAllocatedSize())
 	{
 		mIndex = mContainer->GetAllocatedSize();
-		return this;
+		return *this;
 	}
 	while (mContainer->IsFree(++mIndex) && !IsAtEnd())
 	{
 		continue; //avoid re-referencing mIndex; see condition.
 	}
-	return this;
+	return *this;
 }
 
-Iterator* Iterator::Decrement()
+Iterator& Iterator::Decrement()
 {
 	if (!mIndex)
 	{
-		return this;
+		return *this;
 	}
 	while (mContainer->IsFree(--mIndex) && !IsAtBeginning())
 	{
 		continue; //avoid re-referencing mIndex; see condition.
 	}
-	return this;
+	return *this;
 }
 
 ByteStream Iterator::operator*()

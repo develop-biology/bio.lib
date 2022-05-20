@@ -110,29 +110,42 @@ bool Engine::FilterPass(
 	LogLevel level
 ) const
 {
+	if (filter == filter::All())
+	{
+		return false;
+	}
 	return level >= mLevelFilter[filter];
 }
 
-bool Engine::FilterSet(
+bool Engine::SetFilter(
 	Filter filter,
 	LogLevel level
 )
 {
-	mLevelFilter[filter] = level;
+	if (filter == filter::All())
+	{
+		mLevelFilter.assign(
+			FilterPerspective::Instance().GetNumUsedIds(),
+			level);
+	}
+	else
+	{
+		mLevelFilter[filter] = level;
+	}
 	return true; //SUCCESS
 }
 
-bool Engine::FilterSet(
+bool Engine::SetFilter(
 	Name filter,
 	Name level
 )
 {
-	return FilterSet(
+	return SetFilter(
 		FilterPerspective::Instance().GetIdFromName(filter),
 		LogLevelPerspective::Instance().GetIdFromName(level));
 }
 
-LogLevel Engine::FilterGet(Filter filter) const
+LogLevel Engine::GetFilter(Filter filter) const
 {
 	return mLevelFilter[filter];
 }

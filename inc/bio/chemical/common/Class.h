@@ -56,8 +56,11 @@ private:
 			Filterable::Initialize(filter);
 		}
 		//Bond the class we're given, Virtually.
-		physical::Class< T >::mObject->FormBond(
-			physical::Class< T >::mObject,
+		//Cannot use mObject because it doesn't exist yet.
+		AtomicNumber bondedId = Atom::GetBondId< T >();
+		this->AsAtom()->FormBondImplementation(
+			this->AsWave(),
+			bondedId,
 			bond_type::Virtual());
 	}
 

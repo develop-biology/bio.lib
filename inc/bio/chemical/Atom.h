@@ -225,6 +225,27 @@ public:
 	}
 
 	/**
+	 * @tparam T
+	 * @return the Id to use when bonding the given type.
+	 */
+	template < typename T >
+	static AtomicNumber GetBondId()
+	{
+		#if BIO_CPP_VERSION < 17
+		return PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >();
+		#else
+		if constexpr(!utility::IsWave< T >())
+		{
+			return PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >();
+		}
+		else
+		{
+			return PeriodicTable::Instance().GetIdFromType< T >();
+		}
+		#endif
+	}
+
+	/**
 	 * Adds a new Bond to *this or updates an Empty Bond for T. <br />
 	 * Updating a Bond requires both Breaking and Forming steps to be done manually. <br />
 	 * You CANNOT bond the same T twice (without Breaking the initial Bond). <br />
@@ -238,24 +259,24 @@ public:
 		T toBond,
 		BondType type = bond_type::Unknown())
 	{
+		AtomicNumber bondedId = GetBondId< T >();
 		#if BIO_CPP_VERSION < 17
-		AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >(); 
-		return FormBondImplementation((new physical::Quantum< T >(toBond))->AsWave(),
+		return FormBondImplementation(
+			(new physical::Quantum< T >(toBond))->AsWave(),
 			bondedId,
 			type
 		);
 		#else
 		if constexpr(!utility::IsWave< T >())
 		{
-			AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >();
-			return FormBondImplementation((new physical::Quantum< T >(toBond))->AsWave(),
+			return FormBondImplementation(
+				(new physical::Quantum< T >(toBond))->AsWave(),
 				bondedId,
 				type
 			);
 		}
 		else
 		{
-			AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< T >();
 			return FormBondImplementation(
 				toBond->AsWave(),
 				bondedId,
@@ -376,11 +397,9 @@ public:
 	 */
 	const Bonds* GetAllBonds() const;
 
-protected:
-	Bonds mBonds;
-
 	/**
 	 * Create a Bond. <br />
+	 * This is public for use in ctors. Please use FormBond<> unless you are forced to call this impl method. <br />
 	 * @param toBond
 	 * @param id
 	 * @param type
@@ -393,6 +412,7 @@ protected:
 
 	/**
 	 * Remove a Bond. <br />
+	 * This is public for use in dtors. Please use BreakBond<> unless you are forced to call this impl method. <br />
 	 * @param toDisassociate
 	 * @param id
 	 * @param type
@@ -403,6 +423,9 @@ protected:
 		AtomicNumber id,
 		BondType type
 	);
+
+protected:
+	Bonds mBonds;
 };
 
 } //chemical namespace

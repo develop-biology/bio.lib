@@ -123,7 +123,7 @@ public:
 	 * Release thread processing for us microseconds. <br />
 	 * @param us
 	 */
-	virtual void Sleep(TimeUS us);
+	virtual void Sleep(MicroSeconds us);
 
 protected:
 

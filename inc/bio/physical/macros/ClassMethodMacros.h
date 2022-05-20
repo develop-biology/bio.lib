@@ -26,15 +26,16 @@
 /**
  * Define a virtual function that forwards to a Class. <br />
  * Currently only works for functions that have a non-void return type. <br />
+ * NOTE: We currently have to hard-code ::bio before ns to make this compatible with MACROS_OF_ns. This does prevent extension of this system downstream (but it could be copied). <br />
  */
-#define BIO_CLASS_METHOD(\
-    ns, \
-    caller, \
-    functionSignature, \
+#define BIO_CLASS_METHOD(                                                      \
+    ns,                                                                        \
+    caller,                                                                    \
+    functionSignature,                                                         \
     functionCall)                                                              \
 functionSignature                                                              \
 {                                                                              \
-    return this->ns::Class< caller >::functionCall;                            \
+    return this->::bio::ns::Class< caller >::functionCall;                     \
 }
 
 #define BIO_CLASS_METHOD_WITH_MACRO(ns, caller, macro)                         \

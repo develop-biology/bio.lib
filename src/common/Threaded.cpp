@@ -167,7 +167,7 @@ bool Threaded::Stop()
 
 }
 
-void Threaded::Sleep(TimeUS us)
+void Threaded::Sleep(MicroSeconds us)
 {
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11

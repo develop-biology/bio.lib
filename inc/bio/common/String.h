@@ -166,5 +166,13 @@ struct Echelon
 typedef Arrangement< Echelon > Echelons;
 
 
+/**
+ * This is a simple wrapper around strcmp.
+ * @param str1
+ * @param str2
+ * @return whether or not str1 == str2
+ */
+bool AreEqual(const char* str1, const char* str2);
+
 } //string namespace
 } //bio namespace

@@ -217,7 +217,7 @@ public:
 	 */
 	virtual Id GetIdFromName(Name name)
 	{
-		if (strcmp(
+		if (string::AreEqual(
 			InvalidName(),
 			name
 		))
@@ -279,7 +279,7 @@ public:
 	 */
 	virtual Id GetUniqueIdFor(Name name)
 	{
-		if (strcmp(
+		if (string::AreEqual(
 			InvalidName(),
 			name
 		))
@@ -315,7 +315,7 @@ public:
 	 */
 	virtual Id GetIdWithoutCreation(Name name) const
 	{
-		if (strcmp(
+		if (string::AreEqual(
 			InvalidName(),
 			name
 		))
@@ -332,7 +332,7 @@ public:
 		{
 			haditBuffer = hdt;
 
-			if (!strcmp(
+			if (string::AreEqual(
 				haditBuffer->mName,
 				name
 			))

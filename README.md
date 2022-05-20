@@ -96,7 +96,8 @@ With that said, this is just c++ code. Build it however you want.
 
 Build using ebbs:
 ```
-ebbs
+cd build
+ebbs -c build_local.json
 ```
 
 installation instructions coming soon (need package manager / repository semantics for module delivery)
