@@ -101,7 +101,7 @@ Index Container::GetEndIndex() const
 
 Index Container::GetCapacity() const
 {
-	return mSize;
+	return mSize - 1;
 }
 
 Index Container::GetAllocatedSize() const
@@ -116,7 +116,7 @@ Index Container::GetNumberOfElements() const
 
 bool Container::IsInRange(const Index index) const
 {
-	return index && index < mSize;
+	return index && index < GetCapacity();
 }
 
 bool Container::IsFree(Index index) const
@@ -146,7 +146,7 @@ bool Container::IsAllocated(const Index index) const
 
 void Container::Expand()
 {
-	BIO_SANITIZE(mSize < ::std::numeric_limits< Index >::max(), ,
+	BIO_SANITIZE(mSize != ::std::numeric_limits< Index >::max(), ,
 		return)
 	Index targetSize = mSize * mSize; //squared. 
 	if (targetSize < mSize)

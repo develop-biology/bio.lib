@@ -147,6 +147,7 @@ public:
 			sizeof(T));
 		mSize = sizeof(T);
 		mTypeName = TypeName< T >();
+		mHolding = true;
 	}
 
 	/**
