@@ -81,6 +81,7 @@ public:
 			&this->mStore[ret * sizeof(TYPE)],
 			&toAdd,
 			sizeof(TYPE));
+		BIO_ASSERT(this->Access(ret).template Is< TYPE >())
 		return ret;
 	}
 

@@ -87,7 +87,7 @@ public:
 		physical::Class< T >(
 			object,
 			new physical::Symmetry(
-				TypeName< T >().c_str(),
+				TypeName< T >(),
 				symmetryType
 			))
 	{
@@ -111,7 +111,7 @@ public:
 		physical::Class< T >(
 			object,
 			new physical::Symmetry(
-				TypeName< T >().c_str(),
+				TypeName< T >(),
 				symmetryType
 			))
 	{
@@ -146,7 +146,7 @@ public:
 		physical::Class< T >(
 			object,
 			new physical::Symmetry(
-				TypeName< T >().c_str(),
+				TypeName< T >(),
 				symmetryType
 			))
 	{

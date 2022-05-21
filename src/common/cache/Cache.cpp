@@ -38,7 +38,7 @@ void Cache::Flush()
 {
 	for (
 		SmartIterator chd = End();
-		!chd.IsAtBeginning();
+		!chd.IsBeforeBeginning();
 		--chd
 		)
 	{

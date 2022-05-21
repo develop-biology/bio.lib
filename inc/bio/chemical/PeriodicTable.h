@@ -58,7 +58,7 @@ public:
 	template < typename T >
 	Name GetNameFromType() const
 	{
-		return TypeName< T >().c_str();
+		return TypeName< T >();
 	}
 
 	/**
@@ -114,7 +114,7 @@ public:
 	template < typename T >
 	const Properties GetPropertiesOf() const
 	{
-		return GetPropertiesOf(TypeName< T >().c_str());
+		return GetPropertiesOf(TypeName< T >());
 	}
 
 	/**
@@ -149,7 +149,7 @@ public:
 	AtomicNumber RecordPropertyOf(Property property)
 	{
 		return RecordPropertyOf(
-			TypeName< T >().c_str(),
+			TypeName< T >(),
 			property
 		);
 	}
@@ -186,7 +186,7 @@ public:
 	AtomicNumber RecordPropertiesOf(Properties properties)
 	{
 		return RecordPropertiesOf(
-			TypeName< T >().c_str(),
+			TypeName< T >(),
 			properties
 		);
 	}

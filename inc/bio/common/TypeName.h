@@ -22,6 +22,7 @@
 #pragma once
 
 #include <string>
+#include <cstring>
 
 namespace bio {
 
@@ -33,13 +34,13 @@ namespace bio {
  * @return Just T as a string.
  */
 template < typename T >
-const ::std::string TypeName();
+const char* TypeName();
 
 /**
  * @return "void"
  */
 template <>
-inline const ::std::string TypeName< void >()
+inline const char* TypeName< void >()
 {
 	return "void";
 }
@@ -84,7 +85,7 @@ static const ::std::size_t WrappedTypeNamePrefixLength()
  */
 static const ::std::size_t WrappedTypeNameSuffixLength()
 {
-	return WrappedTypeName< TypeNameProber >().length() - WrappedTypeNamePrefixLength() - TypeName< TypeNameProber >().length();
+	return WrappedTypeName< TypeNameProber >().length() - WrappedTypeNamePrefixLength() - strlen(TypeName< TypeNameProber >());
 }
 
 /**
@@ -93,16 +94,26 @@ static const ::std::size_t WrappedTypeNameSuffixLength()
  * @return Just T as a string.
  */
 template < typename T >
-static const ::std::string TypeName()
+static const char* TypeName()
 {
 	static const ::std::string wrappedName = WrappedTypeName< T >();
 	static const ::std::size_t prefixLength = WrappedTypeNamePrefixLength();
 	static const ::std::size_t suffixLength = WrappedTypeNameSuffixLength();
 	static const ::std::size_t typeNameLength = wrappedName.length() - prefixLength - suffixLength;
-	return wrappedName.substr(
+	::std::string name = wrappedName.substr(
 		prefixLength,
 		typeNameLength
 	);
+
+	const size_t len = strlen(name.c_str());
+	char* ret = new char[len + 1]; //TODO: Memory leak.
+	strncpy(
+		ret,
+		name.c_str(),
+		len
+	);
+	ret[len] = '\0';
+	return ret;
 }
 
 /**
@@ -112,7 +123,7 @@ static const ::std::string TypeName()
  * @return Just T as a string.
  */
 template < typename T >
-const ::std::string TypeName(const T t)
+static const char* TypeName(const T t)
 {
 	return TypeName< T >();
 }

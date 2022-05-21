@@ -118,7 +118,7 @@ public:
 		Hadit* haditBuffer;
 		for (
 			SmartIterator hdt = mHadits.Begin();
-			!hdt.IsAtEnd();
+			!hdt.IsAfterEnd();
 			++hdt
 			)
 		{
@@ -169,7 +169,7 @@ public:
 		LockThread();
 		SmartIterator hdt = mHadits.Begin();
 		for (
-			; !hdt.IsAtEnd();
+			; !hdt.IsAfterEnd();
 			++hdt
 			)
 		{
@@ -194,7 +194,7 @@ public:
 		LockThread();
 		SmartIterator hdt = mHadits.Begin();
 		for (
-			; !hdt.IsAtEnd();
+			; !hdt.IsAfterEnd();
 			++hdt
 			)
 		{
@@ -326,7 +326,7 @@ public:
 		Hadit* haditBuffer;
 		SmartIterator hdt = mHadits.Begin();
 		for (
-			; !hdt.IsAtEnd();
+			; !hdt.IsAfterEnd();
 			++hdt
 			)
 		{

@@ -139,7 +139,6 @@ public:
 	const T AsBonded() const
 	{
 		Valence position = GetBondPosition< T >();
-
 		BIO_SANITIZE(position, ,
 			return 0);
 		return ForceCast< const T >(mBonds.OptimizedAccess(position)->GetBonded());
@@ -153,7 +152,10 @@ public:
 	template < typename T >
 	T AsBondedQuantum()
 	{
-		return Cast< T >(AsBonded< physical::Quantum< T >* >());
+		physical::Quantum< T >* bonded = AsBonded< physical::Quantum< T >* >();
+		BIO_SANITIZE(bonded, ,
+			return 0)
+		return bonded->operator T();
 	}
 
 	/**
@@ -164,7 +166,10 @@ public:
 	template < typename T >
 	const T AsBondedQuantum() const
 	{
-		return *AsBonded< physical::Quantum< T >* >();
+		physical::Quantum< T >* bonded = AsBonded< physical::Quantum< T >* >();
+		BIO_SANITIZE(bonded, ,
+			return 0)
+		return bonded->operator T();
 	}
 
 	/**
@@ -269,8 +274,7 @@ public:
 		#else
 		if constexpr(!utility::IsWave< T >())
 		{
-			return FormBondImplementation(
-				(new physical::Quantum< T >(toBond))->AsWave(),
+			return FormBondImplementation((new physical::Quantum< T >(toBond))->AsWave(),
 				bondedId,
 				type
 			);

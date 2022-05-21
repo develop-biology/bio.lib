@@ -70,12 +70,12 @@ public:
 	/**
 	 * @return whether or not *this has reached the beginning of its Arrangement.
 	 */
-	virtual bool IsAtBeginning() const;
+	virtual bool IsBeforeBeginning() const;
 
 	/**
 	 * @return whether or not *this has reached the end of its Arrangement.
 	 */
-	virtual bool IsAtEnd() const;
+	virtual bool IsAfterEnd() const;
 
 	/**
 	 * Move *this up a Index <br />

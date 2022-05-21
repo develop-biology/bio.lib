@@ -327,7 +327,7 @@ public:
 		std::vector< T > ret;
 		for (
 			SmartIterator rct = End();
-			!rct.IsAtBeginning();
+			!rct.IsBeforeBeginning();
 			--rct
 			)
 		{

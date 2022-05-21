@@ -57,7 +57,7 @@ public:
 		physical::Class< Quantum< T > >(
 			this,
 			new Symmetry(
-				TypeName< T >().c_str(),
+				TypeName< T >(),
 				symmetry_type::DefineVariable())),
 		mQuantized(new T())
 	{
@@ -72,7 +72,7 @@ public:
 		physical::Class< Quantum< T > >(
 			this,
 			new Symmetry(
-				TypeName< T >().c_str(),
+				TypeName< T >(),
 				symmetry_type::DefineVariable())),
 		mQuantized(new T(assignment))
 	{
@@ -86,7 +86,7 @@ public:
 		physical::Class< Quantum< T > >(
 			this,
 			new Symmetry(
-				TypeName< T >().c_str(),
+				TypeName< T >(),
 				symmetry_type::DefineVariable())),
 		mQuantized(new T(other))
 	{

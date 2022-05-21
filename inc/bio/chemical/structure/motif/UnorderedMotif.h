@@ -164,7 +164,7 @@ public:
 		unsigned int ret = 0;
 		for (
 			SmartIterator otr = other->End();
-			!otr.IsAtBeginning();
+			!otr.IsBeforeBeginning();
 			--otr
 			)
 		{
@@ -201,7 +201,7 @@ public:
 		{
 			ret += string::From< CONTENT_TYPE >(*cnt);
 			++cnt;
-			if (cnt.IsAtEnd())
+			if (cnt.IsAfterEnd())
 			{
 				break;
 			}

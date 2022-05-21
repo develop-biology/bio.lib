@@ -55,24 +55,23 @@ bool Iterator::MoveTo(const Index index)
 	return false;
 }
 
-bool Iterator::IsAtBeginning() const
+bool Iterator::IsBeforeBeginning() const
 {
 	return !mIndex;
 }
 
-bool Iterator::IsAtEnd() const
+bool Iterator::IsAfterEnd() const
 {
-	return mIndex == mContainer->GetAllocatedSize();
+	return !mIndex || mIndex > mContainer->GetAllocatedSize();
 }
 
 Iterator& Iterator::Increment()
 {
-	if (mIndex >= mContainer->GetAllocatedSize())
+	if (IsAfterEnd())
 	{
-		mIndex = mContainer->GetAllocatedSize();
 		return *this;
 	}
-	while (mContainer->IsFree(++mIndex) && !IsAtEnd())
+	while (mContainer->IsFree(++mIndex) && !IsAfterEnd())
 	{
 		continue; //avoid re-referencing mIndex; see condition.
 	}
@@ -81,11 +80,11 @@ Iterator& Iterator::Increment()
 
 Iterator& Iterator::Decrement()
 {
-	if (!mIndex)
+	if (IsBeforeBeginning())
 	{
 		return *this;
 	}
-	while (mContainer->IsFree(--mIndex) && !IsAtBeginning())
+	while (mContainer->IsFree(--mIndex) && !IsBeforeBeginning())
 	{
 		continue; //avoid re-referencing mIndex; see condition.
 	}

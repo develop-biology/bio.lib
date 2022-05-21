@@ -177,7 +177,7 @@ public:
 	template < typename T >
 	bool Is() const
 	{
-		return sizeof(T) == mSize && TypeName< T >() == mTypeName;
+		return sizeof(T) == mSize && strcmp(TypeName< T >(), mTypeName) == 0;
 	}
 
 	/**
@@ -195,7 +195,7 @@ public:
 	/**
 	 * @return the type stored in *this as a string.
 	 */
-	std::string GetTypeName() const;
+	const char* GetTypeName() const;
 
 	/**
 	 * @return the number of bytes *this points to.
@@ -211,7 +211,7 @@ public:
 
 protected:
 	mutable void* mStream;
-	std::string mTypeName;
+	const char* mTypeName;
 	std::size_t mSize;
 	bool mHolding;
 };

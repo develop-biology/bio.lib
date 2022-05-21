@@ -42,7 +42,7 @@ chemical::Products Pathway::Process(chemical::Reactants* reactants)
 	Reaction* reactionBuffer;
 	for (
 		SmartIterator rct = GetAll< Reaction* >()->Begin();
-		!rct.IsAtEnd();
+		!rct.IsAfterEnd();
 		++rct
 		)
 	{

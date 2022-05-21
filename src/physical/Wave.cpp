@@ -211,14 +211,14 @@ Properties Wave::GetProperties() const
 
 	for (
 		SmartIterator wav = waves.Begin()++;
-		!wav.IsAtEnd();
+		!wav.IsAfterEnd();
 		++wav
 		)
 	{
 		Properties wavProperties = wav.As< Wave* >()->GetProperties();
 		for (
 			SmartIterator prp = overlap.Begin();
-			!prp.IsAtEnd();
+			!prp.IsAfterEnd();
 			++prp
 			)
 		{

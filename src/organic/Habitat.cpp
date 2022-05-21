@@ -38,7 +38,7 @@ Code Habitat::AdaptInhabitants()
 	Organism* buddy;
 	for (
 		SmartIterator bud = buddies->Begin();
-		!bud.IsAtEnd();
+		!bud.IsAfterEnd();
 		++bud
 		)
 	{

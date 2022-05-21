@@ -43,7 +43,21 @@ Atom::Atom(const Atom& other)
 
 Atom::~Atom()
 {
-
+	Bond* bondBuffer;
+	for (
+		SmartIterator bnd = mBonds.Begin();
+		!bnd.IsAfterEnd();
+		++bnd
+		)
+	{
+		bondBuffer = bnd;
+		if (bondBuffer)
+		{
+			delete bondBuffer;
+			bondBuffer = NULL;
+		}
+	}
+	mBonds.Clear();
 }
 
 Code Atom::Attenuate(const physical::Wave* other)
@@ -57,7 +71,7 @@ Code Atom::Attenuate(const physical::Wave* other)
 	Bond* bondBuffer;
 	for (
 		SmartIterator bnd = mBonds.End();
-		!bnd.IsAtBeginning();
+		!bnd.IsBeforeBeginning();
 		--bnd
 		)
 	{
@@ -91,7 +105,7 @@ Code Atom::Disattenuate(const physical::Wave* other)
 	Bond* bondBuffer;
 	for (
 		SmartIterator bnd = mBonds.End();
-		!bnd.IsAtBeginning();
+		!bnd.IsBeforeBeginning();
 		--bnd
 		)
 	{
@@ -120,12 +134,12 @@ bool Atom::FormBondImplementation(
 	BondType type
 )
 {
-	BIO_SANITIZE(!toBond || !id, ,
+	BIO_SANITIZE(toBond && id, ,
 		return false);
 
 	Valence position = GetBondPosition(id);
 	Bond* bondBuffer;
-	if (mBonds.IsAllocated(position))
+	if (position && mBonds.IsAllocated(position))
 	{
 		bondBuffer = mBonds.OptimizedAccess(position);
 		BIO_SANITIZE(!bondBuffer->IsEmpty(), ,
@@ -138,7 +152,7 @@ bool Atom::FormBondImplementation(
 	}
 	//implicitly cast the addition index to a bool.
 	return mBonds.Add(
-		Bond(
+		new Bond(
 			id,
 			toBond,
 			type
@@ -169,13 +183,16 @@ Valence Atom::GetBondPosition(AtomicNumber bondedId) const
 {
 	BIO_SANITIZE(bondedId, ,
 		return 0);
+
+	Bond* bondBuffer;
 	for (
 		SmartIterator bnd = mBonds.End();
-		!bnd.IsAtBeginning();
+		!bnd.IsBeforeBeginning();
 		--bnd
 		)
 	{
-		if ((*bnd).template As< Bond >() == bondedId)
+		bondBuffer = bnd;
+		if (bondBuffer->GetId() == bondedId)
 		{
 			return bnd.GetIndex();
 		}

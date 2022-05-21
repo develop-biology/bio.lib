@@ -51,7 +51,7 @@ Code Expressor::ExpressGenes()
 	Code ret = code::Success();
 	for (
 		SmartIterator dna = GetAll< Plasmid* >()->Begin();
-		!dna.IsAtEnd();
+		!dna.IsAfterEnd();
 		++dna
 		)
 	{
@@ -63,7 +63,7 @@ Code Expressor::ExpressGenes()
 	}
 	for (
 		SmartIterator rna = mTranscriptome.Begin();
-		!rna.IsAtEnd();
+		!rna.IsAfterEnd();
 		++rna
 		)
 	{
@@ -93,13 +93,13 @@ Code Expressor::Translate(const RNA* mRNA)
 	Gene* geneBuffer;
 	for (
 		SmartIterator rna = mTranscriptome.Begin();
-		!rna.IsAtEnd();
+		!rna.IsAfterEnd();
 		++rna
 		)
 	{
 		for (
 			SmartIterator gen = rna.As< const RNA* >()->GetAll< Gene* >()->Begin();
-			!gen.IsAtEnd();
+			!gen.IsAfterEnd();
 			++gen
 			)
 		{

@@ -54,7 +54,7 @@ Code RNAPolymerase::Activate()
 	bool shouldTranscribe = false;
 	for (
 		SmartIterator gen = mSource->GetAll< Gene* >()->Begin();
-		!gen.IsAtEnd();
+		!gen.IsAfterEnd();
 		++gen
 		)
 	{

@@ -138,7 +138,7 @@ std::string FromVectorOfStrings(
 	std::string result;
 	for (
 		SmartIterator iter = v.Begin();
-		!iter.IsAtEnd();
+		!iter.IsAfterEnd();
 		++iter
 		)
 	{
@@ -176,7 +176,7 @@ std::string FromVectorOfStrings(
 	std::string result;
 	for (
 		SmartIterator iter = v.Begin();
-		!iter.IsAtEnd();
+		!iter.IsAfterEnd();
 		++iter
 		)
 	{
@@ -210,7 +210,7 @@ CharStrings ToCharStrings(const StdStrings& strings)
 	CharStrings ret;
 	for (
 		SmartIterator str = strings.Begin();
-		!str.IsAtEnd();
+		!str.IsAfterEnd();
 		++str
 		)
 	{
@@ -224,7 +224,7 @@ StdStrings ToStdStrings(const CharStrings& strings)
 	StdStrings ret;
 	for (
 		SmartIterator chr = strings.Begin();
-		!chr.IsAtEnd();
+		!chr.IsAfterEnd();
 		++chr
 		)
 	{

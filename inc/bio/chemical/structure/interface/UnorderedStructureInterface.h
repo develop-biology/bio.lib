@@ -125,7 +125,7 @@ public:
 	{
 		for (
 			SmartIterator otr = other.Begin();
-			!otr.IsAtEnd();
+			!otr.IsAfterEnd();
 			++otr
 			)
 		{
@@ -150,7 +150,7 @@ public:
 		Bond* bondBuffer;
 		for (
 			SmartIterator bnd = other->AsAtom()->GetAllBonds()->End();
-			!bnd.IsAtBeginning();
+			!bnd.IsBeforeBeginning();
 			--bnd
 			)
 		{

@@ -41,21 +41,29 @@ Container::Container(
 Container::Container(const Container& other)
 	:
 	mFirstFree(other.mFirstFree),
-	mSize(other.mSize)
+	mSize(other.mSize),
+	mDeallocated(other.mDeallocated)
 {
 	mStore = (unsigned char*)std::malloc(mSize * other.GetStepSize());
 	BIO_ASSERT(mStore)
-	Import(other); // <- NOT VIRTUAL (in ctor).
+	std::memcpy(
+		mStore,
+		other.mStore,
+		mFirstFree * other.GetStepSize());
 }
 
 Container::Container(const Container* other)
 	:
 	mFirstFree(other->mFirstFree),
-	mSize(other->mSize)
+	mSize(other->mSize),
+	mDeallocated(other->mDeallocated)
 {
 	mStore = (unsigned char*)std::malloc(mSize * other->GetStepSize());
 	BIO_ASSERT(mStore)
-	Import(other); // <- NOT VIRTUAL (in ctor).
+	std::memcpy(
+		mStore,
+		other->mStore,
+		mFirstFree * other->GetStepSize());
 }
 
 Container::~Container()
@@ -111,12 +119,13 @@ Index Container::GetAllocatedSize() const
 
 Index Container::GetNumberOfElements() const
 {
+	BIO_ASSERT(GetAllocatedSize() >= mDeallocated.size())
 	return GetAllocatedSize() - mDeallocated.size();
 }
 
 bool Container::IsInRange(const Index index) const
 {
-	return index && index < GetCapacity();
+	return index && index <= GetCapacity();
 }
 
 bool Container::IsFree(Index index) const
@@ -237,7 +246,7 @@ Index Container::SeekTo(const ByteStream content) const
 	Iterator* itt = ConstructClassIterator();
 	itt->MoveTo(GetEndIndex());
 	for (
-		; !itt->IsAtBeginning();
+		; !itt->IsBeforeBeginning();
 		itt->Decrement()
 		)
 	{
@@ -273,7 +282,7 @@ void Container::Import(const Container& other)
 {
 	for (
 		SmartIterator otr = other.End();
-		!otr.IsAtBeginning();
+		!otr.IsBeforeBeginning();
 		--otr
 		)
 	{

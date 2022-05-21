@@ -88,7 +88,7 @@ Index Line::SeekToName(Name name)
 	}
 	mTempItt->MoveTo(GetEndIndex());
 	for (
-		; !mTempItt->IsAtBeginning();
+		; !mTempItt->IsBeforeBeginning();
 		mTempItt->Decrement()
 		)
 	{
@@ -108,7 +108,7 @@ Index Line::SeekToId(StandardDimension id)
 	}
 	mTempItt->MoveTo(GetEndIndex());
 	for (
-		; !mTempItt->IsAtBeginning();
+		; !mTempItt->IsBeforeBeginning();
 		mTempItt->Decrement()
 		)
 	{

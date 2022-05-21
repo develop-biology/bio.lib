@@ -206,7 +206,7 @@ public:
 		//Remove conflicts
 		for (
 			SmartIterator cnt = this->mContents->End();
-			!cnt.IsAtBeginning();
+			!cnt.IsBeforeBeginning();
 			--cnt
 			)
 		{
@@ -238,7 +238,7 @@ public:
 				Bond* bondBuffer;
 				for (
 					SmartIterator bnd = addition->AsAtom()->GetAllBonds()->End();
-					!bnd.IsAtBeginning();
+					!bnd.IsBeforeBeginning();
 					--bnd
 					)
 				{
@@ -484,7 +484,7 @@ public:
 		Code ret = code::Success();
 		for (
 			SmartIterator cnt = this->mContents;
-			!cnt.IsAtBeginning();
+			!cnt.IsBeforeBeginning();
 			--cnt
 			)
 		{
@@ -506,7 +506,7 @@ public:
 		Code ret = code::Success();
 		for (
 			SmartIterator cnt = this->mContents;
-			!cnt.IsAtBeginning();
+			!cnt.IsBeforeBeginning();
 			--cnt
 			)
 		{
@@ -530,7 +530,7 @@ public:
 		Emission ret;
 		for (
 			SmartIterator cnt = this->mContents;
-			!cnt.IsAtBeginning();
+			!cnt.IsBeforeBeginning();
 			--cnt
 			)
 		{
@@ -557,7 +557,7 @@ public:
 			SmartIterator cnt(
 				this->mContents,
 				this->mContents->GetBeginIndex());
-			!cnt.IsAtEnd();
+			!cnt.IsAfterEnd();
 			++cnt
 			)
 		{
