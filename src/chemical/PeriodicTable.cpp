@@ -66,11 +66,11 @@ const Properties PeriodicTableImplementation::GetPropertiesOf(AtomicNumber id) c
 {
 	Properties ret;
 	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id));
-	BIO_SANITIZE(element, ,
-		return ret);
-	LockThread();
+	BIO_SANITIZE(element,
+		,
+		return ret
+	)
 	ret = element->GetAll< Property >();
-	UnlockThread();
 	return ret;
 }
 
@@ -109,11 +109,10 @@ AtomicNumber PeriodicTableImplementation::RecordPropertiesOf(
 )
 {
 	SmartIterator hdt = Find(id);
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(hdt.IsValid(), ,
+	BIO_SANITIZE_AT_SAFETY_LEVEL_1(hdt.IsValid(), ,
 		return InvalidId());
 
 	Hadit* hadit = hdt;
-	LockThread();
 	Element* element = ForceCast< Element* >(hadit->mType);
 	if (!element)
 	{
@@ -121,7 +120,6 @@ AtomicNumber PeriodicTableImplementation::RecordPropertiesOf(
 		hadit->mType = element->AsWave();
 	}
 	element->Import< Property >(properties);
-	UnlockThread();
 	return id;
 }
 
@@ -139,8 +137,10 @@ AtomicNumber PeriodicTableImplementation::RecordPropertiesOf(
 const physical::Wave* PeriodicTableImplementation::GetTypeFromId(AtomicNumber id) const
 {
 	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id));
-	BIO_SANITIZE(element, ,
-		return NULL);
+	BIO_SANITIZE(element,
+		,
+		return NULL
+	)
 	return element->mType;
 }
 
@@ -150,22 +150,22 @@ bool PeriodicTableImplementation::AssociateType(
 )
 {
 	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id));
-	BIO_SANITIZE(element, ,
-		return false);
-	LockThread();
+	BIO_SANITIZE(element,
+		,
+		return false
+	)
 	element->mType = type;
-	UnlockThread();
 	return true;
 }
 
 bool PeriodicTableImplementation::DisassociateType(AtomicNumber id)
 {
 	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id));
-	BIO_SANITIZE(element, ,
-		return false);
-	LockThread();
+	BIO_SANITIZE(element,
+		,
+		return false
+	)
 	element->mType = NULL;
-	UnlockThread();
 	return true;
 }
 

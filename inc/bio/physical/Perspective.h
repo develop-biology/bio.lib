@@ -24,7 +24,7 @@
 #include "bio/physical/macros/Macros.h"
 #include "bio/common/Types.h"
 #include "bio/common/String.h"
-#include "bio/common/ThreadSafe.h"
+#include "bio/common/thread/ThreadSafe.h"
 #include "bio/common/Cast.h"
 #include <sstream>
 #include <cstring>
@@ -114,7 +114,6 @@ public:
 	 */
 	virtual ~Perspective()
 	{
-		LockThread();
 		Hadit* haditBuffer;
 		for (
 			SmartIterator hdt = mHadits.Begin();
@@ -137,7 +136,6 @@ public:
 			haditBuffer = NULL;
 		}
 		mHadits.Clear();
-		UnlockThread();
 	}
 
 	/**
@@ -165,8 +163,6 @@ public:
 	 */
 	SmartIterator Find(Id id)
 	{
-
-		LockThread();
 		SmartIterator hdt = mHadits.Begin();
 		for (
 			; !hdt.IsAfterEnd();
@@ -175,12 +171,10 @@ public:
 		{
 			if (hdt.As< Hadit* >()->mId == id)
 			{
-				UnlockThread();
 				return hdt;
 			}
 		}
 		hdt.Invalidate();
-		UnlockThread();
 		return hdt;
 	}
 
@@ -191,7 +185,6 @@ public:
 	 */
 	SmartIterator Find(Id id) const
 	{
-		LockThread();
 		SmartIterator hdt = mHadits.Begin();
 		for (
 			; !hdt.IsAfterEnd();
@@ -200,12 +193,10 @@ public:
 		{
 			if (hdt.As< Hadit* >()->mId == id)
 			{
-				UnlockThread();
 				return hdt;
 			}
 		}
 		hdt.Invalidate();
-		UnlockThread();
 		return hdt;
 	}
 
@@ -237,7 +228,6 @@ public:
 			usedName
 		);
 
-		LockThread();
 		ret = mNextId++;
 		mHadits.Add(
 			new Hadit(
@@ -245,7 +235,6 @@ public:
 				usedName,
 				NULL
 			));
-		UnlockThread();
 
 		return ret;
 	}
@@ -372,11 +361,9 @@ public:
 		}
 		Hadit* haditBuffer = hdt;
 
-		LockThread();
 		BIO_SANITIZE(type,
 			haditBuffer->mType = PerspectiveUtilities::Clone(type),
-			haditBuffer->mType = type);
-		UnlockThread();
+			haditBuffer->mType = type)
 
 		return true;
 	}
@@ -396,11 +383,10 @@ public:
 
 		Hadit* haditBuffer = hdt;
 
-		LockThread();
-		BIO_SANITIZE_AT_SAFETY_LEVEL_2(haditBuffer->mType,
-			PerspectiveUtilities::Delete(haditBuffer->mType),);
+		BIO_SANITIZE_AT_SAFETY_LEVEL_1(haditBuffer->mType,
+			PerspectiveUtilities::Delete(haditBuffer->mType),
+		)
 		haditBuffer->mType = NULL;
-		UnlockThread();
 
 		return true;
 	}
@@ -413,8 +399,10 @@ public:
 	 */
 	virtual const Wave* GetTypeFromId(Id id) const
 	{
-		BIO_SANITIZE(id == InvalidId(), ,
-			return NULL)
+		BIO_SANITIZE(id == InvalidId(),
+			,
+			return NULL
+		)
 
 		SmartIterator result = Find(id);
 		if (!result.IsValid())
@@ -470,7 +458,8 @@ public:
 	{
 		BIO_SANITIZE_WITH_CACHE(GetTypeFromId(id),
 			BIO_SINGLE_ARG(return ForceCast< T, const Wave* >(RESULT)),
-			return NULL);
+			return NULL
+		)
 	}
 
 	/**
@@ -484,7 +473,8 @@ public:
 	{
 		BIO_SANITIZE_WITH_CACHE(GetTypeFromName(name),
 			BIO_SINGLE_ARG(return ForceCast< T, const Wave* >(RESULT)),
-			return NULL);
+			return NULL
+		)
 	}
 
 	/**
@@ -498,7 +488,8 @@ public:
 	{
 		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromId(id),
 			BIO_SINGLE_ARG(return ForceCast< T, Wave* >(RESULT)),
-			return NULL);
+			return NULL
+		)
 	}
 
 	/**
@@ -512,7 +503,8 @@ public:
 	{
 		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromName(name),
 			BIO_SINGLE_ARG(return ForceCast< T, Wave* >(RESULT)),
-			return NULL);
+			return NULL
+		)
 	}
 
 

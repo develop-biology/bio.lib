@@ -27,6 +27,7 @@
 #include "bio/common/macros/Macros.h"
 #include "bio/common/container/Arrangement.h"
 #include "bio/common/container/SmartIterator.h"
+#include "bio/common/thread/SafelyAccess.h"
 
 namespace bio {
 
@@ -40,9 +41,6 @@ typedef Arrangement< SmartIterator > SmartIterators;
  */
 typedef const char* Name;
 typedef Arrangement< Name > Names;
-
-typedef Arrangement< const char* > CharStrings;
-typedef Arrangement< ::std::string > StdStrings;
 
 typedef Arrangement< ByteStream > ByteStreams;
 

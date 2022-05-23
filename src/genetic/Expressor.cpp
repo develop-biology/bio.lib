@@ -42,7 +42,7 @@ Code Expressor::Activate(StandardDimension proteinId)
 
 Code Expressor::Activate(Name proteinName)
 {
-	return Activate(molecular::ProteinPerspective::Instance().GetIdWithoutCreation(proteinName));
+	return Activate(SafelyAccess<molecular::ProteinPerspective>()->GetIdWithoutCreation(proteinName));
 }
 
 Code Expressor::ExpressGenes()

@@ -30,7 +30,7 @@ namespace genetic {
 
 RNAPolymerase::RNAPolymerase(Plasmid* toTranscribe)
 	:
-	molecular::Protein(chemical::PeriodicTable::Instance().GetNameFromType(*this))
+	molecular::Protein(SafelyAccess<chemical::PeriodicTable>()->GetNameFromType(*this))
 {
 	SetSource(toTranscribe);
 	mc_rna = Define("RNA Binding Site");

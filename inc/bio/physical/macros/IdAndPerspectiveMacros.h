@@ -45,7 +45,7 @@ BIO_ID_WITH_PLURAL(className, className##s, dimension)
 
 /**
  * To make defining ids easier, use this macro to define the function body of your Id Function(). <br />
- * This will assign a value to a string that is identical to your FunctionName e.g. MyPerspective::Instance().GetNameFromId(Value()) would give "Value". <br />
+ * This will assign a value to a string that is identical to your FunctionName e.g. SafelyAccess<MyPerspective>()->GetNameFromId(Value()) would give "Value". <br />
  * Necessitates that functionName be a part of any namespaces are already specified (e.g. using namespace somewhere above a call to this macro). <br />
  */
 #define BIO_ID_FUNCTION_BODY(functionName, perspective, dimension)             \

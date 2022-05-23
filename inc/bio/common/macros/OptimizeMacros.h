@@ -25,7 +25,15 @@
  * BIO_SAFETY_LEVEL dictates how fast vs safe *this should be. <br />
  * A lower level means faster runtime and a higher chance of crashing. <br />
  * A higher level means slower runtime and a smaller chance of crashing. <br />
- * Values generally range from 0 to 4 (unless you make your own code dependent on the BIO_SAFETY_LEVEL). <br />
+ * Values generally range from 0 to 3 (unless you make your own code dependent on the BIO_SAFETY_LEVEL). <br />
+ * For BIO_SANITIZE, this means: <br />
+ * 0. just run success, don't even check the condition; i.e. assume failure is not possible. <br />
+ * 1. check the condition and run the provided failure if necessary; i.e. assume failure is not bad. <br />
+ * 2. check the condition and throw an exception when failing; i.e. assume failure is fatal but recoverable if caught. <br />
+ * 3. assert the condition is true and halt execution when failing; i.e. assume failure is fatal and cannot be recovered. <br />
+ * NOTE: there are no catch statements in *this framework. <br />
+ *
+ * The default BIO_SAFETY_LEVEL is 2.
  */
 #ifndef BIO_SAFETY_LEVEL
 	#define BIO_SAFETY_LEVEL 2
@@ -60,9 +68,11 @@
 /**
  * Thread locking & unlocking is unnecessary on single-threaded builds. <br />
  * If you do not intend on using threads at all, <br />
- * #define BIO_ENABLE_THREADING 0 <br />
+ * #define BIO_THREAD_SAFETY_LEVEL 0 <br />
  * Doing so will make all thread related operations into nops and save you some cpu cycles. <br />
+ * At higher thread safety levels, more locks are implemented. In general, critical write locks are placed in level 1 and critical read locks are placed in level 2. <br />
+ * However, you will likely want to use SafelyAccess<> to protect shared resources. <br />
  */
-#ifndef BIO_ENABLE_THREADING
-	#define BIO_ENABLE_THREADING 1
+#ifndef BIO_THREAD_SAFETY_LEVEL
+	#define BIO_THREAD_SAFETY_LEVEL 1
 #endif

@@ -133,7 +133,7 @@ physical::Wave* Surface::Release(
 		if (bondBuffer->GetType() == bondType)
 		{
 			ret = ChemicalCast< physical::Wave* >(bondBuffer->GetBonded());
-			BIO_SANITIZE_AT_SAFETY_LEVEL_2(!ret || ret != toRelease,
+			BIO_SANITIZE_AT_SAFETY_LEVEL_1(!ret || ret != toRelease,
 				continue,);
 			bondBuffer->Break();
 			break;
@@ -160,11 +160,11 @@ chemical::Substance* Surface::Release(
 		if (bondBuffer->GetType() == bondType)
 		{
 			ret = ChemicalCast< chemical::Substance* >(bondBuffer->GetBonded());
-			BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
+			BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret, ,
 				continue);
-			BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret->IsName(toRelease), ,
+			BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret->IsName(toRelease), ,
 				continue);
-			BIO_SANITIZE_AT_SAFETY_LEVEL_2(perspective && ret->GetPerspective() != perspective,
+			BIO_SANITIZE_AT_SAFETY_LEVEL_1(perspective && ret->GetPerspective() != perspective,
 				continue,);
 			bondBuffer->Break();
 			break;
@@ -191,11 +191,11 @@ chemical::Substance* Surface::Release(
 		if (bondBuffer->GetType() == bondType)
 		{
 			ret = ChemicalCast< chemical::Substance* >(bondBuffer->GetBonded());
-			BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
+			BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret, ,
 				continue);
-			BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret->IsId(toRelease), ,
+			BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret->IsId(toRelease), ,
 				continue);
-			BIO_SANITIZE_AT_SAFETY_LEVEL_2(perspective && ret->GetPerspective() != perspective,
+			BIO_SANITIZE_AT_SAFETY_LEVEL_1(perspective && ret->GetPerspective() != perspective,
 				continue,);
 			bondBuffer->Break();
 			break;

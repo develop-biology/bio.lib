@@ -21,8 +21,7 @@
 
 #pragma once
 
-#include <string>
-#include <cstring>
+#include "String.h"
 
 namespace bio {
 
@@ -105,14 +104,8 @@ static const char* TypeName()
 		typeNameLength
 	);
 
-	const size_t len = strlen(name.c_str());
-	char* ret = new char[len + 1]; //TODO: Memory leak.
-	strncpy(
-		ret,
-		name.c_str(),
-		len
-	);
-	ret[len] = '\0';
+	const char* ret;
+	string::CloneInto(name.c_str(), ret); //TODO: Memory leak.
 	return ret;
 }
 

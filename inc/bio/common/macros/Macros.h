@@ -32,6 +32,7 @@
 #include "OptimizeMacros.h"
 #include "OSMacros.h"
 #include "SanitizeMacros.h"
+#include "SingletonMacros.h"
 #include "StrongTypedef.h"
 #include "KeywordMacros.h"
 #include "UtilityHelperMacros.h"
@@ -85,35 +86,4 @@
  */
 #define BIO_CALL_LOOP(loopName, iterations, ...)                               \
     loopName##_##iterations(__VA_ARGS__)
-
-/**
- * Singleton interface makes the constructor private so that there is only one instance ever created, which is by Instance() <br />
- * we also override default copy constructor and assignment operator so that nobody can make a copy of the singleton  (otherwise it wouldn't be a singleton). We don't define them, so these methods will give a link error if used. <br />
- * @param className the name of the new singleton
- * @param baseClass the name of the class the new singleton will inherit from (i.e. what to make into a singleton).
-*/
-#define BIO_SINGLETON(className, baseClass)                                    \
-class className :                                                              \
-    public baseClass                                                           \
-{                                                                              \
-public:                                                                        \
-    static className& Instance()                                               \
-    {                                                                          \
-        static className instance;                                             \
-        return instance;                                                       \
-    }                                                                          \
-private:                                                                       \
-    className()                                                                \
-    {                                                                          \
-    }                                                                          \
-    className(className const &);                                              \
-    void operator=(className const &);                                         \
-};
-
-/**
- * Create a consistent map and pair. <br />
- */
-#define BIO_DEFINE_MAP(mapName, keyType, valueType)                            \
-typedef ::std::map<keyType, valueType> mapName;                                  \
-typedef ::std::pair<keyType, valueType> mapName##Pair;
 

@@ -67,20 +67,16 @@ public:
 		const bool transferSubContents = false
 	)
 	{
-		Code ret = code::GeneralFailure();
-		LockThread();
 		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
-		if (implementer)
-		{
-			ret = implementer->InsertImplementation(
+		BIO_SANITIZE(implementer,
+			BIO_SINGLE_ARG(return implementer->InsertImplementation(
 				toAdd,
 				position,
 				optionalPositionArg,
 				transferSubContents
-			);
-		}
-		UnlockThread();
-		return ret;
+			)),
+			return code::GeneralFailure()
+		)
 	}
 
 	/**
@@ -92,17 +88,11 @@ public:
 	template < typename T >
 	T GetById(StandardDimension id)
 	{
-		T ret = NULL;
-		LockThread();
 		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
-		if (implementer)
-		{
-			ret = implementer->GetByIdImplementation(
-				id
-			);
-		}
-		UnlockThread();
-		return ret;
+		BIO_SANITIZE(implementer,
+			return implementer->GetByIdImplementation(id),
+			return NULL
+		)
 	}
 
 	/**
@@ -116,17 +106,11 @@ public:
 		StandardDimension id
 	) const
 	{
-		T ret = NULL;
-		LockThread();
 		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
-		if (implementer)
-		{
-			ret = implementer->GetByIdImplementation(
-				id
-			);
-		}
-		UnlockThread();
-		return ret;
+		BIO_SANITIZE(implementer,
+			return implementer->GetByIdImplementation(id),
+			return NULL
+		)
 	}
 
 	/**
@@ -140,17 +124,11 @@ public:
 		Name name
 	)
 	{
-		T ret = NULL;
-		LockThread();
 		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
-		if (implementer)
-		{
-			ret = implementer->GetByNameImplementation(
-				name
-			);
-		}
-		UnlockThread();
-		return ret;
+		BIO_SANITIZE(implementer,
+			return implementer->GetByNameImplementation(name),
+			return NULL
+		)
 	}
 
 	/**
@@ -164,17 +142,11 @@ public:
 		Name name
 	) const
 	{
-		T ret = NULL;
-		LockThread();
 		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
-		if (implementer)
-		{
-			ret = implementer->GetByNameImplementation(
-				name
-			);
-		}
-		UnlockThread();
-		return ret;
+		BIO_SANITIZE(implementer,
+			return implementer->GetByNameImplementation(name),
+			return NULL
+		)
 	}
 
 	/**
@@ -189,17 +161,11 @@ public:
 		StandardDimension id
 	)
 	{
-		T ret = NULL;
-		LockThread();
 		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
-		if (implementer)
-		{
-			ret = implementer->GetOrCreateByIdImplementation(
-				id
-			);
-		}
-		UnlockThread();
-		return ret;
+		BIO_SANITIZE(implementer,
+			return implementer->GetOrCreateByIdImplementation(id),
+			return NULL
+		)
 	}
 
 	/**
@@ -214,17 +180,11 @@ public:
 		Name name
 	)
 	{
-		T ret = NULL;
-		LockThread();
 		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
-		if (implementer)
-		{
-			ret = implementer->GetOrCreateByNameImplementation(
-				name
-			);
-		}
-		UnlockThread();
-		return ret;
+		BIO_SANITIZE(implementer,
+			return implementer->GetOrCreateByNameImplementation(name),
+			return NULL
+		)
 	}
 
 
@@ -233,19 +193,13 @@ public:
 	 * @param excitation
 	 */
 	template < typename T >
-	Emission ForEach(
-		ExcitationBase* excitation
-	)
+	Emission ForEach(ExcitationBase* excitation)
 	{
-		Emission ret;
-		LockThread();
 		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
-		if (implementer)
-		{
-			ret = implementer->ForEachImplementation(excitation);
-		}
-		UnlockThread();
-		return ret;
+		BIO_SANITIZE(implementer,
+			return implementer->ForEachImplementation(excitation),
+			return Emission()
+		)
 	}
 };
 

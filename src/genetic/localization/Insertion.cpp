@@ -82,7 +82,7 @@ void Insertion::SetSite(Site site)
 {
 	//Assume Sites & Sites always match exactly.
 	mSite = site;
-	mc_method = InsertionSitePerspective::Instance().GetNewObjectFromIdAs< chemical::ExcitationBase* >(mSite);
+	mc_method = SafelyAccess<InsertionSitePerspective>()->GetNewObjectFromIdAs< chemical::ExcitationBase* >(mSite);
 }
 
 void Insertion::InsertThis(chemical::Substance* toInsert)

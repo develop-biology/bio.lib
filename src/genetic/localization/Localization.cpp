@@ -123,7 +123,7 @@ void Localization::SetSite(Site site)
 	{
 		delete mc_method;
 	}
-	mc_method = LocalizationSitePerspective::Instance().GetNewObjectFromIdAs< chemical::ExcitationBase* >(mSite);
+	mc_method = SafelyAccess<LocalizationSitePerspective>()->GetNewObjectFromIdAs< chemical::ExcitationBase* >(mSite);
 }
 
 Site Localization::GetSite() const

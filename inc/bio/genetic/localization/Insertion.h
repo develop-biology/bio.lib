@@ -31,7 +31,7 @@ namespace genetic {
  * This is used to move Proteins to their correct position after Transcription. <br />
  *  <br />
  * NOTE: All Sites currently have a 1 to 1 mapping with Sites and should always be the same value. <br />
- * i.e. Cast< Site >(mySiteId) == InsertionSitePerspective::Instance().GetIdWithoutCreation(mySiteName) <br />
+ * i.e. Cast< Site >(mySiteId) == SafelyAccess<InsertionSitePerspective>()->GetIdWithoutCreation(mySiteName) <br />
  */
 class Insertion :
 	public physical::Class< Insertion >,

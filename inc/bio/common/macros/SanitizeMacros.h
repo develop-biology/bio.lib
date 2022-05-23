@@ -39,6 +39,13 @@
  * BIO_SANITIZE(myVar, myVar->do_something(), do_something_else()) <br />
  * auto myVar; BIO_SANITIZE(some_test(), myVar = some_test(), myVar = 0) <br />
  * auto myOtherVar; BIO_SANITIZE(myVar, myOtherVar = myVar->do_something(), myOtherVar = 0) <br />
+ *
+ * Safety levels are, in short: <br />
+ * 0. just run success, don't even check the condition; i.e. assume failure is not possible. <br />
+ * 1. check the condition and run the provided failure if necessary; i.e. assume failure is not bad. <br />
+ * 2. check the condition and throw an exception when failing; i.e. assume failure is fatal but recoverable if caught. <br />
+ * 3. assert the condition is true and halt execution when failing; i.e. assume failure is fatal and cannot be recovered. <br />
+ * NOTE: there are no catch statements in *this framework. <br />
  */
 #define BIO_SANITIZE_AT_SAFETY_LEVEL_0(test, success, failure)                 \
 {                                                                              \
@@ -46,12 +53,6 @@
 }
 
 #define BIO_SANITIZE_AT_SAFETY_LEVEL_1(test, success, failure)                 \
-{                                                                              \
-    BIO_ASSERT(test);                                                          \
-    success;                                                                   \
-}
-
-#define BIO_SANITIZE_AT_SAFETY_LEVEL_2(test, success, failure)                 \
 if (test)                                                                      \
 {                                                                              \
     success;                                                                   \
@@ -61,13 +62,36 @@ else                                                                           \
     failure;                                                                   \
 }
 
+#define BIO_SANITIZE_AT_SAFETY_LEVEL_2(test, success, failure)                 \
+if (test)                                                                      \
+{                                                                              \
+    success;                                                                   \
+}                                                                              \
+else                                                                           \
+{                                                                              \
+    throw ::std::runtime_error(::std::string("Sanitization Failed: ") +        \
+		::std::string(#test) + ::std::string(" @ ") +                          \
+		::std::string(__FILE__) + ::std::string(":") +                         \
+		::bio::string::From(__LINE__)                                          \
+	);                                                                         \
+}
+
+#define BIO_SANITIZE_AT_SAFETY_LEVEL_3(test, success, failure)                 \
+{                                                                              \
+    BIO_ASSERT(test);                                                          \
+    success;                                                                   \
+}
+
+
 //@formatter:off
 #if defined(BIO_SAFETY_LEVEL) && BIO_SAFETY_LEVEL == 0
 	#define BIO_SANITIZE(test, success, failure)    BIO_SANITIZE_AT_SAFETY_LEVEL_0(test, BIO_SINGLE_ARG(success), BIO_SINGLE_ARG(failure))
 #elif defined(BIO_SAFETY_LEVEL) && BIO_SAFETY_LEVEL == 1
 	#define BIO_SANITIZE(test, success, failure)    BIO_SANITIZE_AT_SAFETY_LEVEL_1(test, BIO_SINGLE_ARG(success), BIO_SINGLE_ARG(failure))
-#else
+#elif defined(BIO_SAFETY_LEVEL) && BIO_SAFETY_LEVEL == 2
 	#define BIO_SANITIZE(test, success, failure)    BIO_SANITIZE_AT_SAFETY_LEVEL_2(test, BIO_SINGLE_ARG(success), BIO_SINGLE_ARG(failure))
+#else
+	#define BIO_SANITIZE(test, success, failure)    BIO_SANITIZE_AT_SAFETY_LEVEL_3(test, BIO_SINGLE_ARG(success), BIO_SINGLE_ARG(failure))
 #endif
 //@formatter:on
 
@@ -93,7 +117,7 @@ else                                                                           \
  */
 #define BIO_SANITIZE_WITH_CACHE(test, success, failure)                        \
 {                                                                              \
-    BIO_BYTESTREAM_CACHE(test)                                                            \
+    BIO_BYTESTREAM_CACHE(test)                                                 \
     BIO_SANITIZE(                                                              \
         RESULT,                                                                \
         BIO_SINGLE_ARG(success),                                               \
@@ -102,7 +126,7 @@ else                                                                           \
 
 #define BIO_SANITIZE_WITH_CACHE_AT_SAFETY_LEVEL_0(test, success, failure)      \
 {                                                                              \
-    BIO_BYTESTREAM_CACHE(test)                                                            \
+    BIO_BYTESTREAM_CACHE(test)                                                 \
     BIO_SANITIZE_AT_SAFETY_LEVEL_0(                                            \
         RESULT,                                                                \
         BIO_SINGLE_ARG(success),                                               \
@@ -111,7 +135,7 @@ else                                                                           \
 
 #define BIO_SANITIZE_WITH_CACHE_AT_SAFETY_LEVEL_1(test, success, failure)      \
 {                                                                              \
-    BIO_BYTESTREAM_CACHE(test)                                                            \
+    BIO_BYTESTREAM_CACHE(test)                                                 \
     BIO_SANITIZE_AT_SAFETY_LEVEL_1(                                            \
         RESULT,                                                                \
         BIO_SINGLE_ARG(success),                                               \
@@ -120,8 +144,17 @@ else                                                                           \
 
 #define BIO_SANITIZE_WITH_CACHE_AT_SAFETY_LEVEL_2(test, success, failure)      \
 {                                                                              \
-    BIO_BYTESTREAM_CACHE(test)                                                            \
+    BIO_BYTESTREAM_CACHE(test)                                                 \
     BIO_SANITIZE_AT_SAFETY_LEVEL_2(                                            \
+        RESULT,                                                                \
+        BIO_SINGLE_ARG(success),                                               \
+        BIO_SINGLE_ARG(failure))                                               \
+}
+
+#define BIO_SANITIZE_WITH_CACHE_AT_SAFETY_LEVEL_3(test, success, failure)      \
+{                                                                              \
+    BIO_BYTESTREAM_CACHE(test)                                                 \
+    BIO_SANITIZE_AT_SAFETY_LEVEL_3(                                            \
         RESULT,                                                                \
         BIO_SINGLE_ARG(success),                                               \
         BIO_SINGLE_ARG(failure))                                               \

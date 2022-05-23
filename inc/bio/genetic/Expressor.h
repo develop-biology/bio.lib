@@ -94,7 +94,7 @@ public:
 
 	/**
 	 * Ease of use wrapper around Activate(Id) <br />
-	 * This only works is the molecular::Protein's name matches its type (i.e. were constructed with name=PeriodicTable::Instance().GetNameFromType(*this)), which is true of all official Biology Proteins. <br />
+	 * This only works is the molecular::Protein's name matches its type (i.e. were constructed with name=SafelyAccess<PeriodicTable>()->GetNameFromType(*this)), which is true of all official Biology Proteins. <br />
 	 * NOTE: This method is preferred due to its clarity and will eventually be optimized to go straight from type to Id (e.g. T::GetId()) without the slowdown of intermediate string comparisons & extraneous lookups. <br />
 	 * @tparam T
 	 * @return the result of Activate after resolving the given type to an Id.

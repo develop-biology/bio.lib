@@ -23,7 +23,9 @@
 
 #include "bio/common/container/common/Types.h"
 #include "bio/common/macros/Macros.h"
+#include "bio/common/thread/ThreadSafe.h"
 #include "bio/common/Cast.h"
+#include "bio/common/String.h"
 #include "SmartIterator.h"
 #include <deque>
 
@@ -58,7 +60,7 @@ class Iterator;
  * 2. If you do not need direct access, store the raw type (e.g. for .?int\d+_t types) <br />
  * 3. Containers themselves should be passed by pointer. This consistency helps when the Container needs to be Cast, etc. <br />
  */
-class Container
+class Container : virtual public ThreadSafe
 {
 public:
 

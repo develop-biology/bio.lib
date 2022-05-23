@@ -328,7 +328,7 @@ public:
 	)
 	{
 		Index ret = Cast< physical::Line* >(this->mContents)->SeekToId(id);
-		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
+		BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret, ,
 			return NULL) //level 2 for GetOrCreate.
 
 		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->mContents)->LinearAccess(ret));
@@ -344,7 +344,7 @@ public:
 	) const
 	{
 		Index ret = Cast< physical::Line* >(this->mContents)->SeekToId(id);
-		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
+		BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret, ,
 			return NULL) //level 2 for GetOrCreate.
 
 		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->mContents)->LinearAccess(ret));
@@ -361,7 +361,7 @@ public:
 	)
 	{
 		Index ret = Cast< physical::Line* >(this->mContents)->SeekToName(name);
-		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
+		BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret, ,
 			return NULL) //level 2 for GetOrCreate.
 
 		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->mContents)->LinearAccess(ret));
@@ -377,7 +377,7 @@ public:
 	) const
 	{
 		Index ret = Cast< physical::Line* >(this->mContents)->SeekToName(name);
-		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
+		BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret, ,
 			return NULL) //level 2 for GetOrCreate.
 
 		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->mContents)->LinearAccess(ret));

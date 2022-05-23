@@ -101,7 +101,7 @@ public:
 	 * Implementation for counting Contents. <br />
 	 * @return the number of Contents in *this.
 	 */
-	virtual unsigned long GetCountImplementation() const
+	virtual Index GetCountImplementation() const
 	{
 		return this->mContents->GetNumberOfElements();
 	}

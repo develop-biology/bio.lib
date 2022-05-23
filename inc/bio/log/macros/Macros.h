@@ -25,7 +25,7 @@
 
 /**
  * To make defining LogLevels easier, use this macro to define the function body of your LogLevel Function(). <br />
- * This will assign a value to a string that is identical to your FunctionName (e.g. LogLevelPerspective::Instance().GetNameFromId(MySpecialInformation()) would give "MySpecialInformation") <br />
+ * This will assign a value to a string that is identical to your FunctionName (e.g. SafelyAccess<LogLevelPerspective>()->GetNameFromId(MySpecialInformation()) would give "MySpecialInformation") <br />
  * Necessitates that functionName be a part of the log namespace and that any other namespaces are already specified (e.g. using namespace) <br />
  */
 #define BIO_LOG_LEVEL_FUNCTION_BODY(functionName)                              \

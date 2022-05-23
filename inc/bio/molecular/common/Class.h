@@ -36,7 +36,8 @@ namespace molecular {
 template < typename T >
 class Class :
 	public chemical::Class< T >,
-	virtual public chemical::Substance
+	virtual public chemical::Substance,
+	virtual public ThreadSafe
 {
 public:
 

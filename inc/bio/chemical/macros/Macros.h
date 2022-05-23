@@ -65,7 +65,7 @@
 
 /**
 To make defining BondTypes easier, use this macro to define the function body of your BondType Function().
-This will assign a value to a string that is identical to your FunctionName e.g. BondTypePerspective::Instance().GetNameFromId(Value()) would give "Value".
+This will assign a value to a string that is identical to your FunctionName e.g. SafelyAccess<BondTypePerspective>()->GetNameFromId(Value()) would give "Value".
 */
 #define BIO_CHEMICAL_BOND_TYPE_FUNCTION_BODY(functionName)                     \
 BIO_ID_FUNCTION_BODY(                                                          \

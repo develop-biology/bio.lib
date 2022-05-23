@@ -39,7 +39,7 @@ VirtualBase::~VirtualBase()
 
 void VirtualBase::Initialize(ByteStreams args)
 {
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(mHasBeenInitialized, ,
+	BIO_SANITIZE_AT_SAFETY_LEVEL_1(mHasBeenInitialized, ,
 		return);
 	InitializeImplementation(args);
 	mHasBeenInitialized = true;
@@ -47,7 +47,7 @@ void VirtualBase::Initialize(ByteStreams args)
 
 void VirtualBase::Initialize(ByteStream arg1)
 {
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(mHasBeenInitialized, ,
+	BIO_SANITIZE_AT_SAFETY_LEVEL_1(mHasBeenInitialized, ,
 		return);
 	ByteStreams args;
 	args.Add(arg1);
@@ -59,7 +59,7 @@ void VirtualBase::Initialize(
 	ByteStream arg2
 )
 {
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(mHasBeenInitialized, ,
+	BIO_SANITIZE_AT_SAFETY_LEVEL_1(mHasBeenInitialized, ,
 		return);
 	ByteStreams args;
 	args.Add(arg1);
@@ -73,7 +73,7 @@ void VirtualBase::Initialize(
 	ByteStream arg3
 )
 {
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(mHasBeenInitialized, ,
+	BIO_SANITIZE_AT_SAFETY_LEVEL_1(mHasBeenInitialized, ,
 		return);
 	ByteStreams args;
 	args.Add(arg1);

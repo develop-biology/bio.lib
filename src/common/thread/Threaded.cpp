@@ -19,7 +19,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/common/Threaded.h"
+#include "bio/common/thread/Threaded.h"
 #include "bio/common/Cast.h"
 
 //@formatter:off

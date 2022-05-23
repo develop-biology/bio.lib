@@ -28,7 +28,7 @@ namespace genetic {
 
 RegisterPlasmid::RegisterPlasmid()
 	:
-	molecular::Protein(chemical::PeriodicTable::Instance().GetNameFromType(*this))
+	molecular::Protein(SafelyAccess<chemical::PeriodicTable>()->GetNameFromType(*this))
 {
 	mc_plasmidSite = Define("Plasmid Binding Site");
 }
@@ -44,7 +44,7 @@ Code RegisterPlasmid::Activate()
 	Plasmid* boundPlasmid = RotateTo< Plasmid* >(mc_plasmidSite);
 	BIO_SANITIZE(boundPlasmid, ,
 		return ret)
-	PlasmidPerspective::Instance().AssociateType(
+	SafelyAccess<PlasmidPerspective>()->AssociateType(
 		boundPlasmid->GetId(),
 		boundPlasmid->AsWave());
 	ret = code::Success();

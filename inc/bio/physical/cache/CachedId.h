@@ -68,7 +68,7 @@ public:
 	 */
 	virtual void Flush()
 	{
-		this->mT = (this->mPerspective.*(this->mLookupFunction))(this->mLookup);
+		this->mT = ((*SafelyAccess(&this->mPerspective))->*(this->mLookupFunction))(this->mLookup);
 	}
 
 	/**

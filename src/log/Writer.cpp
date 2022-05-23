@@ -85,7 +85,7 @@ void Writer::Log(
 		return);
 
 	//Check if filter is on
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(mLogEngine->FilterPass(
+	BIO_SANITIZE_AT_SAFETY_LEVEL_1(mLogEngine->FilterPass(
 		mFilter,
 		level
 	), ,

@@ -172,7 +172,7 @@ public:
 	 */
 	virtual Properties GetProperties() const
 	{
-		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
+		Properties ret = SafelyAccess<PeriodicTable>()->GetPropertiesOf< WAVE >();
 		ret.Import(ExcitationBase::GetClassProperties());
 		return ret;
 	}
@@ -269,7 +269,7 @@ public:
 	 */
 	virtual Properties GetProperties() const
 	{
-		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
+		Properties ret = SafelyAccess<PeriodicTable>()->GetPropertiesOf< WAVE >();
 		ret.Import(ExcitationBase::GetClassProperties());
 		return ret;
 	}
@@ -348,7 +348,7 @@ public:
 	 */
 	virtual Properties GetProperties() const
 	{
-		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
+		Properties ret = SafelyAccess<PeriodicTable>()->GetPropertiesOf< WAVE >();
 		ret.Import(ExcitationBase::GetClassProperties());
 		return ret;
 	}
@@ -449,7 +449,7 @@ public:
 	 */
 	virtual Properties GetProperties() const
 	{
-		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
+		Properties ret = SafelyAccess<PeriodicTable>()->GetPropertiesOf< WAVE >();
 		ret.Import(ExcitationBase::GetClassProperties());
 		return ret;
 	}

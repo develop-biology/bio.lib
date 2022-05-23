@@ -21,6 +21,7 @@
 
 #include "bio/common/cache/AbstractCached.h"
 #include "bio/common/cache/Cache.h"
+#include "bio/common/thread/SafelyAccess.h"
 
 namespace bio {
 
@@ -36,17 +37,17 @@ AbstractCached::~AbstractCached()
 
 void AbstractCached::Register()
 {
-	BIO_SANITIZE(!GlobalCache::Instance().Has(this), ,
+	BIO_SANITIZE(!SafelyAccess<GlobalCache>()->Has(this), ,
 		return)
-	GlobalCache::Instance().Add(this);
+	SafelyAccess<GlobalCache>()->Add(this);
 }
 
 void AbstractCached::Deregister()
 {
-	Index indexOfThis = GlobalCache::Instance().SeekTo(this);
+	Index indexOfThis = SafelyAccess<GlobalCache>()->SeekTo(this);
 	BIO_SANITIZE(indexOfThis, ,
 		return)
-	GlobalCache::Instance().Erase(indexOfThis);
+	SafelyAccess<GlobalCache>()->Erase(indexOfThis);
 }
 
 } //bio namespace

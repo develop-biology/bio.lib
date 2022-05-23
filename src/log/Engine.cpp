@@ -38,7 +38,7 @@ Engine::Engine()
 {
 	//Set all filters to only log if level is >= Info
 	mLevelFilter.assign(
-		FilterPerspective::Instance().GetNumUsedIds(),
+		SafelyAccess<FilterPerspective>()->GetNumUsedIds(),
 		log_level::Info());
 }
 
@@ -54,7 +54,7 @@ void Engine::Log(
 	va_list args
 )
 {
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(FilterPass(
+	BIO_SANITIZE_AT_SAFETY_LEVEL_1(FilterPass(
 		filter,
 		level
 	), ,
@@ -74,7 +74,7 @@ void Engine::Log(
 	mLogMessage.clear();
 	mLogMessage.str(""); //TODO: is seekp good enough? what is faster?
 
-	mLogMessage << physical::GetCurrentTimestamp() << " " << FilterPerspective::Instance().GetNameFromId(filter) << " " << LogLevelPerspective::Instance().GetNameFromId(level) << ": " << str << "\n";
+	mLogMessage << physical::GetCurrentTimestamp() << " " << SafelyAccess<FilterPerspective>()->GetNameFromId(filter) << " " << SafelyAccess<LogLevelPerspective>()->GetNameFromId(level) << ": " << str << "\n";
 	Output(mLogMessage.str());
 }
 
@@ -125,7 +125,7 @@ bool Engine::SetFilter(
 	if (filter == filter::All())
 	{
 		mLevelFilter.assign(
-			FilterPerspective::Instance().GetNumUsedIds(),
+			SafelyAccess<FilterPerspective>()->GetNumUsedIds(),
 			level);
 	}
 	else
@@ -141,8 +141,8 @@ bool Engine::SetFilter(
 )
 {
 	return SetFilter(
-		FilterPerspective::Instance().GetIdFromName(filter),
-		LogLevelPerspective::Instance().GetIdFromName(level));
+		SafelyAccess<FilterPerspective>()->GetIdFromName(filter),
+		SafelyAccess<LogLevelPerspective>()->GetIdFromName(level));
 }
 
 LogLevel Engine::GetFilter(Filter filter) const

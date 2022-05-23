@@ -24,13 +24,17 @@
  * Common string operations <br />
  */
 
-#include "bio/common/Types.h"
 #include <string>
+#include <cstring>
 #include <vector>
 #include <stdlib.h>
 #include <sstream>
 
 namespace bio {
+
+typedef ::std::vector< const char* > CharStrings;
+typedef ::std::vector< ::std::string > StdStrings;
+
 namespace string {
 /**
  * Convert "true" or "false" to bool <br />
@@ -84,7 +88,7 @@ bool ToFloat(
  * @return value as a string.
  */
 template < typename T >
-std::string From(const T& value)
+::std::string From(const T& value)
 {
 	std::ostringstream str;
 	str << value;
@@ -112,7 +116,7 @@ StdStrings Parse(
  * @param trimLeadingSpaces if true, removes leading spaces from substrings.
  * @return a single string with all strings from v.
  */
-std::string FromVectorOfStrings(
+::std::string FromVectorOfStrings(
 	const StdStrings& v,
 	char delimiter = ',',
 	bool trimLeadingSpaces = true
@@ -125,7 +129,7 @@ std::string FromVectorOfStrings(
  * @param trimLeadingSpaces
  * @return
  */
-std::string FromVectorOfStrings(
+::std::string FromVectorOfStrings(
 	const CharStrings& v,
 	char delimiter = ',',
 	bool trimLeadingSpaces = true
@@ -163,7 +167,7 @@ struct Echelon
 	const char* string;
 	unsigned int echelon;
 };
-typedef Arrangement< Echelon > Echelons;
+typedef ::std::vector< Echelon > Echelons;
 
 
 /**

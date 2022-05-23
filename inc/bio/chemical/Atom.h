@@ -237,15 +237,15 @@ public:
 	static AtomicNumber GetBondId()
 	{
 		#if BIO_CPP_VERSION < 17
-		return PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >();
+		return SafelyAccess<PeriodicTable>()->GetIdFromType< physical::Quantum< T >* >();
 		#else
 		if constexpr(!utility::IsWave< T >())
 		{
-			return PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >();
+			return SafelyAccess<PeriodicTable>()->GetIdFromType< physical::Quantum< T >* >();
 		}
 		else
 		{
-			return PeriodicTable::Instance().GetIdFromType< T >();
+			return SafelyAccess<PeriodicTable>()->GetIdFromType< T >();
 		}
 		#endif
 	}
@@ -318,7 +318,7 @@ public:
 			); //T matters, toDisassociate does not.
 		}
 
-		AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< T >();
+		AtomicNumber bondedId = SafelyAccess<PeriodicTable>()->GetIdFromType< T >();
 		return BreakBondImplementation(
 			toDisassociate,
 			bondedId,
@@ -353,13 +353,13 @@ public:
 	Valence GetBondPosition() const
 	{
 		#if BIO_CPP_VERSION < 17
-		return GetBondPosition(PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >());
+		return GetBondPosition(SafelyAccess<PeriodicTable>()->GetIdFromType< physical::Quantum< T >* >());
 		#else
 		if constexpr(!utility::IsWave< T >())
 		{
-			return GetBondPosition(PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >());
+			return GetBondPosition(SafelyAccess<PeriodicTable>()->GetIdFromType< physical::Quantum< T >* >());
 		}
-		return GetBondPosition(PeriodicTable::Instance().GetIdFromType< T >());
+		return GetBondPosition(SafelyAccess<PeriodicTable>()->GetIdFromType< T >());
 		#endif
 	}
 

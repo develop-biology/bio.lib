@@ -180,7 +180,7 @@ public:
 	 */
 	virtual Properties GetProperties() const
 	{
-		return PeriodicTable::Instance().GetPropertiesOf< T >();
+		return SafelyAccess<PeriodicTable>()->GetPropertiesOf< T >();
 	}
 
 	/**

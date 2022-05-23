@@ -123,7 +123,7 @@ StdStrings Parse(
 			}
 		} //else: don't alter substring
 
-		result.Add(substring);
+		result.push_back(substring);
 	}
 
 	return result;
@@ -137,8 +137,8 @@ std::string FromVectorOfStrings(
 {
 	std::string result;
 	for (
-		SmartIterator iter = v.Begin();
-		!iter.IsAfterEnd();
+		StdStrings::const_iterator iter = v.begin();
+		iter != v.end();
 		++iter
 		)
 	{
@@ -147,7 +147,7 @@ std::string FromVectorOfStrings(
 		if (trimLeadingSpaces)
 		{
 			//trim leading spaces from substring
-			size_t firstcharpos = substring.find_first_not_of(' ');
+			::std::size_t firstcharpos = substring.find_first_not_of(' ');
 			if (firstcharpos != ::std::string::npos)
 			{
 				substring = substring.substr(firstcharpos);
@@ -175,17 +175,17 @@ std::string FromVectorOfStrings(
 {
 	std::string result;
 	for (
-		SmartIterator iter = v.Begin();
-		!iter.IsAfterEnd();
+		CharStrings::const_iterator iter = v.begin();
+		iter != v.end();
 		++iter
 		)
 	{
-		std::string substring(Cast< const char* >(iter));
+		std::string substring(*iter);
 
 		if (trimLeadingSpaces)
 		{
 			//trim leading spaces from substring
-			size_t firstcharpos = substring.find_first_not_of(' ');
+			::std::size_t firstcharpos = substring.find_first_not_of(' ');
 			if (firstcharpos != ::std::string::npos)
 			{
 				substring = substring.substr(firstcharpos);
@@ -209,12 +209,14 @@ CharStrings ToCharStrings(const StdStrings& strings)
 {
 	CharStrings ret;
 	for (
-		SmartIterator str = strings.Begin();
-		!str.IsAfterEnd();
-		++str
+		StdStrings::const_iterator iter = strings.begin();
+		iter != strings.end();
+		++iter
 		)
 	{
-		ret.Add(str.As< char* >());
+		const char* toAdd;
+		CloneInto(iter->c_str(), toAdd);
+		ret.push_back(toAdd);
 	}
 	return ret;
 }
@@ -223,12 +225,12 @@ StdStrings ToStdStrings(const CharStrings& strings)
 {
 	StdStrings ret;
 	for (
-		SmartIterator chr = strings.Begin();
-		!chr.IsAfterEnd();
-		++chr
+		CharStrings::const_iterator iter = strings.begin();
+		iter != strings.end();
+		++iter
 		)
 	{
-		ret.Add(chr.As< std::string >());
+		ret.push_back(*iter);
 	}
 	return ret;
 }

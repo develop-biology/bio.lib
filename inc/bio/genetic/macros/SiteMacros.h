@@ -24,9 +24,9 @@
 /**
  * This is not for you. <br />
  */
-#define BIO_SITE_FUNCTION(perspective, site, type, function, typeTuple, argTuple)\
-    bool g_##site##Registered =                                                \
-        ::bio::perspective::Instance().AssociateType(                          \
+#define BIO_SITE_FUNCTION(perspective, site, type, function, typeTuple, argTuple) \
+    bool g##site##Registered =                                                 \
+        SafelyAccess<::bio::perspective>()->AssociateType(                     \
             ::bio::perspective::Instance().GetIdFromName(#site),               \
             (                                                                  \
                 new BIO_EXCITATION_CLASS(                                      \
@@ -42,7 +42,7 @@
 
 /**
  * To make defining Sites easier, use this macro to define the function body of your Site Function(). <br />
- * This will assign a value to a string that is identical to your FunctionName e.g. LocalizationSitePerspective::Instance().GetNameFromId(Value()) would give "Value". <br />
+ * This will assign a value to a string that is identical to your FunctionName e.g. SafelyAccess<LocalizationSitePerspective>()->GetNameFromId(Value()) would give "Value". <br />
  * This will also help you define the required extraction method (chemical::Excitation*) required for accessing your Site. <br />
  * REMINDER: Your Site Function()s should be in the ::bio::site namespace. <br />
  */
@@ -55,7 +55,7 @@
 
 /**
  * To make defining Sites easier, use this macro to define the function body of your Site Function(). <br />
- * This will assign a value to a string that is identical to your FunctionName e.g. InsertionSitePerspective::Instance().GetNameFromId(Value()) would give "Value". <br />
+ * This will assign a value to a string that is identical to your FunctionName e.g. SafelyAccess<InsertionSitePerspective>()->GetNameFromId(Value()) would give "Value". <br />
  * This will also help you define the required insertion method (chemical::Excitation*) required for using your Site. <br />
  * REMINDER: Your Site Function()s should be in the ::bio::site namespace. <br />
  */
