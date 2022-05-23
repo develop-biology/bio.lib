@@ -34,9 +34,7 @@ Container::Container(
 	mFirstFree(1),
 	mSize(expectedSize + 1)
 {
-	LockThread();
 	mStore = (unsigned char*)std::malloc(mSize * stepSize);
-	UnlockThread();
 	BIO_ASSERT(mStore)
 }
 
@@ -46,14 +44,12 @@ Container::Container(const Container& other)
 	mSize(other.mSize),
 	mDeallocated(other.mDeallocated)
 {
-	LockThread();
 	mStore = (unsigned char*)std::malloc(mSize * other.GetStepSize());
 	BIO_ASSERT(mStore)
 	std::memcpy(
 		mStore,
 		other.mStore,
 		mFirstFree * other.GetStepSize());
-	UnlockThread();
 }
 
 Container::Container(const Container* other)
@@ -62,14 +58,12 @@ Container::Container(const Container* other)
 	mSize(other->mSize),
 	mDeallocated(other->mDeallocated)
 {
-	LockThread();
 	mStore = (unsigned char*)std::malloc(mSize * other->GetStepSize());
 	BIO_ASSERT(mStore)
 	std::memcpy(
 		mStore,
 		other->mStore,
 		mFirstFree * other->GetStepSize());
-	UnlockThread();
 }
 
 Container::~Container()
@@ -78,10 +72,8 @@ Container::~Container()
 	//Clear(); // <- NOT VIRTUAL (in dtor).
 	if (mStore)
 	{
-		LockThread();
 		std::free(mStore);
 		mStore = NULL;
-		UnlockThread();
 	}
 }
 
@@ -163,6 +155,7 @@ bool Container::IsAllocated(const Index index) const
 
 void Container::Expand()
 {
+	//IMPORTANT: ASSUME 
 	BIO_SANITIZE(mSize != ::std::numeric_limits< Index >::max(), ,
 		return)
 	Index targetSize = mSize * mSize; //squared. 
@@ -170,12 +163,10 @@ void Container::Expand()
 	{
 		targetSize = ::std::numeric_limits< Index >::max();
 	}
-	LockThread();
 	mStore = (unsigned char*)std::realloc(
 		mStore,
 		targetSize * GetStepSize());
 	mSize = targetSize;
-	UnlockThread();
 	BIO_SANITIZE(mStore, ,
 		return)
 }
@@ -185,12 +176,10 @@ Index Container::Add(const ByteStream content)
 	Index ret = GetNextAvailableIndex();
 	BIO_SANITIZE(ret, ,
 		return ret)
-	LockThread();
 	std::memcpy(
 		&mStore[ret * sizeof(ByteStream)],
 		content,
 		sizeof(ByteStream));
-	UnlockThread();
 	return ret;
 }
 
@@ -225,7 +214,6 @@ Index Container::Insert(
 	}
 
 	//move all memory down 1.
-	LockThread();
 	std::memcpy(
 		&mStore[index * GetStepSize()],
 		&mStore[(index + 1) * GetStepSize()],
@@ -233,7 +221,6 @@ Index Container::Insert(
 
 	mDeallocated = adjustedDeallocations;
 	mDeallocated.push_front(index); //make sure we add to the desired index.
-	UnlockThread();
 
 	//add the content.
 	return Add(content);
@@ -260,8 +247,7 @@ Index Container::SeekTo(const ByteStream content) const
 	itt->MoveTo(GetEndIndex());
 	for (
 		; !itt->IsBeforeBeginning();
-		itt->Decrement()
-		)
+		itt->Decrement())
 	{
 		if (AreEqual(
 			itt->GetIndex(),
@@ -287,9 +273,7 @@ ByteStream Container::Erase(const Index index)
 	BIO_SANITIZE(this->IsAllocated(index), ,
 		return ret)
 	ret = Access(index);
-	LockThread();
 	this->mDeallocated.push_back(index);
-	UnlockThread();
 	return ret;
 }
 
@@ -314,10 +298,8 @@ void Container::Import(const Container* other)
 
 void Container::Clear()
 {
-	LockThread();
 	mFirstFree = 1;
 	mDeallocated.clear();
-	UnlockThread();
 }
 
 Iterator* Container::ConstructClassIterator(const Index index) const
@@ -365,26 +347,21 @@ const ByteStream Container::operator[](const SmartIterator itt) const
 
 Index Container::GetNextAvailableIndex()
 {
+	//IMPORTANT: ASSUME 
 	Index ret = InvalidIndex();
 	if (!mDeallocated.empty())
 	{
-		LockThread();
 		ret = mDeallocated.front();
 		mDeallocated.pop_front();
-		UnlockThread();
 	}
 	else if (GetAllocatedSize() == GetCapacity())
 	{
 		Expand();
-		LockThread();
 		ret = mFirstFree++;
-		UnlockThread();
 	}
 	else
 	{
-		LockThread();
 		ret = mFirstFree++;
-		UnlockThread();
 	}
 	return ret;
 }

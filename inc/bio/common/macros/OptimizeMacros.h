@@ -40,6 +40,18 @@
 #endif
 
 /**
+ * Thread locking & unlocking is unnecessary on single-threaded builds. <br />
+ * If you do not intend on using threads at all, <br />
+ * #define BIO_THREAD_ENFORCEMENT_LEVEL 0 <br />
+ * Doing so will make all thread related operations into nops and save you some cpu cycles. <br />
+ * At higher thread enforcement levels, locking becomes increasingly strict. It is recommended that you compile with as high of an enforcement level as you can. <br />
+ * The current max is 2. <br />
+ */
+#ifndef BIO_THREAD_ENFORCEMENT_LEVEL
+	#define BIO_THREAD_ENFORCEMENT_LEVEL 2
+#endif
+
+/**
  * Certain places in the bio framework afford easy toggling between storing fewer variables and calculating the values only when needed or caching the values and only calculating them once (or as necessary). <br />
  * BIO_MEMORY_OPTIMIZE_LEVEL controls this tradeoff. <br />
  * At a lower value, BIO_MEMORY_OPTIMIZE_LEVEL will cause more memory to be cached, saving cpu. <br />
@@ -63,16 +75,4 @@
  */
 #ifndef BIO_ENABLE_REFLECTION
 	#define BIO_ENABLE_REFLECTION 1
-#endif
-
-/**
- * Thread locking & unlocking is unnecessary on single-threaded builds. <br />
- * If you do not intend on using threads at all, <br />
- * #define BIO_THREAD_SAFETY_LEVEL 0 <br />
- * Doing so will make all thread related operations into nops and save you some cpu cycles. <br />
- * At higher thread safety levels, more locks are implemented. In general, critical write locks are placed in level 1 and critical read locks are placed in level 2. <br />
- * However, you will likely want to use SafelyAccess<> to protect shared resources. <br />
- */
-#ifndef BIO_THREAD_SAFETY_LEVEL
-	#define BIO_THREAD_SAFETY_LEVEL 1
 #endif

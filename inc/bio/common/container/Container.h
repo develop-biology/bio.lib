@@ -59,6 +59,8 @@ class Iterator;
  * 1. If you need direct access to the memory stored, store a pointer. Keep it simple. <br />
  * 2. If you do not need direct access, store the raw type (e.g. for .?int\d+_t types) <br />
  * 3. Containers themselves should be passed by pointer. This consistency helps when the Container needs to be Cast, etc. <br />
+ *
+ * Containers are NOT ThreadSafe when used outside of SafelyAccess. YOU MUST USE SafelyAccess to access a container safely in a concurrent environment!
  */
 class Container : virtual public ThreadSafe
 {

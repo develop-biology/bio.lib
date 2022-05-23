@@ -24,7 +24,7 @@
 #include "bio/common/macros/Macros.h"
 
 //@formatter:off
-#if BIO_THREAD_SAFETY_LEVEL > 0
+#if BIO_THREAD_ENFORCEMENT_LEVEL > 0
 	#if BIO_CPP_VERSION < 11
 		#ifdef BIO_OS_IS_LINUX
 			#include <pthread.h>
@@ -45,7 +45,7 @@ namespace bio {
  * At this time, ThreadSafe methods are only implemented for c++11 and on and on linux systems using c++98 and on. <br />
  * Support for c++98 on other platforms may or may not ever happen. <br />
  *
- * NOTE: if you do not need threading and don't want to waste time locking & unlocking a single thread all the time, check out Optimize.h (in bio/common), which will let you turn off threading for an extra performance boost (i.e. set BIO_THREAD_SAFETY_LEVEL to 0 to disable). <br />
+ * NOTE: if you do not need threading and don't want to waste time locking & unlocking a single thread all the time, check out Optimize.h (in bio/common), which will let you turn off threading for an extra performance boost (i.e. set BIO_THREAD_ENFORCEMENT_LEVEL to 0 to disable). <br />
  *
  * Please see SafelyAccess for an easy way to create external locks of ThreadSafe classes.
  */
@@ -95,7 +95,7 @@ public:
 	void UnlockThread() const;
 
 	//@formatter:off
-	#if BIO_THREAD_SAFETY_LEVEL > 0
+	#if BIO_THREAD_ENFORCEMENT_LEVEL > 0
 		#if BIO_CPP_VERSION < 11
 			#ifdef BIO_OS_IS_LINUX
 				mutable pthread_mutex_t mLock;
@@ -106,6 +106,13 @@ public:
 		#endif
 	#endif
 	//@formatter:on
+
+	#if BIO_THREAD_ENFORCEMENT_LEVEL < 2
+	mutable bool mIsLocked;
+	#endif
+
+private:
+	void CtorCommon();
 };
 
 } //bio namespace

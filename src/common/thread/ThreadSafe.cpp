@@ -20,52 +20,16 @@
  */
 
 #include "bio/common/thread/ThreadSafe.h"
+#include <assert.h>
 
 namespace bio {
 
-ThreadSafe::ThreadSafe()
-	//@formatter:off
-	#if BIO_THREAD_SAFETY_LEVEL > 0
-		#if BIO_CPP_VERSION < 11
-		#else
-			:
-			mMutex(),
-			mLock(mMutex, ::std::defer_lock)
-		#endif
-	#endif
-	//@formatter:on
+void ThreadSafe::CtorCommon()
 {
 	//@formatter:off
-	#if BIO_THREAD_SAFETY_LEVEL > 0
+	#if BIO_THREAD_ENFORCEMENT_LEVEL > 0
 		#if BIO_CPP_VERSION < 11
-			#ifdef BIO_OS_IS_LINUX
-				pthread_mutexattr_t mutexattr;
-				pthread_mutexattr_init(&mutexattr);
-				pthread_mutexattr_settype(&mutexattr, PTHREAD_MUTEX_RECURSIVE);
-				pthread_mutex_init(&mLock, &mutexattr);
-			#endif
-		#else
-		#endif
-	#endif
-	//@formatter:on
-}
-
-ThreadSafe::ThreadSafe(ThreadSafe&& toMove)
-	//@formatter:off
-	#if BIO_THREAD_SAFETY_LEVEL > 0
-		#if BIO_CPP_VERSION < 11
-		#else
-			:
-			mMutex(),
-			mLock(mMutex, ::std::defer_lock)
-		#endif
-	#endif
-	//@formatter:on
-{
-	//@formatter:off
-	#if BIO_THREAD_SAFETY_LEVEL > 0
-		#if BIO_CPP_VERSION < 11
-			#ifdef BIO_OS_IS_LINUX
+	#ifdef BIO_OS_IS_LINUX
 				pthread_mutexattr_t mutexattr;
 				pthread_mutexattr_init(&mutexattr);
 				pthread_mutexattr_settype(&mutexattr, PTHREAD_MUTEX_NORMAL);
@@ -75,11 +39,45 @@ ThreadSafe::ThreadSafe(ThreadSafe&& toMove)
 		#endif
 	#endif
 	//@formatter:on
+
+	#if BIO_THREAD_ENFORCEMENT_LEVEL < 2
+	mIsLocked = false;
+	#endif
+}
+
+ThreadSafe::ThreadSafe()
+	//@formatter:off
+	#if BIO_THREAD_ENFORCEMENT_LEVEL > 0
+		#if BIO_CPP_VERSION < 11
+		#else
+			:
+			mMutex(),
+			mLock(mMutex, ::std::defer_lock)
+		#endif
+	#endif
+	//@formatter:on
+{
+	CtorCommon();
+}
+
+ThreadSafe::ThreadSafe(ThreadSafe&& toMove)
+	//@formatter:off
+	#if BIO_THREAD_ENFORCEMENT_LEVEL > 0
+		#if BIO_CPP_VERSION < 11
+		#else
+			:
+			mMutex(),
+			mLock(mMutex, ::std::defer_lock)
+		#endif
+	#endif
+	//@formatter:on
+{
+	CtorCommon();
 }
 
 ThreadSafe::ThreadSafe(const ThreadSafe& toCopy)
 //@formatter:off
-#if BIO_THREAD_SAFETY_LEVEL > 0
+#if BIO_THREAD_ENFORCEMENT_LEVEL > 0
 	#if BIO_CPP_VERSION < 11
 	#else
 	:
@@ -89,25 +87,13 @@ ThreadSafe::ThreadSafe(const ThreadSafe& toCopy)
 #endif
 //@formatter:on
 {
-	//@formatter:off
-			#if BIO_THREAD_SAFETY_LEVEL > 0
-				#if BIO_CPP_VERSION < 11
-	#ifdef BIO_OS_IS_LINUX
-				pthread_mutexattr_t mutexattr;
-				pthread_mutexattr_init(&mutexattr);
-				pthread_mutexattr_settype(&mutexattr, PTHREAD_MUTEX_NORMAL);
-				pthread_mutex_init(&mLock, &mutexattr);
-			#endif
-				#else
-				#endif
-			#endif
-	//@formatter:on
+	CtorCommon();
 }
 
 ThreadSafe::~ThreadSafe()
 {
 	//@formatter:off
-	#if BIO_THREAD_SAFETY_LEVEL > 0
+	#if BIO_THREAD_ENFORCEMENT_LEVEL > 0
 		#if BIO_CPP_VERSION < 11
 			#ifdef BIO_OS_IS_LINUX
 				pthread_mutex_destroy(&mLock);
@@ -132,8 +118,13 @@ ThreadSafe& ThreadSafe::operator=(const ThreadSafe& toCopy)
 
 void ThreadSafe::LockThread() const
 {
+	#if BIO_THREAD_ENFORCEMENT_LEVEL < 2
+	BIO_SANITIZE(!mIsLocked,,return)
+	mIsLocked = true;
+	#endif
+
 	//@formatter:off
-	#if BIO_THREAD_SAFETY_LEVEL > 0
+	#if BIO_THREAD_ENFORCEMENT_LEVEL > 0
 		#if BIO_CPP_VERSION < 11
 			#ifdef BIO_OS_IS_LINUX
 				pthread_mutex_lock(&mLock);
@@ -147,8 +138,13 @@ void ThreadSafe::LockThread() const
 
 void ThreadSafe::UnlockThread() const
 {
+	#if BIO_THREAD_ENFORCEMENT_LEVEL < 2
+	BIO_SANITIZE(mIsLocked,,return)
+	mIsLocked = false;
+	#endif
+
 	//@formatter:off
-	#if BIO_THREAD_SAFETY_LEVEL > 0
+	#if BIO_THREAD_ENFORCEMENT_LEVEL > 0
 		#if BIO_CPP_VERSION < 11
 			#ifdef BIO_OS_IS_LINUX
 				pthread_mutex_unlock(&mLock);

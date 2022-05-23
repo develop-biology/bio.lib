@@ -77,12 +77,10 @@ public:
 		BIO_SANITIZE(ret, ,
 			return InvalidIndex())
 		TYPE toAdd = content;
-		LockThread();
 		std::memcpy(
 			&this->mStore[ret * sizeof(TYPE)],
 			&toAdd,
 			sizeof(TYPE));
-		UnlockThread();
 		BIO_ASSERT(this->Access(ret).template Is< TYPE >())
 		return ret;
 	}
