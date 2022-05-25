@@ -21,13 +21,13 @@
 
 #pragma once
 
-#include <assert.h>
 #include "ByteStream.h"
 #include "Primitives.h"
 #include "bio/common/macros/Macros.h"
 #include "bio/common/container/Arrangement.h"
 #include "bio/common/container/SmartIterator.h"
 #include "bio/common/thread/SafelyAccess.h"
+#include "bio/common/thread/ThreadSafe.h"
 
 namespace bio {
 

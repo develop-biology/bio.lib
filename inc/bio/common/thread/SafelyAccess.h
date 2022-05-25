@@ -20,7 +20,6 @@
  */
 #pragma once
 
-#include <assert.h>
 #include "bio/common/macros/Macros.h"
 
 /**

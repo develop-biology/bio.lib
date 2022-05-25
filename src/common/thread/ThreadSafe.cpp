@@ -20,7 +20,6 @@
  */
 
 #include "bio/common/thread/ThreadSafe.h"
-#include <assert.h>
 
 namespace bio {
 

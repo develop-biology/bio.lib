@@ -30,7 +30,7 @@
 #define BIO_SINGLETON(className, baseClass)                                    \
 class className :                                                              \
     public baseClass,                                                          \
-	virtual public ThreadSafe                                                  \
+	virtual public ::bio::ThreadSafe                                           \
 {                                                                              \
 public:                                                                        \
     static className& Instance()                                               \

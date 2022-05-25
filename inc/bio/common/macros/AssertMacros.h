@@ -20,10 +20,11 @@
  */
 
 #pragma once
-/**  
- * Description: assert definition. Will get more complicated as we support more target environments <br />
- */
 
-//#include <assert.h> //YOU MUST INCLUDE THIS WHERE USING BIO_ASSERT
+#include <assert.h>
+
+/**
+ * Simple wrapper around assert. May get more complicated if platform specific overrides become necessary.  <br />
+ */
 
 #define BIO_ASSERT(cond)    assert(cond);
