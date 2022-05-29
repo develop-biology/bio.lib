@@ -96,7 +96,7 @@ void Surface::SetEnvironment(Molecule* environment)
 {
 	mEnvironment = environment;
 	SetId(0); //0 should always be invalid.
-	Identifiable< StandardDimension >::SetPerspective(environment);
+	Identifiable< Id >::SetPerspective(environment);
 }
 
 void Surface::SetPerspective(Molecule* perspective)
@@ -144,7 +144,7 @@ physical::Wave* Surface::Release(
 
 chemical::Substance* Surface::Release(
 	Name toRelease,
-	physical::Perspective< StandardDimension >* perspective,
+	physical::Perspective< Id >* perspective,
 	BondType bondType
 )
 {
@@ -174,8 +174,8 @@ chemical::Substance* Surface::Release(
 }
 
 chemical::Substance* Surface::Release(
-	StandardDimension toRelease,
-	physical::Perspective< StandardDimension >* perspective,
+	Id toRelease,
+	physical::Perspective< Id >* perspective,
 	BondType bondType
 )
 {
@@ -234,7 +234,7 @@ chemical::Substance* Surface::operator-=(Name toRelease)
 	return Release(toRelease);
 }
 
-chemical::Substance* Surface::operator-=(StandardDimension toRelease)
+chemical::Substance* Surface::operator-=(Id toRelease)
 {
 	return Release(toRelease);
 }

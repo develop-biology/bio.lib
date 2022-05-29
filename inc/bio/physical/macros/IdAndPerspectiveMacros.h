@@ -37,7 +37,7 @@ BIO_STRONG_TYPEDEF(dimension, className, 0)                                    \
 typedef ::bio::Arrangement<className> pluralName;
 
 /**
- * Define a BIO_ID with "classNames" as plural (e.g. StandardDimensions) <br />
+ * Define a BIO_ID with "classNames" as plural (e.g. Ids) <br />
  * NOTE: this method MUST be called from the ::bio namespace (see BIO_STRONG_TYPEDEF for why). <br />
  */
 #define BIO_ID(className, dimension)                                           \

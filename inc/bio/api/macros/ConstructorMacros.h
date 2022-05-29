@@ -37,7 +37,7 @@ thisClass() :                                                                  \
 explicit thisClass(::bio::Name name) :                                         \
     finalClass(name)                                                           \
 {}                                                                             \
-explicit thisClass(::bio::StandardDimension id) :                              \
+explicit thisClass(::bio::Id id) :                              \
     finalClass(id)                                                             \
 {}
 
@@ -63,7 +63,7 @@ explicit thisClass(::bio::Name name) :                                         \
 {                                                                              \
 	this->CtorCommon();                                                        \
 }                                                                              \
-explicit thisClass(::bio::StandardDimension id) :                              \
+explicit thisClass(::bio::Id id) :                              \
     finalClass(id)                                                             \
 {                                                                              \
     this->CtorCommon();                                                        \

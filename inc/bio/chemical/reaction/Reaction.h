@@ -222,7 +222,7 @@ public:
 	 * @param id
 	 * @return a Reaction* with the given id or NULL.
 	 */
-	static const Reaction* Initiate(StandardDimension id);
+	static const Reaction* Initiate(Id id);
 
 	/**
 	 * Get a Reaction! <br />

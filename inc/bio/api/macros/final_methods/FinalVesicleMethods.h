@@ -23,18 +23,18 @@
 
 #define BIO_FINAL_VESICLE_METHODS                                              \
 BIO_FINAL_MOLECULE_METHODS                                                     \
-	bio::molecular::Molecule* operator[](StandardDimension moleculeId)         \
+	bio::molecular::Molecule* operator[](Id moleculeId)         \
 {                                                                              \
 return this->mT.operator[](moleculeId);                                        \
 }                                                                              \
                                                                                \
-const bio::molecular::Molecule* operator[](StandardDimension moleculeId) const \
+const bio::molecular::Molecule* operator[](Id moleculeId) const \
 {                                                                              \
 return this->mT.operator[](moleculeId);                                        \
 }                                                                              \
                                                                                \
 template < typename T >                                                        \
-bio::molecular::Molecule* operator[](StandardDimension moleculeId)             \
+bio::molecular::Molecule* operator[](Id moleculeId)             \
 {                                                                              \
 return this->mT.template operator[]< T >(moleculeId);                          \
 }                                                                              \

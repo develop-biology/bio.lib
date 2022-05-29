@@ -41,8 +41,8 @@ namespace chemical {
 /**
  * LinearMotif objects contain pointers to chemical::Classes. <br />
  *
- * IMPORTANT: CONTENT_TYPE MUST BE A chemical::Class* (which is in the StandardDimension). 
- * YOU CANNOT USE LinearMotif WITH TYPES THAT ARE NOT POINTERS TO CHILDREN OF chemical::Class (i.e. a physical::Identifiable<StandardDimension>) <br />
+ * IMPORTANT: CONTENT_TYPE MUST BE A chemical::Class* (which is in the Id).
+ * YOU CANNOT USE LinearMotif WITH TYPES THAT ARE NOT POINTERS TO CHILDREN OF chemical::Class (i.e. a physical::Identifiable<Id>) <br />
  * Other Dimensions may be supported in a future release. <br />
  * physical::Line and physical::Linear for why. <br />
  *
@@ -89,7 +89,7 @@ public:
 	/**
 	 * @param perspective
 	 */
-	explicit LinearMotif(physical::Perspective< StandardDimension >* perspective = NULL)
+	explicit LinearMotif(physical::Perspective< Id >* perspective = NULL)
 		:
 		Elementary< LinearMotif< CONTENT_TYPE > >(GetClassProperties()),
 		chemical::Class< LinearMotif< CONTENT_TYPE > >(this),
@@ -105,7 +105,7 @@ public:
 	 */
 	explicit LinearMotif(
 		const Contents* contents,
-		physical::Perspective< StandardDimension >* perspective = NULL
+		physical::Perspective< Id >* perspective = NULL
 	)
 		:
 		Elementary< LinearMotif< CONTENT_TYPE > >(GetClassProperties()),
@@ -146,12 +146,12 @@ public:
 	 * This Perspective will be used for Name <-> Id matching, Wave->Clone()ing, etc. <br />
 	 * See bio/physical/Perspective.h for more details. <br />
 	 */
-	physical::Perspective< StandardDimension >* mPerspective;
+	physical::Perspective< Id >* mPerspective;
 
 	/**
 	 * @return the mPerspective used by *this.
 	 */
-	physical::Perspective< StandardDimension >* GetStructuralPerspective()
+	physical::Perspective< Id >* GetStructuralPerspective()
 	{
 		return mPerspective;
 	}
@@ -159,7 +159,7 @@ public:
 	/**
 	 * @return the mPerspective used by *this.
 	 */
-	const physical::Perspective< StandardDimension >* GetStructuralPerspective() const
+	const physical::Perspective< Id >* GetStructuralPerspective() const
 	{
 		return mPerspective;
 	}
@@ -190,7 +190,7 @@ public:
 	virtual Code InsertImplementation(
 		CONTENT_TYPE toAdd,
 		const Position position = BOTTOM,
-		const StandardDimension optionalPositionArg = 0, //i.e. invalid.
+		const Id optionalPositionArg = 0, //i.e. invalid.
 		const bool transferSubContents = false
 	)
 	{
@@ -324,7 +324,7 @@ public:
 	 * @return a Content of the given id or NULL.
 	 */
 	virtual CONTENT_TYPE GetByIdImplementation(
-		StandardDimension id
+		Id id
 	)
 	{
 		Index ret = Cast< physical::Line* >(this->mContents)->SeekToId(id);
@@ -340,7 +340,7 @@ public:
 	* @return a Content of the given id or NULL.
 	*/
 	virtual const CONTENT_TYPE GetByIdImplementation(
-		StandardDimension id
+		Id id
 	) const
 	{
 		Index ret = Cast< physical::Line* >(this->mContents)->SeekToId(id);
@@ -391,7 +391,7 @@ public:
 	 * @return a newly created CONTENT_TYPE else NULL.
 	 */
 	virtual CONTENT_TYPE CreateImplementation(
-		StandardDimension id
+		Id id
 	)
 	{
 		BIO_SANITIZE(this->GetStructuralPerspective(), ,
@@ -406,7 +406,7 @@ public:
 	 * @return A CONTENT_TYPE of the given id.
 	 */
 	virtual CONTENT_TYPE GetOrCreateByIdImplementation(
-		StandardDimension id
+		Id id
 	)
 	{
 		CONTENT_TYPE ret = this->GetByIdImplementation(
@@ -432,7 +432,7 @@ public:
 		BIO_SANITIZE(this->GetStructuralPerspective(), ,
 			return NULL);
 		//We convert to Id in case the Name is not already registered in the desired Perspective.
-		StandardDimension id = this->GetStructuralPerspective()->GetIdFromName(name);
+		Id id = this->GetStructuralPerspective()->GetIdFromName(name);
 		CONTENT_TYPE ret = this->GetByIdImplementation(id);
 		if (ret)
 		{
@@ -488,7 +488,7 @@ public:
 			--cnt
 			)
 		{
-			if (cnt.template As< physical::Identifiable< StandardDimension >* >()->Attenuate(other) != code::Success())
+			if (cnt.template As< physical::Identifiable< Id >* >()->Attenuate(other) != code::Success())
 			{
 				ret = code::UnknownError();
 			}
@@ -510,7 +510,7 @@ public:
 			--cnt
 			)
 		{
-			if (cnt.template As< physical::Identifiable< StandardDimension >* >()->Disattenuate(other) != code::Success())
+			if (cnt.template As< physical::Identifiable< Id >* >()->Disattenuate(other) != code::Success())
 			{
 				ret = code::UnknownError();
 			}
@@ -536,7 +536,7 @@ public:
 		{
 			ByteStream result;
 			excitation->CallDown(
-				cnt.template As< physical::Identifiable< StandardDimension >* >()->AsWave(),
+				cnt.template As< physical::Identifiable< Id >* >()->AsWave(),
 				&result
 			);
 			ret.Add(result);
@@ -561,7 +561,7 @@ public:
 			++cnt
 			)
 		{
-			ret += cnt.template As< physical::Identifiable< StandardDimension >* >()->GetName();
+			ret += cnt.template As< physical::Identifiable< Id >* >()->GetName();
 			if (cnt.GetIndex() != this->mContents->GetEndIndex() - 1)
 			{
 				ret += separator;

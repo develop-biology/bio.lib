@@ -47,7 +47,7 @@ Code FetchPlasmid::Activate()
 	RotateTo(mc_returnSite)->ReleaseAll();
 
 	Name boundName = RotateTo< Name >(mc_nameSite);
-	StandardDimension boundId = RotateTo< StandardDimension >(mc_idSite);
+	Id boundId = RotateTo< Id >(mc_idSite);
 
 	if (boundName)
 	{

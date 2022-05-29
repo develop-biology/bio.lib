@@ -66,20 +66,20 @@ typedef Index Valence;
 
 /**
  * The AtomicNumber tracks class definitions. <br />
- * The StandardDimension can be used to track object configurations as well class definitions, so there is some overlap. However, the AtomicNumber should only ever have 1 Perspective: the PeriodicTable. <br />
+ * The Id can be used to track object configurations as well class definitions, so there is some overlap. However, the AtomicNumber should only ever have 1 Perspective: the PeriodicTable. <br />
  * See PeriodicTable.h for more info <br />
  */
 typedef uint16_t AtomicNumber;
 
 BIO_PERSPECTIVE_SINGLETON(ReactionPerspective,
-	StandardDimension)
+	Id)
 
 class Substance;
 
 typedef ::bio::Arrangement< Substance* > Substances;
 
 BIO_PERSPECTIVE_SINGLETON(SubstancePerspective,
-	StandardDimension)
+	Id)
 
 typedef ::bio::Arrangement< ByteStream > Emission;
 

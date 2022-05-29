@@ -42,7 +42,7 @@ class() :                                                                      \
 explicit class(::bio::Name name) :                                             \
     ns::Class< class >(this, name, __VA_ARGS__)                                \
 {}                                                                             \
-explicit class(::bio::StandardDimension id) :                                  \
+explicit class(::bio::Id id) :                                  \
     ns::Class< class >(this, id, __VA_ARGS__)                                  \
 {}
 
@@ -73,7 +73,7 @@ explicit class(::bio::Name name) :                                             \
 {                                                                              \
     this->CtorCommon();                                                        \
 }                                                                              \
-explicit class(::bio::StandardDimension id) :                                  \
+explicit class(::bio::Id id) :                                  \
     ns::Class< class >(this, id, __VA_ARGS__)                                  \
 {                                                                              \
     this->CtorCommon();                                                        \

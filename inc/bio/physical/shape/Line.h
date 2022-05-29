@@ -58,38 +58,38 @@ public:
 	virtual ~Line();
 
 	/**
-	 * Get the position of an Identifiable< StandardDimension >* with the given name in *this. 
+	 * Get the position of an Identifiable< Id >* with the given name in *this.
 	 * @param name
 	 * @return an Index matching the given name or InvalidIndex().
 	 */
 	virtual Index SeekToName(Name name);
 
 	/**
-	 * Get the position of an Identifiable< StandardDimension >* with the given id in *this. 
+	 * Get the position of an Identifiable< Id >* with the given id in *this.
 	 * @param id
 	 * @return an Index matching the given id or InvalidIndex().
 	 */
-	virtual Index SeekToId(StandardDimension id);
+	virtual Index SeekToId(Id id);
 
 	/**
-	 * We want to return an Identifiable< StandardDimension >*, not a Linear. <br />
+	 * We want to return an Identifiable< Id >*, not a Linear. <br />
 	 * @param index
-	 * @return an Identifiable< StandardDimension >* from the Linear at the given Index.
+	 * @return an Identifiable< Id >* from the Linear at the given Index.
 	 */
 	ByteStream Access(const Index index);
 
 	/**
-	 * We want to return an Identifiable< StandardDimension >*, not a Linear. <br />
+	 * We want to return an Identifiable< Id >*, not a Linear. <br />
 	 * @param index
-	 * @return an Identifiable< StandardDimension >* from the Linear at the given Index.
+	 * @return an Identifiable< Id >* from the Linear at the given Index.
 	 */
 	const ByteStream Access(const Index index) const;
 
 	/**
-	 * Since we operate on Identifiable< StandardDimension >*, not Linears, we want to treat the external datum as Identifiable< StandardDimension >*. <br />
+	 * Since we operate on Identifiable< Id >*, not Linears, we want to treat the external datum as Identifiable< Id >*. <br />
 	 * @param internal
 	 * @param external
-	 * @return whether or not the Linear at the given Index is equal to the provided Identifiable< StandardDimension >*.
+	 * @return whether or not the Linear at the given Index is equal to the provided Identifiable< Id >*.
 	 */
 	virtual bool AreEqual(
 		Index internal,
@@ -99,16 +99,16 @@ public:
 	/**
 	 * Convenience wrapper around OptimizedAccess. <br />
 	 * @param index
-	 * @return the given position casted to an Identifiable< StandardDimension >*
+	 * @return the given position casted to an Identifiable< Id >*
 	 */
-	virtual Identifiable< StandardDimension >* LinearAccess(Index index);
+	virtual Identifiable< Id >* LinearAccess(Index index);
 
 	/**
 	 * Convenience wrapper around OptimizedAccess. <br />
 	 * @param index
-	 * @return the given position casted to an Identifiable< StandardDimension >*
+	 * @return the given position casted to an Identifiable< Id >*
 	 */
-	virtual const Identifiable< StandardDimension >* LinearAccess(Index index) const;
+	virtual const Identifiable< Id >* LinearAccess(Index index) const;
 
 protected:
 	Iterator* mTempItt;

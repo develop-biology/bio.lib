@@ -31,7 +31,7 @@ Expressor::~Expressor()
 
 }
 
-Code Expressor::Activate(StandardDimension proteinId)
+Code Expressor::Activate(Id proteinId)
 {
 	Code ret = code::Success();
 	molecular::Protein* toActivate = GetById< molecular::Protein* >(proteinId);

@@ -59,7 +59,7 @@ public:
 	/**
 	 * @param id
 	 */
-	explicit Final(StandardDimension id):
+	explicit Final(Id id):
 		TransparentWrapper< CLASS >(CLASS(id))
 	{
 	}
@@ -74,9 +74,9 @@ public:
 	
 	//START: operators
 
-	operator StandardDimension() const 
+	operator Id() const
 	{
-		return this->mT.operator StandardDimension();
+		return this->mT.operator Id();
 	}
 
 	operator physical::Wave*() 
@@ -120,7 +120,7 @@ public:
 		return this->mT.operator-(other);
 	}
 
-	bool operator==(const StandardDimension id) const 
+	bool operator==(const Id id) const
 	{
 		return this->mT.operator==(id);
 	}
@@ -130,7 +130,7 @@ public:
 		return this->mT.operator==(name);
 	}
 
-	bool operator==(const physical::Identifiable< StandardDimension >& other) const 
+	bool operator==(const physical::Identifiable< Id >& other) const
 	{
 		return this->mT.operator==(other);
 	}
@@ -285,7 +285,7 @@ public:
 	Code Insert(
 		T toAdd,
 		const Position position = BOTTOM,
-		const StandardDimension optionalPositionArg = 0,
+		const Id optionalPositionArg = 0,
 		const bool transferSubContents = false
 	)
 	{
@@ -298,13 +298,13 @@ public:
 	}
 
 	template < typename T >
-	T GetById(StandardDimension id)
+	T GetById(Id id)
 	{
 		return this->mT.template GetById< T >(id);
 	}
 
 	template < typename T >
-	const T GetById(StandardDimension id) const
+	const T GetById(Id id) const
 	{
 		return this->mT.template GetById< T >(id);
 	}
@@ -322,7 +322,7 @@ public:
 	}
 
 	template < typename T >
-	T GetOrCreateById(StandardDimension id)
+	T GetOrCreateById(Id id)
 	{
 		return this->mT.template GetOrCreateById< T >(id);
 	}
@@ -449,14 +449,14 @@ public:
 
 	//END: log::Writer methods
 
-	//START: physical::Identifiable< StandardDimension > methods
+	//START: physical::Identifiable< Id > methods
 
 	Name GetName() const 
 	{
 		return this->mT.GetName();
 	}
 
-	StandardDimension GetId() const 
+	Id GetId() const
 	{
 		return this->mT.GetId();
 	}
@@ -466,7 +466,7 @@ public:
 		return this->mT.SetName(name);
 	}
 
-	void SetId(StandardDimension id) 
+	void SetId(Id id)
 	{
 		return this->mT.SetId(id);
 	}
@@ -481,12 +481,12 @@ public:
 		return this->mT.IsNameInsensitive(name);
 	}
 	
-	bool IsId(StandardDimension id) const 
+	bool IsId(Id id) const
 	{
 		return this->mT.IsId(id);
 	}
 	
-	void SetPerspective(physical::Perspective< StandardDimension >* perspective) 
+	void SetPerspective(physical::Perspective< Id >* perspective)
 	{
 		return this->mT.SetPerspective(perspective);
 	}
@@ -496,12 +496,12 @@ public:
 		return this->mT.MakeWave();
 	}
 
-	physical::Perspective< StandardDimension >* GetPerspective() const
+	physical::Perspective< Id >* GetPerspective() const
 	{
 		return this->mT.GetPerspective();
 	}
 
-	//END: physical::Identifiable< StandardDimension > methods
+	//END: physical::Identifiable< Id > methods
 
 	//START: physical::Wave methods (some of these defined above).
 

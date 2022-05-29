@@ -28,7 +28,7 @@ namespace physical {
 Symmetry::Symmetry()
 	:
 	Class< Symmetry >(this),
-	Identifiable< StandardDimension >(&SymmetryPerspective::Instance()),
+	Identifiable< Id >(&SymmetryPerspective::Instance()),
 	mType(&SymmetryTypePerspective::Instance())
 {
 
@@ -44,7 +44,7 @@ Symmetry::Symmetry(
 		type,
 		&SymmetryTypePerspective::Instance())
 {
-	Identifiable< StandardDimension >::Initialize(
+	Identifiable< Id >::Initialize(
 		name,
 		&SymmetryPerspective::Instance());
 }
@@ -59,13 +59,13 @@ Symmetry::Symmetry(
 		type,
 		&SymmetryTypePerspective::Instance())
 {
-	Identifiable< StandardDimension >::Initialize(
+	Identifiable< Id >::Initialize(
 		name,
 		&SymmetryPerspective::Instance());
 }
 
 Symmetry::Symmetry(
-	StandardDimension id,
+	Id id,
 	Name type
 )
 	:
@@ -74,13 +74,13 @@ Symmetry::Symmetry(
 		type,
 		&SymmetryTypePerspective::Instance())
 {
-	Identifiable< StandardDimension >::Initialize(
+	Identifiable< Id >::Initialize(
 		id,
 		&SymmetryPerspective::Instance());
 }
 
 Symmetry::Symmetry(
-	StandardDimension id,
+	Id id,
 	SymmetryType type
 )
 	:
@@ -89,7 +89,7 @@ Symmetry::Symmetry(
 		type,
 		&SymmetryTypePerspective::Instance())
 {
-	Identifiable< StandardDimension >::Initialize(
+	Identifiable< Id >::Initialize(
 		id,
 		&SymmetryPerspective::Instance());
 }

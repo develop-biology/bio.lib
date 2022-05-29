@@ -34,7 +34,7 @@ namespace physical {
  * Both Symmetry and SymmetryTypes are intended to grow with each namespace, as the complexity of what is being Rotated grows. <br />
  */
 class Symmetry :
-	virtual public Identifiable< StandardDimension >,
+	virtual public Identifiable< Id >,
 	Class< Symmetry >
 {
 public:
@@ -73,7 +73,7 @@ public:
 	 * @param type
 	 */
 	Symmetry(
-		StandardDimension id,
+		Id id,
 		Name type
 	);
 
@@ -82,7 +82,7 @@ public:
 	 * @param type
 	 */
 	Symmetry(
-		StandardDimension id,
+		Id id,
 		SymmetryType type
 	);
 

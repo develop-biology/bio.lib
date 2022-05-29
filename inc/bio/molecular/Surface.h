@@ -157,7 +157,7 @@ public:
 	 */
 	virtual chemical::Substance* Release(
 		Name toRelease,
-		physical::Perspective< StandardDimension >* perspective = NULL,
+		physical::Perspective< Id >* perspective = NULL,
 		BondType bondType = bond_type::Temporary());
 
 	/**
@@ -169,8 +169,8 @@ public:
 	 * @return the previously bound Substance or NULL.
 	 */
 	virtual chemical::Substance* Release(
-		StandardDimension toRelease,
-		physical::Perspective< StandardDimension >* perspective = NULL,
+		Id toRelease,
+		physical::Perspective< Id >* perspective = NULL,
 		BondType bondType = bond_type::Temporary());
 
 	/**
@@ -221,7 +221,7 @@ public:
 	 * @param toRelease
 	 * @return result of Release
 	 */
-	virtual chemical::Substance* operator-=(StandardDimension toRelease);
+	virtual chemical::Substance* operator-=(Id toRelease);
 
 	/**
 	 * Wrapper around ReleaseAll <br />

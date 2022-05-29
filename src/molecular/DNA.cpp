@@ -53,7 +53,7 @@ const Protein* DNA::GetProtein() const
 	return mProtein;
 }
 
-StandardDimension DNA::GetProteinId() const
+Id DNA::GetProteinId() const
 {
 	BIO_SANITIZE(mProtein, ,
 		return ProteinPerspective::InvalidId());

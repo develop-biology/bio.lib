@@ -53,7 +53,7 @@ Symmetry::Symmetry(
 }
 
 Symmetry::Symmetry(
-	StandardDimension id,
+	Id id,
 	Name type
 )
 	:
@@ -67,7 +67,7 @@ Symmetry::Symmetry(
 }
 
 Symmetry::Symmetry(
-	StandardDimension id,
+	Id id,
 	SymmetryType type
 )
 	:

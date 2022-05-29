@@ -39,7 +39,7 @@ namespace molecular {
  * Next, imagine a collection of these spheres as some kind of glob. This represents a collection of basic types and would be akin to a class or struct. However, these globs can take whatever form we want and do not have to map into any hard-coded structure. We call these globular constructs a Surface. <br />
  * Most of the time, Surfaces will be singular globs, with a 1 to 1 Surface to primitive type correspondence. However, they can be arbitrarily knobby. <br />
  * Now imagine 10 or so of these Surfaces all stuck together as a Molecule. So, a Molecule is just a big globby mass. <br />
- * Surfaces do not (usually) overlap. They are, instead,  distinct, identifiable (Identifiable<StandardDimension>) regions on a Molecule. <br />
+ * Surfaces do not (usually) overlap. They are, instead,  distinct, identifiable (Identifiable<Id>) regions on a Molecule. <br />
  * Imagine identical 2 Molecules that have 1 globby collection (Surface) that differs between them. That kind of comparative difference helps us Identify the Surfaces from the otherwise indistinguishable mass of globs. <br />
  * Next, imagine 2 Molecules bumping into each other so that 1 or more of their Surfaces touch. <br />
  * When Surfaces interact in this manner, they can change each other. In computer science, we can just conjure change whenever, however, and wherever we want. However, in the real world, the idea that matter / energy is conserved requires that matter / energy be moved between the interacting surfaces in order to effect change. <br />
@@ -71,7 +71,7 @@ namespace molecular {
  */
 class Molecule :
 	public Class< Molecule >,
-	public physical::Perspective< StandardDimension >,
+	public physical::Perspective< Id >,
 	public chemical::LinearMotif< Surface* >
 {
 public:
@@ -110,7 +110,7 @@ public:
 	 * @return the Id of the Surface created or InvalidId().
 	 */
 	template < typename T >
-	StandardDimension Use(
+	Id Use(
 		Name varName,
 		T* varPtr
 	)
@@ -133,7 +133,7 @@ public:
 	 * @param varName
 	 * @return the Id of the Surface created or InvalidId().
 	 */
-	StandardDimension Define(Name varName)
+	Id Define(Name varName)
 	{
 		BIO_SANITIZE(!RotateTo(varName), ,
 			return InvalidId());
@@ -153,7 +153,7 @@ public:
 	 * @return the Id of the Surface created or InvalidId().
 	 */
 	template < typename T >
-	StandardDimension Define(Name varName)
+	Id Define(Name varName)
 	{
 		BIO_SANITIZE(!RotateTo(varName), ,
 			return InvalidId());
@@ -176,7 +176,7 @@ public:
 	 * @return the Id of the Surface created or InvalidId().
 	 */
 	template < typename T >
-	StandardDimension Define(
+	Id Define(
 		Name varName,
 		const T& assignment
 	)
@@ -199,14 +199,14 @@ public:
 	 * @param surfaceId
 	 * @return a Surface with the given Id, as defined by *this, or NULL.
 	 */
-	virtual Surface* RotateTo(StandardDimension surfaceId);
+	virtual Surface* RotateTo(Id surfaceId);
 
 	/**
 	 * const version of RotateTo <br />
 	 * @param surfaceId
 	 * @return a const Surface with the given Id, as defined by *this, or NULL.
 	 */
-	virtual const Surface* RotateTo(StandardDimension surfaceId) const;
+	virtual const Surface* RotateTo(Id surfaceId) const;
 
 	/**
 	 * Ease of use methods for getting variables as the desired type. <br />
@@ -214,7 +214,7 @@ public:
 	 * @return a Surface from *this casted to T.
 	 */
 	template < typename T >
-	T RotateTo(StandardDimension surfaceId) const
+	T RotateTo(Id surfaceId) const
 	{
 		return ChemicalCast< T >(RotateTo(surfaceId));
 	}
@@ -286,12 +286,12 @@ public:
 	 * @return RotateTo(...)
 	 * @{
 	 */
-	virtual Surface* operator()(StandardDimension surfaceId);
+	virtual Surface* operator()(Id surfaceId);
 
-	virtual const Surface* operator()(StandardDimension surfaceId) const;
+	virtual const Surface* operator()(Id surfaceId) const;
 
 	template < typename T >
-	Surface* operator()(StandardDimension surfaceId)
+	Surface* operator()(Id surfaceId)
 	{
 		return ChemicalCast< T >(RotateTo(surfaceId));
 	}

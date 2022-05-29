@@ -28,7 +28,7 @@ namespace genetic {
 
 /**
  * Used by the Genome to get a Plasmid. <br />
- * Takes a Plasmid's Name in "Name Binding Site" or a StandardDimension Id in the "Id Binding Site" and gives the result in "Return Site". <br />
+ * Takes a Plasmid's Name in "Name Binding Site" or a Id Id in the "Id Binding Site" and gives the result in "Return Site". <br />
  */
 class FetchPlasmid :
 	public molecular::Protein
@@ -51,9 +51,9 @@ public:
 	virtual Code Activate();
 
 protected:
-	StandardDimension mc_nameSite;
-	StandardDimension mc_idSite;
-	StandardDimension mc_returnSite;
+	Id mc_nameSite;
+	Id mc_idSite;
+	Id mc_returnSite;
 };
 
 } //genetic namespace

@@ -43,7 +43,7 @@ class Substance;
 template < typename T >
 class Class :
 	public physical::Class< T >,
-	virtual public physical::Identifiable< StandardDimension >,
+	virtual public physical::Identifiable< Id >,
 	virtual public log::Writer,
 	virtual public Atom
 {
@@ -80,7 +80,7 @@ public:
 	 */
 	Class(
 		T* object,
-		physical::Perspective< StandardDimension >* perspective = NULL,
+		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
@@ -104,7 +104,7 @@ public:
 	Class(
 		T* object,
 		Name name,
-		physical::Perspective< StandardDimension >* perspective = NULL,
+		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
@@ -119,7 +119,7 @@ public:
 
 		if (perspective)
 		{
-			physical::Identifiable< StandardDimension >::Initialize(
+			physical::Identifiable< Id >::Initialize(
 				name,
 				perspective
 			);
@@ -138,8 +138,8 @@ public:
 	 */
 	Class(
 		T* object,
-		StandardDimension id,
-		physical::Perspective< StandardDimension >* perspective = NULL,
+		Id id,
+		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
@@ -154,7 +154,7 @@ public:
 
 		if (perspective)
 		{
-			physical::Identifiable< StandardDimension >::Initialize(
+			physical::Identifiable< Id >::Initialize(
 				id,
 				perspective
 			);

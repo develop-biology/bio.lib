@@ -34,17 +34,17 @@ namespace bio {
 namespace physical {
 
 /**
- * An Identifiable class has a name and a numeric identifier (Id). <br />
+ * An Identifiable class has a name and a numeric identifier (Identifier). <br />
  * Names are used for debugging and human interaction, while Ids are used for run-time processing. <br />
- * Identifiable classes require a Perspective<DIMENSION> to maintain a mapping of Id <-> Name pairs. <br />
- * The Id exists within a DIMENSION, i.e. an int type (almost always unsigned), like uint32_t. <br />
+ * Identifiable classes require a Perspective<DIMENSION> to maintain a mapping of Identifier <-> Name pairs. <br />
+ * The Identifier exists within a DIMENSION, i.e. an int type (almost always unsigned), like uint32_t. <br />
  * For more on DIMENSIONs, see Perspective.h <br />
  *
  *The reason this class is templated is so that less numerous classes can use a smaller ID type, which decreases memory footprint and increases processing speed (less bits to check).
  * Unfortunately, inheritance reveals a problem with this design: Identifiable classes cannot change their ID type. <br />
- * For example, if you have one class that you expect a small number of and then derive from that class, expecting a larger number of children, you either must derive from Identifiable twice, indulging in diamond inheritance, or increase the size of Id to encompass all possible uses. <br />
- * For this reason, the default DIMENSION (StandardDimension, from Types.h) should be used in nearly all cases, unless you want to ensure either your class is not derived from or that it remains separated from other code. <br />
- * An example of using a non-StandardDimension can be found in Codes. Codes have their own DIMENSION, as they should not be inherited from but may still be expanded upon through user-defined values (simply additional name <-> id definitions). <br />
+ * For example, if you have one class that you expect a small number of and then derive from that class, expecting a larger number of children, you either must derive from Identifiable twice, indulging in diamond inheritance, or increase the size of Identifier to encompass all possible uses. <br />
+ * For this reason, the default DIMENSION (Id, from Types.h) should be used in nearly all cases, unless you want to ensure either your class is not derived from or that it remains separated from other code. <br />
+ * An example of using a non-Id can be found in Codes. Codes have their own DIMENSION, as they should not be inherited from but may still be expanded upon through user-defined values (simply additional name <-> id definitions). <br />
 */
 template < typename DIMENSION >
 class Identifiable :
@@ -52,8 +52,8 @@ class Identifiable :
 	public physical::Class< Identifiable< DIMENSION > >
 {
 public:
-	typedef DIMENSION Id;
-	typedef ::bio::Arrangement< Id > Ids;
+	typedef DIMENSION Identifier;
+	typedef ::bio::Arrangement< Identifier > Ids;
 
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
@@ -113,7 +113,7 @@ public:
 	 * @param perspective
 	 */
 	explicit Identifiable(
-		Id id,
+		Identifier id,
 		Perspective< DIMENSION >* perspective = NULL
 	)
 		:
@@ -162,7 +162,7 @@ public:
 	}
 
 	/**
-	 * @return *this as its Id.
+	 * @return *this as its Identifier.
 	 */
 	virtual operator DIMENSION() const
 	{
@@ -173,7 +173,7 @@ public:
 	 * @param id
 	 * @return whether or not the id of *this matches id provided and double checks with the Perspective used by *this.
 	 */
-	virtual bool operator==(const Id id) const
+	virtual bool operator==(const Identifier id) const
 	{
 		if (!this->GetId())
 		{
@@ -240,7 +240,7 @@ public:
 	/**
 	 * @return the id of *this.
 	 */
-	virtual Id GetId() const
+	virtual Identifier GetId() const
 	{
 		return mId;
 	}
@@ -268,7 +268,7 @@ public:
 	 * Has no effect if perspective is null. <br />
 	 * @param id
 	 */
-	virtual void SetId(Id id)
+	virtual void SetId(Identifier id)
 	{
 		if (!this->GetPerspective())
 		{
@@ -307,7 +307,7 @@ public:
 	 * @param id
 	 * @return whether or not the given id matches that of *this.
 	 */
-	virtual bool IsId(Id id) const
+	virtual bool IsId(Identifier id) const
 	{
 		return id == mId;
 	}
@@ -408,7 +408,7 @@ private:
 	Name mName;
 	#endif
 
-	Id mId;
+	Identifier mId;
 
 	void CloneIntoName(Name name)
 	{

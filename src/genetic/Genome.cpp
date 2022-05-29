@@ -52,11 +52,11 @@ void GenomeImplementation::CacheProteins()
 	mc_fetchSite = mc_fetchPlasmid->GetIdWithoutCreation("Return Site");
 }
 
-StandardDimension GenomeImplementation::RegisterPlasmid(Plasmid* toRegister)
+Id GenomeImplementation::RegisterPlasmid(Plasmid* toRegister)
 {
 	BIO_SANITIZE(toRegister, ,
 		return PlasmidPerspective::InvalidId())
-	StandardDimension ret = PlasmidPerspective::InvalidId();
+	Id ret = PlasmidPerspective::InvalidId();
 	mc_registerPlasmid->RotateTo(mc_registrationSite)->Bind(ChemicalCast< chemical::Substance* >(toRegister));
 	if (mc_registerPlasmid->Activate() == code::Success())
 	{
@@ -65,7 +65,7 @@ StandardDimension GenomeImplementation::RegisterPlasmid(Plasmid* toRegister)
 	return ret;
 }
 
-Plasmid* GenomeImplementation::FetchPlasmid(StandardDimension plasmidId)
+Plasmid* GenomeImplementation::FetchPlasmid(Id plasmidId)
 {
 	Plasmid* ret = NULL;
 	mc_fetchPlasmid->RotateTo(mc_idSite)->Bind(plasmidId);

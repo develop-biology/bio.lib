@@ -63,7 +63,7 @@ public:
 	Code Insert(
 		T toAdd,
 		const Position position = BOTTOM,
-		const StandardDimension optionalPositionArg = 0, // assuming 0 is the InvalidId for all Perspectives.
+		const Id optionalPositionArg = 0, // assuming 0 is the InvalidId for all Perspectives.
 		const bool transferSubContents = false
 	)
 	{
@@ -86,7 +86,7 @@ public:
 	 * @return a T of the given id or NULL; NULL if T is invalid.
 	 */
 	template < typename T >
-	T GetById(StandardDimension id)
+	T GetById(Id id)
 	{
 		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
 		BIO_SANITIZE(implementer,
@@ -103,7 +103,7 @@ public:
 	 */
 	template < typename T >
 	const T GetById(
-		StandardDimension id
+		Id id
 	) const
 	{
 		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
@@ -158,7 +158,7 @@ public:
 	 */
 	template < typename T >
 	T GetOrCreateById(
-		StandardDimension id
+		Id id
 	)
 	{
 		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();

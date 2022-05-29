@@ -61,14 +61,14 @@ public:
 	 * @param toRegister
 	 * @return the Id of the Registered Plasmid.
 	 */
-	virtual StandardDimension RegisterPlasmid(Plasmid* toRegister);
+	virtual Id RegisterPlasmid(Plasmid* toRegister);
 
 	/**
 	 * Get a Plasmid! <br />
 	 * @param plasmidId
 	 * @return a shared Plasmid*. Should become const in a future release.
 	 */
-	virtual Plasmid* FetchPlasmid(StandardDimension plasmidId);
+	virtual Plasmid* FetchPlasmid(Id plasmidId);
 
 	/**
 	 * Get a Plasmid! <br />
@@ -80,10 +80,10 @@ public:
 protected:
 	molecular::Protein* mc_registerPlasmid;
 	molecular::Protein* mc_fetchPlasmid;
-	StandardDimension mc_registrationSite;
-	StandardDimension mc_nameSite;
-	StandardDimension mc_idSite;
-	StandardDimension mc_fetchSite;
+	Id mc_registrationSite;
+	Id mc_nameSite;
+	Id mc_idSite;
+	Id mc_fetchSite;
 };
 
 BIO_SINGLETON(Genome,

@@ -66,9 +66,9 @@ public:
 	virtual ~Expressor();
 
 	/**
-	 * Use this method to populate any member variable Protein* or StandardDimension Ids. 
+	 * Use this method to populate any member variable Protein* or Id Ids.
 	 * You'll want to do this to speed up your code by bypassing the dynamic execution provided by Molecule. <br />
-	 * Use StandardDimension Ids when the Protein* might change (e.g. the Protein may be Transferred in or out of *this). 
+	 * Use Id Ids when the Protein* might change (e.g. the Protein may be Transferred in or out of *this).
 	 * Use a Protein* if you know & will enforce a static set of Proteins which will not be Transferred. 
 	 */
 	virtual void CacheProteins()
@@ -84,7 +84,7 @@ public:
 	 * @param proteinId
 	 * @return the result of activation or code::BadArgument1 if no such molecular::Protein exists within *this.
 	 */
-	Code Activate(StandardDimension proteinId);
+	Code Activate(Id proteinId);
 
 	/**
 	 * Ease of use wrapper around Activate(Id). <br />

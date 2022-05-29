@@ -88,7 +88,7 @@ public:
 	/**
 	 * @return the Id of the Protein *this encodes.
 	 */
-	virtual StandardDimension GetProteinId() const;
+	virtual Id GetProteinId() const;
 
 	/**
 	 * @return the mVersion of *this.

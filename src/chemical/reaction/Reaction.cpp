@@ -79,7 +79,7 @@ bool Reaction::ReactantsMeetRequirements(const Reactants* toCheck) const
 	return toCheck->HasAll< Substance* >(mRequiredReactants.GetAll< Substance* >());
 }
 
-/*static*/ const Reaction* Reaction::Initiate(StandardDimension id)
+/*static*/ const Reaction* Reaction::Initiate(Id id)
 {
 	BIO_SANITIZE_WITH_CACHE(SafelyAccess<ReactionPerspective>()->GetTypeFromIdAs< Reaction* >(id),
 		return *(Cast< const Reaction** >(RESULT)),

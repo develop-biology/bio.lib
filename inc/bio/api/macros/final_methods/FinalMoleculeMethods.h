@@ -23,7 +23,7 @@
 
 #define BIO_FINAL_MOLECULE_METHODS                                             \
 template < typename T >                                                        \
-StandardDimension Use(                                                         \
+Id Use(                                                         \
 	Name varName,                                                              \
 	T* varPtr                                                                  \
 )                                                                              \
@@ -34,19 +34,19 @@ StandardDimension Use(                                                         \
 	);                                                                         \
 }                                                                              \
                                                                                \
-StandardDimension Define(Name varName)                                         \
+Id Define(Name varName)                                         \
 {                                                                              \
 	return this->mT.Define(varName);                                           \
 }                                                                              \
                                                                                \
 template < typename T >                                                        \
-StandardDimension Define(Name varName)                                         \
+Id Define(Name varName)                                         \
 {                                                                              \
 	return this->mT.template Define< T >(varName);                             \
 }                                                                              \
                                                                                \
 template < typename T >                                                        \
-StandardDimension Define(                                                      \
+Id Define(                                                      \
 	Name varName,                                                              \
 	const T& assignment                                                        \
 )                                                                              \
@@ -57,18 +57,18 @@ StandardDimension Define(                                                      \
 	);                                                                         \
 }                                                                              \
                                                                                \
-bio::molecular::Surface* RotateTo(StandardDimension surfaceId)                 \
+bio::molecular::Surface* RotateTo(Id surfaceId)                 \
 {                                                                              \
 	return this->mT.RotateTo(surfaceId);                                       \
 }                                                                              \
                                                                                \
-const bio::molecular::Surface* RotateTo(StandardDimension surfaceId) const     \
+const bio::molecular::Surface* RotateTo(Id surfaceId) const     \
 {                                                                              \
 	return this->mT.RotateTo(surfaceId);                                       \
 }                                                                              \
                                                                                \
 template < typename T >                                                        \
-T RotateTo(StandardDimension surfaceId) const                                  \
+T RotateTo(Id surfaceId) const                                  \
 {                                                                              \
 	return this->mT.template RotateTo< T >(surfaceId);                         \
 }                                                                              \
@@ -111,18 +111,18 @@ bool TransferFrom(                                                             \
 	);                                                                         \
 }                                                                              \
                                                                                \
-bio::molecular::Surface* operator()(StandardDimension surfaceId)               \
+bio::molecular::Surface* operator()(Id surfaceId)               \
 {                                                                              \
 	return this->mT.operator()(surfaceId);                                     \
 }                                                                              \
                                                                                \
-const bio::molecular::Surface* operator()(StandardDimension surfaceId) const   \
+const bio::molecular::Surface* operator()(Id surfaceId) const   \
 {                                                                              \
 	return this->mT.operator()(surfaceId);                                     \
 }                                                                              \
                                                                                \
 template < typename T >                                                        \
-bio::molecular::Surface* operator()(StandardDimension surfaceId)               \
+bio::molecular::Surface* operator()(Id surfaceId)               \
 {                                                                              \
 	return this->mT.operator()(surfaceId);                                     \
 }                                                                              \

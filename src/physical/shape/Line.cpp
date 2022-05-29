@@ -52,12 +52,12 @@ Line::~Line()
 
 ByteStream Line::Access(const Index index)
 {
-	return OptimizedAccess(index).operator Identifiable< StandardDimension >*();
+	return OptimizedAccess(index).operator Identifiable< Id >*();
 }
 
 const ByteStream Line::Access(const Index index) const
 {
-	return OptimizedAccess(index).operator const Identifiable< StandardDimension >*();
+	return OptimizedAccess(index).operator const Identifiable< Id >*();
 }
 
 bool Line::AreEqual(
@@ -65,17 +65,17 @@ bool Line::AreEqual(
 	const ByteStream external
 ) const
 {
-	BIO_SANITIZE(external.Is< Identifiable< StandardDimension >* >(), ,
+	BIO_SANITIZE(external.Is< Identifiable< Id >* >(), ,
 		return false)
-	return OptimizedAccess(internal) == external.template As< const Identifiable< StandardDimension >* >();
+	return OptimizedAccess(internal) == external.template As< const Identifiable< Id >* >();
 }
 
-Identifiable< StandardDimension >* Line::LinearAccess(Index index)
+Identifiable< Id >* Line::LinearAccess(Index index)
 {
 	return OptimizedAccess(index);
 }
 
-const Identifiable< StandardDimension >* Line::LinearAccess(Index index) const
+const Identifiable< Id >* Line::LinearAccess(Index index) const
 {
 	return OptimizedAccess(index);
 }
@@ -100,7 +100,7 @@ Index Line::SeekToName(Name name)
 	return InvalidIndex();
 }
 
-Index Line::SeekToId(StandardDimension id)
+Index Line::SeekToId(Id id)
 {
 	if (!mTempItt)
 	{
