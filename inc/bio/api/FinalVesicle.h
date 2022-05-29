@@ -37,7 +37,7 @@ class FinalVesicle :
 {
 public:
 
-	BIO_CONSTRUCTORS(FinalVesicle, bio::Final< bio::molecular::Vesicle >)
+	BIO_CONSTRUCONSTRUCTORS(FinalVesicle, bio::Final< bio::molecular::Vesicle >)
 
 	virtual ~FinalVesicle()	{}
 

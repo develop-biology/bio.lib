@@ -39,7 +39,7 @@ Threaded::Threaded()
 //@formatter:off
 	#if BIO_CPP_VERSION < 11
 		#ifdef BIO_OS_IS_LINUX
-			//use mThread default ctor
+			//use mThread default constructor
 		#endif
 		mId(InvalidThreadId()),
 	#else

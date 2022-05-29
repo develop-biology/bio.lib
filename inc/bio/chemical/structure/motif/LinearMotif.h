@@ -95,7 +95,7 @@ public:
 		chemical::Class< LinearMotif< CONTENT_TYPE > >(this),
 		mPerspective(perspective)
 	{
-		CtorCommon();
+		CommonConstructor();
 	}
 
 	/**
@@ -112,7 +112,7 @@ public:
 		chemical::Class< LinearMotif< CONTENT_TYPE > >(this),
 		mPerspective(perspective)
 	{
-		CtorCommon();
+		CommonConstructor();
 		this->mContents->Import(contents);
 	}
 
@@ -127,7 +127,7 @@ public:
 		chemical::Class< LinearMotif< CONTENT_TYPE > >(this),
 		mPerspective(toCopy.mPerspective)
 	{
-		CtorCommon();
+		CommonConstructor();
 		this->mContents->Import(toCopy.GetAllImplementation());
 	}
 
@@ -585,7 +585,7 @@ private:
 	/**
 	 * Common constructor code. <br />
 	 */
-	void CtorCommon()
+	void CommonConstructor()
 	{
 		//TODO: This needs work.
 		//		#if BIO_CPP_VERSION >= 11

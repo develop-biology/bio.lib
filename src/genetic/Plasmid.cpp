@@ -41,7 +41,7 @@ const molecular::Protein* Plasmid::GetRNAPolymerase() const
 	return GetProtein();
 }
 
-void Plasmid::CtorCommon()
+void Plasmid::CommonConstructor()
 {
 	mProtein = new RNAPolymerase(this);
 }

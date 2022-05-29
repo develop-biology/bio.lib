@@ -50,7 +50,7 @@ public:
 
 	/**
 	 * Standard ctors. <br />
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCONSTRUCTORS(cellular,
 		Habitat,
 		&HabitatPerspective::Instance(),
 		filter::Organic())

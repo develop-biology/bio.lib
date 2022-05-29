@@ -86,7 +86,7 @@ private:
 	/**
 	 * @param typeName
 	 */
-	void CtorCommon(Name typeName);
+	void CommonConstructor(Name typeName);
 };
 
 } //chemical namespace

@@ -50,7 +50,7 @@ public:
 	}
 
 	/**
-	 * Copy ctor for pointers. <br />
+	 * Copy constructor for pointers. <br />
 	 * Dereferences other then Imports all contents from other into *this. <br />
 	 * @param other
 	 */

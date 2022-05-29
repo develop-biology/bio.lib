@@ -28,14 +28,14 @@
  *
  * IMPORTANT: despite using __VA_ARGS__, this will fail if nothing more than the namespace and class are provided. <br />
  * At a minimum, you MUST ALSO INCLUDE THE Perspective AFTER class! <br />
- * e.g. BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(my_namespace, MyClass, &MyClassPerspective::Instance()) <br />
+ * e.g. BIO_DEFAULT_IDENTIFIABLE_CONSTRUCONSTRUCTORS(my_namespace, MyClass, &MyClassPerspective::Instance()) <br />
  *
  * NOTE: if your class has multiple template args or otherwise uses commas in its name, you must enclose it in BIO_SINGLE_ARG() so as to not have it be considered part of the __VA_ARGS__. <br />
  * @param ns the namespace of the class
  * @param class the name of the class
  * @param ... all arguments to the ns::Class<class>(...) constructor.
  */
-#define BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(ns, class, ...)                  \
+#define BIO_DEFAULT_IDENTIFIABLE_CONSTRUCONSTRUCTORS(ns, class, ...)                  \
 class() :                                                                      \
     ns::Class< class >(this, __VA_ARGS__)                                      \
 {}                                                                             \
@@ -48,13 +48,13 @@ explicit class(::bio::Id id) :                                  \
 
 /**
  * Defines constructors for classes deriving from chemical::Class and beyond. <br />
- * All constructors call a CtorCommon() method with no args. <br />
+ * All constructors call a CommonConstructor() method with no args. <br />
  * These will allow you to construct your object with either a name or an id. <br />
  * We also define the empty constructor for when neither name nor id are supplied. <br />
  *
  * IMPORTANT: despite using __VA_ARGS__, this will fail if nothing more than the namespace and class are provided. <br />
  * At a minimum, you MUST ALSO INCLUDE THE Perspective AFTER class! <br />
- * e.g. BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(my_namespace, MyClass, &MyClassPerspective::Instance()) <br />
+ * e.g. BIO_DEFAULT_IDENTIFIABLE_CONSTRUCONSTRUCTORS(my_namespace, MyClass, &MyClassPerspective::Instance()) <br />
  *
  * NOTE: if your class has multiple template args or otherwise uses commas in its name, you must enclose it in BIO_SINGLE_ARG() so as to not have it be considered part of the __VA_ARGS__. <br />
  *
@@ -62,19 +62,19 @@ explicit class(::bio::Id id) :                                  \
  * @param class the name of the class
  * @param ... all arguments to the ns::Class<class>(...) constructor.
  */
-#define BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(ns, class, ...) \
+#define BIO_DEFAULT_IDENTIFIABLE_CONSTRUCONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(ns, class, ...) \
 class() :                                                                      \
     ns::Class< class >(this, __VA_ARGS__)                                      \
 {                                                                              \
-    this->CtorCommon();                                                        \
+    this->CommonConstructor();                                                        \
 }                                                                              \
 explicit class(::bio::Name name) :                                             \
     ns::Class< class >(this, name, __VA_ARGS__)                                \
 {                                                                              \
-    this->CtorCommon();                                                        \
+    this->CommonConstructor();                                                        \
 }                                                                              \
 explicit class(::bio::Id id) :                                  \
     ns::Class< class >(this, id, __VA_ARGS__)                                  \
 {                                                                              \
-    this->CtorCommon();                                                        \
+    this->CommonConstructor();                                                        \
 }

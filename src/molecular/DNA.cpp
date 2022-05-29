@@ -28,7 +28,7 @@
 namespace bio {
 namespace molecular {
 
-void DNA::CtorCommon()
+void DNA::CommonConstructor()
 {
 	mProtein = NULL;
 	mVersion = 0.0f;

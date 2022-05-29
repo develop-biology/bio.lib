@@ -30,7 +30,7 @@
  * @param thisClass the name of the class to construct
  * @param finalClass the name of the Final____ class *this is deriving from.
  */
-#define BIO_CONSTRUCTORS(thisClass, finalClass)                                \
+#define BIO_CONSTRUCONSTRUCTORS(thisClass, finalClass)                                \
 thisClass() :                                                                  \
     finalClass()                                                               \
 {}                                                                             \
@@ -44,7 +44,7 @@ explicit thisClass(::bio::Id id) :                              \
 
  /**
  * Defines constructors for classes deriving from any Final class. <br />
- * All constructors call a CtorCommon() method with no args. <br />
+ * All constructors call a CommonConstructor() method with no args. <br />
  * These will allow you to construct your object with either a name or an id. <br />
  * We also define the empty constructor for when neither name nor id are supplied. <br />
  *
@@ -52,19 +52,19 @@ explicit thisClass(::bio::Id id) :                              \
  * @param thisClass the name of the class to construct
  * @param finalClass the name of the Final____ class *this is deriving from.
  */
-#define BIO_CONSTRUCTORS_WITH_CTOR_COMMON(thisClass, finalClass)               \
+#define BIO_CONSTRUCONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(thisClass, finalClass)               \
 thisClass() :                                                                  \
     finalClass()                                                               \
 {                                                                              \
-	this->CtorCommon();                                                        \
+	this->CommonConstructor();                                                        \
 }                                                                              \
 explicit thisClass(::bio::Name name) :                                         \
     finalClass(name)                                                           \
 {                                                                              \
-	this->CtorCommon();                                                        \
+	this->CommonConstructor();                                                        \
 }                                                                              \
 explicit thisClass(::bio::Id id) :                              \
     finalClass(id)                                                             \
 {                                                                              \
-    this->CtorCommon();                                                        \
+    this->CommonConstructor();                                                        \
 }

@@ -75,14 +75,14 @@ public:
 		std::size_t stepSize = sizeof(ByteStream));
 
 	/**
-	 * Copy ctor. <br />
+	 * Copy constructor. <br />
 	 * Imports all contents from other into *this. <br />
 	 * @param other
 	 */
 	Container(const Container& other);
 
 	/**
-	 * Copy ctor for pointers. <br />
+	 * Copy constructor for pointers. <br />
 	 * Dereferences other then Imports all contents from other into *this. <br />
 	 * @param other
 	 */

@@ -63,7 +63,7 @@ public:
 	/**
 	 * Standard ctors. <br />
 	 */
- 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
+ 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCONSTRUCTORS(cellular,
 		Cell,
 		&CellPerspective::Instance(),
 		filter::Cellular())

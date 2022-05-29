@@ -48,7 +48,7 @@ class Class :
 	virtual public Atom
 {
 private:
-	void CtorCommon(Filter filter = filter::Default())
+	void CommonConstructor(Filter filter = filter::Default())
 	{
 		if (filter != filter::Default())
 		{
@@ -91,7 +91,7 @@ public:
 				symmetryType
 			))
 	{
-		CtorCommon(filter);
+		CommonConstructor(filter);
 	}
 
 
@@ -115,7 +115,7 @@ public:
 				symmetryType
 			))
 	{
-		CtorCommon(filter);
+		CommonConstructor(filter);
 
 		if (perspective)
 		{
@@ -150,7 +150,7 @@ public:
 				symmetryType
 			))
 	{
-		CtorCommon(filter);
+		CommonConstructor(filter);
 
 		if (perspective)
 		{

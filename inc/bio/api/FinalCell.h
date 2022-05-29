@@ -39,7 +39,7 @@ class FinalCell :
 {
 public:
 
-	BIO_CONSTRUCTORS_WITH_CTOR_COMMON(FinalCell, BIO_SINGLE_ARG(Final< CellularForwarder< FinalCell, bio::cellular::Cell, bio::cellular::CellPerspective > >))
+	BIO_CONSTRUCONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(FinalCell, BIO_SINGLE_ARG(Final< CellularForwarder< FinalCell, bio::cellular::Cell, bio::cellular::CellPerspective > >))
 
 	virtual ~FinalCell() {}
 
@@ -68,7 +68,7 @@ public:
 	BIO_FINAL_CELL_METHODS
 
 private:
-	void CtorCommon()
+	void CommonConstructor()
 	{
 		this->mT.SetPeakFunction(&FinalCell::Peak, this);
 	}

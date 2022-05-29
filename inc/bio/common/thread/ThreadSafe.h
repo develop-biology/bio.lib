@@ -112,7 +112,7 @@ public:
 	#endif
 
 private:
-	void CtorCommon();
+	void CommonConstructor();
 };
 
 } //bio namespace

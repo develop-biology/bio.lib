@@ -277,7 +277,7 @@ public:
 		}
 
 		std::ostringstream usedName;
-		usedName.str(""); //TODO: can we do this all in the ctor?
+		usedName.str(""); //TODO: can we do this all in the constructor?
 		usedName << name;
 
 		Id ret = GetIdWithoutCreation(usedName.str().c_str());

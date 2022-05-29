@@ -39,7 +39,7 @@ class Class :
 {
 public:
 	/**
-	 * NOTE: you may wish to explicitly instantiate Wave in you ctor. <br />
+	 * NOTE: you may wish to explicitly instantiate Wave in you constructor. <br />
 	 * @param object
 	 * @param symmetry
 	 */

@@ -39,7 +39,7 @@ public:
 	SafelyAccess() :
 		mClass(&CLASS::Instance())
 	{
-		this->CtorCommon();
+		this->CommonConstructor();
 	}
 
 	/**
@@ -49,7 +49,7 @@ public:
 	SafelyAccess(CLASS* toAccess) :
 		mClass(toAccess)
 	{
-		this->CtorCommon();
+		this->CommonConstructor();
 	}
 
 	/**
@@ -99,7 +99,7 @@ public:
 private:
 	CLASS* mClass;
 
-	void CtorCommon()
+	void CommonConstructor()
 	{
 		BIO_ASSERT(this->mClass)
 		this->mClass->LockThread();

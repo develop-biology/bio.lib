@@ -46,7 +46,7 @@ class Substance :
 {
 public:
 
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(chemical,
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(chemical,
 		Substance,
 		&SubstancePerspective::Instance(),
 		filter::Chemical())
@@ -91,7 +91,7 @@ public:
 	virtual bool IsEnabled() const;
 
 private:
-	void CtorCommon();
+	void CommonConstructor();
 };
 
 } //chemical namespace

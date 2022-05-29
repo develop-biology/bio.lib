@@ -23,7 +23,7 @@
 
 namespace bio {
 
-void ThreadSafe::CtorCommon()
+void ThreadSafe::CommonConstructor()
 {
 	//@formatter:off
 	#if BIO_THREAD_ENFORCEMENT_LEVEL > 0
@@ -56,7 +56,7 @@ ThreadSafe::ThreadSafe()
 	#endif
 	//@formatter:on
 {
-	CtorCommon();
+	CommonConstructor();
 }
 
 ThreadSafe::ThreadSafe(ThreadSafe&& toMove)
@@ -71,7 +71,7 @@ ThreadSafe::ThreadSafe(ThreadSafe&& toMove)
 	#endif
 	//@formatter:on
 {
-	CtorCommon();
+	CommonConstructor();
 }
 
 ThreadSafe::ThreadSafe(const ThreadSafe& toCopy)
@@ -86,7 +86,7 @@ ThreadSafe::ThreadSafe(const ThreadSafe& toCopy)
 #endif
 //@formatter:on
 {
-	CtorCommon();
+	CommonConstructor();
 }
 
 ThreadSafe::~ThreadSafe()

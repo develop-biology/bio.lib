@@ -27,7 +27,7 @@
 namespace bio {
 namespace molecular {
 
-void Protein::CtorCommon()
+void Protein::CommonConstructor()
 {
 	mSource = NULL;
 }

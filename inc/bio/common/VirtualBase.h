@@ -40,14 +40,14 @@ namespace bio {
  * When multiple child classes all call Initialize on a virtually inherited parent, only the FIRST call will take effect. All others will be ignored (but you can fall back on chaotic setter calls to overcome this). By inverting the way virtually inherited construction works, we can rely on passing arguments to a base class in order to virtual base class, restoring normal derived->base initialization behavior. <br />
  *
  * To illustrate how this works: <br />
- * [furthest derived class] ----> [virtual base default ctor] (implicit) <br />
- * [furthest derived class] ----> [parent class 1 ctor] ----> [grandparent 1 ctor] <br />
- * [furthest derived class] ----> [parent class 2 ctor] ----> [(virtual base)::Initialize()] <br />
- * [furthest derived class] ----> [parent class 3 ctor] ----> [(virtual base)::Initialize()] <br />
+ * [furthest derived class] ----> [virtual base default constructor] (implicit) <br />
+ * [furthest derived class] ----> [parent class 1 constructor] ----> [grandparent 1 constructor] <br />
+ * [furthest derived class] ----> [parent class 2 constructor] ----> [(virtual base)::Initialize()] <br />
+ * [furthest derived class] ----> [parent class 3 constructor] ----> [(virtual base)::Initialize()] <br />
  * In this example, only "parent class 2" gets to Initialize the virtual base. <br />
  * "Parent class 3" does not get to Initialize the virtual base. <br />
  * "Furthest derived class" elects "parent class 2" as the Initializer based on it's inheritance order ("parent class 2" comes first). <br />
- * If we change up the order and have "grandparent 1" call Initialize, we'll have to make sure "parent class 1" passes the appropriate arguments to the "grandparent 1" ctor. <br />
+ * If we change up the order and have "grandparent 1" call Initialize, we'll have to make sure "parent class 1" passes the appropriate arguments to the "grandparent 1" constructor. <br />
  * Passing arguments to the Initializing parent is thus the key to making this system work without needing to have the "furthest derived class" include the virtual base in its initializer list. <br />
  */
 class VirtualBase

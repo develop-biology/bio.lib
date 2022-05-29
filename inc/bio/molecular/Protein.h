@@ -60,7 +60,7 @@ public:
 	 * For example: <br />
 	 * 		Protein myProtein = Protein("MyProtein"); <br />
 	 * 		myProtein.SetSource(myDNA); //myDNA created sometime earlier. <br />
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(molecular,
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(molecular,
 		Protein,
 		&ProteinPerspective::Instance(),
 		filter::Molecular())
@@ -143,7 +143,7 @@ private:
 	/**
 	 *
 	 */
-	void CtorCommon();
+	void CommonConstructor();
 };
 
 } //molecular namespace

@@ -58,7 +58,7 @@ namespace chemical {
  * See Excitation.h for more info. <br />
  *
  * To make a Reaction, you must overload Process (virtual chemical::Products Process(chemical::Substances& reactants) = 0;) <br />
- * Then, preferably in your ctor, state the Require()ments. <br />
+ * Then, preferably in your constructor, state the Require()ments. <br />
  * Each Require()d Reactant* will be checked against the reactants (Substances&) provided to *this. 
  * ORDER MATTERS! The reactants must follow the same order as the Required Reactants! <br />
  *
@@ -85,7 +85,7 @@ public:
 
 	/**
 	 * Standard ctors. <br />
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(chemical,
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCONSTRUCTORS(chemical,
 		Reaction,
 		&ReactionPerspective::Instance(),
 		filter::Chemical(),

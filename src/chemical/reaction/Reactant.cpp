@@ -25,7 +25,7 @@
 namespace bio {
 namespace chemical {
 
-void Reactant::CtorCommon(Name typeName)
+void Reactant::CommonConstructor(Name typeName)
 {
 	string::CloneInto(
 		typeName,
@@ -38,7 +38,7 @@ Reactant::Reactant(Name typeName)
 	Class< Reactant >(this),
 	Substance()
 {
-	CtorCommon(typeName);
+	CommonConstructor(typeName);
 }
 
 Reactant::Reactant(
@@ -53,7 +53,7 @@ Reactant::Reactant(
 		states
 	)
 {
-	CtorCommon(typeName);
+	CommonConstructor(typeName);
 }
 
 Reactant::Reactant(
@@ -64,7 +64,7 @@ Reactant::Reactant(
 	Class< Reactant >(this),
 	Substance(*substance)
 {
-	CtorCommon(typeName);
+	CommonConstructor(typeName);
 }
 
 
