@@ -129,7 +129,7 @@ Code Atom::Disattenuate(const physical::Wave* other)
 }
 
 bool Atom::FormBondImplementation(
-	Wave* toBond,
+	physical::Wave* toBond,
 	AtomicNumber id,
 	BondType type
 )
@@ -160,7 +160,7 @@ bool Atom::FormBondImplementation(
 }
 
 bool Atom::BreakBondImplementation(
-	Wave* toBreak,
+	physical::Wave* toBreak,
 	AtomicNumber id,
 	BondType type
 )

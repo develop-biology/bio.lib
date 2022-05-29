@@ -18,24 +18,31 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 #pragma once
 
-/**
- * Because we support c++98 but also want to take advantage of later c++ features, we have to make our own wrappers around some keywords. <br />
- * Here, we define the "constexpr" keyword for only c++11 and beyond. <br />
- */
-//@formatter:off
-#if BIO_CPP_VERSION < 14
-	#define BIO_CONSTEXPR
-#else
-	#define BIO_CONSTEXPR constexpr
-#endif
-//@formatter:on
+#include "bio/api/internal/Final.h"
+#include "bio/api/macros/Macros.h"
+#include "bio/molecular/Vesicle.h"
 
-//@formatter:off
-#if BIO_CPP_VERSION < 11
-	#define BIO_FINAL
-#else
-	#define BIO_FINAL final
-#endif
-//@formatter:on
+namespace bio {
+namespace api {
+
+/**
+ * A FinalVesicle removes all the inheritance machinery from Vesicle. <br />
+ * Use this when you want to create your own Vesicles but not allow anyone else to override Biology methods when inheriting from them. <br />
+ */
+class FinalVesicle :
+	public Final< bio::molecular::Vesicle >
+{
+public:
+
+	BIO_CONSTRUCTORS(FinalVesicle, bio::Final< bio::molecular::Vesicle >)
+
+	virtual ~FinalVesicle()	{}
+
+	BIO_FINAL_VESICLE_METHODS
+};
+
+} //api namespace
+} //bio namespace

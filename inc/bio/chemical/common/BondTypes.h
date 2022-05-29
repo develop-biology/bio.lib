@@ -41,5 +41,11 @@ BondType Unknown();
  */
 BondType Virtual();
 
+/**
+ * AutoDelete Bonds will delete whatever they've Bonded when they are destroyed. <br />
+ * This is the only kind of bond with this behavior at the Bond level (you are obviously free to call delete on the Bonded object yourself). <br />
+ */
+BondType AutoDelete();
+
 } //bond_type namespace
 } //bio namespace

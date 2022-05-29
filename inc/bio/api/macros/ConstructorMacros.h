@@ -22,59 +22,49 @@
 #pragma once
 
 /**
- * Defines constructors for classes deriving from chemical::Class and beyond. <br />
+ * Defines constructors for classes deriving from any Final class. <br />
  * These will allow you to construct your object with either a name or an id. <br />
  * We also define the empty constructor for when neither name nor id are supplied. <br />
  *
- * IMPORTANT: despite using __VA_ARGS__, this will fail if nothing more than the namespace and class are provided. <br />
- * At a minimum, you MUST ALSO INCLUDE THE Perspective AFTER class! <br />
- * e.g. BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(my_namespace, MyClass, &MyClassPerspective::Instance()) <br />
- *
  * NOTE: if your class has multiple template args or otherwise uses commas in its name, you must enclose it in BIO_SINGLE_ARG() so as to not have it be considered part of the __VA_ARGS__. <br />
- * @param ns the namespace of the class
- * @param class the name of the class
- * @param ... all arguments to the ns::Class<class>(...) constructor.
+ * @param thisClass the name of the class to construct
+ * @param finalClass the name of the Final____ class *this is deriving from.
  */
-#define BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(ns, class, ...)                  \
-class() :                                                                      \
-    ns::Class< class >(this, __VA_ARGS__)                                      \
+#define BIO_CONSTRUCTORS(thisClass, finalClass)                                \
+thisClass() :                                                                  \
+    finalClass()                                                               \
 {}                                                                             \
-explicit class(::bio::Name name) :                                             \
-    ns::Class< class >(this, name, __VA_ARGS__)                                \
+explicit thisClass(::bio::Name name) :                                         \
+    finalClass(name)                                                           \
 {}                                                                             \
-explicit class(::bio::StandardDimension id) :                                  \
-    ns::Class< class >(this, id, __VA_ARGS__)                                  \
+explicit thisClass(::bio::StandardDimension id) :                              \
+    finalClass(id)                                                             \
 {}
 
-/**
- * Defines constructors for classes deriving from chemical::Class and beyond. <br />
+
+ /**
+ * Defines constructors for classes deriving from any Final class. <br />
  * All constructors call a CtorCommon() method with no args. <br />
  * These will allow you to construct your object with either a name or an id. <br />
  * We also define the empty constructor for when neither name nor id are supplied. <br />
  *
- * IMPORTANT: despite using __VA_ARGS__, this will fail if nothing more than the namespace and class are provided. <br />
- * At a minimum, you MUST ALSO INCLUDE THE Perspective AFTER class! <br />
- * e.g. BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(my_namespace, MyClass, &MyClassPerspective::Instance()) <br />
- *
  * NOTE: if your class has multiple template args or otherwise uses commas in its name, you must enclose it in BIO_SINGLE_ARG() so as to not have it be considered part of the __VA_ARGS__. <br />
- *
- * @param ns the namespace of the class
- * @param class the name of the class
- * @param ... all arguments to the ns::Class<class>(...) constructor.
+ * @param thisClass the name of the class to construct
+ * @param finalClass the name of the Final____ class *this is deriving from.
  */
-#define BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(ns, class, ...) \
-class() :                                                                      \
-    ns::Class< class >(this, __VA_ARGS__)                                      \
+#define BIO_CONSTRUCTORS_WITH_CTOR_COMMON(thisClass, finalClass)               \
+thisClass() :                                                                  \
+    finalClass()                                                               \
 {                                                                              \
-    this->CtorCommon();                                                        \
+	this->CtorCommon();                                                        \
 }                                                                              \
-explicit class(::bio::Name name) :                                             \
-    ns::Class< class >(this, name, __VA_ARGS__)                                \
+explicit thisClass(::bio::Name name) :                                         \
+    finalClass(name)                                                           \
 {                                                                              \
-    this->CtorCommon();                                                        \
+	this->CtorCommon();                                                        \
 }                                                                              \
-explicit class(::bio::StandardDimension id) :                                  \
-    ns::Class< class >(this, id, __VA_ARGS__)                                  \
+explicit thisClass(::bio::StandardDimension id) :                              \
+    finalClass(id)                                                             \
 {                                                                              \
     this->CtorCommon();                                                        \
 }

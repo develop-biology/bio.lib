@@ -54,11 +54,13 @@ void Engine::Log(
 	va_list args
 )
 {
-	BIO_SANITIZE_AT_SAFETY_LEVEL_1(FilterPass(
+	if (FilterPass(
 		filter,
 		level
-	), ,
-		return);
+	))
+	{
+		return; //filter off, don't log
+	}
 
 	char str[BIO_LOG_PRINTF_MAX_LINE_SIZE + 1];
 

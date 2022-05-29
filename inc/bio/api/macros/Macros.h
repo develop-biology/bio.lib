@@ -20,22 +20,8 @@
  */
 #pragma once
 
-/**
- * Because we support c++98 but also want to take advantage of later c++ features, we have to make our own wrappers around some keywords. <br />
- * Here, we define the "constexpr" keyword for only c++11 and beyond. <br />
- */
-//@formatter:off
-#if BIO_CPP_VERSION < 14
-	#define BIO_CONSTEXPR
-#else
-	#define BIO_CONSTEXPR constexpr
-#endif
-//@formatter:on
-
-//@formatter:off
-#if BIO_CPP_VERSION < 11
-	#define BIO_FINAL
-#else
-	#define BIO_FINAL final
-#endif
-//@formatter:on
+#include "ConstructorMacros.h"
+#include "final_methods/FinalCellMethods.h"
+#include "final_methods/FinalOrganelleMethods.h"
+#include "final_methods/FinalVesicleMethods.h"
+#include "final_methods/FinalMoleculeMethods.h"

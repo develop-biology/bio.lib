@@ -27,6 +27,7 @@
 #include "bio/log/common/Types.h"
 #include "bio/log/common/LogLevels.h"
 #include "bio/log/macros/Macros.h"
+#include <stdarg.h>
 
 namespace bio {
 namespace log {
@@ -86,6 +87,45 @@ public:
 	) const;
 
 	/**
+	 * For static callers only. <br />
+	 * This is a little hacky, but its better than having a static logger <br />
+	 * @param logFilter
+	 * @param level
+	 * @param format
+	 * @param ...
+	 */
+	void ExternalLog(
+		Filter logFilter,
+		LogLevel level,
+		const char* format,
+		va_list args
+	) const;
+
+	/**
+	 * Do the actual logging. <br />
+	 * @param level
+	 * @param format
+	 * @param ...
+	 */
+	void Log(
+		LogLevel level,
+		const char* format,
+		...
+	) const;
+
+	/**
+	 * Do the actual logging. <br />
+	 * @param level
+	 * @param format
+	 * @param ...
+	 */
+	void Log(
+		LogLevel level,
+		const char* format,
+		va_list args
+	) const;
+
+	/**
 	 * Set the log::Engine* for *this. 
 	 * Propagate logEngine to any and all related classes that should receive the change. <br />
 	 * if *this contains member LoggerObjects, these may be overridden to pass the call along to those objects as well. <br />
@@ -117,18 +157,6 @@ protected:
 	 * @param args
 	 */
 	virtual void InitializeImplementation(ByteStreams args);
-
-	/**
-	 * In case the above are too restrictive <br />
-	 * @param level
-	 * @param format
-	 * @param ...
-	 */
-	void Log(
-		LogLevel level,
-		const char* format,
-		...
-	) const;
 
 private:
 	Engine* mLogEngine;

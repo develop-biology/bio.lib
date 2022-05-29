@@ -40,6 +40,7 @@ Linear::~Linear()
 	if (!mShared && mComponent)
 	{
 		delete mComponent;
+		mComponent = NULL;
 	}
 }
 

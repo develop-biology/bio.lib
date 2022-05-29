@@ -93,28 +93,28 @@ public:
 	 * Attenuation here operates slightly differently from the real world concept. Because we have a continuous flow of electrons providing the power to run this code, doing work is essentially free (or at least abstracted and we don't HAVE to worry about it), Attenuation is more like amplification, where flux, in terms of work, is generated, rather than dispersed. However, if we treat some desired state as flux and any deviation from that state as offering resistance, "information flux" is lost as the desired state is approached, making Attenuation technically correct. <br />
 	 * @param other
 	 */
-	virtual Code Attenuate(const Wave* other);
+	virtual Code Attenuate(const physical::Wave* other);
 
 	/**
 	 * If the given Wave Resonates with any Bonded Wave in *this, the given Wave will be Demodulated and Disattenuated by the Bonded Wave. <br />
 	 * This is the opposite of Attenuation (above). <br />
 	 * @param other
 	 */
-	virtual Code Disattenuate(const Wave* other);
+	virtual Code Disattenuate(const physical::Wave* other);
 
 	/**
 	 * Simply get a bond. <br />
 	 * @param position
 	 * @return the Bonded Wave*
 	 */
-	Wave* GetBonded(Valence position);
+	physical::Wave* GetBonded(Valence position);
 
 	/**
 	 * Simply get a bond. <br />
 	 * @param position
 	 * @return the Bonded Wave*
 	 */
-	const Wave* GetBonded(Valence position) const;
+	const physical::Wave* GetBonded(Valence position) const;
 
 	/**
 	 * Gets the bond to an bonded of type T from *this, then casts the Bond()ed Wave to T*. <br />
@@ -409,7 +409,7 @@ public:
 	 * @param type
 	 */
 	virtual bool FormBondImplementation(
-		Wave* toBond,
+		physical::Wave* toBond,
 		AtomicNumber id,
 		BondType type
 	);
@@ -423,7 +423,7 @@ public:
 	 * @return
 	 */
 	virtual bool BreakBondImplementation(
-		Wave* toDisassociate,
+		physical::Wave* toDisassociate,
 		AtomicNumber id,
 		BondType type
 	);
