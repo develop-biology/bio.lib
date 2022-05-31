@@ -59,6 +59,7 @@ ThreadSafe::ThreadSafe()
 	CommonConstructor();
 }
 
+#if BIO_CPP_VERSION >= 11
 ThreadSafe::ThreadSafe(ThreadSafe&& toMove)
 	//@formatter:off
 	#if BIO_THREAD_ENFORCEMENT_LEVEL > 0
@@ -73,6 +74,7 @@ ThreadSafe::ThreadSafe(ThreadSafe&& toMove)
 {
 	CommonConstructor();
 }
+#endif
 
 ThreadSafe::ThreadSafe(const ThreadSafe& toCopy)
 //@formatter:off
@@ -103,11 +105,13 @@ ThreadSafe::~ThreadSafe()
 	//@formatter:on
 }
 
+#if BIO_CPP_VERSION >= 11
 ThreadSafe& ThreadSafe::operator=(ThreadSafe&& toMove)
 {
 	//mutexes have already been created by the time assignment can be called.
 	return *this;
 }
+#endif
 
 ThreadSafe& ThreadSafe::operator=(const ThreadSafe& toCopy)
 {

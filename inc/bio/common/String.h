@@ -20,9 +20,16 @@
  */
 
 #pragma once
-/**
- * Common string operations <br />
- */
+
+#include "bio/common/macros/Macros.h"
+
+//@formatter:off
+#if BIO_CPP_VERSION < 11
+	#include <stdint.h>
+#else
+	#include <cstdint>
+#endif
+//@formatter:on
 
 #include <string>
 #include <cstring>

@@ -57,21 +57,25 @@ public:
 	 */
 	ThreadSafe();
 
+	#if BIO_CPP_VERSION >= 11
 	/**
 	 * @param toMove
 	 */
 	ThreadSafe(ThreadSafe&& toMove);
+	#endif
 
 	/**
 	 * @param toCopy
 	 */
 	ThreadSafe(const ThreadSafe& toCopy);
 
+	#if BIO_CPP_VERSION >= 11
 	/**
 	 * @param toMove
 	 * @return *this.
 	 */
 	ThreadSafe& operator=(ThreadSafe&& toMove);
+	#endif
 
 	/**
 	 * @param toCopy

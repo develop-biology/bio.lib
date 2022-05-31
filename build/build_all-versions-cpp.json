@@ -1,0 +1,40 @@
+{
+	"name" : "bio",
+	"type" : "lib",
+	"clear_build_path" : false,
+	"build_in" : "../",
+	"next" : [
+		{
+			"clear_build_path" : true,
+			"build" : "cpp",
+			"build_in": "local/cpp98",
+			"config" : {
+				"cpp_version" : 98
+			}
+		},
+		{
+			"clear_build_path" : true,
+			"build" : "cpp",
+			"build_in": "local/cpp11",
+			"config" : {
+				"cpp_version" : 11
+			}
+		},
+		{
+			"clear_build_path" : true,
+			"build" : "cpp",
+			"build_in": "local/cpp17",
+			"config" : {
+				"cpp_version" : 17
+			}
+		},
+		{
+			"clear_build_path" : true,
+			"build" : "cpp",
+			"build_in": "local/cpp20",
+			"config" : {
+				"cpp_version" : 20
+			}
+    	}
+  	]
+}

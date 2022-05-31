@@ -26,7 +26,7 @@
  */
 #define BIO_SITE_FUNCTION(perspective, site, type, function, typeTuple, argTuple) \
     bool g##site##Registered =                                                 \
-        SafelyAccess<::bio::perspective>()->AssociateType(                     \
+        SafelyAccess< ::bio::perspective >()->AssociateType(                   \
             ::bio::perspective::Instance().GetIdFromName(#site),               \
             (                                                                  \
                 new BIO_EXCITATION_CLASS(                                      \
