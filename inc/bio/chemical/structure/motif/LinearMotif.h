@@ -561,7 +561,7 @@ public:
 			++cnt
 			)
 		{
-			ret += cnt.template As< physical::Identifiable< Id >* >()->GetName();
+			ret += cnt.template As< physical::Identifiable< Id >* >()->GetName().AsStdString();
 			if (cnt.GetIndex() != this->mContents->GetEndIndex() - 1)
 			{
 				ret += separator;

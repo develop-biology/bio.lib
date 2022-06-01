@@ -85,7 +85,7 @@ public:
 
 	/**
 	 * Standard ctors. <br />
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCONSTRUCTORS(chemical,
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(chemical,
 		Reaction,
 		&ReactionPerspective::Instance(),
 		filter::Chemical(),

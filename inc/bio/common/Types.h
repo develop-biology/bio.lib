@@ -23,6 +23,7 @@
 
 #include "ByteStream.h"
 #include "Primitives.h"
+#include "String.h"
 #include "bio/common/macros/Macros.h"
 #include "bio/common/container/Arrangement.h"
 #include "bio/common/container/SmartIterator.h"
@@ -39,7 +40,7 @@ typedef Arrangement< SmartIterator > SmartIterators;
 /**
  * Names are used in NameTracker<>s but are defined here for simplicity. <br />
  */
-typedef const char* Name;
+typedef String Name;
 typedef Arrangement< Name > Names;
 
 typedef Arrangement< ByteStream > ByteStreams;

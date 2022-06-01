@@ -25,20 +25,13 @@
 namespace bio {
 namespace chemical {
 
-void Reactant::CommonConstructor(Name typeName)
-{
-	string::CloneInto(
-		typeName,
-		mTypeName
-	);
-}
-
 Reactant::Reactant(Name typeName)
 	:
 	Class< Reactant >(this),
-	Substance()
+	Substance(),
+	mTypeName(typeName)
 {
-	CommonConstructor(typeName);
+
 }
 
 Reactant::Reactant(
@@ -51,9 +44,10 @@ Reactant::Reactant(
 	Substance(
 		properties,
 		states
-	)
+	),
+	mTypeName(typeName)
 {
-	CommonConstructor(typeName);
+
 }
 
 Reactant::Reactant(
@@ -62,15 +56,16 @@ Reactant::Reactant(
 )
 	:
 	Class< Reactant >(this),
-	Substance(*substance)
+	Substance(*substance),
+	mTypeName(typeName)
 {
-	CommonConstructor(typeName);
+
 }
 
 
 Reactant::~Reactant()
 {
-	delete[] mTypeName;
+
 }
 
 bool Reactant::operator==(const Substance& other) const

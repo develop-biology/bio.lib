@@ -26,17 +26,30 @@ namespace bio {
 namespace chemical {
 
 /**
- * Elements track the Properties of items in the PeriodicTable. 
- * This is a Substance for ease of use but can be changed later. 
- * We also want to use Element as a Substance here as we can store the Properties of classes which are not Substances (e.g. Symmetry) 
- * NOTE, this is not chemical::Elementary<T>, which is used to define these Elements. 
+ * Elements track the Properties of items in the PeriodicTable. <br />
+ * Elements should be Substances; however, creating a Substance (or indeed any Atom with Bonds) requires locking the PeriodicTable. Thus, when the PeriodicTable creates new Elements, it locks itself and halts. <br />
+ * Instead of making Elements full Substances, we just steal UnorderedMotif< Property > so that we can store the Properties of classes, including those which are not Substances (e.g. Symmetry). <br />
+ * NOTE: this is not chemical::Elementary<T>, which is used to define these Elements. <br />
  */
 class Element :
-	public Substance
+	public physical::Class< Element >,
+	public Arrangement< Property >
 {
 public:
+
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, Element)
+
 	Element()
 		:
+		physical::Class< Element >(this),
+		mType(NULL)
+	{
+	}
+
+	Element(Properties* properties)
+		:
+		physical::Class< Element >(this),
+		Arrangement< Property >(properties),
 		mType(NULL)
 	{
 	}
@@ -64,14 +77,14 @@ PeriodicTableImplementation::~PeriodicTableImplementation()
 
 const Properties PeriodicTableImplementation::GetPropertiesOf(AtomicNumber id) const
 {
-	Properties ret;
+	Properties* ret;
 	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id));
 	BIO_SANITIZE(element,
 		,
 		return ret
 	)
-	ret = element->GetAll< Property >();
-	return ret;
+	ret = Cast< Properties* >(element);
+	return *ret;
 }
 
 const Properties PeriodicTableImplementation::GetPropertiesOf(Name name) const
@@ -116,10 +129,9 @@ AtomicNumber PeriodicTableImplementation::RecordPropertiesOf(
 	Element* element = ForceCast< Element* >(hadit->mType);
 	if (!element)
 	{
-		element = new Element();
+		element = new Element(&properties);
 		hadit->mType = element->AsWave();
 	}
-	element->Import< Property >(properties);
 	return id;
 }
 

@@ -22,9 +22,18 @@
 #pragma once
 
 #include <assert.h>
+#include "LanguageMacros.h"
 
 /**
  * Simple wrapper around assert. May get more complicated if platform specific overrides become necessary.  <br />
  */
 
-#define BIO_ASSERT(cond)    assert(cond);
+#define BIO_ASSERT(condition)    assert(condition);
+
+#if BIO_CPP_VERSION < 11
+#define BIO_STATIC_ASSERT(condition)
+#elif BIO_CPP_VERSION < 17
+#define BIO_STATIC_ASSERT(condition) static_assert(condition, "");
+#else
+#define BIO_STATIC_ASSERT(condition) static_assert(condition);
+#endif

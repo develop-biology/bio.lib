@@ -111,7 +111,7 @@ public:
 	#endif
 	//@formatter:on
 
-	#if BIO_THREAD_ENFORCEMENT_LEVEL < 2
+	#if BIO_THREAD_ENFORCEMENT_LEVEL > 1
 	mutable bool mIsLocked;
 	#endif
 

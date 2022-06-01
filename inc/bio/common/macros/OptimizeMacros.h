@@ -33,10 +33,10 @@
  * 3. assert the condition is true and halt execution when failing; i.e. assume failure is fatal and cannot be recovered. <br />
  * NOTE: there are no catch statements in *this framework. <br />
  *
- * The default BIO_SAFETY_LEVEL is 2.
+ * The default BIO_SAFETY_LEVEL is 3.
  */
 #ifndef BIO_SAFETY_LEVEL
-	#define BIO_SAFETY_LEVEL 2
+	#define BIO_SAFETY_LEVEL 3
 #endif
 
 /**

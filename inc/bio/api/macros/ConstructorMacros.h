@@ -30,7 +30,7 @@
  * @param thisClass the name of the class to construct
  * @param finalClass the name of the Final____ class *this is deriving from.
  */
-#define BIO_CONSTRUCONSTRUCTORS(thisClass, finalClass)                                \
+#define BIO_CONSTRUCTORS(thisClass, finalClass)                                \
 thisClass() :                                                                  \
     finalClass()                                                               \
 {}                                                                             \
@@ -52,7 +52,7 @@ explicit thisClass(::bio::Id id) :                              \
  * @param thisClass the name of the class to construct
  * @param finalClass the name of the Final____ class *this is deriving from.
  */
-#define BIO_CONSTRUCONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(thisClass, finalClass)               \
+#define BIO_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(thisClass, finalClass)               \
 thisClass() :                                                                  \
     finalClass()                                                               \
 {                                                                              \

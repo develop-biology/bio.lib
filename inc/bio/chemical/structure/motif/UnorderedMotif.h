@@ -189,23 +189,23 @@ public:
 	}
 
 	/**
-	 * Get the Contents of *this as a string. <br />
+	 * Get the Contents of *this as a String. <br />
 	 * @param separator e.g. ", ", the default, or just " ".
 	 * @return the Contents of *this as a string.
 	 */
-	virtual ::std::string GetStringFromImplementation(std::string separator = ", ")
+	virtual String GetStringFromImplementation(String separator = ", ")
 	{
 		std::string ret = "";
 		SmartIterator cnt = this->mContents->Begin();
 		while (true)
 		{
-			ret += string::From< CONTENT_TYPE >(*cnt);
+			ret += String::From< CONTENT_TYPE >(*cnt).AsStdString();
 			++cnt;
 			if (cnt.IsAfterEnd())
 			{
 				break;
 			}
-			ret += separator;
+			ret += separator.AsStdString();
 		}
 		return ret;
 	}

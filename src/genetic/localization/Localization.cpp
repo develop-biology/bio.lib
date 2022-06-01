@@ -33,7 +33,6 @@ Localization::Localization(
 )
 	:
 	physical::Class< Localization >(this),
-	mName(NULL),
 	mc_method(NULL)
 {
 	SetNameOfSite(name);
@@ -42,11 +41,6 @@ Localization::Localization(
 
 Localization::~Localization()
 {
-	if (mName)
-	{
-		delete[] mName;
-		mName = NULL;
-	}
 	if (mc_method)
 	{
 		delete mc_method;
@@ -101,14 +95,7 @@ chemical::Substance* Localization::Seek(chemical::Substance* seekIn) const
 
 void Localization::SetNameOfSite(Name name)
 {
-	if (mName)
-	{
-		delete[] mName;
-	}
-	string::CloneInto(
-		name,
-		mName
-	);
+	mName = name;
 }
 
 Name Localization::GetNameOfSite() const

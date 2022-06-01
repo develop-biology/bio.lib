@@ -37,7 +37,7 @@ class FinalMolecule :
 {
 public:
 
-	BIO_CONSTRUCONSTRUCTORS(FinalMolecule, bio::Final< bio::molecular::Molecule >)
+	BIO_CONSTRUCTORS(FinalMolecule, bio::Final< bio::molecular::Molecule >)
 
 	virtual ~FinalMolecule() {}
 

@@ -49,7 +49,7 @@ void Plasmid::CommonConstructor()
 RNA* Plasmid::TranscribeFor(Expressor* expressor) const
 {
 	std::string rnaName = "mRNA_";
-	rnaName += GetName();
+	rnaName += GetName().AsStdString();
 	RNA* ret = new RNA(rnaName.c_str());
 	molecular::Protein* polymerase = ForceCast< molecular::Protein* >(GetRNAPolymerase()->Clone());
 	Id bindingSite = polymerase->GetIdFromName("RNA Binding Site");

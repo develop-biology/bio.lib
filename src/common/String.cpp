@@ -22,225 +22,141 @@
 #include "bio/common/String.h"
 
 #include <cstring>
+#include <cstdlib>
 
 namespace bio {
-namespace string {
 
-bool ToBool(
-	const char* s,
-	bool* returned
-)
+String::String()
 {
-	*returned = s == "true";
-	if (!returned && s != "false")
-	{
-		return false;
-	}
-	return true;
+
 }
 
-bool ToInt(
-	const char* s,
-	int32_t* value
-)
+String::String(const char* string) :
+	mString(string ? string : "")
 {
-	if (strlen(s) == 0)
+
+}
+
+String::String(::std::string string) :
+	mString(string)
+{
+
+}
+
+String::String(const String& toCopy) :
+	mString(toCopy)
+{
+
+}
+
+String::~String()
+{
+
+}
+
+String& String::operator=(const char* string)
+{
+	if (!string)
 	{
-		return false; //FAIL: empty string
+		mString = "";
 	}
+	else
+	{
+		mString = string;
+	}
+	return *this;
+}
+
+String& String::operator=(::std::string string)
+{
+	mString = string;
+	return *this;
+}
+
+bool String::operator==(const String& other) const
+{
+	return mString == other.mString;
+}
+
+String::operator ::std::string() const
+{
+	return mString;
+}
+
+String::operator bool() const
+{
+	return mString.size();
+}
+
+::std::string String::AsStdString() const
+{
+	return mString;
+}
+
+const char* String::AsCharString() const
+{
+	return GetCloneOf(mString.c_str());
+}
+
+bool String::AsBool() const
+{
+	BIO_SANITIZE(mString.size(),
+		,
+		return false
+	)
+
+	return !strcasecmp(
+		"true",
+		mString.c_str()
+	);
+}
+
+int32_t String::AsInt() const
+{
+	BIO_SANITIZE(mString.size(),
+		,
+		return 0
+	)
 
 	char* endptr = NULL;
-	*value = strtol(
-		s,
+	return strtol(
+		mString.c_str(),
 		&endptr,
 		10
 	);
-	return ((*endptr) == '\0');
 }
 
-bool ToUInt(
-	const char* s,
-	uint32_t* value
-)
+uint32_t String::AsUInt() const
 {
-	if (strlen(s) == 0)
-	{
-		return false; //FAIL: empty string
-	}
+	BIO_SANITIZE(mString.size(),
+		,
+		return 0
+	)
 
 	char* endptr = NULL;
-	*value = strtoul(
-		s,
+	return strtoul(
+		mString.c_str(),
 		&endptr,
 		10
 	);
-	return ((*endptr) == '\0');
 }
 
-bool ToFloat(
-	const char* s,
-	float* value
-)
+float String::AsFloat() const
 {
-	if (strlen(s) == 0)
-	{
-		return false; //FAIL: empty string
-	}
+	BIO_SANITIZE(mString.size(),
+		,
+		return 0.0f
+	)
 
 	char* endptr = NULL;
-	*value = strtof(
-		s,
+	return strtof(
+		mString.c_str(),
 		&endptr
 	);
-	return ((*endptr) == '\0');
 }
 
-StdStrings Parse(
-	const ::std::string& s,
-	char delimiter,
-	bool trimLeadingSpaces
-)
+/*static*/ const char* String::GetCloneOf(const char* source)
 {
-	std::stringstream ss(s);
-	StdStrings result;
-	while (ss.good())
-	{
-
-		std::string substring;
-		std::getline(
-			ss,
-			substring,
-			delimiter
-		);
-
-		if (trimLeadingSpaces)
-		{
-			//trim leading spaces from substring
-			size_t firstcharpos = substring.find_first_not_of(' ');
-			if (firstcharpos != ::std::string::npos)
-			{
-				substring = substring.substr(firstcharpos);
-			}
-		} //else: don't alter substring
-
-		result.push_back(substring);
-	}
-
-	return result;
-}
-
-std::string FromVectorOfStrings(
-	const StdStrings& v,
-	char delimiter,
-	bool trimLeadingSpaces
-)
-{
-	std::string result;
-	for (
-		StdStrings::const_iterator iter = v.begin();
-		iter != v.end();
-		++iter
-		)
-	{
-		std::string substring = *iter;
-
-		if (trimLeadingSpaces)
-		{
-			//trim leading spaces from substring
-			::std::size_t firstcharpos = substring.find_first_not_of(' ');
-			if (firstcharpos != ::std::string::npos)
-			{
-				substring = substring.substr(firstcharpos);
-			}
-		} //else: don't alter substring
-
-		if (result.length() == 0)
-		{
-			result = substring;
-		}
-		else
-		{
-			result += (delimiter + substring);
-		}
-	}
-
-	return result;
-}
-
-std::string FromVectorOfStrings(
-	const CharStrings& v,
-	char delimiter,
-	bool trimLeadingSpaces
-)
-{
-	std::string result;
-	for (
-		CharStrings::const_iterator iter = v.begin();
-		iter != v.end();
-		++iter
-		)
-	{
-		std::string substring(*iter);
-
-		if (trimLeadingSpaces)
-		{
-			//trim leading spaces from substring
-			::std::size_t firstcharpos = substring.find_first_not_of(' ');
-			if (firstcharpos != ::std::string::npos)
-			{
-				substring = substring.substr(firstcharpos);
-			}
-		} //else: don't alter substring
-
-		if (result.length() == 0)
-		{
-			result = substring;
-		}
-		else
-		{
-			result += (delimiter + substring);
-		}
-	}
-
-	return result;
-}
-
-CharStrings ToCharStrings(const StdStrings& strings)
-{
-	CharStrings ret;
-	for (
-		StdStrings::const_iterator iter = strings.begin();
-		iter != strings.end();
-		++iter
-		)
-	{
-		const char* toAdd;
-		CloneInto(iter->c_str(), toAdd);
-		ret.push_back(toAdd);
-	}
-	return ret;
-}
-
-StdStrings ToStdStrings(const CharStrings& strings)
-{
-	StdStrings ret;
-	for (
-		CharStrings::const_iterator iter = strings.begin();
-		iter != strings.end();
-		++iter
-		)
-	{
-		ret.push_back(*iter);
-	}
-	return ret;
-}
-
-void CloneInto(
-	const char* source,
-	const char*& target
-)
-{
-	//NOTE: because "new" is used here, a delete needs to be called either here or in the caller.
 	const size_t len = strlen(source);
 	char* tmpName = new char[len + 1];
 	strncpy(
@@ -249,13 +165,7 @@ void CloneInto(
 		len
 	);
 	tmpName[len] = '\0';
-	target = tmpName;
+	return tmpName;
 }
 
-bool AreEqual(const char* str1, const char* str2)
-{
-	return strcmp(str1, str2) == 0;
-}
-
-} //string namespace
 } //bio namespace

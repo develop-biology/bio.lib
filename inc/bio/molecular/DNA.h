@@ -57,7 +57,7 @@ public:
 	 * For example: <br />
 	 * 		DNA myAllele = DNA("MyGene"); <br />
 	 * 		myAllele.SetVersion(1.0); <br />
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(molecular,
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(molecular,
 		DNA,
 		&DNAPerspective::Instance(),
 		filter::Molecular())

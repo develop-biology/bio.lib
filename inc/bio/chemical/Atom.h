@@ -125,8 +125,10 @@ public:
 	T AsBonded()
 	{
 		Valence position = GetBondPosition< T >();
-		BIO_SANITIZE(position, ,
-			return NULL);
+		BIO_SANITIZE(position,
+			,
+			return NULL
+		)
 		return ForceCast< T >(mBonds.OptimizedAccess(position)->GetBonded());
 	}
 
@@ -139,8 +141,10 @@ public:
 	const T AsBonded() const
 	{
 		Valence position = GetBondPosition< T >();
-		BIO_SANITIZE(position, ,
-			return 0);
+		BIO_SANITIZE(position,
+			,
+			return NULL
+		)
 		return ForceCast< const T >(mBonds.OptimizedAccess(position)->GetBonded());
 	}
 
@@ -153,8 +157,10 @@ public:
 	T AsBondedQuantum()
 	{
 		physical::Quantum< T >* bonded = AsBonded< physical::Quantum< T >* >();
-		BIO_SANITIZE(bonded, ,
-			return 0)
+		BIO_SANITIZE(bonded,
+			,
+			return 0
+		)
 		return bonded->operator T();
 	}
 
@@ -167,8 +173,10 @@ public:
 	const T AsBondedQuantum() const
 	{
 		physical::Quantum< T >* bonded = AsBonded< physical::Quantum< T >* >();
-		BIO_SANITIZE(bonded, ,
-			return 0)
+		BIO_SANITIZE(bonded,
+			,
+			return 0
+		)
 		return bonded->operator T();
 	}
 
@@ -245,6 +253,7 @@ public:
 		}
 		else
 		{
+			BIO_STATIC_ASSERT(utility::IsPointer< T >());
 			return SafelyAccess<PeriodicTable>()->GetIdFromType< T >();
 		}
 		#endif
@@ -294,6 +303,7 @@ public:
 	 * Breaking a Bond Break()s the associated position. <br />
 	 * Removal of the Bond object is done upon destruction. <br />
 	 * Updating a Bond requires both Breaking and Forming steps to be done manually. <br />
+	 * NOTE: toDisassociate is not currently used for anything beyond automatic template type detection. <br />
 	 * @tparam T
 	 * @param toDisassociate
 	 * @param type
@@ -304,27 +314,10 @@ public:
 		T toDisassociate,
 		BondType type = bond_type::Unknown())
 	{
-		#if BIO_CPP_VERSION < 17
-		return BreakBond< physical::Quantum< T >* >( 
-			NULL,
-			type
-		);
-		#else
-		if constexpr(!utility::IsWave< T >())
-		{
-			return BreakBond< physical::Quantum< T >* >(
-				NULL,
-				type
-			); //T matters, toDisassociate does not.
-		}
-
-		AtomicNumber bondedId = SafelyAccess<PeriodicTable>()->GetIdFromType< T >();
 		return BreakBondImplementation(
-			toDisassociate,
-			bondedId,
+			GetBondId< T >(),
 			type
 		);
-		#endif
 	}
 
 
@@ -352,15 +345,7 @@ public:
 	template < typename T >
 	Valence GetBondPosition() const
 	{
-		#if BIO_CPP_VERSION < 17
-		return GetBondPosition(SafelyAccess<PeriodicTable>()->GetIdFromType< physical::Quantum< T >* >());
-		#else
-		if constexpr(!utility::IsWave< T >())
-		{
-			return GetBondPosition(SafelyAccess<PeriodicTable>()->GetIdFromType< physical::Quantum< T >* >());
-		}
-		return GetBondPosition(SafelyAccess<PeriodicTable>()->GetIdFromType< T >());
-		#endif
+		return GetBondPosition(GetBondId< T >());
 	}
 
 	/**
@@ -417,13 +402,11 @@ public:
 	/**
 	 * Remove a Bond. <br />
 	 * This is public for use in dtors. Please use BreakBond<> unless you are forced to call this impl method. <br />
-	 * @param toDisassociate
 	 * @param id
 	 * @param type
 	 * @return
 	 */
 	virtual bool BreakBondImplementation(
-		physical::Wave* toDisassociate,
 		AtomicNumber id,
 		BondType type
 	);

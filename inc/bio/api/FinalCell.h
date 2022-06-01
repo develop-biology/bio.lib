@@ -39,7 +39,7 @@ class FinalCell :
 {
 public:
 
-	BIO_CONSTRUCONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(FinalCell, BIO_SINGLE_ARG(Final< CellularForwarder< FinalCell, bio::cellular::Cell, bio::cellular::CellPerspective > >))
+	BIO_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(FinalCell, BIO_SINGLE_ARG(Final< CellularForwarder< FinalCell, bio::cellular::Cell, bio::cellular::CellPerspective > >))
 
 	virtual ~FinalCell() {}
 

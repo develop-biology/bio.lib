@@ -365,7 +365,7 @@ public:
 	{
 		BIO_SANITIZE(position,
 			return,);
-		mArg = newVal;
+		mArg = newVal.As< ARGUMENT >();
 	}
 
 	/**
@@ -467,10 +467,10 @@ public:
 		switch (position)
 		{
 			case 0:
-				mArg1 = newVal;
+				mArg1 = newVal.As< ARGUMENT1 >();
 				break;
 			case 1:
-				mArg2 = newVal;
+				mArg2 = newVal.As< ARGUMENT2 >();
 				break;
 		}
 	}

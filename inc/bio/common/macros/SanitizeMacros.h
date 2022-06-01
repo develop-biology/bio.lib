@@ -72,7 +72,7 @@ else                                                                           \
     throw ::std::runtime_error(::std::string("Sanitization Failed: ") +        \
 		::std::string(#test) + ::std::string(" @ ") +                          \
 		::std::string(__FILE__) + ::std::string(":") +                         \
-		::bio::string::From(__LINE__)                                          \
+		::bio::String::From(__LINE__).AsStdString()                            \
 	);                                                                         \
 }
 

@@ -57,7 +57,7 @@ private:
 		}
 		//Bond the class we're given, Virtually.
 		//Cannot use mObject because it doesn't exist yet.
-		AtomicNumber bondedId = Atom::GetBondId< T >();
+		AtomicNumber bondedId = Atom::GetBondId< T* >();
 		this->AsAtom()->FormBondImplementation(
 			this->AsWave(),
 			bondedId,

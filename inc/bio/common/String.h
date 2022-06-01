@@ -32,158 +32,139 @@
 //@formatter:on
 
 #include <string>
-#include <cstring>
-#include <vector>
-#include <stdlib.h>
 #include <sstream>
 
 namespace bio {
 
-typedef ::std::vector< const char* > CharStrings;
-typedef ::std::vector< ::std::string > StdStrings;
-
-namespace string {
 /**
- * Convert "true" or "false" to bool <br />
- * Case sensitive. TODO: make insensitive. <br />
- * @param s
- * @param returned
- * @return true on success, false if s is not an integer
+ * We use our own String implementation in order to ensure consistency across the library and to provide a single point of optimization for all String operations. <br />
+ * For example, we would like bio::Strings to encompass the compile-time behavior of std::string_view and run-time versatility of std::string. <br />
+ * Right now, this is essentially just a wrapper around std::string. <br />
+ * <br />
+ * Like other Biology classes, String is inheritable and designed to be extended.
  */
-bool ToBool(
-	const char* s,
-	bool* returned
-);
-
-/**
- * convert string s to an integer and return result in value <br />
- * @param s
- * @param returned
- * @return true on success, false if s is not an integer
- */
-bool ToInt(
-	const char* s,
-	int32_t* returned
-);
-
-/**
- * convert string s to an unsigned integer and return result in value <br />
- * @param s
- * @param returned
- * @return true on success, false if s is not an unsigned integer
- */
-bool ToUInt(
-	const char* s,
-	uint32_t* returned
-);
-
-/**
- * convert string s to a float and return result in value. <br />
- * @param s
- * @param returned
- * @return true on success, false if s is not a float.
- */
-bool ToFloat(
-	const char* s,
-	float* returned
-);
-
-/**
- * Converts the given value to a string. <br />
- * This is slower than the To____ methods but is more flexible. <br />
- * @param value
- * @return value as a string.
- */
-template < typename T >
-::std::string From(const T& value)
+class String
 {
-	std::ostringstream str;
-	str << value;
-	return str.str();
-}
+public:
+	
+	/**
+	 * 
+	 */
+	String();
+	
+	/**
+	 * @param string 
+	 */
+	String(const char* string);
+	
+	/**
+	 * @param string 
+	 */
+	String(::std::string string);
 
-/**
- * Convert a string containing substrings separated by delimiter to vector of substrings <br />
- * Example: s is "1,abc,3000"   Results will be vector of 3 strings:   "1" "abc" "3000" <br />
- * @param s the string with substrings separated by delimiter.
- * @param delimiter item separator (e.g. ',').
- * @param trimLeadingSpaces if true, removes leading spaces from substrings.
- * @return vector of substrings.
- */
-StdStrings Parse(
-	const ::std::string& s,
-	char delimiter = ',',
-	bool trimLeadingSpaces = true
-);
+	/**
+	 * @param toCopy
+	 */
+	String(const String& toCopy);
+	
+	/**
+	 * 
+	 */
+	virtual ~String();
 
-/**
- * Take a vector of strings and output as a single string with delimiter separating the strings. <br />
- * @param v vector of .
- * @param delimiter item separator (e.g. ',').
- * @param trimLeadingSpaces if true, removes leading spaces from substrings.
- * @return a single string with all strings from v.
- */
-::std::string FromVectorOfStrings(
-	const StdStrings& v,
-	char delimiter = ',',
-	bool trimLeadingSpaces = true
-);
+	/**
+	 * Converts the given value to a string. <br />
+	 * @param value
+	 */
+	template < typename T >
+	static String From(const T& value)
+	{
+		std::ostringstream str;
+		str << value;
+		return String(str.str());
+	}
 
-/**
- * Take a vector of char*s and outputs a single string with delimiter separating the strings. <br />
- * @param v
- * @param delimiter
- * @param trimLeadingSpaces
- * @return
- */
-::std::string FromVectorOfStrings(
-	const CharStrings& v,
-	char delimiter = ',',
-	bool trimLeadingSpaces = true
-);
+	/**
+	 * @param string 
+	 * @return *this.
+	 */
+	virtual String& operator=(const char* string);
 
-/**
- * Takes a vector of ::std::strings and converts it to a vector of const char*. <br />
- * @param strings
- * @return strings as CharStrings.
- */
-CharStrings ToCharStrings(const StdStrings& strings);
+	/**
+	 * @param string 
+	 * @return *this.
+	 */
+	virtual String& operator=(::std::string string);
 
-/**
- * Takes a vector of const char*s and converts it to a vector of ::std::strings. <br />
- * @param strings
- * @return strings as StdStrings
- */
-StdStrings ToStdStrings(const CharStrings& strings);
+	/**
+	 * @param other
+	 * @return whether or not the contents of *this match those of other.
+	 */
+	virtual bool operator==(const String& other) const;
 
-/**
- * Copies the contents of source into a new const char* and sets target to point to the new value. 
- * @param source
- * @param target
- */
-void CloneInto(
-	const char* source,
-	const char*& target
-);
+	/**
+	 * @return *this as an std::string.
+	 */
+	virtual operator ::std::string() const;
 
-/**
- * A string at a level. <br />
- */
-struct Echelon
-{
-	const char* string;
-	unsigned int echelon;
+	/**
+	 * You can implicitly treat Strings as booleans the same way you do pointers (specifically char*). <br />
+	 * NOTE: THIS IS NOT this->AsBool()!!!
+	 * @return whether or not *this is empty.
+	 */
+	virtual operator bool() const;
+
+	/**
+	 * Get *this as an std::string.
+	 * @return *this as an std::string.
+	 */
+	virtual ::std::string AsStdString() const;
+
+	/**
+	 * Get a *new* const char* from *this. <br />
+	 * YOU MUST delete THE RETURNED VALUE TO AVOID MEMORY LEAKS! <br />
+	 * @return a new const char* copy of *this.
+	 */
+	virtual const char* AsCharString() const;
+	
+	/**
+	 * Convert "true" or "false" to bool. <br />
+	 * This is essentially just {== "true"} with no extra test for "false". <br />
+	 * This behavior may change in a future release. <br />
+	 * Case insensitive. <br />
+	 * @return *this as a bool, false by default.
+	 */
+	virtual bool AsBool() const;
+
+	/**
+	 * convert *this to an integer. <br />
+	 * @return *this as an integer; 0 by default.
+	 */
+	virtual int32_t AsInt() const;
+
+	/**
+	 * convert *this to an unsigned integer. <br />
+	 * @return *this as an unsigned integer; 0 by default.
+	 */
+	virtual uint32_t AsUInt() const;
+
+	/**
+	 * convert *this to a float. <br />
+	 * @return *this as a float; 0.0f by default.
+	 */
+	virtual float AsFloat() const;
+
+	/**
+	 * Copies the contents of source into a new const char*. <br />
+	 * NOTE: because "new" is used here, a delete needs to be called elsewhere. <br />
+	 * @param source
+	 * @return a new const char* with the contents of source.
+	 */
+	static const char* GetCloneOf(const char* source);
+	
+protected:
+	::std::string mString;
+
 };
-typedef ::std::vector< Echelon > Echelons;
 
-
-/**
- * This is a simple wrapper around strcmp.
- * @param str1
- * @param str2
- * @return whether or not str1 == str2
- */
-bool AreEqual(const char* str1, const char* str2);
-
-} //string namespace
 } //bio namespace

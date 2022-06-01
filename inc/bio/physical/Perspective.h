@@ -122,11 +122,6 @@ public:
 			)
 		{
 			haditBuffer = hdt;
-			if (haditBuffer->mName)
-			{
-				delete[] haditBuffer->mName;
-				haditBuffer->mName = NULL;
-			}
 			if (haditBuffer->mType)
 			{
 				PerspectiveUtilities::Delete(haditBuffer->mType);
@@ -208,10 +203,7 @@ public:
 	 */
 	virtual Id GetIdFromName(Name name)
 	{
-		if (string::AreEqual(
-			InvalidName(),
-			name
-		))
+		if (name == InvalidName())
 		{
 			return InvalidId();
 		}
@@ -222,17 +214,11 @@ public:
 			return ret;
 		}
 
-		Name usedName;
-		string::CloneInto(
-			name,
-			usedName
-		);
-
 		ret = mNextId++;
 		mHadits.Add(
 			new Hadit(
 				ret,
-				usedName,
+				name,
 				NULL
 			));
 
@@ -268,16 +254,13 @@ public:
 	 */
 	virtual Id GetUniqueIdFor(Name name)
 	{
-		if (string::AreEqual(
-			InvalidName(),
-			name
-		))
+		if (name == InvalidName())
 		{
 			return InvalidId();
 		}
 
 		std::ostringstream usedName;
-		usedName.str(""); //TODO: can we do this all in the constructor?
+		usedName.str("");
 		usedName << name;
 
 		Id ret = GetIdWithoutCreation(usedName.str().c_str());
@@ -286,14 +269,14 @@ public:
 		while (!ret)
 		{
 			usedName.clear();
-			usedName.str(""); //TODO: is this right?
+			usedName.str("");
 			usedName << name;
 			usedName << "_" << nameCount++;
 			ret = GetIdWithoutCreation(usedName.str().c_str());
 		}
 
 		//this creates the unique id.
-		return GetIdFromName(usedName.str().c_str());
+		return GetIdFromName(usedName.str());
 	}
 
 
@@ -304,10 +287,7 @@ public:
 	 */
 	virtual Id GetIdWithoutCreation(Name name) const
 	{
-		if (string::AreEqual(
-			InvalidName(),
-			name
-		))
+		if (name == InvalidName())
 		{
 			return InvalidId();
 		}
@@ -321,10 +301,7 @@ public:
 		{
 			haditBuffer = hdt;
 
-			if (string::AreEqual(
-				haditBuffer->mName,
-				name
-			))
+			if (name == haditBuffer->mName)
 			{
 				return haditBuffer->mId;
 			}

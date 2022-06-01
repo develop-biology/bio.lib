@@ -160,7 +160,6 @@ bool Atom::FormBondImplementation(
 }
 
 bool Atom::BreakBondImplementation(
-	physical::Wave* toBreak,
 	AtomicNumber id,
 	BondType type
 )

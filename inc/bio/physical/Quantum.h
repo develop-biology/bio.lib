@@ -142,7 +142,7 @@ public:
 		BIO_SANITIZE(symmetry, ,
 			return code::BadArgument1());
 		//Wave::Reify(symmetry); //this does nothing useful.
-		*this->mQuantized = symmetry->GetValue();
+		*this->mQuantized = symmetry->GetValue().As< T >();
 		return code::Success();
 	}
 

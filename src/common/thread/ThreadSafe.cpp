@@ -39,7 +39,7 @@ void ThreadSafe::CommonConstructor()
 	#endif
 	//@formatter:on
 
-	#if BIO_THREAD_ENFORCEMENT_LEVEL < 2
+	#if BIO_THREAD_ENFORCEMENT_LEVEL > 1
 	mIsLocked = false;
 	#endif
 }
@@ -121,7 +121,7 @@ ThreadSafe& ThreadSafe::operator=(const ThreadSafe& toCopy)
 
 void ThreadSafe::LockThread() const
 {
-	#if BIO_THREAD_ENFORCEMENT_LEVEL < 2
+	#if BIO_THREAD_ENFORCEMENT_LEVEL > 1
 	BIO_SANITIZE(!mIsLocked,,return)
 	mIsLocked = true;
 	#endif
@@ -141,7 +141,7 @@ void ThreadSafe::LockThread() const
 
 void ThreadSafe::UnlockThread() const
 {
-	#if BIO_THREAD_ENFORCEMENT_LEVEL < 2
+	#if BIO_THREAD_ENFORCEMENT_LEVEL > 1
 	BIO_SANITIZE(mIsLocked,,return)
 	mIsLocked = false;
 	#endif

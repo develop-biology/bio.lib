@@ -69,11 +69,10 @@ public:
 		:
 		physical::Class< Identifiable< DIMENSION > >(this),
 		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-		mName(NULL),
+		mName(Perspective< DIMENSION >::InvalidName()),
 		#endif
 		mId(Perspective< DIMENSION >::InvalidId())
 	{
-		CloneIntoName(Perspective< DIMENSION >::InvalidName());
 		if (perspective)
 		{
 			Observer< Perspective< DIMENSION > >::Initialize(perspective);
@@ -91,11 +90,10 @@ public:
 		:
 		physical::Class< Identifiable< DIMENSION > >(this),
 		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-		mName(NULL),
+		mName(name),
 		#endif
 		mId(Perspective< DIMENSION >::InvalidId())
 	{
-		CloneIntoName(name);
 		if (perspective)
 		{
 			Observer< Perspective< DIMENSION > >::Initialize(perspective);
@@ -118,21 +116,20 @@ public:
 	)
 		:
 		physical::Class< Identifiable< DIMENSION > >(this),
-		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-		mName(NULL),
-		#endif
 		mId(Perspective< DIMENSION >::InvalidId())
 	{
 		if (perspective)
 		{
 			Observer< Perspective< DIMENSION > >::Initialize(perspective);
-			CloneIntoName(perspective->GetNameFromId(id));
+			#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
+			mName = perspective->GetNameFromId(id);
+			#endif
 			this->MakeWave();
 		}
 		else
 		{
 			mId = Perspective< DIMENSION >::InvalidId();
-			CloneIntoName(Perspective< DIMENSION >::InvalidName());
+			mName = Perspective< DIMENSION >::InvalidName();
 		}
 	}
 
@@ -143,12 +140,11 @@ public:
 		:
 		physical::Class< Identifiable< DIMENSION > >(this),
 		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-		mName(NULL),
+		mName(other.GetName()),
 		#endif
 		mId(other.mId)
 	{
 		Observer< Perspective< DIMENSION > >::Initialize(other.GetPerspective());
-		CloneIntoName(other.GetName());
 	}
 
 	/**
@@ -156,9 +152,7 @@ public:
 	 */
 	virtual ~Identifiable()
 	{
-		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-		delete[] mName;
-		#endif
+
 	}
 
 	/**
@@ -249,34 +243,43 @@ public:
 	 * Sets the name and updates the type to the given name. <br />
 	 * Has no effect if perspective is null. <br />
 	 * @param name
+	 * @return whether or not the Name was updated.
 	 */
-	virtual void SetName(Name name)
+	virtual bool SetName(Name name)
 	{
-		//TODO: should this check be after setting the name?
-		//	if so, the constructors can be simplified.
-		if (!this->GetPerspective())
-		{
-			return;
-		}
-		CloneIntoName(name);
+		BIO_SANITIZE(this->GetPerspective(),
+			,
+			return false
+		)
 
-		mId = this->GetPerspective()->GetIdFromName(mName);
+		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
+		mName = name;
+		#endif
+
+		mId = this->GetPerspective()->GetIdFromName(name);
+		return true;
 	}
 
 	/**
 	 * Sets the id and updates the name to the given id. <br />
 	 * Has no effect if perspective is null. <br />
 	 * @param id
+	 * @return whether or not the id was updated.
 	 */
-	virtual void SetId(Identifier id)
+	virtual bool SetId(Identifier id)
 	{
-		if (!this->GetPerspective())
-		{
-			return;
-		}
+		BIO_SANITIZE(this->GetPerspective(),
+			,
+			return false
+		)
+
 		mId = id;
 
-		CloneIntoName(this->GetPerspective()->GetNameFromId(mId));
+		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
+		mName = this->GetPerspective()->GetNameFromId(mId);
+		#endif
+
+		return true;
 	}
 
 	/**
@@ -287,9 +290,7 @@ public:
 	 */
 	virtual bool IsName(Name name) const
 	{
-		return string::AreEqual(
-			name,
-			this->GetName());
+		return name == this->GetName();
 	}
 
 	/**
@@ -299,8 +300,8 @@ public:
 	virtual bool IsNameInsensitive(Name name) const
 	{
 		return !strcasecmp(
-			name,
-			this->GetName());
+			name.AsCharString(),
+			this->GetName().AsCharString());
 	}
 
 	/**
@@ -322,7 +323,9 @@ public:
 
 		if (IsName(Perspective< DIMENSION >::InvalidName()) && !IsId(Perspective< DIMENSION >::InvalidId()))
 		{
-			CloneIntoName(this->GetPerspective()->GetNameFromId(mId));
+			#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
+			mName = this->GetPerspective()->GetNameFromId(mId);
+			#endif
 		}
 		else if (!IsName(Perspective< DIMENSION >::InvalidName()) && IsId(Perspective< DIMENSION >::InvalidId()))
 		{
@@ -396,10 +399,12 @@ protected:
 			{
 				mId = args[0];
 			}
+			#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
 			else if (args[0].Is(mName))
 			{
-				CloneIntoName(args[0]);
+				mName = args[0].As< String >();
 			}
+			#endif
 		}
 	}
 
@@ -409,20 +414,6 @@ private:
 	#endif
 
 	Identifier mId;
-
-	void CloneIntoName(Name name)
-	{
-		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-		if (mName)
-		{
-			delete[] mName;
-		}
-		string::CloneInto(
-			name,
-			mName
-		);
-		#endif
-	}
 };
 
 } //physical namespace

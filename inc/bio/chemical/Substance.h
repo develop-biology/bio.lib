@@ -46,7 +46,7 @@ class Substance :
 {
 public:
 
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(chemical,
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(chemical,
 		Substance,
 		&SubstancePerspective::Instance(),
 		filter::Chemical())
