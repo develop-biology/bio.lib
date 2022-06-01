@@ -21,12 +21,14 @@
 
 #pragma once
 
-#include <assert.h>
 #include "ByteStream.h"
 #include "Primitives.h"
+#include "String.h"
 #include "bio/common/macros/Macros.h"
 #include "bio/common/container/Arrangement.h"
 #include "bio/common/container/SmartIterator.h"
+#include "bio/common/thread/SafelyAccess.h"
+#include "bio/common/thread/ThreadSafe.h"
 
 namespace bio {
 
@@ -38,33 +40,33 @@ typedef Arrangement< SmartIterator > SmartIterators;
 /**
  * Names are used in NameTracker<>s but are defined here for simplicity. <br />
  */
-typedef const char* Name;
+typedef String Name;
 typedef Arrangement< Name > Names;
-
-typedef Arrangement< const char* > CharStrings;
-typedef Arrangement< ::std::string > StdStrings;
 
 typedef Arrangement< ByteStream > ByteStreams;
 
 /**
- * milliseconds (ms for short) <br />
+ * Timestamp. Usually in ms since epoch (epoch is sometimes the uptime of the kernel) <br />
  */
 typedef uint32_t Timestamp;
 typedef Arrangement< Timestamp > Timestamps;
 
 /**
- * microseconds (us for short) <br />
+ * microseconds (us for short). <br />
  */
-typedef uint32_t TimeUS;
+typedef uint32_t MicroSeconds;
+typedef MicroSeconds US;
 
 /**
- * milliseconds (ms for short) <br />
+ * milliseconds (ms for short). <br />
  */
-typedef uint32_t TimeMS;
+typedef uint32_t MilliSeconds;
+typedef MilliSeconds MS;
 
 /**
- * seconds (s or sec for short) <br />
+ * seconds (s or sec for short). <br />
  */
-typedef uint32_t TimeSec;
+typedef uint32_t Seconds;
+typedef Seconds S;
 
 } //bio namespace

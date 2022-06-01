@@ -43,7 +43,7 @@ std::string Axis::Rotate(Symmetry* symmetry) const
 	Container* toRotate = symmetry->GetAll< Symmetry* >();
 	for (
 		SmartIterator sym = toRotate->Begin();
-		!sym.IsAtEnd();
+		!sym.IsAfterEnd();
 		++sym
 		)
 	{

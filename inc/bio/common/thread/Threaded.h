@@ -24,7 +24,7 @@
 #include "ThreadSafe.h"
 #include "bio/common/macros/LanguageMacros.h"
 #include "bio/common/macros/OSMacros.h"
-#include "Types.h"
+#include "bio/common/Types.h"
 #include "bio/common/macros/Macros.h"
 
 //@formatter:off
@@ -123,7 +123,7 @@ public:
 	 * Release thread processing for us microseconds. <br />
 	 * @param us
 	 */
-	virtual void Sleep(TimeUS us);
+	virtual void Sleep(MicroSeconds us);
 
 protected:
 

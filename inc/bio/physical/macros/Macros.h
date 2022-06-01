@@ -71,7 +71,7 @@
 
 /**
  * To make defining return codes easier, use this macro to define the function body of your Code Function(). <br />
- * This will assign a value to a string that is identical to your FunctionName e.g. CodePerspective::Instance().GetNameFromId(Success()) would give "Success" <br />
+ * This will assign a value to a string that is identical to your FunctionName e.g. SafelyAccess<CodePerspective>()->GetNameFromId(Success()) would give "Success" <br />
  * REMINDER: Your Code Function()s should be in the ::bio::code namespace. <br />
 */
 #define BIO_CODE_FUNCTION_BODY(functionName)                                   \
@@ -82,7 +82,7 @@ BIO_ID_FUNCTION_BODY(                                                          \
 
 /**
  * To make defining States easier, use this macro to define the function body of your State Function(). <br />
- * This will assign a value to a string that is identical to your FunctionName e.g. StatePerspective::Instance().GetNameFromId(Value()) would give "Value". <br />
+ * This will assign a value to a string that is identical to your FunctionName e.g. SafelyAccess<StatePerspective>()->GetNameFromId(Value()) would give "Value". <br />
  * REMINDER: Your State Function()s should be in the ::bio::state namespace. <br />
  */
 #define BIO_STATE_FUNCTION_BODY(functionName)                                  \
@@ -94,7 +94,7 @@ BIO_ID_FUNCTION_BODY(                                                          \
 
 /**
  * To make defining Properties easier, use this macro to define the function body of your Property Function(). <br />
- * This will assign a value to a string that is identical to your FunctionName e.g. PropertyPerspective::Instance().GetNameFromId(Value()) would give "Value". <br />
+ * This will assign a value to a string that is identical to your FunctionName e.g. SafelyAccess<PropertyPerspective>()->GetNameFromId(Value()) would give "Value". <br />
  * REMINDER: Your Property Function()s should be in the ::bio::property namespace. <br />
  */
 #define BIO_PROPERTY_FUNCTION_BODY(functionName)                               \
@@ -105,7 +105,7 @@ BIO_ID_FUNCTION_BODY(                                                          \
 
 /**
  * To make defining SymmetryTypes easier, use this macro to define the function body of your SymmetryType Function(). <br />
- * This will assign a value to a string that is identical to your FunctionName e.g. SymmetryTypePerspective::Instance().GetNameFromId(Value()) would give "Value". <br />
+ * This will assign a value to a string that is identical to your FunctionName e.g. SafelyAccess<SymmetryTypePerspective>()->GetNameFromId(Value()) would give "Value". <br />
  * REMINDER: Your SymmetryType Function()s should be in the ::bio::symmetry_type namespace. <br />
  */
 #define BIO_SYMMETRY_TYPE_FUNCTION_BODY(functionName)                          \
@@ -116,7 +116,7 @@ BIO_ID_FUNCTION_BODY(                                                          \
 
 /**
  * To make defining Filters easier, use this macro to define the function body of your Filter Function(). <br />
- * This will assign a value to a string that is identical to your FunctionName e.g. FilterPerspective::Instance().GetNameFromId(Value()) would give "Value". <br />
+ * This will assign a value to a string that is identical to your FunctionName e.g. SafelyAccess<FilterPerspective>()->GetNameFromId(Value()) would give "Value". <br />
  * REMINDER: Your Filter Function()s should be in the ::bio::filter namespace. <br />
  */
 #define BIO_FILTER_FUNCTION_BODY(functionName)                                 \

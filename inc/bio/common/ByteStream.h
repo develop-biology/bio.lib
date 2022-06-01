@@ -26,7 +26,6 @@
 #include <cstddef>
 #include <cstdlib>
 #include <cstring>
-#include <assert.h>
 
 namespace bio {
 
@@ -34,9 +33,9 @@ namespace bio {
  * Generic byte stream class. Kinda like a void* that you can save and cast later. 
  * Work around for c++98 auto keyword and other wonky problems. <br />
  *
- *******************************************************************************
- *                    DO NOT USE THIS IMPROPERLY!! <br />
- *******************************************************************************
+ *******************************************************************************<br />
+ *                    DO NOT USE THIS IMPROPERLY!!                              <br />
+ *******************************************************************************<br />
  *
  * If you don't understand what this does and how it CAN GO HORRIBLY WRONG, <br />
  * DO NOT USE THIS CLASS! <br />
@@ -147,6 +146,7 @@ public:
 			sizeof(T));
 		mSize = sizeof(T);
 		mTypeName = TypeName< T >();
+		mHolding = true;
 	}
 
 	/**
@@ -194,7 +194,7 @@ public:
 	/**
 	 * @return the type stored in *this as a string.
 	 */
-	std::string GetTypeName() const;
+	String GetTypeName() const;
 
 	/**
 	 * @return the number of bytes *this points to.
@@ -210,7 +210,7 @@ public:
 
 protected:
 	mutable void* mStream;
-	std::string mTypeName;
+	String mTypeName;
 	std::size_t mSize;
 	bool mHolding;
 };

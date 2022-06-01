@@ -30,7 +30,7 @@ Gene::~Gene()
 {
 }
 
-void Gene::CtorCommon()
+void Gene::CommonConstructor()
 {
 	mInsertion.InsertThis(ChemicalCast< chemical::Substance* >(GetProtein()));
 }

@@ -19,7 +19,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/common/Threaded.h"
+#include "bio/common/thread/Threaded.h"
 #include "bio/common/Cast.h"
 
 //@formatter:off
@@ -39,7 +39,7 @@ Threaded::Threaded()
 //@formatter:off
 	#if BIO_CPP_VERSION < 11
 		#ifdef BIO_OS_IS_LINUX
-			//use mThread default ctor
+			//use mThread default constructor
 		#endif
 		mId(InvalidThreadId()),
 	#else
@@ -167,7 +167,7 @@ bool Threaded::Stop()
 
 }
 
-void Threaded::Sleep(TimeUS us)
+void Threaded::Sleep(MicroSeconds us)
 {
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11

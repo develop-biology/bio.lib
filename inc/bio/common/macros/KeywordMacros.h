@@ -31,3 +31,11 @@
 	#define BIO_CONSTEXPR constexpr
 #endif
 //@formatter:on
+
+//@formatter:off
+#if BIO_CPP_VERSION < 11
+	#define BIO_FINAL
+#else
+	#define BIO_FINAL final
+#endif
+//@formatter:on

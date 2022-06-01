@@ -52,6 +52,9 @@ struct IsPrimitiveImplementation< TransparentWrapper< T > >
 	//@formatter:on
 };
 
+BIO_SET_PRIMITIVE(String)
+BIO_SET_PRIMITIVE(const String)
+
 #if BIO_CPP_VERSION < 11
 
 BIO_SET_PRIMITIVE(bool)

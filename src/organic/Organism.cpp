@@ -37,7 +37,7 @@ Code Organism::Morphogenesis()
 	cellular::OrganSystem* systemBuffer;
 	for (
 		SmartIterator sys = organSystems->Begin();
-		!sys.IsAtEnd();
+		!sys.IsAfterEnd();
 		++sys
 		)
 	{

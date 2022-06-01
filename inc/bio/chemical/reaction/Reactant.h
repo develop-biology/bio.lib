@@ -82,11 +82,6 @@ public:
 protected:
 	Name mTypeName;
 
-private:
-	/**
-	 * @param typeName
-	 */
-	void CtorCommon(Name typeName);
 };
 
 } //chemical namespace

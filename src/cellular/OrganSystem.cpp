@@ -40,7 +40,7 @@ Code OrganSystem::Organogenesis()
 	Organ* organBuffer;
 	for (
 		SmartIterator org = organs->Begin();
-		!org.IsAtEnd();
+		!org.IsAfterEnd();
 		++org
 		)
 	{

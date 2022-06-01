@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <string>
+#include "String.h"
 
 namespace bio {
 
@@ -33,13 +33,13 @@ namespace bio {
  * @return Just T as a string.
  */
 template < typename T >
-const ::std::string TypeName();
+String TypeName();
 
 /**
  * @return "void"
  */
 template <>
-inline const ::std::string TypeName< void >()
+inline String TypeName< void >()
 {
 	return "void";
 }
@@ -56,7 +56,7 @@ typedef void TypeNameProber;
  * @return T as a string with wrapping symbols.
  */
 template < typename T >
-static const ::std::string WrappedTypeName()
+static const String WrappedTypeName()
 {
 	#ifdef __clang__
 	return __PRETTY_FUNCTION__;
@@ -75,7 +75,7 @@ static const ::std::string WrappedTypeName()
  */
 static const ::std::size_t WrappedTypeNamePrefixLength()
 {
-	return WrappedTypeName< TypeNameProber >().find(TypeName< TypeNameProber >());
+	return WrappedTypeName< TypeNameProber >().AsStdString().find(TypeName< TypeNameProber >().AsStdString());
 }
 
 /**
@@ -84,7 +84,7 @@ static const ::std::size_t WrappedTypeNamePrefixLength()
  */
 static const ::std::size_t WrappedTypeNameSuffixLength()
 {
-	return WrappedTypeName< TypeNameProber >().length() - WrappedTypeNamePrefixLength() - TypeName< TypeNameProber >().length();
+	return WrappedTypeName< TypeNameProber >().AsStdString().length() - WrappedTypeNamePrefixLength() - TypeName< TypeNameProber >().AsStdString().length();
 }
 
 /**
@@ -93,13 +93,13 @@ static const ::std::size_t WrappedTypeNameSuffixLength()
  * @return Just T as a string.
  */
 template < typename T >
-static const ::std::string TypeName()
+static String TypeName()
 {
-	static const ::std::string wrappedName = WrappedTypeName< T >();
+	static const String wrappedName = WrappedTypeName< T >();
 	static const ::std::size_t prefixLength = WrappedTypeNamePrefixLength();
 	static const ::std::size_t suffixLength = WrappedTypeNameSuffixLength();
-	static const ::std::size_t typeNameLength = wrappedName.length() - prefixLength - suffixLength;
-	return wrappedName.substr(
+	static const ::std::size_t typeNameLength = wrappedName.AsStdString().length() - prefixLength - suffixLength;
+	return wrappedName.AsStdString().substr(
 		prefixLength,
 		typeNameLength
 	);
@@ -112,7 +112,7 @@ static const ::std::string TypeName()
  * @return Just T as a string.
  */
 template < typename T >
-const ::std::string TypeName(const T t)
+static String TypeName(const T t)
 {
 	return TypeName< T >();
 }

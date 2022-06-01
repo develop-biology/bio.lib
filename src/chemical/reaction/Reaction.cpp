@@ -79,9 +79,9 @@ bool Reaction::ReactantsMeetRequirements(const Reactants* toCheck) const
 	return toCheck->HasAll< Substance* >(mRequiredReactants.GetAll< Substance* >());
 }
 
-/*static*/ const Reaction* Reaction::Initiate(StandardDimension id)
+/*static*/ const Reaction* Reaction::Initiate(Id id)
 {
-	BIO_SANITIZE_WITH_CACHE(ReactionPerspective::Instance().GetTypeFromIdAs< Reaction* >(id),
+	BIO_SANITIZE_WITH_CACHE(SafelyAccess<ReactionPerspective>()->GetTypeFromIdAs< Reaction* >(id),
 		return *(Cast< const Reaction** >(RESULT)),
 		return NULL);
 }
@@ -89,7 +89,7 @@ bool Reaction::ReactantsMeetRequirements(const Reactants* toCheck) const
 Products Reaction::operator()(Reactants* reactants) const
 {
 	//Always level 2, even if the user wants more (i.e. never less).
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(ReactantsMeetRequirements(reactants),
+	BIO_SANITIZE_AT_SAFETY_LEVEL_1(ReactantsMeetRequirements(reactants),
 		return Process(reactants),
 		return code::FailedReaction());
 }

@@ -28,7 +28,7 @@ namespace genetic {
 
 FetchPlasmid::FetchPlasmid()
 	:
-	molecular::Protein(chemical::PeriodicTable::Instance().GetNameFromType(*this))
+	molecular::Protein(SafelyAccess<chemical::PeriodicTable>()->GetNameFromType(*this))
 {
 	mc_nameSite = Define("Name Binding Site");
 	mc_idSite = Define("Id Binding Site");
@@ -47,16 +47,16 @@ Code FetchPlasmid::Activate()
 	RotateTo(mc_returnSite)->ReleaseAll();
 
 	Name boundName = RotateTo< Name >(mc_nameSite);
-	StandardDimension boundId = RotateTo< StandardDimension >(mc_idSite);
+	Id boundId = RotateTo< Id >(mc_idSite);
 
 	if (boundName)
 	{
-		RotateTo(mc_returnSite)->Bind(PlasmidPerspective::Instance().GetTypeFromIdAs< Plasmid* >(boundId));
+		RotateTo(mc_returnSite)->Bind(SafelyAccess<PlasmidPerspective>()->GetTypeFromIdAs< Plasmid* >(boundId));
 		ret = code::Success();
 	}
 	else if (boundId)
 	{
-		RotateTo(mc_returnSite)->Bind(PlasmidPerspective::Instance().GetTypeFromIdAs< Plasmid* >(boundId));
+		RotateTo(mc_returnSite)->Bind(SafelyAccess<PlasmidPerspective>()->GetTypeFromIdAs< Plasmid* >(boundId));
 		ret = code::Success();
 	}
 

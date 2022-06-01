@@ -25,7 +25,7 @@
 namespace bio {
 namespace physical {
 
-ThreadedPeriodic::ThreadedPeriodic(TimeUS interval)
+ThreadedPeriodic::ThreadedPeriodic(MicroSeconds interval)
 	:
 	Class< ThreadedPeriodic >(this)
 {

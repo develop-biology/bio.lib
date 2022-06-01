@@ -41,12 +41,12 @@ Vesicle::~Vesicle()
 {
 }
 
-Molecule* Vesicle::operator[](StandardDimension moleculeId)
+Molecule* Vesicle::operator[](Id moleculeId)
 {
 	return GetById< Molecule* >(moleculeId);
 }
 
-const Molecule* Vesicle::operator[](StandardDimension moleculeId) const
+const Molecule* Vesicle::operator[](Id moleculeId) const
 {
 	return GetById< Molecule* >(moleculeId);
 }

@@ -57,7 +57,7 @@ public:
 		physical::Class< Quantum< T > >(
 			this,
 			new Symmetry(
-				TypeName< T >().c_str(),
+				TypeName< T >(),
 				symmetry_type::DefineVariable())),
 		mQuantized(new T())
 	{
@@ -72,7 +72,7 @@ public:
 		physical::Class< Quantum< T > >(
 			this,
 			new Symmetry(
-				TypeName< T >().c_str(),
+				TypeName< T >(),
 				symmetry_type::DefineVariable())),
 		mQuantized(new T(assignment))
 	{
@@ -86,7 +86,7 @@ public:
 		physical::Class< Quantum< T > >(
 			this,
 			new Symmetry(
-				TypeName< T >().c_str(),
+				TypeName< T >(),
 				symmetry_type::DefineVariable())),
 		mQuantized(new T(other))
 	{
@@ -142,7 +142,7 @@ public:
 		BIO_SANITIZE(symmetry, ,
 			return code::BadArgument1());
 		//Wave::Reify(symmetry); //this does nothing useful.
-		*this->mQuantized = symmetry->GetValue();
+		*this->mQuantized = symmetry->GetValue().As< T >();
 		return code::Success();
 	}
 

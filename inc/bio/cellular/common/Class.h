@@ -53,7 +53,7 @@ public:
 	 */
 	Class(
 		T* object,
-		physical::Perspective< StandardDimension >* perspective = NULL,
+		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default())
 		:
 		genetic::Class< T >(
@@ -75,9 +75,9 @@ public:
 	Class(
 		T* object,
 		Name name,
-		physical::Perspective< StandardDimension >* perspective = NULL,
+		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
-		TimeUS interval = GetDefaultInterval())
+		MicroSeconds interval = GetDefaultInterval())
 		:
 		genetic::Class< T >(
 			object,
@@ -98,10 +98,10 @@ public:
 	 */
 	Class(
 		T* object,
-		StandardDimension id,
-		physical::Perspective< StandardDimension >* perspective = NULL,
+		Id id,
+		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
-		TimeUS interval = GetDefaultInterval())
+		MicroSeconds interval = GetDefaultInterval())
 		:
 		genetic::Class< T >(
 			object,
@@ -122,7 +122,7 @@ public:
 
 	}
 
-	Code Peak()
+	virtual Code Peak()
 	{
 		static PeakCarrierWave sPeakCarrierWave;
 		return Attenuate(&sPeakCarrierWave);

@@ -62,7 +62,7 @@ public:
 	/**
 	 * Standard ctors. <br />
 	 * These are easy to use but require setting member variables manually. <br />
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(genetic,
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(genetic,
 		Plasmid,
 		&PlasmidPerspective::Instance(),
 		filter::Genetic())
@@ -96,7 +96,7 @@ private:
 	/**
 	 * common constructor code. <br />
 	 */
-	void CtorCommon();
+	void CommonConstructor();
 };
 
 } //genetic namespace

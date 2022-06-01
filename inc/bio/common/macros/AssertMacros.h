@@ -20,10 +20,20 @@
  */
 
 #pragma once
-/**  
- * Description: assert definition. Will get more complicated as we support more target environments <br />
+
+#include <assert.h>
+#include "LanguageMacros.h"
+
+/**
+ * Simple wrapper around assert. May get more complicated if platform specific overrides become necessary.  <br />
  */
 
-//#include <assert.h> //YOU MUST INCLUDE THIS WHERE USING BIO_ASSERT
+#define BIO_ASSERT(condition)    assert(condition);
 
-#define BIO_ASSERT(cond)    assert(cond);
+#if BIO_CPP_VERSION < 11
+#define BIO_STATIC_ASSERT(condition)
+#elif BIO_CPP_VERSION < 17
+#define BIO_STATIC_ASSERT(condition) static_assert(condition, "");
+#else
+#define BIO_STATIC_ASSERT(condition) static_assert(condition);
+#endif

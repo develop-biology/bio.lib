@@ -69,12 +69,12 @@ public:
 	 * @return Extract(...)
 	 * @{
 	 */
-	virtual Molecule* operator[](StandardDimension moleculeId);
+	virtual Molecule* operator[](Id moleculeId);
 
-	virtual const Molecule* operator[](StandardDimension moleculeId) const;
+	virtual const Molecule* operator[](Id moleculeId) const;
 
 	template < typename T >
-	Molecule* operator[](StandardDimension moleculeId)
+	Molecule* operator[](Id moleculeId)
 	{
 		return ChemicalCast< T >(GetById< Molecule* >(moleculeId));
 	}

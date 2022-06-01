@@ -43,12 +43,12 @@ class Substance;
 template < typename T >
 class Class :
 	public physical::Class< T >,
-	virtual public physical::Identifiable< StandardDimension >,
+	virtual public physical::Identifiable< Id >,
 	virtual public log::Writer,
 	virtual public Atom
 {
 private:
-	void CtorCommon(Filter filter = filter::Default())
+	void CommonConstructor(Filter filter = filter::Default())
 	{
 		if (filter != filter::Default())
 		{
@@ -56,8 +56,11 @@ private:
 			Filterable::Initialize(filter);
 		}
 		//Bond the class we're given, Virtually.
-		physical::Class< T >::mObject->FormBond(
-			physical::Class< T >::mObject,
+		//Cannot use mObject because it doesn't exist yet.
+		AtomicNumber bondedId = Atom::GetBondId< T* >();
+		this->AsAtom()->FormBondImplementation(
+			this->AsWave(),
+			bondedId,
 			bond_type::Virtual());
 	}
 
@@ -77,18 +80,18 @@ public:
 	 */
 	Class(
 		T* object,
-		physical::Perspective< StandardDimension >* perspective = NULL,
+		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
 		physical::Class< T >(
 			object,
 			new physical::Symmetry(
-				TypeName< T >().c_str(),
+				TypeName< T >(),
 				symmetryType
 			))
 	{
-		CtorCommon(filter);
+		CommonConstructor(filter);
 	}
 
 
@@ -101,22 +104,22 @@ public:
 	Class(
 		T* object,
 		Name name,
-		physical::Perspective< StandardDimension >* perspective = NULL,
+		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
 		physical::Class< T >(
 			object,
 			new physical::Symmetry(
-				TypeName< T >().c_str(),
+				TypeName< T >(),
 				symmetryType
 			))
 	{
-		CtorCommon(filter);
+		CommonConstructor(filter);
 
 		if (perspective)
 		{
-			physical::Identifiable< StandardDimension >::Initialize(
+			physical::Identifiable< Id >::Initialize(
 				name,
 				perspective
 			);
@@ -135,23 +138,23 @@ public:
 	 */
 	Class(
 		T* object,
-		StandardDimension id,
-		physical::Perspective< StandardDimension >* perspective = NULL,
+		Id id,
+		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
 		physical::Class< T >(
 			object,
 			new physical::Symmetry(
-				TypeName< T >().c_str(),
+				TypeName< T >(),
 				symmetryType
 			))
 	{
-		CtorCommon(filter);
+		CommonConstructor(filter);
 
 		if (perspective)
 		{
-			physical::Identifiable< StandardDimension >::Initialize(
+			physical::Identifiable< Id >::Initialize(
 				id,
 				perspective
 			);
@@ -177,7 +180,7 @@ public:
 	 */
 	virtual Properties GetProperties() const
 	{
-		return PeriodicTable::Instance().GetPropertiesOf< T >();
+		return SafelyAccess<PeriodicTable>()->GetPropertiesOf< T >();
 	}
 
 	/**

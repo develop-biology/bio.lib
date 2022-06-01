@@ -55,41 +55,40 @@ bool Iterator::MoveTo(const Index index)
 	return false;
 }
 
-bool Iterator::IsAtBeginning() const
+bool Iterator::IsBeforeBeginning() const
 {
 	return !mIndex;
 }
 
-bool Iterator::IsAtEnd() const
+bool Iterator::IsAfterEnd() const
 {
-	return mIndex == mContainer->GetAllocatedSize();
+	return !mIndex || mIndex > mContainer->GetAllocatedSize();
 }
 
-Iterator* Iterator::Increment()
+Iterator& Iterator::Increment()
 {
-	if (mIndex >= mContainer->GetAllocatedSize())
+	if (IsAfterEnd())
 	{
-		mIndex = mContainer->GetAllocatedSize();
-		return this;
+		return *this;
 	}
-	while (mContainer->IsFree(++mIndex) && !IsAtEnd())
+	while (mContainer->IsFree(++mIndex) && !IsAfterEnd())
 	{
 		continue; //avoid re-referencing mIndex; see condition.
 	}
-	return this;
+	return *this;
 }
 
-Iterator* Iterator::Decrement()
+Iterator& Iterator::Decrement()
 {
-	if (!mIndex)
+	if (IsBeforeBeginning())
 	{
-		return this;
+		return *this;
 	}
-	while (mContainer->IsFree(--mIndex) && !IsAtBeginning())
+	while (mContainer->IsFree(--mIndex) && !IsBeforeBeginning())
 	{
 		continue; //avoid re-referencing mIndex; see condition.
 	}
-	return this;
+	return *this;
 }
 
 ByteStream Iterator::operator*()

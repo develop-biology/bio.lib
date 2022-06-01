@@ -26,7 +26,6 @@ namespace bio {
 ByteStream::ByteStream()
 	:
 	mStream(NULL),
-	mTypeName(""),
 	mSize(0),
 	mHolding(false)
 {
@@ -67,7 +66,7 @@ bool ByteStream::IsEmpty() const
 	return !mStream;
 }
 
-std::string ByteStream::GetTypeName() const
+String ByteStream::GetTypeName() const
 {
 	return mTypeName;
 }
@@ -104,7 +103,7 @@ void ByteStream::Release()
 	}
 	std::free(mStream);
 	mSize = 0;
-	mTypeName.clear();
+	mTypeName = "";
 	mHolding = false;
 }
 

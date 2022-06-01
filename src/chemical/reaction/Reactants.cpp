@@ -37,7 +37,7 @@ Reactants::Reactants(Substances& substances)
 {
 	for (
 		SmartIterator sub = substances.Begin();
-		!sub.IsAtEnd();
+		!sub.IsAfterEnd();
 		++sub
 		)
 	{

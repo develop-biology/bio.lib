@@ -94,12 +94,12 @@ public:
 	/**
 	 * @return whether or not *this has reached the beginning of its Arrangement.
 	 */
-	bool IsAtBeginning() const;
+	bool IsBeforeBeginning() const;
 
 	/**
 	 * @return whether or not *this has reached the end of its Arrangement.
 	 */
-	bool IsAtEnd() const;
+	bool IsAfterEnd() const;
 
 	/**
 	 * Dereferencing gives the datum *this is currently pointing to. <br />

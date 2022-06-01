@@ -77,14 +77,14 @@ bool SmartIterator::MoveTo(Index index) const
 	return mImplementation->MoveTo(index);
 }
 
-bool SmartIterator::IsAtBeginning() const
+bool SmartIterator::IsBeforeBeginning() const
 {
-	return mImplementation->IsAtBeginning();
+	return mImplementation->IsBeforeBeginning();
 }
 
-bool SmartIterator::IsAtEnd() const
+bool SmartIterator::IsAfterEnd() const
 {
-	return mImplementation->IsAtEnd();
+	return mImplementation->IsAfterEnd();
 }
 
 ByteStream SmartIterator::operator*()

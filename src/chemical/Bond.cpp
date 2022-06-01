@@ -49,7 +49,12 @@ Bond::Bond(
 
 Bond::~Bond()
 {
-
+	if (!mBonded && mType == bond_type::AutoDelete())
+	{
+		delete mBonded;
+		mBonded = NULL;
+		mType = bond_type::Empty();
+	}
 }
 
 bool Bond::Form(

@@ -172,7 +172,7 @@ public:
 	 */
 	virtual Properties GetProperties() const
 	{
-		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
+		Properties ret = SafelyAccess<PeriodicTable>()->GetPropertiesOf< WAVE >();
 		ret.Import(ExcitationBase::GetClassProperties());
 		return ret;
 	}
@@ -269,7 +269,7 @@ public:
 	 */
 	virtual Properties GetProperties() const
 	{
-		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
+		Properties ret = SafelyAccess<PeriodicTable>()->GetPropertiesOf< WAVE >();
 		ret.Import(ExcitationBase::GetClassProperties());
 		return ret;
 	}
@@ -348,7 +348,7 @@ public:
 	 */
 	virtual Properties GetProperties() const
 	{
-		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
+		Properties ret = SafelyAccess<PeriodicTable>()->GetPropertiesOf< WAVE >();
 		ret.Import(ExcitationBase::GetClassProperties());
 		return ret;
 	}
@@ -365,7 +365,7 @@ public:
 	{
 		BIO_SANITIZE(position,
 			return,);
-		mArg = newVal;
+		mArg = newVal.As< ARGUMENT >();
 	}
 
 	/**
@@ -449,7 +449,7 @@ public:
 	 */
 	virtual Properties GetProperties() const
 	{
-		Properties ret = PeriodicTable::Instance().GetPropertiesOf< WAVE >();
+		Properties ret = SafelyAccess<PeriodicTable>()->GetPropertiesOf< WAVE >();
 		ret.Import(ExcitationBase::GetClassProperties());
 		return ret;
 	}
@@ -467,10 +467,10 @@ public:
 		switch (position)
 		{
 			case 0:
-				mArg1 = newVal;
+				mArg1 = newVal.As< ARGUMENT1 >();
 				break;
 			case 1:
-				mArg2 = newVal;
+				mArg2 = newVal.As< ARGUMENT2 >();
 				break;
 		}
 	}

@@ -25,10 +25,30 @@
  * BIO_SAFETY_LEVEL dictates how fast vs safe *this should be. <br />
  * A lower level means faster runtime and a higher chance of crashing. <br />
  * A higher level means slower runtime and a smaller chance of crashing. <br />
- * Values generally range from 0 to 4 (unless you make your own code dependent on the BIO_SAFETY_LEVEL). <br />
+ * Values generally range from 0 to 3 (unless you make your own code dependent on the BIO_SAFETY_LEVEL). <br />
+ * For BIO_SANITIZE, this means: <br />
+ * 0. just run success, don't even check the condition; i.e. assume failure is not possible. <br />
+ * 1. check the condition and run the provided failure if necessary; i.e. assume failure is not bad. <br />
+ * 2. check the condition and throw an exception when failing; i.e. assume failure is fatal but recoverable if caught. <br />
+ * 3. assert the condition is true and halt execution when failing; i.e. assume failure is fatal and cannot be recovered. <br />
+ * NOTE: there are no catch statements in *this framework. <br />
+ *
+ * The default BIO_SAFETY_LEVEL is 3.
  */
 #ifndef BIO_SAFETY_LEVEL
-	#define BIO_SAFETY_LEVEL 2
+	#define BIO_SAFETY_LEVEL 3
+#endif
+
+/**
+ * Thread locking & unlocking is unnecessary on single-threaded builds. <br />
+ * If you do not intend on using threads at all, <br />
+ * #define BIO_THREAD_ENFORCEMENT_LEVEL 0 <br />
+ * Doing so will make all thread related operations into nops and save you some cpu cycles. <br />
+ * At higher thread enforcement levels, locking becomes increasingly strict. It is recommended that you compile with as high of an enforcement level as you can. <br />
+ * The current max is 2. <br />
+ */
+#ifndef BIO_THREAD_ENFORCEMENT_LEVEL
+	#define BIO_THREAD_ENFORCEMENT_LEVEL 2
 #endif
 
 /**
@@ -55,14 +75,4 @@
  */
 #ifndef BIO_ENABLE_REFLECTION
 	#define BIO_ENABLE_REFLECTION 1
-#endif
-
-/**
- * Thread locking & unlocking is unnecessary on single-threaded builds. <br />
- * If you do not intend on using threads at all, <br />
- * #define BIO_ENABLE_THREADING 0 <br />
- * Doing so will make all thread related operations into nops and save you some cpu cycles. <br />
- */
-#ifndef BIO_ENABLE_THREADING
-	#define BIO_ENABLE_THREADING 1
 #endif

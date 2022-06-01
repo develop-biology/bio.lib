@@ -47,7 +47,7 @@ public:
 	 * Currently default is set to 200 milliseconds (200000 microseconds). <br />
 	 * @return a default value for Periodic constructors.
 	 */
-	static TimeUS GetDefaultInterval();
+	static MicroSeconds GetDefaultInterval();
 
 	/**
 	 * All Periodic objects share the "Periodic" Property. <br />
@@ -58,7 +58,7 @@ public:
 	/**
 	 * @param interval the period that Peak() wants to be called in microseconds.
 	 */
-	Periodic(TimeUS interval = GetDefaultInterval());
+	Periodic(MicroSeconds interval = GetDefaultInterval());
 
 	/**
 	 *
@@ -99,12 +99,12 @@ public:
 	 * Set how quickly *this should Peak() <br />
 	 * @param interval
 	 */
-	virtual void SetInterval(TimeUS interval);
+	virtual void SetInterval(MicroSeconds interval);
 
 	/**
 	 * @return the time interval between Peaks of *this, in microseconds.
 	 */
-	TimeUS GetInterval() const;
+	MicroSeconds GetInterval() const;
 
 	/**
 	 * @return the last time *this Peaked.
@@ -143,7 +143,7 @@ public:
 	virtual Properties GetProperties() const;
 
 protected:
-	TimeUS mInterval;
+	MicroSeconds mInterval;
 	Timestamp mLastPeakTimestamp;
 };
 

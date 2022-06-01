@@ -39,16 +39,16 @@
 class() :                                                                      \
     ns::Class< class >(this, __VA_ARGS__)                                      \
 {}                                                                             \
-explicit class(Name name) :                                                    \
+explicit class(::bio::Name name) :                                             \
     ns::Class< class >(this, name, __VA_ARGS__)                                \
 {}                                                                             \
-explicit class(StandardDimension id) :                                         \
+explicit class(::bio::Id id) :                                                 \
     ns::Class< class >(this, id, __VA_ARGS__)                                  \
 {}
 
 /**
  * Defines constructors for classes deriving from chemical::Class and beyond. <br />
- * All constructors call a CtorCommon() method with no args. <br />
+ * All constructors call a CommonConstructor() method with no args. <br />
  * These will allow you to construct your object with either a name or an id. <br />
  * We also define the empty constructor for when neither name nor id are supplied. <br />
  *
@@ -62,19 +62,19 @@ explicit class(StandardDimension id) :                                         \
  * @param class the name of the class
  * @param ... all arguments to the ns::Class<class>(...) constructor.
  */
-#define BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(ns, class, ...) \
+#define BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(ns, class, ...) \
 class() :                                                                      \
     ns::Class< class >(this, __VA_ARGS__)                                      \
 {                                                                              \
-    this->CtorCommon();                                                        \
+    this->CommonConstructor();                                                 \
 }                                                                              \
-explicit class(Name name) :                                                    \
+explicit class(::bio::Name name) :                                             \
     ns::Class< class >(this, name, __VA_ARGS__)                                \
 {                                                                              \
-    this->CtorCommon();                                                        \
+    this->CommonConstructor();                                                 \
 }                                                                              \
-explicit class(StandardDimension id) :                                         \
+explicit class(::bio::Id id) :                                                 \
     ns::Class< class >(this, id, __VA_ARGS__)                                  \
 {                                                                              \
-    this->CtorCommon();                                                        \
+    this->CommonConstructor();                                                 \
 }

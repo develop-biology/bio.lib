@@ -23,7 +23,9 @@
 
 #include "bio/common/container/common/Types.h"
 #include "bio/common/macros/Macros.h"
+#include "bio/common/thread/ThreadSafe.h"
 #include "bio/common/Cast.h"
+#include "bio/common/String.h"
 #include "SmartIterator.h"
 #include <deque>
 
@@ -57,8 +59,10 @@ class Iterator;
  * 1. If you need direct access to the memory stored, store a pointer. Keep it simple. <br />
  * 2. If you do not need direct access, store the raw type (e.g. for .?int\d+_t types) <br />
  * 3. Containers themselves should be passed by pointer. This consistency helps when the Container needs to be Cast, etc. <br />
+ *
+ * Containers are NOT ThreadSafe when used outside of SafelyAccess. YOU MUST USE SafelyAccess to access a container safely in a concurrent environment!
  */
-class Container
+class Container : virtual public ThreadSafe
 {
 public:
 
@@ -71,14 +75,14 @@ public:
 		std::size_t stepSize = sizeof(ByteStream));
 
 	/**
-	 * Copy ctor. <br />
+	 * Copy constructor. <br />
 	 * Imports all contents from other into *this. <br />
 	 * @param other
 	 */
 	Container(const Container& other);
 
 	/**
-	 * Copy ctor for pointers. <br />
+	 * Copy constructor for pointers. <br />
 	 * Dereferences other then Imports all contents from other into *this. <br />
 	 * @param other
 	 */
@@ -90,12 +94,12 @@ public:
 	virtual ~Container();
 
 	/**
-	 * @return where to start.
+	 * @return the first allocated (i.e. usable) index in *this.
 	 */
 	virtual Index GetBeginIndex() const;
 
 	/**
-	 * @return where to end.
+	 * @return the last allocated (i.e. usable) index in *this.
 	 */
 	virtual Index GetEndIndex() const;
 
@@ -129,6 +133,7 @@ public:
 	/**
 	 * Checks if the given Index is available to be allocated, i.e. the Index should not be used. <br />
 	 * NOTE: Just because a Index is not free does not necessarily mean the Index has been allocated. <br />
+	 * InvalidIndex is always Free. <br />
 	 * @param index
 	 * @return whether or not the given Index is free to use.
 	 */
@@ -229,10 +234,11 @@ public:
 
 	/**
 	 * Removes content from *this. <br />
+	 * If *this stores pointers and you don't delete them elsewhere, consider doing something like: delete myContainer.Erase(someIndex).As< MyPointerType* >();
 	 * @param index
-	 * @return whether or not the erasure was successful.
+	 * @return the content that was previously at the given index.
 	 */
-	virtual bool Erase(Index index);
+	virtual ByteStream Erase(Index index);
 
 	/**
 	 * Erase wrapper for SmartIterators. <br />
@@ -325,7 +331,7 @@ public:
 		std::vector< T > ret;
 		for (
 			SmartIterator rct = End();
-			!rct.IsAtBeginning();
+			!rct.IsBeforeBeginning();
 			--rct
 			)
 		{
@@ -368,12 +374,6 @@ protected:
 	Index mSize;
 	Index mFirstFree;
 	std::deque< Index > mDeallocated;
-
-	/**
-	 * An iterator for use in loops. <br />
-	 * Matches lifecycle of object for better performance. <br />
-	 */
-	mutable Iterator* mTempItt;
 };
 
 } //bio namespace

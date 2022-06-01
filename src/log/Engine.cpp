@@ -38,7 +38,7 @@ Engine::Engine()
 {
 	//Set all filters to only log if level is >= Info
 	mLevelFilter.assign(
-		FilterPerspective::Instance().GetNumUsedIds(),
+		SafelyAccess<FilterPerspective>()->GetNumUsedIds(),
 		log_level::Info());
 }
 
@@ -54,11 +54,13 @@ void Engine::Log(
 	va_list args
 )
 {
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(FilterPass(
+	if (FilterPass(
 		filter,
 		level
-	), ,
-		return);
+	))
+	{
+		return; //filter off, don't log
+	}
 
 	char str[BIO_LOG_PRINTF_MAX_LINE_SIZE + 1];
 
@@ -74,7 +76,7 @@ void Engine::Log(
 	mLogMessage.clear();
 	mLogMessage.str(""); //TODO: is seekp good enough? what is faster?
 
-	mLogMessage << physical::GetCurrentTimestamp() << " " << FilterPerspective::Instance().GetNameFromId(filter) << " " << LogLevelPerspective::Instance().GetNameFromId(level) << ": " << str << "\n";
+	mLogMessage << physical::GetCurrentTimestamp() << " " << SafelyAccess<FilterPerspective>()->GetNameFromId(filter) << " " << SafelyAccess<LogLevelPerspective>()->GetNameFromId(level) << ": " << str << "\n";
 	Output(mLogMessage.str());
 }
 
@@ -110,29 +112,42 @@ bool Engine::FilterPass(
 	LogLevel level
 ) const
 {
+	if (filter == filter::All())
+	{
+		return false;
+	}
 	return level >= mLevelFilter[filter];
 }
 
-bool Engine::FilterSet(
+bool Engine::SetFilter(
 	Filter filter,
 	LogLevel level
 )
 {
-	mLevelFilter[filter] = level;
+	if (filter == filter::All())
+	{
+		mLevelFilter.assign(
+			SafelyAccess<FilterPerspective>()->GetNumUsedIds(),
+			level);
+	}
+	else
+	{
+		mLevelFilter[filter] = level;
+	}
 	return true; //SUCCESS
 }
 
-bool Engine::FilterSet(
+bool Engine::SetFilter(
 	Name filter,
 	Name level
 )
 {
-	return FilterSet(
-		FilterPerspective::Instance().GetIdFromName(filter),
-		LogLevelPerspective::Instance().GetIdFromName(level));
+	return SetFilter(
+		SafelyAccess<FilterPerspective>()->GetIdFromName(filter),
+		SafelyAccess<LogLevelPerspective>()->GetIdFromName(level));
 }
 
-LogLevel Engine::FilterGet(Filter filter) const
+LogLevel Engine::GetFilter(Filter filter) const
 {
 	return mLevelFilter[filter];
 }

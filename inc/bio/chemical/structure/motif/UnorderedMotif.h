@@ -101,7 +101,7 @@ public:
 	 * Implementation for counting Contents. <br />
 	 * @return the number of Contents in *this.
 	 */
-	virtual unsigned long GetCountImplementation() const
+	virtual Index GetCountImplementation() const
 	{
 		return this->mContents->GetNumberOfElements();
 	}
@@ -164,7 +164,7 @@ public:
 		unsigned int ret = 0;
 		for (
 			SmartIterator otr = other->End();
-			!otr.IsAtBeginning();
+			!otr.IsBeforeBeginning();
 			--otr
 			)
 		{
@@ -189,23 +189,23 @@ public:
 	}
 
 	/**
-	 * Get the Contents of *this as a string. <br />
+	 * Get the Contents of *this as a String. <br />
 	 * @param separator e.g. ", ", the default, or just " ".
 	 * @return the Contents of *this as a string.
 	 */
-	virtual ::std::string GetStringFromImplementation(std::string separator = ", ")
+	virtual String GetStringFromImplementation(String separator = ", ")
 	{
 		std::string ret = "";
 		SmartIterator cnt = this->mContents->Begin();
 		while (true)
 		{
-			ret += string::From< CONTENT_TYPE >(*cnt);
+			ret += String::From< CONTENT_TYPE >(*cnt).AsStdString();
 			++cnt;
-			if (cnt.IsAtEnd())
+			if (cnt.IsAfterEnd())
 			{
 				break;
 			}
-			ret += separator;
+			ret += separator.AsStdString();
 		}
 		return ret;
 	}

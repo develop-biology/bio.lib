@@ -39,7 +39,7 @@ Code Tissue::DifferentiateCells()
 	Cell* cellBuffer;
 	for (
 		SmartIterator cel = cells->Begin();
-		!cel.IsAtEnd();
+		!cel.IsAfterEnd();
 		++cel
 		)
 	{
@@ -58,7 +58,7 @@ Code Tissue::DifferentiateCells()
 	Tissue* tissueBuffer;
 	for (
 		SmartIterator tis = tissues->Begin();
-		!tis.IsAtEnd();
+		!tis.IsAfterEnd();
 		++tis
 		)
 	{

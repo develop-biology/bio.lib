@@ -58,7 +58,7 @@ namespace chemical {
  * See Excitation.h for more info. <br />
  *
  * To make a Reaction, you must overload Process (virtual chemical::Products Process(chemical::Substances& reactants) = 0;) <br />
- * Then, preferably in your ctor, state the Require()ments. <br />
+ * Then, preferably in your constructor, state the Require()ments. <br />
  * Each Require()d Reactant* will be checked against the reactants (Substances&) provided to *this. 
  * ORDER MATTERS! The reactants must follow the same order as the Required Reactants! <br />
  *
@@ -222,20 +222,20 @@ public:
 	 * @param id
 	 * @return a Reaction* with the given id or NULL.
 	 */
-	static const Reaction* Initiate(StandardDimension id);
+	static const Reaction* Initiate(Id id);
 
 	/**
 	 * Get a Reaction! <br />
 	 * This should be used to avoid unnecessary new and deletes. <br />
-	 * This only works for Reactions that have a name matching their type (i.e. were constructed with name=PeriodicTable::Instance().GetNameFromType(*this)), which is true for all Reactions in the core Biology framework. <br />
+	 * This only works for Reactions that have a name matching their type (i.e. were constructed with name=SafelyAccess<PeriodicTable>()->GetNameFromType(*this)), which is true for all Reactions in the core Biology framework. <br />
 	 * @tparam T
 	 * @return a Reaction* of the given type or NULL, if no Reaction exists matching the TypeName of the given T.
 	 */
 	template < typename T >
 	static const T* Initiate()
 	{
-		const T* ret = ReactionPerspective::Instance().template GetTypeFromNameAs< T >(TypeName< T >());
-		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret,
+		const T* ret = SafelyAccess<ReactionPerspective>()->template GetTypeFromNameAs< T >(TypeName< T >());
+		BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret,
 			return ret,
 			return NULL);
 	}

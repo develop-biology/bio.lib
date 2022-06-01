@@ -75,7 +75,7 @@ public:
 	 * @param type
 	 */
 	Symmetry(
-		StandardDimension id,
+		Id id,
 		Name type
 	);
 
@@ -84,7 +84,7 @@ public:
 	 * @param type
 	 */
 	Symmetry(
-		StandardDimension id,
+		Id id,
 		SymmetryType type
 	);
 

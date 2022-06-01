@@ -41,7 +41,7 @@
 
 namespace bio {
 
-class StandardDimension;
+class Id;
 
 namespace utility {
 

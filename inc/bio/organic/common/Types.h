@@ -26,9 +26,9 @@
 namespace bio {
 
 BIO_PERSPECTIVE_SINGLETON(OrganismPerspective,
-	StandardDimension)
+	Id)
 
 BIO_PERSPECTIVE_SINGLETON(HabitatPerspective,
-	StandardDimension)
+	Id)
 
 } //bio namespace

@@ -60,9 +60,9 @@ class RNA;
 typedef ::bio::Arrangement< const RNA* > Transcriptome;
 
 BIO_PERSPECTIVE_SINGLETON(RNAPerspective,
-	StandardDimension)
+	Id)
 
 BIO_PERSPECTIVE_SINGLETON(PlasmidPerspective,
-	StandardDimension)
+	Id)
 } //genetic namespace
 } //bio namespace

@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/common/Threaded.h"
+#include "bio/common/thread/Threaded.h"
 #include "Periodic.h"
 
 namespace bio {
@@ -47,7 +47,7 @@ public:
 	/**
 	 *
 	 */
-	ThreadedPeriodic(TimeUS interval = GetDefaultInterval());
+	ThreadedPeriodic(MicroSeconds interval = GetDefaultInterval());
 
 	/**
 	 *

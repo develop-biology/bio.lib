@@ -41,8 +41,8 @@ namespace chemical {
 /**
  * LinearMotif objects contain pointers to chemical::Classes. <br />
  *
- * IMPORTANT: CONTENT_TYPE MUST BE A chemical::Class* (which is in the StandardDimension). 
- * YOU CANNOT USE LinearMotif WITH TYPES THAT ARE NOT POINTERS TO CHILDREN OF chemical::Class (i.e. a physical::Identifiable<StandardDimension>) <br />
+ * IMPORTANT: CONTENT_TYPE MUST BE A chemical::Class* (which is in the Id).
+ * YOU CANNOT USE LinearMotif WITH TYPES THAT ARE NOT POINTERS TO CHILDREN OF chemical::Class (i.e. a physical::Identifiable<Id>) <br />
  * Other Dimensions may be supported in a future release. <br />
  * physical::Line and physical::Linear for why. <br />
  *
@@ -89,13 +89,13 @@ public:
 	/**
 	 * @param perspective
 	 */
-	explicit LinearMotif(physical::Perspective< StandardDimension >* perspective = NULL)
+	explicit LinearMotif(physical::Perspective< Id >* perspective = NULL)
 		:
 		Elementary< LinearMotif< CONTENT_TYPE > >(GetClassProperties()),
 		chemical::Class< LinearMotif< CONTENT_TYPE > >(this),
 		mPerspective(perspective)
 	{
-		CtorCommon();
+		CommonConstructor();
 	}
 
 	/**
@@ -105,14 +105,14 @@ public:
 	 */
 	explicit LinearMotif(
 		const Contents* contents,
-		physical::Perspective< StandardDimension >* perspective = NULL
+		physical::Perspective< Id >* perspective = NULL
 	)
 		:
 		Elementary< LinearMotif< CONTENT_TYPE > >(GetClassProperties()),
 		chemical::Class< LinearMotif< CONTENT_TYPE > >(this),
 		mPerspective(perspective)
 	{
-		CtorCommon();
+		CommonConstructor();
 		this->mContents->Import(contents);
 	}
 
@@ -127,7 +127,7 @@ public:
 		chemical::Class< LinearMotif< CONTENT_TYPE > >(this),
 		mPerspective(toCopy.mPerspective)
 	{
-		CtorCommon();
+		CommonConstructor();
 		this->mContents->Import(toCopy.GetAllImplementation());
 	}
 
@@ -146,12 +146,12 @@ public:
 	 * This Perspective will be used for Name <-> Id matching, Wave->Clone()ing, etc. <br />
 	 * See bio/physical/Perspective.h for more details. <br />
 	 */
-	physical::Perspective< StandardDimension >* mPerspective;
+	physical::Perspective< Id >* mPerspective;
 
 	/**
 	 * @return the mPerspective used by *this.
 	 */
-	physical::Perspective< StandardDimension >* GetStructuralPerspective()
+	physical::Perspective< Id >* GetStructuralPerspective()
 	{
 		return mPerspective;
 	}
@@ -159,7 +159,7 @@ public:
 	/**
 	 * @return the mPerspective used by *this.
 	 */
-	const physical::Perspective< StandardDimension >* GetStructuralPerspective() const
+	const physical::Perspective< Id >* GetStructuralPerspective() const
 	{
 		return mPerspective;
 	}
@@ -190,7 +190,7 @@ public:
 	virtual Code InsertImplementation(
 		CONTENT_TYPE toAdd,
 		const Position position = BOTTOM,
-		const StandardDimension optionalPositionArg = 0, //i.e. invalid.
+		const Id optionalPositionArg = 0, //i.e. invalid.
 		const bool transferSubContents = false
 	)
 	{
@@ -206,7 +206,7 @@ public:
 		//Remove conflicts
 		for (
 			SmartIterator cnt = this->mContents->End();
-			!cnt.IsAtBeginning();
+			!cnt.IsBeforeBeginning();
 			--cnt
 			)
 		{
@@ -238,7 +238,7 @@ public:
 				Bond* bondBuffer;
 				for (
 					SmartIterator bnd = addition->AsAtom()->GetAllBonds()->End();
-					!bnd.IsAtBeginning();
+					!bnd.IsBeforeBeginning();
 					--bnd
 					)
 				{
@@ -324,11 +324,11 @@ public:
 	 * @return a Content of the given id or NULL.
 	 */
 	virtual CONTENT_TYPE GetByIdImplementation(
-		StandardDimension id
+		Id id
 	)
 	{
 		Index ret = Cast< physical::Line* >(this->mContents)->SeekToId(id);
-		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
+		BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret, ,
 			return NULL) //level 2 for GetOrCreate.
 
 		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->mContents)->LinearAccess(ret));
@@ -340,11 +340,11 @@ public:
 	* @return a Content of the given id or NULL.
 	*/
 	virtual const CONTENT_TYPE GetByIdImplementation(
-		StandardDimension id
+		Id id
 	) const
 	{
 		Index ret = Cast< physical::Line* >(this->mContents)->SeekToId(id);
-		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
+		BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret, ,
 			return NULL) //level 2 for GetOrCreate.
 
 		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->mContents)->LinearAccess(ret));
@@ -361,7 +361,7 @@ public:
 	)
 	{
 		Index ret = Cast< physical::Line* >(this->mContents)->SeekToName(name);
-		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
+		BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret, ,
 			return NULL) //level 2 for GetOrCreate.
 
 		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->mContents)->LinearAccess(ret));
@@ -377,7 +377,7 @@ public:
 	) const
 	{
 		Index ret = Cast< physical::Line* >(this->mContents)->SeekToName(name);
-		BIO_SANITIZE_AT_SAFETY_LEVEL_2(ret, ,
+		BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret, ,
 			return NULL) //level 2 for GetOrCreate.
 
 		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->mContents)->LinearAccess(ret));
@@ -391,7 +391,7 @@ public:
 	 * @return a newly created CONTENT_TYPE else NULL.
 	 */
 	virtual CONTENT_TYPE CreateImplementation(
-		StandardDimension id
+		Id id
 	)
 	{
 		BIO_SANITIZE(this->GetStructuralPerspective(), ,
@@ -406,7 +406,7 @@ public:
 	 * @return A CONTENT_TYPE of the given id.
 	 */
 	virtual CONTENT_TYPE GetOrCreateByIdImplementation(
-		StandardDimension id
+		Id id
 	)
 	{
 		CONTENT_TYPE ret = this->GetByIdImplementation(
@@ -432,7 +432,7 @@ public:
 		BIO_SANITIZE(this->GetStructuralPerspective(), ,
 			return NULL);
 		//We convert to Id in case the Name is not already registered in the desired Perspective.
-		StandardDimension id = this->GetStructuralPerspective()->GetIdFromName(name);
+		Id id = this->GetStructuralPerspective()->GetIdFromName(name);
 		CONTENT_TYPE ret = this->GetByIdImplementation(id);
 		if (ret)
 		{
@@ -484,11 +484,11 @@ public:
 		Code ret = code::Success();
 		for (
 			SmartIterator cnt = this->mContents;
-			!cnt.IsAtBeginning();
+			!cnt.IsBeforeBeginning();
 			--cnt
 			)
 		{
-			if (cnt.template As< physical::Identifiable< StandardDimension >* >()->Attenuate(other) != code::Success())
+			if (cnt.template As< physical::Identifiable< Id >* >()->Attenuate(other) != code::Success())
 			{
 				ret = code::UnknownError();
 			}
@@ -506,11 +506,11 @@ public:
 		Code ret = code::Success();
 		for (
 			SmartIterator cnt = this->mContents;
-			!cnt.IsAtBeginning();
+			!cnt.IsBeforeBeginning();
 			--cnt
 			)
 		{
-			if (cnt.template As< physical::Identifiable< StandardDimension >* >()->Disattenuate(other) != code::Success())
+			if (cnt.template As< physical::Identifiable< Id >* >()->Disattenuate(other) != code::Success())
 			{
 				ret = code::UnknownError();
 			}
@@ -530,13 +530,13 @@ public:
 		Emission ret;
 		for (
 			SmartIterator cnt = this->mContents;
-			!cnt.IsAtBeginning();
+			!cnt.IsBeforeBeginning();
 			--cnt
 			)
 		{
 			ByteStream result;
 			excitation->CallDown(
-				cnt.template As< physical::Identifiable< StandardDimension >* >()->AsWave(),
+				cnt.template As< physical::Identifiable< Id >* >()->AsWave(),
 				&result
 			);
 			ret.Add(result);
@@ -557,11 +557,11 @@ public:
 			SmartIterator cnt(
 				this->mContents,
 				this->mContents->GetBeginIndex());
-			!cnt.IsAtEnd();
+			!cnt.IsAfterEnd();
 			++cnt
 			)
 		{
-			ret += cnt.template As< physical::Identifiable< StandardDimension >* >()->GetName();
+			ret += cnt.template As< physical::Identifiable< Id >* >()->GetName().AsStdString();
 			if (cnt.GetIndex() != this->mContents->GetEndIndex() - 1)
 			{
 				ret += separator;
@@ -585,7 +585,7 @@ private:
 	/**
 	 * Common constructor code. <br />
 	 */
-	void CtorCommon()
+	void CommonConstructor()
 	{
 		//TODO: This needs work.
 		//		#if BIO_CPP_VERSION >= 11

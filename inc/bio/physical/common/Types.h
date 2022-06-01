@@ -31,9 +31,9 @@ namespace bio {
 
 /**
  * Id type used for all Ids until Named classes can be properly derived from. See physical::Identifiable.h for more info. <br />
- * StandardDimension is NOT used when the type itself is the id, e.g. for Code, etc. <br />
+ * Id is NOT used when the type itself is the id, e.g. for Code, etc. <br />
  */
-BIO_ID(StandardDimension,
+BIO_ID(Id,
 	uint32_t)
 
 /**
@@ -78,7 +78,7 @@ namespace physical {
 class Symmetry;
 //typedef ::bio::Arrangement<Symmetry*> Symmetries; //From Wave.h
 BIO_PERSPECTIVE_SINGLETON(SymmetryPerspective,
-	StandardDimension)
+	Id)
 
 } //physical namespace
 } //bio namespace

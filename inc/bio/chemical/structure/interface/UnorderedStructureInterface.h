@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/common/ThreadSafe.h"
+#include "bio/common/thread/ThreadSafe.h"
 #include "bio/chemical/Atom.h"
 #include "bio/chemical/structure/motif/LinearMotif.h"
 
@@ -62,15 +62,11 @@ public:
 	template < typename T >
 	T Add(const T t)
 	{
-		T ret = 0;
-		LockThread();
 		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
-		if (implementer)
-		{
-			ret = implementer->AddImplementation(t);
-		}
-		UnlockThread();
-		return ret;
+		BIO_SANITIZE(implementer,
+			return implementer->AddImplementation(t),
+			return 0
+		)
 	}
 
 
@@ -83,15 +79,11 @@ public:
 	template < typename T >
 	T Remove(const T t)
 	{
-		T ret = 0;
-		LockThread();
 		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
-		if (implementer)
-		{
-			ret = implementer->RemoveImplementation(t);
-		}
-		UnlockThread();
-		return ret;
+		BIO_SANITIZE(implementer,
+			return implementer->RemoveImplementation(t),
+			return 0
+		)
 	}
 
 
@@ -104,13 +96,10 @@ public:
 	template < typename T >
 	void Import(const UnorderedMotif< T >* other)
 	{
-		LockThread();
 		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
-		if (implementer)
-		{
-			implementer->ImportImplementation(other);
-		}
-		UnlockThread();
+		BIO_SANITIZE(implementer,
+			implementer->ImportImplementation(other),
+		)
 	}
 
 	/**
@@ -125,7 +114,7 @@ public:
 	{
 		for (
 			SmartIterator otr = other.Begin();
-			!otr.IsAtEnd();
+			!otr.IsAfterEnd();
 			++otr
 			)
 		{
@@ -146,11 +135,10 @@ public:
 
 		Code ret = code::Success();
 
-		LockThread(); // in case mBonds changes.
 		Bond* bondBuffer;
 		for (
 			SmartIterator bnd = other->AsAtom()->GetAllBonds()->End();
-			!bnd.IsAtBeginning();
+			!bnd.IsBeforeBeginning();
 			--bnd
 			)
 		{
@@ -168,8 +156,6 @@ public:
 			const physical::Wave* otherBond = other->AsAtom()->GetBonded(other->AsAtom()->GetBondPosition(bondBuffer->GetId()));
 			(Cast< AbstractMotif* >(bondBuffer->GetBonded()))->ImportImplementation(otherBond); //actual work 
 		}
-		UnlockThread();
-
 		return ret;
 	}
 
@@ -179,17 +165,13 @@ public:
 	 * @return the size of contents; 0 if T is invalid.
 	 */
 	template < typename T >
-	unsigned long GetCount() const
+	Index GetCount() const
 	{
-		unsigned long ret = 0;
-		LockThread();
 		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
-		if (implementer)
-		{
-			ret = implementer->GetCountImplementation();
-		}
-		UnlockThread();
-		return ret;
+		BIO_SANITIZE(implementer,
+			return implementer->GetCountImplementation(),
+			return 0
+		)
 	}
 
 
@@ -201,15 +183,11 @@ public:
 	template < typename T >
 	Container* GetAll()
 	{
-		Container* ret = 0;
-		LockThread();
 		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
-		if (implementer)
-		{
-			ret = implementer->GetAllImplementation();
-		}
-		UnlockThread();
-		return ret;
+		BIO_SANITIZE(implementer,
+			return implementer->GetAllImplementation(),
+			return 0
+		)
 	}
 
 
@@ -221,15 +199,11 @@ public:
 	template < typename T >
 	const Container* GetAll() const
 	{
-		Container* ret = 0;
-		LockThread();
 		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
-		if (implementer)
-		{
-			ret = implementer->GetAllImplementation();
-		}
-		UnlockThread();
-		return ret;
+		BIO_SANITIZE(implementer,
+			return implementer->GetAllImplementation(),
+			return 0
+		)
 	}
 
 
@@ -242,15 +216,11 @@ public:
 	template < typename T >
 	bool Has(T content) const
 	{
-		bool ret = false;
-		LockThread();
 		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
-		if (implementer)
-		{
-			ret = implementer->HasImplementation(content);
-		}
-		UnlockThread();
-		return ret;
+		BIO_SANITIZE(implementer,
+			return implementer->HasImplementation(content),
+			return false
+		)
 	}
 
 	/**
@@ -261,15 +231,11 @@ public:
 	template < typename T >
 	unsigned int GetNumMatching(const Container* other) const
 	{
-		unsigned int ret = 0;
-		LockThread();
 		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
-		if (implementer)
-		{
-			ret = implementer->GetNumMatchingImplementation(other);
-		}
-		UnlockThread();
-		return ret;
+		BIO_SANITIZE(implementer,
+			return implementer->GetNumMatchingImplementation(other),
+			return 0
+		)
 	}
 
 	/**
@@ -281,15 +247,11 @@ public:
 	template < typename T >
 	bool HasAll(const Container* contents) const
 	{
-		bool ret = false;
-		LockThread();
 		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
-		if (implementer)
-		{
-			ret = implementer->HasAllImplementation(contents);
-		}
-		UnlockThread();
-		return ret;
+		BIO_SANITIZE(implementer,
+			return implementer->HasAllImplementation(contents),
+			return false
+		)
 	}
 
 	/**
@@ -301,13 +263,10 @@ public:
 	template < typename T >
 	void Clear()
 	{
-		LockThread();
 		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
-		if (implementer)
-		{
-			implementer->ClearImplementation();
-		}
-		UnlockThread();
+		BIO_SANITIZE(implementer,
+			implementer->ClearImplementation(),
+		)
 	}
 
 	/**
@@ -318,15 +277,10 @@ public:
 	template < typename T >
 	std::string GetStringFrom(std::string separator = ", ")
 	{
-		std::string ret = "";
-		LockThread();
 		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
-		if (implementer)
-		{
-			ret = implementer->GetStringFromImplementation(separator);
-		}
-		UnlockThread();
-		return ret;
+		BIO_SANITIZE(implementer,
+			return implementer->GetStringFromImplementation(separator),
+			return "");
 	}
 
 	/**

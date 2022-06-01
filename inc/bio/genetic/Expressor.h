@@ -54,7 +54,8 @@ public:
 
 	/**
 	 * Standard ctors. <br />
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(genetic,
+	 */
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(genetic,
 		Expressor,
 		&molecular::VesiclePerspective::Instance(),
 		filter::Genetic())
@@ -65,9 +66,9 @@ public:
 	virtual ~Expressor();
 
 	/**
-	 * Use this method to populate any member variable Protein* or StandardDimension Ids. 
+	 * Use this method to populate any member variable Protein* or Id Ids.
 	 * You'll want to do this to speed up your code by bypassing the dynamic execution provided by Molecule. <br />
-	 * Use StandardDimension Ids when the Protein* might change (e.g. the Protein may be Transferred in or out of *this). 
+	 * Use Id Ids when the Protein* might change (e.g. the Protein may be Transferred in or out of *this).
 	 * Use a Protein* if you know & will enforce a static set of Proteins which will not be Transferred. 
 	 */
 	virtual void CacheProteins()
@@ -83,7 +84,7 @@ public:
 	 * @param proteinId
 	 * @return the result of activation or code::BadArgument1 if no such molecular::Protein exists within *this.
 	 */
-	Code Activate(StandardDimension proteinId);
+	Code Activate(Id proteinId);
 
 	/**
 	 * Ease of use wrapper around Activate(Id). <br />
@@ -94,7 +95,7 @@ public:
 
 	/**
 	 * Ease of use wrapper around Activate(Id) <br />
-	 * This only works is the molecular::Protein's name matches its type (i.e. were constructed with name=PeriodicTable::Instance().GetNameFromType(*this)), which is true of all official Biology Proteins. <br />
+	 * This only works is the molecular::Protein's name matches its type (i.e. were constructed with name=SafelyAccess<PeriodicTable>()->GetNameFromType(*this)), which is true of all official Biology Proteins. <br />
 	 * NOTE: This method is preferred due to its clarity and will eventually be optimized to go straight from type to Id (e.g. T::GetId()) without the slowdown of intermediate string comparisons & extraneous lookups. <br />
 	 * @tparam T
 	 * @return the result of Activate after resolving the given type to an Id.

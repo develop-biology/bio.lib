@@ -81,19 +81,12 @@ void Writer::Log(
 ) const
 {
 
-	BIO_SANITIZE(mLogEngine, ,
-		return);
-
-	//Check if filter is on
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(mLogEngine->FilterPass(
-		mFilter,
-		level
-	), ,
+	BIO_SANITIZE(mLogEngine,
+		,
 		return);
 
 	va_list args;
-	va_start(args,
-		format);
+	va_start(args, format);
 	mLogEngine->Log(
 		mFilter,
 		level,
@@ -103,6 +96,23 @@ void Writer::Log(
 	va_end(args);
 }
 
+void Writer::Log(
+	LogLevel level,
+	const char* format,
+	va_list args
+) const
+{
+	BIO_SANITIZE(mLogEngine,
+		,
+		return);
+
+	mLogEngine->Log(
+		mFilter,
+		level,
+		format,
+		args);
+}
+
 void Writer::ExternalLog(
 	Filter filter,
 	LogLevel level,
@@ -110,7 +120,8 @@ void Writer::ExternalLog(
 	...
 ) const
 {
-	BIO_SANITIZE(mLogEngine, ,
+	BIO_SANITIZE(mLogEngine,
+		,
 		return);
 
 	va_list args;
@@ -123,6 +134,25 @@ void Writer::ExternalLog(
 		args
 	);
 	va_end(args);
+}
+
+void Writer::ExternalLog(
+	Filter filter,
+	LogLevel level,
+	const char* format,
+	va_list args
+) const
+{
+	BIO_SANITIZE(mLogEngine,
+		,
+		return);
+
+	mLogEngine->Log(
+		filter,
+		level,
+		format,
+		args
+	);
 }
 
 void Writer::InitializeImplementation(ByteStreams args)

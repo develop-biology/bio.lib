@@ -27,7 +27,7 @@
 namespace bio {
 
 /**
- * Arrangements provide a more memory-efficient interface of the Container interface for a single type. <br />
+ * Arrangements provide a memory-optimized implementation of the Container interface for a single type. <br />
  * @tparam TYPE
  */
 template < typename TYPE >
@@ -50,7 +50,7 @@ public:
 	}
 
 	/**
-	 * Copy ctor for pointers. <br />
+	 * Copy constructor for pointers. <br />
 	 * Dereferences other then Imports all contents from other into *this. <br />
 	 * @param other
 	 */
@@ -81,6 +81,7 @@ public:
 			&this->mStore[ret * sizeof(TYPE)],
 			&toAdd,
 			sizeof(TYPE));
+		BIO_ASSERT(this->Access(ret).template Is< TYPE >())
 		return ret;
 	}
 
@@ -88,38 +89,14 @@ public:
 	{
 		BIO_SANITIZE(this->IsAllocated(index), ,
 			return NULL)
-		TYPE* ret;
-		std::memcpy(
-			ret,
-			&this->mStore[index * sizeof(TYPE)],
-			sizeof(TYPE));
-		return *ret;
+		return *ForceCast< TYPE* >(&this->mStore[index * sizeof(TYPE)]);
 	}
 
 	const ByteStream Access(const Index index) const
 	{
 		BIO_SANITIZE(this->IsAllocated(index), ,
 			return NULL)
-		TYPE* ret;
-		std::memcpy(
-			ret,
-			&this->mStore[index * sizeof(TYPE)],
-			sizeof(TYPE));
-		return *ret;
-	}
-
-	bool Erase(const Index index)
-	{
-		BIO_SANITIZE(this->IsAllocated(index), ,
-			return false)
-		TYPE* toDelete;
-		std::memcpy(
-			toDelete,
-			&this->mStore[index * sizeof(TYPE)],
-			sizeof(TYPE));
-		delete toDelete;
-		this->mDeallocated.push_back(index);
-		return true;
+		return *ForceCast< TYPE* >(&this->mStore[index * sizeof(TYPE)]);
 	}
 
 	virtual bool AreEqual(

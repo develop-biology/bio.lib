@@ -87,6 +87,26 @@ All Biology classes, with few exceptions, are virtual and may be extended as far
 
 Thus, in terms of possible templates, we get either `Class<>` on its own, `Class<> : AbstractClass`, or `ClassOf<> : Class`, depending on whether the base class is functional (of course, we also have `Class : OtherClass<>` but that's just general inheritance).
 
+### Multithreading
+
+If you're not using multiple threads, simply compile with `BIO_THREAD_ENFORCEMENT_LEVEL 0` and ignore the rest of this section.
+Otherwise, please compile with as high of a `BIO_THREAD_ENFORCEMENT_LEVEL` as you can. The current max is 2 but 10 would work just fine.
+
+All classes that have data which needs to be protected derive from `ThreadSafe`. Just because a class derives from `ThreadSafe` does not mean you can do whatever you want with it, and it will never break, unfortunately.
+
+In order to use a `ThreadSafe` class safely, you must use `SafelyAccess` to create an external lock. For example:
+```cpp
+SafelyAccess< MyPerspectiveSingleton >()->GetIdFromName("Some Name");
+```
+or
+```cpp
+MyType* mine = GetMineSomehow();
+SafelyAccess< MyType >(mine)->CallMyMethodSafely(mine->NowSafeAccessToAnotherMethod());
+```
+Note that in the last example we only use SafelyAccess once while making two calls to `mine`. This is how the `SafelyAccess` [RAII](https://en.wikipedia.org/wiki/Resource_acquisition_is_initialization) mechanism must work. You cannot call `SafelyAccess` on the same object in the same thread twice: doing so is an error which is subject to the `BIO_THREAD_ENFORCEMENT_LEVEL` (i.e. you code will crash at high enforcement levels; this is what you want).
+
+To recap, Biology handles threading by providing each resource with the option to be locked independently. Locking itself is then done through the RAII external locking mechanism provided by `SafelyAccess`.
+
 ## Building
 
 ### Code
@@ -96,7 +116,8 @@ With that said, this is just c++ code. Build it however you want.
 
 Build using ebbs:
 ```
-ebbs
+cd build
+ebbs -c build_local.json
 ```
 
 installation instructions coming soon (need package manager / repository semantics for module delivery)

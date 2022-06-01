@@ -31,5 +31,7 @@ BIO_CHEMICAL_BOND_TYPE_FUNCTION_BODY(Unknown)
 
 BIO_CHEMICAL_BOND_TYPE_FUNCTION_BODY(Virtual)
 
+BIO_CHEMICAL_BOND_TYPE_FUNCTION_BODY(AutoDelete)
+
 } //bond_type namespace
 } //bio namespace

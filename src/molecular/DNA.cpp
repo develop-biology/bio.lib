@@ -28,7 +28,7 @@
 namespace bio {
 namespace molecular {
 
-void DNA::CtorCommon()
+void DNA::CommonConstructor()
 {
 	mProtein = NULL;
 	mVersion = 0.0f;
@@ -53,7 +53,7 @@ const Protein* DNA::GetProtein() const
 	return mProtein;
 }
 
-StandardDimension DNA::GetProteinId() const
+Id DNA::GetProteinId() const
 {
 	BIO_SANITIZE(mProtein, ,
 		return ProteinPerspective::InvalidId());

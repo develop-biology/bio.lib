@@ -44,7 +44,7 @@ Wave::Wave(
 
 Wave::~Wave()
 {
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(mSymmetry,
+	BIO_SANITIZE_AT_SAFETY_LEVEL_1(mSymmetry,
 		delete mSymmetry;
 		mSymmetry = NULL,);
 }
@@ -206,19 +206,19 @@ Properties Wave::GetProperties() const
 	BIO_SANITIZE(waves.Size() && waves[0], ,
 		return overlap);
 	overlap = waves[0].As< Wave* >()->GetProperties();
-	BIO_SANITIZE_AT_SAFETY_LEVEL_2(waves.Size() > 1, ,
+	BIO_SANITIZE_AT_SAFETY_LEVEL_1(waves.Size() > 1, ,
 		return overlap);
 
 	for (
 		SmartIterator wav = waves.Begin()++;
-		!wav.IsAtEnd();
+		!wav.IsAfterEnd();
 		++wav
 		)
 	{
 		Properties wavProperties = wav.As< Wave* >()->GetProperties();
 		for (
 			SmartIterator prp = overlap.Begin();
-			!prp.IsAtEnd();
+			!prp.IsAfterEnd();
 			++prp
 			)
 		{

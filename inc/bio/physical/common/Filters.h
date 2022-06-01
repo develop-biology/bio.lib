@@ -26,6 +26,8 @@
 namespace bio {
 namespace filter {
 
+Filter All();
+
 Filter Default();
 
 } //filter namespace

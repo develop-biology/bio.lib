@@ -57,7 +57,7 @@ public:
 	 * For example: <br />
 	 * 		DNA myAllele = DNA("MyGene"); <br />
 	 * 		myAllele.SetVersion(1.0); <br />
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_CTOR_COMMON(molecular,
+	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(molecular,
 		DNA,
 		&DNAPerspective::Instance(),
 		filter::Molecular())
@@ -88,7 +88,7 @@ public:
 	/**
 	 * @return the Id of the Protein *this encodes.
 	 */
-	virtual StandardDimension GetProteinId() const;
+	virtual Id GetProteinId() const;
 
 	/**
 	 * @return the mVersion of *this.
@@ -109,7 +109,7 @@ private:
 	/**
 	 * common constructor code. <br />
 	 */
-	void CtorCommon();
+	void CommonConstructor();
 };
 
 } //molecular namespace

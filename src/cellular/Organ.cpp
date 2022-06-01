@@ -39,7 +39,7 @@ Code Organ::SpecializeTissues()
 	Tissue* tissueBuffer;
 	for (
 		SmartIterator tis = tissues->Begin();
-		!tis.IsAtEnd();
+		!tis.IsAfterEnd();
 		++tis
 		)
 	{

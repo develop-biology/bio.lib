@@ -33,7 +33,7 @@ Substance::Substance(
 	UnorderedMotif< Property >(properties),
 	UnorderedMotif< State >(states)
 {
-	CtorCommon();
+	CommonConstructor();
 }
 
 Substance::~Substance()
@@ -55,7 +55,7 @@ bool Substance::IsEnabled() const
 	return Has< State >(state::Enabled());
 }
 
-void Substance::CtorCommon()
+void Substance::CommonConstructor()
 {
 	Enable();
 }

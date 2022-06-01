@@ -25,7 +25,7 @@ namespace bio {
 namespace physical {
 
 Linear::Linear(
-	Identifiable< StandardDimension >* component,
+	Identifiable< Id >* component,
 	bool shared
 )
 	:
@@ -40,25 +40,26 @@ Linear::~Linear()
 	if (!mShared && mComponent)
 	{
 		delete mComponent;
+		mComponent = NULL;
 	}
 }
 
-Identifiable< StandardDimension >& Linear::operator*()
+Identifiable< Id >& Linear::operator*()
 {
 	return *mComponent;
 }
 
-const Identifiable< StandardDimension >& Linear::operator*() const
+const Identifiable< Id >& Linear::operator*() const
 {
 	return *mComponent;
 }
 
-Linear::operator Identifiable< StandardDimension >*()
+Linear::operator Identifiable< Id >*()
 {
 	return mComponent;
 }
 
-Linear::operator const Identifiable< StandardDimension >*() const
+Linear::operator const Identifiable< Id >*() const
 {
 	return mComponent;
 }
@@ -68,19 +69,19 @@ bool Linear::operator==(const Linear& other) const
 	return *mComponent == *other.mComponent;
 }
 
-bool Linear::operator==(const Identifiable< StandardDimension >* component) const
+bool Linear::operator==(const Identifiable< Id >* component) const
 {
 	BIO_SANITIZE(component, ,
 		return false)
 	return *mComponent == *component;
 }
 
-Identifiable< StandardDimension >* Linear::operator->()
+Identifiable< Id >* Linear::operator->()
 {
 	return mComponent;
 }
 
-const Identifiable< StandardDimension >* Linear::operator->() const
+const Identifiable< Id >* Linear::operator->() const
 {
 	return mComponent;
 }

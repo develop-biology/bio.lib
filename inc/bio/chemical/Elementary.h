@@ -61,7 +61,7 @@ public:
 		static bool canRegister = true;
 		if (canRegister)
 		{
-			PeriodicTable::Instance().RecordPropertiesOf< T >(properties);
+			SafelyAccess<PeriodicTable>()->RecordPropertiesOf< T >(properties);
 			canRegister = false;
 		}
 	}

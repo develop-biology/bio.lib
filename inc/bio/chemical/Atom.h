@@ -93,28 +93,28 @@ public:
 	 * Attenuation here operates slightly differently from the real world concept. Because we have a continuous flow of electrons providing the power to run this code, doing work is essentially free (or at least abstracted and we don't HAVE to worry about it), Attenuation is more like amplification, where flux, in terms of work, is generated, rather than dispersed. However, if we treat some desired state as flux and any deviation from that state as offering resistance, "information flux" is lost as the desired state is approached, making Attenuation technically correct. <br />
 	 * @param other
 	 */
-	virtual Code Attenuate(const Wave* other);
+	virtual Code Attenuate(const physical::Wave* other);
 
 	/**
 	 * If the given Wave Resonates with any Bonded Wave in *this, the given Wave will be Demodulated and Disattenuated by the Bonded Wave. <br />
 	 * This is the opposite of Attenuation (above). <br />
 	 * @param other
 	 */
-	virtual Code Disattenuate(const Wave* other);
+	virtual Code Disattenuate(const physical::Wave* other);
 
 	/**
 	 * Simply get a bond. <br />
 	 * @param position
 	 * @return the Bonded Wave*
 	 */
-	Wave* GetBonded(Valence position);
+	physical::Wave* GetBonded(Valence position);
 
 	/**
 	 * Simply get a bond. <br />
 	 * @param position
 	 * @return the Bonded Wave*
 	 */
-	const Wave* GetBonded(Valence position) const;
+	const physical::Wave* GetBonded(Valence position) const;
 
 	/**
 	 * Gets the bond to an bonded of type T from *this, then casts the Bond()ed Wave to T*. <br />
@@ -125,8 +125,10 @@ public:
 	T AsBonded()
 	{
 		Valence position = GetBondPosition< T >();
-		BIO_SANITIZE(position, ,
-			return NULL);
+		BIO_SANITIZE(position,
+			,
+			return NULL
+		)
 		return ForceCast< T >(mBonds.OptimizedAccess(position)->GetBonded());
 	}
 
@@ -139,9 +141,10 @@ public:
 	const T AsBonded() const
 	{
 		Valence position = GetBondPosition< T >();
-
-		BIO_SANITIZE(position, ,
-			return 0);
+		BIO_SANITIZE(position,
+			,
+			return NULL
+		)
 		return ForceCast< const T >(mBonds.OptimizedAccess(position)->GetBonded());
 	}
 
@@ -153,7 +156,12 @@ public:
 	template < typename T >
 	T AsBondedQuantum()
 	{
-		return Cast< T >(AsBonded< physical::Quantum< T >* >());
+		physical::Quantum< T >* bonded = AsBonded< physical::Quantum< T >* >();
+		BIO_SANITIZE(bonded,
+			,
+			return 0
+		)
+		return bonded->operator T();
 	}
 
 	/**
@@ -164,7 +172,12 @@ public:
 	template < typename T >
 	const T AsBondedQuantum() const
 	{
-		return *AsBonded< physical::Quantum< T >* >();
+		physical::Quantum< T >* bonded = AsBonded< physical::Quantum< T >* >();
+		BIO_SANITIZE(bonded,
+			,
+			return 0
+		)
+		return bonded->operator T();
 	}
 
 	/**
@@ -225,6 +238,28 @@ public:
 	}
 
 	/**
+	 * @tparam T
+	 * @return the Id to use when bonding the given type.
+	 */
+	template < typename T >
+	static AtomicNumber GetBondId()
+	{
+		#if BIO_CPP_VERSION < 17
+		return SafelyAccess<PeriodicTable>()->GetIdFromType< physical::Quantum< T >* >();
+		#else
+		if constexpr(!utility::IsWave< T >())
+		{
+			return SafelyAccess<PeriodicTable>()->GetIdFromType< physical::Quantum< T >* >();
+		}
+		else
+		{
+			BIO_STATIC_ASSERT(utility::IsPointer< T >());
+			return SafelyAccess<PeriodicTable>()->GetIdFromType< T >();
+		}
+		#endif
+	}
+
+	/**
 	 * Adds a new Bond to *this or updates an Empty Bond for T. <br />
 	 * Updating a Bond requires both Breaking and Forming steps to be done manually. <br />
 	 * You CANNOT bond the same T twice (without Breaking the initial Bond). <br />
@@ -238,16 +273,16 @@ public:
 		T toBond,
 		BondType type = bond_type::Unknown())
 	{
+		AtomicNumber bondedId = GetBondId< T >();
 		#if BIO_CPP_VERSION < 17
-		AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >(); 
-		return FormBondImplementation((new physical::Quantum< T >(toBond))->AsWave(),
+		return FormBondImplementation(
+			(new physical::Quantum< T >(toBond))->AsWave(),
 			bondedId,
 			type
 		);
 		#else
 		if constexpr(!utility::IsWave< T >())
 		{
-			AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >();
 			return FormBondImplementation((new physical::Quantum< T >(toBond))->AsWave(),
 				bondedId,
 				type
@@ -255,7 +290,6 @@ public:
 		}
 		else
 		{
-			AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< T >();
 			return FormBondImplementation(
 				toBond->AsWave(),
 				bondedId,
@@ -269,6 +303,7 @@ public:
 	 * Breaking a Bond Break()s the associated position. <br />
 	 * Removal of the Bond object is done upon destruction. <br />
 	 * Updating a Bond requires both Breaking and Forming steps to be done manually. <br />
+	 * NOTE: toDisassociate is not currently used for anything beyond automatic template type detection. <br />
 	 * @tparam T
 	 * @param toDisassociate
 	 * @param type
@@ -279,27 +314,10 @@ public:
 		T toDisassociate,
 		BondType type = bond_type::Unknown())
 	{
-		#if BIO_CPP_VERSION < 17
-		return BreakBond< physical::Quantum< T >* >( 
-			NULL,
-			type
-		);
-		#else
-		if constexpr(!utility::IsWave< T >())
-		{
-			return BreakBond< physical::Quantum< T >* >(
-				NULL,
-				type
-			); //T matters, toDisassociate does not.
-		}
-
-		AtomicNumber bondedId = PeriodicTable::Instance().GetIdFromType< T >();
 		return BreakBondImplementation(
-			toDisassociate,
-			bondedId,
+			GetBondId< T >(),
 			type
 		);
-		#endif
 	}
 
 
@@ -327,15 +345,7 @@ public:
 	template < typename T >
 	Valence GetBondPosition() const
 	{
-		#if BIO_CPP_VERSION < 17
-		return GetBondPosition(PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >());
-		#else
-		if constexpr(!utility::IsWave< T >())
-		{
-			return GetBondPosition(PeriodicTable::Instance().GetIdFromType< physical::Quantum< T >* >());
-		}
-		return GetBondPosition(PeriodicTable::Instance().GetIdFromType< T >());
-		#endif
+		return GetBondPosition(GetBondId< T >());
 	}
 
 	/**
@@ -376,33 +386,33 @@ public:
 	 */
 	const Bonds* GetAllBonds() const;
 
-protected:
-	Bonds mBonds;
-
 	/**
 	 * Create a Bond. <br />
+	 * This is public for use in ctors. Please use FormBond<> unless you are forced to call this impl method. <br />
 	 * @param toBond
 	 * @param id
 	 * @param type
 	 */
 	virtual bool FormBondImplementation(
-		Wave* toBond,
+		physical::Wave* toBond,
 		AtomicNumber id,
 		BondType type
 	);
 
 	/**
 	 * Remove a Bond. <br />
-	 * @param toDisassociate
+	 * This is public for use in dtors. Please use BreakBond<> unless you are forced to call this impl method. <br />
 	 * @param id
 	 * @param type
 	 * @return
 	 */
 	virtual bool BreakBondImplementation(
-		Wave* toDisassociate,
 		AtomicNumber id,
 		BondType type
 	);
+
+protected:
+	Bonds mBonds;
 };
 
 } //chemical namespace

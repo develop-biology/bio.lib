@@ -52,7 +52,7 @@ public:
 		),
 		mPerspective(perspective)
 	{
-
+		Flush();
 	}
 
 	/**
@@ -68,7 +68,7 @@ public:
 	 */
 	virtual void Flush()
 	{
-		this->mT = (this->mPerspective.*(this->mLookupFunction))(this->mLookup);
+		this->mT = ((*SafelyAccess< physical::Perspective< ID_TYPE > >(&this->mPerspective))->*(this->mLookupFunction))(this->mLookup);
 	}
 
 	/**
