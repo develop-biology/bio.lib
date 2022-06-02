@@ -51,12 +51,12 @@ const Molecule* Vesicle::operator[](Id moleculeId) const
 	return GetById< Molecule* >(moleculeId);
 }
 
-Molecule* Vesicle::operator[](Name moleculeName)
+Molecule* Vesicle::operator[](const Name& moleculeName)
 {
 	return GetByName< Molecule* >(moleculeName);
 }
 
-const Molecule* Vesicle::operator[](Name moleculeName) const
+const Molecule* Vesicle::operator[](const Name& moleculeName) const
 {
 	return GetByName< Molecule* >(moleculeName);
 }

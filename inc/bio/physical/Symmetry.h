@@ -56,7 +56,7 @@ public:
 	 */
 	Symmetry(
 		Name name,
-		Name type
+		const Name& type
 	);
 
 	/**
@@ -74,7 +74,7 @@ public:
 	 */
 	Symmetry(
 		Id id,
-		Name type
+		const Name& type
 	);
 
 	/**
@@ -107,7 +107,7 @@ public:
 	 * Set the type of *this. <br />
 	 * @param type
 	 */
-	void SetType(Name type);
+	void SetType(const Name& type);
 
 	/**
 	 * Set the mValue of *this. <br />

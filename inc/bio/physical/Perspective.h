@@ -83,7 +83,7 @@ public:
 	public:
 		Hadit(
 			Id id,
-			Name name,
+			const Name& name,
 			Wave* type
 		)
 			:
@@ -201,7 +201,7 @@ public:
 	 * @param name
 	 * @return the Id associated with the given name
 	 */
-	virtual Id GetIdFromName(Name name)
+	virtual Id GetIdFromName(const Name& name)
 	{
 		if (name == InvalidName())
 		{
@@ -252,7 +252,7 @@ public:
 	 * @param name
 	 * @return a new Id for the given Name. However, the Name associated with the returned Id may not be the one provided. For example, consider: GetNameFromId(GetUniqueIdFor("MyName")); //Returns "MyName" GetNameFromId(GetUniqueIdFor("MyName")); //Returns "MyName_1"
 	 */
-	virtual Id GetUniqueIdFor(Name name)
+	virtual Id GetUniqueIdFor(const Name& name)
 	{
 		if (name == InvalidName())
 		{
@@ -285,7 +285,7 @@ public:
 	 * @param name
 	 * @return the Id associated with name else InvalidId().
 	 */
-	virtual Id GetIdWithoutCreation(Name name) const
+	virtual Id GetIdWithoutCreation(const Name& name) const
 	{
 		if (name == InvalidName())
 		{
@@ -394,7 +394,7 @@ public:
 	 * @param name
 	 * @return the pointer to the Wave type associated with the given id else NULL.
 	 */
-	virtual const Wave* GetTypeFromName(Name name) const
+	virtual const Wave* GetTypeFromName(const Name& name) const
 	{
 		return GetTypeFromId(GetIdWithoutCreation(name));
 	}
@@ -419,7 +419,7 @@ public:
 	 * @param name
 	 * @return a Clone() of the Wave* associated with the given name else NULL.
 	 */
-	virtual Wave* GetNewObjectFromName(Name name)
+	virtual Wave* GetNewObjectFromName(const Name& name)
 	{
 		return this->GetNewObjectFromId(this->GetIdFromName(name));
 	}
@@ -446,7 +446,7 @@ public:
 	 * @return a T* associated with the given name id NULL.
 	 */
 	template < typename T >
-	const T GetTypeFromNameAs(Name name) const
+	const T GetTypeFromNameAs(const Name& name) const
 	{
 		BIO_SANITIZE_WITH_CACHE(GetTypeFromName(name),
 			BIO_SINGLE_ARG(return ForceCast< T, const Wave* >(RESULT)),
@@ -476,7 +476,7 @@ public:
 	 * @return a new T* from Clone()ing the type associated with the given name else NULL.
 	 */
 	template < typename T >
-	T GetNewObjectFromNameAs(Name name)
+	T GetNewObjectFromNameAs(const Name& name)
 	{
 		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromName(name),
 			BIO_SINGLE_ARG(return ForceCast< T, Wave* >(RESULT)),

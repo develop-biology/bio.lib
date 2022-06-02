@@ -286,7 +286,7 @@ public:
 	 * @param toRelease
 	 * @return result of Release
 	 */
-	virtual chemical::Substance* operator-=(Name toRelease);
+	virtual chemical::Substance* operator-=(const Name& toRelease);
 
 	/**
 	 * Wrapper around Release <br />

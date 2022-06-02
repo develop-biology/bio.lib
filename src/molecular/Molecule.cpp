@@ -55,19 +55,19 @@ const Surface* Molecule::RotateTo(Id surfaceId) const
 	return GetById< Surface* >(surfaceId);
 }
 
-Surface* Molecule::RotateTo(Name surfaceName)
+Surface* Molecule::RotateTo(const Name& surfaceName)
 {
 	return GetByName< Surface* >(surfaceName);
 }
 
-const Surface* Molecule::RotateTo(Name surfaceName) const
+const Surface* Molecule::RotateTo(const Name& surfaceName) const
 {
 	return GetByName< Surface* >(surfaceName);
 }
 
 bool Molecule::DuplicateFrom(
 	Molecule* source,
-	Name surface
+	const Name& surface
 )
 {
 	BIO_SANITIZE(source, ,
@@ -88,7 +88,7 @@ bool Molecule::DuplicateFrom(
 
 bool Molecule::TransferFrom(
 	Molecule* source,
-	Name surface
+	const Name& surface
 )
 {
 	BIO_SANITIZE(source, ,
@@ -118,12 +118,12 @@ const Surface* Molecule::operator()(Id surfaceId) const
 	return RotateTo(surfaceId);
 }
 
-Surface* Molecule::operator()(Name name)
+Surface* Molecule::operator()(const Name& name)
 {
 	return RotateTo(name);
 }
 
-const Surface* Molecule::operator()(Name name) const
+const Surface* Molecule::operator()(const Name& name) const
 {
 	return RotateTo(name);
 }

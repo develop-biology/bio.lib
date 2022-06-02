@@ -51,7 +51,7 @@ public:
 	/**
 	 * @param name
 	 */
-	explicit Final(Name name):
+	explicit Final(const Name& name):
 		TransparentWrapper< CLASS >(CLASS(name))
 	{
 	}
@@ -125,7 +125,7 @@ public:
 		return this->mT.operator==(id);
 	}
 
-	bool operator==(Name name) const 
+	bool operator==(const Name& name) const
 	{
 		return this->mT.operator==(name);
 	}
@@ -310,13 +310,13 @@ public:
 	}
 
 	template < typename T >
-	T GetByName(Name name)
+	T GetByName(const Name& name)
 	{
 		return this->mT.template GetByName< T >(name);
 	}
 
 	template < typename T >
-	const T GetByName(Name name) const
+	const T GetByName(const Name& name) const
 	{
 		return this->mT.template GetByName< T >(name);
 	}
@@ -328,7 +328,7 @@ public:
 	}
 
 	template < typename T >
-	T GetOrCreateByName(Name name)
+	T GetOrCreateByName(const Name& name)
 	{
 		return this->mT.template GetOrCreateByName< T >(name);
 	}
@@ -461,7 +461,7 @@ public:
 		return this->mT.GetId();
 	}
 
-	void SetName(Name name) 
+	void SetName(const Name& name)
 	{
 		return this->mT.SetName(name);
 	}
@@ -471,12 +471,12 @@ public:
 		return this->mT.SetId(id);
 	}
 	
-	bool IsName(Name name) const 
+	bool IsName(const Name& name) const
 	{
 		return this->mT.IsName(name);
 	}
 	
-	bool IsNameInsensitive(Name name) const 
+	bool IsNameInsensitive(const Name& name) const
 	{
 		return this->mT.IsNameInsensitive(name);
 	}

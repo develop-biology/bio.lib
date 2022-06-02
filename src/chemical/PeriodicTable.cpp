@@ -87,7 +87,7 @@ const Properties PeriodicTableImplementation::GetPropertiesOf(AtomicNumber id) c
 	return *ret;
 }
 
-const Properties PeriodicTableImplementation::GetPropertiesOf(Name name) const
+const Properties PeriodicTableImplementation::GetPropertiesOf(const Name& name) const
 {
 	return GetPropertiesOf(GetIdWithoutCreation(name));
 }

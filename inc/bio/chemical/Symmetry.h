@@ -58,7 +58,7 @@ public:
 	 */
 	Symmetry(
 		Name name,
-		Name type
+		const Name& type
 	);
 
 	/**
@@ -76,7 +76,7 @@ public:
 	 */
 	Symmetry(
 		Id id,
-		Name type
+		const Name& type
 	);
 
 	/**

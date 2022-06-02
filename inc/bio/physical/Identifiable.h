@@ -189,7 +189,7 @@ public:
 	 * @param name
 	 * @return whether or not the given name matches that of *this and double checks with the Perspective used by *this.
 	 */
-	virtual bool operator==(Name name) const
+	virtual bool operator==(const Name& name) const
 	{
 		if (!GetName())
 		{
@@ -245,7 +245,7 @@ public:
 	 * @param name
 	 * @return whether or not the Name was updated.
 	 */
-	virtual bool SetName(Name name)
+	virtual bool SetName(const Name& name)
 	{
 		BIO_SANITIZE(this->GetPerspective(),
 			,
@@ -288,7 +288,7 @@ public:
 	 * @param name
 	 * @return a comparison operation on the given name with the name of *this.
 	 */
-	virtual bool IsName(Name name) const
+	virtual bool IsName(const Name& name) const
 	{
 		return name == this->GetName();
 	}
@@ -297,7 +297,7 @@ public:
 	 * @param name
 	 * @return whether or not the given name is offensive. JK, it's just a case insensitive version of IsName.
 	 */
-	virtual bool IsNameInsensitive(Name name) const
+	virtual bool IsNameInsensitive(const Name& name) const
 	{
 		return !strcasecmp(
 			name.AsCharString(),

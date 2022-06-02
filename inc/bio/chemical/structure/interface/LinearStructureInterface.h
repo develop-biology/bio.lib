@@ -118,7 +118,7 @@ public:
 	 * @return a T of the given id or NULL; NULL if T is invalid.
 	 */
 	template < typename T >
-	T GetByName(Name name)
+	T GetByName(const Name& name)
 	{
 		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
 		BIO_SANITIZE(implementer,

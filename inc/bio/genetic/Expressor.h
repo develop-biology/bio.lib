@@ -91,7 +91,7 @@ public:
 	 * @param proteinName
 	 * @return the result of Activate after resolving the given name to an Id.
 	 */
-	Code Activate(Name proteinName);
+	Code Activate(const Name& proteinName);
 
 	/**
 	 * Ease of use wrapper around Activate(Id) <br />

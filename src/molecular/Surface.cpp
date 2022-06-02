@@ -242,7 +242,7 @@ physical::Wave* Surface::operator-=(physical::Wave* toRelease)
 	return Release(toRelease);
 }
 
-chemical::Substance* Surface::operator-=(Name toRelease)
+chemical::Substance* Surface::operator-=(const Name& toRelease)
 {
 	return Release(toRelease);
 }

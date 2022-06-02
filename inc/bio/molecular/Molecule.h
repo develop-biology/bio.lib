@@ -135,7 +135,7 @@ public:
 	 * @param varName
 	 * @return the Id of the Surface created or InvalidId().
 	 */
-	Id Define(Name varName)
+	Id Define(const Name& varName)
 	{
 		BIO_SANITIZE(!RotateTo(varName),
 			,
@@ -157,7 +157,7 @@ public:
 	 * @return the Id of the Surface created or InvalidId().
 	 */
 	template < typename T >
-	Id Define(Name varName)
+	Id Define(const Name& varName)
 	{
 		BIO_SANITIZE(!RotateTo(varName),
 			,
@@ -222,14 +222,14 @@ public:
 	 * @param surfaceName
 	 * @return a Surface with the given Name from *this.
 	 */
-	virtual Surface* RotateTo(Name surfaceName);
+	virtual Surface* RotateTo(const Name& surfaceName);
 
 	/**
 	 * const version of RotateTo <br />
 	 * @param surfaceName
 	 * @return a const Surface with the given Name from *this.
 	 */
-	virtual const Surface* RotateTo(Name surfaceName) const;
+	virtual const Surface* RotateTo(const Name& surfaceName) const;
 
 	/**
 	 * Copy a Surface from another Molecule into *this. <br />
@@ -239,7 +239,7 @@ public:
 	 */
 	virtual bool DuplicateFrom(
 		Molecule* source,
-		Name surface
+		const Name& surface
 	);
 
 	/**
@@ -250,7 +250,7 @@ public:
 	 */
 	virtual bool TransferFrom(
 		Molecule* source,
-		Name surface
+		const Name& surface
 	);
 
 	/**
@@ -296,14 +296,14 @@ public:
 	 * @param surfaceName
 	 * @return RotateTo(...)
 	 */
-	virtual Surface* operator()(Name name);
+	virtual Surface* operator()(const Name& name);
 
 	/**
 	 * operator wrappers around RotateTo <br />
 	 * @param surfaceName
 	 * @return RotateTo(...)
 	 */
-	virtual const Surface* operator()(Name name) const;
+	virtual const Surface* operator()(const Name& name) const;
 
 	/**
 	 * operator wrappers around RotateTo <br />
@@ -311,7 +311,7 @@ public:
 	 * @return RotateTo(...)
 	 */
 	template < typename T >
-	Surface* operator()(Name surfaceName)
+	Surface* operator()(const Name& surfaceName)
 	{
 		return ChemicalCast< T >(RotateTo(surfaceName));
 	}

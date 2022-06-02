@@ -334,7 +334,7 @@ public:
 	 * @param typeName
 	 * @return The position of the given Wave (Id) within *this; else 0.
 	 */
-	Valence GetBondPosition(Name typeName) const;
+	Valence GetBondPosition(const Name& typeName) const;
 
 
 	/**

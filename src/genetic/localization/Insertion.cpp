@@ -30,7 +30,7 @@ namespace genetic {
 Insertion::Insertion(
 	chemical::Substance* toInsert,
 	Site site,
-	Name name
+	const Name& name
 )
 	:
 	physical::Class< Insertion >(this),

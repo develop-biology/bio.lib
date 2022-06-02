@@ -105,7 +105,7 @@ public:
 	 * @param name
 	 * @return whatever properties have been Recorded for the given type.
 	 */
-	const Properties GetPropertiesOf(Name name) const;
+	const Properties GetPropertiesOf(const Name& name) const;
 
 	/**
 	 * @tparam T

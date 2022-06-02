@@ -75,7 +75,7 @@ public:
 	 * @param moleculeName
 	 * @return a new Molecule from that of the given Name in *this or NULL if no such Molecule could be found. <br />
 	 */
-	virtual Molecule* Egress(Name moleculeName);
+	virtual Molecule* Egress(const Name& moleculeName);
 
 	/**
 	 * Egress copies Molecules in *this and provides them for export. <br />
@@ -83,7 +83,7 @@ public:
 	 * @param moleculeName
 	 * @return a new Molecule from that of the given Name in *this or NULL if no such Molecule could be found.
 	 */
-	virtual const Molecule* Egress(Name moleculeName) const;
+	virtual const Molecule* Egress(const Name& moleculeName) const;
 
 
 	/**
@@ -113,7 +113,7 @@ public:
 	 * @param moleculeName
 	 * @return an existing Molecule with the given Id in *this or NULL if no such Molecule could be found.
 	 */
-	virtual Molecule* Secrete(Name moleculeName);
+	virtual Molecule* Secrete(const Name& moleculeName);
 
 
 	/**

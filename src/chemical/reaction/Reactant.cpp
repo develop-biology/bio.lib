@@ -25,7 +25,7 @@
 namespace bio {
 namespace chemical {
 
-Reactant::Reactant(Name typeName)
+Reactant::Reactant(const Name& typeName)
 	:
 	Class< Reactant >(this),
 	Substance(),

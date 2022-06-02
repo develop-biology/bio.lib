@@ -46,7 +46,7 @@ public:
 	/**
 	 * @param typeName
 	 */
-	Reactant(Name typeName);
+	Reactant(const Name& typeName);
 
 	/**
 	 * @param typeName

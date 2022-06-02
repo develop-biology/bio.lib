@@ -114,7 +114,7 @@ public:
 	 */
 	bool SetFilter(
 		Name filter,
-		Name level
+		const Name& level
 	); //calls StringTo...
 
 	/**

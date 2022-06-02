@@ -104,14 +104,14 @@ protected:
 	 * @param moleculeName
 	 * @return GetBy____< Molecule* >
 	 */
-	virtual Molecule* operator[](Name moleculeName);
+	virtual Molecule* operator[](const Name& moleculeName);
 
 	/**
 	 * operator wrappers around GetBy____< Molecule* > 
 	 * @param moleculeName
 	 * @return GetBy____< Molecule* >
 	 */
-	virtual const Molecule* operator[](Name moleculeName) const;
+	virtual const Molecule* operator[](const Name& moleculeName) const;
 
 	/**
 	 * operator wrappers around GetBy____< Molecule* >
@@ -120,7 +120,7 @@ protected:
 	 * @return GetBy____< Molecule* >
 	 */
 	template < typename T >
-	Molecule* operator[](Name moleculeName)
+	Molecule* operator[](const Name& moleculeName)
 	{
 		return ChemicalCast< T >(GetByName< Molecule* >(moleculeName));
 	}

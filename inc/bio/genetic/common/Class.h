@@ -71,7 +71,7 @@ public:
 		 */
 	Class(
 		T* object,
-		Name name,
+		const Name& name,
 		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default())
 		:

@@ -57,13 +57,13 @@ void OpenChannel::Ingress(Vesicle* outer)
 }
 
 
-Molecule* OpenChannel::Egress(Name moleculeName)
+Molecule* OpenChannel::Egress(const Name& moleculeName)
 {
 	return mTransMembraneDomain.Egress(moleculeName);
 }
 
 
-const Molecule* OpenChannel::Egress(Name moleculeName) const
+const Molecule* OpenChannel::Egress(const Name& moleculeName) const
 {
 	return mTransMembraneDomain.Egress(moleculeName);
 }
@@ -81,7 +81,7 @@ const Molecule* OpenChannel::Egress(Id moleculeId) const
 }
 
 
-Molecule* OpenChannel::Secrete(Name moleculeName)
+Molecule* OpenChannel::Secrete(const Name& moleculeName)
 {
 	return mTransMembraneDomain.Secrete(moleculeName);
 }

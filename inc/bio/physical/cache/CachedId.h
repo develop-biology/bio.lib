@@ -32,7 +32,7 @@ namespace bio {
  */
 template < typename ID_TYPE >
 class CachedId :
-	public Cached< ID_TYPE, Name, ID_TYPE (physical::Perspective< ID_TYPE >::*)(Name) >
+	public Cached< ID_TYPE, const Name&, ID_TYPE (physical::Perspective< ID_TYPE >::*)(const Name&) >
 {
 public:
 
@@ -41,11 +41,11 @@ public:
 	 * @param perspective
 	 */
 	CachedId(
-		Name lookup,
+		const Name& lookup,
 		physical::Perspective< ID_TYPE >& perspective
 	)
 		:
-		Cached< ID_TYPE, Name, ID_TYPE (physical::Perspective< ID_TYPE >::*)(Name) >(
+		Cached< ID_TYPE, const Name&, ID_TYPE (physical::Perspective< ID_TYPE >::*)(const Name&) >(
 			lookup,
 			0,
 			&physical::Perspective< ID_TYPE >::GetIdFromName

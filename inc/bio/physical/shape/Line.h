@@ -62,7 +62,7 @@ public:
 	 * @param name
 	 * @return an Index matching the given name or InvalidIndex().
 	 */
-	virtual Index SeekToName(Name name);
+	virtual Index SeekToName(const Name& name);
 
 	/**
 	 * Get the position of an Identifiable< Id >* with the given id in *this.

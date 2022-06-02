@@ -29,7 +29,7 @@ namespace genetic {
 
 Localization::Localization(
 	Site site,
-	Name name
+	const Name& name
 )
 	:
 	physical::Class< Localization >(this),
@@ -93,7 +93,7 @@ chemical::Substance* Localization::Seek(chemical::Substance* seekIn) const
 	return extract;
 }
 
-void Localization::SetNameOfSite(Name name)
+void Localization::SetNameOfSite(const Name& name)
 {
 	mName = name;
 }

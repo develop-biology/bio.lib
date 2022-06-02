@@ -89,7 +89,7 @@ public:
 	 * @param moleculeName 
 	 * @return a new Molecule from that of the given Name in *this or NULL if no such Molecule could be found. <br />
 	 */
-	Molecule* Egress(Name moleculeName);
+	Molecule* Egress(const Name& moleculeName);
 
 	/**
 	 * Egress copies Molecules in *this and provides them for export. <br />
@@ -97,7 +97,7 @@ public:
 	 * @param moleculeName 
 	 * @return a new Molecule from that of the given Name in *this or NULL if no such Molecule could be found.
 	 */
-	const Molecule* Egress(Name moleculeName) const;
+	const Molecule* Egress(const Name& moleculeName) const;
 
 	
 	/**
@@ -127,7 +127,7 @@ public:
 	 * @param moleculeName
 	 * @return an existing Molecule with the given Id in *this or NULL if no such Molecule could be found.
 	 */
-	Molecule* Secrete(Name moleculeName);
+	Molecule* Secrete(const Name& moleculeName);
 
 
 	/**

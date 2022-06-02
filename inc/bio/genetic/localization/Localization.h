@@ -71,7 +71,7 @@ public:
 	 */
 	explicit Localization(
 		Site site = LocalizationSitePerspective::InvalidId(),
-		Name name = NULL
+		const Name& name = NULL
 	);
 
 	/**
@@ -109,7 +109,7 @@ public:
 	 * Set mName. <br />
 	 * @param name
 	 */
-	virtual void SetNameOfSite(Name name);
+	virtual void SetNameOfSite(const Name& name);
 
 protected:
 	/**

@@ -40,7 +40,7 @@ Code Expressor::Activate(Id proteinId)
 	return toActivate->Activate();
 }
 
-Code Expressor::Activate(Name proteinName)
+Code Expressor::Activate(const Name& proteinName)
 {
 	return Activate(SafelyAccess<molecular::ProteinPerspective>()->GetIdWithoutCreation(proteinName));
 }

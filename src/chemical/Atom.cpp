@@ -203,7 +203,7 @@ Valence Atom::GetBondPosition(AtomicNumber bondedId) const
 	return InvalidIndex();
 }
 
-Valence Atom::GetBondPosition(Name typeName) const
+Valence Atom::GetBondPosition(const Name& typeName) const
 {
 	return GetBondPosition(SafelyAccess<PeriodicTable>()->GetIdWithoutCreation(typeName));
 }
