@@ -38,7 +38,8 @@ Surface::Surface(
 		environment,
 		filter::Molecular(),
 		symmetry_type::Variable()),
-	EnvironmentDependent< Molecule >(environment)
+	EnvironmentDependent< Molecule >(environment),
+	mBoundPosition(InvalidIndex())
 {
 
 }
@@ -51,8 +52,8 @@ Surface::Surface(const Surface& toCopy)
 		toCopy.GetPerspective(),
 		toCopy.GetFilter(),
 		symmetry_type::Variable()),
-	chemical::LinearMotif< Molecule* >(toCopy),
-	EnvironmentDependent< Molecule >(toCopy)
+	EnvironmentDependent< Molecule >(toCopy),
+	mBoundPosition(toCopy.mBoundPosition)
 {
 	chemical::Bond* bondBuffer;
 	for (
@@ -139,6 +140,9 @@ physical::Wave* Surface::Release(
 			break;
 		}
 	}
+
+	mBoundPosition = InvalidIndex();
+
 	return ret;
 }
 
@@ -170,6 +174,9 @@ chemical::Substance* Surface::Release(
 			break;
 		}
 	}
+
+	mBoundPosition = InvalidIndex();
+
 	return ret;
 }
 
@@ -201,10 +208,13 @@ chemical::Substance* Surface::Release(
 			break;
 		}
 	}
+
+	mBoundPosition = InvalidIndex();
+
 	return ret;
 }
 
-physical::Waves Surface::ReleaseAll(BondType bondType)
+physical::Waves Surface::Release(BondType bondType)
 {
 	physical::Waves ret;
 	chemical::Bond* bondBuffer;
@@ -221,6 +231,9 @@ physical::Waves Surface::ReleaseAll(BondType bondType)
 			bondBuffer->Break();
 		}
 	}
+
+	mBoundPosition = InvalidIndex();
+
 	return ret;
 }
 
@@ -241,7 +254,7 @@ chemical::Substance* Surface::operator-=(Id toRelease)
 
 physical::Waves Surface::operator--()
 {
-	return ReleaseAll();
+	return Release();
 }
 
 

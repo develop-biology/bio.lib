@@ -128,14 +128,14 @@ Code Atom::Disattenuate(const physical::Wave* other)
 	return ret;
 }
 
-bool Atom::FormBondImplementation(
+Valence Atom::FormBondImplementation(
 	physical::Wave* toBond,
 	AtomicNumber id,
 	BondType type
 )
 {
 	BIO_SANITIZE(toBond && id, ,
-		return false);
+		return InvalidIndex());
 
 	Valence position = GetBondPosition(id);
 	Bond* bondBuffer;
@@ -143,14 +143,18 @@ bool Atom::FormBondImplementation(
 	{
 		bondBuffer = mBonds.OptimizedAccess(position);
 		BIO_SANITIZE(!bondBuffer->IsEmpty(), ,
-			return false)
-		return bondBuffer->Form(
+			return InvalidIndex())
+		if (bondBuffer->Form(
 			id,
 			toBond,
 			type
-		);
+		))
+		{
+			return position;
+		}
+		return InvalidIndex();
 	}
-	//implicitly cast the addition index to a bool.
+
 	return mBonds.Add(
 		new Bond(
 			id,
@@ -181,7 +185,7 @@ bool Atom::BreakBondImplementation(
 Valence Atom::GetBondPosition(AtomicNumber bondedId) const
 {
 	BIO_SANITIZE(bondedId, ,
-		return 0);
+		return InvalidIndex());
 
 	Bond* bondBuffer;
 	for (
@@ -196,7 +200,7 @@ Valence Atom::GetBondPosition(AtomicNumber bondedId) const
 			return bnd.GetIndex();
 		}
 	}
-	return 0;
+	return InvalidIndex();
 }
 
 Valence Atom::GetBondPosition(Name typeName) const

@@ -37,6 +37,9 @@ BIO_SITE_FUNCTION_BODY(OnMolecule,
 	molecular::Surface*)
 
 BIO_SITE_FUNCTION_BODY(InVesicle,
+	molecular::Molecule*)
+
+BIO_SITE_FUNCTION_BODY(ToVesicle,
 	molecular::Vesicle*)
 
 } //bio namespace

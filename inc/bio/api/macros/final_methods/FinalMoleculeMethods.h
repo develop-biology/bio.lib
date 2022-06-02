@@ -23,7 +23,7 @@
 
 #define BIO_FINAL_MOLECULE_METHODS                                             \
 template < typename T >                                                        \
-Id Use(                                                         \
+Id Use(                                                                        \
 	Name varName,                                                              \
 	T* varPtr                                                                  \
 )                                                                              \
@@ -34,19 +34,19 @@ Id Use(                                                         \
 	);                                                                         \
 }                                                                              \
                                                                                \
-Id Define(Name varName)                                         \
+Id Define(Name varName)                                                        \
 {                                                                              \
 	return this->mT.Define(varName);                                           \
 }                                                                              \
                                                                                \
 template < typename T >                                                        \
-Id Define(Name varName)                                         \
+Id Define(Name varName)                                                        \
 {                                                                              \
 	return this->mT.template Define< T >(varName);                             \
 }                                                                              \
                                                                                \
 template < typename T >                                                        \
-Id Define(                                                      \
+Id Define(                                                                     \
 	Name varName,                                                              \
 	const T& assignment                                                        \
 )                                                                              \
@@ -57,20 +57,14 @@ Id Define(                                                      \
 	);                                                                         \
 }                                                                              \
                                                                                \
-bio::molecular::Surface* RotateTo(Id surfaceId)                 \
+bio::molecular::Surface* RotateTo(Id surfaceId)                                \
 {                                                                              \
 	return this->mT.RotateTo(surfaceId);                                       \
 }                                                                              \
                                                                                \
-const bio::molecular::Surface* RotateTo(Id surfaceId) const     \
+const bio::molecular::Surface* RotateTo(Id surfaceId) const                    \
 {                                                                              \
 	return this->mT.RotateTo(surfaceId);                                       \
-}                                                                              \
-                                                                               \
-template < typename T >                                                        \
-T RotateTo(Id surfaceId) const                                  \
-{                                                                              \
-	return this->mT.template RotateTo< T >(surfaceId);                         \
 }                                                                              \
                                                                                \
 bio::molecular::Surface* RotateTo(Name surfaceName)                            \
@@ -81,12 +75,6 @@ bio::molecular::Surface* RotateTo(Name surfaceName)                            \
 const bio::molecular::Surface* RotateTo(Name surfaceName) const                \
 {                                                                              \
 	return this->mT.RotateTo(surfaceName);                                     \
-}                                                                              \
-                                                                               \
-template < typename T >                                                        \
-T RotateTo(Name surfaceName) const                                             \
-{                                                                              \
-	return this->mT.template RotateTo< T >(surfaceName);                       \
 }                                                                              \
                                                                                \
 bool DuplicateFrom(                                                            \
@@ -111,18 +99,18 @@ bool TransferFrom(                                                             \
 	);                                                                         \
 }                                                                              \
                                                                                \
-bio::molecular::Surface* operator()(Id surfaceId)               \
+bio::molecular::Surface* operator()(Id surfaceId)                              \
 {                                                                              \
 	return this->mT.operator()(surfaceId);                                     \
 }                                                                              \
                                                                                \
-const bio::molecular::Surface* operator()(Id surfaceId) const   \
+const bio::molecular::Surface* operator()(Id surfaceId) const                  \
 {                                                                              \
 	return this->mT.operator()(surfaceId);                                     \
 }                                                                              \
                                                                                \
 template < typename T >                                                        \
-bio::molecular::Surface* operator()(Id surfaceId)               \
+bio::molecular::Surface* operator()(Id surfaceId)                              \
 {                                                                              \
 	return this->mT.operator()(surfaceId);                                     \
 }                                                                              \

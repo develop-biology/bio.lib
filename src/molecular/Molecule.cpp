@@ -47,38 +47,22 @@ Molecule::~Molecule()
 
 Surface* Molecule::RotateTo(Id surfaceId)
 {
-	BIO_SANITIZE_WITH_CACHE(GetById< Surface* >(
-		surfaceId
-	),
-		return *Cast< Surface** >(RESULT),
-		return NULL);
+	return GetById< Surface* >(surfaceId);
 }
 
 const Surface* Molecule::RotateTo(Id surfaceId) const
 {
-	BIO_SANITIZE_WITH_CACHE(GetById< Surface* >(
-		surfaceId
-	),
-		return *Cast< const Surface** >(RESULT),
-		return NULL);
+	return GetById< Surface* >(surfaceId);
 }
 
 Surface* Molecule::RotateTo(Name surfaceName)
 {
-	BIO_SANITIZE_WITH_CACHE(GetByName< Surface* >(
-		surfaceName
-	),
-		return *Cast< Surface** >(RESULT),
-		return NULL);
+	return GetByName< Surface* >(surfaceName);
 }
 
 const Surface* Molecule::RotateTo(Name surfaceName) const
 {
-	BIO_SANITIZE_WITH_CACHE(GetByName< Surface* >(
-		surfaceName
-	),
-		return *Cast< const Surface** >(RESULT),
-		return NULL);
+	return GetByName< Surface* >(surfaceName);
 }
 
 bool Molecule::DuplicateFrom(

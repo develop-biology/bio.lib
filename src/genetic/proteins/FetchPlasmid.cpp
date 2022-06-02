@@ -44,10 +44,10 @@ Code FetchPlasmid::Activate()
 {
 	Code ret = code::BadArgument1();
 
-	RotateTo(mc_returnSite)->ReleaseAll();
+	RotateTo(mc_returnSite)->Release();
 
-	Name boundName = RotateTo< Name >(mc_nameSite);
-	Id boundId = RotateTo< Id >(mc_idSite);
+	Name boundName = *RotateTo(mc_nameSite)->Probe< Name* >();
+	Id boundId = *RotateTo(mc_idSite)->Probe< Id* >();
 
 	if (boundName)
 	{
@@ -60,8 +60,8 @@ Code FetchPlasmid::Activate()
 		ret = code::Success();
 	}
 
-	RotateTo(mc_nameSite)->ReleaseAll();
-	RotateTo(mc_idSite)->ReleaseAll();
+	RotateTo(mc_nameSite)->Release();
+	RotateTo(mc_idSite)->Release();
 
 	return ret;
 }

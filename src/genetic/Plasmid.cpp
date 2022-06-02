@@ -57,7 +57,7 @@ RNA* Plasmid::TranscribeFor(Expressor* expressor) const
 	polymerase->Fold();
 	polymerase->RotateTo(bindingSite)->Bind(ret);
 	polymerase->Activate();
-	polymerase->RotateTo(bindingSite)->ReleaseAll();
+	polymerase->RotateTo(bindingSite)->Release();
 	delete polymerase;
 	return ret;
 }

@@ -19,19 +19,38 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include "bio/genetic/common/Types.h"
-#include "bio/genetic/macros/Macros.h"
+#include "bio/molecular/channel/Pore.h"
+#include "bio/molecular/common/SymmetryTypes.h"
 
 namespace bio {
+namespace molecular {
 
-BIO_SITE(InSurface)
+Pore::Pore(
+	Name name,
+	Vesicle* environment
+) :
+	Surface(name, environment),
+	molecular::Class< Pore >(
+		this,
+		name,
+		environment,
+		filter::Molecular(),
+		symmetry_type::Variable())
+{
 
-BIO_SITE(OnMolecule)
+}
 
-BIO_SITE(InVesicle)
+Pore::~Pore()
+{
 
-BIO_SITE(ToVesicle)
+}
 
+void Pore::SetEnvironment(Vesicle* environment)
+{
+	mTransMembraneDomain.SetVesicle(environment);
+	Surface::SetEnvironment(environment);
+}
+
+
+} //molecular namespace
 } //bio namespace

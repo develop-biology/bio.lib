@@ -269,7 +269,7 @@ public:
 	 * @return true, if the Bond was created; false otherwise.
 	 */
 	template < typename T >
-	bool FormBond(
+	Valence FormBond(
 		T toBond,
 		BondType type = bond_type::Unknown())
 	{
@@ -388,12 +388,14 @@ public:
 
 	/**
 	 * Create a Bond. <br />
-	 * This is public for use in ctors. Please use FormBond<> unless you are forced to call this impl method. <br />
+	 * This is public for use in constructors. <br />
+	 * Please use FormBond<> unless you are forced to call this impl method. <br />
 	 * @param toBond
 	 * @param id
 	 * @param type
+	 * @return the position of the new Bond in *this.
 	 */
-	virtual bool FormBondImplementation(
+	virtual Valence FormBondImplementation(
 		physical::Wave* toBond,
 		AtomicNumber id,
 		BondType type
@@ -401,7 +403,8 @@ public:
 
 	/**
 	 * Remove a Bond. <br />
-	 * This is public for use in dtors. Please use BreakBond<> unless you are forced to call this impl method. <br />
+	 * This is public for use in destructors. <br />
+	 * Please use BreakBond<> unless you are forced to call this impl method. <br />
 	 * @param id
 	 * @param type
 	 * @return

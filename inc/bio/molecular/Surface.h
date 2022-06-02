@@ -26,7 +26,6 @@
 #include "bio/molecular/common/Class.h"
 #include "bio/molecular/macros/Macros.h"
 #include "EnvironmentDependent.h"
-#include "bio/chemical/structure/motif/LinearMotif.h"
 
 namespace bio {
 namespace molecular {
@@ -35,12 +34,11 @@ class Molecule;
 
 /**
  * Surfaces can be thought of as variables for the Biology syntax. <br />
- * They either hold a single, Quantum  value, or are composed of a complex array of Molecules. <br />
+ * They hold a single value but the type of that value may be arbitrarily complex (e.g. a Molecule with more Surfaces on it). <br />
  * See Molecule.h for a more detailed explanation. <br />
  */
 class Surface :
 	public Class< Surface >,
-	public chemical::LinearMotif< Molecule* >,
 	public EnvironmentDependent< Molecule >
 {
 public:
@@ -96,9 +94,11 @@ public:
 	template < typename T >
 	T Manage(T varPtr)
 	{
+		BIO_STATIC_ASSERT(utility::IsPointer< T >())
 		FormBond(
 			varPtr,
 			bond_type::Manage());
+		return varPtr;
 	}
 
 	/**
@@ -112,14 +112,41 @@ public:
 	template < typename T >
 	T Use(T varPtr)
 	{
+		BIO_STATIC_ASSERT(utility::IsPointer< T >())
 		FormBond(
 			varPtr,
 			bond_type::Use());
+		return varPtr;
 	}
 
 	/**
-	 * Binding, as opposed to permanent Bonding, forms a temporary association with the given Substance. <br />
-	 * Binding forms a Temporary Bond, allowing *this to be treated as the Bound Substance. <br />
+	 * Probe is the Biology style "get". <br />
+	 * This is a little more complicated than ChemicalCast< T >(this) but follows the same logic. <br />
+	 * @tparam T
+	 * @return a T that is Bound to *this or 0.
+	 */
+	template < typename T >
+	T Probe()
+	{
+		BIO_SANITIZE(mBoundPosition,,return 0)
+		BIO_SANITIZE(mBonds.IsAllocated(mBoundPosition),,return 0)
+
+		chemical::Bond* bond = mBonds.OptimizedAccess(mBoundPosition);
+
+		//If we Manage or Use a variable, it will be stored as a T*.
+		if (bond->GetId() == GetBondId< T* >())
+		{
+			return *(ChemicalCast< T* >(bond->GetBonded()));
+		}
+
+		//Assume Bound as T. Anything else is an error.
+		return ChemicalCast< T >(bond->GetBonded());
+	}
+
+	/**
+	 * Bind is the Biology style "set". <br />
+	 * If *this is not Managing or Using a value already, the provided value will be Temporarily Bonded (i.e. Bound) to *this. Otherwise, the already Bound value will be set to that provided. <br />
+	 * When *this already has a value Bound and Bind is called, the
 	 * @tparam T
 	 * @param toBind
 	 * @param bondType
@@ -130,6 +157,39 @@ public:
 		T toBind,
 		BondType bondType = bond_type::Temporary())
 	{
+		if (mBoundPosition)
+		{
+			BIO_SANITIZE(mBonds.IsAllocated(mBoundPosition),,return 0)
+
+			chemical::Bond* bond = mBonds.OptimizedAccess(mBoundPosition);
+
+			#if BIO_CPP_VERSION < 17
+			BIO_SANITIZE(utility::IsPointer< T >(),,return 0)
+			//Assume Bound as T. Anything else is an error.
+			T bound = ChemicalCast< T >(bond->GetBonded());
+			*bound = *toBind;
+			return bound;
+			#else
+			if constexpr(utility::IsPointer< T >())
+			{
+				T bound = ChemicalCast< T >(bond->GetBonded());
+				*bound = *toBind;
+				return bound;
+			}
+			else
+			{
+				//If we Manage or Use a variable, it will be stored as a T*.
+				//So, if we can, we'll accommodate non-pointer uses.
+				if (bond->GetId() == GetBondId< T* >())
+				{
+					T* bound = ChemicalCast< T* >(bond->GetBonded());
+					*bound = toBind;
+					return *bound;
+				}
+			}
+			#endif
+		}
+
 		FormBond(
 			toBind,
 			bondType
@@ -138,7 +198,10 @@ public:
 	}
 
 	/**
+	 * Release a Surface Binding if you need to change the type of the Surface. <br />
+	 * Generally you shouldn't be changing variable types at runtime, so if you think you need this, double check your design. <br />
 	 * Breaks the Temporary Bond formed by Bind. <br />
+	 * Can also be used on the Bond formed by Use and Manage. <br />
 	 * @param toRelease
 	 * @param bondType
 	 * @return the previously bound Substance or NULL.
@@ -148,7 +211,10 @@ public:
 		BondType bondType = bond_type::Temporary());
 
 	/**
+	 * Release a Surface Binding if you need to change the type of the Surface. <br />
+	 * Generally you shouldn't be changing variable types at runtime, so if you think you need this, double check your design. <br />
 	 * Breaks the Temporary Bond formed by Bind. <br />
+	 * Can also be used on the Bond formed by Use and Manage. <br />
 	 * NOTE: the given Substance could be Identifiable through some unknown Perspective, so this does actual string comparison. Unless a Perspective is given, in which case numeric comparison is done on the given Name. <br />
 	 * @param toRelease
 	 * @param perspective
@@ -161,7 +227,10 @@ public:
 		BondType bondType = bond_type::Temporary());
 
 	/**
+	 * Release a Surface Binding if you need to change the type of the Surface. <br />
+	 * Generally you shouldn't be changing variable types at runtime, so if you think you need this, double check your design. <br />
 	 * Breaks the Temporary Bond formed by Bind. <br />
+	 * Can also be used on the Bond formed by Use and Manage. <br />
 	 * NOTE: the given Substance could be Identifiable through some unknown Perspective, so this does an unreliable numeric comparison. However, if a Perspective is given, we can be certain if the id we find is correct or not. <br />
 	 * @param toRelease
 	 * @param perspective
@@ -174,10 +243,13 @@ public:
 		BondType bondType = bond_type::Temporary());
 
 	/**
+	 * Release a Surface Binding if you need to change the type of the Surface. <br />
+	 * Generally you shouldn't be changing variable types at runtime, so if you think you need this, double check your design. <br />
 	 * Releases all Temporarily Bound Substances <br />
+	 * Can also be used on the Bond formed by Use and Manage. <br />
 	 * @return all Temporarily Bound Substances
 	 */
-	virtual physical::Waves ReleaseAll(BondType bondType = bond_type::Temporary());
+	virtual physical::Waves Release(BondType bondType = bond_type::Temporary());
 
 	/**
 	 * Sets both the mEnvironment and mPerspective and updates mId. <br />
@@ -224,10 +296,16 @@ public:
 	virtual chemical::Substance* operator-=(Id toRelease);
 
 	/**
-	 * Wrapper around ReleaseAll <br />
+	 * Wrapper around Release <br />
 	 * @return all Temporarily Bound Substances.
 	 */
 	virtual physical::Waves operator--();
+
+protected:
+	/**
+	 * should be 0 or 1 in practice (i.e. we prevent >1 Binding).
+	 */
+	chemical::Valence mBoundPosition;
 };
 
 } //molecular namespace

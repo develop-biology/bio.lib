@@ -22,45 +22,4 @@
 #pragma once
 
 #define BIO_FINAL_VESICLE_METHODS                                              \
-BIO_FINAL_MOLECULE_METHODS                                                     \
-	bio::molecular::Molecule* operator[](Id moleculeId)         \
-{                                                                              \
-return this->mT.operator[](moleculeId);                                        \
-}                                                                              \
-                                                                               \
-const bio::molecular::Molecule* operator[](Id moleculeId) const \
-{                                                                              \
-return this->mT.operator[](moleculeId);                                        \
-}                                                                              \
-                                                                               \
-template < typename T >                                                        \
-bio::molecular::Molecule* operator[](Id moleculeId)             \
-{                                                                              \
-return this->mT.template operator[]< T >(moleculeId);                          \
-}                                                                              \
-                                                                               \
-bio::molecular::Molecule* operator[](Name moleculeName)                        \
-{                                                                              \
-	return this->mT.operator[](moleculeName);                                  \
-}                                                                              \
-                                                                               \
-const bio::molecular::Molecule* operator[](Name moleculeName) const            \
-{                                                                              \
-	return this->mT.operator[](moleculeName);                                  \
-}                                                                              \
-                                                                               \
-template < typename T >                                                        \
-bio::molecular::Molecule* operator[](Name moleculeName)                        \
-{                                                                              \
-	return this->mT.template operator[]< T >(moleculeName);                    \
-}                                                                              \
-                                                                               \
-bio::molecular::Vesicle* operator<<=(bio::molecular::Vesicle* source)          \
-{                                                                              \
-	return this->mT.operator<<=(source);                                       \
-}                                                                              \
-                                                                               \
-bio::molecular::Vesicle* operator>>=(bio::molecular::Vesicle* target)          \
-{                                                                              \
-	return this->mT.operator>>=(target);                                       \
-}
+BIO_FINAL_MOLECULE_METHODS

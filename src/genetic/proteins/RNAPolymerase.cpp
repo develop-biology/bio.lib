@@ -30,7 +30,7 @@ namespace genetic {
 
 RNAPolymerase::RNAPolymerase(Plasmid* toTranscribe)
 	:
-	molecular::Protein(SafelyAccess<chemical::PeriodicTable>()->GetNameFromType(*this))
+	molecular::Protein(SafelyAccess< chemical::PeriodicTable >()->GetNameFromType(*this))
 {
 	SetSource(toTranscribe);
 	mc_rna = Define("RNA Binding Site");
@@ -44,11 +44,12 @@ RNAPolymerase::~RNAPolymerase()
 Code RNAPolymerase::Activate()
 {
 	Expressor* expressor = ChemicalCast< Expressor* >(GetEnvironment());
-	BIO_SANITIZE(expressor, ,
-		return code::BadArgument1());
-	RNA* boundRNA = RotateTo< RNA* >(mc_rna);
-	BIO_SANITIZE(mc_rna, ,
-		return code::BadArgument2());
+
+	BIO_SANITIZE(expressor, , return code::BadArgument1());
+
+	RNA* boundRNA = RotateTo(mc_rna)->Probe< RNA* >();
+
+	BIO_SANITIZE(mc_rna, , return code::BadArgument2());
 
 	Gene* geneBuffer;
 	bool shouldTranscribe = false;
@@ -61,6 +62,7 @@ Code RNAPolymerase::Activate()
 		geneBuffer = gen;
 		shouldTranscribe = expressor->HasAll< TranscriptionFactor >(
 			geneBuffer->GetAll< TranscriptionFactor >());
+
 		if (!shouldTranscribe)
 		{
 			continue;
