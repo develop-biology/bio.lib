@@ -106,7 +106,7 @@ AtomicNumber PeriodicTableImplementation::RecordPropertyOf(
 }
 
 AtomicNumber PeriodicTableImplementation::RecordPropertyOf(
-	Name name,
+	const Name& name,
 	Property property
 )
 {
@@ -136,7 +136,7 @@ AtomicNumber PeriodicTableImplementation::RecordPropertiesOf(
 }
 
 AtomicNumber PeriodicTableImplementation::RecordPropertiesOf(
-	Name name,
+	const Name& name,
 	Properties properties
 )
 {

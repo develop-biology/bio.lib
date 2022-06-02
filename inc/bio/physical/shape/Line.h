@@ -69,7 +69,7 @@ public:
 	 * @param id
 	 * @return an Index matching the given id or InvalidIndex().
 	 */
-	virtual Index SeekToId(Id id);
+	virtual Index SeekToId(const Id& id);
 
 	/**
 	 * We want to return an Identifiable< Id >*, not a Linear. <br />

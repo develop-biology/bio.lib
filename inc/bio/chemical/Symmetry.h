@@ -57,7 +57,7 @@ public:
 	 * @param type
 	 */
 	Symmetry(
-		Name name,
+		const Name& name,
 		const Name& type
 	);
 
@@ -66,7 +66,7 @@ public:
 	 * @param type
 	 */
 	Symmetry(
-		Name name,
+		const Name& name,
 		SymmetryType type
 	);
 

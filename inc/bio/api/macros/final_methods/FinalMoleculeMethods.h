@@ -57,12 +57,12 @@ Id Define(                                                                     \
 	);                                                                         \
 }                                                                              \
                                                                                \
-bio::molecular::Surface* RotateTo(Id surfaceId)                                \
+bio::molecular::Surface* RotateTo(const Id& surfaceId)                                \
 {                                                                              \
 	return this->mT.RotateTo(surfaceId);                                       \
 }                                                                              \
                                                                                \
-const bio::molecular::Surface* RotateTo(Id surfaceId) const                    \
+const bio::molecular::Surface* RotateTo(const Id& surfaceId) const                    \
 {                                                                              \
 	return this->mT.RotateTo(surfaceId);                                       \
 }                                                                              \
@@ -99,18 +99,18 @@ bool TransferFrom(                                                             \
 	);                                                                         \
 }                                                                              \
                                                                                \
-bio::molecular::Surface* operator()(Id surfaceId)                              \
+bio::molecular::Surface* operator()(const Id& surfaceId)                              \
 {                                                                              \
 	return this->mT.operator()(surfaceId);                                     \
 }                                                                              \
                                                                                \
-const bio::molecular::Surface* operator()(Id surfaceId) const                  \
+const bio::molecular::Surface* operator()(const Id& surfaceId) const                  \
 {                                                                              \
 	return this->mT.operator()(surfaceId);                                     \
 }                                                                              \
                                                                                \
 template < typename T >                                                        \
-bio::molecular::Surface* operator()(Id surfaceId)                              \
+bio::molecular::Surface* operator()(const Id& surfaceId)                              \
 {                                                                              \
 	return this->mT.operator()(surfaceId);                                     \
 }                                                                              \

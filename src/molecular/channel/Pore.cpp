@@ -26,7 +26,7 @@ namespace bio {
 namespace molecular {
 
 Pore::Pore(
-	Name name,
+	const Name& name,
 	Vesicle* environment
 ) :
 	Surface(name, environment),

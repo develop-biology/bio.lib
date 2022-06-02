@@ -25,7 +25,7 @@ namespace bio {
 namespace chemical {
 
 Symmetry::Symmetry(
-	Name name,
+	const Name& name,
 	const Name& type
 )
 	:
@@ -39,7 +39,7 @@ Symmetry::Symmetry(
 }
 
 Symmetry::Symmetry(
-	Name name,
+	const Name& name,
 	SymmetryType type
 )
 	:

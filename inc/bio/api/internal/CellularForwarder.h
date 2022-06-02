@@ -77,7 +77,7 @@ public:
 	/**
 	 * @param id
 	 */
-	explicit CellularForwarder(Id id) :
+	explicit CellularForwarder(const Id& id) :
 		cellular::Class< CellularForwarder< CALLER, CLOBBER, PERSPECTIVE > >(
 			this,
 			id,

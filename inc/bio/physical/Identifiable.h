@@ -84,7 +84,7 @@ public:
 	 * @param perspective
 	 */
 	explicit Identifiable(
-		Name name,
+		const Name& name,
 		Perspective< DIMENSION >* perspective = NULL
 	)
 		:

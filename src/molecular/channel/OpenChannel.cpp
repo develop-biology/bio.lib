@@ -26,7 +26,7 @@ namespace bio {
 namespace molecular {
 
 OpenChannel::OpenChannel(
-	Name name,
+	const Name& name,
 	Vesicle* environment
 ) :
 	Pore(name, environment),
@@ -69,13 +69,13 @@ const Molecule* OpenChannel::Egress(const Name& moleculeName) const
 }
 
 
-Molecule* OpenChannel::Egress(Id moleculeId)
+Molecule* OpenChannel::Egress(const Id& moleculeId)
 {
 	return mTransMembraneDomain.Egress(moleculeId);
 }
 
 
-const Molecule* OpenChannel::Egress(Id moleculeId) const
+const Molecule* OpenChannel::Egress(const Id& moleculeId) const
 {
 	return mTransMembraneDomain.Egress(moleculeId);
 }
@@ -87,7 +87,7 @@ Molecule* OpenChannel::Secrete(const Name& moleculeName)
 }
 
 
-Molecule* OpenChannel::Secrete(Id moleculeId)
+Molecule* OpenChannel::Secrete(const Id& moleculeId)
 {
 	return mTransMembraneDomain.Secrete(moleculeId);
 }

@@ -107,7 +107,7 @@ public:
 	 * @param moleculeId
 	 * @return a new Molecule from that of the given Id in *this or NULL if no such Molecule could be found.
 	 */
-	Molecule* Egress(Id moleculeId);
+	Molecule* Egress(const Id& moleculeId);
 
 	
 	/**
@@ -117,7 +117,7 @@ public:
 	 * @param moleculeId
 	 * @return a new Molecule from that of the given Id in *this or NULL if no such Molecule could be found.
 	 */
-	const Molecule* Egress(Id moleculeId) const;
+	const Molecule* Egress(const Id& moleculeId) const;
 
 
 	/**
@@ -137,7 +137,7 @@ public:
 	 * @param moleculeId
 	 * @return an existing Molecule with the given Id in *this or NULL if no such Molecule could be found.
 	 */
-	Molecule* Secrete(Id moleculeId);
+	Molecule* Secrete(const Id& moleculeId);
 
 
 private:

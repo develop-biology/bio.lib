@@ -52,7 +52,7 @@ public:
 	 * @param name
 	 */
 	Pore(
-		Name name,
+		const Name& name,
 		Vesicle* environment = NULL
 	);
 

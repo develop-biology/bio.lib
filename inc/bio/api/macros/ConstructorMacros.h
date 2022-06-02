@@ -34,10 +34,10 @@
 thisClass() :                                                                  \
     finalClass()                                                               \
 {}                                                                             \
-explicit thisClass(::bio::Name name) :                                         \
+explicit thisClass(const ::bio::Name& name) :                                  \
     finalClass(name)                                                           \
 {}                                                                             \
-explicit thisClass(::bio::Id id) :                              \
+explicit thisClass(const ::bio::Id& id) :                                      \
     finalClass(id)                                                             \
 {}
 
@@ -52,19 +52,19 @@ explicit thisClass(::bio::Id id) :                              \
  * @param thisClass the name of the class to construct
  * @param finalClass the name of the Final____ class *this is deriving from.
  */
-#define BIO_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(thisClass, finalClass)               \
+#define BIO_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(thisClass, finalClass)        \
 thisClass() :                                                                  \
     finalClass()                                                               \
 {                                                                              \
-	this->CommonConstructor();                                                        \
+	this->CommonConstructor();                                                 \
 }                                                                              \
-explicit thisClass(::bio::Name name) :                                         \
+explicit thisClass(const ::bio::Name& name) :                                  \
     finalClass(name)                                                           \
 {                                                                              \
-	this->CommonConstructor();                                                        \
+	this->CommonConstructor();                                                 \
 }                                                                              \
-explicit thisClass(::bio::Id id) :                              \
+explicit thisClass(const ::bio::Id& id) :                                      \
     finalClass(id)                                                             \
 {                                                                              \
-    this->CommonConstructor();                                                        \
+    this->CommonConstructor();                                                 \
 }

@@ -28,7 +28,7 @@ namespace bio {
 namespace molecular {
 
 Surface::Surface(
-	Name name,
+	const Name& name,
 	Molecule* environment
 )
 	:
@@ -147,7 +147,7 @@ physical::Wave* Surface::Release(
 }
 
 chemical::Substance* Surface::Release(
-	Name toRelease,
+	const Name& toRelease,
 	physical::Perspective< Id >* perspective,
 	BondType bondType
 )
@@ -247,7 +247,7 @@ chemical::Substance* Surface::operator-=(const Name& toRelease)
 	return Release(toRelease);
 }
 
-chemical::Substance* Surface::operator-=(Id toRelease)
+chemical::Substance* Surface::operator-=(const Id& toRelease)
 {
 	return Release(toRelease);
 }

@@ -135,7 +135,7 @@ public:
 	 * @return the id of the given name.
 	 */
 	AtomicNumber RecordPropertyOf(
-		Name name,
+		const Name& name,
 		Property property
 	);
 
@@ -172,7 +172,7 @@ public:
 	 * @return the id of the given name.
 	 */
 	AtomicNumber RecordPropertiesOf(
-		Name name,
+		const Name& name,
 		Properties properties
 	);
 

@@ -46,7 +46,7 @@ public:
 	 * @param name
 	 */
 	OpenChannel(
-		Name name,
+		const Name& name,
 		Vesicle* environment = NULL
 	);
 
@@ -93,7 +93,7 @@ public:
 	 * @param moleculeId
 	 * @return a new Molecule from that of the given Id in *this or NULL if no such Molecule could be found.
 	 */
-	virtual Molecule* Egress(Id moleculeId);
+	virtual Molecule* Egress(const Id& moleculeId);
 
 
 	/**
@@ -103,7 +103,7 @@ public:
 	 * @param moleculeId
 	 * @return a new Molecule from that of the given Id in *this or NULL if no such Molecule could be found.
 	 */
-	virtual const Molecule* Egress(Id moleculeId) const;
+	virtual const Molecule* Egress(const Id& moleculeId) const;
 
 
 	/**
@@ -123,7 +123,7 @@ public:
 	 * @param moleculeId
 	 * @return an existing Molecule with the given Id in *this or NULL if no such Molecule could be found.
 	 */
-	virtual Molecule* Secrete(Id moleculeId);
+	virtual Molecule* Secrete(const Id& moleculeId);
 };
 } //molecular namespace
 } //bio namespace

@@ -53,7 +53,7 @@ public:
 	 * @param name
 	 */
 	Surface(
-		Name name,
+		const Name& name,
 		Molecule* environment = NULL
 	);
 
@@ -222,7 +222,7 @@ public:
 	 * @return the previously bound Substance or NULL.
 	 */
 	virtual chemical::Substance* Release(
-		Name toRelease,
+		const Name& toRelease,
 		physical::Perspective< Id >* perspective = NULL,
 		BondType bondType = bond_type::Temporary());
 
@@ -293,7 +293,7 @@ public:
 	 * @param toRelease
 	 * @return result of Release
 	 */
-	virtual chemical::Substance* operator-=(Id toRelease);
+	virtual chemical::Substance* operator-=(const Id& toRelease);
 
 	/**
 	 * Wrapper around Release <br />

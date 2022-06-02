@@ -31,7 +31,7 @@ Expressor::~Expressor()
 
 }
 
-Code Expressor::Activate(Id proteinId)
+Code Expressor::Activate(const Id& proteinId)
 {
 	Code ret = code::Success();
 	molecular::Protein* toActivate = GetById< molecular::Protein* >(proteinId);

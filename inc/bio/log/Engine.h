@@ -113,7 +113,7 @@ public:
 	 * @return true on success, false otherwise.
 	 */
 	bool SetFilter(
-		Name filter,
+		const Name& filter,
 		const Name& level
 	); //calls StringTo...
 

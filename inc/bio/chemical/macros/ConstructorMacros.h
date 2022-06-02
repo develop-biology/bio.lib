@@ -39,10 +39,10 @@
 class() :                                                                      \
     ns::Class< class >(this, __VA_ARGS__)                                      \
 {}                                                                             \
-explicit class(::bio::Name name) :                                             \
+explicit class(const ::bio::Name& name) :                                      \
     ns::Class< class >(this, name, __VA_ARGS__)                                \
 {}                                                                             \
-explicit class(::bio::Id id) :                                                 \
+explicit class(const ::bio::Id& id) :                                          \
     ns::Class< class >(this, id, __VA_ARGS__)                                  \
 {}
 
@@ -68,12 +68,12 @@ class() :                                                                      \
 {                                                                              \
     this->CommonConstructor();                                                 \
 }                                                                              \
-explicit class(::bio::Name name) :                                             \
+explicit class(const ::bio::Name& name) :                                      \
     ns::Class< class >(this, name, __VA_ARGS__)                                \
 {                                                                              \
     this->CommonConstructor();                                                 \
 }                                                                              \
-explicit class(::bio::Id id) :                                                 \
+explicit class(const ::bio::Id& id) :                                          \
     ns::Class< class >(this, id, __VA_ARGS__)                                  \
 {                                                                              \
     this->CommonConstructor();                                                 \

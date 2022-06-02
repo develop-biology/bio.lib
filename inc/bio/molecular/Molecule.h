@@ -111,7 +111,7 @@ public:
 	 */
 	template < typename T >
 	Id Use(
-		Name varName,
+		const Name& varName,
 		T* varPtr
 	)
 	{
@@ -183,7 +183,7 @@ public:
 	 */
 	template < typename T >
 	Id Define(
-		Name varName,
+		const Name& varName,
 		const T& assignment
 	)
 	{
@@ -207,14 +207,14 @@ public:
 	 * @param surfaceId
 	 * @return a Surface with the given Id, as defined by *this, or NULL.
 	 */
-	virtual Surface* RotateTo(Id surfaceId);
+	virtual Surface* RotateTo(const Id& surfaceId);
 
 	/**
 	 * const version of RotateTo <br />
 	 * @param surfaceId
 	 * @return a const Surface with the given Id, as defined by *this, or NULL.
 	 */
-	virtual const Surface* RotateTo(Id surfaceId) const;
+	virtual const Surface* RotateTo(const Id& surfaceId) const;
 
 	/**
  	* Get a variable from within *this. <br />
@@ -271,14 +271,14 @@ public:
 	 * @param surfaceId
 	 * @return RotateTo(...)
 	 */
-	virtual Surface* operator()(Id surfaceId);
+	virtual Surface* operator()(const Id& surfaceId);
 
 	/**
 	 * operator wrappers around RotateTo <br />
 	 * @param surfaceId
 	 * @return RotateTo(...)
 	 */
-	virtual const Surface* operator()(Id surfaceId) const;
+	virtual const Surface* operator()(const Id& surfaceId) const;
 
 	/**
 	 * operator wrappers around RotateTo <br />
@@ -286,7 +286,7 @@ public:
 	 * @return RotateTo(...)
 	 */
 	template < typename T >
-	Surface* operator()(Id surfaceId)
+	Surface* operator()(const Id& surfaceId)
 	{
 		return ChemicalCast< T >(RotateTo(surfaceId));
 	}

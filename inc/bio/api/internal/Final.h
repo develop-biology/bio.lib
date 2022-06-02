@@ -59,7 +59,7 @@ public:
 	/**
 	 * @param id
 	 */
-	explicit Final(Id id):
+	explicit Final(const Id& id):
 		TransparentWrapper< CLASS >(CLASS(id))
 	{
 	}
@@ -298,13 +298,13 @@ public:
 	}
 
 	template < typename T >
-	T GetById(Id id)
+	T GetById(const Id& id)
 	{
 		return this->mT.template GetById< T >(id);
 	}
 
 	template < typename T >
-	const T GetById(Id id) const
+	const T GetById(const Id& id) const
 	{
 		return this->mT.template GetById< T >(id);
 	}
@@ -322,7 +322,7 @@ public:
 	}
 
 	template < typename T >
-	T GetOrCreateById(Id id)
+	T GetOrCreateById(const Id& id)
 	{
 		return this->mT.template GetOrCreateById< T >(id);
 	}
@@ -466,7 +466,7 @@ public:
 		return this->mT.SetName(name);
 	}
 
-	void SetId(Id id)
+	void SetId(const Id& id)
 	{
 		return this->mT.SetId(id);
 	}
@@ -481,7 +481,7 @@ public:
 		return this->mT.IsNameInsensitive(name);
 	}
 	
-	bool IsId(Id id) const
+	bool IsId(const Id& id) const
 	{
 		return this->mT.IsId(id);
 	}

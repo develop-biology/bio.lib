@@ -28,7 +28,7 @@ namespace bio {
 namespace chemical {
 
 Reaction::Reaction(
-	Name name,
+	const Name& name,
 	const Reactants* reactants
 )
 	:
@@ -48,7 +48,7 @@ void Reaction::Require(Reactant* reactant)
 }
 
 void Reaction::Require(
-	Name typeName,
+	const Name& typeName,
 	const Substance* substance
 )
 {
@@ -60,7 +60,7 @@ void Reaction::Require(
 }
 
 void Reaction::Require(
-	Name typeName,
+	const Name& typeName,
 	const UnorderedMotif< Property >::Contents* properties,
 	const UnorderedMotif< State >::Contents* states
 )
@@ -79,7 +79,7 @@ bool Reaction::ReactantsMeetRequirements(const Reactants* toCheck) const
 	return toCheck->HasAll< Substance* >(mRequiredReactants.GetAll< Substance* >());
 }
 
-/*static*/ const Reaction* Reaction::Initiate(Id id)
+/*static*/ const Reaction* Reaction::Initiate(const Id& id)
 {
 	BIO_SANITIZE_WITH_CACHE(SafelyAccess<ReactionPerspective>()->GetTypeFromIdAs< Reaction* >(id),
 		return *(Cast< const Reaction** >(RESULT)),

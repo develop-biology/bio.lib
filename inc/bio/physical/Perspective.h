@@ -156,7 +156,7 @@ public:
 	 * @param id
 	 * @return a SmartIterator pointing to the Hadit desired, if it IsValid.
 	 */
-	SmartIterator Find(Id id)
+	SmartIterator Find(const Id& id)
 	{
 		SmartIterator hdt = mHadits.Begin();
 		for (
@@ -178,7 +178,7 @@ public:
 	 * @param id
 	 * @return a SmartIterator pointing to the Hadit desired, if it IsValid.
 	 */
-	SmartIterator Find(Id id) const
+	SmartIterator Find(const Id& id) const
 	{
 		SmartIterator hdt = mHadits.Begin();
 		for (
@@ -231,7 +231,7 @@ public:
 	 * @param id
 	 * @return the Name associated with the given Id
 	 */
-	virtual Name GetNameFromId(Id id) const
+	virtual Name GetNameFromId(const Id& id) const
 	{
 		if (id == InvalidId())
 		{
@@ -350,7 +350,7 @@ public:
 	 * @param id
 	 * @return true if the association was removed else false.
 	 */
-	virtual bool DisassociateType(Id id)
+	virtual bool DisassociateType(const Id& id)
 	{
 		SmartIterator hdt = Find(id);
 		if (!hdt.IsValid())
@@ -374,7 +374,7 @@ public:
 	 * @param id
 	 * @return the pointer to the Wave type associated with the given id else NULL.
 	 */
-	virtual const Wave* GetTypeFromId(Id id) const
+	virtual const Wave* GetTypeFromId(const Id& id) const
 	{
 		BIO_SANITIZE(id == InvalidId(),
 			,
@@ -404,7 +404,7 @@ public:
 	 * @param id
 	 * @return a Clone() of the Wave* associated with the given id else NULL.
 	 */
-	virtual Wave* GetNewObjectFromId(Id id) const
+	virtual Wave* GetNewObjectFromId(const Id& id) const
 	{
 		const Wave* ret = GetTypeFromId(id);
 		if (ret)
@@ -431,7 +431,7 @@ public:
 	 * @return a T* associated with the given name id NULL.
 	 */
 	template < typename T >
-	const T GetTypeFromIdAs(Id id) const
+	const T GetTypeFromIdAs(const Id& id) const
 	{
 		BIO_SANITIZE_WITH_CACHE(GetTypeFromId(id),
 			BIO_SINGLE_ARG(return ForceCast< T, const Wave* >(RESULT)),
@@ -461,7 +461,7 @@ public:
 	 * @return a new T* from Clone()ing the type associated with the given id else NULL.
 	 */
 	template < typename T >
-	T GetNewObjectFromIdAs(Id id)
+	T GetNewObjectFromIdAs(const Id& id)
 	{
 		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromId(id),
 			BIO_SINGLE_ARG(return ForceCast< T, Wave* >(RESULT)),

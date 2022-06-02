@@ -102,7 +102,7 @@ public:
 	 */
 	Class(
 		T* object,
-		Id id,
+		const Id& id,
 		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())

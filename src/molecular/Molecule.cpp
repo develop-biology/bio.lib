@@ -45,12 +45,12 @@ Molecule::~Molecule()
 {
 }
 
-Surface* Molecule::RotateTo(Id surfaceId)
+Surface* Molecule::RotateTo(const Id& surfaceId)
 {
 	return GetById< Surface* >(surfaceId);
 }
 
-const Surface* Molecule::RotateTo(Id surfaceId) const
+const Surface* Molecule::RotateTo(const Id& surfaceId) const
 {
 	return GetById< Surface* >(surfaceId);
 }
@@ -108,12 +108,12 @@ bool Molecule::TransferFrom(
 	return true;
 }
 
-Surface* Molecule::operator()(Id surfaceId)
+Surface* Molecule::operator()(const Id& surfaceId)
 {
 	return RotateTo(surfaceId);
 }
 
-const Surface* Molecule::operator()(Id surfaceId) const
+const Surface* Molecule::operator()(const Id& surfaceId) const
 {
 	return RotateTo(surfaceId);
 }

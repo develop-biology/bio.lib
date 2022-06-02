@@ -84,7 +84,7 @@ public:
 	 * @param proteinId
 	 * @return the result of activation or code::BadArgument1 if no such molecular::Protein exists within *this.
 	 */
-	Code Activate(Id proteinId);
+	Code Activate(const Id& proteinId);
 
 	/**
 	 * Ease of use wrapper around Activate(Id). <br />

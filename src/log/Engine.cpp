@@ -138,7 +138,7 @@ bool Engine::SetFilter(
 }
 
 bool Engine::SetFilter(
-	Name filter,
+	const Name& filter,
 	const Name& level
 )
 {

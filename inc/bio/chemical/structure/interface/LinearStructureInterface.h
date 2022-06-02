@@ -86,7 +86,7 @@ public:
 	 * @return a T of the given id or NULL; NULL if T is invalid.
 	 */
 	template < typename T >
-	T GetById(Id id)
+	T GetById(const Id& id)
 	{
 		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
 		BIO_SANITIZE(implementer,
@@ -102,7 +102,7 @@ public:
 	 * @return a T of the given id or NULL; NULL if T is invalid.
 	 */
 	template < typename T >
-	const T GetById(Id id) const
+	const T GetById(const Id& id) const
 	{
 		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
 		BIO_SANITIZE(implementer,
@@ -135,7 +135,7 @@ public:
 	 */
 	template < typename T >
 	const T GetByName(
-		Name name
+		const Name& name
 	) const
 	{
 		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
@@ -173,7 +173,7 @@ public:
 	 */
 	template < typename T >
 	T GetOrCreateByName(
-		Name name
+		const Name& name
 	)
 	{
 		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();

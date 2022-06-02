@@ -51,7 +51,7 @@
         functionName##LocalizationSite,                                        \
         ::bio::LocalizationSitePerspective::Instance(),                        \
         ::bio::Site)                                                           \
-    BIO_SITE_FUNCTION(LocalizationSitePerspective, functionName##LocalizationSite, toExtract, GetByNameImplementation, (Name), (NULL))
+    BIO_SITE_FUNCTION(LocalizationSitePerspective, functionName##LocalizationSite, toExtract, GetByNameImplementation, (const Name&), (NULL))
 
 /**
  * To make defining Sites easier, use this macro to define the function body of your Site Function(). <br />
