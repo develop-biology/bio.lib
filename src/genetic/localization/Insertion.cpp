@@ -60,15 +60,15 @@ chemical::Substance* Insertion::Seek(chemical::Substance* insertIn) const
 		return insertIn;
 	}
 
-	BIO_SANITIZE(mc_method, ,
+	BIO_SANITIZE(mcMethod, ,
 		return NULL)
 	ByteStream insertion(mToInsert);
-	(const_cast< chemical::ExcitationBase* >(mc_method))->EditArg(
+	(const_cast< chemical::ExcitationBase* >(mcMethod))->EditArg(
 		0,
 		insertion
 	);
 	ByteStream result;
-	mc_method->CallDown(
+	mcMethod->CallDown(
 		insertIn->AsWave(),
 		result
 	);
@@ -82,7 +82,7 @@ void Insertion::SetSite(Site site)
 {
 	//Assume Sites & Sites always match exactly.
 	mSite = site;
-	mc_method = SafelyAccess<InsertionSitePerspective>()->GetNewObjectFromIdAs< chemical::ExcitationBase* >(mSite);
+	mcMethod = SafelyAccess<InsertionSitePerspective>()->GetNewObjectFromIdAs< chemical::ExcitationBase* >(mSite);
 }
 
 void Insertion::InsertThis(chemical::Substance* toInsert)

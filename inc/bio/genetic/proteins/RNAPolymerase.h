@@ -57,7 +57,7 @@ public:
 	virtual Code Activate();
 
 protected:
-	Id mc_rna;
+	Id mcRna;
 };
 
 } //genetic namespace

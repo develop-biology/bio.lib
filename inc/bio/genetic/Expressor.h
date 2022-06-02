@@ -79,7 +79,7 @@ public:
 	/**
 	 * Calls molecular::Protein::Activate() for a molecular::Protein of the given id. <br />
 	 * If your Proteins are called often (e.g. on a clock), you may consider caching a pointer to the molecular::Protein and invoking that directly, rather than through this method. <br />
-	 * For example, mc_myFavoriteProtein = GetByName<molecular::Protein*>("MyFavoriteProteinName") <br />
+	 * For example, mcMyFavoriteProtein = GetByName<molecular::Protein*>("MyFavoriteProteinName") <br />
 	 * If you feel like going through the extra work, you can also wrap those cached calls with #if BIO_MEMORY_OPTIMIZE_LEVEL >= 1 ... #endif so that the downstream user of your code can prefer cache to processing (see common/macros/OptimizeMacros.h for details). <br />
 	 * @param proteinId
 	 * @return the result of activation or code::BadArgument1 if no such molecular::Protein exists within *this.

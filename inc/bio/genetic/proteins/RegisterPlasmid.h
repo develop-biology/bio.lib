@@ -50,7 +50,7 @@ public:
 	virtual Code Activate();
 
 protected:
-	Id mc_plasmidSite;
+	Id mcPlasmidSite;
 };
 
 } //genetic namespace

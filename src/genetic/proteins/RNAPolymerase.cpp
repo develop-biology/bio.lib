@@ -33,7 +33,7 @@ RNAPolymerase::RNAPolymerase(Plasmid* toTranscribe)
 	molecular::Protein(SafelyAccess< chemical::PeriodicTable >()->GetNameFromType(*this))
 {
 	SetSource(toTranscribe);
-	mc_rna = Define("RNA Binding Site");
+	mcRna = Define("RNA Binding Site");
 }
 
 RNAPolymerase::~RNAPolymerase()
@@ -47,9 +47,9 @@ Code RNAPolymerase::Activate()
 
 	BIO_SANITIZE(expressor, , return code::BadArgument1());
 
-	RNA* boundRNA = RotateTo(mc_rna)->Probe< RNA* >();
+	RNA* boundRNA = RotateTo(mcRna)->Probe< RNA* >();
 
-	BIO_SANITIZE(mc_rna, , return code::BadArgument2());
+	BIO_SANITIZE(mcRna, , return code::BadArgument2());
 
 	Gene* geneBuffer;
 	bool shouldTranscribe = false;

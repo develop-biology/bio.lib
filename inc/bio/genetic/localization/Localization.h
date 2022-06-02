@@ -122,7 +122,7 @@ protected:
 	Site mSite;
 	Name mName;
 	Localization* mPrevious;
-	chemical::ExcitationBase* mc_method; //cached pointer to site-associated function pointer. 
+	chemical::ExcitationBase* mcMethod; //cached pointer to site-associated function pointer.
 };
 
 } //genetic namespace

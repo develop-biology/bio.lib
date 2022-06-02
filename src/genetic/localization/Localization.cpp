@@ -33,7 +33,7 @@ Localization::Localization(
 )
 	:
 	physical::Class< Localization >(this),
-	mc_method(NULL)
+	mcMethod(NULL)
 {
 	SetNameOfSite(name);
 	SetSite(site);
@@ -41,10 +41,10 @@ Localization::Localization(
 
 Localization::~Localization()
 {
-	if (mc_method)
+	if (mcMethod)
 	{
-		delete mc_method;
-		mc_method = NULL;
+		delete mcMethod;
+		mcMethod = NULL;
 	}
 }
 
@@ -75,15 +75,15 @@ chemical::Substance* Localization::Seek(chemical::Substance* seekIn) const
 		return seekIn;
 	}
 
-	BIO_SANITIZE(mc_method, ,
+	BIO_SANITIZE(mcMethod, ,
 		return NULL)
 	ByteStream newName(mName);
-	(const_cast< chemical::ExcitationBase* >(mc_method))->EditArg(
+	(const_cast< chemical::ExcitationBase* >(mcMethod))->EditArg(
 		0,
 		newName
 	);
 	ByteStream result;
-	mc_method->CallDown(
+	mcMethod->CallDown(
 		seekIn->AsWave(),
 		result
 	);
@@ -106,11 +106,11 @@ Name Localization::GetNameOfSite() const
 void Localization::SetSite(Site site)
 {
 	mSite = site;
-	if (mc_method)
+	if (mcMethod)
 	{
-		delete mc_method;
+		delete mcMethod;
 	}
-	mc_method = SafelyAccess<LocalizationSitePerspective>()->GetNewObjectFromIdAs< chemical::ExcitationBase* >(mSite);
+	mcMethod = SafelyAccess<LocalizationSitePerspective>()->GetNewObjectFromIdAs< chemical::ExcitationBase* >(mSite);
 }
 
 Site Localization::GetSite() const

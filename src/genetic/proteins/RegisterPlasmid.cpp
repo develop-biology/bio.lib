@@ -30,7 +30,7 @@ RegisterPlasmid::RegisterPlasmid()
 	:
 	molecular::Protein(SafelyAccess<chemical::PeriodicTable>()->GetNameFromType(*this))
 {
-	mc_plasmidSite = Define("Plasmid Binding Site");
+	mcPlasmidSite = Define("Plasmid Binding Site");
 }
 
 RegisterPlasmid::~RegisterPlasmid()
@@ -41,7 +41,7 @@ RegisterPlasmid::~RegisterPlasmid()
 Code RegisterPlasmid::Activate()
 {
 	Code ret = code::BadArgument1();
-	Plasmid* boundPlasmid = RotateTo(mc_plasmidSite)->Probe< Plasmid* >();
+	Plasmid* boundPlasmid = RotateTo(mcPlasmidSite)->Probe< Plasmid* >();
 	BIO_SANITIZE(boundPlasmid, ,return ret)
 
 	SafelyAccess<PlasmidPerspective>()->AssociateType(
@@ -49,7 +49,7 @@ Code RegisterPlasmid::Activate()
 		boundPlasmid->AsWave());
 
 	ret = code::Success();
-	RotateTo(mc_plasmidSite)->Release();
+	RotateTo(mcPlasmidSite)->Release();
 	return ret;
 }
 

@@ -44,12 +44,12 @@ GenomeImplementation::~GenomeImplementation()
 
 void GenomeImplementation::CacheProteins()
 {
-	mc_registerPlasmid = RotateTo("RegisterPlasmid")->Probe< molecular::Protein* >();
-	mc_fetchPlasmid = RotateTo("FetchPlasmid")->Probe< molecular::Protein* >();
-	mc_registrationSite = mc_registerPlasmid->GetIdWithoutCreation("Plasmid Binding Site");
-	mc_nameSite = mc_fetchPlasmid->GetIdWithoutCreation("Name Binding Site");
-	mc_idSite = mc_fetchPlasmid->GetIdWithoutCreation("Id Binding Site");
-	mc_fetchSite = mc_fetchPlasmid->GetIdWithoutCreation("Return Site");
+	mcRegisterPlasmid = RotateTo("RegisterPlasmid")->Probe< molecular::Protein* >();
+	mcFetchPlasmid = RotateTo("FetchPlasmid")->Probe< molecular::Protein* >();
+	mcRegistrationSite = mcRegisterPlasmid->GetIdWithoutCreation("Plasmid Binding Site");
+	mcNameSite = mcFetchPlasmid->GetIdWithoutCreation("Name Binding Site");
+	mcIdSite = mcFetchPlasmid->GetIdWithoutCreation("Id Binding Site");
+	mcFetchSite = mcFetchPlasmid->GetIdWithoutCreation("Return Site");
 }
 
 Id GenomeImplementation::RegisterPlasmid(Plasmid* toRegister)
@@ -57,8 +57,8 @@ Id GenomeImplementation::RegisterPlasmid(Plasmid* toRegister)
 	BIO_SANITIZE(toRegister, ,
 		return PlasmidPerspective::InvalidId())
 	Id ret = PlasmidPerspective::InvalidId();
-	mc_registerPlasmid->RotateTo(mc_registrationSite)->Bind(ChemicalCast< chemical::Substance* >(toRegister));
-	if (mc_registerPlasmid->Activate() == code::Success())
+	mcRegisterPlasmid->RotateTo(mcRegistrationSite)->Bind(ChemicalCast< chemical::Substance* >(toRegister));
+	if (mcRegisterPlasmid->Activate() == code::Success())
 	{
 		ret = toRegister->GetId();
 	}
@@ -68,18 +68,18 @@ Id GenomeImplementation::RegisterPlasmid(Plasmid* toRegister)
 Plasmid* GenomeImplementation::FetchPlasmid(Id plasmidId)
 {
 	Plasmid* ret = NULL;
-	mc_fetchPlasmid->RotateTo(mc_idSite)->Bind(&plasmidId);
-	mc_fetchPlasmid->Activate();
-	ret = mc_fetchPlasmid->RotateTo(mc_fetchSite)->Probe< Plasmid* >();
+	mcFetchPlasmid->RotateTo(mcIdSite)->Bind(&plasmidId);
+	mcFetchPlasmid->Activate();
+	ret = mcFetchPlasmid->RotateTo(mcFetchSite)->Probe< Plasmid* >();
 	return ret;
 }
 
 Plasmid* GenomeImplementation::FetchPlasmid(Name plasmidName)
 {
 	Plasmid* ret = NULL;
-	mc_fetchPlasmid->RotateTo(mc_nameSite)->Bind(&plasmidName);
-	mc_fetchPlasmid->Activate();
-	ret = mc_fetchPlasmid->RotateTo(mc_fetchSite)->Probe< Plasmid* >();
+	mcFetchPlasmid->RotateTo(mcNameSite)->Bind(&plasmidName);
+	mcFetchPlasmid->Activate();
+	ret = mcFetchPlasmid->RotateTo(mcFetchSite)->Probe< Plasmid* >();
 	return ret;
 }
 

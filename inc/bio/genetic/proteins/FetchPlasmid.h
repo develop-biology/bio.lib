@@ -51,9 +51,9 @@ public:
 	virtual Code Activate();
 
 protected:
-	Id mc_nameSite;
-	Id mc_idSite;
-	Id mc_returnSite;
+	Id mcNameSite;
+	Id mcIdSite;
+	Id mcReturnSite;
 };
 
 } //genetic namespace

@@ -30,9 +30,9 @@ FetchPlasmid::FetchPlasmid()
 	:
 	molecular::Protein(SafelyAccess<chemical::PeriodicTable>()->GetNameFromType(*this))
 {
-	mc_nameSite = Define("Name Binding Site");
-	mc_idSite = Define("Id Binding Site");
-	mc_returnSite = Define("Return Site");
+	mcNameSite = Define("Name Binding Site");
+	mcIdSite = Define("Id Binding Site");
+	mcReturnSite = Define("Return Site");
 }
 
 FetchPlasmid::~FetchPlasmid()
@@ -44,24 +44,24 @@ Code FetchPlasmid::Activate()
 {
 	Code ret = code::BadArgument1();
 
-	RotateTo(mc_returnSite)->Release();
+	RotateTo(mcReturnSite)->Release();
 
-	Name boundName = *RotateTo(mc_nameSite)->Probe< Name* >();
-	Id boundId = *RotateTo(mc_idSite)->Probe< Id* >();
+	Name boundName = *RotateTo(mcNameSite)->Probe< Name* >();
+	Id boundId = *RotateTo(mcIdSite)->Probe< Id* >();
 
 	if (boundName)
 	{
-		RotateTo(mc_returnSite)->Bind(SafelyAccess<PlasmidPerspective>()->GetTypeFromIdAs< Plasmid* >(boundId));
+		RotateTo(mcReturnSite)->Bind(SafelyAccess<PlasmidPerspective>()->GetTypeFromIdAs< Plasmid* >(boundId));
 		ret = code::Success();
 	}
 	else if (boundId)
 	{
-		RotateTo(mc_returnSite)->Bind(SafelyAccess<PlasmidPerspective>()->GetTypeFromIdAs< Plasmid* >(boundId));
+		RotateTo(mcReturnSite)->Bind(SafelyAccess<PlasmidPerspective>()->GetTypeFromIdAs< Plasmid* >(boundId));
 		ret = code::Success();
 	}
 
-	RotateTo(mc_nameSite)->Release();
-	RotateTo(mc_idSite)->Release();
+	RotateTo(mcNameSite)->Release();
+	RotateTo(mcIdSite)->Release();
 
 	return ret;
 }
