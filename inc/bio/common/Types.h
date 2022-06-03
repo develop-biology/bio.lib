@@ -43,7 +43,7 @@ typedef Arrangement< SmartIterator > SmartIterators;
 typedef String Name;
 typedef Arrangement< Name > Names;
 
-typedef Arrangement< ByteStream > ByteStreams;
+typedef Container ByteStreams; //ByteStream is the default TYPE, so no need to re-specify.
 
 /**
  * Timestamp. Usually in ms since epoch (epoch is sometimes the uptime of the kernel) <br />

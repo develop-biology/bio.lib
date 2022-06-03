@@ -91,9 +91,9 @@ protected:
 	 */
 	virtual void InitializeImplementation(ByteStreams args)
 	{
-		BIO_SANITIZE(args.Size() == 1 && args[0].Is(mPerspective), ,
+		BIO_SANITIZE(args.Size() == 1 && args[args.GetEndIndex()].Is(mPerspective), ,
 			return);
-		mPerspective = args[0];
+		mPerspective = args[args.GetEndIndex()];
 	}
 
 private:

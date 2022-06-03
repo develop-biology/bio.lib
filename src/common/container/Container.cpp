@@ -178,7 +178,7 @@ Index Container::Add(const ByteStream content)
 		return ret)
 	std::memcpy(
 		&mStore[ret * sizeof(ByteStream)],
-		content,
+		&content,
 		sizeof(ByteStream));
 	return ret;
 }

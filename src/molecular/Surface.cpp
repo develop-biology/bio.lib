@@ -55,40 +55,40 @@ Surface::Surface(const Surface& toCopy)
 	EnvironmentDependent< Molecule >(toCopy),
 	mBoundPosition(toCopy.mBoundPosition)
 {
-	chemical::Bond* bondBuffer;
+	chemical::Bond* bond;
 	for (
 		SmartIterator bnd = toCopy.mBonds.End();
 		!bnd.IsBeforeBeginning();
 		--bnd
 		)
 	{
-		bondBuffer = bnd;
-		if (bondBuffer->GetType() == bond_type::Manage())
+		bond = bnd;
+		if (bond->GetType() == bond_type::Manage())
 		{
 			//Calling FormBondImplementation directly saves us some work and should be safer than trying to do auto-template type determination from Clone().
 			FormBondImplementation(
-				bondBuffer->GetBonded()->Clone(),
-				bondBuffer->GetId(),
-				bondBuffer->GetType());
+				bond->GetBonded()->Clone(),
+				bond->GetId(),
+				bond->GetType());
 		}
 	}
 }
 
 Surface::~Surface()
 {
-	chemical::Bond* bondBuffer;
+	chemical::Bond* bond;
 	for (
 		SmartIterator bnd = mBonds.End();
 		!bnd.IsBeforeBeginning();
 		--bnd
 		)
 	{
-		bondBuffer = bnd;
-		if (bondBuffer->GetType() == bond_type::Manage())
+		bond = bnd;
+		if (bond->GetType() == bond_type::Manage())
 		{
 			//bypass BreakBondImplementation and just do it.
-			delete bondBuffer->GetBonded();
-			bondBuffer->Break();
+			delete bond->GetBonded();
+			bond->Break();
 		}
 	}
 }
@@ -123,20 +123,20 @@ physical::Wave* Surface::Release(
 )
 {
 	physical::Wave* ret = NULL;
-	chemical::Bond* bondBuffer;
+	chemical::Bond* bond;
 	for (
 		SmartIterator bnd = mBonds.End();
 		!bnd.IsBeforeBeginning();
 		--bnd
 		)
 	{
-		bondBuffer = bnd;
-		if (bondBuffer->GetType() == bondType)
+		bond = bnd;
+		if (bond->GetType() == bondType)
 		{
-			ret = ChemicalCast< physical::Wave* >(bondBuffer->GetBonded());
+			ret = ChemicalCast< physical::Wave* >(bond->GetBonded());
 			BIO_SANITIZE_AT_SAFETY_LEVEL_1(!ret || ret != toRelease,
 				continue,);
-			bondBuffer->Break();
+			bond->Break();
 			break;
 		}
 	}
@@ -153,24 +153,24 @@ chemical::Substance* Surface::Release(
 )
 {
 	chemical::Substance* ret = NULL;
-	chemical::Bond* bondBuffer;
+	chemical::Bond* bond;
 	for (
 		SmartIterator bnd = mBonds.End();
 		!bnd.IsBeforeBeginning();
 		--bnd
 		)
 	{
-		bondBuffer = bnd;
-		if (bondBuffer->GetType() == bondType)
+		bond = bnd;
+		if (bond->GetType() == bondType)
 		{
-			ret = ChemicalCast< chemical::Substance* >(bondBuffer->GetBonded());
+			ret = ChemicalCast< chemical::Substance* >(bond->GetBonded());
 			BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret, ,
 				continue);
 			BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret->IsName(toRelease), ,
 				continue);
 			BIO_SANITIZE_AT_SAFETY_LEVEL_1(perspective && ret->GetPerspective() != perspective,
 				continue,);
-			bondBuffer->Break();
+			bond->Break();
 			break;
 		}
 	}
@@ -187,24 +187,24 @@ chemical::Substance* Surface::Release(
 )
 {
 	chemical::Substance* ret = NULL;
-	chemical::Bond* bondBuffer;
+	chemical::Bond* bond;
 	for (
 		SmartIterator bnd = mBonds.End();
 		!bnd.IsBeforeBeginning();
 		--bnd
 		)
 	{
-		bondBuffer = bnd;
-		if (bondBuffer->GetType() == bondType)
+		bond = bnd;
+		if (bond->GetType() == bondType)
 		{
-			ret = ChemicalCast< chemical::Substance* >(bondBuffer->GetBonded());
+			ret = ChemicalCast< chemical::Substance* >(bond->GetBonded());
 			BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret, ,
 				continue);
 			BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret->IsId(toRelease), ,
 				continue);
 			BIO_SANITIZE_AT_SAFETY_LEVEL_1(perspective && ret->GetPerspective() != perspective,
 				continue,);
-			bondBuffer->Break();
+			bond->Break();
 			break;
 		}
 	}
@@ -217,18 +217,18 @@ chemical::Substance* Surface::Release(
 physical::Waves Surface::Release(BondType bondType)
 {
 	physical::Waves ret;
-	chemical::Bond* bondBuffer;
+	chemical::Bond* bond;
 	for (
 		SmartIterator bnd = mBonds.End();
 		!bnd.IsBeforeBeginning();
 		--bnd
 		)
 	{
-		bondBuffer = bnd;
-		if (bondBuffer->GetType() == bondType)
+		bond = bnd;
+		if (bond->GetType() == bondType)
 		{
-			ret.Add(ChemicalCast< physical::Wave* >(bondBuffer->GetBonded()));
-			bondBuffer->Break();
+			ret.Add(ChemicalCast< physical::Wave* >(bond->GetBonded()));
+			bond->Break();
 		}
 	}
 

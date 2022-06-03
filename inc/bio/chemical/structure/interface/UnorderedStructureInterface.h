@@ -135,26 +135,26 @@ public:
 
 		Code ret = code::Success();
 
-		Bond* bondBuffer;
+		Bond* bond;
 		for (
 			SmartIterator bnd = other->AsAtom()->GetAllBonds()->End();
 			!bnd.IsBeforeBeginning();
 			--bnd
 			)
 		{
-			bondBuffer = bnd;
-			if (bondBuffer->IsEmpty())
+			bond = bnd;
+			if (bond->IsEmpty())
 			{
 				continue;
 			}
 			if (physical::Wave::GetResonanceBetween(
-				bondBuffer->GetBonded(),
+				bond->GetBonded(),
 				AbstractMotif::GetClassProperties()).Size() == 0)
 			{
 				continue;
 			}
-			const physical::Wave* otherBond = other->AsAtom()->GetBonded(other->AsAtom()->GetBondPosition(bondBuffer->GetId()));
-			(Cast< AbstractMotif* >(bondBuffer->GetBonded()))->ImportImplementation(otherBond); //actual work 
+			const physical::Wave* otherBond = other->AsAtom()->GetBonded(other->AsAtom()->GetBondPosition(bond->GetId()));
+			(Cast< AbstractMotif* >(bond->GetBonded()))->ImportImplementation(otherBond); //actual work
 		}
 		return ret;
 	}

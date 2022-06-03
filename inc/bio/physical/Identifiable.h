@@ -385,24 +385,25 @@ protected:
 	 */
 	virtual void InitializeImplementation(ByteStreams args)
 	{
+
 		if (args.Size() == 2)
 		{
-			if (args[1].Is< Perspective< DIMENSION >* >())
+			if (args[args.GetEndIndex()].Is< Perspective< DIMENSION >* >())
 			{
-				Observer< Perspective< DIMENSION > >::Initialize(args[1]);
+				Observer< Perspective< DIMENSION > >::Initialize(args[args.GetEndIndex()]);
 			}
-			args.Erase(1);
+			args.Erase(args.GetEndIndex());
 		}
 		if (args.Size() == 1)
 		{
-			if (args[0].Is(mId))
+			if (args[args.GetEndIndex()].Is(mId))
 			{
-				mId = args[0];
+				mId = args[args.GetEndIndex()];
 			}
 			#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-			else if (args[0].Is(mName))
+			else if (args[args.GetEndIndex()].Is(mName))
 			{
-				mName = args[0].As< String >();
+				mName = args[args.GetEndIndex()].As< String >();
 			}
 			#endif
 		}

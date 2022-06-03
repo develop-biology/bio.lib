@@ -37,24 +37,24 @@ Code OrganSystem::Organogenesis()
 	Container* organs = GetAll< Organ* >();
 	BIO_SANITIZE(organs, ,
 		return code::CouldNotFindValue1())
-	Organ* organBuffer;
+	Organ* organ;
 	for (
 		SmartIterator org = organs->Begin();
 		!org.IsAfterEnd();
 		++org
 		)
 	{
-		organBuffer = org;
-		organBuffer->SetEnvironment(this);
-		if (organBuffer->BuildMobilome() != code::Success() && ret == code::Success())
+		organ = org;
+		organ->SetEnvironment(this);
+		if (organ->BuildMobilome() != code::Success() && ret == code::Success())
 		{
 			ret = code::UnknownError();
 		}
-		if (organBuffer->GrowTissues() != code::Success() && ret == code::Success())
+		if (organ->GrowTissues() != code::Success() && ret == code::Success())
 		{
 			ret = code::UnknownError();
 		}
-		if (organBuffer->SpecializeTissues() != code::Success() && ret == code::Success())
+		if (organ->SpecializeTissues() != code::Success() && ret == code::Success())
 		{
 			ret = code::UnknownError();
 		}

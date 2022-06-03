@@ -235,26 +235,26 @@ public:
 				CONTENT_TYPE toReplaceCasted = toReplace.template As< CONTENT_TYPE >();
 				//addition->ImportAll(toReplaceCasted); //<- inaccessible, so we replicate the function here.
 
-				Bond* bondBuffer;
+				Bond* bond;
 				for (
 					SmartIterator bnd = addition->AsAtom()->GetAllBonds()->End();
 					!bnd.IsBeforeBeginning();
 					--bnd
 					)
 				{
-					bondBuffer = bnd;
-					if (bondBuffer->IsEmpty())
+					bond = bnd;
+					if (bond->IsEmpty())
 					{
 						continue;
 					}
 					if (physical::Wave::GetResonanceBetween(
-						bondBuffer->GetBonded(),
+						bond->GetBonded(),
 						AbstractMotif::GetClassProperties()).Size() == 0)
 					{
 						continue;
 					}
-					const physical::Wave* otherBond = toReplaceCasted->AsAtom()->GetBonded(toReplaceCasted->AsAtom()->GetBondPosition(bondBuffer->GetId()));
-					Cast< AbstractMotif* >(bondBuffer->GetBonded())->ImportImplementation(otherBond); //actual work 
+					const physical::Wave* otherBond = toReplaceCasted->AsAtom()->GetBonded(toReplaceCasted->AsAtom()->GetBondPosition(bond->GetId()));
+					Cast< AbstractMotif* >(bond->GetBonded())->ImportImplementation(otherBond); //actual work
 				}
 			}
 			this->mContents->Erase(toReplace);
@@ -571,13 +571,9 @@ private:
 	 */
 	void CommonConstructor()
 	{
-		//TODO: This needs work.
-		//		#if BIO_CPP_VERSION >= 11
-		//		BIO_ASSERT(std::is_base_of<Substance, CONTENT_TYPE>::value);
-		//		#else
-		//		CONTENT_TYPE ct;
-		//		BIO_ASSERT(Cast< Substance* >(&ct) != NULL);
-		//		#endif
+		//TODO: check if T is a child of Substance.
+		//This will do for now.
+		BIO_STATIC_ASSERT(utility::IsPointer< CONTENT_TYPE >())
 
 		if (this->mContents)
 		{

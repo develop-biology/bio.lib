@@ -121,16 +121,16 @@ AtomicNumber PeriodicTableImplementation::RecordPropertiesOf(
 	Properties properties
 )
 {
-	SmartIterator hdt = Find(id);
-	BIO_SANITIZE_AT_SAFETY_LEVEL_1(hdt.IsValid(), ,
+	SmartIterator brn = Find(id);
+	BIO_SANITIZE_AT_SAFETY_LEVEL_1(brn.IsValid(), ,
 		return InvalidId());
 
-	Hadit* hadit = hdt;
-	Element* element = ForceCast< Element* >(hadit->mType);
+	Brane* brane = brn;
+	Element* element = ForceCast< Element* >(brane->mType);
 	if (!element)
 	{
 		element = new Element(&properties);
-		hadit->mType = element->AsWave();
+		brane->mType = element->AsWave();
 	}
 	return id;
 }

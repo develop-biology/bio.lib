@@ -43,18 +43,18 @@ Atom::Atom(const Atom& other)
 
 Atom::~Atom()
 {
-	Bond* bondBuffer;
+	Bond* bond;
 	for (
 		SmartIterator bnd = mBonds.Begin();
 		!bnd.IsAfterEnd();
 		++bnd
 		)
 	{
-		bondBuffer = bnd;
-		if (bondBuffer)
+		bond = bnd;
+		if (bond)
 		{
-			delete bondBuffer;
-			bondBuffer = NULL;
+			delete bond;
+			bond = NULL;
 		}
 	}
 	mBonds.Clear();
@@ -68,24 +68,24 @@ Code Atom::Attenuate(const physical::Wave* other)
 	const physical::Wave* demodulated = other->Demodulate();
 	Code ret = code::Success();
 
-	Bond* bondBuffer;
+	Bond* bond;
 	for (
 		SmartIterator bnd = mBonds.End();
 		!bnd.IsBeforeBeginning();
 		--bnd
 		)
 	{
-		bondBuffer = bnd;
-		if (bondBuffer->IsEmpty())
+		bond = bnd;
+		if (bond->IsEmpty())
 		{
 			continue;
 		}
 		if (physical::Wave::GetResonanceBetween(
-			bondBuffer->GetBonded(),
+			bond->GetBonded(),
 			other
 		).Size())
 		{
-			if (bondBuffer->GetBonded()->Attenuate(demodulated) != code::Success())
+			if (bond->GetBonded()->Attenuate(demodulated) != code::Success())
 			{
 				ret = code::UnknownError(); //user can debug from logs for now.
 			}
@@ -102,24 +102,24 @@ Code Atom::Disattenuate(const physical::Wave* other)
 	const physical::Wave* demodulated = other->Demodulate();
 	Code ret = code::Success();
 
-	Bond* bondBuffer;
+	Bond* bond;
 	for (
 		SmartIterator bnd = mBonds.End();
 		!bnd.IsBeforeBeginning();
 		--bnd
 		)
 	{
-		bondBuffer = bnd;
-		if (bondBuffer->IsEmpty())
+		bond = bnd;
+		if (bond->IsEmpty())
 		{
 			continue;
 		}
 		if (physical::Wave::GetResonanceBetween(
-			bondBuffer->GetBonded(),
+			bond->GetBonded(),
 			other
 		).Size())
 		{
-			if (bondBuffer->GetBonded()->Disattenuate(demodulated) != code::Success())
+			if (bond->GetBonded()->Disattenuate(demodulated) != code::Success())
 			{
 				ret = code::UnknownError(); //user can debug from logs for now.
 			}
@@ -138,13 +138,13 @@ Valence Atom::FormBondImplementation(
 		return InvalidIndex());
 
 	Valence position = GetBondPosition(id);
-	Bond* bondBuffer;
+	Bond* bond;
 	if (position && mBonds.IsAllocated(position))
 	{
-		bondBuffer = mBonds.OptimizedAccess(position);
-		BIO_SANITIZE(!bondBuffer->IsEmpty(), ,
+		bond = mBonds.OptimizedAccess(position);
+		BIO_SANITIZE(!bond->IsEmpty(), ,
 			return InvalidIndex())
-		if (bondBuffer->Form(
+		if (bond->Form(
 			id,
 			toBond,
 			type
@@ -187,15 +187,15 @@ Valence Atom::GetBondPosition(AtomicNumber bondedId) const
 	BIO_SANITIZE(bondedId, ,
 		return InvalidIndex());
 
-	Bond* bondBuffer;
+	Bond* bond;
 	for (
 		SmartIterator bnd = mBonds.End();
 		!bnd.IsBeforeBeginning();
 		--bnd
 		)
 	{
-		bondBuffer = bnd;
-		if (bondBuffer->GetId() == bondedId)
+		bond = bnd;
+		if (bond->GetId() == bondedId)
 		{
 			return bnd.GetIndex();
 		}

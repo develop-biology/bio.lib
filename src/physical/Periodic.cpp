@@ -104,11 +104,11 @@ Code Periodic::Reify(Symmetry* symmetry)
 
 void Periodic::InitializeImplementation(ByteStreams args)
 {
-	BIO_SANITIZE(args.Size() == 1 && args[0].Is(
+	BIO_SANITIZE(args.Size() == 1 && args[args.GetEndIndex()].Is(
 		mInterval
 	), ,
 		return);
-	mInterval = args[0];
+	mInterval = args[args.GetEndIndex()];
 }
 
 Properties Periodic::GetProperties() const

@@ -51,7 +51,7 @@ Code RNAPolymerase::Activate()
 
 	BIO_SANITIZE(mcRna, , return code::BadArgument2());
 
-	Gene* geneBuffer;
+	Gene* gene;
 	bool shouldTranscribe = false;
 	for (
 		SmartIterator gen = mSource->GetAll< Gene* >()->Begin();
@@ -59,15 +59,15 @@ Code RNAPolymerase::Activate()
 		++gen
 		)
 	{
-		geneBuffer = gen;
+		gene = gen;
 		shouldTranscribe = expressor->HasAll< TranscriptionFactor >(
-			geneBuffer->GetAll< TranscriptionFactor >());
+			gene->GetAll< TranscriptionFactor >());
 
 		if (!shouldTranscribe)
 		{
 			continue;
 		}
-		boundRNA->Add< Gene* >(geneBuffer);
+		boundRNA->Add< Gene* >(gene);
 	}
 	return code::Success();
 }

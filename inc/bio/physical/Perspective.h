@@ -75,13 +75,13 @@ public:
 	typedef Arrangement< Id > Ids;
 
 	/**
-	 * What a single point in space contains. <br />
-	 * Dimensions are Nuit ∴ ∴ <br />
+	 * What a single "point" in space contains. <br />
+	 * Branes are taken from super string theory and are the multi-dimensional abstraction of membranes. <br />
 	 */
-	class Hadit
+	class Brane
 	{
 	public:
-		Hadit(
+		Brane(
 			Id id,
 			const Name& name,
 			Wave* type
@@ -98,7 +98,7 @@ public:
 		Wave* mType;
 	};
 
-	typedef Arrangement< Hadit* > Hadits;
+	typedef Arrangement< Brane* > Branes;
 
 	/**
 	 *
@@ -114,23 +114,23 @@ public:
 	 */
 	virtual ~Perspective()
 	{
-		Hadit* haditBuffer;
+		Brane* brane;
 		for (
-			SmartIterator hdt = mHadits.Begin();
-			!hdt.IsAfterEnd();
-			++hdt
+			SmartIterator brn = mBranes.Begin();
+			!brn.IsAfterEnd();
+			++brn
 			)
 		{
-			haditBuffer = hdt;
-			if (haditBuffer->mType)
+			brane = brn;
+			if (brane->mType)
 			{
-				PerspectiveUtilities::Delete(haditBuffer->mType);
-				haditBuffer->mType = NULL;
+				PerspectiveUtilities::Delete(brane->mType);
+				brane->mType = NULL;
 			}
-			delete haditBuffer;
-			haditBuffer = NULL;
+			delete brane;
+			brane = NULL;
 		}
-		mHadits.Clear();
+		mBranes.Clear();
 	}
 
 	/**
@@ -154,45 +154,45 @@ public:
 	/**
 	 * Gives an iterator fos the given id. <br />
 	 * @param id
-	 * @return a SmartIterator pointing to the Hadit desired, if it IsValid.
+	 * @return a SmartIterator pointing to the Brane desired, if it IsValid.
 	 */
 	SmartIterator Find(const Id& id)
 	{
-		SmartIterator hdt = mHadits.Begin();
+		SmartIterator brn = mBranes.Begin();
 		for (
-			; !hdt.IsAfterEnd();
-			++hdt
+			; !brn.IsAfterEnd();
+			++brn
 			)
 		{
-			if (hdt.As< Hadit* >()->mId == id)
+			if (brn.As< Brane* >()->mId == id)
 			{
-				return hdt;
+				return brn;
 			}
 		}
-		hdt.Invalidate();
-		return hdt;
+		brn.Invalidate();
+		return brn;
 	}
 
 	/**
 	 * Gives an iterator fos the given id. <br />
 	 * @param id
-	 * @return a SmartIterator pointing to the Hadit desired, if it IsValid.
+	 * @return a SmartIterator pointing to the Brane desired, if it IsValid.
 	 */
 	SmartIterator Find(const Id& id) const
 	{
-		SmartIterator hdt = mHadits.Begin();
+		SmartIterator brn = mBranes.Begin();
 		for (
-			; !hdt.IsAfterEnd();
-			++hdt
+			; !brn.IsAfterEnd();
+			++brn
 			)
 		{
-			if (hdt.As< Hadit* >()->mId == id)
+			if (brn.As< Brane* >()->mId == id)
 			{
-				return hdt;
+				return brn;
 			}
 		}
-		hdt.Invalidate();
-		return hdt;
+		brn.Invalidate();
+		return brn;
 	}
 
 
@@ -215,8 +215,8 @@ public:
 		}
 
 		ret = mNextId++;
-		mHadits.Add(
-			new Hadit(
+		mBranes.Add(
+			new Brane(
 				ret,
 				name,
 				NULL
@@ -243,7 +243,7 @@ public:
 		{
 			return InvalidName();
 		}
-		return result.As< Hadit* >()->mName;
+		return result.As< Brane* >()->mName;
 	}
 
 
@@ -292,18 +292,18 @@ public:
 			return InvalidId();
 		}
 
-		Hadit* haditBuffer;
-		SmartIterator hdt = mHadits.Begin();
+		Brane* brane;
+		SmartIterator brn = mBranes.Begin();
 		for (
-			; !hdt.IsAfterEnd();
-			++hdt
+			; !brn.IsAfterEnd();
+			++brn
 			)
 		{
-			haditBuffer = hdt;
+			brane = brn;
 
-			if (name == haditBuffer->mName)
+			if (name == brane->mName)
 			{
-				return haditBuffer->mId;
+				return brane->mId;
 			}
 		}
 		return InvalidId();
@@ -331,16 +331,16 @@ public:
 		Wave* type
 	)
 	{
-		SmartIterator hdt = Find(id);
-		if (!hdt.IsValid())
+		SmartIterator brn = Find(id);
+		if (!brn.IsValid())
 		{
 			return false;
 		}
-		Hadit* haditBuffer = hdt;
+		Brane* brane = brn;
 
 		BIO_SANITIZE(type,
-			haditBuffer->mType = PerspectiveUtilities::Clone(type),
-			haditBuffer->mType = type)
+			brane->mType = PerspectiveUtilities::Clone(type),
+			brane->mType = type)
 
 		return true;
 	}
@@ -352,18 +352,18 @@ public:
 	 */
 	virtual bool DisassociateType(const Id& id)
 	{
-		SmartIterator hdt = Find(id);
-		if (!hdt.IsValid())
+		SmartIterator brn = Find(id);
+		if (!brn.IsValid())
 		{
 			return false;
 		}
 
-		Hadit* haditBuffer = hdt;
+		Brane* brane = brn;
 
-		BIO_SANITIZE_AT_SAFETY_LEVEL_1(haditBuffer->mType,
-			PerspectiveUtilities::Delete(haditBuffer->mType),
+		BIO_SANITIZE_AT_SAFETY_LEVEL_1(brane->mType,
+			PerspectiveUtilities::Delete(brane->mType),
 		)
-		haditBuffer->mType = NULL;
+		brane->mType = NULL;
 
 		return true;
 	}
@@ -386,7 +386,7 @@ public:
 		{
 			return NULL;
 		}
-		return result.As< Hadit* >()->mType;
+		return result.As< Brane* >()->mType;
 	}
 
 	/**
@@ -486,7 +486,7 @@ public:
 
 
 protected:
-	Hadits mHadits;
+	Branes mBranes;
 	Id mNextId;
 };
 

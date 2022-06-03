@@ -187,7 +187,8 @@ public:
 		const T& assignment
 	)
 	{
-		BIO_SANITIZE(!RotateTo(varName),
+		Surface* preExisting = RotateTo(varName);
+		BIO_SANITIZE(!preExisting,
 			,
 			return InvalidId()
 		)
