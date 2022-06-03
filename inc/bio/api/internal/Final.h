@@ -51,7 +51,7 @@ public:
 	/**
 	 * @param name
 	 */
-	explicit Final(Name name):
+	explicit Final(const Name& name):
 		TransparentWrapper< CLASS >(CLASS(name))
 	{
 	}
@@ -59,7 +59,7 @@ public:
 	/**
 	 * @param id
 	 */
-	explicit Final(Id id):
+	explicit Final(const Id& id):
 		TransparentWrapper< CLASS >(CLASS(id))
 	{
 	}
@@ -125,7 +125,7 @@ public:
 		return this->mT.operator==(id);
 	}
 
-	bool operator==(Name name) const 
+	bool operator==(const Name& name) const
 	{
 		return this->mT.operator==(name);
 	}
@@ -298,37 +298,37 @@ public:
 	}
 
 	template < typename T >
-	T GetById(Id id)
+	T GetById(const Id& id)
 	{
 		return this->mT.template GetById< T >(id);
 	}
 
 	template < typename T >
-	const T GetById(Id id) const
+	const T GetById(const Id& id) const
 	{
 		return this->mT.template GetById< T >(id);
 	}
 
 	template < typename T >
-	T GetByName(Name name)
+	T GetByName(const Name& name)
 	{
 		return this->mT.template GetByName< T >(name);
 	}
 
 	template < typename T >
-	const T GetByName(Name name) const
+	const T GetByName(const Name& name) const
 	{
 		return this->mT.template GetByName< T >(name);
 	}
 
 	template < typename T >
-	T GetOrCreateById(Id id)
+	T GetOrCreateById(const Id& id)
 	{
 		return this->mT.template GetOrCreateById< T >(id);
 	}
 
 	template < typename T >
-	T GetOrCreateByName(Name name)
+	T GetOrCreateByName(const Name& name)
 	{
 		return this->mT.template GetOrCreateByName< T >(name);
 	}
@@ -461,27 +461,27 @@ public:
 		return this->mT.GetId();
 	}
 
-	void SetName(Name name) 
+	void SetName(const Name& name)
 	{
 		return this->mT.SetName(name);
 	}
 
-	void SetId(Id id)
+	void SetId(const Id& id)
 	{
 		return this->mT.SetId(id);
 	}
 	
-	bool IsName(Name name) const 
+	bool IsName(const Name& name) const
 	{
 		return this->mT.IsName(name);
 	}
 	
-	bool IsNameInsensitive(Name name) const 
+	bool IsNameInsensitive(const Name& name) const
 	{
 		return this->mT.IsNameInsensitive(name);
 	}
 	
-	bool IsId(Id id) const
+	bool IsId(const Id& id) const
 	{
 		return this->mT.IsId(id);
 	}

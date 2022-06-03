@@ -20,7 +20,7 @@
  */
 
 #include "bio/common/VirtualBase.h"
-#include "bio/common/macros/Macros.h"
+#include "bio/common/macro/Macros.h"
 
 namespace bio {
 
@@ -39,16 +39,20 @@ VirtualBase::~VirtualBase()
 
 void VirtualBase::Initialize(ByteStreams args)
 {
-	BIO_SANITIZE_AT_SAFETY_LEVEL_1(mHasBeenInitialized, ,
-		return);
+	if (mHasBeenInitialized)
+	{
+		return;
+	}
 	InitializeImplementation(args);
 	mHasBeenInitialized = true;
 }
 
 void VirtualBase::Initialize(ByteStream arg1)
 {
-	BIO_SANITIZE_AT_SAFETY_LEVEL_1(mHasBeenInitialized, ,
-		return);
+	if (mHasBeenInitialized)
+	{
+		return;
+	}
 	ByteStreams args;
 	args.Add(arg1);
 	Initialize(args);
@@ -59,8 +63,10 @@ void VirtualBase::Initialize(
 	ByteStream arg2
 )
 {
-	BIO_SANITIZE_AT_SAFETY_LEVEL_1(mHasBeenInitialized, ,
-		return);
+	if (mHasBeenInitialized)
+	{
+		return;
+	}
 	ByteStreams args;
 	args.Add(arg1);
 	args.Add(arg2);
@@ -73,8 +79,10 @@ void VirtualBase::Initialize(
 	ByteStream arg3
 )
 {
-	BIO_SANITIZE_AT_SAFETY_LEVEL_1(mHasBeenInitialized, ,
-		return);
+	if (mHasBeenInitialized)
+	{
+		return;
+	}
 	ByteStreams args;
 	args.Add(arg1);
 	args.Add(arg2);

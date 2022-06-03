@@ -26,7 +26,7 @@
 #include "bio/physical/common/Filters.h"
 #include "bio/log/common/Types.h"
 #include "bio/log/common/LogLevels.h"
-#include "bio/log/macros/Macros.h"
+#include "bio/log/macro/Macros.h"
 #include <stdarg.h>
 
 namespace bio {

@@ -22,7 +22,7 @@
 #pragma once
 
 #include "AbstractMotif.h"
-#include "bio/chemical/macros/Macros.h"
+#include "bio/chemical/macro/Macros.h"
 #include "bio/chemical/common/Class.h"
 #include "bio/physical/common/Filters.h"
 #include "bio/common/container/Arrangement.h"

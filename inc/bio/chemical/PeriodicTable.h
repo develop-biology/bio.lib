@@ -105,7 +105,7 @@ public:
 	 * @param name
 	 * @return whatever properties have been Recorded for the given type.
 	 */
-	const Properties GetPropertiesOf(Name name) const;
+	const Properties GetPropertiesOf(const Name& name) const;
 
 	/**
 	 * @tparam T
@@ -135,7 +135,7 @@ public:
 	 * @return the id of the given name.
 	 */
 	AtomicNumber RecordPropertyOf(
-		Name name,
+		const Name& name,
 		Property property
 	);
 
@@ -172,7 +172,7 @@ public:
 	 * @return the id of the given name.
 	 */
 	AtomicNumber RecordPropertiesOf(
-		Name name,
+		const Name& name,
 		Properties properties
 	);
 

@@ -22,10 +22,10 @@
 #pragma once
 
 #include "bio/common/container/common/Types.h"
-#include "bio/common/macros/Macros.h"
+#include "bio/common/macro/Macros.h"
 #include "bio/common/thread/ThreadSafe.h"
 #include "bio/common/Cast.h"
-#include "bio/common/String.h"
+#include "bio/common/string/String.h"
 #include "SmartIterator.h"
 #include <deque>
 

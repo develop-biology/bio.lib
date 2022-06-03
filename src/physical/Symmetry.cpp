@@ -20,7 +20,7 @@
  */
 
 #include "bio/physical/Symmetry.h"
-#include "bio/common/String.h"
+#include "bio/common/string/String.h"
 
 namespace bio {
 namespace physical {
@@ -35,8 +35,8 @@ Symmetry::Symmetry()
 }
 
 Symmetry::Symmetry(
-	Name name,
-	Name type
+	const Name& name,
+	const Name& type
 )
 	:
 	Class< Symmetry >(this),
@@ -50,7 +50,7 @@ Symmetry::Symmetry(
 }
 
 Symmetry::Symmetry(
-	Name name,
+	const Name& name,
 	SymmetryType type
 )
 	:
@@ -66,7 +66,7 @@ Symmetry::Symmetry(
 
 Symmetry::Symmetry(
 	Id id,
-	Name type
+	const Name& type
 )
 	:
 	Class< Symmetry >(this),
@@ -108,7 +108,7 @@ void Symmetry::SetType(SymmetryType type)
 	mType.SetId(type);
 }
 
-void Symmetry::SetType(Name type)
+void Symmetry::SetType(const Name& type)
 {
 	mType.SetName(type);
 }

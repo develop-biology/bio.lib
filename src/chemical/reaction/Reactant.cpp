@@ -20,12 +20,12 @@
  */
 
 #include "bio/chemical/reaction/Reactant.h"
-#include "bio/common/String.h"
+#include "bio/common/string/String.h"
 
 namespace bio {
 namespace chemical {
 
-Reactant::Reactant(Name typeName)
+Reactant::Reactant(const Name& typeName)
 	:
 	Class< Reactant >(this),
 	Substance(),
@@ -35,7 +35,7 @@ Reactant::Reactant(Name typeName)
 }
 
 Reactant::Reactant(
-	Name typeName,
+	const Name& typeName,
 	const typename UnorderedMotif< Property >::Contents* properties,
 	const typename UnorderedMotif< State >::Contents* states
 )
@@ -51,7 +51,7 @@ Reactant::Reactant(
 }
 
 Reactant::Reactant(
-	Name typeName,
+	const Name& typeName,
 	const Substance* substance
 )
 	:

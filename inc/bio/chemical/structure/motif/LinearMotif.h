@@ -235,26 +235,26 @@ public:
 				CONTENT_TYPE toReplaceCasted = toReplace.template As< CONTENT_TYPE >();
 				//addition->ImportAll(toReplaceCasted); //<- inaccessible, so we replicate the function here.
 
-				Bond* bondBuffer;
+				Bond* bond;
 				for (
 					SmartIterator bnd = addition->AsAtom()->GetAllBonds()->End();
 					!bnd.IsBeforeBeginning();
 					--bnd
 					)
 				{
-					bondBuffer = bnd;
-					if (bondBuffer->IsEmpty())
+					bond = bnd;
+					if (bond->IsEmpty())
 					{
 						continue;
 					}
 					if (physical::Wave::GetResonanceBetween(
-						bondBuffer->GetBonded(),
+						bond->GetBonded(),
 						AbstractMotif::GetClassProperties()).Size() == 0)
 					{
 						continue;
 					}
-					const physical::Wave* otherBond = toReplaceCasted->AsAtom()->GetBonded(toReplaceCasted->AsAtom()->GetBondPosition(bondBuffer->GetId()));
-					Cast< AbstractMotif* >(bondBuffer->GetBonded())->ImportImplementation(otherBond); //actual work 
+					const physical::Wave* otherBond = toReplaceCasted->AsAtom()->GetBonded(toReplaceCasted->AsAtom()->GetBondPosition(bond->GetId()));
+					Cast< AbstractMotif* >(bond->GetBonded())->ImportImplementation(otherBond); //actual work
 				}
 			}
 			this->mContents->Erase(toReplace);
@@ -323,9 +323,7 @@ public:
 	 * @param id
 	 * @return a Content of the given id or NULL.
 	 */
-	virtual CONTENT_TYPE GetByIdImplementation(
-		Id id
-	)
+	virtual CONTENT_TYPE GetByIdImplementation(const Id& id)
 	{
 		Index ret = Cast< physical::Line* >(this->mContents)->SeekToId(id);
 		BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret, ,
@@ -339,9 +337,7 @@ public:
 	* @param id
 	* @return a Content of the given id or NULL.
 	*/
-	virtual const CONTENT_TYPE GetByIdImplementation(
-		Id id
-	) const
+	virtual const CONTENT_TYPE GetByIdImplementation(const Id& id) const
 	{
 		Index ret = Cast< physical::Line* >(this->mContents)->SeekToId(id);
 		BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret, ,
@@ -356,9 +352,7 @@ public:
 	 * @param name
 	 * @return a CONTENT_TYPE of the given name or NULL.
 	 */
-	virtual CONTENT_TYPE GetByNameImplementation(
-		Name name
-	)
+	virtual CONTENT_TYPE GetByNameImplementation(const Name& name)
 	{
 		Index ret = Cast< physical::Line* >(this->mContents)->SeekToName(name);
 		BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret, ,
@@ -372,9 +366,7 @@ public:
 	 * @param name
 	 * @return a CONTENT_TYPE of the given name or NULL.
 	 */
-	virtual const CONTENT_TYPE GetByNameImplementation(
-		Name name
-	) const
+	virtual const CONTENT_TYPE GetByNameImplementation(const Name& name) const
 	{
 		Index ret = Cast< physical::Line* >(this->mContents)->SeekToName(name);
 		BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret, ,
@@ -390,9 +382,7 @@ public:
 	 * @param id
 	 * @return a newly created CONTENT_TYPE else NULL.
 	 */
-	virtual CONTENT_TYPE CreateImplementation(
-		Id id
-	)
+	virtual CONTENT_TYPE CreateImplementation(const Id& id)
 	{
 		BIO_SANITIZE(this->GetStructuralPerspective(), ,
 			return NULL);
@@ -405,9 +395,7 @@ public:
 	 * @param id
 	 * @return A CONTENT_TYPE of the given id.
 	 */
-	virtual CONTENT_TYPE GetOrCreateByIdImplementation(
-		Id id
-	)
+	virtual CONTENT_TYPE GetOrCreateByIdImplementation(const Id& id)
 	{
 		CONTENT_TYPE ret = this->GetByIdImplementation(
 			id
@@ -425,9 +413,7 @@ public:
 	 * @param name
 	 * @return A CONTENT_TYPE of the given id.
 	 */
-	virtual CONTENT_TYPE GetOrCreateByNameImplementation(
-		Name name
-	)
+	virtual CONTENT_TYPE GetOrCreateByNameImplementation(const Name& name)
 	{
 		BIO_SANITIZE(this->GetStructuralPerspective(), ,
 			return NULL);
@@ -523,9 +509,7 @@ public:
 	 * Performs the given Excitation on all contents. <br />
 	 * @param excitation
 	 */
-	virtual Emission ForEachImplementation(
-		ExcitationBase* excitation
-	)
+	virtual Emission ForEachImplementation(ExcitationBase* excitation)
 	{
 		Emission ret;
 		for (
@@ -587,13 +571,9 @@ private:
 	 */
 	void CommonConstructor()
 	{
-		//TODO: This needs work.
-		//		#if BIO_CPP_VERSION >= 11
-		//		BIO_ASSERT(std::is_base_of<Substance, CONTENT_TYPE>::value);
-		//		#else
-		//		CONTENT_TYPE ct;
-		//		BIO_ASSERT(Cast< Substance* >(&ct) != NULL);
-		//		#endif
+		//TODO: check if T is a child of Substance.
+		//This will do for now.
+		BIO_STATIC_ASSERT(utility::IsPointer< CONTENT_TYPE >())
 
 		if (this->mContents)
 		{

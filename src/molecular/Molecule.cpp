@@ -45,45 +45,29 @@ Molecule::~Molecule()
 {
 }
 
-Surface* Molecule::RotateTo(Id surfaceId)
+Surface* Molecule::RotateTo(const Id& surfaceId)
 {
-	BIO_SANITIZE_WITH_CACHE(GetById< Surface* >(
-		surfaceId
-	),
-		return *Cast< Surface** >(RESULT),
-		return NULL);
+	return GetById< Surface* >(surfaceId);
 }
 
-const Surface* Molecule::RotateTo(Id surfaceId) const
+const Surface* Molecule::RotateTo(const Id& surfaceId) const
 {
-	BIO_SANITIZE_WITH_CACHE(GetById< Surface* >(
-		surfaceId
-	),
-		return *Cast< const Surface** >(RESULT),
-		return NULL);
+	return GetById< Surface* >(surfaceId);
 }
 
-Surface* Molecule::RotateTo(Name surfaceName)
+Surface* Molecule::RotateTo(const Name& surfaceName)
 {
-	BIO_SANITIZE_WITH_CACHE(GetByName< Surface* >(
-		surfaceName
-	),
-		return *Cast< Surface** >(RESULT),
-		return NULL);
+	return GetByName< Surface* >(surfaceName);
 }
 
-const Surface* Molecule::RotateTo(Name surfaceName) const
+const Surface* Molecule::RotateTo(const Name& surfaceName) const
 {
-	BIO_SANITIZE_WITH_CACHE(GetByName< Surface* >(
-		surfaceName
-	),
-		return *Cast< const Surface** >(RESULT),
-		return NULL);
+	return GetByName< Surface* >(surfaceName);
 }
 
 bool Molecule::DuplicateFrom(
 	Molecule* source,
-	Name surface
+	const Name& surface
 )
 {
 	BIO_SANITIZE(source, ,
@@ -104,7 +88,7 @@ bool Molecule::DuplicateFrom(
 
 bool Molecule::TransferFrom(
 	Molecule* source,
-	Name surface
+	const Name& surface
 )
 {
 	BIO_SANITIZE(source, ,
@@ -124,22 +108,22 @@ bool Molecule::TransferFrom(
 	return true;
 }
 
-Surface* Molecule::operator()(Id surfaceId)
+Surface* Molecule::operator()(const Id& surfaceId)
 {
 	return RotateTo(surfaceId);
 }
 
-const Surface* Molecule::operator()(Id surfaceId) const
+const Surface* Molecule::operator()(const Id& surfaceId) const
 {
 	return RotateTo(surfaceId);
 }
 
-Surface* Molecule::operator()(Name name)
+Surface* Molecule::operator()(const Name& name)
 {
 	return RotateTo(name);
 }
 
-const Surface* Molecule::operator()(Name name) const
+const Surface* Molecule::operator()(const Name& name) const
 {
 	return RotateTo(name);
 }

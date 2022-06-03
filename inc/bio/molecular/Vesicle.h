@@ -29,15 +29,21 @@ namespace bio {
 namespace molecular {
 
 /**
- * Vesicles define an inside / outside dichotomy between the Molecules on the "outside" of *this and the Molecules on the inside of *this. <br />
+ * Vesicles define an inside / outside dichotomy between the Surfaces on the "outside" of *this and the Molecules on the inside of *this. <br />
  * NOTE: The Molecules inside *this can, themselves, be Vesicles (thought they don't have to be). <br />
- * Another way to think of Vesicles is as a "vacuum" whereby Molecules can exist in an isolated context (which is probably not true of any real system). For example think of 1 Molecules on one side of a room and another on the other side; the Vesicle would be the Room and what is ultimately responsible for defining the scale by which the Molecule's separation can be measured. <br />
+ * Another way to think of Vesicles is as a "vacuum" whereby Molecules can exist in an isolated context. <br />
+ * For example think of one Molecule on one side of a room and another on the other side; the Vesicle would be the room and what is ultimately responsible for defining the scale by which the Molecule's separation can be measured. <br />
+ * Functionally, what Vesicle does is implement the "protected" keyword. <br />
+ * Thus, Vesicles may only interact with each other through what they expose on their Surfaces. <br />
  */
 class Vesicle :
 	virtual public Molecule,
 	public Class< Vesicle >,
-	public chemical::LinearMotif< Molecule* >
+	protected chemical::LinearMotif< Molecule* >
 {
+	friend class TransMembraneDomain;
+	friend BIO_EXCITATION_CLASS(chemical::LinearMotif< Molecule* >, Molecule*, Name); //For genetic Localization and Insertion.
+
 public:
 
 	/**
@@ -48,7 +54,8 @@ public:
 
 	/**
 	 * Standard ctors. <br />
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(molecular,
+	 */
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(molecular,
 		Vesicle,
 		&VesiclePerspective::Instance(),
 		filter::Molecular())
@@ -63,49 +70,61 @@ public:
 	 */
 	virtual ~Vesicle();
 
+	
+protected:
+	
 	/**
 	 * operator wrappers around GetBy____< Molecule* > 
 	 * @param moleculeId
-	 * @return Extract(...)
-	 * @{
+	 * @return GetBy____< Molecule* >
 	 */
-	virtual Molecule* operator[](Id moleculeId);
+	virtual Molecule* operator[](const Id& moleculeId);
 
-	virtual const Molecule* operator[](Id moleculeId) const;
+	/**
+	 * operator wrappers around GetBy____< Molecule* > 
+	 * @param moleculeId
+	 * @return GetBy____< Molecule* >
+	 */
+	virtual const Molecule* operator[](const Id& moleculeId) const;
 
+	/**
+	 * operator wrappers around GetBy____< Molecule* > 
+	 * @tparam T
+	 * @param moleculeId
+	 * @return GetBy____< Molecule* >
+	 */
 	template < typename T >
-	Molecule* operator[](Id moleculeId)
+	Molecule* operator[](const Id& moleculeId)
 	{
 		return ChemicalCast< T >(GetById< Molecule* >(moleculeId));
 	}
 
-	virtual Molecule* operator[](Name moleculeName);
+	/**
+	 * operator wrappers around GetBy____< Molecule* > 
+	 * @param moleculeName
+	 * @return GetBy____< Molecule* >
+	 */
+	virtual Molecule* operator[](const Name& moleculeName);
 
-	virtual const Molecule* operator[](Name moleculeName) const;
+	/**
+	 * operator wrappers around GetBy____< Molecule* > 
+	 * @param moleculeName
+	 * @return GetBy____< Molecule* >
+	 */
+	virtual const Molecule* operator[](const Name& moleculeName) const;
 
+	/**
+	 * operator wrappers around GetBy____< Molecule* >
+	 * @tparam T
+	 * @param moleculeName
+	 * @return GetBy____< Molecule* >
+	 */
 	template < typename T >
-	Molecule* operator[](Name moleculeName)
+	Molecule* operator[](const Name& moleculeName)
 	{
 		return ChemicalCast< T >(GetByName< Molecule* >(moleculeName));
 	}
-	/**@}*/
 
-	/**
-	 * Vesicle copy operation. <br />
-	 * Copies all Molecules in the source Vesicle into *this. <br />
-	 * @param source
-	 * @return this
-	 */
-	virtual Vesicle* operator<<=(Vesicle* source);
-
-	/**
-	 * Vesicle move operation. <br />
-	 * Moves all Molecules in *this into the target Vesicle. <br />
-	 * This REMOVES all Molecules from *this. <br />
-	 * @param target
-	 * @return target
-	 */
-	virtual Vesicle* operator>>=(Vesicle* target);
 };
 
 } //molecular namespace

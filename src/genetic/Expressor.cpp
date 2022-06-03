@@ -31,7 +31,7 @@ Expressor::~Expressor()
 
 }
 
-Code Expressor::Activate(Id proteinId)
+Code Expressor::Activate(const Id& proteinId)
 {
 	Code ret = code::Success();
 	molecular::Protein* toActivate = GetById< molecular::Protein* >(proteinId);
@@ -40,14 +40,14 @@ Code Expressor::Activate(Id proteinId)
 	return toActivate->Activate();
 }
 
-Code Expressor::Activate(Name proteinName)
+Code Expressor::Activate(const Name& proteinName)
 {
 	return Activate(SafelyAccess<molecular::ProteinPerspective>()->GetIdWithoutCreation(proteinName));
 }
 
 Code Expressor::ExpressGenes()
 {
-	Plasmid* plasmidBuffer;
+	Plasmid* plasmid;
 	Code ret = code::Success();
 	for (
 		SmartIterator dna = GetAll< Plasmid* >()->Begin();
@@ -55,8 +55,8 @@ Code Expressor::ExpressGenes()
 		++dna
 		)
 	{
-		plasmidBuffer = dna;
-		if (AddToTranscriptome(plasmidBuffer->TranscribeFor(this)) != code::Success() && ret == code::Success())
+		plasmid = dna;
+		if (AddToTranscriptome(plasmid->TranscribeFor(this)) != code::Success() && ret == code::Success())
 		{
 			ret = code::TranscriptionError();
 		}
@@ -90,7 +90,7 @@ Code Expressor::Translate(const RNA* mRNA)
 
 	Code ret = code::Success();
 
-	Gene* geneBuffer;
+	Gene* gene;
 	for (
 		SmartIterator rna = mTranscriptome.Begin();
 		!rna.IsAfterEnd();
@@ -103,8 +103,8 @@ Code Expressor::Translate(const RNA* mRNA)
 			++gen
 			)
 		{
-			geneBuffer = gen;
-			if (!geneBuffer->mInsertion.Seek(this))
+			gene = gen;
+			if (!gene->mInsertion.Seek(this))
 			{
 				ret = code::UnknownError();
 			}

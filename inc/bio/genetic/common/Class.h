@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/genetic/macros/Macros.h"
+#include "bio/genetic/macro/Macros.h"
 #include "bio/molecular/common/Class.h"
 #include "bio/molecular/Molecule.h"
 
@@ -71,7 +71,7 @@ public:
 		 */
 	Class(
 		T* object,
-		Name name,
+		const Name& name,
 		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default())
 		:
@@ -93,7 +93,7 @@ public:
 	 */
 	Class(
 		T* object,
-		Id id,
+		const Id& id,
 		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default())
 		:

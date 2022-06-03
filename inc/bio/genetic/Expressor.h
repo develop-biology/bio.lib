@@ -25,7 +25,7 @@
 #include "bio/molecular/Protein.h"
 #include "bio/genetic/common/Types.h"
 #include "bio/genetic/common/Filters.h"
-#include "bio/genetic/macros/Macros.h"
+#include "bio/genetic/macro/Macros.h"
 #include "RNA.h"
 
 namespace bio {
@@ -79,19 +79,19 @@ public:
 	/**
 	 * Calls molecular::Protein::Activate() for a molecular::Protein of the given id. <br />
 	 * If your Proteins are called often (e.g. on a clock), you may consider caching a pointer to the molecular::Protein and invoking that directly, rather than through this method. <br />
-	 * For example, mc_myFavoriteProtein = GetByName<molecular::Protein*>("MyFavoriteProteinName") <br />
+	 * For example, mcMyFavoriteProtein = GetByName<molecular::Protein*>("MyFavoriteProteinName") <br />
 	 * If you feel like going through the extra work, you can also wrap those cached calls with #if BIO_MEMORY_OPTIMIZE_LEVEL >= 1 ... #endif so that the downstream user of your code can prefer cache to processing (see common/macros/OptimizeMacros.h for details). <br />
 	 * @param proteinId
 	 * @return the result of activation or code::BadArgument1 if no such molecular::Protein exists within *this.
 	 */
-	Code Activate(Id proteinId);
+	Code Activate(const Id& proteinId);
 
 	/**
 	 * Ease of use wrapper around Activate(Id). <br />
 	 * @param proteinName
 	 * @return the result of Activate after resolving the given name to an Id.
 	 */
-	Code Activate(Name proteinName);
+	Code Activate(const Name& proteinName);
 
 	/**
 	 * Ease of use wrapper around Activate(Id) <br />

@@ -22,7 +22,7 @@
 #pragma once
 
 #include "bio/genetic/common/Types.h"
-#include "bio/genetic/macros/Macros.h"
+#include "bio/genetic/macro/Macros.h"
 
 namespace bio {
 
@@ -31,5 +31,7 @@ BIO_SITE(InSurface)
 BIO_SITE(OnMolecule)
 
 BIO_SITE(InVesicle)
+
+BIO_SITE(ToVesicle)
 
 } //bio namespace

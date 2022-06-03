@@ -28,7 +28,7 @@ namespace bio {
 namespace molecular {
 
 Surface::Surface(
-	Name name,
+	const Name& name,
 	Molecule* environment
 )
 	:
@@ -38,7 +38,8 @@ Surface::Surface(
 		environment,
 		filter::Molecular(),
 		symmetry_type::Variable()),
-	EnvironmentDependent< Molecule >(environment)
+	EnvironmentDependent< Molecule >(environment),
+	mBoundPosition(InvalidIndex())
 {
 
 }
@@ -51,43 +52,43 @@ Surface::Surface(const Surface& toCopy)
 		toCopy.GetPerspective(),
 		toCopy.GetFilter(),
 		symmetry_type::Variable()),
-	chemical::LinearMotif< Molecule* >(toCopy),
-	EnvironmentDependent< Molecule >(toCopy)
+	EnvironmentDependent< Molecule >(toCopy),
+	mBoundPosition(toCopy.mBoundPosition)
 {
-	chemical::Bond* bondBuffer;
+	chemical::Bond* bond;
 	for (
 		SmartIterator bnd = toCopy.mBonds.End();
 		!bnd.IsBeforeBeginning();
 		--bnd
 		)
 	{
-		bondBuffer = bnd;
-		if (bondBuffer->GetType() == bond_type::Manage())
+		bond = bnd;
+		if (bond->GetType() == bond_type::Manage())
 		{
 			//Calling FormBondImplementation directly saves us some work and should be safer than trying to do auto-template type determination from Clone().
 			FormBondImplementation(
-				bondBuffer->GetBonded()->Clone(),
-				bondBuffer->GetId(),
-				bondBuffer->GetType());
+				bond->GetBonded()->Clone(),
+				bond->GetId(),
+				bond->GetType());
 		}
 	}
 }
 
 Surface::~Surface()
 {
-	chemical::Bond* bondBuffer;
+	chemical::Bond* bond;
 	for (
 		SmartIterator bnd = mBonds.End();
 		!bnd.IsBeforeBeginning();
 		--bnd
 		)
 	{
-		bondBuffer = bnd;
-		if (bondBuffer->GetType() == bond_type::Manage())
+		bond = bnd;
+		if (bond->GetType() == bond_type::Manage())
 		{
 			//bypass BreakBondImplementation and just do it.
-			delete bondBuffer->GetBonded();
-			bondBuffer->Break();
+			delete bond->GetBonded();
+			bond->Break();
 		}
 	}
 }
@@ -122,54 +123,60 @@ physical::Wave* Surface::Release(
 )
 {
 	physical::Wave* ret = NULL;
-	chemical::Bond* bondBuffer;
+	chemical::Bond* bond;
 	for (
 		SmartIterator bnd = mBonds.End();
 		!bnd.IsBeforeBeginning();
 		--bnd
 		)
 	{
-		bondBuffer = bnd;
-		if (bondBuffer->GetType() == bondType)
+		bond = bnd;
+		if (bond->GetType() == bondType)
 		{
-			ret = ChemicalCast< physical::Wave* >(bondBuffer->GetBonded());
+			ret = ChemicalCast< physical::Wave* >(bond->GetBonded());
 			BIO_SANITIZE_AT_SAFETY_LEVEL_1(!ret || ret != toRelease,
 				continue,);
-			bondBuffer->Break();
+			bond->Break();
 			break;
 		}
 	}
+
+	mBoundPosition = InvalidIndex();
+
 	return ret;
 }
 
 chemical::Substance* Surface::Release(
-	Name toRelease,
+	const Name& toRelease,
 	physical::Perspective< Id >* perspective,
 	BondType bondType
 )
 {
 	chemical::Substance* ret = NULL;
-	chemical::Bond* bondBuffer;
+	chemical::Bond* bond;
 	for (
 		SmartIterator bnd = mBonds.End();
 		!bnd.IsBeforeBeginning();
 		--bnd
 		)
 	{
-		bondBuffer = bnd;
-		if (bondBuffer->GetType() == bondType)
+		bond = bnd;
+		if (bond->GetType() == bondType)
 		{
-			ret = ChemicalCast< chemical::Substance* >(bondBuffer->GetBonded());
+			ret = ChemicalCast< chemical::Substance* >(bond->GetBonded());
 			BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret, ,
 				continue);
 			BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret->IsName(toRelease), ,
 				continue);
 			BIO_SANITIZE_AT_SAFETY_LEVEL_1(perspective && ret->GetPerspective() != perspective,
 				continue,);
-			bondBuffer->Break();
+			bond->Break();
 			break;
 		}
 	}
+
+	mBoundPosition = InvalidIndex();
+
 	return ret;
 }
 
@@ -180,47 +187,53 @@ chemical::Substance* Surface::Release(
 )
 {
 	chemical::Substance* ret = NULL;
-	chemical::Bond* bondBuffer;
+	chemical::Bond* bond;
 	for (
 		SmartIterator bnd = mBonds.End();
 		!bnd.IsBeforeBeginning();
 		--bnd
 		)
 	{
-		bondBuffer = bnd;
-		if (bondBuffer->GetType() == bondType)
+		bond = bnd;
+		if (bond->GetType() == bondType)
 		{
-			ret = ChemicalCast< chemical::Substance* >(bondBuffer->GetBonded());
+			ret = ChemicalCast< chemical::Substance* >(bond->GetBonded());
 			BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret, ,
 				continue);
 			BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret->IsId(toRelease), ,
 				continue);
 			BIO_SANITIZE_AT_SAFETY_LEVEL_1(perspective && ret->GetPerspective() != perspective,
 				continue,);
-			bondBuffer->Break();
+			bond->Break();
 			break;
 		}
 	}
+
+	mBoundPosition = InvalidIndex();
+
 	return ret;
 }
 
-physical::Waves Surface::ReleaseAll(BondType bondType)
+physical::Waves Surface::Release(BondType bondType)
 {
 	physical::Waves ret;
-	chemical::Bond* bondBuffer;
+	chemical::Bond* bond;
 	for (
 		SmartIterator bnd = mBonds.End();
 		!bnd.IsBeforeBeginning();
 		--bnd
 		)
 	{
-		bondBuffer = bnd;
-		if (bondBuffer->GetType() == bondType)
+		bond = bnd;
+		if (bond->GetType() == bondType)
 		{
-			ret.Add(ChemicalCast< physical::Wave* >(bondBuffer->GetBonded()));
-			bondBuffer->Break();
+			ret.Add(ChemicalCast< physical::Wave* >(bond->GetBonded()));
+			bond->Break();
 		}
 	}
+
+	mBoundPosition = InvalidIndex();
+
 	return ret;
 }
 
@@ -229,19 +242,19 @@ physical::Wave* Surface::operator-=(physical::Wave* toRelease)
 	return Release(toRelease);
 }
 
-chemical::Substance* Surface::operator-=(Name toRelease)
+chemical::Substance* Surface::operator-=(const Name& toRelease)
 {
 	return Release(toRelease);
 }
 
-chemical::Substance* Surface::operator-=(Id toRelease)
+chemical::Substance* Surface::operator-=(const Id& toRelease)
 {
 	return Release(toRelease);
 }
 
 physical::Waves Surface::operator--()
 {
-	return ReleaseAll();
+	return Release();
 }
 
 

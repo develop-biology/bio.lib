@@ -22,7 +22,7 @@
 #pragma once
 
 #include "bio/physical/common/Filters.h"
-#include "bio/log/macros/Macros.h"
+#include "bio/log/macro/Macros.h"
 #include "bio/log/common/Types.h"
 #include <sstream>
 #include <stdarg.h>
@@ -113,8 +113,8 @@ public:
 	 * @return true on success, false otherwise.
 	 */
 	bool SetFilter(
-		Name filter,
-		Name level
+		const Name& filter,
+		const Name& level
 	); //calls StringTo...
 
 	/**

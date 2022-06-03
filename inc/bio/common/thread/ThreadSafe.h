@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/common/macros/Macros.h"
+#include "bio/common/macro/Macros.h"
 
 //@formatter:off
 #if BIO_THREAD_ENFORCEMENT_LEVEL > 0

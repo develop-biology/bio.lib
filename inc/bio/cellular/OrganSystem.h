@@ -24,7 +24,7 @@
 #include "bio/cellular/common/Class.h"
 #include "bio/cellular/common/Types.h"
 #include "bio/cellular/common/Filters.h"
-#include "bio/cellular/macros/Macros.h"
+#include "bio/cellular/macro/Macros.h"
 #include "bio/cellular/Organ.h"
 #include "bio/genetic/Plasmid.h"
 #include "bio/chemical/structure/motif/LinearMotif.h"

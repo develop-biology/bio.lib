@@ -36,15 +36,15 @@ Code Organ::SpecializeTissues()
 	Container* tissues = GetAll< Tissue* >();
 	BIO_SANITIZE(tissues, ,
 		return code::CouldNotFindValue1())
-	Tissue* tissueBuffer;
+	Tissue* tissue;
 	for (
 		SmartIterator tis = tissues->Begin();
 		!tis.IsAfterEnd();
 		++tis
 		)
 	{
-		tissueBuffer = tis;
-		if (tissueBuffer->DifferentiateCells() != code::Success() && ret == code::Success())
+		tissue = tis;
+		if (tissue->DifferentiateCells() != code::Success() && ret == code::Success())
 		{
 			ret = code::UnknownError();
 		}

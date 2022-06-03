@@ -21,7 +21,8 @@
 
 #pragma once
 
-#include "bio/common/macros/Macros.h"
+#include "bio/common/macro/Macros.h"
+#include "bio/common/string/String.h"
 #include "TypeName.h"
 #include <cstddef>
 #include <cstdlib>
@@ -82,6 +83,30 @@ public:
 	 */
 	bool operator==(const ByteStream& other) const;
 
+	//@formatter:off
+	#if BIO_CPP_VERSION < 17
+	/**
+	 * Without a move constructor, we cannot use reference types, like const Name&. <br />
+	 * AsImplementation provides a backwards compatible solution. <br />
+	 * @tparam T
+	 */
+	template < typename T >
+	struct AsImplementation
+	{
+		AsImplementation(void* stream) : mStream(stream) {}
+		T* Get() {return (T*)mStream;}
+		void* mStream;
+	};
+	template < typename T >
+	struct AsImplementation< T& >
+	{
+		AsImplementation(void* stream) : mStream(stream) {}
+		T* Get() {return (T*)mStream;}
+		void* mStream;
+	};
+	#endif
+	//@formatter:on
+
 	/**
 	 * Casts stored data to T. <br />
 	 * @tparam T
@@ -90,8 +115,15 @@ public:
 	template < typename T >
 	T As()
 	{
-		BIO_ASSERT(Is< T >());
-		return *(T*)mStream;
+		BIO_ASSERT(Is< T >())
+
+		//@formatter: off
+		#if BIO_CPP_VERSION < 17
+			return *AsImplementation< T >(mStream).Get();
+		#else
+			return *(T*)mStream;
+		#endif
+		//@formatter:on
 	}
 
 	/**
@@ -102,8 +134,13 @@ public:
 	template < typename T >
 	const T As() const
 	{
-		BIO_ASSERT(Is< T >());
-		return *(T*)mStream;
+		//@formatter: off
+		#if BIO_CPP_VERSION < 17
+			return *AsImplementation< T >(mStream).Get();
+		#else
+			return *(T*)mStream;
+		#endif
+		//@formatter:on
 	}
 
 	/**
@@ -176,7 +213,7 @@ public:
 	template < typename T >
 	bool Is() const
 	{
-		return sizeof(T) == mSize && TypeName< T >() == mTypeName;
+		return sizeof(T) == mSize && mTypeName == TypeName< T >();
 	}
 
 	/**

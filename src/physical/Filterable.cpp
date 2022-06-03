@@ -21,7 +21,7 @@
 
 #include "bio/physical/Filterable.h"
 #include "bio/physical/common/Filters.h"
-#include "bio/physical/macros/Macros.h"
+#include "bio/physical/macro/Macros.h"
 #include "bio/physical/Symmetry.h"
 #include "bio/physical/common/SymmetryTypes.h"
 
@@ -81,9 +81,9 @@ Code Filterable::Reify(Symmetry* symmetry)
 
 void Filterable::InitializeImplementation(ByteStreams args)
 {
-	BIO_SANITIZE(args.Size() == 1 && args[0].Is(mFilter), ,
+	BIO_SANITIZE(args.Size() == 1 && args[args.GetEndIndex()].Is(mFilter), ,
 		return);
-	mFilter = args[0];
+	mFilter = args[args.GetEndIndex()];
 }
 
 } //physical namespace

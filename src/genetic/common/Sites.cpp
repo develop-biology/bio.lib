@@ -20,7 +20,7 @@
  */
 
 #include "bio/genetic/common/Sites.h"
-#include "bio/genetic/macros/Macros.h"
+#include "bio/genetic/macro/Macros.h"
 #include "bio/molecular/Surface.h"
 #include "bio/molecular/Molecule.h"
 #include "bio/molecular/Vesicle.h"
@@ -37,6 +37,9 @@ BIO_SITE_FUNCTION_BODY(OnMolecule,
 	molecular::Surface*)
 
 BIO_SITE_FUNCTION_BODY(InVesicle,
+	molecular::Molecule*)
+
+BIO_SITE_FUNCTION_BODY(ToVesicle,
 	molecular::Vesicle*)
 
 } //bio namespace

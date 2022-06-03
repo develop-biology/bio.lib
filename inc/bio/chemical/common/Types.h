@@ -22,7 +22,7 @@
 #pragma once
 
 #include "bio/physical/common/Types.h"
-#include "bio/physical/macros/Macros.h"
+#include "bio/physical/macro/Macros.h"
 #include "bio/physical/Perspective.h"
 
 namespace bio {

@@ -96,7 +96,7 @@ public:
 	 * @param reactants
 	 */
 	explicit Reaction(
-		Name name,
+		const Name& name,
 		const Reactants* reactants
 	);
 
@@ -115,7 +115,7 @@ public:
 	 * @param substance
 	 */
 	void Require(
-		Name typeName,
+		const Name& typeName,
 		const Substance* substance
 	);
 
@@ -127,7 +127,7 @@ public:
 	 * @param states
 	 */
 	void Require(
-		Name typeName,
+		const Name& typeName,
 		const typename UnorderedMotif< Property >::Contents* properties,
 		const typename UnorderedMotif< State >::Contents* states
 	);
@@ -222,7 +222,7 @@ public:
 	 * @param id
 	 * @return a Reaction* with the given id or NULL.
 	 */
-	static const Reaction* Initiate(Id id);
+	static const Reaction* Initiate(const Id& id);
 
 	/**
 	 * Get a Reaction! <br />

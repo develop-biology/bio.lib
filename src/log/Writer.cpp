@@ -21,7 +21,7 @@
 
 #include "bio/log/Writer.h"
 #include "bio/log/Engine.h"
-#include "bio/common/macros/Macros.h"
+#include "bio/common/macro/Macros.h"
 
 #include <stdarg.h>
 
@@ -159,13 +159,13 @@ void Writer::InitializeImplementation(ByteStreams args)
 {
 	if (args.Size() == 2)
 	{
-		if (args[1].Is(mLogEngine))
+		if (args[args.GetEndIndex()].Is(mLogEngine))
 		{
-			mLogEngine = args[1];
+			mLogEngine = args[args.GetEndIndex()];
 		}
-		args.Erase(1);
+		args.Erase(args.GetEndIndex());
 	}
-	if (args.Size() == 1 && args[0].Is< Filter >())
+	if (args.Size() == 1 && args[args.GetEndIndex()].Is< Filter >())
 	{
 		Filterable::InitializeImplementation(args);
 	}

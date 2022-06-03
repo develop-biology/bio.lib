@@ -20,7 +20,7 @@
  */
 #pragma once
 
-#include "bio/common/macros/Macros.h"
+#include "bio/common/macro/Macros.h"
 
 /**
  * SafelyAccess<> is a simple RAII wrapper around a ThreadSafe object. <br />

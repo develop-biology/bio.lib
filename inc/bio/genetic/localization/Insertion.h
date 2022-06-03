@@ -54,7 +54,7 @@ public:
 	explicit Insertion(
 		chemical::Substance* whatToInsert = NULL,
 		Site site = InsertionSitePerspective::InvalidId(),
-		Name name = NULL
+		const Name& name = NULL
 	);
 
 	/**

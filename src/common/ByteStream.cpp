@@ -26,6 +26,7 @@ namespace bio {
 ByteStream::ByteStream()
 	:
 	mStream(NULL),
+	mTypeName(String::READ_WRITE),
 	mSize(0),
 	mHolding(false)
 {
@@ -33,6 +34,7 @@ ByteStream::ByteStream()
 
 ByteStream::ByteStream(const ByteStream& other)
 	:
+	mTypeName(String::READ_WRITE),
 	mHolding(false)
 {
 	*this = other;

@@ -20,7 +20,7 @@
  */
 
 #include "bio/cellular/common/TranscriptionFactors.h"
-#include "bio/cellular/macros/Macros.h"
+#include "bio/cellular/macro/Macros.h"
 
 namespace bio {
 namespace transcription_factor {

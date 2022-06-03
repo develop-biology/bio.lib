@@ -34,15 +34,15 @@ Code Organism::Morphogenesis()
 	Container* organSystems = GetAll< cellular::OrganSystem* >();
 	BIO_SANITIZE(organSystems, ,
 		return code::CouldNotFindValue1())
-	cellular::OrganSystem* systemBuffer;
+	cellular::OrganSystem* system;
 	for (
 		SmartIterator sys = organSystems->Begin();
 		!sys.IsAfterEnd();
 		++sys
 		)
 	{
-		systemBuffer = sys;
-		if (systemBuffer->Organogenesis() != code::Success() && ret == code::Success())
+		system = sys;
+		if (system->Organogenesis() != code::Success() && ret == code::Success())
 		{
 			ret = code::UnknownError();
 		}

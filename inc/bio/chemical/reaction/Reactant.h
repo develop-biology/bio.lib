@@ -46,14 +46,14 @@ public:
 	/**
 	 * @param typeName
 	 */
-	Reactant(Name typeName);
+	Reactant(const Name& typeName);
 
 	/**
 	 * @param typeName
 	 * @param substance
 	 */
 	Reactant(
-		Name typeName,
+		const Name& typeName,
 		const Substance* substance
 	);
 
@@ -63,7 +63,7 @@ public:
 	 * @param states
 	 */
 	Reactant(
-		Name typeName,
+		const Name& typeName,
 		const typename UnorderedMotif< Property >::Contents* properties,
 		const typename UnorderedMotif< State >::Contents* states
 	);

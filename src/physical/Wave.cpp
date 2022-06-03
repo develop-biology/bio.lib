@@ -23,7 +23,7 @@
 #include "bio/physical/common/Types.h"
 #include "bio/physical/Symmetry.h"
 #include "bio/physical/common/Codes.h"
-#include "bio/common/macros/Macros.h"
+#include "bio/common/macro/Macros.h"
 #include <algorithm>
 
 namespace bio {

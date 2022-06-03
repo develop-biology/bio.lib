@@ -20,7 +20,7 @@
  */
 
 #include "bio/physical/Properties.h"
-#include "bio/physical/macros/Macros.h"
+#include "bio/physical/macro/Macros.h"
 
 namespace bio {
 namespace property {

@@ -21,7 +21,7 @@
 
 #include "bio/genetic/Plasmid.h"
 #include "bio/genetic/Expressor.h"
-#include "bio/genetic/proteins/RNAPolymerase.h"
+#include "bio/genetic/protein/RNAPolymerase.h"
 
 namespace bio {
 namespace genetic {
@@ -57,7 +57,7 @@ RNA* Plasmid::TranscribeFor(Expressor* expressor) const
 	polymerase->Fold();
 	polymerase->RotateTo(bindingSite)->Bind(ret);
 	polymerase->Activate();
-	polymerase->RotateTo(bindingSite)->ReleaseAll();
+	polymerase->RotateTo(bindingSite)->Release();
 	delete polymerase;
 	return ret;
 }

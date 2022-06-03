@@ -22,7 +22,7 @@
 #pragma once
 
 #include "bio/physical/common/Class.h"
-#include "bio/physical/macros/Macros.h"
+#include "bio/physical/macro/Macros.h"
 #include "bio/chemical/common/Properties.h"
 #include "bio/chemical/PeriodicTable.h"
 

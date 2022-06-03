@@ -22,8 +22,8 @@
 #pragma once
 
 #include "bio/common/VirtualBase.h"
-#include "bio/common/String.h"
-#include "bio/common/macros/OSMacros.h"
+#include "bio/common/string/String.h"
+#include "bio/common/macro/OSMacros.h"
 #include "Perspective.h"
 #include "Observer.h"
 #include "Wave.h"
@@ -84,7 +84,7 @@ public:
 	 * @param perspective
 	 */
 	explicit Identifiable(
-		Name name,
+		const Name& name,
 		Perspective< DIMENSION >* perspective = NULL
 	)
 		:
@@ -189,7 +189,7 @@ public:
 	 * @param name
 	 * @return whether or not the given name matches that of *this and double checks with the Perspective used by *this.
 	 */
-	virtual bool operator==(Name name) const
+	virtual bool operator==(const Name& name) const
 	{
 		if (!GetName())
 		{
@@ -245,7 +245,7 @@ public:
 	 * @param name
 	 * @return whether or not the Name was updated.
 	 */
-	virtual bool SetName(Name name)
+	virtual bool SetName(const Name& name)
 	{
 		BIO_SANITIZE(this->GetPerspective(),
 			,
@@ -288,7 +288,7 @@ public:
 	 * @param name
 	 * @return a comparison operation on the given name with the name of *this.
 	 */
-	virtual bool IsName(Name name) const
+	virtual bool IsName(const Name& name) const
 	{
 		return name == this->GetName();
 	}
@@ -297,7 +297,7 @@ public:
 	 * @param name
 	 * @return whether or not the given name is offensive. JK, it's just a case insensitive version of IsName.
 	 */
-	virtual bool IsNameInsensitive(Name name) const
+	virtual bool IsNameInsensitive(const Name& name) const
 	{
 		return !strcasecmp(
 			name.AsCharString(),
@@ -385,24 +385,25 @@ protected:
 	 */
 	virtual void InitializeImplementation(ByteStreams args)
 	{
+
 		if (args.Size() == 2)
 		{
-			if (args[1].Is< Perspective< DIMENSION >* >())
+			if (args[args.GetEndIndex()].Is< Perspective< DIMENSION >* >())
 			{
-				Observer< Perspective< DIMENSION > >::Initialize(args[1]);
+				Observer< Perspective< DIMENSION > >::Initialize(args[args.GetEndIndex()]);
 			}
-			args.Erase(1);
+			args.Erase(args.GetEndIndex());
 		}
 		if (args.Size() == 1)
 		{
-			if (args[0].Is(mId))
+			if (args[args.GetEndIndex()].Is(mId))
 			{
-				mId = args[0];
+				mId = args[args.GetEndIndex()];
 			}
 			#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-			else if (args[0].Is(mName))
+			else if (args[args.GetEndIndex()].Is(mName))
 			{
-				mName = args[0].As< String >();
+				mName = args[args.GetEndIndex()].As< String >();
 			}
 			#endif
 		}

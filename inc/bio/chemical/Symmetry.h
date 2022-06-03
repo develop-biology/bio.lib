@@ -57,8 +57,8 @@ public:
 	 * @param type
 	 */
 	Symmetry(
-		Name name,
-		Name type
+		const Name& name,
+		const Name& type
 	);
 
 	/**
@@ -66,7 +66,7 @@ public:
 	 * @param type
 	 */
 	Symmetry(
-		Name name,
+		const Name& name,
 		SymmetryType type
 	);
 
@@ -76,7 +76,7 @@ public:
 	 */
 	Symmetry(
 		Id id,
-		Name type
+		const Name& type
 	);
 
 	/**

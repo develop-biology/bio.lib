@@ -21,9 +21,9 @@
 
 #pragma once
 
-#include "bio/physical/macros/Macros.h"
+#include "bio/physical/macro/Macros.h"
 #include "bio/common/Types.h"
-#include "bio/common/String.h"
+#include "bio/common/string/String.h"
 #include "bio/common/thread/ThreadSafe.h"
 #include "bio/common/Cast.h"
 #include <sstream>
@@ -75,15 +75,15 @@ public:
 	typedef Arrangement< Id > Ids;
 
 	/**
-	 * What a single point in space contains. <br />
-	 * Dimensions are Nuit ∴ ∴ <br />
+	 * What a single "point" in space contains. <br />
+	 * Branes are taken from super string theory and are the multi-dimensional abstraction of membranes. <br />
 	 */
-	class Hadit
+	class Brane
 	{
 	public:
-		Hadit(
+		Brane(
 			Id id,
-			Name name,
+			const Name& name,
 			Wave* type
 		)
 			:
@@ -98,7 +98,7 @@ public:
 		Wave* mType;
 	};
 
-	typedef Arrangement< Hadit* > Hadits;
+	typedef Arrangement< Brane* > Branes;
 
 	/**
 	 *
@@ -114,23 +114,23 @@ public:
 	 */
 	virtual ~Perspective()
 	{
-		Hadit* haditBuffer;
+		Brane* brane;
 		for (
-			SmartIterator hdt = mHadits.Begin();
-			!hdt.IsAfterEnd();
-			++hdt
+			SmartIterator brn = mBranes.Begin();
+			!brn.IsAfterEnd();
+			++brn
 			)
 		{
-			haditBuffer = hdt;
-			if (haditBuffer->mType)
+			brane = brn;
+			if (brane->mType)
 			{
-				PerspectiveUtilities::Delete(haditBuffer->mType);
-				haditBuffer->mType = NULL;
+				PerspectiveUtilities::Delete(brane->mType);
+				brane->mType = NULL;
 			}
-			delete haditBuffer;
-			haditBuffer = NULL;
+			delete brane;
+			brane = NULL;
 		}
-		mHadits.Clear();
+		mBranes.Clear();
 	}
 
 	/**
@@ -154,45 +154,45 @@ public:
 	/**
 	 * Gives an iterator fos the given id. <br />
 	 * @param id
-	 * @return a SmartIterator pointing to the Hadit desired, if it IsValid.
+	 * @return a SmartIterator pointing to the Brane desired, if it IsValid.
 	 */
-	SmartIterator Find(Id id)
+	SmartIterator Find(const Id& id)
 	{
-		SmartIterator hdt = mHadits.Begin();
+		SmartIterator brn = mBranes.Begin();
 		for (
-			; !hdt.IsAfterEnd();
-			++hdt
+			; !brn.IsAfterEnd();
+			++brn
 			)
 		{
-			if (hdt.As< Hadit* >()->mId == id)
+			if (brn.As< Brane* >()->mId == id)
 			{
-				return hdt;
+				return brn;
 			}
 		}
-		hdt.Invalidate();
-		return hdt;
+		brn.Invalidate();
+		return brn;
 	}
 
 	/**
 	 * Gives an iterator fos the given id. <br />
 	 * @param id
-	 * @return a SmartIterator pointing to the Hadit desired, if it IsValid.
+	 * @return a SmartIterator pointing to the Brane desired, if it IsValid.
 	 */
-	SmartIterator Find(Id id) const
+	SmartIterator Find(const Id& id) const
 	{
-		SmartIterator hdt = mHadits.Begin();
+		SmartIterator brn = mBranes.Begin();
 		for (
-			; !hdt.IsAfterEnd();
-			++hdt
+			; !brn.IsAfterEnd();
+			++brn
 			)
 		{
-			if (hdt.As< Hadit* >()->mId == id)
+			if (brn.As< Brane* >()->mId == id)
 			{
-				return hdt;
+				return brn;
 			}
 		}
-		hdt.Invalidate();
-		return hdt;
+		brn.Invalidate();
+		return brn;
 	}
 
 
@@ -201,7 +201,7 @@ public:
 	 * @param name
 	 * @return the Id associated with the given name
 	 */
-	virtual Id GetIdFromName(Name name)
+	virtual Id GetIdFromName(const Name& name)
 	{
 		if (name == InvalidName())
 		{
@@ -215,8 +215,8 @@ public:
 		}
 
 		ret = mNextId++;
-		mHadits.Add(
-			new Hadit(
+		mBranes.Add(
+			new Brane(
 				ret,
 				name,
 				NULL
@@ -231,7 +231,7 @@ public:
 	 * @param id
 	 * @return the Name associated with the given Id
 	 */
-	virtual Name GetNameFromId(Id id) const
+	virtual Name GetNameFromId(const Id& id) const
 	{
 		if (id == InvalidId())
 		{
@@ -243,7 +243,7 @@ public:
 		{
 			return InvalidName();
 		}
-		return result.As< Hadit* >()->mName;
+		return result.As< Brane* >()->mName;
 	}
 
 
@@ -252,7 +252,7 @@ public:
 	 * @param name
 	 * @return a new Id for the given Name. However, the Name associated with the returned Id may not be the one provided. For example, consider: GetNameFromId(GetUniqueIdFor("MyName")); //Returns "MyName" GetNameFromId(GetUniqueIdFor("MyName")); //Returns "MyName_1"
 	 */
-	virtual Id GetUniqueIdFor(Name name)
+	virtual Id GetUniqueIdFor(const Name& name)
 	{
 		if (name == InvalidName())
 		{
@@ -285,25 +285,25 @@ public:
 	 * @param name
 	 * @return the Id associated with name else InvalidId().
 	 */
-	virtual Id GetIdWithoutCreation(Name name) const
+	virtual Id GetIdWithoutCreation(const Name& name) const
 	{
 		if (name == InvalidName())
 		{
 			return InvalidId();
 		}
 
-		Hadit* haditBuffer;
-		SmartIterator hdt = mHadits.Begin();
+		Brane* brane;
+		SmartIterator brn = mBranes.Begin();
 		for (
-			; !hdt.IsAfterEnd();
-			++hdt
+			; !brn.IsAfterEnd();
+			++brn
 			)
 		{
-			haditBuffer = hdt;
+			brane = brn;
 
-			if (name == haditBuffer->mName)
+			if (name == brane->mName)
 			{
-				return haditBuffer->mId;
+				return brane->mId;
 			}
 		}
 		return InvalidId();
@@ -331,16 +331,16 @@ public:
 		Wave* type
 	)
 	{
-		SmartIterator hdt = Find(id);
-		if (!hdt.IsValid())
+		SmartIterator brn = Find(id);
+		if (!brn.IsValid())
 		{
 			return false;
 		}
-		Hadit* haditBuffer = hdt;
+		Brane* brane = brn;
 
 		BIO_SANITIZE(type,
-			haditBuffer->mType = PerspectiveUtilities::Clone(type),
-			haditBuffer->mType = type)
+			brane->mType = PerspectiveUtilities::Clone(type),
+			brane->mType = type)
 
 		return true;
 	}
@@ -350,20 +350,20 @@ public:
 	 * @param id
 	 * @return true if the association was removed else false.
 	 */
-	virtual bool DisassociateType(Id id)
+	virtual bool DisassociateType(const Id& id)
 	{
-		SmartIterator hdt = Find(id);
-		if (!hdt.IsValid())
+		SmartIterator brn = Find(id);
+		if (!brn.IsValid())
 		{
 			return false;
 		}
 
-		Hadit* haditBuffer = hdt;
+		Brane* brane = brn;
 
-		BIO_SANITIZE_AT_SAFETY_LEVEL_1(haditBuffer->mType,
-			PerspectiveUtilities::Delete(haditBuffer->mType),
+		BIO_SANITIZE_AT_SAFETY_LEVEL_1(brane->mType,
+			PerspectiveUtilities::Delete(brane->mType),
 		)
-		haditBuffer->mType = NULL;
+		brane->mType = NULL;
 
 		return true;
 	}
@@ -374,7 +374,7 @@ public:
 	 * @param id
 	 * @return the pointer to the Wave type associated with the given id else NULL.
 	 */
-	virtual const Wave* GetTypeFromId(Id id) const
+	virtual const Wave* GetTypeFromId(const Id& id) const
 	{
 		BIO_SANITIZE(id == InvalidId(),
 			,
@@ -386,7 +386,7 @@ public:
 		{
 			return NULL;
 		}
-		return result.As< Hadit* >()->mType;
+		return result.As< Brane* >()->mType;
 	}
 
 	/**
@@ -394,7 +394,7 @@ public:
 	 * @param name
 	 * @return the pointer to the Wave type associated with the given id else NULL.
 	 */
-	virtual const Wave* GetTypeFromName(Name name) const
+	virtual const Wave* GetTypeFromName(const Name& name) const
 	{
 		return GetTypeFromId(GetIdWithoutCreation(name));
 	}
@@ -404,7 +404,7 @@ public:
 	 * @param id
 	 * @return a Clone() of the Wave* associated with the given id else NULL.
 	 */
-	virtual Wave* GetNewObjectFromId(Id id) const
+	virtual Wave* GetNewObjectFromId(const Id& id) const
 	{
 		const Wave* ret = GetTypeFromId(id);
 		if (ret)
@@ -419,7 +419,7 @@ public:
 	 * @param name
 	 * @return a Clone() of the Wave* associated with the given name else NULL.
 	 */
-	virtual Wave* GetNewObjectFromName(Name name)
+	virtual Wave* GetNewObjectFromName(const Name& name)
 	{
 		return this->GetNewObjectFromId(this->GetIdFromName(name));
 	}
@@ -431,7 +431,7 @@ public:
 	 * @return a T* associated with the given name id NULL.
 	 */
 	template < typename T >
-	const T GetTypeFromIdAs(Id id) const
+	const T GetTypeFromIdAs(const Id& id) const
 	{
 		BIO_SANITIZE_WITH_CACHE(GetTypeFromId(id),
 			BIO_SINGLE_ARG(return ForceCast< T, const Wave* >(RESULT)),
@@ -446,7 +446,7 @@ public:
 	 * @return a T* associated with the given name id NULL.
 	 */
 	template < typename T >
-	const T GetTypeFromNameAs(Name name) const
+	const T GetTypeFromNameAs(const Name& name) const
 	{
 		BIO_SANITIZE_WITH_CACHE(GetTypeFromName(name),
 			BIO_SINGLE_ARG(return ForceCast< T, const Wave* >(RESULT)),
@@ -461,7 +461,7 @@ public:
 	 * @return a new T* from Clone()ing the type associated with the given id else NULL.
 	 */
 	template < typename T >
-	T GetNewObjectFromIdAs(Id id)
+	T GetNewObjectFromIdAs(const Id& id)
 	{
 		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromId(id),
 			BIO_SINGLE_ARG(return ForceCast< T, Wave* >(RESULT)),
@@ -476,7 +476,7 @@ public:
 	 * @return a new T* from Clone()ing the type associated with the given name else NULL.
 	 */
 	template < typename T >
-	T GetNewObjectFromNameAs(Name name)
+	T GetNewObjectFromNameAs(const Name& name)
 	{
 		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromName(name),
 			BIO_SINGLE_ARG(return ForceCast< T, Wave* >(RESULT)),
@@ -486,7 +486,7 @@ public:
 
 
 protected:
-	Hadits mHadits;
+	Branes mBranes;
 	Id mNextId;
 };
 

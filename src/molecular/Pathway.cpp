@@ -39,7 +39,7 @@ chemical::Products Pathway::Process(chemical::Reactants* reactants)
 		return code::BadArgument1())
 
 	chemical::Products products(reactants);
-	Reaction* reactionBuffer;
+	Reaction* reaction;
 	for (
 		SmartIterator rct = GetAll< Reaction* >()->Begin();
 		!rct.IsAfterEnd();
@@ -49,8 +49,8 @@ chemical::Products Pathway::Process(chemical::Reactants* reactants)
 		if (products == code::Success() && products != code::NoErrorNoSuccess())
 		{
 			chemical::Reactants nextReactants(products);
-			reactionBuffer = rct;
-			products = (*reactionBuffer)(&nextReactants);
+			reaction = rct;
+			products = (*reaction)(&nextReactants);
 		}
 		else
 		{

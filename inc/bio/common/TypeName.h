@@ -21,7 +21,8 @@
 
 #pragma once
 
-#include "String.h"
+#include "bio/common/string/ImmutableString.h"
+#include "bio/common/macro/Macros.h"
 
 namespace bio {
 
@@ -33,15 +34,15 @@ namespace bio {
  * @return Just T as a string.
  */
 template < typename T >
-String TypeName();
+BIO_CONSTEXPR ImmutableString TypeName();
 
 /**
  * @return "void"
  */
 template <>
-inline String TypeName< void >()
+BIO_CONSTEXPR inline ImmutableString TypeName< void >()
 {
-	return "void";
+	return ImmutableString("void");
 }
 
 /**
@@ -56,7 +57,7 @@ typedef void TypeNameProber;
  * @return T as a string with wrapping symbols.
  */
 template < typename T >
-static const String WrappedTypeName()
+BIO_CONSTEXPR static const ImmutableString WrappedTypeName()
 {
 	#ifdef __clang__
 	return __PRETTY_FUNCTION__;
@@ -73,18 +74,18 @@ static const String WrappedTypeName()
  * Used to trim leading characters from symbol string. <br />
  * @return magic number for prefix length.
  */
-static const ::std::size_t WrappedTypeNamePrefixLength()
+BIO_CONSTEXPR static const ::std::size_t WrappedTypeNamePrefixLength()
 {
-	return WrappedTypeName< TypeNameProber >().AsStdString().find(TypeName< TypeNameProber >().AsStdString());
+	return WrappedTypeName< TypeNameProber >().Find(TypeName< TypeNameProber >());
 }
 
 /**
  * Used to trim trailing characters from symbol string. <br />
  * @return magic number for suffix length.
  */
-static const ::std::size_t WrappedTypeNameSuffixLength()
+BIO_CONSTEXPR static const ::std::size_t WrappedTypeNameSuffixLength()
 {
-	return WrappedTypeName< TypeNameProber >().AsStdString().length() - WrappedTypeNamePrefixLength() - TypeName< TypeNameProber >().AsStdString().length();
+	return WrappedTypeName< TypeNameProber >().Length() - WrappedTypeNamePrefixLength() - TypeName< TypeNameProber >().Length();
 }
 
 /**
@@ -93,13 +94,13 @@ static const ::std::size_t WrappedTypeNameSuffixLength()
  * @return Just T as a string.
  */
 template < typename T >
-static String TypeName()
+BIO_CONSTEXPR static ImmutableString TypeName()
 {
-	static const String wrappedName = WrappedTypeName< T >();
-	static const ::std::size_t prefixLength = WrappedTypeNamePrefixLength();
-	static const ::std::size_t suffixLength = WrappedTypeNameSuffixLength();
-	static const ::std::size_t typeNameLength = wrappedName.AsStdString().length() - prefixLength - suffixLength;
-	return wrappedName.AsStdString().substr(
+	ImmutableString wrappedName = WrappedTypeName< T >();
+	::std::size_t prefixLength = WrappedTypeNamePrefixLength();
+	::std::size_t suffixLength = WrappedTypeNameSuffixLength();
+	::std::size_t typeNameLength = wrappedName.Length() - prefixLength - suffixLength;
+	return wrappedName.GetImmutableSubString(
 		prefixLength,
 		typeNameLength
 	);
@@ -112,7 +113,7 @@ static String TypeName()
  * @return Just T as a string.
  */
 template < typename T >
-static String TypeName(const T t)
+BIO_CONSTEXPR static ImmutableString TypeName(const T t)
 {
 	return TypeName< T >();
 }

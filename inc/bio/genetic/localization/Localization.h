@@ -23,7 +23,7 @@
 
 #include "bio/genetic/common/Types.h"
 #include "bio/physical/common/Class.h"
-#include "bio/physical/macros/Macros.h"
+#include "bio/physical/macro/Macros.h"
 #include "bio/chemical/reaction/Excitation.h"
 
 namespace bio {
@@ -71,7 +71,7 @@ public:
 	 */
 	explicit Localization(
 		Site site = LocalizationSitePerspective::InvalidId(),
-		Name name = NULL
+		const Name& name = NULL
 	);
 
 	/**
@@ -109,7 +109,7 @@ public:
 	 * Set mName. <br />
 	 * @param name
 	 */
-	virtual void SetNameOfSite(Name name);
+	virtual void SetNameOfSite(const Name& name);
 
 protected:
 	/**
@@ -122,7 +122,7 @@ protected:
 	Site mSite;
 	Name mName;
 	Localization* mPrevious;
-	chemical::ExcitationBase* mc_method; //cached pointer to site-associated function pointer. 
+	chemical::ExcitationBase* mcMethod; //cached pointer to site-associated function pointer.
 };
 
 } //genetic namespace

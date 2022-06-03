@@ -23,7 +23,7 @@
 
 #include "Perspective.h"
 #include "bio/common/VirtualBase.h"
-#include "bio/common/macros/Macros.h"
+#include "bio/common/macro/Macros.h"
 
 namespace bio {
 namespace physical {
@@ -91,9 +91,9 @@ protected:
 	 */
 	virtual void InitializeImplementation(ByteStreams args)
 	{
-		BIO_SANITIZE(args.Size() == 1 && args[0].Is(mPerspective), ,
+		BIO_SANITIZE(args.Size() == 1 && args[args.GetEndIndex()].Is(mPerspective), ,
 			return);
-		mPerspective = args[0];
+		mPerspective = args[args.GetEndIndex()];
 	}
 
 private:

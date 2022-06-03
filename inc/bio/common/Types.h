@@ -23,8 +23,8 @@
 
 #include "ByteStream.h"
 #include "Primitives.h"
-#include "String.h"
-#include "bio/common/macros/Macros.h"
+#include "bio/common/string/String.h"
+#include "bio/common/macro/Macros.h"
 #include "bio/common/container/Arrangement.h"
 #include "bio/common/container/SmartIterator.h"
 #include "bio/common/thread/SafelyAccess.h"
@@ -43,7 +43,7 @@ typedef Arrangement< SmartIterator > SmartIterators;
 typedef String Name;
 typedef Arrangement< Name > Names;
 
-typedef Arrangement< ByteStream > ByteStreams;
+typedef Container ByteStreams; //ByteStream is the default TYPE, so no need to re-specify.
 
 /**
  * Timestamp. Usually in ms since epoch (epoch is sometimes the uptime of the kernel) <br />

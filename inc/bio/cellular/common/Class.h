@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/cellular/waves/PeakCarrierWave.h"
+#include "bio/cellular/wave/PeakCarrierWave.h"
 #include "bio/genetic/common/Class.h"
 #include "bio/molecular/Vesicle.h"
 #include "bio/physical/Periodic.h"
@@ -74,7 +74,7 @@ public:
 	 */
 	Class(
 		T* object,
-		Name name,
+		const Name& name,
 		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
 		MicroSeconds interval = GetDefaultInterval())
@@ -98,7 +98,7 @@ public:
 	 */
 	Class(
 		T* object,
-		Id id,
+		const Id& id,
 		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
 		MicroSeconds interval = GetDefaultInterval())

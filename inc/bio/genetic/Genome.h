@@ -78,12 +78,12 @@ public:
 	virtual Plasmid* FetchPlasmid(Name plasmidName);
 
 protected:
-	molecular::Protein* mc_registerPlasmid;
-	molecular::Protein* mc_fetchPlasmid;
-	Id mc_registrationSite;
-	Id mc_nameSite;
-	Id mc_idSite;
-	Id mc_fetchSite;
+	molecular::Protein* mcRegisterPlasmid;
+	molecular::Protein* mcFetchPlasmid;
+	Id mcRegistrationSite;
+	Id mcNameSite;
+	Id mcIdSite;
+	Id mcFetchSite;
 };
 
 BIO_SINGLETON(Genome,
