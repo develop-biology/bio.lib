@@ -34,27 +34,28 @@ namespace utility {
 
 //@formatter:off
 #if BIO_CPP_VERSION < 11
-	template<typename T>
-	struct IsPointerImplementation {static const bool sValue = false;};
+template<typename T>
+struct IsReferenceImplementation {static const bool sValue = false;};
 
-	template<typename T>
-	struct IsPointerImplementation<T*> {static const bool sValue = true;};
+template<typename T>
+struct IsReferenceImplementation<T&> {static const bool sValue = true;};
+
 #endif
 //@formatter:on
 
 /**
- * Check whether or not T is a pointer <br />
+ * Check whether or not T is a reference <br />
  * @tparam T
- * @return whether or not T is a pointer.
+ * @return whether or not T has an '&' at the end..
  */
 template < typename T >
-BIO_CONSTEXPR bool IsPointer()
+BIO_CONSTEXPR bool IsReference()
 {
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
-		return IsPointerImplementation< T >::sValue;
+		return IsReferenceImplementation< T >::sValue;
 	#else
-		return ::std::is_pointer<T>::value;
+		return ::std::is_reference<T>::value;
 	#endif
 	//@formatter:on
 }
@@ -66,9 +67,9 @@ BIO_CONSTEXPR bool IsPointer()
  * @return whether or not T is a pointer.
  */
 template < typename T >
-bool IsPointer(const T t)
+bool IsReference(const T t)
 {
-	return IsPointer< T >();
+	return IsReference< T >();
 }
 
 } //utility namespace

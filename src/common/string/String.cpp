@@ -149,6 +149,20 @@ String& String::operator=(const String& toCopy)
 	return *this;
 }
 
+const String& String::operator=(const String& toMoveHack) const
+{
+	String* hack = const_cast< String* >(this);
+	if (mMode == READ_WRITE && mString)
+	{
+		delete[] hack->mString;
+	}
+
+	hack->mString = toMoveHack.mString;
+	hack->mMode = toMoveHack.mMode;
+	hack->mLength = toMoveHack.mLength;
+	return *this;
+}
+
 String& String::operator=(const ImmutableString& toAssign)
 {
 	switch(mMode)

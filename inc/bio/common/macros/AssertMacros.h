@@ -30,10 +30,8 @@
 
 #define BIO_ASSERT(condition)    assert(condition);
 
-#if BIO_CPP_VERSION < 11
+#if BIO_CPP_VERSION < 17
 #define BIO_STATIC_ASSERT(condition)
-#elif BIO_CPP_VERSION < 17
-#define BIO_STATIC_ASSERT(condition) static_assert(condition, "");
 #else
 #define BIO_STATIC_ASSERT(condition) static_assert(condition);
 #endif

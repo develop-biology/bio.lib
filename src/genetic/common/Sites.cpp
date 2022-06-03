@@ -30,38 +30,8 @@
 
 namespace bio {
 
-//BIO_SITE_FUNCTION_BODY(InSurface,
-//	molecular::Molecule*)
-
-
-namespace site {
-::bio::Site InSurfaceLocalizationSite()
-{
-	static ::bio::CachedId< ::bio::Site > sInSurfaceLocalizationSite(
-		"InSurfaceLocalizationSite",
-		::bio::LocalizationSitePerspective::Instance());
-	return sInSurfaceLocalizationSite;
-}
-bool gInSurfaceLocalizationSiteRegistered = SafelyAccess< ::bio::LocalizationSitePerspective >()->AssociateType(
-	::bio::LocalizationSitePerspective::Instance().GetIdFromName("InSurfaceLocalizationSite"),
-	(new ::bio::chemical::Excitation< ::bio::chemical::LinearMotif< molecular::Molecule* >, molecular::Molecule*, const Name& >(
-		&::bio::chemical::LinearMotif< molecular::Molecule* >::GetByNameImplementation,
-		__null
-	))->AsWave());
-::bio::Site InSurfaceInsertionSite()
-{
-	static ::bio::CachedId< ::bio::Site > sInSurfaceInsertionSite(
-		"InSurfaceInsertionSite",
-		::bio::InsertionSitePerspective::Instance());
-	return sInSurfaceInsertionSite;
-}
-bool gInSurfaceInsertionSiteRegistered = SafelyAccess< ::bio::InsertionSitePerspective >()->AssociateType(
-	::bio::InsertionSitePerspective::Instance().GetIdFromName("InSurfaceInsertionSite"),
-	(new ::bio::chemical::Excitation< ::bio::chemical::LinearMotif< molecular::Molecule* >, molecular::Molecule*, molecular::Molecule* >(
-		&::bio::chemical::LinearMotif< molecular::Molecule* >::AddImplementation,
-		__null
-	))->AsWave());
-}
+BIO_SITE_FUNCTION_BODY(InSurface,
+	molecular::Molecule*)
 
 BIO_SITE_FUNCTION_BODY(OnMolecule,
 	molecular::Surface*)

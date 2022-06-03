@@ -141,7 +141,7 @@ public:
 	 * @param toMove
 	 * @return *this.
 	 */
-	String& operator=(const String&& toMove);
+	virtual String& operator=(const String&& toMove);
 	#endif
 
 	/**
@@ -149,13 +149,22 @@ public:
 	 * @param toCopy
 	 * @return *this.
 	 */
-	String& operator=(const String& toCopy);
+	virtual String& operator=(const String& toCopy);
+
+	/**
+	 * This is just lies: we const_cast(this) and change the values.. <br />
+	 * This is used in places where a move operation would be performed but since that can't be done prior to c++11, we hack it. <br />
+	 * All Values are moved, including Mode,
+	 * @param toMoveHack
+	 * @return *this.
+	 */
+	virtual const String& operator=(const String& toMoveHack) const;
 
 	/**
 	 * @param toAssign
 	 * @return *this.
 	 */
-	String& operator=(const ImmutableString& toAssign);
+	virtual String& operator=(const ImmutableString& toAssign);
 
 	/**
 	 * @param string
