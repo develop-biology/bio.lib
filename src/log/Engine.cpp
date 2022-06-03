@@ -21,8 +21,8 @@
 
 #include "bio/log/Engine.h"
 #include "bio/log/common/LogLevels.h"
-#include "bio/common/macros/Macros.h"
-#include "bio/common/macros/OSMacros.h"
+#include "bio/common/macro/Macros.h"
+#include "bio/common/macro/OSMacros.h"
 #include "bio/physical/common/Types.h"
 #include "bio/physical/Time.h"
 #include <cstring>

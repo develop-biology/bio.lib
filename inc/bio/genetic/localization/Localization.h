@@ -23,7 +23,7 @@
 
 #include "bio/genetic/common/Types.h"
 #include "bio/physical/common/Class.h"
-#include "bio/physical/macros/Macros.h"
+#include "bio/physical/macro/Macros.h"
 #include "bio/chemical/reaction/Excitation.h"
 
 namespace bio {

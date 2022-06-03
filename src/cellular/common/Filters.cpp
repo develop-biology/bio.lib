@@ -20,7 +20,7 @@
  */
 
 #include "bio/cellular/common/Filters.h"
-#include "bio/physical/macros/Macros.h"
+#include "bio/physical/macro/Macros.h"
 
 namespace bio {
 namespace filter {

@@ -20,7 +20,7 @@
  */
 
 #include "bio/chemical/common/BondTypes.h"
-#include "bio/chemical/macros/Macros.h"
+#include "bio/chemical/macro/Macros.h"
 
 namespace bio {
 namespace bond_type {

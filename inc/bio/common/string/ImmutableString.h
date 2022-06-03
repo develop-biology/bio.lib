@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/common/macros/Macros.h"
+#include "bio/common/macro/Macros.h"
 
 #include <string>
 #include <cstring>

@@ -22,7 +22,7 @@
 #pragma once
 
 #include "bio/api/internal/Final.h"
-#include "bio/api/macros/Macros.h"
+#include "bio/api/macro/Macros.h"
 #include "bio/molecular/Molecule.h"
 
 namespace bio {

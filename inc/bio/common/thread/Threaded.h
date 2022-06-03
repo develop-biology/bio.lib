@@ -22,10 +22,10 @@
 #pragma once
 
 #include "ThreadSafe.h"
-#include "bio/common/macros/LanguageMacros.h"
-#include "bio/common/macros/OSMacros.h"
+#include "bio/common/macro/LanguageMacros.h"
+#include "bio/common/macro/OSMacros.h"
 #include "bio/common/Types.h"
-#include "bio/common/macros/Macros.h"
+#include "bio/common/macro/Macros.h"
 
 //@formatter:off
 #if BIO_CPP_VERSION < 11

@@ -21,7 +21,7 @@
 
 #include "bio/genetic/Plasmid.h"
 #include "bio/genetic/Expressor.h"
-#include "bio/genetic/proteins/RNAPolymerase.h"
+#include "bio/genetic/protein/RNAPolymerase.h"
 
 namespace bio {
 namespace genetic {

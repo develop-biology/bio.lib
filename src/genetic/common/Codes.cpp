@@ -20,7 +20,7 @@
  */
 
 #include "bio/genetic/common/Codes.h"
-#include "bio/genetic/macros/Macros.h"
+#include "bio/genetic/macro/Macros.h"
 
 namespace bio {
 namespace code {

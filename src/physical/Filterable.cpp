@@ -21,7 +21,7 @@
 
 #include "bio/physical/Filterable.h"
 #include "bio/physical/common/Filters.h"
-#include "bio/physical/macros/Macros.h"
+#include "bio/physical/macro/Macros.h"
 #include "bio/physical/Symmetry.h"
 #include "bio/physical/common/SymmetryTypes.h"
 

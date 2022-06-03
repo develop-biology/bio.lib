@@ -21,8 +21,8 @@
 
 #pragma once
 
-#include "bio/common/macros/Macros.h"
-#include "bio/common/utilities/IsPrimitive.h"
+#include "bio/common/macro/Macros.h"
+#include "bio/common/utility/IsPrimitive.h"
 #include "ByteStream.h"
 
 #include <vector>

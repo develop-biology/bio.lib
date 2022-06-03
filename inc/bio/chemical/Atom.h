@@ -22,9 +22,9 @@
 #pragma once
 
 #include "bio/common/Cast.h"
-#include "bio/common/macros/Macros.h"
-#include "bio/physical/utilities/IsWave.h"
-#include "bio/common/macros/OSMacros.h"
+#include "bio/common/macro/Macros.h"
+#include "bio/physical/utility/IsWave.h"
+#include "bio/common/macro/OSMacros.h"
 #include "bio/physical/Quantum.h"
 #include "bio/physical/common/Class.h"
 #include "bio/chemical/common/BondTypes.h"

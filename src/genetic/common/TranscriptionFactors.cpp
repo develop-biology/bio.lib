@@ -20,12 +20,12 @@
  */
 
 #include "bio/genetic/common/TranscriptionFactors.h"
-#include "bio/genetic/macros/Macros.h"
+#include "bio/genetic/macro/Macros.h"
 
 namespace bio {
 namespace transcription_factor {
 
-BIO_TRANSCRIPTION_FACONSTRUCTOR_FUNCTION_BODY(Genome)
+BIO_TRANSCRIPTION_FACTOR_FUNCTION_BODY(Genome)
 
 } //transcription_factor namespace
 } //bio namespace

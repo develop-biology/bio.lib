@@ -26,7 +26,7 @@
 #include "bio/chemical/common/Properties.h"
 #include "bio/chemical/common/Class.h"
 #include "bio/chemical/common/Filters.h"
-#include "bio/chemical/macros/Macros.h"
+#include "bio/chemical/macro/Macros.h"
 #include "bio/chemical/structure/Structure.h"
 #include "bio/chemical/structure/motif/UnorderedMotif.h"
 

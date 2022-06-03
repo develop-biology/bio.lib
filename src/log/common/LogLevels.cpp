@@ -20,7 +20,7 @@
  */
 
 #include "bio/log/common/LogLevels.h"
-#include "bio/log/macros/Macros.h"
+#include "bio/log/macro/Macros.h"
 
 namespace bio {
 namespace log_level {

@@ -25,7 +25,7 @@
 #include "bio/molecular/Protein.h"
 #include "bio/genetic/common/Types.h"
 #include "bio/genetic/common/Filters.h"
-#include "bio/genetic/macros/Macros.h"
+#include "bio/genetic/macro/Macros.h"
 #include "RNA.h"
 
 namespace bio {

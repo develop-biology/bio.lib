@@ -20,7 +20,7 @@
  */
 
 #include "bio/common/VirtualBase.h"
-#include "bio/common/macros/Macros.h"
+#include "bio/common/macro/Macros.h"
 
 namespace bio {
 

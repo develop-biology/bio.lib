@@ -24,7 +24,7 @@
 #include "bio/molecular/common/BondTypes.h"
 #include "bio/molecular/common/Types.h"
 #include "bio/molecular/common/Class.h"
-#include "bio/molecular/macros/Macros.h"
+#include "bio/molecular/macro/Macros.h"
 #include "EnvironmentDependent.h"
 
 namespace bio {

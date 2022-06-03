@@ -23,7 +23,7 @@
 
 #include "bio/common/VirtualBase.h"
 #include "bio/common/string/String.h"
-#include "bio/common/macros/OSMacros.h"
+#include "bio/common/macro/OSMacros.h"
 #include "Perspective.h"
 #include "Observer.h"
 #include "Wave.h"

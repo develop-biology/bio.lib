@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/genetic/macros/Macros.h"
+#include "bio/genetic/macro/Macros.h"
 #include "bio/molecular/common/Class.h"
 #include "bio/molecular/Molecule.h"
 

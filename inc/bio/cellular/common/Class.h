@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/cellular/waves/PeakCarrierWave.h"
+#include "bio/cellular/wave/PeakCarrierWave.h"
 #include "bio/genetic/common/Class.h"
 #include "bio/molecular/Vesicle.h"
 #include "bio/physical/Periodic.h"

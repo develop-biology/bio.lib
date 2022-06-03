@@ -20,7 +20,7 @@
  */
 
 #include "bio/genetic/localization/Insertion.h"
-#include "bio/genetic/macros/Macros.h"
+#include "bio/genetic/macro/Macros.h"
 #include "bio/chemical/Substance.h"
 #include "bio/common/ByteStream.h"
 
