@@ -20,7 +20,7 @@
  */
 
 #include "bio/physical/Symmetry.h"
-#include "bio/common/String.h"
+#include "bio/common/string/String.h"
 
 namespace bio {
 namespace physical {

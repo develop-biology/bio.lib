@@ -23,7 +23,7 @@
 
 #include "ByteStream.h"
 #include "Primitives.h"
-#include "String.h"
+#include "bio/common/string/String.h"
 #include "bio/common/macros/Macros.h"
 #include "bio/common/container/Arrangement.h"
 #include "bio/common/container/SmartIterator.h"

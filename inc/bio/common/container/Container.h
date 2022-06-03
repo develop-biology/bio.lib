@@ -25,7 +25,7 @@
 #include "bio/common/macros/Macros.h"
 #include "bio/common/thread/ThreadSafe.h"
 #include "bio/common/Cast.h"
-#include "bio/common/String.h"
+#include "bio/common/string/String.h"
 #include "SmartIterator.h"
 #include <deque>
 

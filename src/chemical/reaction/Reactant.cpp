@@ -20,7 +20,7 @@
  */
 
 #include "bio/chemical/reaction/Reactant.h"
-#include "bio/common/String.h"
+#include "bio/common/string/String.h"
 
 namespace bio {
 namespace chemical {

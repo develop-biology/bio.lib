@@ -33,6 +33,14 @@
 //@formatter:on
 
 //@formatter:off
+#if BIO_CPP_VERSION < 20
+	#define BIO_VIRUTAL_CONSTEXPR virtual
+#else
+	#define BIO_VIRTUAL_CONSTEXPR virtual constexpr
+#endif
+//@formatter:on
+
+//@formatter:off
 #if BIO_CPP_VERSION < 11
 	#define BIO_FINAL
 #else

@@ -22,6 +22,7 @@
 #pragma once
 
 #include "bio/common/macros/Macros.h"
+#include "bio/common/string/String.h"
 #include "TypeName.h"
 #include <cstddef>
 #include <cstdlib>
@@ -176,7 +177,7 @@ public:
 	template < typename T >
 	bool Is() const
 	{
-		return sizeof(T) == mSize && TypeName< T >() == mTypeName;
+		return sizeof(T) == mSize && mTypeName == TypeName< T >();
 	}
 
 	/**
