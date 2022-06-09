@@ -38,7 +38,7 @@ class Substance;
  * This will FormBond() with the provided T. <br />
  * Class in other namespaces will grow to include more complex, templated logic. <br />
  * This pattern prevents you from having to define virtual methods each of your child classes, so long as you always derive from the appropriate Class<T>. <br />
- * @tparam T
+ * @tparam T a pointer to a class type.
  */
 template < typename T >
 class Class :
@@ -52,16 +52,27 @@ private:
 	{
 		if (filter != filter::Default())
 		{
-			//Skip log::Writer::Initialize, since we don't have a log::Engine atm.
-			Filterable::Initialize(filter);
+			log::Writer::Initialize(filter);
 		}
+
 		//Bond the class we're given, Virtually.
 		//Cannot use mObject because it doesn't exist yet.
-		AtomicNumber bondedId = Atom::GetBondId< T* >();
+		AtomicNumber bondedId = Atom::GetBondId< T >();
+
+		#if BIO_CPP_VERSION < 17
+		//TODO: Atom expects a Quantum< T > but can we make one if we don't have a T yet?
+		//Propose: adding a DirectAccess() method to Quantum would allow us to hack this.
+		//Or: make implicit Quntum constructor from Wave*.
 		this->AsAtom()->FormBondImplementation(
 			this->AsWave(),
 			bondedId,
 			bond_type::Virtual());
+		#else
+		this->AsAtom()->FormBondImplementation(
+			this->AsWave(),
+			bondedId,
+			bond_type::Virtual());
+		#endif
 	}
 
 public:
@@ -87,7 +98,7 @@ public:
 		physical::Class< T >(
 			object,
 			new physical::Symmetry(
-				TypeName< T >(),
+				type::TypeName< T >(),
 				symmetryType
 			))
 	{
@@ -111,7 +122,7 @@ public:
 		physical::Class< T >(
 			object,
 			new physical::Symmetry(
-				TypeName< T >(),
+				type::TypeName< T >(),
 				symmetryType
 			))
 	{
@@ -146,7 +157,7 @@ public:
 		physical::Class< T >(
 			object,
 			new physical::Symmetry(
-				TypeName< T >(),
+				type::TypeName< T >(),
 				symmetryType
 			))
 	{

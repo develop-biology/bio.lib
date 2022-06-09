@@ -39,10 +39,10 @@ namespace chemical {
  * Substances start Enable()d. <br />
  */
 class Substance :
-	virtual public Structure,
 	public chemical::Class< Substance >,
 	public UnorderedMotif< Property >,
-	public UnorderedMotif< State >
+	public UnorderedMotif< State >,
+	virtual public Structure
 {
 public:
 

@@ -34,8 +34,8 @@ namespace bio {
  */
 template < class CALLER, class CLOBBER, class PERSPECTIVE >
 class CellularForwarder:
-	public CLOBBER,
-	public cellular::Class< CellularForwarder< CALLER, CLOBBER, PERSPECTIVE > >
+	public cellular::Class< CellularForwarder< CALLER, CLOBBER, PERSPECTIVE > >,
+	public CLOBBER
 {
 public:
 

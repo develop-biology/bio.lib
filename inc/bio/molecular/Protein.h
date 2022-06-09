@@ -42,10 +42,10 @@ class DNA;
  * NOTE: Because Proteins are Molecules, they are more than just simple functors; they can store variables, facilitate in Transferring variables, and act as any other data structure. <br />
  */
 class Protein :
-	virtual public Molecule,
 	public Class< Protein >,
 	public chemical::LinearMotif< Protein* >,
-	public EnvironmentDependent< Vesicle >
+	public EnvironmentDependent< Vesicle >,
+	virtual public Molecule
 {
 public:
 

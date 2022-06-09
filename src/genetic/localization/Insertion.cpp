@@ -52,16 +52,15 @@ chemical::Substance* Insertion::Seek(chemical::Substance* insertIn) const
 {
 	insertIn = ResolvePrevious(insertIn);
 
-	BIO_SANITIZE(insertIn && mToInsert, ,
-		return insertIn);
+	BIO_SANITIZE(insertIn && mToInsert, , return insertIn);
 
 	if (mSite == InsertionSitePerspective::InvalidId())
 	{
 		return insertIn;
 	}
 
-	BIO_SANITIZE(mcMethod, ,
-		return NULL)
+	BIO_SANITIZE(mcMethod, , return NULL)
+
 	ByteStream insertion(mToInsert);
 	(const_cast< chemical::ExcitationBase* >(mcMethod))->EditArg(
 		0,
@@ -72,9 +71,8 @@ chemical::Substance* Insertion::Seek(chemical::Substance* insertIn) const
 		insertIn->AsWave(),
 		result
 	);
-	chemical::Substance* insert = ChemicalCast< chemical::Substance* >(Cast< physical::Wave* >(result.DirectAccess())); //This is about as safe as we can get right now. 
-	BIO_SANITIZE(insert, ,
-		return NULL)
+	chemical::Substance* insert = ChemicalCast< chemical::Substance* >(Cast< physical::Wave* >(result.DirectAccess())); //This is about as safe as we can get right now.
+	BIO_SANITIZE(insert, , return NULL)
 	return insert;
 }
 
@@ -82,6 +80,10 @@ void Insertion::SetSite(Site site)
 {
 	//Assume Sites & Sites always match exactly.
 	mSite = site;
+	if (mcMethod)
+	{
+		delete mcMethod;
+	}
 	mcMethod = SafelyAccess<InsertionSitePerspective>()->GetNewObjectFromIdAs< chemical::ExcitationBase* >(mSite);
 }
 

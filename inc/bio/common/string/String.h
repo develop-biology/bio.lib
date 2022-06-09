@@ -194,6 +194,18 @@ public:
 	virtual bool operator==(const String& other) const;
 
 	/**
+	 * @param other
+	 * @return whether or not the contents of *this match those of other.
+	 */
+	virtual bool operator==(const char* other) const;
+
+	/**
+	 * @param other
+	 * @return whether or not the contents of *this match those of other.
+	 */
+	virtual bool operator==(const ::std::string& other) const;
+
+	/**
 	 * @return *this as an std::string.
 	 */
 	virtual operator ::std::string() const;

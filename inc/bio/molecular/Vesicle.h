@@ -37,9 +37,9 @@ namespace molecular {
  * Thus, Vesicles may only interact with each other through what they expose on their Surfaces. <br />
  */
 class Vesicle :
-	virtual public Molecule,
 	public Class< Vesicle >,
-	protected chemical::LinearMotif< Molecule* >
+	protected chemical::LinearMotif< Molecule* >,
+	virtual public Molecule
 {
 	friend class TransMembraneDomain;
 	friend BIO_EXCITATION_CLASS(chemical::LinearMotif< Molecule* >, Molecule*, Name); //For genetic Localization and Insertion.

@@ -27,7 +27,7 @@ namespace bio {
 namespace bond_type {
 
 /**
- * An Manage Bond should be used for basic types by a Surface. <br />
+ * A Manage Bond should be used for basic types by a Surface. <br />
  * This will instruct the Surface to take ownership of the Managed Wave*, tying the Wave*s life cycle to the Managing Surface. In other words, Managed objects will be deleted by the Manager (the Surface with the Bond). <br />
  */
 BondType Manage();

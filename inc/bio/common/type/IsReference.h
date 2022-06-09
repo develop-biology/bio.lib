@@ -21,39 +21,56 @@
 
 #pragma once
 
+#include "bio/common/macro/Macros.h"
+
+//@formatter:off
+#if BIO_CPP_VERSION >= 11
+	#include <type_traits>
+#endif
+//@formatter:on
+
 namespace bio {
+namespace type {
 
-namespace physical {
-class Wave;
-}
+//@formatter:off
+#if BIO_CPP_VERSION < 11
+template<typename T>
+struct IsReferenceImplementation {static const bool sValue = false;};
 
-/**
- * ChemicalCasts use chemical Bonds to change one object into anther. <br />
- * See Atom::As<>() for more info.<br />
- * @tparam TO
- * @tparam FROM
- * @param toCast
- * @return The TO that is bonded to FROM or 0.
- */
-template < typename TO, typename FROM >
-TO ChemicalCast(FROM toCast)
-{
-	BIO_STATIC_ASSERT(type::IsPointer< FROM >())
-	return toCast->AsAtom()->template As< TO >();
-}
+template<typename T>
+struct IsReferenceImplementation<T&> {static const bool sValue = true;};
+
+#endif
+//@formatter:on
 
 /**
- * Ease of use method for Cloning. <br />
+ * Check whether or not T is a reference <br />
  * @tparam T
- * @return a Clone of T casted to back to T.
+ * @return whether or not T has an '&' at the end.
  */
 template < typename T >
-T CloneAndCast(const T& toClone)
+BIO_CONSTEXPR bool IsReference()
 {
-	//Dereference here might be dangerous & need sanitization.
-	::bio::physical::Wave* clone = toClone->Clone()->AsWave();
-	return ChemicalCast< T >(clone);
+	//@formatter:off
+	#if BIO_CPP_VERSION < 11
+		return IsReferenceImplementation< T >::sValue;
+	#else
+		return ::std::is_reference<T>::value;
+	#endif
+	//@formatter:on
 }
 
+/**
+ * Ease of use method for passing T as arg. <br />
+ * @tparam T
+ * @param t
+ * @return whether or not T has an '&' at the end.
+ */
+template < typename T >
+bool IsReference(const T t)
+{
+	return IsReference< T >();
+}
 
+} //type namespace
 } //bio namespace

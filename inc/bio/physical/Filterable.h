@@ -67,7 +67,7 @@ public:
 	 * VirtualBase required method. See that class for details (in common/) <br />
 	 * @param args
 	 */
-	virtual void InitializeImplementation(ByteStreams args);
+	virtual void InitializeImplementation(ByteStreams& args);
 
 	/**
 	 * Set the filter for *this. <br />

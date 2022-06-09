@@ -25,6 +25,7 @@
 #include "bio/common/macro/Macros.h"
 
 namespace bio {
+namespace type {
 
 //Modified from: https://stackoverflow.com/questions/35941045/can-i-obtain-c-type-names-in-a-constexpr-way
 
@@ -118,4 +119,5 @@ BIO_CONSTEXPR static ImmutableString TypeName(const T t)
 	return TypeName< T >();
 }
 
+} //type namespace
 } //bio namespace

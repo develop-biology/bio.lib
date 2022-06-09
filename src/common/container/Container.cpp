@@ -180,6 +180,10 @@ Index Container::Add(const ByteStream content)
 		&mStore[ret * sizeof(ByteStream)],
 		&content,
 		sizeof(ByteStream));
+
+	// prevent the contents we just copied from being Released.
+	const_cast< ByteStream* >(&content)->TakeHold();
+
 	return ret;
 }
 
@@ -347,7 +351,6 @@ const ByteStream Container::operator[](const SmartIterator itt) const
 
 Index Container::GetNextAvailableIndex()
 {
-	//IMPORTANT: ASSUME 
 	Index ret = InvalidIndex();
 	if (!mDeallocated.empty())
 	{

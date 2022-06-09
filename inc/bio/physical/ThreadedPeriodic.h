@@ -32,9 +32,9 @@ namespace physical {
  * See Periodic.h & Threaded.h for more info. <br />
  */
 class ThreadedPeriodic :
+	physical::Class< ThreadedPeriodic >,
 	virtual public Periodic,
-	virtual public Threaded,
-	physical::Class< ThreadedPeriodic >
+	virtual public Threaded
 {
 public:
 

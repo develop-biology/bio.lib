@@ -31,8 +31,8 @@ namespace molecular {
  * When creating your own Channels, you may want to derive from this and specify when the Channel is "closed", add some monitoring / logging, etc. <br />
  */
 class OpenChannel :
-	public Pore,
-	public Class< OpenChannel >
+	public Class< OpenChannel >,
+	public Pore
 {
 public:
 

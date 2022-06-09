@@ -48,12 +48,13 @@ namespace physical {
 */
 template < typename DIMENSION >
 class Identifiable :
-	virtual public Observer< Perspective< DIMENSION > >, //includes VirtualBase, so no need to re-inherit.
-	public physical::Class< Identifiable< DIMENSION > >
+	public physical::Class< Identifiable< DIMENSION > >,
+	public Observer< Perspective< DIMENSION > >,
+	protected VirtualBase
 {
 public:
 	typedef DIMENSION Identifier;
-	typedef ::bio::Arrangement< Identifier > Ids;
+	typedef Arrangement< Identifier > Ids;
 
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
@@ -68,14 +69,14 @@ public:
 	explicit Identifiable(Perspective< DIMENSION >* perspective = NULL)
 		:
 		physical::Class< Identifiable< DIMENSION > >(this),
-		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
+		#if BIO_MEMORY_OPTIMIZE_LEVEL < 1
 		mName(Perspective< DIMENSION >::InvalidName()),
 		#endif
 		mId(Perspective< DIMENSION >::InvalidId())
 	{
 		if (perspective)
 		{
-			Observer< Perspective< DIMENSION > >::Initialize(perspective);
+			this->Observer< Perspective< DIMENSION > >::SetPerspective(perspective);
 		}
 	}
 
@@ -89,20 +90,20 @@ public:
 	)
 		:
 		physical::Class< Identifiable< DIMENSION > >(this),
-		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
+		#if BIO_MEMORY_OPTIMIZE_LEVEL < 1
 		mName(name),
 		#endif
 		mId(Perspective< DIMENSION >::InvalidId())
 	{
 		if (perspective)
 		{
-			Observer< Perspective< DIMENSION > >::Initialize(perspective);
-			mId = this->GetPerspective()->GetIdFromName(mName);
+			this->Observer< Perspective< DIMENSION > >::SetPerspective(perspective);
+			this->mId = this->GetPerspective()->GetIdFromName(mName);
 			this->MakeWave();
 		}
 		else
 		{
-			mId = Perspective< DIMENSION >::InvalidId();
+			this->mId = Perspective< DIMENSION >::InvalidId();
 		}
 	}
 
@@ -120,16 +121,16 @@ public:
 	{
 		if (perspective)
 		{
-			Observer< Perspective< DIMENSION > >::Initialize(perspective);
-			#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-			mName = perspective->GetNameFromId(id);
+			this->Observer< Perspective< DIMENSION > >::SetPerspective(perspective);
+			#if BIO_MEMORY_OPTIMIZE_LEVEL < 1
+			this->mName = perspective->GetNameFromId(id);
 			#endif
 			this->MakeWave();
 		}
 		else
 		{
-			mId = Perspective< DIMENSION >::InvalidId();
-			mName = Perspective< DIMENSION >::InvalidName();
+			this->mId = Perspective< DIMENSION >::InvalidId();
+			this->mName = Perspective< DIMENSION >::InvalidName();
 		}
 	}
 
@@ -139,12 +140,12 @@ public:
 	Identifiable(const Identifiable& other)
 		:
 		physical::Class< Identifiable< DIMENSION > >(this),
-		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
+		#if BIO_MEMORY_OPTIMIZE_LEVEL < 1
 		mName(other.GetName()),
 		#endif
 		mId(other.mId)
 	{
-		Observer< Perspective< DIMENSION > >::Initialize(other.GetPerspective());
+		this->Observer< Perspective< DIMENSION > >::SetPerspective(other.GetPerspective());
 	}
 
 	/**
@@ -160,7 +161,7 @@ public:
 	 */
 	virtual operator DIMENSION() const
 	{
-		return mId;
+		return this->mId;
 	}
 
 	/**
@@ -191,7 +192,7 @@ public:
 	 */
 	virtual bool operator==(const Name& name) const
 	{
-		if (!GetName())
+		if (!this->GetName())
 		{
 			if (!name)
 			{
@@ -224,8 +225,8 @@ public:
 	 */
 	virtual Name GetName() const
 	{
-		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-		return mName;
+		#if BIO_MEMORY_OPTIMIZE_LEVEL < 1
+		return this->mName;
 		#else
 		return BIO_SANITIZE_WITH_CACHE(this->GetPerspective(), RESULT->GetNameFromId(mId), return "INVALID_NAME");
 		#endif
@@ -236,7 +237,7 @@ public:
 	 */
 	virtual Identifier GetId() const
 	{
-		return mId;
+		return this->mId;
 	}
 
 	/**
@@ -252,11 +253,11 @@ public:
 			return false
 		)
 
-		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
-		mName = name;
+		#if BIO_MEMORY_OPTIMIZE_LEVEL < 1
+		this->mName = name;
 		#endif
 
-		mId = this->GetPerspective()->GetIdFromName(name);
+		this->mId = this->GetPerspective()->GetIdFromName(name);
 		return true;
 	}
 
@@ -275,7 +276,7 @@ public:
 
 		mId = id;
 
-		#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
+		#if BIO_MEMORY_OPTIMIZE_LEVEL < 1
 		mName = this->GetPerspective()->GetNameFromId(mId);
 		#endif
 
@@ -310,7 +311,7 @@ public:
 	 */
 	virtual bool IsId(Identifier id) const
 	{
-		return id == mId;
+		return id == this->mId;
 	}
 
 	/**
@@ -319,15 +320,15 @@ public:
 	 */
 	virtual void SetPerspective(Perspective< DIMENSION >* perspective)
 	{
-		this->SetPerspective(perspective);
+		this->Observer< Perspective< DIMENSION > >::SetPerspective(perspective);
 
-		if (IsName(Perspective< DIMENSION >::InvalidName()) && !IsId(Perspective< DIMENSION >::InvalidId()))
+		if (this->IsName(Perspective< DIMENSION >::InvalidName()) && !this->IsId(Perspective< DIMENSION >::InvalidId()))
 		{
-			#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
+			#if BIO_MEMORY_OPTIMIZE_LEVEL < 1
 			mName = this->GetPerspective()->GetNameFromId(mId);
 			#endif
 		}
-		else if (!IsName(Perspective< DIMENSION >::InvalidName()) && IsId(Perspective< DIMENSION >::InvalidId()))
+		else if (!this->IsName(Perspective< DIMENSION >::InvalidName()) && this->IsId(Perspective< DIMENSION >::InvalidId()))
 		{
 			mId = this->GetPerspective()->GetIdFromName(GetName());
 		}
@@ -383,14 +384,14 @@ protected:
 	 * VirtualBase required method. See that class for details (in common/) <br />
 	 * @param args
 	 */
-	virtual void InitializeImplementation(ByteStreams args)
+	virtual void InitializeImplementation(ByteStreams& args)
 	{
 
 		if (args.Size() == 2)
 		{
 			if (args[args.GetEndIndex()].Is< Perspective< DIMENSION >* >())
 			{
-				Observer< Perspective< DIMENSION > >::Initialize(args[args.GetEndIndex()]);
+				this->Observer< Perspective< DIMENSION > >::SetPerspective(args[args.GetEndIndex()]);
 			}
 			args.Erase(args.GetEndIndex());
 		}
@@ -398,19 +399,34 @@ protected:
 		{
 			if (args[args.GetEndIndex()].Is(mId))
 			{
-				mId = args[args.GetEndIndex()];
+				this->mId = args[args.GetEndIndex()].As< Identifier >();
+
+				#if BIO_MEMORY_OPTIMIZE_LEVEL < 1
+				if (this->mId && this->GetPerspective())
+				{
+					this->mName = this->GetPerspective()->GetNameFromId(this->mId);
+				}
+				#endif
 			}
-			#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
+			#if BIO_MEMORY_OPTIMIZE_LEVEL < 1
 			else if (args[args.GetEndIndex()].Is(mName))
 			{
-				mName = args[args.GetEndIndex()].As< String >();
+				//mName keeps being deleted when this temp goes out of scope.
+				//If we can find a way to reliably use move constructors here, we can make the Mode READ_ONLY and potentially save ourselves a bunch of memory.
+				//Or we can leave as is and let people use BIO_MEMORY_OPTIMIZE_LEVEL to remove storing names altogether.
+				this->mName = String::SetMode(args[args.GetEndIndex()].As< String >(), String::READ_WRITE);
+
+				if (this->GetPerspective())
+				{
+					this->mId = this->GetPerspective()->GetIdFromName(this->mName);
+				}
 			}
 			#endif
 		}
 	}
 
 private:
-	#if BIO_MEMORY_OPTIMIZE_LEVEL == 0
+	#if BIO_MEMORY_OPTIMIZE_LEVEL < 1
 	Name mName;
 	#endif
 

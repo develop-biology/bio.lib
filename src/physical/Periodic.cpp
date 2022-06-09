@@ -96,18 +96,14 @@ Symmetry* Periodic::Spin() const
 
 Code Periodic::Reify(Symmetry* symmetry)
 {
-	BIO_SANITIZE(symmetry, ,
-		return code::BadArgument1());
+	BIO_SANITIZE(symmetry, , return code::BadArgument1());
 	mInterval = symmetry->GetValue();
 	return code::Success();
 }
 
-void Periodic::InitializeImplementation(ByteStreams args)
+void Periodic::InitializeImplementation(ByteStreams& args)
 {
-	BIO_SANITIZE(args.Size() == 1 && args[args.GetEndIndex()].Is(
-		mInterval
-	), ,
-		return);
+	BIO_SANITIZE(args[args.GetEndIndex()].Is(mInterval), , return);
 	mInterval = args[args.GetEndIndex()];
 }
 

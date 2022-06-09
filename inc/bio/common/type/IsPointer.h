@@ -30,7 +30,7 @@
 //@formatter:on
 
 namespace bio {
-namespace utility {
+namespace type {
 
 //@formatter:off
 #if BIO_CPP_VERSION < 11
@@ -45,7 +45,7 @@ namespace utility {
 /**
  * Check whether or not T is a pointer <br />
  * @tparam T
- * @return whether or not T is a pointer.
+ * @return whether or not T has a '*' at the end.
  */
 template < typename T >
 BIO_CONSTEXPR bool IsPointer()
@@ -63,7 +63,7 @@ BIO_CONSTEXPR bool IsPointer()
  * Ease of use method for passing T as arg. <br />
  * @tparam T
  * @param t
- * @return whether or not T is a pointer.
+ * @return whether or not T has a '*' at the end.
  */
 template < typename T >
 bool IsPointer(const T t)
@@ -71,5 +71,5 @@ bool IsPointer(const T t)
 	return IsPointer< T >();
 }
 
-} //utility namespace
+} //type namespace
 } //bio namespace

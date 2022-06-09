@@ -92,13 +92,13 @@ public:
 	 * @return
 	 */
 	template < typename T >
-	T Manage(T varPtr)
+	T& Manage(T* varPtr)
 	{
-		BIO_STATIC_ASSERT(utility::IsPointer< T >())
+		BIO_STATIC_ASSERT(!type::IsPointer< T >())
 		FormBond(
 			varPtr,
 			bond_type::Manage());
-		return varPtr;
+		return Probe< T >();
 	}
 
 	/**
@@ -110,37 +110,33 @@ public:
 	 * @return
 	 */
 	template < typename T >
-	T Use(T varPtr)
+	T& Use(T* varPtr)
 	{
-		BIO_STATIC_ASSERT(utility::IsPointer< T >())
+		BIO_STATIC_ASSERT(!type::IsPointer< T >())
 		FormBond(
 			varPtr,
 			bond_type::Use());
-		return varPtr;
+		return Probe< T >();
 	}
 
 	/**
 	 * Probe is the Biology style "get". <br />
-	 * This is a little more complicated than ChemicalCast< T >(this) but follows the same logic. <br />
-	 * @tparam T
+	 * This is a simple wrapper around Atom::As<>(). If you need to Get the T* *this is Bound to, use As directly. <br />
+	 * @tparam T a non-pointer type that is Bound to *this.
 	 * @return a T that is Bound to *this or 0.
 	 */
 	template < typename T >
-	T Probe()
+	T& Probe()
 	{
+		BIO_STATIC_ASSERT(!type::IsPointer< T >())
+
 		BIO_SANITIZE(mBoundPosition,,return 0)
 		BIO_SANITIZE(mBonds.IsAllocated(mBoundPosition),,return 0)
 
-		chemical::Bond* bond = mBonds.OptimizedAccess(mBoundPosition);
+		//We won't bother re-implementing the Atom::As method here, even though we could be more efficient since we already know the Bonded position.
 
-		//If we Manage or Use a variable, it will be stored as a T*.
-		if (bond->GetId() == GetBondId< T* >())
-		{
-			return *(ChemicalCast< T* >(bond->GetBonded()));
-		}
-
-		//Assume Bound as T. Anything else is an error.
-		return ChemicalCast< T >(bond->GetBonded());
+		T* ret = this->As< T* >();
+		return *ret;
 	}
 
 	/**
@@ -153,48 +149,22 @@ public:
 	 * @return the Bound type.
 	 */
 	template < typename T >
-	T Bind(
-		T toBind,
+	T& Bind(
+		T& toBind,
 		BondType bondType = bond_type::Temporary())
 	{
+		BIO_STATIC_ASSERT(!type::IsPointer< T >());
 		if (mBoundPosition)
 		{
-			BIO_SANITIZE(mBonds.IsAllocated(mBoundPosition),,return 0)
-
-			chemical::Bond* bond = mBonds.OptimizedAccess(mBoundPosition);
-
-			#if BIO_CPP_VERSION < 17
-			BIO_SANITIZE(utility::IsPointer< T >(),,return 0)
-			//Assume Bound as T. Anything else is an error.
-			T bound = ChemicalCast< T >(bond->GetBonded());
-			*bound = *toBind;
-			return bound;
-			#else
-			if constexpr(utility::IsPointer< T >())
-			{
-				T bound = ChemicalCast< T >(bond->GetBonded());
-				*bound = *toBind;
-				return bound;
-			}
-			else
-			{
-				//If we Manage or Use a variable, it will be stored as a T*.
-				//So, if we can, we'll accommodate non-pointer uses.
-				if (bond->GetId() == GetBondId< T* >())
-				{
-					T* bound = ChemicalCast< T* >(bond->GetBonded());
-					*bound = toBind;
-					return *bound;
-				}
-			}
-			#endif
+			T* bound = As< T* >();
+			*bound = toBind;
 		}
 
-		FormBond(
+		FormBond< T >(
 			toBind,
 			bondType
 		);
-		return toBind;
+		return Probe< T >();
 	}
 
 	/**

@@ -67,16 +67,14 @@ chemical::Substance* Localization::Seek(chemical::Substance* seekIn) const
 {
 	seekIn = ResolvePrevious(seekIn);
 
-	BIO_SANITIZE(seekIn, ,
-		return seekIn);
+	BIO_SANITIZE(seekIn, , return seekIn);
 
 	if (mSite == LocalizationSitePerspective::InvalidId())
 	{
 		return seekIn;
 	}
 
-	BIO_SANITIZE(mcMethod, ,
-		return NULL)
+	BIO_SANITIZE(mcMethod, , return NULL)
 	ByteStream newName(mName);
 	(const_cast< chemical::ExcitationBase* >(mcMethod))->EditArg(
 		0,
@@ -88,8 +86,7 @@ chemical::Substance* Localization::Seek(chemical::Substance* seekIn) const
 		result
 	);
 	chemical::Substance* extract = ChemicalCast< chemical::Substance* >(Cast< physical::Wave* >(result.DirectAccess())); //This is about as safe as we can get right now. 
-	BIO_SANITIZE(extract, ,
-		return NULL)
+	BIO_SANITIZE(extract, , return NULL)
 	return extract;
 }
 

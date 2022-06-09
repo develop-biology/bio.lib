@@ -25,7 +25,7 @@
 #include "Symmetry.h"
 #include "bio/physical/common/SymmetryTypes.h"
 #include "bio/common/macro/Macros.h"
-#include "bio/common/TypeName.h"
+#include "bio/common/type/TypeName.h"
 
 namespace bio {
 namespace physical {
@@ -57,7 +57,7 @@ public:
 		physical::Class< Quantum< T > >(
 			this,
 			new Symmetry(
-				TypeName< T >(),
+				type::TypeName< T >(),
 				symmetry_type::DefineVariable())),
 		mQuantized(new T())
 	{
@@ -72,7 +72,7 @@ public:
 		physical::Class< Quantum< T > >(
 			this,
 			new Symmetry(
-				TypeName< T >(),
+				type::TypeName< T >(),
 				symmetry_type::DefineVariable())),
 		mQuantized(new T(assignment))
 	{
@@ -86,7 +86,7 @@ public:
 		physical::Class< Quantum< T > >(
 			this,
 			new Symmetry(
-				TypeName< T >(),
+				type::TypeName< T >(),
 				symmetry_type::DefineVariable())),
 		mQuantized(new T(other))
 	{
@@ -102,23 +102,46 @@ public:
 	}
 
 	/**
-	 * *this can be treated as a T* directly. 
-	 * @return *this as a T*.
+	 * Simple getter.
+	 * @return the object wrapped by *this.
 	 */
-	operator T*()
+	virtual T* GetQuantumObject()
 	{
+		BIO_SANITIZE(this->mQuantized,,return NULL)
 		return this->mQuantized;
 	}
 
 	/**
-	 * Read only access to the value of *this. <br />
+	 * Simple getter.
+	 * @return the object wrapped by *this.
+	 */
+	virtual const T* GetQuantumObject() const
+	{
+		BIO_SANITIZE(this->mQuantized,,return NULL)
+		return this->mQuantized;
+	}
+
+	/**
+	 * Transparent access to the value of *this. <br />
 	 * For ease of use. <br />
 	 * @return *this as a T.
 	 */
-	operator T() const
+	operator T&()
 	{
 		BIO_SANITIZE(mQuantized,
-			return *this->mQuantized,
+			return *this->GetQuantumObject(),
+			return T());
+	}
+
+	/**
+	 * Transparent access to the value of *this. <br />
+	 * For ease of use. <br />
+	 * @return *this as a T.
+	 */
+	operator const T&() const
+	{
+		BIO_SANITIZE(mQuantized,
+			return *this->GetQuantumObject(),
 			return T());
 	}
 

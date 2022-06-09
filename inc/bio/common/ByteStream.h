@@ -23,7 +23,8 @@
 
 #include "bio/common/macro/Macros.h"
 #include "bio/common/string/String.h"
-#include "TypeName.h"
+#include "bio/common/type/IsPointer.h"
+#include "bio/common/type/TypeName.h"
 #include <cstddef>
 #include <cstdlib>
 #include <cstring>
@@ -56,7 +57,8 @@ public:
 	template < typename T >
 	ByteStream(T in)
 		:
-		mHolding(false)
+		mHolding(false),
+		mTypeName(String::READ_ONLY)
 	{
 		Set(in);
 	}
@@ -113,7 +115,7 @@ public:
 	 * @return stored bytes as T.
 	 */
 	template < typename T >
-	T As()
+	T& As()
 	{
 		BIO_ASSERT(Is< T >())
 
@@ -132,7 +134,7 @@ public:
 	 * @return stored bytes as T.
 	 */
 	template < typename T >
-	const T As() const
+	const T& As() const
 	{
 		//@formatter: off
 		#if BIO_CPP_VERSION < 17
@@ -182,7 +184,7 @@ public:
 			&in,
 			sizeof(T));
 		mSize = sizeof(T);
-		mTypeName = TypeName< T >();
+		mTypeName = type::TypeName< T >();
 		mHolding = true;
 	}
 
@@ -213,7 +215,23 @@ public:
 	template < typename T >
 	bool Is() const
 	{
-		return sizeof(T) == mSize && mTypeName == TypeName< T >();
+		if (sizeof(T) != mSize)
+		{
+			return false;
+		}
+		if BIO_CONSTEXPR(!type::IsPointer< T >())
+		{
+			return mTypeName == type::TypeName< T >();
+		}
+
+		//TODO: You have a type T which might be a pointer to either a parent or a child class of what you keep in mStore. How do you know if what you have is convertable to T without access to the actual type of the data you store?
+		//Possible solutions:
+		//1. bitshift through a vtable, assuming our compiler uses one, and do pointer comparisons on T's parents first to see if our class is a parent of T; then, failing that, see if we can identify the vtable of what we store and compare it with T to see if our class derives from T.
+		//2. Use the PeriodicTable to convert mTypeName to a type we can use.
+		//3. Store pointers as Wave*s and only allow a pointer to be stored if it can be converted to a Wave*, then we can use AsWave() and even ChemicalCast.
+
+
+		return true; //push burden of safety off to caller until we solve this.
 	}
 
 	/**
@@ -237,6 +255,16 @@ public:
 	 * @return the number of bytes *this points to.
 	 */
 	std::size_t GetSize() const;
+
+	/**
+	 * This is yet another strange and hacky function in the ByteStream menagerie. <br />
+	 * If a ByteStream is passed by reference to a function which copies the data of the ByteStream, the temporary variable needs to stop mHolding its mStream so that the copy can be in charge of Releasing the Held data. <br />
+	 * Otherwise, once the ByteStream is copied elsewhere (e.g. into a Container) and then the original ByteStream goes out of scope, the persisted copy's mStream will be freed. <br />
+	 * To address optimized hand-off situations like this, you can TakeHold of a ByteStream, which will prevent it from Releasing its contents. <br />
+	 * As with other methods of this class, don't use this. Just stop. Unless you know exactly what your doing and where your memory is going, pretend this doesn't exist and find a sane solution to whatever problem you have (e.g. create a new ByteStream by copying the reference). <br />
+	 * It is UNDEFINED BEHAVIOR to use a ByteStream after its Hold has been Taken. <br />
+	 */
+	void TakeHold();
 
 	/**
 	 * Assume the caller knows something we don't. <br />

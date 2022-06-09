@@ -183,7 +183,7 @@ public:
 	 * NOTE: operator Wave*() and various perturbations fail to resolve ambiguous implicit upcasting. <br />
 	 * @return this
 	 */
-	virtual Wave* AsWave()
+	Wave* AsWave()
 	{
 		return this;
 	}
@@ -194,7 +194,7 @@ public:
 	 * NOTE: operator Wave*() and various perturbations fail to resolve ambiguous implicit upcasting. <br />
 	 * @return this
 	 */
-	virtual const Wave* AsWave() const
+	const Wave* AsWave() const
 	{
 		return this;
 	}

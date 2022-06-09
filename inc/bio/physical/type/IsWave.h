@@ -18,45 +18,23 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 #pragma once
 
-#include "bio/common/macro/Macros.h"
-
-//@formatter:off
-#if BIO_CPP_VERSION >= 11
-	#include <type_traits>
-#endif
-//@formatter:on
+#include "bio/common/type/IsPrimitive.h"
 
 namespace bio {
-namespace utility {
-
-//@formatter:off
-#if BIO_CPP_VERSION < 11
-	template<typename T>
-	struct RemoveReferenceImplementation {typedef T Type;};
-
-	template<typename T>
-	struct RemoveReferenceImplementation<T&> {typedef T Type;};
-#endif
-//@formatter:on
+namespace type {
 
 /**
- * Strips '&' from the end of T <br />
  * @tparam T
+ * @return whether or not the given T derives from physical::Wave.
  */
 template < typename T >
-struct RemoveReference
+BIO_CONSTEXPR bool IsWave()
 {
-	//@formatter:off
-	#if BIO_CPP_VERSION < 11
-		typedef typename RemoveReferenceImplementation< T >::Type Type;
-	#else
-		typedef ::std::remove_reference<T>::type Type;
-	#endif
-	//@formatter:on
-};
+	//TODO: Actually determine inheritance.
+	return !IsPrimitive< T >();
+}
 
-} //utility namespace
+} //type namespace
 } //bio namespace

@@ -36,8 +36,7 @@ namespace physical {
  * By not allowing objects to be duplicated across perspectives, we reduce our overall memory footprint. <br />
 */
 template < typename PERSPECTIVE >
-class Observer :
-	protected VirtualBase
+class Observer
 {
 public:
 	typedef PERSPECTIVE Perspective;
@@ -76,24 +75,12 @@ public:
 		mPerspective = perspective;
 	}
 
-	virtual /**
+	/**
 	 * @return the perspective held by *this.
 	 */
-	Perspective* GetPerspective() const
+	virtual Perspective* GetPerspective() const
 	{
 		return mPerspective;
-	}
-
-protected:
-	/**
-	 * VirtualBase required method. See that class for details (in common/) <br />
-	 * @param args
-	 */
-	virtual void InitializeImplementation(ByteStreams args)
-	{
-		BIO_SANITIZE(args.Size() == 1 && args[args.GetEndIndex()].Is(mPerspective), ,
-			return);
-		mPerspective = args[args.GetEndIndex()];
 	}
 
 private:

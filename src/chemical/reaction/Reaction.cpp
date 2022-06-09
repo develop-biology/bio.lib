@@ -82,7 +82,7 @@ bool Reaction::ReactantsMeetRequirements(const Reactants* toCheck) const
 /*static*/ const Reaction* Reaction::Initiate(const Id& id)
 {
 	BIO_SANITIZE_WITH_CACHE(SafelyAccess<ReactionPerspective>()->GetTypeFromIdAs< Reaction* >(id),
-		return *(Cast< const Reaction** >(RESULT)),
+		return Cast< Reaction* >(RESULT),
 		return NULL);
 }
 

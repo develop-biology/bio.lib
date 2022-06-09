@@ -433,6 +433,7 @@ public:
 	template < typename T >
 	const T GetTypeFromIdAs(const Id& id) const
 	{
+		BIO_STATIC_ASSERT(type::IsPointer< T >())
 		BIO_SANITIZE_WITH_CACHE(GetTypeFromId(id),
 			BIO_SINGLE_ARG(return ForceCast< T, const Wave* >(RESULT)),
 			return NULL
@@ -448,6 +449,7 @@ public:
 	template < typename T >
 	const T GetTypeFromNameAs(const Name& name) const
 	{
+		BIO_STATIC_ASSERT(type::IsPointer< T >())
 		BIO_SANITIZE_WITH_CACHE(GetTypeFromName(name),
 			BIO_SINGLE_ARG(return ForceCast< T, const Wave* >(RESULT)),
 			return NULL
@@ -463,6 +465,7 @@ public:
 	template < typename T >
 	T GetNewObjectFromIdAs(const Id& id)
 	{
+		BIO_STATIC_ASSERT(type::IsPointer< T >())
 		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromId(id),
 			BIO_SINGLE_ARG(return ForceCast< T, Wave* >(RESULT)),
 			return NULL
@@ -478,6 +481,7 @@ public:
 	template < typename T >
 	T GetNewObjectFromNameAs(const Name& name)
 	{
+		BIO_STATIC_ASSERT(type::IsPointer< T >())
 		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromName(name),
 			BIO_SINGLE_ARG(return ForceCast< T, Wave* >(RESULT)),
 			return NULL

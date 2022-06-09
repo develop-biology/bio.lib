@@ -62,7 +62,7 @@ public:
 	template < typename T >
 	T Add(const T t)
 	{
-		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
+		UnorderedMotif< T >* implementer = this->As< UnorderedMotif< T >* >();
 		BIO_SANITIZE(implementer,
 			return implementer->AddImplementation(t),
 			return 0
@@ -79,7 +79,7 @@ public:
 	template < typename T >
 	T Remove(const T t)
 	{
-		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
+		UnorderedMotif< T >* implementer = this->As< UnorderedMotif< T >* >();
 		BIO_SANITIZE(implementer,
 			return implementer->RemoveImplementation(t),
 			return 0
@@ -96,7 +96,7 @@ public:
 	template < typename T >
 	void Import(const UnorderedMotif< T >* other)
 	{
-		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
+		UnorderedMotif< T >* implementer = this->As< UnorderedMotif< T >* >();
 		BIO_SANITIZE(implementer,
 			implementer->ImportImplementation(other),
 		)
@@ -167,7 +167,7 @@ public:
 	template < typename T >
 	Index GetCount() const
 	{
-		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
+		const UnorderedMotif< T >* implementer = this->As< UnorderedMotif< T >* >();
 		BIO_SANITIZE(implementer,
 			return implementer->GetCountImplementation(),
 			return 0
@@ -183,7 +183,7 @@ public:
 	template < typename T >
 	Container* GetAll()
 	{
-		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
+		UnorderedMotif< T >* implementer = this->As< UnorderedMotif< T >* >();
 		BIO_SANITIZE(implementer,
 			return implementer->GetAllImplementation(),
 			return 0
@@ -199,7 +199,7 @@ public:
 	template < typename T >
 	const Container* GetAll() const
 	{
-		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
+		const UnorderedMotif< T >* implementer = this->As< UnorderedMotif< T >* >();
 		BIO_SANITIZE(implementer,
 			return implementer->GetAllImplementation(),
 			return 0
@@ -216,7 +216,7 @@ public:
 	template < typename T >
 	bool Has(T content) const
 	{
-		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
+		const UnorderedMotif< T >* implementer = this->As< UnorderedMotif< T >* >();
 		BIO_SANITIZE(implementer,
 			return implementer->HasImplementation(content),
 			return false
@@ -231,7 +231,7 @@ public:
 	template < typename T >
 	unsigned int GetNumMatching(const Container* other) const
 	{
-		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
+		const UnorderedMotif< T >* implementer = this->As< UnorderedMotif< T >* >();
 		BIO_SANITIZE(implementer,
 			return implementer->GetNumMatchingImplementation(other),
 			return 0
@@ -247,7 +247,7 @@ public:
 	template < typename T >
 	bool HasAll(const Container* contents) const
 	{
-		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
+		const UnorderedMotif< T >* implementer = this->As< UnorderedMotif< T >* >();
 		BIO_SANITIZE(implementer,
 			return implementer->HasAllImplementation(contents),
 			return false
@@ -263,7 +263,7 @@ public:
 	template < typename T >
 	void Clear()
 	{
-		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
+		UnorderedMotif< T >* implementer = this->As< UnorderedMotif< T >* >();
 		BIO_SANITIZE(implementer,
 			implementer->ClearImplementation(),
 		)
@@ -277,7 +277,7 @@ public:
 	template < typename T >
 	std::string GetStringFrom(std::string separator = ", ")
 	{
-		UnorderedMotif< T >* implementer = this->AsBonded< UnorderedMotif< T >* >();
+		UnorderedMotif< T >* implementer = this->As< UnorderedMotif< T >* >();
 		BIO_SANITIZE(implementer,
 			return implementer->GetStringFromImplementation(separator),
 			return "");
