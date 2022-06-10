@@ -219,19 +219,10 @@ public:
 		{
 			return false;
 		}
-		if BIO_CONSTEXPR(!type::IsPointer< T >())
-		{
-			return mTypeName == type::TypeName< T >();
-		}
+		return mTypeName == type::TypeName< T >();
 
-		//TODO: You have a type T which might be a pointer to either a parent or a child class of what you keep in mStore. How do you know if what you have is convertable to T without access to the actual type of the data you store?
-		//Possible solutions:
-		//1. bitshift through a vtable, assuming our compiler uses one, and do pointer comparisons on T's parents first to see if our class is a parent of T; then, failing that, see if we can identify the vtable of what we store and compare it with T to see if our class derives from T.
-		//2. Use the PeriodicTable to convert mTypeName to a type we can use.
-		//3. Store pointers as Wave*s and only allow a pointer to be stored if it can be converted to a Wave*, then we can use AsWave() and even ChemicalCast.
-
-
-		return true; //push burden of safety off to caller until we solve this.
+		//NOTE: You may have a type T which might be a pointer to either a parent or a child class of what you keep in mStore. How do you know if what you have is convertable to T without access to the actual type of the data you store?
+		//ANSWER: You don't care. If the caller tries to pull anything out of *this besides what they put in, the caller is wrong and should be notified.
 	}
 
 	/**

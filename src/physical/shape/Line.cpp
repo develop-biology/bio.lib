@@ -50,16 +50,6 @@ Line::~Line()
 	}
 }
 
-ByteStream Line::Access(const Index index)
-{
-	return OptimizedAccess(index).operator Identifiable< Id >*();
-}
-
-const ByteStream Line::Access(const Index index) const
-{
-	return OptimizedAccess(index).operator const Identifiable< Id >*();
-}
-
 bool Line::AreEqual(
 	Index internal,
 	const ByteStream external
@@ -72,12 +62,12 @@ bool Line::AreEqual(
 
 Identifiable< Id >* Line::LinearAccess(Index index)
 {
-	return OptimizedAccess(index);
+	return OptimizedAccess(index).operator Identifiable< Id >*();
 }
 
 const Identifiable< Id >* Line::LinearAccess(Index index) const
 {
-	return OptimizedAccess(index);
+	return OptimizedAccess(index).operator const Identifiable< Id >*();
 }
 
 Index Line::SeekToName(const Name& name)

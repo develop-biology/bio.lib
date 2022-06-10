@@ -166,15 +166,17 @@ public:
 
 	/**
 	 * Adds content to *this. <br />
+	 * Added objects are "owned" (not physical::Linear::IsShared()) and will be deleted with *this. <br />
 	 * @param content
 	 * @return t or NULL.
 	 */
 	virtual CONTENT_TYPE AddImplementation(CONTENT_TYPE content)
 	{
-		Index addedPosition = this->mContents->Add(content);
+		Index addedPosition = this->mContents->Add(physical::Linear(content)); //stored as shared...
 		BIO_SANITIZE(addedPosition,,return NULL)
-		physical::Identifiable< Id >* added = Cast< physical::Line* >(this->mContents)->LinearAccess(addedPosition);
-		CONTENT_TYPE ret = ChemicalCast< CONTENT_TYPE >(added);
+		physical::Linear& added = Cast< physical::Line* >(this->mContents)->OptimizedAccess(addedPosition);
+		added.SetShared(false); //...but added contents are not shared.
+		CONTENT_TYPE ret = ChemicalCast< CONTENT_TYPE >(added.operator physical::Identifiable< Id >*());
 		BIO_SANITIZE(ret == content, , return NULL)
 		return ret;
 	}
@@ -225,8 +227,9 @@ public:
 			}
 		}
 
-		CONTENT_TYPE addition = CloneAndCast< CONTENT_TYPE >(toAdd);
-		BIO_SANITIZE(addition, , return code::GeneralFailure())
+		CONTENT_TYPE additionContent = CloneAndCast< CONTENT_TYPE >(toAdd);
+		BIO_SANITIZE(additionContent, , return code::GeneralFailure())
+		physical::Linear addition(additionContent);
 
 		if (this->mContents->IsAllocated(toReplace.GetIndex())) //i.e. GetIndex() != 0.
 		{
@@ -391,8 +394,11 @@ public:
 	 */
 	virtual CONTENT_TYPE CreateImplementation(const Id& id)
 	{
-		BIO_SANITIZE(this->GetStructuralPerspective(), , return NULL);
-		return this->AddImplementation((this->GetStructuralPerspective()->template GetTypeFromIdAs< CONTENT_TYPE >(id)));
+		BIO_SANITIZE(this->GetStructuralPerspective(), , return NULL)
+		physical::Wave* created = this->GetStructuralPerspective()->template GetNewObjectFromId(id);
+		BIO_SANITIZE(created, , return NULL)
+		CONTENT_TYPE toAdd = ChemicalCast< CONTENT_TYPE >(toAdd);
+		return this->AddImplementation(toAdd);
 	}
 
 	/**
@@ -440,7 +446,7 @@ public:
 	 */
 	virtual bool HasImplementation(const CONTENT_TYPE& content) const
 	{
-		return this->mContents->Has(content);
+		return this->mContents->Has(physical::Linear(content));
 	}
 
 	/**

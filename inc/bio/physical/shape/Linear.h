@@ -46,6 +46,9 @@ namespace physical {
  * Id here, mirrors what is used by chemical::Class and does not require any additional template specialization. <br />
  * Plus, not supporting other Dimensions makes for cleaner inheritance / downstream code. <br />
  * Support for other Dimensions may be added in a future release. <br />
+ *
+ * NOTE: Linear wrappers are Shared by default to avoid destructive action by temporaries. <br />
+ * Sharing should be removed when undesired. <br />
  */
 class Linear
 {
@@ -56,8 +59,21 @@ public:
 	 */
 	Linear(
 		Identifiable< Id >* component,
-		bool shared = false
+		bool shared = true
 	);
+
+	/**
+	 * NOTE: This sets mShared to true!
+	 * @param toCopy
+	 */
+	Linear(const Linear& toCopy);
+
+	#if BIO_CPP_VERSION >= 11
+	/**
+	 * @param toMove
+	 */
+	Linear(const Linear&& toMove);
+	#endif
 
 	/**
 	 * Will delete mComponent iff !mShared. <br />
@@ -107,6 +123,17 @@ public:
 	 * @return mComponent
 	 */
 	const Identifiable< Id >* operator->() const;
+
+	/**
+	 * @return whether or not *this is mShared.
+	 */
+	bool IsShared() const;
+
+	/**
+	 * Sets mShared in *this.
+	 * @param shouldShare
+	 */
+	void SetShared(bool shouldShare);
 
 protected:
 	Identifiable< Id >* mComponent;

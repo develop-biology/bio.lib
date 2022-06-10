@@ -95,9 +95,11 @@ public:
 	T& Manage(T* varPtr)
 	{
 		BIO_STATIC_ASSERT(!type::IsPointer< T >())
+		//TODO: cpp < 17 cannot bond pointers?
 		FormBond(
 			varPtr,
 			bond_type::Manage());
+		mBoundPosition = GetBondPosition< T >();
 		return Probe< T >();
 	}
 
@@ -113,9 +115,11 @@ public:
 	T& Use(T* varPtr)
 	{
 		BIO_STATIC_ASSERT(!type::IsPointer< T >())
+		//TODO: cpp < 17 cannot bond pointers?
 		FormBond(
 			varPtr,
 			bond_type::Use());
+		mBoundPosition = GetBondPosition< T >();
 		return Probe< T >();
 	}
 
@@ -150,7 +154,7 @@ public:
 	 */
 	template < typename T >
 	T& Bind(
-		T& toBind,
+		T toBind, //must be pass-by-value for basic types.
 		BondType bondType = bond_type::Temporary())
 	{
 		BIO_STATIC_ASSERT(!type::IsPointer< T >());
@@ -164,6 +168,7 @@ public:
 			toBind,
 			bondType
 		);
+		mBoundPosition = GetBondPosition< T >();
 		return Probe< T >();
 	}
 
