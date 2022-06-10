@@ -36,8 +36,7 @@ VirtualBase::~VirtualBase()
 
 }
 
-
-void VirtualBase::Initialize(ByteStreams args)
+void VirtualBase::Initialize(ByteStreams& args)
 {
 	if (mHasBeenInitialized)
 	{
@@ -55,7 +54,8 @@ void VirtualBase::Initialize(ByteStream arg1)
 	}
 	ByteStreams args;
 	args.Add(arg1);
-	Initialize(args);
+	InitializeImplementation(args);
+	mHasBeenInitialized = true;
 }
 
 void VirtualBase::Initialize(
@@ -70,7 +70,8 @@ void VirtualBase::Initialize(
 	ByteStreams args;
 	args.Add(arg1);
 	args.Add(arg2);
-	Initialize(args);
+	InitializeImplementation(args);
+	mHasBeenInitialized = true;
 }
 
 void VirtualBase::Initialize(
@@ -87,7 +88,8 @@ void VirtualBase::Initialize(
 	args.Add(arg1);
 	args.Add(arg2);
 	args.Add(arg3);
-	Initialize(args);
+	InitializeImplementation(args);
+	mHasBeenInitialized = true;
 }
 
 } //bio namespace

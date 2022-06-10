@@ -103,7 +103,7 @@ public:
 	template < typename T >
 	Code Activate()
 	{
-		return Activate(TypeName< T >);
+		return Activate(type::TypeName< T >);
 	}
 
 

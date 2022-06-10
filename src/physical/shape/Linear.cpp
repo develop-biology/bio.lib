@@ -30,10 +30,26 @@ Linear::Linear(
 )
 	:
 	mComponent(component),
-	mShared(false)
+	mShared(shared)
 {
 
 }
+
+Linear::Linear(const Linear& toCopy) :
+	mComponent(toCopy.mComponent),
+	mShared(true)
+{
+
+}
+
+#if BIO_CPP_VERSION >= 11
+Linear::Linear(const Linear&& toMove) :
+	mComponent(toMove.mComponent),
+	mShared(toMove.mShared)
+{
+
+}
+#endif
 
 Linear::~Linear()
 {
@@ -84,6 +100,16 @@ Identifiable< Id >* Linear::operator->()
 const Identifiable< Id >* Linear::operator->() const
 {
 	return mComponent;
+}
+
+bool Linear::IsShared() const
+{
+	return mShared;
+}
+
+void Linear::SetShared(bool shouldShare)
+{
+	mShared = shouldShare;
 }
 
 } //physical namespace

@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/common/TypeName.h"
+#include "bio/common/type/TypeName.h"
 #include "bio/chemical/common/Types.h"
 #include "bio/physical/Perspective.h"
 
@@ -58,7 +58,7 @@ public:
 	template < typename T >
 	Name GetNameFromType() const
 	{
-		return TypeName< T >();
+		return type::TypeName< T >();
 	}
 
 	/**
@@ -114,7 +114,7 @@ public:
 	template < typename T >
 	const Properties GetPropertiesOf() const
 	{
-		return GetPropertiesOf(TypeName< T >());
+		return GetPropertiesOf(type::TypeName< T >());
 	}
 
 	/**
@@ -149,7 +149,7 @@ public:
 	AtomicNumber RecordPropertyOf(Property property)
 	{
 		return RecordPropertyOf(
-			TypeName< T >(),
+			type::TypeName< T >(),
 			property
 		);
 	}
@@ -186,7 +186,7 @@ public:
 	AtomicNumber RecordPropertiesOf(Properties properties)
 	{
 		return RecordPropertiesOf(
-			TypeName< T >(),
+			type::TypeName< T >(),
 			properties
 		);
 	}

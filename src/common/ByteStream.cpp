@@ -26,7 +26,7 @@ namespace bio {
 ByteStream::ByteStream()
 	:
 	mStream(NULL),
-	mTypeName(String::READ_WRITE),
+	mTypeName(String::READ_ONLY),
 	mSize(0),
 	mHolding(false)
 {
@@ -34,7 +34,7 @@ ByteStream::ByteStream()
 
 ByteStream::ByteStream(const ByteStream& other)
 	:
-	mTypeName(String::READ_WRITE),
+	mTypeName(String::READ_ONLY),
 	mHolding(false)
 {
 	*this = other;
@@ -121,5 +121,11 @@ bool ByteStream::operator==(const ByteStream& other) const
 		mSize
 	) == 0;
 }
+
+void ByteStream::TakeHold()
+{
+	mHolding = false;
+}
+
 
 } //bio namespace

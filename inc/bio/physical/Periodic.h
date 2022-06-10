@@ -69,7 +69,7 @@ public:
 	 * VirtualBase required method. See that class for details (in common/) <br />
 	 * @param args
 	 */
-	virtual void InitializeImplementation(ByteStreams args);
+	virtual void InitializeImplementation(ByteStreams& args);
 
 	/**
 	 * Peak()s occur at Periodic::mIntervals. <br />

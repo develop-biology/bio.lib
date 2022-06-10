@@ -39,9 +39,8 @@ Protein::~Protein()
 Code Protein::Fold()
 {
 	Code ret = code::Success();
-	BIO_EXCITATION_CLASS(Protein,
-		Code) fold(&Protein::Fold);
-	chemical::Emission result = ForEach< Protein* >(fold);
+	BIO_EXCITATION_CLASS(Protein, Code) fold(&Protein::Fold);
+	chemical::Emission result = ForEach< Protein* >(&fold);
 	//We don't care about result right now.
 	return ret;
 }
@@ -49,9 +48,7 @@ Code Protein::Fold()
 Code Protein::RecruitChaperones(Vesicle* environment)
 {
 	SetEnvironment(environment);
-	BIO_EXCITATION_CLASS(Protein,
-		Code,
-		Vesicle*) recruitChaperones(
+	BIO_EXCITATION_CLASS(Protein, Code, Vesicle*) recruitChaperones(
 		&Protein::RecruitChaperones,
 		environment
 	);
@@ -64,9 +61,8 @@ Code Protein::RecruitChaperones(Vesicle* environment)
 Code Protein::Activate()
 {
 	Code ret = code::Success();
-	BIO_EXCITATION_CLASS(Protein,
-		Code) activate(&Protein::Activate);
-	chemical::Emission result = ForEach< Protein* >(activate);
+	BIO_EXCITATION_CLASS(Protein, Code) activate(&Protein::Activate);
+	chemical::Emission result = ForEach< Protein* >(&activate);
 	//We don't care about result right now.
 	return ret;
 }

@@ -37,8 +37,8 @@ namespace molecular {
  * Channels "run on" Pores the way sockets "run on" ports; though here Pores scale precisely with Channels. <br />
  */
 class Pore :
-	public Surface,
-	public Class< Pore >
+	public Class< Pore >,
+	public Surface
 {
 public:
 

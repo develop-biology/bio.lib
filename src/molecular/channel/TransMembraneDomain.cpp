@@ -112,7 +112,7 @@ Molecule* TransMembraneDomain::Secrete(const Name& moleculeName)
 	physical::Line* molecules = Cast< physical::Line* >(mInner->GetAll< Molecule* >());
 	Index found = molecules->SeekToName(moleculeName);
 	BIO_SANITIZE(found,,return NULL)
-	return molecules->Erase(found).As< Molecule* >();
+	return ChemicalCast< Molecule* >(molecules->Erase(found).As< physical::Linear >().operator physical::Identifiable< Id >*());
 }
 
 
@@ -122,7 +122,7 @@ Molecule* TransMembraneDomain::Secrete(const Id& moleculeId)
 	physical::Line* molecules = Cast< physical::Line* >(mInner->GetAll< Molecule* >());
 	Index found = molecules->SeekToId(moleculeId);
 	BIO_SANITIZE(found,,return NULL)
-	return molecules->Erase(found).As< Molecule* >();
+	return ChemicalCast< Molecule* >(molecules->Erase(found).As< physical::Linear >().operator physical::Identifiable< Id >*());
 }
 
 

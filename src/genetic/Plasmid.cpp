@@ -55,7 +55,7 @@ RNA* Plasmid::TranscribeFor(Expressor* expressor) const
 	Id bindingSite = polymerase->GetIdFromName("RNA Binding Site");
 	polymerase->RecruitChaperones(expressor);
 	polymerase->Fold();
-	polymerase->RotateTo(bindingSite)->Bind(ret);
+	polymerase->RotateTo(bindingSite)->Bind(*ret);
 	polymerase->Activate();
 	polymerase->RotateTo(bindingSite)->Release();
 	delete polymerase;

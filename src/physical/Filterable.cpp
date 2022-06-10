@@ -79,11 +79,10 @@ Code Filterable::Reify(Symmetry* symmetry)
 	return code::Success();
 }
 
-void Filterable::InitializeImplementation(ByteStreams args)
+void Filterable::InitializeImplementation(ByteStreams& args)
 {
-	BIO_SANITIZE(args.Size() == 1 && args[args.GetEndIndex()].Is(mFilter), ,
-		return);
-	mFilter = args[args.GetEndIndex()];
+	BIO_SANITIZE(args[args.GetEndIndex()].Is(mFilter), , return);
+	SetFilter(args[args.GetEndIndex()]);
 }
 
 } //physical namespace

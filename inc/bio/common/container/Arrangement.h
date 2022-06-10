@@ -87,15 +87,13 @@ public:
 
 	ByteStream Access(const Index index)
 	{
-		BIO_SANITIZE(this->IsAllocated(index), ,
-			return NULL)
+		BIO_SANITIZE(this->IsAllocated(index), , return NULL)
 		return *ForceCast< TYPE* >(&this->mStore[index * sizeof(TYPE)]);
 	}
 
 	const ByteStream Access(const Index index) const
 	{
-		BIO_SANITIZE(this->IsAllocated(index), ,
-			return NULL)
+		BIO_SANITIZE(this->IsAllocated(index), , return NULL)
 		return *ForceCast< TYPE* >(&this->mStore[index * sizeof(TYPE)]);
 	}
 
@@ -104,8 +102,7 @@ public:
 		const ByteStream external
 	) const
 	{
-		BIO_SANITIZE(external.Is< TYPE >(), ,
-			return false)
+		BIO_SANITIZE(external.Is< TYPE >(), , return false)
 		return this->Access(internal).template As< TYPE >() == external.template As< TYPE >();
 	}
 
@@ -114,9 +111,10 @@ public:
 	 * @param index
 	 * @return the given position in *this as a TYPE.
 	 */
-	virtual TYPE OptimizedAccess(Index index)
+	virtual TYPE& OptimizedAccess(Index index)
 	{
-		return this->Access(index);
+		BIO_SANITIZE(this->IsAllocated(index), , return NULL)
+		return *ForceCast< TYPE* >(&this->mStore[index * sizeof(TYPE)]);
 	}
 
 	/**
@@ -124,9 +122,10 @@ public:
 	 * @param index
 	 * @return the given position in *this as a TYPE.
 	 */
-	virtual const TYPE OptimizedAccess(Index index) const
+	virtual const TYPE& OptimizedAccess(Index index) const
 	{
-		return this->Access(index).template As< TYPE >();
+		BIO_SANITIZE(this->IsAllocated(index), , return NULL)
+		return *ForceCast< TYPE* >(&this->mStore[index * sizeof(TYPE)]);
 	}
 
 	/**

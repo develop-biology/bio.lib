@@ -54,8 +54,8 @@ namespace chemical {
  */
 template < typename CONTENT_TYPE >
 class LinearMotif :
-	public Elementary< LinearMotif< CONTENT_TYPE > >,
 	public chemical::Class< LinearMotif< CONTENT_TYPE > >,
+	public Elementary< LinearMotif< CONTENT_TYPE > >,
 	public UnorderedMotif< CONTENT_TYPE >
 {
 public:
@@ -166,12 +166,19 @@ public:
 
 	/**
 	 * Adds content to *this. <br />
+	 * Added objects are "owned" (not physical::Linear::IsShared()) and will be deleted with *this. <br />
 	 * @param content
 	 * @return t or NULL.
 	 */
 	virtual CONTENT_TYPE AddImplementation(CONTENT_TYPE content)
 	{
-		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->mContents)->LinearAccess(this->mContents->Add(content)));
+		Index addedPosition = this->mContents->Add(physical::Linear(content)); //stored as shared...
+		BIO_SANITIZE(addedPosition,,return NULL)
+		physical::Linear& added = Cast< physical::Line* >(this->mContents)->OptimizedAccess(addedPosition);
+		added.SetShared(false); //...but added contents are not shared.
+		CONTENT_TYPE ret = ChemicalCast< CONTENT_TYPE >(added.operator physical::Identifiable< Id >*());
+		BIO_SANITIZE(ret == content, , return NULL)
+		return ret;
 	}
 
 	/**
@@ -220,16 +227,15 @@ public:
 			}
 		}
 
-		CONTENT_TYPE addition = CloneAndCast< CONTENT_TYPE >(toAdd);
-		BIO_SANITIZE(addition, ,
-			return code::GeneralFailure())
+		CONTENT_TYPE additionContent = CloneAndCast< CONTENT_TYPE >(toAdd);
+		BIO_SANITIZE(additionContent, , return code::GeneralFailure())
+		physical::Linear addition(additionContent);
 
 		if (this->mContents->IsAllocated(toReplace.GetIndex())) //i.e. GetIndex() != 0.
 		{
 			if (transferSubContents)
 			{
-				//NOTE: THIS REMOVES ALL STRUCTURAL COMPONENTS IN toReplace
-				// WHICH ARE NOT EXPLICITLY IN addition
+				//NOTE: THIS REMOVES ALL STRUCTURAL COMPONENTS IN toReplace WHICH ARE NOT EXPLICITLY IN addition
 				//This makes sense but is bound to be a bug at some point...
 
 				CONTENT_TYPE toReplaceCasted = toReplace.template As< CONTENT_TYPE >();
@@ -325,25 +331,27 @@ public:
 	 */
 	virtual CONTENT_TYPE GetByIdImplementation(const Id& id)
 	{
-		Index ret = Cast< physical::Line* >(this->mContents)->SeekToId(id);
-		BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret, ,
-			return NULL) //level 2 for GetOrCreate.
+		Index found = Cast< physical::Line* >(this->mContents)->SeekToId(id);
+		BIO_SANITIZE_AT_SAFETY_LEVEL_1(found, , return NULL) //level 2 for GetOrCreate.
 
-		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->mContents)->LinearAccess(ret));
+		physical::Identifiable< Id >* got = Cast< physical::Line* >(this->mContents)->LinearAccess(found);
+		CONTENT_TYPE ret = ChemicalCast< CONTENT_TYPE >(got);
+		return ret;
 	}
 
 	/**
-	* const interface for getting by id. <br />
-	* @param id
-	* @return a Content of the given id or NULL.
-	*/
-	virtual const CONTENT_TYPE GetByIdImplementation(const Id& id) const
+	 * const interface for getting by id. <br />
+	 * @param id
+	 * @return a Content of the given id or NULL.
+	 */
+	 virtual const CONTENT_TYPE GetByIdImplementation(const Id& id) const
 	{
-		Index ret = Cast< physical::Line* >(this->mContents)->SeekToId(id);
-		BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret, ,
-			return NULL) //level 2 for GetOrCreate.
+		Index found = Cast< physical::Line* >(this->mContents)->SeekToId(id);
+		BIO_SANITIZE_AT_SAFETY_LEVEL_1(found, , return NULL) //level 2 for GetOrCreate.
 
-		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->mContents)->LinearAccess(ret));
+		physical::Identifiable< Id >* got = Cast< physical::Line* >(this->mContents)->LinearAccess(found);
+		CONTENT_TYPE ret = ChemicalCast< CONTENT_TYPE >(got);
+		return ret;
 	}
 
 
@@ -354,11 +362,12 @@ public:
 	 */
 	virtual CONTENT_TYPE GetByNameImplementation(const Name& name)
 	{
-		Index ret = Cast< physical::Line* >(this->mContents)->SeekToName(name);
-		BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret, ,
-			return NULL) //level 2 for GetOrCreate.
+		Index found = Cast< physical::Line* >(this->mContents)->SeekToName(name);
+		BIO_SANITIZE_AT_SAFETY_LEVEL_1(found, , return NULL) //level 2 for GetOrCreate.
 
-		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->mContents)->LinearAccess(ret));
+		physical::Identifiable< Id >* got = Cast< physical::Line* >(this->mContents)->LinearAccess(found);
+		CONTENT_TYPE ret = ChemicalCast< CONTENT_TYPE >(got);
+		return ret;
 	}
 
 	/**
@@ -368,11 +377,12 @@ public:
 	 */
 	virtual const CONTENT_TYPE GetByNameImplementation(const Name& name) const
 	{
-		Index ret = Cast< physical::Line* >(this->mContents)->SeekToName(name);
-		BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret, ,
-			return NULL) //level 2 for GetOrCreate.
+		Index found = Cast< physical::Line* >(this->mContents)->SeekToName(name);
+		BIO_SANITIZE_AT_SAFETY_LEVEL_1(found, , return NULL) //level 2 for GetOrCreate.
 
-		return ChemicalCast< CONTENT_TYPE >(Cast< physical::Line* >(this->mContents)->LinearAccess(ret));
+		physical::Identifiable< Id >* got = Cast< physical::Line* >(this->mContents)->LinearAccess(found);
+		CONTENT_TYPE ret = ChemicalCast< CONTENT_TYPE >(got);
+		return ret;
 	}
 
 	/**
@@ -384,9 +394,11 @@ public:
 	 */
 	virtual CONTENT_TYPE CreateImplementation(const Id& id)
 	{
-		BIO_SANITIZE(this->GetStructuralPerspective(), ,
-			return NULL);
-		return this->AddImplementation((this->GetStructuralPerspective()->template GetTypeFromIdAs< CONTENT_TYPE >(id)));
+		BIO_SANITIZE(this->GetStructuralPerspective(), , return NULL)
+		physical::Wave* created = this->GetStructuralPerspective()->template GetNewObjectFromId(id);
+		BIO_SANITIZE(created, , return NULL)
+		CONTENT_TYPE toAdd = ChemicalCast< CONTENT_TYPE >(toAdd);
+		return this->AddImplementation(toAdd);
 	}
 
 	/**
@@ -415,8 +427,7 @@ public:
 	 */
 	virtual CONTENT_TYPE GetOrCreateByNameImplementation(const Name& name)
 	{
-		BIO_SANITIZE(this->GetStructuralPerspective(), ,
-			return NULL);
+		BIO_SANITIZE(this->GetStructuralPerspective(), , return NULL);
 		//We convert to Id in case the Name is not already registered in the desired Perspective.
 		Id id = this->GetStructuralPerspective()->GetIdFromName(name);
 		CONTENT_TYPE ret = this->GetByIdImplementation(id);
@@ -435,7 +446,7 @@ public:
 	 */
 	virtual bool HasImplementation(const CONTENT_TYPE& content) const
 	{
-		return this->mContents->Has(content);
+		return this->mContents->Has(physical::Linear(content));
 	}
 
 	/**
@@ -445,8 +456,7 @@ public:
 	 */
 	virtual void ImportImplementation(const LinearMotif< CONTENT_TYPE >* other)
 	{
-		BIO_SANITIZE(other, ,
-			return);
+		BIO_SANITIZE(other, , return);
 
 		this->mContents->Import(other->mContents);
 	}
@@ -474,7 +484,7 @@ public:
 			--cnt
 			)
 		{
-			if (cnt.template As< physical::Identifiable< Id >* >()->Attenuate(other) != code::Success())
+			if (cnt.template As< physical::Linear >()->Attenuate(other) != code::Success())
 			{
 				ret = code::UnknownError();
 			}
@@ -496,7 +506,7 @@ public:
 			--cnt
 			)
 		{
-			if (cnt.template As< physical::Identifiable< Id >* >()->Disattenuate(other) != code::Success())
+			if (cnt.template As< physical::Linear >()->Disattenuate(other) != code::Success())
 			{
 				ret = code::UnknownError();
 			}
@@ -509,7 +519,7 @@ public:
 	 * Performs the given Excitation on all contents. <br />
 	 * @param excitation
 	 */
-	virtual Emission ForEachImplementation(ExcitationBase* excitation)
+	virtual Emission ForEachImplementation(const ExcitationBase* excitation)
 	{
 		Emission ret;
 		for (
@@ -520,7 +530,7 @@ public:
 		{
 			ByteStream result;
 			excitation->CallDown(
-				cnt.template As< physical::Identifiable< Id >* >()->AsWave(),
+				cnt.template As< physical::Linear >()->AsWave(),
 				&result
 			);
 			ret.Add(result);
@@ -545,7 +555,7 @@ public:
 			++cnt
 			)
 		{
-			ret += cnt.template As< physical::Identifiable< Id >* >()->GetName().AsStdString();
+			ret += cnt.template As< physical::Linear >()->GetName().AsStdString();
 			if (cnt.GetIndex() != this->mContents->GetEndIndex() - 1)
 			{
 				ret += separator;
@@ -573,7 +583,7 @@ private:
 	{
 		//TODO: check if T is a child of Substance.
 		//This will do for now.
-		BIO_STATIC_ASSERT(utility::IsPointer< CONTENT_TYPE >())
+		BIO_STATIC_ASSERT(type::IsPointer< CONTENT_TYPE >())
 
 		if (this->mContents)
 		{

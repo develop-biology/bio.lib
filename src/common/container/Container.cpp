@@ -167,19 +167,21 @@ void Container::Expand()
 		mStore,
 		targetSize * GetStepSize());
 	mSize = targetSize;
-	BIO_SANITIZE(mStore, ,
-		return)
+	BIO_SANITIZE(mStore, ,return)
 }
 
 Index Container::Add(const ByteStream content)
 {
 	Index ret = GetNextAvailableIndex();
-	BIO_SANITIZE(ret, ,
-		return ret)
+	BIO_SANITIZE(ret, , return ret)
 	std::memcpy(
 		&mStore[ret * sizeof(ByteStream)],
 		&content,
 		sizeof(ByteStream));
+
+	// prevent the contents we just copied from being Released.
+	const_cast< ByteStream* >(&content)->TakeHold();
+
 	return ret;
 }
 
@@ -188,8 +190,7 @@ Index Container::Insert(
 	const Index index
 )
 {
-	BIO_SANITIZE(index, ,
-		return InvalidIndex())
+	BIO_SANITIZE(index, , return InvalidIndex())
 
 	if (index == mFirstFree)
 	{
@@ -228,15 +229,13 @@ Index Container::Insert(
 
 ByteStream Container::Access(const Index index)
 {
-	BIO_SANITIZE(IsAllocated(index), ,
-		return NULL)
+	BIO_SANITIZE(IsAllocated(index), , return NULL)
 	return *ForceCast< ByteStream* >(&mStore[index * sizeof(ByteStream)]);
 }
 
 const ByteStream Container::Access(const Index index) const
 {
-	BIO_SANITIZE(IsAllocated(index), ,
-		return NULL)
+	BIO_SANITIZE(IsAllocated(index), , return NULL)
 	return *ForceCast< ByteStream* >(&mStore[index * sizeof(ByteStream)]);
 }
 
@@ -270,8 +269,7 @@ bool Container::Has(const ByteStream content) const
 ByteStream Container::Erase(const Index index)
 {
 	ByteStream ret;
-	BIO_SANITIZE(this->IsAllocated(index), ,
-		return ret)
+	BIO_SANITIZE(this->IsAllocated(index), , return ret)
 	ret = Access(index);
 	this->mDeallocated.push_back(index);
 	return ret;
@@ -291,8 +289,7 @@ void Container::Import(const Container& other)
 
 void Container::Import(const Container* other)
 {
-	BIO_SANITIZE(other, ,
-		return)
+	BIO_SANITIZE(other, , return)
 	Import(*other);
 }
 
@@ -347,7 +344,6 @@ const ByteStream Container::operator[](const SmartIterator itt) const
 
 Index Container::GetNextAvailableIndex()
 {
-	//IMPORTANT: ASSUME 
 	Index ret = InvalidIndex();
 	if (!mDeallocated.empty())
 	{

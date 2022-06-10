@@ -21,39 +21,42 @@
 
 #pragma once
 
+#include "bio/common/macro/Macros.h"
+
+//@formatter:off
+#if BIO_CPP_VERSION >= 11
+	#include <type_traits>
+#endif
+//@formatter:on
+
 namespace bio {
+namespace type {
 
-namespace physical {
-class Wave;
-}
+//@formatter:off
+#if BIO_CPP_VERSION < 11
+	template<typename T>
+	struct RemoveReferenceImplementation {typedef T Type;};
 
-/**
- * ChemicalCasts use chemical Bonds to change one object into anther. <br />
- * See Atom::As<>() for more info.<br />
- * @tparam TO
- * @tparam FROM
- * @param toCast
- * @return The TO that is bonded to FROM or 0.
- */
-template < typename TO, typename FROM >
-TO ChemicalCast(FROM toCast)
-{
-	BIO_STATIC_ASSERT(type::IsPointer< FROM >())
-	return toCast->AsAtom()->template As< TO >();
-}
+	template<typename T>
+	struct RemoveReferenceImplementation<T&> {typedef T Type;};
+#endif
+//@formatter:on
 
 /**
- * Ease of use method for Cloning. <br />
+ * Strips '&' from the end of T <br />
  * @tparam T
- * @return a Clone of T casted to back to T.
  */
 template < typename T >
-T CloneAndCast(const T& toClone)
+struct RemoveReference
 {
-	//Dereference here might be dangerous & need sanitization.
-	::bio::physical::Wave* clone = toClone->Clone()->AsWave();
-	return ChemicalCast< T >(clone);
-}
+	//@formatter:off
+	#if BIO_CPP_VERSION < 11
+		typedef typename RemoveReferenceImplementation< T >::Type Type;
+	#else
+		typedef typename ::std::remove_reference<T>::type Type;
+	#endif
+	//@formatter:on
+};
 
-
+} //type namespace
 } //bio namespace

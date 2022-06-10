@@ -23,8 +23,13 @@
 
 #include "bio/common/Cast.h"
 #include "bio/common/macro/Macros.h"
-#include "bio/physical/utility/IsWave.h"
-#include "bio/common/macro/OSMacros.h"
+#include "bio/common/type/IsPointer.h"
+#include "bio/common/type/IsReference.h"
+#include "bio/common/type/IsConst.h"
+#include "bio/common/type/RemovePointer.h"
+#include "bio/common/type/RemoveReference.h"
+#include "bio/common/type/RemoveConst.h"
+#include "bio/physical/type/IsWave.h"
 #include "bio/physical/Quantum.h"
 #include "bio/physical/common/Class.h"
 #include "bio/chemical/common/BondTypes.h"
@@ -116,111 +121,73 @@ public:
 	 */
 	const physical::Wave* GetBonded(Valence position) const;
 
-	/**
-	 * Gets the bond to an bonded of type T from *this, then casts the Bond()ed Wave to T*. <br />
-	 * @tparam T
-	 * @return a T* that is Bond()ed with *this; else NULL.
-	 */
-	template < typename T >
-	T AsBonded()
-	{
-		Valence position = GetBondPosition< T >();
-		BIO_SANITIZE(position,
-			,
-			return NULL
-		)
-		return ForceCast< T >(mBonds.OptimizedAccess(position)->GetBonded());
-	}
 
 	/**
-	 * Gets the bond to an bonded of type T from *this, then casts the Bond()ed Wave to T*. <br />
-	 * @tparam T
-	 * @return  a const T* that is Bond()ed with *this; else NULL.
+	 * Gets the bond to an bonded of type T from *this, then casts the Bond()ed Wave to T. <br />
+	 * NOTE: const here is a lie (sort of). Changing the returned value indirectly changes *this. <br />
+	 * @tparam T a non-reference, non-pointer type which is Bonded to *this; const is okay.
+	 * @return a T that is Bond()ed with *this; else NULL.
 	 */
 	template < typename T >
-	const T AsBonded() const
+	T* AsBonded() const
 	{
+		BIO_STATIC_ASSERT(!type::IsReference< T >())
+		BIO_STATIC_ASSERT(!type::IsPointer< T >())
+
 		Valence position = GetBondPosition< T >();
 		BIO_SANITIZE(position,
 			,
 			return NULL
 		)
-		return ForceCast< const T >(mBonds.OptimizedAccess(position)->GetBonded());
+
+		//What should be actually Bonded is a pointer to a physical::Class.
+		//This is performed by the chemical::Class constructor.
+		physical::Class< T >* bonded = ForceCast< physical::Class< T >* >(mBonds.OptimizedAccess(position)->GetBonded());
+		return bonded->GetWaveObject();
 	}
 
 	/**
 	 * If T IsPrimitive(), you can use *this to get the Bonded Quantum Wave for that primitive. <br />
-	 * @tparam T
-	 * @return *this as a T*, from a Bonded Quantum Wave, or NULL.
+	 * NOTE: const here is a lie (sort of). Changing the returned value indirectly changes *this. <br /
+	 * @tparam T a non-reference, non-pointer type which is Bonded to *this; const is okay.
+	 * @return *this as a T, from a Bonded Quantum Wave, or NULL.
 	 */
 	template < typename T >
-	T AsBondedQuantum()
+	T* AsBondedQuantum() const
 	{
-		physical::Quantum< T >* bonded = AsBonded< physical::Quantum< T >* >();
-		BIO_SANITIZE(bonded,
-			,
-			return 0
-		)
-		return bonded->operator T();
-	}
+		BIO_STATIC_ASSERT(!type::IsReference< T >())
+		BIO_STATIC_ASSERT(!type::IsPointer< T >())
 
-	/**
-	 * Const version of AsBondedQuantum(). <br />
-	 * @tparam T
-	 * @return *this as a const T*, from a Bonded Quantum Wave.
-	 */
-	template < typename T >
-	const T AsBondedQuantum() const
-	{
-		physical::Quantum< T >* bonded = AsBonded< physical::Quantum< T >* >();
-		BIO_SANITIZE(bonded,
-			,
-			return 0
-		)
-		return bonded->operator T();
+		Valence position = GetBondPosition< T >();
+		BIO_SANITIZE(position, , return 0)
+		physical::Quantum< T >* bonded = ForceCast< physical::Quantum< T >* >(mBonds.OptimizedAccess(position)->GetBonded());
+		return bonded->GetQuantumObject();
 	}
 
 	/**
 	 * This method is here so that we can add different As____ methods without changing the downstream interfaces. <br />
-	 * @tparam T
-	 * @return *this as a T* or NULL.
+	 * NOTE: As CANNOT be used in constructors. The returned pointer may not be valid!!! <br />
+	 * NOTE: const here is a lie (sort of). Changing the returned value indirectly changes *this. <br />
+	 * @tparam T a pointer to a Bonded type and nothing else, no double pointers, references, etc; const is okay.
+	 * @return *this as a T or NULL.
 	 */
 	template < typename T >
-	T As()
+	T As() const
 	{
-		#if BIO_CPP_VERSION < 17
-		return AsBondedQuantum< T >();
-		#else
-		if constexpr(!utility::IsWave< T >())
-		{
-			return AsBondedQuantum< T >();
-		}
-		else
-		{
-			return AsBonded< T >();
-		}
+		//We store a Wave* or a T*. Nothing else.
+		BIO_STATIC_ASSERT(type::IsPointer< T >())
+		BIO_STATIC_ASSERT(!type::IsPointer< typename type::RemovePointer< T >::Type >())
+
+		#if BIO_CPP_VERSION >= 17
+		if BIO_CONSTEXPR(!type::IsWave< T >())
 		#endif
-	}
-
-	/**
-	 * Const version of As(). <br />
-	 * This method is here so that we can add different As____ methods without changing the downstream interfaces. <br />
-	 * @tparam T
-	 * @return *this as a const T* or NULL.
-	 */
-	template < typename T >
-	const T As() const
-	{
-		#if BIO_CPP_VERSION < 17
-		return AsBondedQuantum< T >();
-		#else
-		if constexpr(!utility::IsWave< T >())
 		{
-			return AsBondedQuantum< T >();
+			return AsBondedQuantum< typename type::RemovePointer< T >::Type >();
 		}
+		#if BIO_CPP_VERSION >= 17
 		else
 		{
-			return AsBonded< T >();
+			return AsBonded< typename type::RemovePointer< T >::Type >();
 		}
 		#endif
 	}
@@ -228,33 +195,56 @@ public:
 
 	/**
 	 * Atoms can be converted to anything they are bonded to. <br />
-	 * @tparam T
-	 * @return *this as a T* or NULL.
+	 * NOTE: this CANNOT be used in constructors. The returned pointer may not be valid!!! <br />
+	 * @tparam T a pointer to a Bonded type and nothing else, no double pointers, references, etc; const is okay.
+	 * @return *this as a T or NULL.
 	 */
 	template < typename T >
-	operator T()
+	operator T() const
 	{
 		return As< T >();
 	}
 
 	/**
+	 * This method strips all decorations from T in order to guarantee consistent behavior across varied usages. <br />
+	 * For example GetBondId< const MyClass* > will give the same result as GetBondId< MyClass& >. <br />
+	 * Because of this behavior, Atoms are incapable of bonding both a MyClass* as a Quantum and a MyClass object as a native Wave. <br />
+	 * This is intentional. <br />
 	 * @tparam T
 	 * @return the Id to use when bonding the given type.
 	 */
 	template < typename T >
 	static AtomicNumber GetBondId()
 	{
+		if BIO_CONSTEXPR(type::IsPointer< T >())
+		{
+			return GetBondId< typename type::RemovePointer< T >::Type >();
+		}
+		else if BIO_CONSTEXPR(type::IsReference< T >())
+		{
+			return GetBondId< typename type::RemoveReference< T >::Type >();
+		}
+		else if BIO_CONSTEXPR(type::IsConst< T >())
+		{
+			return GetBondId< typename type::RemoveConst< T >::Type >();
+		}
+		else
+		{
+			BIO_STATIC_ASSERT(!type::IsConst< T >());
+			BIO_STATIC_ASSERT(!type::IsReference< T >());
+			BIO_STATIC_ASSERT(!type::IsPointer< T >());
+		}
+
 		#if BIO_CPP_VERSION < 17
 		return SafelyAccess<PeriodicTable>()->GetIdFromType< physical::Quantum< T >* >();
 		#else
-		if constexpr(!utility::IsWave< T >())
+		if constexpr(!type::IsWave< T >())
 		{
 			return SafelyAccess<PeriodicTable>()->GetIdFromType< physical::Quantum< T >* >();
 		}
 		else
 		{
-			BIO_STATIC_ASSERT(utility::IsPointer< T >());
-			return SafelyAccess<PeriodicTable>()->GetIdFromType< T >();
+			return SafelyAccess<PeriodicTable>()->GetIdFromType< T* >();
 		}
 		#endif
 	}
@@ -264,34 +254,59 @@ public:
 	 * Updating a Bond requires both Breaking and Forming steps to be done manually. <br />
 	 * You CANNOT bond the same T twice (without Breaking the initial Bond). <br />
 	 * See Molecule.h if you would like to Bond multiple Ts. <br />
+	 * Like GetBondId, this method strips all decorations from T in order to guarantee consistent behavior across varied usages. <br />
+	 * For example FormBond< const MyClass* > will give the same result as FormBond< MyClass& >. <br />
+	 * Because of this behavior, Atoms are incapable of bonding both a MyClass* as a Quantum and a MyClass object as a native Wave. <br />
+	 * This is intentional. <br />
 	 * @tparam T A pointer to an instance of a class deriving from Wave and which is not already Bonded.
 	 * @param toBond what to Bond
-	 * @return true, if the Bond was created; false otherwise.
+	 * @return The position of the created Bond in *this.
 	 */
 	template < typename T >
 	Valence FormBond(
 		T toBond,
 		BondType type = bond_type::Unknown())
 	{
-		AtomicNumber bondedId = GetBondId< T >();
-		#if BIO_CPP_VERSION < 17
-		return FormBondImplementation(
-			(new physical::Quantum< T >(toBond))->AsWave(),
-			bondedId,
-			type
-		);
-		#else
-		if constexpr(!utility::IsWave< T >())
-		{
+		#if BIO_CPP_VERSION >= 17
+		if constexpr(!type::IsWave< T >())
+		#endif
+		{ //extra scope doesn't hurt.
+			if BIO_CONSTEXPR(type::IsPointer< T >())
+			{
+				#if BIO_CPP_VERSION < 17
+				bool you_cannot_bond_pointers_until_cpp17 = false;
+				BIO_ASSERT(you_cannot_bond_pointers_until_cpp17);
+				#else
+				BIO_SANITIZE(toBond,,return NULL)
+				return FormBond< typename type::RemovePointer< T >::Type >(*toBond, type); //necessitates copy by value...
+				#endif
+			}
+			else if BIO_CONSTEXPR(type::IsReference< T >())
+			{
+				return FormBond< typename type::RemoveReference< T >::Type >(toBond, type);
+			}
+
+			AtomicNumber bondedId = GetBondId< T >();
 			return FormBondImplementation((new physical::Quantum< T >(toBond))->AsWave(),
 				bondedId,
 				type
 			);
 		}
+		#if BIO_CPP_VERSION >= 17
 		else
 		{
+			AtomicNumber bondedId = GetBondId< T >();
+			physical::Wave* waveToBond;
+			if constexpr(type::IsPointer< T >())
+			{
+				waveToBond = toBond->AsWave();
+			}
+			else
+			{
+				waveToBond = toBond.AsWave();
+			}
 			return FormBondImplementation(
-				toBond->AsWave(),
+				waveToBond,
 				bondedId,
 				type
 			);
@@ -304,6 +319,10 @@ public:
 	 * Removal of the Bond object is done upon destruction. <br />
 	 * Updating a Bond requires both Breaking and Forming steps to be done manually. <br />
 	 * NOTE: toDisassociate is not currently used for anything beyond automatic template type detection. <br />
+	 * Like GetBondId, this method strips all decorations from T in order to guarantee consistent behavior across varied usages. <br />
+	 * For example BreakBond< const MyClass* > will give the same result as BreakBond< MyClass& >. <br />
+	 * Because of this behavior, Atoms are incapable of bonding both a MyClass* as a Quantum and a MyClass object as a native Wave. <br />
+	 * This is intentional. <br />
 	 * @tparam T
 	 * @param toDisassociate
 	 * @param type
@@ -363,15 +382,7 @@ public:
 	template < typename T >
 	BondType GetBondType() const
 	{
-		#if BIO_CPP_VERSION < 17
-		return GetBondType(GetBondPosition< physical::Quantum< T > >());
-		#else
-		if constexpr(!utility::IsWave< T >())
-		{
-			return GetBondType(GetBondPosition< physical::Quantum< T > >());
-		}
 		return GetBondType(GetBondPosition< T >());
-		#endif
 	}
 
 	/**

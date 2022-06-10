@@ -67,8 +67,8 @@ public:
 		const bool transferSubContents = false
 	)
 	{
-		BIO_STATIC_ASSERT(utility::IsPointer< T >())
-		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
+		BIO_STATIC_ASSERT(type::IsPointer< T >())
+		LinearMotif< T >* implementer = this->As< LinearMotif< T >* >();
 		BIO_SANITIZE(implementer,
 			BIO_SINGLE_ARG(return implementer->InsertImplementation(
 				toAdd,
@@ -89,8 +89,8 @@ public:
 	template < typename T >
 	T GetById(const Id& id)
 	{
-		BIO_STATIC_ASSERT(utility::IsPointer< T >())
-		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
+		BIO_STATIC_ASSERT(type::IsPointer< T >())
+		LinearMotif< T >* implementer = this->As< LinearMotif< T >* >();
 		BIO_SANITIZE(implementer,
 			return implementer->GetByIdImplementation(id),
 			return NULL
@@ -106,8 +106,8 @@ public:
 	template < typename T >
 	const T GetById(const Id& id) const
 	{
-		BIO_STATIC_ASSERT(utility::IsPointer< T >())
-		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
+		BIO_STATIC_ASSERT(type::IsPointer< T >())
+		const LinearMotif< T >* implementer = this->As< LinearMotif< T >* >();
 		BIO_SANITIZE(implementer,
 			return implementer->GetByIdImplementation(id),
 			return NULL
@@ -123,11 +123,12 @@ public:
 	template < typename T >
 	T GetByName(const Name& name)
 	{
-		BIO_STATIC_ASSERT(utility::IsPointer< T >())
-		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
-		BIO_SANITIZE(implementer,,return NULL)
-		T ret = implementer->GetByNameImplementation(name);
-		return ret;
+		BIO_STATIC_ASSERT(type::IsPointer< T >())
+		LinearMotif< T >* implementer = this->As< LinearMotif< T >* >();
+		BIO_SANITIZE(implementer,
+			return implementer->GetByNameImplementation(name),
+			return NULL
+		)
 	}
 
 	/**
@@ -139,8 +140,8 @@ public:
 	template < typename T >
 	const T GetByName(const Name& name) const
 	{
-		BIO_STATIC_ASSERT(utility::IsPointer< T >())
-		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
+		BIO_STATIC_ASSERT(type::IsPointer< T >())
+		const LinearMotif< T >* implementer = this->As< LinearMotif< T >* >();
 		BIO_SANITIZE(implementer,
 			return implementer->GetByNameImplementation(name),
 			return NULL
@@ -159,8 +160,8 @@ public:
 		Id id
 	)
 	{
-		BIO_STATIC_ASSERT(utility::IsPointer< T >())
-		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
+		BIO_STATIC_ASSERT(type::IsPointer< T >())
+		LinearMotif< T >* implementer = this->As< LinearMotif< T >* >();
 		BIO_SANITIZE(implementer,
 			return implementer->GetOrCreateByIdImplementation(id),
 			return NULL
@@ -179,8 +180,8 @@ public:
 		const Name& name
 	)
 	{
-		BIO_STATIC_ASSERT(utility::IsPointer< T >())
-		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
+		BIO_STATIC_ASSERT(type::IsPointer< T >())
+		LinearMotif< T >* implementer = this->As< LinearMotif< T >* >();
 		BIO_SANITIZE(implementer,
 			return implementer->GetOrCreateByNameImplementation(name),
 			return NULL
@@ -195,8 +196,8 @@ public:
 	template < typename T >
 	Emission ForEach(ExcitationBase* excitation)
 	{
-		BIO_STATIC_ASSERT(utility::IsPointer< T >())
-		LinearMotif< T >* implementer = this->AsBonded< LinearMotif< T >* >();
+		BIO_STATIC_ASSERT(type::IsPointer< T >())
+		LinearMotif< T >* implementer = this->As< LinearMotif< T >* >();
 		BIO_SANITIZE(implementer,
 			return implementer->ForEachImplementation(excitation),
 			return Emission()

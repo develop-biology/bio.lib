@@ -29,7 +29,7 @@
 #include "bio/chemical/common/States.h"
 #include "bio/chemical/structure/motif/LinearMotif.h"
 #include "bio/physical/Identifiable.h"
-#include "bio/common/TypeName.h"
+#include "bio/common/type/TypeName.h"
 
 namespace bio {
 namespace chemical {
@@ -145,7 +145,7 @@ public:
 		States enabled;
 		enabled.Add(state::Enabled());
 		Require(
-			TypeName< T >(),
+			type::TypeName< T >(),
 			empty,
 			enabled
 		);
@@ -161,7 +161,7 @@ public:
 	void Require(const T* substance)
 	{
 		Require(
-			TypeName< T >(),
+			type::TypeName< T >(),
 			substance
 		);
 	}
@@ -178,7 +178,7 @@ public:
 	)
 	{
 		Require(
-			TypeName< T >(),
+			type::TypeName< T >(),
 			properties,
 			states
 		);
@@ -234,7 +234,7 @@ public:
 	template < typename T >
 	static const T* Initiate()
 	{
-		const T* ret = SafelyAccess<ReactionPerspective>()->template GetTypeFromNameAs< T >(TypeName< T >());
+		const T* ret = SafelyAccess<ReactionPerspective>()->template GetTypeFromNameAs< T >(type::TypeName< T >());
 		BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret,
 			return ret,
 			return NULL);

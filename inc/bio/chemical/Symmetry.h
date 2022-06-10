@@ -35,9 +35,9 @@ namespace chemical {
  * Primarily, chemical::Symmetry allows for lists (chemical::Structures) and basic operations (chemical::Reactions) to be Rotated. <br />
  */
 class Symmetry :
+	public chemical::Class< Symmetry >,
 	public physical::Symmetry,
 	public LinearMotif< Symmetry* >,
-	public chemical::Class< Symmetry >,
 	virtual public Structure
 {
 public:

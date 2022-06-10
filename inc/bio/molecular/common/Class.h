@@ -31,7 +31,7 @@ namespace molecular {
  * A molecular::Class extends chemical::Class <br />
  * Class in other namespaces will grow to include more complex, templated logic. <br />
  * This pattern prevents you from having to define virtual methods each of your child classes, so long as you always derive from the appropriate Class<T>. <br />
- * @tparam T
+ * @tparam T a pointer to a class type.
  */
 template < typename T >
 class Class :

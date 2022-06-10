@@ -98,7 +98,7 @@ Code Expressor::Translate(const RNA* mRNA)
 		)
 	{
 		for (
-			SmartIterator gen = rna.As< const RNA* >()->GetAll< Gene* >()->Begin();
+			SmartIterator gen = rna.As< const RNA* >()->GetAll< Gene >()->Begin();
 			!gen.IsAfterEnd();
 			++gen
 			)

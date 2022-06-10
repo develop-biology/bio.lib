@@ -59,7 +59,7 @@ namespace bio {
 			break;
 		case READ_WRITE:
 			ret.mMode = READ_WRITE;
-			ret.mString = GetCloneOf(string.mString);
+			ret.mString = GetCloneOf(string.mString, string.mLength);
 			ret.mLength = string.mLength;
 			break;
 		default:
@@ -117,7 +117,6 @@ String::~String()
 	//if we move delete[] out of this function the whole ImmutableString class can be merged into this.
 
 	Clear(); //NOT VIRTUAL!
-	mString = NULL;
 }
 
 #if BIO_CPP_VERSION >= 11
@@ -127,6 +126,7 @@ String& String::operator=(const String&& toMove)
 	mString = toMove.mString;
 	mMode = toMove.mMode;
 	mLength = toMove.mLength;
+	const_cast< String* >(&toMove)->mMode = INVALID; // don't delete the mString we just assigned elsewhere.
 	return *this;
 }
 #endif
@@ -137,7 +137,7 @@ String& String::operator=(const String& toCopy)
 	{
 		case READ_WRITE:
 			Clear();
-			mString = GetCloneOf(toCopy.mString);
+			mString = GetCloneOf(toCopy.mString, toCopy.mLength);
 			break;
 
 		default:
@@ -169,7 +169,7 @@ String& String::operator=(const ImmutableString& toAssign)
 	{
 		case READ_WRITE:
 			Clear();
-			mString = GetCloneOf(toAssign.mString);
+			mString = GetCloneOf(toAssign.mString, toAssign.mLength);
 			break;
 
 		default:
@@ -211,12 +211,50 @@ String& String::operator=(::std::string string)
 
 bool String::operator==(const ImmutableString& other) const
 {
-	return mLength == other.mLength && !strncmp(mString, other.mString, mLength);
+	if (!other.mString || !mString) //one is NULL. Are they both?
+	{
+		return mString == other.mString;
+	}
+	if (mLength != other.mLength)
+	{
+		return false;
+	}
+	return !strncmp(mString, other.mString, mLength);
 }
 
 bool String::operator==(const String& other) const
 {
-	return mLength == other.mLength && !strncmp(mString, other.mString, mLength);
+	if (!other.mString || !mString) //one is NULL. Are they both?
+	{
+		return mString == other.mString;
+	}
+	if (mLength != other.mLength)
+	{
+		return false;
+	}
+	return !strncmp(mString, other.mString, mLength);
+}
+
+bool String::operator==(const char* other) const
+{
+	if (!other || !mString) //one is NULL. Are they both?
+	{
+		return mString == other;
+	}
+	return !strncmp(mString, other, mLength);
+}
+
+bool String::operator==(const ::std::string& other) const
+{
+	if (!mString) //one is NULL. Are they both?
+	{
+		return other == "";
+	}
+	if (mLength != other.size())
+	{
+		return false;
+	}
+	return !strncmp(mString, other.c_str(), mLength);
 }
 
 String::operator ::std::string() const
@@ -248,7 +286,7 @@ String String::SubString(::std::size_t start, ::std::size_t length) const
 
 const char* String::AsCharString() const
 {
-	return GetCloneOf(mString);
+	return GetCloneOf(mString, mLength);
 }
 
 bool String::AsBool() const
@@ -302,6 +340,7 @@ void String::Clear()
 	if (mMode == READ_WRITE && mString)
 	{
 		delete[] mString;
+		mString = NULL;
 	}
 }
 

@@ -32,8 +32,8 @@ namespace chemical {
  * In order to ensure the Substances provided to a Reaction are the proper types, we override the equality operator. This ensures that the compared value can be cast as the type recorded in *this. <br />
  */
 class Reactant :
-	public Substance,
-	public Class< Reactant >
+	public Class< Reactant >,
+	public Substance
 {
 public:
 

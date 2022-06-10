@@ -149,15 +149,15 @@ public:
 				{
 					return start;
 				}
-				while (mString[sub] == substring.mString[sub])
+				while (mString[str] == substring.mString[sub])
 				{
+					++str;
+					++sub;
 					if (sub == substring.mLength)
 					{
 						return start;
 					}
-					++str;
-					++sub;
-					if (str == mLength)
+					else if (str == mLength)
 					{
 						return 0;
 					}

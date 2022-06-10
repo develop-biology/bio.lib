@@ -18,23 +18,60 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 #pragma once
 
-#include "bio/common/utility/IsPrimitive.h"
+#include "bio/common/macro/Macros.h"
+
+//@formatter:off
+#if BIO_CPP_VERSION >= 11
+	#include <type_traits>
+#endif
+//@formatter:on
 
 namespace bio {
-namespace utility {
+namespace type {
+
+//@formatter:off
+#if BIO_CPP_VERSION < 11
+template<typename T>
+struct IsConstImplementation {static const bool sValue = false;};
+
+template<typename T>
+struct IsConstImplementation<const T> {static const bool sValue = true;};
+
+#endif
+//@formatter:on
 
 /**
+ * Check whether or not T is a const type <br />
+ * NOTE: We currently only support the 'const' cv value (i.e. we don't use volatile, etc.). <br />
  * @tparam T
- * @return whether or not the given T derives from physical::Wave.
+ * @return whether or not T has 'const' at the beginning..
  */
 template < typename T >
-BIO_CONSTEXPR bool IsWave()
+BIO_CONSTEXPR bool IsConst()
 {
-	//TODO: Actually determine inheritance.
-	return !IsPrimitive< T >();
+	//@formatter:off
+	#if BIO_CPP_VERSION < 11
+		return IsConstImplementation< T >::sValue;
+	#else
+		return ::std::is_const<T>::value;
+	#endif
+	//@formatter:on
 }
 
-} //utility namespace
+/**
+ * Ease of use method for passing T as arg. <br />
+ * @tparam T
+ * @param t
+ * @return whether or not T is const.
+ */
+template < typename T >
+bool IsConst(const T t)
+{
+	return IsConst< T >();
+}
+
+} //type namespace
 } //bio namespace

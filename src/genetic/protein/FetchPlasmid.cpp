@@ -46,17 +46,17 @@ Code FetchPlasmid::Activate()
 
 	RotateTo(mcReturnSite)->Release();
 
-	Name boundName = *RotateTo(mcNameSite)->Probe< Name* >();
-	Id boundId = *RotateTo(mcIdSite)->Probe< Id* >();
+	Name& boundName = RotateTo(mcNameSite)->Probe< Name >();
+	Id& boundId = RotateTo(mcIdSite)->Probe< Id >();
 
 	if (boundName)
 	{
-		RotateTo(mcReturnSite)->Bind(SafelyAccess<PlasmidPerspective>()->GetTypeFromIdAs< Plasmid* >(boundId));
+		RotateTo(mcReturnSite)->Bind(*(SafelyAccess<PlasmidPerspective>()->GetTypeFromIdAs< Plasmid* >(boundId)));
 		ret = code::Success();
 	}
 	else if (boundId)
 	{
-		RotateTo(mcReturnSite)->Bind(SafelyAccess<PlasmidPerspective>()->GetTypeFromIdAs< Plasmid* >(boundId));
+		RotateTo(mcReturnSite)->Bind(*(SafelyAccess<PlasmidPerspective>()->GetTypeFromIdAs< Plasmid* >(boundId)));
 		ret = code::Success();
 	}
 

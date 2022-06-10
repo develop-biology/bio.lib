@@ -43,7 +43,7 @@ namespace bio {
 
 class Id;
 
-namespace utility {
+namespace type {
 
 /**
  * Helper for IsPrimitiveImplementation.
@@ -156,5 +156,5 @@ BIO_CONSTEXPR bool IsPrimitive()
 	//@formatter:on
 }
 
-} //utility namespace
+} //type namespace
 } //bio namespace

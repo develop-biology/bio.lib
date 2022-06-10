@@ -42,7 +42,8 @@ Biology is broken into the following namespaces:
 5. molecular (values) - adds symmetry and context to chemical base classes.
 6. genetic (modules) - adds the ability to combine molecules & proteins into discrete packages.
 7. cellular (library interface) - combines all lower namespaces and provides common points for library extension.
-8. organism (binary interface) - provides a means of running Biology code.
+8. api (simplified types) - removes extensibility from types, allowing for easy use of custom classes.
+9. organism (binary interface) - provides a means of running Biology code.
 
 #### Extension
 In order to facilitate cross-namespace type extension, some special rules should be followed in order to create consistency between domains.
@@ -62,30 +63,36 @@ State Enabled(); //<- Capitalized "State", the type (::bio::State, not ::bio::st
 ```
 So, you can say
 ```c++
-::bio::State myState = ::bio::state::Enabled();
+bio::State myState = bio::state::Enabled();
 ```
 
 To recap, extendable types should follow these rules:
-* Type is defined in bio namespace. <br />
-* Type is UpperCamelCase. <br />
-* Corresponding namespace is defined in bio namespace. <br />
-* Corresponding namespace is lower_snake_case. <br />
+* Type is defined in bio namespace.
+* Type is UpperCamelCase.
+* Corresponding namespace is defined in bio namespace.
+* Corresponding namespace is lower_snake_case.
+
+### Inheritance
+
+#### What you need to know
+1. The order of inheritance matters (see common/VirtualBase.h for why).
+2. Classes should always derive FIRST from a `Class< T >` class using [CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern).
+3. Ambiguous virtual methods should be resolved with `BIO_DISAMBIGUATE_ALL_CLASS_METHODS(...)` or manually by selectively pointing to the `Class< T >` implementations (see physical/macros/ClassMethodMacros.h).
+4. Simple constructors may be optionally defined with `BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(...)` for extensible types or `BIO_CONSTRUCTORS(...)` for `api` types (see chemical/macros/ConstructorMacros.h and api/macros/ConstructorMacros.h).
+5. If using `api` classes, you will NOT be able to combine objects by inheriting from them and must `Bond` what you need in a `CommonConstructor()` or equivalent method (see chemical/Atom.h for how to form Bonds).
+
+#### Design
+In real-world chemistry, the atoms a substance has determine what it is and there is no difference between a "has a" and "is a" relationship. Such is also true of many other fields, making the concepts of [composition and inheritance](https://en.wikipedia.org/wiki/Composition_over_inheritance) moot. In order to align our code with the real world, Biology leans into object orientation and C++ complexities pretty hard. We go deep enough into inheritance world that we derive the ability to inherit through composition via `chemical::Bonds`. This kind of "horizontal" or even "runtime" inheritance is a simple mimic of the compiler machinery that makes inheritance possible in the first place. So, like the rest of our framework we try not to reinvent the wheel but, instead, make many gears fit together. By learning about [vtables and how inheritance is often implemented](https://en.wikipedia.org/wiki/Virtual_method_table) or about how [chemical bonds](https://en.wikipedia.org/wiki/Chemical_bond) determine the properties of a substance, you should be able to better understand the Biology Bonding interface.
 
 ### Templates
 
-Templates are handled in a WYSIWYG manner where `T` (or the appropriate `typename`) is never modified. This means if you call `Add < T >` you will get a `T` returned, not a `T*` or anything else.
+Templates are always treated in a bare-minimum, unqualified type fashion. Meaning that you might say `Get< MyClass >()` and be given a `MyClass*`. This is confusing. However, it allows maintenance on the code without breaking downstream APIs. For example, in a later version, you might get a `std::smart_ptr< MyClass >`. You should be able to rely on the documentation to see what is taken and returned in a templated symbol.
 
-### Inheritance & Naming
+A few notes:
+1. Any class which derives from `bio::physical::Wave` should be treated as a pointer type in all user-facing routines. This means that if you use or derive from a Biology class, you will be using a pointer type.
+2. The inverse of the above also holds true: all built-in types and classes which do not derive from `Wave` should be treated as non-pointer types, or as pointers to a`bio::physical::Quantum< T >` (which should be implicitly usable as a `T`).
 
-All Biology classes, with few exceptions, are virtual and may be extended as far as you would like. To accommodate this, objects are almost always passed by pointer; meaning, you can pass references to your derived classes and functions will treat them as the base class. Your code is then executed through virtual method calls.  
-
-`AbstractClasses` cannot be instantiated but can be used to pass implementations by pointer.  
-
-`Classes` may be templated if they necessarily require a template. Otherwise, they contain the minimal functionality they represent and may be extended. 
-
-`ClassOf<>` will be used if `Class` is functional on its own, and we also want a templated derivation. The template (i.e. `ClassOf<>`) will share the same name as the base `Class` with the addition of "of" in order to avoid file name conflicts. It will NEVER be the case that a `Class` derives from a templated base class of the same name (i.e. `Class : ClassOf<>` is invalid as are `Class<> : Class` and `Class : Class<>`). Use of `ClassOf<>` is discouraged; a more descriptive name is preferred (i.e. what does the template override provide?).
-
-Thus, in terms of possible templates, we get either `Class<>` on its own, `Class<> : AbstractClass`, or `ClassOf<> : Class`, depending on whether the base class is functional (of course, we also have `Class : OtherClass<>` but that's just general inheritance).
+These rules also apply to preprocessor macros as much as possible.
 
 ### Multithreading
 

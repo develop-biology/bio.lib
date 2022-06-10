@@ -22,7 +22,7 @@
 #pragma once
 
 #include "bio/common/macro/Macros.h"
-#include "bio/common/utility/IsPrimitive.h"
+#include "bio/common/type/IsPrimitive.h"
 #include "ByteStream.h"
 
 #include <vector>
@@ -31,7 +31,7 @@
 #include <ostream>
 
 namespace bio {
-namespace utility {
+namespace type {
 
 /**
  * This specialization shouldn't be necessary. See IsWrappedPrimitive for more info. <br />
@@ -77,5 +77,5 @@ BIO_SET_PRIMITIVE(uint64_t)
 
 #endif
 
-} //utility namespace
+} //type namespace
 } //bio namespace

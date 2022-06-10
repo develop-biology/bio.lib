@@ -34,8 +34,8 @@ namespace physical {
  * Both Symmetry and SymmetryTypes are intended to grow with each namespace, as the complexity of what is being Rotated grows. <br />
  */
 class Symmetry :
-	virtual public Identifiable< Id >,
-	Class< Symmetry >
+	Class< Symmetry >,
+	virtual public Identifiable< Id >
 {
 public:
 
@@ -128,7 +128,6 @@ public:
 	virtual ByteStream* AccessValue();
 
 protected:
-	Name mName;
 	ByteStream mValue;
 	Identifiable< SymmetryType > mType;
 };

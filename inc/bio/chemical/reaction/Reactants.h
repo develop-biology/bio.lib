@@ -37,9 +37,9 @@ class Reactant; //unused here but anything including Reactants will likely use R
  * Reactants is intended to be the single input to a Reaction. In this way, a Reactants represents all the Reacting Substances coming together, making the job of Reaction then to pull them apart into the appropriate Products. <br />
  */
 class Reactants :
-	virtual public Structure,
 	public chemical::Class< Reactants >,
-	public LinearMotif< Substance* >
+	public LinearMotif< Substance* >,
+	virtual public Structure
 {
 public:
 

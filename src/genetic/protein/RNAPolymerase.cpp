@@ -23,7 +23,7 @@
 #include "bio/genetic/Expressor.h"
 #include "bio/genetic/Plasmid.h"
 #include "bio/genetic/RNA.h"
-#include "bio/common/TypeName.h"
+#include "bio/common/type/TypeName.h"
 
 namespace bio {
 namespace genetic {
@@ -47,7 +47,7 @@ Code RNAPolymerase::Activate()
 
 	BIO_SANITIZE(expressor, , return code::BadArgument1());
 
-	RNA* boundRNA = RotateTo(mcRna)->Probe< RNA* >();
+	RNA* boundRNA = RotateTo(mcRna)->As< RNA* >();
 
 	BIO_SANITIZE(mcRna, , return code::BadArgument2());
 

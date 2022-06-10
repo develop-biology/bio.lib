@@ -30,47 +30,33 @@
 //@formatter:on
 
 namespace bio {
-namespace utility {
+namespace type {
 
 //@formatter:off
 #if BIO_CPP_VERSION < 11
-template<typename T>
-struct IsReferenceImplementation {static const bool sValue = false;};
+	template<typename T>
+	struct RemovePointerImplementation {typedef T Type;};
 
-template<typename T>
-struct IsReferenceImplementation<T&> {static const bool sValue = true;};
-
+	template<typename T>
+	struct RemovePointerImplementation<T*> {typedef T Type;};
 #endif
 //@formatter:on
 
 /**
- * Check whether or not T is a reference <br />
+ * Strips '*' from the end of T <br />
  * @tparam T
- * @return whether or not T has an '&' at the end..
  */
 template < typename T >
-BIO_CONSTEXPR bool IsReference()
+struct RemovePointer
 {
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
-		return IsReferenceImplementation< T >::sValue;
+		typedef typename RemovePointerImplementation< T >::Type Type;
 	#else
-		return ::std::is_reference<T>::value;
+		typedef typename ::std::remove_pointer<T>::type Type;
 	#endif
 	//@formatter:on
-}
+};
 
-/**
- * Ease of use method for passing T as arg. <br />
- * @tparam T
- * @param t
- * @return whether or not T is a pointer.
- */
-template < typename T >
-bool IsReference(const T t)
-{
-	return IsReference< T >();
-}
-
-} //utility namespace
+} //type namespace
 } //bio namespace

@@ -132,8 +132,8 @@ public:
  */
 template < class WAVE, typename RETURN, typename... ARGUMENTS >
 class Excitation :
-	public ExcitationBase,
-	public physical::Class< Excitation< WAVE, RETURN, ARGUMENTS... > >
+	public physical::Class< Excitation< WAVE, RETURN, ARGUMENTS... > >,
+	public ExcitationBase
 {
 public:
 
@@ -233,8 +233,8 @@ protected:
  */
 template < class WAVE, typename RETURN >
 class ExcitationWithoutArgument :
-	public ExcitationBase,
-	public physical::Class< ExcitationWithoutArgument< WAVE, RETURN > >
+	public physical::Class< ExcitationWithoutArgument< WAVE, RETURN > >,
+	public ExcitationBase
 {
 public:
 
@@ -307,8 +307,8 @@ protected:
  */
 template < class WAVE, typename RETURN, typename ARGUMENT >
 class ExcitationWithArgument :
-	public ExcitationBase,
-	public physical::Class< ExcitationWithArgument< WAVE, RETURN, ARGUMENT > >
+	public physical::Class< ExcitationWithArgument< WAVE, RETURN, ARGUMENT > >,
+	public ExcitationBase
 {
 public:
 
@@ -403,8 +403,8 @@ protected:
  */
 template < class WAVE, typename RETURN, typename ARGUMENT1, typename ARGUMENT2 >
 class ExcitationWithTwoArguments :
-	public ExcitationBase,
-	public physical::Class< ExcitationWithTwoArguments< WAVE, RETURN, ARGUMENT1, ARGUMENT2 > >
+	public physical::Class< ExcitationWithTwoArguments< WAVE, RETURN, ARGUMENT1, ARGUMENT2 > >,
+	public ExcitationBase
 {
 public:
 

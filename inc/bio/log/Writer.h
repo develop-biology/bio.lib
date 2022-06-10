@@ -41,8 +41,8 @@ class Engine;
  * The above is accomplished by passing log::Engine as a pointer to all LoggerObjects. <br />
  */
 class Writer :
-	virtual public physical::Filterable,
-	public physical::Class< Writer >
+	public physical::Class< Writer >,
+	virtual public physical::Filterable
 {
 public:
 
@@ -156,7 +156,7 @@ protected:
 	 * VirtualBase required method. See that class for details (in common/) <br />
 	 * @param args
 	 */
-	virtual void InitializeImplementation(ByteStreams args);
+	virtual void InitializeImplementation(ByteStreams& args);
 
 private:
 	Engine* mLogEngine;

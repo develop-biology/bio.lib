@@ -155,7 +155,7 @@ void Writer::ExternalLog(
 	);
 }
 
-void Writer::InitializeImplementation(ByteStreams args)
+void Writer::InitializeImplementation(ByteStreams& args)
 {
 	if (args.Size() == 2)
 	{

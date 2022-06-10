@@ -28,6 +28,10 @@
 #include "bio/common/string/String.h"
 #include "SmartIterator.h"
 #include <deque>
+#if BIO_CPP_VERSION >= 17
+	#include <tuple>
+	#include <functional>
+#endif
 
 namespace bio {
 
@@ -65,6 +69,91 @@ class Iterator;
 class Container : virtual public ThreadSafe
 {
 public:
+
+
+	#if BIO_CPP_VERSION < 17
+
+	/**
+	 * Construct a Container::Of< CONTAINER_TYPE >(from_this_value).
+	 * NOTE: All values provided must be valid additions to the CONTAINER_TYPE provided (e.g. no adding MyClass& to a Arrangement< MyClass* >).
+	 * @tparam CONTAINER_TYPE
+	 * @param store1
+	 * @return a CONTAINER_TYPE holding all provided values.
+	 */
+	template < class CONTAINER_TYPE >
+	static CONTAINER_TYPE Of(
+		ByteStream store1
+	)
+	{
+		CONTAINER_TYPE ret(1);
+		ret.Add(store1);
+		return ret;
+	}
+
+	/**
+	 * Construct a Container::Of< CONTAINER_TYPE >(from_these, two_values).
+	 * NOTE: All values provided must be valid additions to the CONTAINER_TYPE provided (e.g. no adding MyClass& to a Arrangement< MyClass* >).
+	 * @tparam CONTAINER_TYPE
+	 * @param store1
+	 * @param store2
+	 * @return a CONTAINER_TYPE holding all provided values.
+	 */
+	template < class CONTAINER_TYPE >
+	static CONTAINER_TYPE Of(
+		ByteStream store1,
+		ByteStream store2
+	)
+	{
+		CONTAINER_TYPE ret(2);
+		ret.Add(store1);
+		ret.Add(store2);
+		return ret;
+	}
+
+	/**
+	 * Construct a Container::Of< CONTAINER_TYPE >(from, these3, values).
+	 * NOTE: All values provided must be valid additions to the CONTAINER_TYPE provided (e.g. no adding MyClass& to a Arrangement< MyClass* >).
+	 * @tparam CONTAINER_TYPE
+	 * @param store1
+	 * @param store2
+	 * @param store3
+	 * @return a CONTAINER_TYPE holding all provided values.
+	 */
+	template < class CONTAINER_TYPE >
+	static CONTAINER_TYPE Of(
+		ByteStream store1,
+		ByteStream store2,
+		ByteStream store3
+	)
+	{
+		CONTAINER_TYPE ret(3);
+		ret.Add(store1);
+		ret.Add(store2);
+		ret.Add(store3);
+		return ret;
+	}
+
+	#else
+
+	/**
+	 * Construct a Container::Of< CONTAINER_TYPE >(from, these, values).
+	 * NOTE: All values provided must be valid additions to the CONTAINER_TYPE provided (e.g. no adding MyClass& to a Arrangement< MyClass* >).
+	 * @tparam CONTAINER_TYPE
+	 * @tparam STORE
+	 * @param ...
+	 * @return a CONTAINER_TYPE holding all provided values.
+	 */
+	template < class CONTAINER_TYPE, typename... STORE >
+	static CONTAINER_TYPE Of(STORE...)
+	{
+		std::tuple< STORE... > toStore;
+		CONTAINER_TYPE ret(std::tuple_size_v< std::tuple< STORE... > >);
+		std::apply([&ret](auto&&... store) {((ret.Add(store)), ...);}, toStore);
+		return ret;
+	}
+
+	#endif
+
 
 	/**
 	 * Containers may only be constructed explicitly to avoid ambiguity when passing numbers to a function with 1 or many argument signatures.

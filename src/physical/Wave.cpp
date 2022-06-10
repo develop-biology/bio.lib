@@ -33,20 +33,18 @@ Wave::Wave(
 	Symmetry* symmetry
 )
 	:
-	mSymmetry(
-		symmetry
-	),
-	mSignal(
-		NULL
-	)
+	mSymmetry(symmetry),
+	mSignal(NULL)
 {
 }
 
 Wave::~Wave()
 {
-	BIO_SANITIZE_AT_SAFETY_LEVEL_1(mSymmetry,
+	if (mSymmetry)
+	{
 		delete mSymmetry;
-		mSymmetry = NULL,);
+		mSymmetry = NULL;
+	}
 }
 
 Wave* Wave::Clone() const

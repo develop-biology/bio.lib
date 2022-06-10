@@ -72,20 +72,6 @@ public:
 	virtual Index SeekToId(const Id& id);
 
 	/**
-	 * We want to return an Identifiable< Id >*, not a Linear. <br />
-	 * @param index
-	 * @return an Identifiable< Id >* from the Linear at the given Index.
-	 */
-	ByteStream Access(const Index index);
-
-	/**
-	 * We want to return an Identifiable< Id >*, not a Linear. <br />
-	 * @param index
-	 * @return an Identifiable< Id >* from the Linear at the given Index.
-	 */
-	const ByteStream Access(const Index index) const;
-
-	/**
 	 * Since we operate on Identifiable< Id >*, not Linears, we want to treat the external datum as Identifiable< Id >*. <br />
 	 * @param internal
 	 * @param external

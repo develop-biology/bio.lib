@@ -38,15 +38,15 @@
 		Clone()                                                                \
 	),                                                                         \
     (                                                                          \
-		virtual ::bio::physical::Wave* AsWave(),                               \
+		::bio::physical::Wave* AsWave(),                               \
 		AsWave()                                                               \
 	),                                                                         \
     (                                                                          \
-		virtual const ::bio::physical::Wave* AsWave() const,                   \
+		const ::bio::physical::Wave* AsWave() const,                   \
 		AsWave()                                                               \
 	),                                                                         \
 	(                                                                          \
-		virtual operator ::bio::physical::Wave*(),                             \
+		operator ::bio::physical::Wave*(),                             \
 		operator ::bio::physical::Wave*()                                      \
 	)
 

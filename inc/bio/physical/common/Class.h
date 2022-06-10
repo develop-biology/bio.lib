@@ -38,6 +38,17 @@ class Class :
 	public Wave
 {
 public:
+
+	/**
+	 * If you have a Class object and need to convert from Wave to the furthest derived Class, use Convert. <br />
+	 * @param wave
+	 * @return the
+	 */
+	static T* Convert(Wave* wave)
+	{
+		return Cast< T* >(wave);
+	}
+	
 	/**
 	 * NOTE: you may wish to explicitly instantiate Wave in you constructor. <br />
 	 * @param object
@@ -61,51 +72,71 @@ public:
 	{
 
 	}
-
+	
 	/**
-	* Make it so we can treat *this as the calling T. <br />
-	* @return the mObject *this was created for.
-	*/
-	virtual operator T*()
+	 * Simple getter.
+	 * @return mObject.
+	 */
+	virtual T* GetWaveObject()
 	{
 		return mObject;
 	}
 
 	/**
-	 * If you have a Class object and need to convert from Wave to the furthest derived Class, use Convert. <br />
-	 * @param wave
-	 * @return the
+	 * Simple getter.
+	 * @return mObject.
 	 */
-	T* Convert(Wave* wave)
+	virtual const T* GetWaveObject() const
 	{
-		return Cast< T* >(wave);
+		return mObject;
+	}
+	
+	/**
+	 * Make it so we can treat *this as the calling T*. <br />
+	 * @return the mObject *this was created for.
+	 */
+	virtual operator T&()
+	{
+		BIO_SANITIZE(mObject, , return 0)
+		return *GetWaveObject();
 	}
 
-
+	/**
+	 * Make it so we can treat *this as the calling T*. <br />
+	 * @return the mObject *this was created for.
+	 */
+	virtual operator const T&() const
+	{
+		BIO_SANITIZE(mObject, , return 0)
+		return *GetWaveObject();
+	}
+	
 	/**
 	 * Template override for Clone so we don't have to define it everywhere. <br />
-	 * @return a new T (and a new *this).
+	 * @return a new T* (and a new *this).
 	 */
 	virtual Wave* Clone() const
 	{
 		T* ret = new T(*mObject);
-		return Cast< Class< T >* >(ret); //2-step cast: 1st explicitly cast to *this; 2nd implicitly cast to Wave. 
+		return Cast< Class< T >* >(ret)->AsWave();
 	}
 
 	/**
 	 * Used for resolving ambiguous inheritance without the need to explicitly derive from Wave. <br />
+	 * This intentionally hides the Wave method. <br />
 	 * @return this
 	 */
-	virtual Wave* AsWave()
+	Wave* AsWave()
 	{
 		return this;
 	}
 
 	/**
 	 * Used for resolving ambiguous inheritance without the need to explicitly derive from Wave. <br />
+	 * This intentionally hides the Wave method. <br />
 	 * @return this
 	 */
-	virtual const Wave* AsWave() const
+	const Wave* AsWave() const
 	{
 		return this;
 	}
