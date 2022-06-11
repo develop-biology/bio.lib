@@ -59,7 +59,8 @@ public:
 			new Symmetry(
 				type::TypeName< T >(),
 				symmetry_type::DefineVariable())),
-		mQuantized(new T())
+		mQuantized(new T()),
+		mControlling(true)
 	{
 
 	}
@@ -74,7 +75,20 @@ public:
 			new Symmetry(
 				type::TypeName< T >(),
 				symmetry_type::DefineVariable())),
-		mQuantized(new T(assignment))
+		mQuantized(new T(assignment)),
+		mControlling(true)
+	{
+	}
+
+	Quantum(T* directControl)
+		:
+		physical::Class< Quantum< T > >(
+			this,
+			new Symmetry(
+				type::TypeName< T >(),
+				symmetry_type::DefineVariable())),
+		mQuantized(directControl),
+		mControlling(false)
 	{
 	}
 
@@ -88,7 +102,8 @@ public:
 			new Symmetry(
 				type::TypeName< T >(),
 				symmetry_type::DefineVariable())),
-		mQuantized(new T(other))
+		mQuantized(new T(other)),
+		mControlling(true)
 	{
 
 	}
@@ -98,7 +113,11 @@ public:
 	 */
 	virtual ~Quantum()
 	{
-		delete this->mQuantized;
+		if (this->mControlling && this->mQuantized)
+		{
+			delete this->mQuantized;
+			this->mQuantized = NULL;
+		}
 	}
 
 	/**
@@ -171,6 +190,7 @@ public:
 
 protected:
 	T* mQuantized;
+	bool mControlling;
 };
 
 } //physical namespace

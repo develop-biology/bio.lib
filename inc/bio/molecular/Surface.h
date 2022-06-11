@@ -95,11 +95,14 @@ public:
 	T& Manage(T* varPtr)
 	{
 		BIO_STATIC_ASSERT(!type::IsPointer< T >())
-		//TODO: cpp < 17 cannot bond pointers?
-		FormBond(
-			varPtr,
-			bond_type::Manage());
-		mBoundPosition = GetBondPosition< T >();
+
+		chemical::AtomicNumber bondedId = GetBondId< T >();
+		mBoundPosition = FormBondImplementation(
+			(new physical::Quantum< T >(varPtr))->AsWave(),
+			bondedId,
+			bond_type::Manage()
+		);
+
 		return Probe< T >();
 	}
 
@@ -115,11 +118,14 @@ public:
 	T& Use(T* varPtr)
 	{
 		BIO_STATIC_ASSERT(!type::IsPointer< T >())
-		//TODO: cpp < 17 cannot bond pointers?
-		FormBond(
-			varPtr,
-			bond_type::Use());
-		mBoundPosition = GetBondPosition< T >();
+
+		chemical::AtomicNumber bondedId = GetBondId< T >();
+		mBoundPosition = FormBondImplementation(
+			(new physical::Quantum< T >(varPtr))->AsWave(),
+			bondedId,
+			bond_type::Use()
+		);
+
 		return Probe< T >();
 	}
 
