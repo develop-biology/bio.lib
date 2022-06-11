@@ -2,6 +2,3 @@
 build/**/
 /local/
 build.json
-
-#intellij
-/.idea/
