@@ -33,22 +33,19 @@ namespace bio {
  * Id type used for all Ids until Named classes can be properly derived from. See physical::Identifiable.h for more info. <br />
  * Id is NOT used when the type itself is the id, e.g. for Code, etc. <br />
  */
-BIO_ID(Id,
-	uint32_t)
+BIO_ID(Id, uint32_t)
 
 /**
  * Value returned by many bio methods. <br />
  * You may make your own Codes by using the macro defined in common/Codes.h <br />
  */
-BIO_ID_WITH_PERSPECTIVE(Code,
-	uint8_t)
+BIO_ID_WITH_PERSPECTIVE(Code, uint8_t)
 
 /**
  * States determine the condition of an object (e.g. a chemical::Substance) at runtime. <br />
  * The most common State is Enabled() (see "bio/chemical/States.h") <br />
  */
-BIO_ID_WITH_PERSPECTIVE(State,
-	uint8_t)
+BIO_ID_WITH_PERSPECTIVE(State, uint8_t)
 
 /**
  * Properties are feature flags that give some hint of what a Wave can do (i.e. be cast as). <br />
@@ -57,19 +54,15 @@ BIO_ID_WITH_PERSPECTIVE(State,
  *
  * While the State of an object might change often, the Properties should remain constant. However, that is not enforced. The properties of water change when its chemical state changes from liquid to solid, so the Properties of your objects could change in whatever way you'd like, though doing so is generally not recommended. <br />
  */
-BIO_ID_WITH_PERSPECTIVE_WITH_PLURAL(Property,
-	Properties,
-	uint8_t)
+BIO_ID_WITH_PERSPECTIVE_WITH_PLURAL(Property, Properties, uint8_t)
 
 /**
  * SymmetryTypes determine what to do with a particular Symmetry. <br />
  * They should contain the generic building blocks of all Axes (e.g. programming languages) such that Waves can be Spun around any Axis. <br />
  */
-BIO_ID_WITH_PERSPECTIVE(SymmetryType,
-	uint8_t)
+BIO_ID_WITH_PERSPECTIVE(SymmetryType, uint8_t)
 
-BIO_ID_WITH_PERSPECTIVE(Filter,
-	uint8_t)
+BIO_ID_WITH_PERSPECTIVE(Filter,	uint8_t)
 } //bio namespace
 
 namespace bio {
@@ -77,8 +70,7 @@ namespace physical {
 
 class Symmetry;
 //typedef ::bio::Arrangement<Symmetry*> Symmetries; //From Wave.h
-BIO_PERSPECTIVE_SINGLETON(SymmetryPerspective,
-	Id)
+BIO_PERSPECTIVE_SINGLETON(SymmetryPerspective, Id)
 
 } //physical namespace
 } //bio namespace

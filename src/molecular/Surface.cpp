@@ -27,6 +27,19 @@
 namespace bio {
 namespace molecular {
 
+Surface::Surface() :
+	molecular::Class< Surface >(
+		this,
+		NULL,
+		filter::Molecular(),
+		symmetry_type::Variable()),
+	EnvironmentDependent< Molecule >(NULL),
+	mBoundPosition(InvalidIndex())
+{
+
+}
+
+
 Surface::Surface(
 	const Name& name,
 	Molecule* environment
@@ -164,10 +177,8 @@ chemical::Substance* Surface::Release(
 		if (bond->GetType() == bondType)
 		{
 			ret = ChemicalCast< chemical::Substance* >(bond->GetBonded());
-			BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret, ,
-				continue);
-			BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret->IsName(toRelease), ,
-				continue);
+			BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret, , continue);
+			BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret->IsName(toRelease), , continue);
 			BIO_SANITIZE_AT_SAFETY_LEVEL_1(perspective && ret->GetPerspective() != perspective,
 				continue,);
 			bond->Break();
@@ -198,10 +209,8 @@ chemical::Substance* Surface::Release(
 		if (bond->GetType() == bondType)
 		{
 			ret = ChemicalCast< chemical::Substance* >(bond->GetBonded());
-			BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret, ,
-				continue);
-			BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret->IsId(toRelease), ,
-				continue);
+			BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret, , continue);
+			BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret->IsId(toRelease), , continue);
 			BIO_SANITIZE_AT_SAFETY_LEVEL_1(perspective && ret->GetPerspective() != perspective,
 				continue,);
 			bond->Break();
@@ -256,7 +265,6 @@ physical::Waves Surface::operator--()
 {
 	return Release();
 }
-
 
 } //molecular namespace
 } //bio namespace

@@ -102,9 +102,10 @@ public:
 	virtual Concentration GetConcentrationAtLastPeak() const;
 
    /**
-     * Applies active changes. See EnableFluctuation, above.
-     * For more info see physical::Periodic.
-     */
+    * Applies all Fluctuations.
+    * To add a Fluctuation, simply Add< Fluctuation* >(yourFluctuation) or GetOrCreateByName("The Name of Your Fluctuation"), etc.
+    * For more info see physical::Periodic.
+    */
 	virtual Code Peak();
 	
 protected:

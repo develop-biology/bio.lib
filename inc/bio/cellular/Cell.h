@@ -57,8 +57,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular,
-		Cell)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular, Cell)
 
 	/**
 	 * Standard ctors. <br />

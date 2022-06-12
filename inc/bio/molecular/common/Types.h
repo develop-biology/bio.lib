@@ -33,17 +33,13 @@ namespace molecular {
  */
 typedef float Version;
 
-BIO_PERSPECTIVE_SINGLETON(VesiclePerspective,
-	Id)
+BIO_PERSPECTIVE_SINGLETON(VesiclePerspective, Id)
 
-BIO_PERSPECTIVE_SINGLETON(MoleculePerspective,
-	Id)
+BIO_PERSPECTIVE_SINGLETON(MoleculePerspective, Id)
 
-BIO_PERSPECTIVE_SINGLETON(DNAPerspective,
-	Id)
+BIO_PERSPECTIVE_SINGLETON(DNAPerspective, Id)
 
-BIO_PERSPECTIVE_SINGLETON(ProteinPerspective,
-	Id)
+BIO_PERSPECTIVE_SINGLETON(ProteinPerspective, Id)
 
 } //molecular namespace
 } //bio namespace

@@ -56,6 +56,11 @@ public:
 
 	virtual ~Element()
 	{
+		if (mType)
+		{
+			delete mType;
+			mType = NULL;
+		}
 	}
 
 	/**
@@ -79,10 +84,7 @@ const Properties PeriodicTableImplementation::GetPropertiesOf(AtomicNumber id) c
 {
 	Properties* ret;
 	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id));
-	BIO_SANITIZE(element,
-		,
-		return ret
-	)
+	BIO_SANITIZE(element, , return ret)
 	ret = Cast< Properties* >(element);
 	return *ret;
 }
@@ -122,8 +124,10 @@ AtomicNumber PeriodicTableImplementation::RecordPropertiesOf(
 )
 {
 	SmartIterator brn = Find(id);
-	BIO_SANITIZE_AT_SAFETY_LEVEL_1(brn.IsValid(), ,
-		return InvalidId());
+	if (!brn.IsValid())
+	{
+		return InvalidId();
+	}
 
 	Brane* brane = brn;
 	Element* element = ForceCast< Element* >(brane->mType);
@@ -149,10 +153,7 @@ AtomicNumber PeriodicTableImplementation::RecordPropertiesOf(
 const physical::Wave* PeriodicTableImplementation::GetTypeFromId(AtomicNumber id) const
 {
 	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id));
-	BIO_SANITIZE(element,
-		,
-		return NULL
-	)
+	BIO_SANITIZE(element, , return NULL)
 	return element->mType;
 }
 
@@ -162,10 +163,11 @@ bool PeriodicTableImplementation::AssociateType(
 )
 {
 	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id));
-	BIO_SANITIZE(element,
-		,
-		return false
-	)
+	BIO_SANITIZE(element, , return false)
+	if (element->mType)
+	{
+		return false;
+	}
 	element->mType = type;
 	return true;
 }
@@ -173,11 +175,12 @@ bool PeriodicTableImplementation::AssociateType(
 bool PeriodicTableImplementation::DisassociateType(AtomicNumber id)
 {
 	Element* element = ForceCast< Element* >(Perspective::GetTypeFromId(id));
-	BIO_SANITIZE(element,
-		,
-		return false
-	)
-	element->mType = NULL;
+	BIO_SANITIZE(element, , return false)
+	if (element->mType)
+	{
+		delete element->mType;
+		element->mType = NULL;
+	}
 	return true;
 }
 

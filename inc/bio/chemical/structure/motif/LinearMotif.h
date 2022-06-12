@@ -58,6 +58,25 @@ class LinearMotif :
 	public Elementary< LinearMotif< CONTENT_TYPE > >,
 	public UnorderedMotif< CONTENT_TYPE >
 {
+private:
+
+	/**
+	 * Common constructor code. <br />
+	 */
+	void CommonConstructor()
+	{
+		//TODO: check if T is a child of Substance.
+		//This will do for now.
+		BIO_STATIC_ASSERT(type::IsPointer< CONTENT_TYPE >())
+
+		if (this->mContents)
+		{
+			delete this->mContents;
+		}
+		this->mContents = new physical::Line(4);
+	}
+
+
 public:
 
 	/**
@@ -69,11 +88,9 @@ public:
 	 * Ensure virtual methods point to Class implementations. <br />
 	 * We want to define our own Attenuate & Disattenuate, so we have to ignore the optional class methods for the chemical class. <br />
 	 */
-	BIO_DISAMBIGUATE_REQUIRED_CLASS_METHODS(chemical,
-		LinearMotif< CONTENT_TYPE >)
+	BIO_DISAMBIGUATE_REQUIRED_CLASS_METHODS(chemical, LinearMotif< CONTENT_TYPE >)
 
-	BIO_DISAMBIGUATE_OPTIONAL_CLASS_METHODS(physical,
-		LinearMotif< CONTENT_TYPE >)
+	BIO_DISAMBIGUATE_OPTIONAL_CLASS_METHODS(physical, LinearMotif< CONTENT_TYPE >)
 
 	/**
 	 * Add property::Linear() to what is given by AbstractMotif. <br />
@@ -93,7 +110,7 @@ public:
 		:
 		Elementary< LinearMotif< CONTENT_TYPE > >(GetClassProperties()),
 		chemical::Class< LinearMotif< CONTENT_TYPE > >(this),
-		mPerspective(perspective)
+		mStructuralPerspective(perspective)
 	{
 		CommonConstructor();
 	}
@@ -110,7 +127,7 @@ public:
 		:
 		Elementary< LinearMotif< CONTENT_TYPE > >(GetClassProperties()),
 		chemical::Class< LinearMotif< CONTENT_TYPE > >(this),
-		mPerspective(perspective)
+		mStructuralPerspective(perspective)
 	{
 		CommonConstructor();
 		this->mContents->Import(contents);
@@ -125,7 +142,7 @@ public:
 		:
 		Elementary< LinearMotif< CONTENT_TYPE > >(toCopy.GetClassProperties()),
 		chemical::Class< LinearMotif< CONTENT_TYPE > >(this),
-		mPerspective(toCopy.mPerspective)
+		mStructuralPerspective(toCopy.mStructuralPerspective)
 	{
 		CommonConstructor();
 		this->mContents->Import(toCopy.GetAllImplementation());
@@ -146,22 +163,28 @@ public:
 	 * This Perspective will be used for Name <-> Id matching, Wave->Clone()ing, etc. <br />
 	 * See bio/physical/Perspective.h for more details. <br />
 	 */
-	physical::Perspective< Id >* mPerspective;
+	mutable physical::Perspective< Id >* mStructuralPerspective;
 
 	/**
-	 * @return the mPerspective used by *this.
+	 * Returns mStructuralPerspective if it exists. <br />
+	 * Otherwise, we'll check if CONTENT_TYPE has been registered with the PeriodicTable and will grab the Perspective from there. <br />
+	 * We can't use GetPerspective(), since that will give a Perspective for creating whatever *this is, not whatever CONTENT_TYPE is and would give errors with CreateImplementation(), etc. <br />
+	 * @return the mStructuralPerspective used by *this.
 	 */
-	physical::Perspective< Id >* GetStructuralPerspective()
+	physical::Perspective< Id >* GetStructuralPerspective() const
 	{
-		return mPerspective;
-	}
-
-	/**
-	 * @return the mPerspective used by *this.
-	 */
-	const physical::Perspective< Id >* GetStructuralPerspective() const
-	{
-		return mPerspective;
+		if (mStructuralPerspective)
+		{
+			return mStructuralPerspective;
+		}
+		//WTF? Why do we need to const_cast on assignment? CONTENT_TYPE is a pointer. This actually doesn't compile if you remove the const_cast.
+		const CONTENT_TYPE archetype = const_cast< const CONTENT_TYPE >(SafelyAccess< PeriodicTable >()->template GetInstance< typename type::RemovePointer< CONTENT_TYPE >::Type >());
+		if (archetype)
+		{
+			mStructuralPerspective = archetype->GetPerspective();
+			return mStructuralPerspective;
+		}
+		return NULL;
 	}
 
 	/**
@@ -573,25 +596,6 @@ public:
 		//No need to delete anything, since our Linear wrapper handles that for us.
 		this->mContents->Clear();
 	}
-
-private:
-
-	/**
-	 * Common constructor code. <br />
-	 */
-	void CommonConstructor()
-	{
-		//TODO: check if T is a child of Substance.
-		//This will do for now.
-		BIO_STATIC_ASSERT(type::IsPointer< CONTENT_TYPE >())
-
-		if (this->mContents)
-		{
-			delete this->mContents;
-		}
-		this->mContents = new physical::Line(4);
-	}
-
 };
 } //chemical namespace
 } //bio namespace

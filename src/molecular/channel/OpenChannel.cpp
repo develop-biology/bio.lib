@@ -25,6 +25,17 @@
 namespace bio {
 namespace molecular {
 
+OpenChannel::OpenChannel() :
+	molecular::Class< OpenChannel >(
+		this,
+		NULL,
+		filter::Molecular(),
+		symmetry_type::Variable())
+{
+
+}
+
+
 OpenChannel::OpenChannel(
 	const Name& name,
 	Vesicle* environment

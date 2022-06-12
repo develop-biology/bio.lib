@@ -40,8 +40,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
-		Periodic)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, Periodic)
 
 	/**
 	 * Currently default is set to 200 milliseconds (200000 microseconds). <br />

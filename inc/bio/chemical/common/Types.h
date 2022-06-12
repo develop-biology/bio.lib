@@ -32,12 +32,9 @@ namespace bio {
  * This can be used to inform other systems (e.g. molecular) of how to treat the Bonded Wave. <br />
  * NOTE: Atoms can Bond things that are not Atoms. The only requirement is that they are Wave. <br />
  */
-BIO_STRONG_TYPEDEF(uint8_t,
-	BondType,
-	0)
+BIO_STRONG_TYPEDEF(uint8_t,	BondType, 0)
 
-BIO_PERSPECTIVE_SINGLETON(BondTypePerspective,
-	BondType)
+BIO_PERSPECTIVE_SINGLETON(BondTypePerspective, BondType)
 
 /**
  * Mainly used for inserting children into Nested classes. <br />
@@ -71,15 +68,13 @@ typedef Index Valence;
  */
 typedef uint16_t AtomicNumber;
 
-BIO_PERSPECTIVE_SINGLETON(ReactionPerspective,
-	Id)
+BIO_PERSPECTIVE_SINGLETON(ReactionPerspective, Id)
 
 class Substance;
 
 typedef ::bio::Arrangement< Substance* > Substances;
 
-BIO_PERSPECTIVE_SINGLETON(SubstancePerspective,
-	Id)
+BIO_PERSPECTIVE_SINGLETON(SubstancePerspective, Id)
 
 typedef ::bio::Arrangement< ByteStream > Emission;
 

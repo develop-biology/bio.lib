@@ -45,8 +45,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical,
-		Symmetry)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical, Symmetry)
 
 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(chemical,
 		Symmetry,

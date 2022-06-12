@@ -34,7 +34,7 @@ Vesicle::Vesicle(const Vesicle& toCopy)
 		toCopy.GetFilter()),
 	LinearMotif< Molecule* >(toCopy)
 {
-	LinearMotif< Molecule* >::mPerspective = this;
+	LinearMotif< Molecule* >::mStructuralPerspective = this;
 }
 
 Vesicle::~Vesicle()

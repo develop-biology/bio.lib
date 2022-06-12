@@ -152,7 +152,7 @@ public:
 	}
 
 protected:
-	T* mObject;
+	mutable T* mObject;
 };
 
 } //physical namespace

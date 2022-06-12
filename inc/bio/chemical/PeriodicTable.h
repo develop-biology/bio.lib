@@ -21,8 +21,10 @@
 
 #pragma once
 
-#include "bio/common/type/TypeName.h"
+#include "bio/common/type/NakedTypeName.h"
 #include "bio/chemical/common/Types.h"
+#include "bio/physical/common/Class.h"
+#include "bio/physical/type/IsWave.h"
 #include "bio/physical/Perspective.h"
 
 
@@ -58,7 +60,7 @@ public:
 	template < typename T >
 	Name GetNameFromType() const
 	{
-		return type::TypeName< T >();
+		return type::NakedTypeName< T >();
 	}
 
 	/**
@@ -114,7 +116,7 @@ public:
 	template < typename T >
 	const Properties GetPropertiesOf() const
 	{
-		return GetPropertiesOf(type::TypeName< T >());
+		return GetPropertiesOf(type::NakedTypeName< T >());
 	}
 
 	/**
@@ -141,6 +143,7 @@ public:
 
 	/**
 	 * Add a Property to the given type's record in *this. <br />
+	 * Strips any qualifiers (*, &, or const) from T <br />
 	 * @tparam T
 	 * @param property
 	 * @return the id of the given typo.
@@ -149,7 +152,7 @@ public:
 	AtomicNumber RecordPropertyOf(Property property)
 	{
 		return RecordPropertyOf(
-			type::TypeName< T >(),
+			type::NakedTypeName< T >(),
 			property
 		);
 	}
@@ -184,9 +187,9 @@ public:
 	 */
 	template < typename T >
 	AtomicNumber RecordPropertiesOf(Properties properties)
-	{
+	{		
 		return RecordPropertiesOf(
-			type::TypeName< T >(),
+			type::NakedTypeName< T >(),
 			properties
 		);
 	}
@@ -200,8 +203,14 @@ public:
 
 	/**
 	 * Associates the given Wave type with the given id. <br />
+	 * Nop if a type is already Associated. In that case, you must Disassociate the type before calling this method. <br />
+	 * <br />
+	 * NOTE: THE ASSOCIATED TYPE WILL BE DELETED BY *this AND SHOULD LAST THE LIFETIME OF THE PROGRAM! <br />
+	 * In other words, don't delete whatever you provide here. <br />
+	 * <br />
 	 * This is only necessary if you want to use GetTypeFromId later on. <br />
 	 * Associating a type with an id has no effect on the Recorded Properties. <br />
+	 * You should only use this with classes that derive from physical::Class<>, as this is the only accepted means of retrieving the type later (see GetInstance, below). <br />
 	 * @param id
 	 * @param type
 	 * @return true if the association completed successfully else false
@@ -212,16 +221,34 @@ public:
 	);
 
 	/**
-	 * Removes the type association created by AssociateType(). <br />
+	 * Removes the type association created by AssociateType() and deletes the Associated Wave. <br />
 	 * Disassociating a type has no effect on the Recorded Properties. <br />
 	 * @param id
 	 * @return true if the association was removed else false.
 	 */
 	virtual bool DisassociateType(AtomicNumber id);
+
+	/**
+	 * Get a previously AssociatedType. <br />
+	 * Requires that T be a child of physical::Class<>. <br />
+	 * It is the caller's responsibility to know if T should be wrapped by Quantum<>; see how Atom handles AsBonded() & AsBondedQuantum() for an example. <br />
+	 * @tparam T
+	 * @return a T* from that stored in *this or NULL.
+	 */
+	template < typename T >
+	const T* GetInstance() const
+	{
+		BIO_STATIC_ASSERT(type::IsWave< T >())
+
+		const physical::Wave* storedInstance = GetTypeFromId(GetIdWithoutCreation(GetNameFromType< T >()));
+		BIO_SANITIZE(storedInstance, , return NULL)
+
+		const physical::Class< T >* type = ForceCast< const physical::Class< T >* >(storedInstance);
+		return type->GetWaveObject();
+	}
 };
 
-BIO_SINGLETON(PeriodicTable,
-	PeriodicTableImplementation)
+BIO_SINGLETON(PeriodicTable, PeriodicTableImplementation)
 
 } //chemical namespace
 } //bio namespace

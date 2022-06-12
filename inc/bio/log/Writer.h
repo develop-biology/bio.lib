@@ -49,8 +49,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
-		Writer)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, Writer)
 
 	/**
 	 *

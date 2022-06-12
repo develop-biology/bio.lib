@@ -46,8 +46,12 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular,
-		Surface)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular, Surface)
+
+	/**
+	 * Don't use this.
+	 */
+	Surface();
 
 	/**
 	 * @param name

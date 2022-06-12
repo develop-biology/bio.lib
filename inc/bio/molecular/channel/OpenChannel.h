@@ -39,8 +39,12 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular,
-		OpenChannel)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular, OpenChannel)
+
+	/**
+	 * Don't use this.
+	 */
+	OpenChannel();
 
 	/**
 	 * @param name

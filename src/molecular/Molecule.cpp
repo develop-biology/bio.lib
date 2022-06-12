@@ -38,7 +38,7 @@ Molecule::Molecule(const Molecule& toCopy)
 	physical::Perspective< Id >(toCopy),
 	chemical::LinearMotif< Surface* >(toCopy)
 {
-	chemical::LinearMotif< Surface* >::mPerspective = this;
+	chemical::LinearMotif< Surface* >::mStructuralPerspective = this;
 }
 
 Molecule::~Molecule()

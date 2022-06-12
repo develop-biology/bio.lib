@@ -30,8 +30,8 @@ class Wave;
 /**
  * ChemicalCasts use chemical Bonds to change one object into anther. <br />
  * See Atom::As<>() for more info.<br />
- * @tparam TO
- * @tparam FROM
+ * @tparam TO a Wave* (not a ** or &).
+ * @tparam FROM also a Wave*
  * @param toCast
  * @return The TO that is bonded to FROM or 0.
  */

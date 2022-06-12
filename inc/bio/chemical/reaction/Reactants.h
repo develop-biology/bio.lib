@@ -46,8 +46,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical,
-		Reactants)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical, Reactants)
 
 	/**
 	 *

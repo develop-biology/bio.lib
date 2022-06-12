@@ -25,7 +25,6 @@
 
 namespace bio {
 
-BIO_ID_WITH_PERSPECTIVE(LogLevel,
-	uint8_t)
+BIO_ID_WITH_PERSPECTIVE(LogLevel, uint8_t)
 
 } //bio namespace

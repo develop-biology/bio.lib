@@ -56,8 +56,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(genetic,
-		Plasmid)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(genetic, Plasmid)
 
 	/**
 	 * Standard ctors. <br />

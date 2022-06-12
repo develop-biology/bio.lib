@@ -41,8 +41,7 @@ class Class :
 {
 public:
 
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular,
-		T)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular, T)
 
 	/**
 	 * Providing just the object should not Initialize anything. <br />

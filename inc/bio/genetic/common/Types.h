@@ -32,14 +32,11 @@ namespace bio {
  * Sites are identical to Sites except they have an insertion method, rather than an extraction method. <br />
  * See Localization.h for more info. <br />
  */
-BIO_ID(Site,
-	uint8_t)
+BIO_ID(Site, uint8_t)
 
-BIO_PERSPECTIVE_SINGLETON(LocalizationSitePerspective,
-	Site)
+BIO_PERSPECTIVE_SINGLETON(LocalizationSitePerspective, Site)
 
-BIO_PERSPECTIVE_SINGLETON(InsertionSitePerspective,
-	Site)
+BIO_PERSPECTIVE_SINGLETON(InsertionSitePerspective, Site)
 
 /**
  * TranscriptionFactors determine which Proteins are expressed in which Cells. <br />
@@ -48,8 +45,7 @@ BIO_PERSPECTIVE_SINGLETON(InsertionSitePerspective,
  * TranscriptionFactors thus allow you to pick and choose which features of your loaded modules you would like in your Cells. <br />
  * In practice, you'll likely be using other people's Plasmids, so TranscriptionFactors give you a level of control over how you want to consume external libraries in your networks. <br />
 */
-BIO_ID_WITH_PERSPECTIVE(TranscriptionFactor,
-	uint8_t)
+BIO_ID_WITH_PERSPECTIVE(TranscriptionFactor, uint8_t)
 } //bio namespace
 
 namespace bio {
@@ -59,10 +55,8 @@ class RNA;
 
 typedef ::bio::Arrangement< const RNA* > Transcriptome;
 
-BIO_PERSPECTIVE_SINGLETON(RNAPerspective,
-	Id)
+BIO_PERSPECTIVE_SINGLETON(RNAPerspective, Id)
 
-BIO_PERSPECTIVE_SINGLETON(PlasmidPerspective,
-	Id)
+BIO_PERSPECTIVE_SINGLETON(PlasmidPerspective, Id)
 } //genetic namespace
 } //bio namespace

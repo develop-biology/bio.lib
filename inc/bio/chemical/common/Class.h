@@ -73,14 +73,27 @@ private:
 			bondedId,
 			bond_type::Virtual());
 		#endif
+
+		//Make sure *this is Associated in the PeriodicTable's registry.
+		//This should almost always be a nop and might be more wasteful than useful, so if there's a better way, we should explore that.
+		//Where this really comes in handy is in enabling LinearMotif::CreateImplementation(), which requires that a Perspective be set for the CONTENT_TYPE used.
+		//For example, if we want to GetOrCreateByName< Cell >("My Cell"), we have to have CellPerspective::Instance() stored in PeriodicTable::GetInstance< Cell >()->GetPerspective().
+		//So, we either do this and Associate a new T with the PeriodicTable here, somewhere externally, or provide a valid Perspective to every LinearMotif::mStructuralPerspective.
+		//Because the minimum requirements for LinearMotif's CONTENT_TYPE are only being a ChemicalClass<>, and anything else that deals with the PeriodicTable will likely be dealing with Substances or beyond, we've chosen to put this here.
+		static T* archetype = NULL;
+		if (!archetype)
+		{
+			archetype = new T(); //will be deleted by PeriodicTable.
+			AtomicNumber atomicNumber = SafelyAccess< PeriodicTable >()->template GetIdFromType< T >();
+			SafelyAccess< PeriodicTable >()->AssociateType(atomicNumber, archetype->AsWave());
+		}
 	}
 
 public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
-		T)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, T)
 
 	/**
 	 * For when we know the Perspective but not ourselves. <br />

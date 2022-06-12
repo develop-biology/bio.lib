@@ -125,8 +125,7 @@ void Writer::ExternalLog(
 		return);
 
 	va_list args;
-	va_start(args,
-		format);
+	va_start(args, format);
 	mLogEngine->Log(
 		filter,
 		level,

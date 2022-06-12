@@ -25,6 +25,16 @@
 namespace bio {
 namespace molecular {
 
+Pore::Pore() :
+	molecular::Class< Pore >(
+	this,
+	NULL,
+	filter::Molecular(),
+	symmetry_type::Variable())
+{
+
+}
+
 Pore::Pore(
 	const Name& name,
 	Vesicle* environment

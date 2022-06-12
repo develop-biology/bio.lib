@@ -52,8 +52,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical,
-		Pathway)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical, Pathway)
 
 	/**
 	 * Standard ctors. <br />

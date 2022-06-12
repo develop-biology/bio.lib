@@ -25,10 +25,8 @@
 
 namespace bio {
 
-BIO_PERSPECTIVE_SINGLETON(OrganismPerspective,
-	Id)
+BIO_PERSPECTIVE_SINGLETON(OrganismPerspective, Id)
 
-BIO_PERSPECTIVE_SINGLETON(HabitatPerspective,
-	Id)
+BIO_PERSPECTIVE_SINGLETON(HabitatPerspective, Id)
 
 } //bio namespace

@@ -52,8 +52,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular,
-		Protein)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular, Protein)
 
 	/**
 	 * These are easy to use but require setting the Source after instantiation. <br />

@@ -61,7 +61,6 @@ public:
 	virtual void Flush();
 };
 
-BIO_SINGLETON(GlobalCache,
-	Cache)
+BIO_SINGLETON(GlobalCache, Cache)
 
 } //bio namespace
