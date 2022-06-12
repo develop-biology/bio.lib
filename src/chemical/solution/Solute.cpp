@@ -19,158 +19,101 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/circulatory/Solute.h"
-#include "bio/personality/Personality.h"
-#include "bio/common/Time.h"
-// #include <cstdio>
+#include "bio/chemical/solution/Solute.h"
+#include "bio/chemical/solution/Fluctuation.h"
 
-using namespace bio;
+namespace bio {
+namespace chemical {
 
-void CommonConstructor()
+void Solute::CommonConstructor()
 {
 	mConcentration = 0.0f;
 	mMin = 0.0f;
 	mMax = 1.0f;
 }
 
-virtual Concentration GetConcentration() const {return mConcentration;}
-
-/**
- * Rather than activating a Fluctuation, you can just set the mConcentration of *this directly.
- * @param newConcentration
- */
-virtual void SetConcentration(Concentration newConcentration);
-
-/**
- * Get the mMin of *this
- * @return the mMin of *this.
- */
-virtual Concentration GetMin() const {return mMin;}
-
-/**
- * Get the mMax of *this.
- * @return the mMax of *this.
- */
-virtual Concentration GetMax() const {return mMax;}
-
-/**
- * Set the mMin of *this.
- * @param newMin
- */
-virtual void SetMin(Concentration newMin);
-
-/**
- * Set the mMax of *this.
- * @param newMax
- */
-virtual void SetMax(Concentration newMax);
-
-/**
- * @return the Concentration of *this last time *this Peak()ed.
- */
-virtual Concentration GetConcentrationAtLastPeak() const {return mConcentrationAtLastPeak;}
-
-/**
- * Mark the given Fluctuation as active.
- * Active Fluctuations will be applied on a per second basis; meaning that a change of +1 will be interpreted as +1 / s. If ApplyAnyActiveChanges is called every 200ms it will add 0.2 between clock ticks.
- * @param fluctuation
- * @param concentration
- * @return true on success, false otherwise
- */
-virtual bool EnableFluctuation(const Id fluctuation, const Concentration concentration);
-
-/**
- * Marks the given Fluctuation as inactive.
- * @param fluctuation
- * @return true on success, false otherwise
- */
-virtual bool DisableFluctuation(const Id fluctuation);
-
-/**
- * Applies active changes. See EnableFluctuation, above.
- * For more info see physical::Periodic.
- */
-virtual Code Peak();
-
-protected:
-Concentration mConcentration;
-Concentration mConcentrationAtLastPeak;
-Concentration mMin, mMax;
-UnchangableChangeMap mActiveChanges;
-
-/**
- * Make sure the Concentration of *this does not exceed mMin ~ mMax.
- */
-virtual void Limit()
+Concentration Solute::GetConcentration() const
 {
-	if (mConcentration > mMax) mConcentration = mMax;
-	else if (mConcentration < mMin) mConcentration = mMin;
+	return mConcentration;
 }
 
-};
-
-
-
-
-
-Hormone::PersonalityVar(Name name, NameTracker<PersonalityVarId>* tracker, PersonalityValue init)
-    : PollObject(), Named(name, tracker), LoggerObject(NULL, log::Filt::PERSONALITY), m_value(init), m_valueAtLastPoll(0), m_min(0.0f), m_max(1.0f)
+void Solute::SetConcentration(Concentration newConcentration)
 {
-
-}
-PersonalityVar::~PersonalityVar()
-{
+	mConcentration = newConcentration;
+	Limit();
 }
 
-void PersonalityVar::SetValue(PersonalityValue newValue)
+void Solute::Increment(Concentration add)
 {
-    m_value = newValue;
-    Limit();
-    Debug("%s = %f. Value is now %f", GetName(), newValue, m_value);
-}
-void PersonalityVar::SetMin(PersonalityValue newMin)
-{
-    m_min = newMin;
-    Limit();
-}
-void PersonalityVar::SetMax(PersonalityValue newMax)
-{
-    m_max = newMax;
-    Limit();
+	mConcentration += add;
+	Limit();
 }
 
-bool PersonalityVar::EnableChangeOverTime(const PersonalityChangeId change, const PersonalityValue value)
+void Solute::Decrement(Concentration subtract)
 {
-    if (m_activeChanges.find(change) != m_activeChanges.end())
-        return false;
-    m_activeChanges.insert(UnchangablePersonalityChangeMapPair(change, value));
-    return true;
+	mConcentration -= subtract;
+	Limit();
 }
 
-bool PersonalityVar::DisableChangeOverTime(PersonalityChangeId change)
+Concentration Solute::GetMin() const
 {
-    UnchangablePersonalityChangeMap::iterator atv = 
-        m_activeChanges.find(change);
-    if (atv == m_activeChanges.end())
-        return false;
-    m_activeChanges.erase(atv);
-    return true;
+	return mMin;
 }
 
-void PersonalityVar::Poll()
+Concentration Solute::GetMax() const
 {
-
+	return mMax;
 }
-void PersonalityVar::Display()
+
+void Solute::SetMin(Concentration newMin)
 {
-    printf("  %s: %f (min: %.2g max: %.2g) Active Changes:\n", GetName(), m_value, m_min, m_max);
-
-    Name changeName; //buffer
-    for (UnchangablePersonalityChangeMap::const_iterator cng = 
-        m_activeChanges.begin(); cng != m_activeChanges.end(); ++cng)
-    {
-        changeName = 
-            Personality::ChangeTracker::Instance().NameFromId(cng->first);
-        printf("    %s rate: %f", changeName, cng->second);
-    }
+	mMin = newMin;
+	Limit();
 }
+
+void Solute::SetMax(Concentration newMax)
+{
+	mMax = newMax;
+	Limit();
+}
+
+Concentration Solute::GetConcentrationAtLastPeak() const
+{
+	return mConcentrationAtLastPeak;
+}
+
+void Solute::RecordPeakConcentration()
+{
+	mConcentrationAtLastPeak = mConcentration;
+}
+
+Code Solute::Peak()
+{
+	Fluctuation* fluctuation;
+	for (
+		SmartIterator flx = GetAll< Fluctuation* >()->Begin();
+		!flx.IsAfterEnd();
+		++flx
+	)
+	{
+		fluctuation = flx;
+		fluctuation->Affect(this);
+		//We don't care about Affect's return value right now.
+	}
+	return code::Success();
+}
+
+void Solute::Limit()
+{
+	if (mConcentration > mMax)
+	{
+		mConcentration = mMax;
+	}
+	else if (mConcentration < mMin)
+	{
+		mConcentration = mMin;
+	}
+}
+
+} //chemical namespace
+} //bio namespace

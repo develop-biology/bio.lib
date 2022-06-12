@@ -68,7 +68,16 @@ typedef Index Valence;
  */
 typedef uint16_t AtomicNumber;
 
+/**
+ * Chemical Concentrations are expressions of fractional quantity and are used by classes like Solute. <br />
+ */
+typedef float Concentration;
+
 BIO_PERSPECTIVE_SINGLETON(ReactionPerspective, Id)
+
+BIO_PERSPECTIVE_SINGLETON(SolutePerspective, Id)
+
+BIO_PERSPECTIVE_SINGLETON(FluctuationPerspective, Id)
 
 class Substance;
 

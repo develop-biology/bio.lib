@@ -167,7 +167,7 @@ bool Threaded::Stop()
 
 }
 
-void Threaded::Sleep(MicroSeconds us)
+void Threaded::Sleep(MilliSeconds us)
 {
 	//@formatter:off
 	#if BIO_CPP_VERSION < 11
@@ -175,7 +175,7 @@ void Threaded::Sleep(MicroSeconds us)
 			usleep(us);
 		#endif
 	#else
-		std::this_thread::sleep_for (std::chrono::microseconds(us));
+		std::this_thread::sleep_for (std::chrono::milliseconds(us));
 	#endif
 	//@formatter:on
 }

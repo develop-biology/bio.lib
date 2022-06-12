@@ -46,7 +46,7 @@ public:
 	/**
 	 *
 	 */
-	ThreadedPeriodic(MicroSeconds interval = GetDefaultInterval());
+	ThreadedPeriodic(MilliSeconds interval = GetDefaultInterval());
 
 	/**
 	 *
@@ -54,7 +54,7 @@ public:
 	virtual ~ThreadedPeriodic();
 
 	/**
-	 * Calls Peak() then sleeps. <br />
+	 * Calls Periodic::CheckIn() then sleeps. <br />
 	 */
 	virtual bool Work();
 };

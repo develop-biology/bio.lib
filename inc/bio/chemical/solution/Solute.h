@@ -22,6 +22,7 @@
 #pragma once
 
 #include "bio/chemical/common/Types.h"
+#include "bio/chemical/macro/Macros.h"
 #include "bio/chemical/Substance.h"
 #include "bio/physical/Periodic.h"
 
@@ -73,6 +74,18 @@ public:
 	virtual void SetConcentration(Concentration newConcentration);
 
 	/**
+	 * Increase the mConcentration of *this.
+	 * @param add
+	 */
+	virtual void Increment(Concentration add);
+
+	/**
+	 * Decrease the mConcentration of *this.
+	 * @param add
+	 */
+	virtual void Decrement(Concentration subtract);
+
+	/**
 	 * Get the mMin of *this
 	 * @return the mMin of *this.
 	 */
@@ -100,6 +113,12 @@ public:
 	 * @return the Concentration of *this last time *this Peak()ed.
 	 */
 	virtual Concentration GetConcentrationAtLastPeak() const;
+
+	/**
+	 * Sets mConcentrationAtLastPeak to mConcentration.
+	 * Should be Called during Peak().
+	 */
+	virtual void RecordPeakConcentration();
 
    /**
     * Applies all Fluctuations.

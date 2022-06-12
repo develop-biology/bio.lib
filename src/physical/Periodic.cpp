@@ -28,9 +28,9 @@
 namespace bio {
 namespace physical {
 
-/*static*/ MicroSeconds Periodic::GetDefaultInterval()
+/*static*/ MilliSeconds Periodic::GetDefaultInterval()
 {
-	return 200000;
+	return 200;
 }
 
 Properties Periodic::GetClassProperties()
@@ -41,19 +41,15 @@ Properties Periodic::GetClassProperties()
 	return ret;
 }
 
-Periodic::Periodic(MicroSeconds interval)
+Periodic::Periodic(MilliSeconds interval)
 	:
 	Class(
 		this,
 		new Symmetry(
 			"mInterval",
 			symmetry_type::DefineVariable())),
-	mInterval(
-		interval
-	),
-	mLastPeakTimestamp(
-		0
-	)
+	mInterval(interval),
+	mLastPeakTimestamp(0)
 {
 }
 
@@ -61,12 +57,12 @@ Periodic::~Periodic()
 {
 }
 
-void Periodic::SetInterval(MicroSeconds interval)
+void Periodic::SetInterval(MilliSeconds interval)
 {
 	mInterval = interval;
 }
 
-MicroSeconds Periodic::GetInterval() const
+MilliSeconds Periodic::GetInterval() const
 {
 	return mInterval;
 }
@@ -78,7 +74,7 @@ Timestamp Periodic::GetTimeLastPeaked() const
 
 float Periodic::GetIntervalInSeconds() const
 {
-	return (static_cast<float>(mInterval)) / 1000000.0f;
+	return (static_cast<float>(mInterval)) / 1000.0f;
 }
 
 void Periodic::SetLastPeakTimestamp(Timestamp lastPeak)
@@ -88,9 +84,7 @@ void Periodic::SetLastPeakTimestamp(Timestamp lastPeak)
 
 Symmetry* Periodic::Spin() const
 {
-	mSymmetry->AccessValue()->Set(
-		mInterval
-	);
+	mSymmetry->AccessValue()->Set(mInterval);
 	return Wave::Spin();
 }
 
@@ -120,9 +114,7 @@ void Periodic::CheckIn()
 		return;
 	}
 	Peak();
-	SetLastPeakTimestamp(
-		now
-	);
+	SetLastPeakTimestamp(now);
 }
 
 } //physical namespace

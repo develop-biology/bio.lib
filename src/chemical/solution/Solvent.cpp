@@ -21,40 +21,37 @@
 
 #pragma once
 
-#include "bio/chemical/solution/fluctuation/ChangeOverTime.h"
-#include "bio/chemical/solution/Solute.h"
-#include "bio/physical/Time.h"
+#include "bio/chemical/solution/Solvent.h"
 
 namespace bio {
 namespace chemical {
 
-void ChangeOverTime::CommonConstructor()
+Concentration Solvent::operator[](const Id& soluteId)
 {
-	mRate = 0.0f;
+	Solute* solute = GetById< Solute* >(soluteId);
+	BIO_SANITIZE(solute,,return 0)
+	return solute->GetConcentration();
 }
 
-Concentration ChangeOverTime::GetRate() const
+const Concentration Solvent::operator[](const Id& soluteId) const
 {
-	return mRate;
+	const Solute* solute = GetById< Solute* >(soluteId);
+	BIO_SANITIZE(solute,,return 0)
+	return solute->GetConcentration();
+}
+	
+Concentration Solvent::operator[](const Name& soluteName)
+{
+	Solute* solute = GetByName< Solute* >(soluteName);
+	BIO_SANITIZE(solute,,return 0)
+	return solute->GetConcentration();
 }
 
-void ChangeOverTime::SetRate(Concentration rate)
+const Concentration Solvent::operator[](const Name& soluteName) const
 {
-	mRate = rate;
-}
-
-Code ChangeOverTime::Affect(Solute* solute)
-{
-	BIO_SANITIZE(solute,,return code::BadArgument1())
-
-	Timestamp now = time::GetCurrentTimestamp();
-	MilliSeconds msSinceLast = now - solute->GetTimeLastPeaked();
-
-	//NOTE: if mRate is negative add will make solute->mConcentration lower.
-	float add = mRate * msSinceLast;
-	solute->Increment(add);
-
-	return code::Success();
+	const Solute* solute = GetByName< Solute* >(soluteName);
+	BIO_SANITIZE(solute,,return 0)
+	return solute->GetConcentration();
 }
 
 } //chemical namespace

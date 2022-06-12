@@ -27,6 +27,8 @@
 namespace bio {
 namespace chemical {
 
+class Solute;
+
 /**
  * Fluctuations change the Concentration of Solutes.
  */
@@ -40,8 +42,8 @@ public:
 
 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(
 		chemical,
-		Solute,
-		&SolutePerspective::Instance(),
+		Fluctuation,
+		&FluctuationPerspective::Instance(),
 		filter::Chemical
 	)
 

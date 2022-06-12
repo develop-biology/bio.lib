@@ -74,7 +74,7 @@ public:
 		const Name& name,
 		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
-		MicroSeconds interval = GetDefaultInterval())
+		MilliSeconds interval = GetDefaultInterval())
 		:
 		cellular::Class< T >(
 			object,
@@ -99,7 +99,7 @@ public:
 		const Id& id,
 		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
-		MicroSeconds interval = GetDefaultInterval())
+		MilliSeconds interval = GetDefaultInterval())
 		:
 		cellular::Class< T >(
 			object,

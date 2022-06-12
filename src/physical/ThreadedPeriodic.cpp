@@ -25,7 +25,7 @@
 namespace bio {
 namespace physical {
 
-ThreadedPeriodic::ThreadedPeriodic(MicroSeconds interval)
+ThreadedPeriodic::ThreadedPeriodic(MilliSeconds interval)
 	:
 	Class< ThreadedPeriodic >(this)
 {
@@ -38,12 +38,9 @@ ThreadedPeriodic::~ThreadedPeriodic()
 
 bool ThreadedPeriodic::Work()
 {
-	Timestamp now = GetCurrentTimestamp();
-	Peak();
 	LockThread();
-	SetLastPeakTimestamp(now);
+	CheckIn();
 	UnlockThread();
-	Threaded::Work();
 	Sleep(GetInterval());
 	return true;
 }

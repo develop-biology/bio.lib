@@ -48,19 +48,19 @@ typedef Container ByteStreams; //ByteStream is the default TYPE, so no need to r
 /**
  * Timestamp. Usually in ms since epoch (epoch is sometimes the uptime of the kernel) <br />
  */
-typedef uint32_t Timestamp;
+typedef uint64_t Timestamp;
 typedef Arrangement< Timestamp > Timestamps;
 
 /**
  * microseconds (us for short). <br />
  */
-typedef uint32_t MicroSeconds;
+typedef uint64_t MicroSeconds;
 typedef MicroSeconds US;
 
 /**
  * milliseconds (ms for short). <br />
  */
-typedef uint32_t MilliSeconds;
+typedef uint64_t MilliSeconds;
 typedef MilliSeconds MS;
 
 /**

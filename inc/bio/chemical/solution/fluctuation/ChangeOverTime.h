@@ -65,6 +65,12 @@ public:
 
 protected:
 	Concentration mRate;
+
+private:
+	/**
+	 *
+	 */
+	void CommonConstructor();
 };
 
 } //chemical namespace

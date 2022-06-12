@@ -43,10 +43,10 @@ public:
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, Periodic)
 
 	/**
-	 * Currently default is set to 200 milliseconds (200000 microseconds). <br />
+	 * Currently default is set to 200 milliseconds. <br />
 	 * @return a default value for Periodic constructors.
 	 */
-	static MicroSeconds GetDefaultInterval();
+	static MilliSeconds GetDefaultInterval();
 
 	/**
 	 * All Periodic objects share the "Periodic" Property. <br />
@@ -55,9 +55,9 @@ public:
 	static Properties GetClassProperties();
 
 	/**
-	 * @param interval the period that Peak() wants to be called in microseconds.
+	 * @param interval the period that Peak() wants to be called in milliseconds.
 	 */
-	Periodic(MicroSeconds interval = GetDefaultInterval());
+	Periodic(MilliSeconds interval = GetDefaultInterval());
 
 	/**
 	 *
@@ -98,12 +98,12 @@ public:
 	 * Set how quickly *this should Peak() <br />
 	 * @param interval
 	 */
-	virtual void SetInterval(MicroSeconds interval);
+	virtual void SetInterval(MilliSeconds interval);
 
 	/**
-	 * @return the time interval between Peaks of *this, in microseconds.
+	 * @return the time interval between Peaks of *this, in milliseconds.
 	 */
-	MicroSeconds GetInterval() const;
+	MilliSeconds GetInterval() const;
 
 	/**
 	 * @return the last time *this Peaked.
@@ -142,7 +142,7 @@ public:
 	virtual Properties GetProperties() const;
 
 protected:
-	MicroSeconds mInterval;
+	MilliSeconds mInterval;
 	Timestamp mLastPeakTimestamp;
 };
 

@@ -120,10 +120,10 @@ public:
 	virtual bool IsRunning();
 
 	/**
-	 * Release thread processing for us microseconds. <br />
+	 * Release thread processing for us milliseconds. <br />
 	 * @param us
 	 */
-	virtual void Sleep(MicroSeconds us);
+	virtual void Sleep(MilliSeconds us);
 
 protected:
 
