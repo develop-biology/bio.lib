@@ -56,11 +56,14 @@ public:
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular, Tissue)
 
 	/**
-	 * Standard ctors. <br />
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
+	 * Standard constructors. <br />
+	 */
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
+		cellular,
 		Tissue,
 		&TissuePerspective::Instance(),
-		filter::Cellular())
+		filter::Cellular()
+	)
 
 
 	/**

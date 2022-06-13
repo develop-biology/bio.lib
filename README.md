@@ -136,9 +136,132 @@ Documentation is available [on the Develop Biology website](https://develop.bio/
 ## Branding
 
 ### Colors
-* Dark Blue: #5ca3ff rgb(92, 163, 255) <br />
-* Cyan: #13f4ef rgb(19, 244, 239) <br />
-* Green: #68ff00 rgb(104, 255, 0) <br />
-* Yellow: #faff00 rgb(250, 255, 0) <br />
-* Orange: #ffbf00 rgb(255, 191, 0) <br />
-* Magenta: #ff5794 rgb(255, 87, 148) <br />
+* Dark Blue: #5ca3ff rgb(92, 163, 255)
+* Cyan: #13f4ef rgb(19, 244, 239)
+* Green: #68ff00 rgb(104, 255, 0)
+* Yellow: #faff00 rgb(250, 255, 0)
+* Orange: #ffbf00 rgb(255, 191, 0)
+* Magenta: #ff5794 rgb(255, 87, 148)
+
+
+# Native Biology Code
+
+The bio library provides the basics for creating a directed, recursive hypergraph by allowing, among other mechanisms, the ability of objects to bond other bonded objects and allowing neurons to communicate through synapses, which are themselves bonded objects (i.e. synapses may use or even be neurons and vice versa). Thus, our graphical programming system blurs the lines of what it means "to be", "to have", and "to do".  From this abstract vantage point, we may rethink what it means for a language to be "functional" vs "object oriented" and much more. However, this framework is only as powerful as what we allow in and out of it. Thus becomes paramount, the feature of symmetry which allows arbitrary data structures, including functions, to be reflected into and out of other systems. These other systems (properly defined as Axes) may be specialized function calls or entire other programming languages. We will now turn our focus to the language we have developed to wrap this library's abstract graph: Native Biology Code.
+
+## Blocks
+Native Biology Code is almost like an object-oriented lisp variant and relies heavily on the meaning of different braces. The braces used are:
+* `()` - Surfaces & Execution (i.e. API)
+* `[]` - Internals & Solutes (i.e. members)
+* `{}` - Execution Definitions (i.e. functions)
+* `<>` - Template Programming through Transcription Factors (i.e. types)
+* `""` - Strings
+* `/**/` - Comments & Documentation
+
+
+## Types
+Different data structures are defined by which blocks they possess. At minimum, a definition must have 2 or more coding (i.e. non-string, non-comment) blocks.
+The available data structures are as follows; "symbol" represents the name of whatever the expression defines:
+* `symbol type` - predefined type
+* `symbol()[]` - Vesicle (i.e. struct)
+* `symbol()[]{}` - Protein (i.e. function)
+* `symbol<>()[]{}` - Cellular Structure, such as a Neuron, Tissue, or Organ (i.e. class)
+* `symbol<>{}` - Transcription Factor (i.e. decorator, parent class, meta programming)
+* `symbol<>[](symbol()[]{})` - Plasmid + RNA Polymerase (i.e. a package)
+* `symbol<>[]{}{}` - Synapse, with an upstream and downstream function (i.e. edge)
+
+## Simple Neuron Example
+An example of a Neuron could be:
+```
+MyNeuron /*A Neuron with gain control*/ <neuron>
+(input int, output int) [gain int = 1]
+{
+    output = gain * input;
+}
+```
+Here, we start the definition of `MyNeuron` with a comment block (`/**/`). This acts as the documentation for the object. Note that newline characters are only ever interpreted in strings and comment blocks, so you can have whatever fancy documentation you'd like. Other than strings and comments, newlines and all other whitespace is mostly irrelevant (more on that later). This allows us to put spaces and even newlines in our blocks.  
+Next, we specify the `neuron` Transcription Factor (TF). This tf will make what would otherwise be a `Cell` (`symbol<>()[]{}`) into a `Neuron` with the ability to receive and send signals.   
+We then add 2 publicly accessible members, `input int` and `output int`. These are built-in `int` types but could be whatever we want. After defining our publicly available Surfaces, we define a private member `gain int` and set the default value to 1. Because `gain` is in square brackets (`[]`), it will not be accessible anywhere outside the execution block (`{}`) of our `MyNeuron`, except in rare cases (such as with TFs, more on that later).  
+Lastly, we define the execution block on a new line and with indents. However, the indentation and white space do not matter. Notice the line ending used in the execution block: `;`. These line endings are only needed to separate executed expressions from each other and are unnecessary when defining symbols, hence no line ending after we complete our `MyNeuron` definition.
+
+## Simple Synapse Example
+Now, let's create a Synapse to connect to our Neuron:
+```
+MySynapse <synapse>
+/**
+ * This synapse moves the outputs of one MyNeuron into the inputs of another. 
+ */
+[
+    passthrough int
+]
+{
+    //upstream is a magic value that is provided in the first execution block of a Synapse.
+    passthrough = upstream.output;
+}
+{
+    //downstream is a similar magic value provided in the last execution block.
+    downstream.input = passthrough;
+}
+```
+We've done a few things differently here. Notice that we changed the position of the comment block to be after the TFs. This is valid; blocks may appear in any order. The caveat to that is that Synapses have duplicated blocks and the first one to appear is always provided the `upstream` value containing the source Neuron while the last is always provided the `downstream` value containing the target neuron.
+
+Notice also that we use the `.` for member access and that we are accessing Surfaces of the provided variables. All variables are passed by reference and the `.` is the only member access specifier.
+
+We can now use this Synapse with our connection notation: `SourceNeuron --- Synapse ---> TargetNeuron`.
+Here's how that could look:
+```
+source MyNeuron --- MySynapse ---> target MyNeuron
+```
+Alternatively, we can declare our variables ahead of time:
+```
+source MyNeuron
+target MyNeuron
+synapse MySynapse
+source --- synapse ---> target
+```
+Alternatively, if we wanted to define our Synapse only using TFs, we could:
+```
+source MyNeuron
+---
+[]{}{}
+<
+    all,
+    of,
+    these,
+    //but,
+    //not these
+    transcription,
+    factors
+>
+--->
+target MyNeuron
+```
+Here, the Synapse declaration is a Type Expression.
+
+## Type Expressions
+Type Expressions can be substituted for full types the same way defined symbols can be treated as types.
+Saying `var MyNeuron` is just as valid as saying `var <neuron>(input int, output int) [gain int = 1]{output = gain * input;}`. These expressions are in fact identical. The only time you need to explicitly define the symbol name is if you are going to use it later.
+Consider the above example:
+```
+source MyNeuron --- MySynapse ---> target MyNeuron
+```
+Since we have no need to modify `MySynapse` after we create it, we do not have to give the `MySynapse` type a name.
+
+## Meta Programming and Inheritance
+There is no inheritance in Native Biology Code. This might be surprising considering how much inheritance is (ab)used in the C++ code underpinning the language. We believe a simple meta-programming along with native code rearrangement is cleaner and less error-prone.
+
+Transcription Factors may perform arbitrary changes to the data structures they are applied to.
+For example:
+```
+symbol <dependencies> 
+{
+    object.newSurface string;
+    object.internal.newVar int;
+    object.execution.add(someExecutionSatement(newVar, newSurface));
+}
+```
+TFs use the same kind magic variables that Synapse uses: our `object` here. The `internal`
+## Casting
+
+
+## Execution
+If an expression has 1 or fewer blocks, it will be executed.

@@ -55,11 +55,14 @@ public:
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical, Pathway)
 
 	/**
-	 * Standard ctors. <br />
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(chemical,
+	 * Standard constructors. <br />
+	 */
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
+		chemical,
 		Pathway,
 		&chemical::ReactionPerspective::Instance(),
-		filter::Chemical())
+		filter::Chemical()
+	)
 
 	/**
 	 *

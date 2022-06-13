@@ -83,12 +83,15 @@ public:
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical, Reaction)
 
 	/**
-	 * Standard ctors. <br />
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(chemical,
+	 * Standard constructors. <br />
+	 */
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
+		chemical,
 		Reaction,
 		&ReactionPerspective::Instance(),
 		filter::Chemical(),
-		symmetry_type::Operation())
+		symmetry_type::Operation()
+	)
 
 	/**
 	 * @param name

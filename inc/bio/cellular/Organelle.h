@@ -47,11 +47,14 @@ public:
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular, Organelle)
 
 	/**
-	 * Standard ctors. <br />
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
+	 * Standard constructors. <br />
+	 */
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
+		cellular,
 		Organelle,
 		&OrganellePerspective::Instance(),
-		filter::Molecular())
+		filter::Molecular()
+	)
 
 	/**
 	 *

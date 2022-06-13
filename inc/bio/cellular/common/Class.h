@@ -53,7 +53,8 @@ public:
 	Class(
 		T* object,
 		physical::Perspective< Id >* perspective = NULL,
-		Filter filter = filter::Default())
+		Filter filter = filter::Default(),
+		MilliSeconds interval = GetDefaultInterval()) //unused.
 		:
 		genetic::Class< T >(
 			object,

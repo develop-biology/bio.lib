@@ -52,12 +52,14 @@ public:
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(genetic, Expressor)
 
 	/**
-	 * Standard ctors. <br />
+	 * Standard constructors. <br />
 	 */
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(genetic,
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
+		genetic,
 		Expressor,
 		&molecular::VesiclePerspective::Instance(),
-		filter::Genetic())
+		filter::Genetic()
+	)
 
 	/**
 	 *

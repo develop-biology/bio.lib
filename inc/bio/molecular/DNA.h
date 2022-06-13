@@ -51,15 +51,18 @@ public:
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular, DNA)
 
 	/**
-	 * Standard ctors. <br />
+	 * Standard constructors. <br />
 	 * These are easy to use but require setting the Version after instantiation. <br />
 	 * For example: <br />
 	 * 		DNA myAllele = DNA("MyGene"); <br />
 	 * 		myAllele.SetVersion(1.0); <br />
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(molecular,
+	 */
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(
+		molecular,
 		DNA,
 		&DNAPerspective::Instance(),
-		filter::Molecular())
+		filter::Molecular()
+	)
 
 	/**
 	 *

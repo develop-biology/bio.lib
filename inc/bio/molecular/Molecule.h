@@ -82,12 +82,14 @@ public:
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular, Molecule)
 
 	/**
-	 * Standard ctors. <br />
+	 * Standard constructors. <br />
 	 */
-	 BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(molecular,
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
+		molecular,
 		Molecule,
 		&MoleculePerspective::Instance(),
-		filter::Molecular())
+		filter::Molecular()
+	)
 
 	/**
 	 * Copying a Molecule will duplicate all Surfaces of toCopy. <br />

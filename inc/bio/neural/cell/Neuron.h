@@ -53,7 +53,10 @@ public:
 	)
 
 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
-		neural, Cell, & neural::NeuronPerspective::Instance(), filter::Neural()
+		neural,
+		Cell,
+		&neural::NeuronPerspective::Instance(),
+		filter::Neural()
 	)
 
 	/**

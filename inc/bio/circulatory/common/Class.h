@@ -21,10 +21,7 @@
 
 #pragma once
 
-#include "bio/cellular/wave/PeakCarrierWave.h"
-#include "bio/genetic/common/Class.h"
-#include "bio/molecular/Vesicle.h"
-#include "bio/physical/Periodic.h"
+#include "bio/cellular/common/Class.h"
 
 namespace bio {
 namespace neural {
@@ -51,12 +48,14 @@ public:
 	Class(
 		T* object,
 		physical::Perspective< Id >* perspective = NULL,
-		Filter filter = filter::Default())
+		Filter filter = filter::Default(),
+		MilliSeconds interval = GetDefaultInterval())
 		:
 		cellular::Class< T >(
 			object,
 			perspective,
-			filter
+			filter,
+			interval
 		)
 	{
 

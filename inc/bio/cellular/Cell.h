@@ -60,12 +60,14 @@ public:
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular, Cell)
 
 	/**
-	 * Standard ctors. <br />
+	 * Standard constructors. <br />
 	 */
- 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
+ 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
+		cellular,
 		Cell,
 		&CellPerspective::Instance(),
-		filter::Cellular())
+		filter::Cellular()
+	)
 
 	/**
 	 *
@@ -91,6 +93,8 @@ public:
 		return cellular::Class< Cell >::Peak();
 	}
 
+protected:
+	Solvent mCytoplasm;
 };
 
 } //cellular namespace

@@ -61,11 +61,14 @@ public:
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular, Organ)
 
 	/**
-	 * Standard ctors. <br />
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
+	 * Standard constructors. <br />
+	 */
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
+		cellular,
 		Organ,
 		&OrganPerspective::Instance(),
-		filter::Cellular())
+		filter::Cellular()
+	)
 
 	virtual ~Organ();
 

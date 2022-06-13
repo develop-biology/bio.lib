@@ -48,11 +48,14 @@ public:
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular, Habitat)
 
 	/**
-	 * Standard ctors. <br />
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
+	 * Standard constructors. <br />
+	 */
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
+		cellular,
 		Habitat,
 		&HabitatPerspective::Instance(),
-		filter::Organic())
+		filter::Organic()
+	)
 
 	/**
 	 *

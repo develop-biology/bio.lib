@@ -52,12 +52,14 @@ public:
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular, Vesicle)
 
 	/**
-	 * Standard ctors. <br />
+	 * Standard constructors. <br />
 	 */
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(molecular,
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
+		molecular,
 		Vesicle,
 		&VesiclePerspective::Instance(),
-		filter::Molecular())
+		filter::Molecular()
+	)
 
 	/**
 	 * @param toCopy

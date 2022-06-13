@@ -40,12 +40,15 @@ public:
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(genetic, RNA)
 
 	/**
-	 * Standard ctors. <br />
+	 * Standard constructors. <br />
 	 * NOTE: RNA does not always have to be Identifiable. We simply make it so for ease-of use. <br />
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(genetic,
+	 */
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
+		genetic,
 		RNA,
 		&genetic::RNAPerspective::Instance(),
-		filter::Genetic())
+		filter::Genetic()
+	)
 
 };
 
