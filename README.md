@@ -143,6 +143,7 @@ Documentation is available [on the Develop Biology website](https://develop.bio/
 * Orange: #ffbf00 rgb(255, 191, 0)
 * Magenta: #ff5794 rgb(255, 87, 148)
 
+--------------------------------------------------------------------------------
 
 # Native Biology Code
 
@@ -151,7 +152,7 @@ The bio library provides the basics for creating a directed, recursive hypergrap
 ## Blocks
 Native Biology Code is almost like an object-oriented lisp variant and relies heavily on the meaning of different braces. The braces used are:
 * `()` - Surfaces & Execution (i.e. API)
-* `[]` - Internals & Solutes (i.e. members)
+* `[]` - Internals (i.e. private members)
 * `{}` - Execution Definitions (i.e. functions)
 * `<>` - Template Programming through Transcription Factors (i.e. types)
 * `""` - Strings
@@ -162,12 +163,30 @@ Native Biology Code is almost like an object-oriented lisp variant and relies he
 Different data structures are defined by which blocks they possess. At minimum, a definition must have 2 or more coding (i.e. non-string, non-comment) blocks.
 The available data structures are as follows; "symbol" represents the name of whatever the expression defines:
 * `symbol type` - predefined type
-* `symbol()[]` - Vesicle (i.e. struct)
-* `symbol()[]{}` - Protein (i.e. function)
-* `symbol<>()[]{}` - Cellular Structure, such as a Neuron, Tissue, or Organ (i.e. class)
-* `symbol<>{}` - Transcription Factor (i.e. decorator, parent class, meta programming)
-* `symbol<>[](symbol()[]{})` - Plasmid + RNA Polymerase (i.e. a package)
+* `symbol()[]{}` - Protein (i.e. function or synchronous functor)
+* `symbol<>()` - Vesicle (i.e. array or struct)
+* `symbol<>()[]{}` - Cellular Structure, such as a Neuron, Tissue, or Organ (i.e. class, node, or stateful asynchronous function)
 * `symbol<>[]{}{}` - Synapse, with an upstream and downstream function (i.e. edge)
+* `symbol<>{}` - Transcription Factor (i.e. decorator, parent class, meta programming)
+* `symbol<>(){}` - Plasmid + RNA Polymerase (i.e. a package)
+
+There are no differences between arrays / lists, maps / dictionaries, sets, etc. In Native Biology Code, items in a Vesicle may be mixed and match to your liking.
+
+## Syntax
+If an expression has 1 or fewer coding blocks, it will be executed (e.g. `functionCall()` or `functionCall` vs `functionDeclaration()[]{}`).
+All executed statements (i.e. those within a `{}`) must be separated by (i.e. end with) a `;`.
+All items in a `()`, `[]`, or `<>` block must be separated by a `,`.
+
+It is an error to redefine a symbol. `type type` will always be an error. `symbol symbol` is an error when used in isolation, as it will be interpreted as a redefinition of `symbol` to the type which `symbol` defines.
+
+However, `symbol symbol` may be valid when used as a part of a larger, executed expression. If the left-hand statement (LHS) is a Protein, a wrapping `()` is applied to the right-hand statement (RHS) and if the LHS is a Vesicle or Cellular Structure, a `.` is added to replace the whitespace between the symbols. Thus, consecutive symbols become expressions in a right to left manner to automatically fill in function calls and member access. This means we can define `+` as a custom function in an object and say `a + b`, which becomes `a.+(b)`. It is an error if the LHS is a Vesicle or Cellular Structure and does not define the given symbol or if the LHS is a Protein which does not have a Surface of the RHS type and the RHS cannot be converted to a type the LHS takes (see below for more on type conversion).
+
+There is no `this`, `self`, etc. all unprefaced symbols in an execution block are prefaced with the current symbol to which the execution block belongs. If no such symbol can be found, the symbol which defines the containing execution block will be searched and so on until all contexts are exhausted. It is an error if a symbol is not found in any execution block leading to the current expression.
+
+Members defined within an object's `[]` will only be searched within that object's `{}`. No other object within or without shall have access to an object's internal members. The only exception to this is Transcription Factors, which have access to any `[]` they can reach.
+
+It is an error if a member is declared in both a `()` and `[]`. The same symbol can be used in a `<>` as in either `()` or `[]`, since the meaning of `<>` is dependent on the object to which it applies and will never be used for member definition.
+
 
 ## Simple Neuron Example
 An example of a Neuron could be:
@@ -247,7 +266,7 @@ source MyNeuron --- MySynapse ---> target MyNeuron
 Since we have no need to modify `MySynapse` after we create it, we do not have to give the `MySynapse` type a name.
 
 ## Meta Programming and Inheritance
-There is no inheritance in Native Biology Code. This might be surprising considering how much inheritance is (ab)used in the C++ code underpinning the language. We believe a simple meta-programming along with native code rearrangement is cleaner and less error-prone.
+There is no inheritance in Native Biology Code. This might be surprising considering how much inheritance is (ab)used in the C++ code underpinning the language. We believe it is cleaner and less error-prone to use a simple meta-programming along with native code rearrangement through self-reflection.
 
 Transcription Factors may perform arbitrary changes to the data structures they are applied to.
 For example:
@@ -255,13 +274,277 @@ For example:
 symbol <dependencies> 
 {
     object.newSurface string;
-    object.internal.newVar int;
-    object.execution.add(someExecutionSatement(newVar, newSurface));
+    object.[].newVar int;
+    object.existingSurface.[].internalValue = 4;
+    object.{} += someExecutionStatement(newVar, newSurface);
+    object.{}.someOtherFunction = (same type, of args)[but with, also these]{and(same, but, also, "modified functionality");};
 }
 ```
-TFs use the same kind magic variables that Synapse uses: our `object` here. The `internal`
-## Casting
+TFs use the same kind of magic variables that Synapse uses: our `object` here is provided to a TF so that it may affect whatever it is applied to.
+TFs have access to all parts of all objects which may be reached through this provided `object`. This is accomplished through the `genetic::` `Localization` and `Insertion` mechanics. 
+In this example, `object.newSurface string;` creates a new `Surface` (i.e. `()`) called `newSurface` which is of type `string`. We don't need to specify `object.().newSurface`, as we do with the internal (i.e. `[]`) variable `newVar`. This is because members are exposed (i.e. public) by default and by specifying `object.[]`  only when making members internal (i.e. private), we save ourselves some work.
+`object.existingSurface.[].internalValue = 4;` shows how TFs have the ability to modify ANY internal value they can access, not just those of `object`.
+The line `object.{} += someExecutionStatement(newVar, newSurface);` appends a new execution statement to whatever object already had in its execution block (i.e. `{}`).
+The last line of this example uses the syntax `object.{}.someOtherFunction ...` which addresses all instances of `someOtherFunction` within the object's execution block. This does not affect `someOtherFunction` in any other object.
 
+You are also allowed to modify comments and strings through these same mechanics. `object./**/ += "New documentation";` is valid.
 
-## Execution
-If an expression has 1 or fewer blocks, it will be executed.
+### Composition
+The easiest way to reuse the code you've written is through composition. Let's take the `someOtherFunction` example from above and assume you wrote:
+```
+MyModifiedFunction
+(
+    same type,
+    of args
+)
+[
+    but with,
+    also these
+]
+{
+    and(same, but, also, "modified functionality");
+}
+```
+You could then create a TF wrapper to enable code reuse with the following:
+```
+modifyFunctionality <>
+{
+    object.{}.someOtherFunction = MyModifiedFunction;
+}
+```
+BAM! Done. Now you can `<modifyFunctionality>` wherever you want!
+
+### Inheritance
+A traditional inheritance style Transcription Factor interface requires a bit more work to build.
+Consider:
+```
+Animal<>(legs int = 0, makeNoise ()[]{print("NOT IMPLEMENTED";})[]{} //pretend print()[]{} was defined beforehand  
+Cat<>(legs int = 4, makeNoise ()[]{print("Meow";})[]{}
+```
+While you can use `Cat` anywhere you can use `Animal` (and vice versa, in this case), making `Cat` effectively an `Animal`, we shouldn't be duplicating code.
+Let's simplify this:
+```
+AnmialTF<>
+{
+    object.legs int = 0;
+    object.noise string = "NOT IMPLEMENTED";
+    object.makeNoise = ()[]{print(noise);};
+}
+CatTF< AnimalTF >
+{
+    object.legs = 4;
+    object.noise = "Meow";
+}
+
+cat < CatTF > ()[]{}
+cat.makeNoise();
+```
+Now, we can define any number of Animals through Transcription Factor dependencies and any change in the `AnimalTF` "base class" will be applied to all Animals.
+
+### Meta Meta
+Let's talk a little bit about how the above inheritance system actually works. When a Transcription Factor has a dependency, that dependency is loaded before the execution block. Thus, the above example of:
+```
+CatTF< AnimalTF >
+{
+    object.legs = 4;
+    object.noise = "Meow";
+}
+```
+expands to:
+```
+CatTF<>
+{
+    //From AnimalTF
+    object.legs int = 0;
+    object.noise string = "NOT IMPLEMENTED";
+    object.makeNoise = ()[]{print(noise);};
+    
+    //From CatTF
+    object.legs = 4;
+    object.noise = "Meow";
+}
+```
+
+We could further expand on this with:
+```
+KittenTF<CatTF>{object.noise = "mew";}
+```
+which would expand to:
+```
+KittenTF<>
+{
+    //From AnimalTF
+    object.legs int = 0;
+    object.noise string = "NOT IMPLEMENTED";
+    object.makeNoise = ()[]{print(noise);};
+    
+    //From CatTF
+    object.legs = 4;
+    object.noise = "Meow";
+    
+    //From KittenTF
+    object.noise = "mew";
+}
+```
+
+This code is executed in order, as expected. No tricks.
+If we redefine `AnimalTF` to end with the following line: `object.makeNoise()` and write:
+```
+kitten <KittenTF>()[]{}
+kitten.makeNoise();
+```
+We would get:
+```
+print("NOT IMPLEMENTED);
+print("mew);
+```
+Since the expanded code would be:
+```
+KittenTF<>
+{
+    //From AnimalTF
+    object.legs int = 0;
+    object.noise string = "NOT IMPLEMENTED";
+    object.makeNoise = ()[]{print(noise);};
+    object.makeNoise(); // <--- THE LINE WE ADDED
+    
+    //From CatTF
+    object.legs = 4;
+    object.noise = "Meow";
+    
+    //From KittenTF
+    object.noise = "mew";
+}
+kitten <KittenTF>()[]{}
+kitten.makeNoise();
+```
+We will come back to this example after we expand on how execution happens.
+
+## Initialization
+There are several means by which you might create a constructor. Destructors do not exist in Native Biology Code but can likewise be accomplished by having a caller call some destructor method.
+
+The easiest way to create a constructor is simply define a TF for your class.
+For example, we can break the above example of `AnimalTF`'s call to `makeNoise()` into 2 TFs: a static initialization and functional initialization:
+```
+Anmial<>
+{
+    object.legs int = 0;
+    object.noise string = "NOT IMPLEMENTED";
+    object.makeNoise = ()[]{print(noise);};
+}
+AnmialConstructor<>
+{
+    object.makeNoise();
+}
+
+Cat< Animal >
+{ 
+    object.legs = 4;
+    object.noise = "Meow";
+}
+CatConstructor< AnimalConstructor > {}
+
+Cat< Animal >
+{ 
+    object.legs = 4;
+    object.noise = "Meow";
+}
+CatConstructor< AnimalConstructor > {}
+
+Kitten< Cat >
+{ 
+    object.noise = "mew";
+}
+KittenConstructor< CatConstructor > {}
+```
+Now, `kitten < Kitten, KittenConstructor >()[]{}` expands to:
+```
+kitten
+<
+    //From Animal
+    object.legs int = 0;
+    object.noise string = "NOT IMPLEMENTED";
+    object.makeNoise = ()[]{print(noise);};
+    
+    //From Cat
+    object.legs = 4;
+    object.noise = "Meow";
+    
+    //From Kitten
+    object.noise = "mew";
+    
+    //From AnimalConstructor
+   object.makeNoise();
+   
+   //From CatConstructor
+   
+   //From KittenConstructor
+>()[]{}
+```
+Which prints the expected "mew".
+
+Another way we can create a constructor or destructor is through a Surface definition.
+We can say:
+```
+kitten < Kitten >
+(
+    constructor ()[]
+    {
+        makeNoise()
+    },
+    destructor ()[]
+    {
+        explode()
+    }
+)
+[
+    explode ()[]
+    {
+        print("BOOM!");
+    }
+]
+{}
+
+kitten.consturctor();
+kitten.destructor();
+```
+Now, the caller can construct and destruct our `kitten`.
+
+## Type Conversion and Casting
+A type may be treated as another type if it defines the target type on its Surface.
+For example:
+```
+InventoryNumber<>
+(
+    int trakingId
+)
+[
+    trackingId int
+]
+{}
+```
+When a function like `1 + InventoryNumber` is called, the expression is interpreted as `1.+(InventoryNumber.int)`, since `1`, being an `int` expects an `int` in its `+` method. `InventoryNumber.int` then produces `InventoryNumber.trackingId`.
+This works for any type.
+```
+Package< SomePackageImplementation >[](){}
+
+TrackPackage(trackingId int, result Position)[track SomePackageTrackingImplementation]{result = track(trackingId).result;}
+
+GetPackage(Position where, result Package)[get SomePositionLookupImplementation]{result = get(position).result;}
+
+InventoryNumber<>
+(
+    int trakingId,
+    Position TrackPackage(trackingId).position,
+    Package GetPackage(Position).result
+)
+[
+    trackingId int
+]
+{}
+```
+Now, our `InventoryNumber` can be treated directly as a `Position` and even passed in place of a `TrackPackage` function call (i.e. `InventoryNumber(someInt).result` discards the provided int and provides its own `Position` as the `result`).
+
+## File Inclusion
+
+`&"/path/to/file.bio"` will include all the contents of the specified file in the exact location the `&` statement occurs in.
