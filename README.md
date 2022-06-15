@@ -172,6 +172,11 @@ The available data structures are as follows; "symbol" represents the name of wh
 
 There are no differences between arrays / lists, maps / dictionaries, sets, etc. In Native Biology Code, items in a Vesicle may be mixed and match to your liking.
 
+If you do not know the type you want ahead of time, you can use `*` in the type declaration and set the type and value at once with "=". This is similar to the `auto` keyword in C++.
+
+`*` is also used after a type to indicate copy-by-value.
+`**` means any time, copied by value.
+
 ## Control Flow
 There are only 2 forms of control flow available in Native Biology Code: the `if` statement and the `while` loop + break statement.
 
@@ -200,6 +205,11 @@ However, `symbol symbol` may be valid when used as a part of a larger, executed 
 
 Thus, consecutive symbols become expressions in a right to left manner to automatically fill in function calls and member access. This means we can define `+` as a custom function in an object and say `a + b`, which becomes `a.+(b)`. It is an error if the LHS is a Vesicle or Cellular Structure and does not define the given symbol or if the LHS is a Protein which does not have a Surface of the RHS type and the RHS cannot be converted to a type the LHS takes (see below for more on type conversion).
 
+You cannot declare variables in an execution block (`{}`).  
+You may execute expressions in declaration blocks (`()` and `[]`) and type blocks (`<>`), provided that they:
+* include single-block expressions (i.e. `functionCalls()` or `indexAccess[]`) and 
+* do not contain spaces (i.e. none of the `symbol symbol` autofill logic is enabled in declaration blocks).
+
 There is no `this`, `self`, etc. all unprefaced symbols in an execution block are prefaced with the current symbol to which the execution block belongs. If no such symbol can be found, the symbol which defines the containing execution block will be searched and so on until all contexts are exhausted. It is an error if a symbol is not found in any execution block leading to the current expression.
 
 Members defined within an object's `[]` will only be searched within that object's `{}`. No other object within or without shall have access to an object's internal members. The only exception to this is Transcription Factors, which have access to any `[]` they can reach.
@@ -209,6 +219,49 @@ It is an error if a member is declared in both a `()` and `[]`. The same symbol 
 Surfaces may be accessed by their name or simply by their index using the `[]` operator in an executable expression.
 
 Any symbols which begin with `__` (2 underscores) are compiler defined and may not be changed. It is illegal for your variables to begin with underscores.
+
+Proteins (i.e. functions, or more accurately functors, or even more accurately `()[]{}`) do not have return types. This is to enable multiple and delayed access to returned values.
+If you would like to treat a Protein as a type, you may define a type conversion for the Protein, which will make the syntax appear as a return value in other languages. There's more on that below.
+
+## Copy by Reference by Default
+Objects are normally copied by reference and any change to the object will be changed in all locations.
+These changes are thread-safe by default and may wait on other threads.
+
+However, if you would like to copy an object by value (possibly for non-blocking or destructive access to the object), indicate such in the type declaration.
+For example:
+```
+add(first int*, second int*, result int)[]
+{
+    result = first + second;
+}
+```
+Here, `first` and `second` are copied by value and will remain a part of the `add` Protein until they are unbound.
+
+## Garbage Collection
+When an object has no references, it is deleted. This is handled through the `chemical::` `solution` system in the underlying C++.
+
+## File Inclusion
+
+`&"/path/to/file.bio"` will include all the contents of the specified file in the exact location the `&` statement occurs in.
+
+This means you can do crazy things like create a file with the contents:  
+`"FunctionDefinition.bio"`
+```
+doStuff(with, internals)
+```
+And then use that file in your code:
+`"Main.bio"`
+```
+MyFunction(with int)[internals <>()]
+{
+    &"FunctionDefinitions.bio"
+}
+```
+
+## Asynchronous Cellular Structures and Event Dispatch
+Most execution blocks, such as Proteins, Transcription Factors, and Plasmids run synchronously and immediately in the thread in which they are called.
+
+All Cellular Structures (i.e. `<>()[]{}`) execute their `{}` on a clock. The speed of their oscillation may be set with the built-in value `interval` in milliseconds (e.g. `MyCell<>()[]{interval ++;}`, which would make `MyCell` call its `{}` 1ms slower every time it's called). Cellular Structures do not always run in separate threads. It may be useful to have a Cellular Structure, like a tissue, contain other Cellular Structures and have their oscillations run in a single thread. Other times you may want maximum parallelism which can be accomplished by calling the built-in `fork()` function. All `fork()` does is move the Cellular Structure to a new thread. Note that you can just say `MyCell fork;`, which will expand to `MyCell.fork();`
 
 ## Simple Neuron Example
 An example of a Neuron could be:
@@ -532,6 +585,20 @@ kitten.destructor();
 ```
 Now, the caller can construct and destruct our `kitten`.
 
+### Meta Initialization
+While all variables must be declared on the Surface or internally before they are used in an execution block, you can use execution statements to declare variables.
+This is valid:
+```
+MyCell<>
+(
+    GetSurfaceFor("MyCell").name GetSurfaceFor("MyCell").type = GetSurfaceFor("MyCell").value  
+)
+[]
+{}
+```
+
+Note that we cannot include spaces in expressions used in declaration blocks, so `GetSurfaceFor "MyCell" GetSurfaceFor "MyCell" = GetSurfaceFor "MyCell"` is invalid and will generate an error.
+
 ## Type Conversion and Casting
 A type may be treated as another type if it defines the target type on its Surface.
 For example:
@@ -599,9 +666,13 @@ Now, we can say `three int = add(1, 2)`, without needing to specify `.result`.
 
 Here's another example:
 ```
-sort(array <>())[index int]
+sort(array <>())
+[
+    index int,
+    buffer * //we want buffer to be any type, so we mark it as "*", which allows us to set the type and value later with "=".
+]
 {
-    array size <= 1 ? {break;};
+    array size <= 1 ? {break};
     
     //the above statement is dense.
     //array size expands to array.size(), which gives the number of Surfaces in a Vesicle or Cellular Structure (and may be overriden).
@@ -609,6 +680,7 @@ sort(array <>())[index int]
     //the Native Biology Code interpreter will check array.size() for an int conversion, which exists, and thus will call: array.size().int.<=(int).
     //the if statement then reads ...int.<=(int).bool 
     //the if statement (i.e. condition ? {true case};) does not require the word "if" nor parenthasese and is terminated with a ";", just like every other expression.
+    //because "break" is the last (and only) expression in the if execution block, it does not need to end with a ";".
     //"break" ends the function, returning control to the caller.
     
     index = 0;
@@ -616,13 +688,13 @@ sort(array <>())[index int]
     {
         array[index] > array[index+1] ?
         {
-            buffer array[index] = array[index];
+            buffer = array[index];
             array[index+1] = array[index];
             array[index+1] = buffer;        
         };
         
         index ++; // note the space after "index", making the expression expand to index.++().
-        index == array size ? {break;}; 
+        index == array size ? {break}; 
     };
 }
 
@@ -655,22 +727,4 @@ heterogeneosuMap <>
     var4 int = 4,
 )
 ```
-This works on `heterogeneosuMap` with a mixture of Pairs and int(s) just as it would on any data which can be represented as an array of ints. Note that the int requirement only exists because of the `int.>(int)` call, which only takes ints. If we had a map consisting of custom types which implemented `> (other CustomType)[]{}`, this would work just as well. 
-
-## File Inclusion
-
-`&"/path/to/file.bio"` will include all the contents of the specified file in the exact location the `&` statement occurs in.
-
-This means you can do crazy things like create a file with the contents:  
-`"FunctionDefinition.bio"`
-```
-doStuff(with, internals)
-```
-And then use that file in your code:
-`"Main.bio"`
-```
-MyFunction(with int)[internals <>()]
-{
-    &"FunctionDefinitions.bio"
-}
-```
+This works on `heterogeneosuMap` with a mixture of Pairs and int(s) just as it would on any data which can be represented as an array of ints. Note that the int requirement only exists because of the `int.>(int)` call, which only takes ints. If we had a map consisting of custom types which implemented `> (other CustomType)[]{}`, this would work just as well.
