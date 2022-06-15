@@ -172,6 +172,18 @@ The available data structures are as follows; "symbol" represents the name of wh
 
 There are no differences between arrays / lists, maps / dictionaries, sets, etc. In Native Biology Code, items in a Vesicle may be mixed and match to your liking.
 
+## Control Flow
+There are only 2 forms of control flow available in Native Biology Code: the `if` statement and the `while` loop + break statement.
+
+Control flow statements must be an entire expression and cannot be part of a larger expression. This means they must begin with either `{` or `;` and end with either `;` or `}`.
+
+`if` expressions are defined as `...?{}` and `if...else` expressions are defined as `...?{}{}` where `...` is the condition to check.
+
+`while` loops are defined as `(...){}`, where `...` is the condition to run the loop again.
+Break statements are simply `break`.
+
+Break statements return execution of any `{}` to the caller. Meaning, they may be used to stop regular function calls from running to completion.
+
 ## Syntax
 If an expression has 1 or fewer coding blocks, it will be executed (e.g. `functionCall()` or `functionCall` vs `functionDeclaration()[]{}`).
 All executed statements (i.e. those within a `{}`) must be separated by (i.e. end with) a `;`.
@@ -179,7 +191,14 @@ All items in a `()`, `[]`, or `<>` block must be separated by a `,`.
 
 It is an error to redefine a symbol. `type type` will always be an error. `symbol symbol` is an error when used in isolation, as it will be interpreted as a redefinition of `symbol` to the type which `symbol` defines.
 
-However, `symbol symbol` may be valid when used as a part of a larger, executed expression. If the left-hand statement (LHS) is a Protein, a wrapping `()` is applied to the right-hand statement (RHS) and if the LHS is a Vesicle or Cellular Structure, a `.` is added to replace the whitespace between the symbols. Thus, consecutive symbols become expressions in a right to left manner to automatically fill in function calls and member access. This means we can define `+` as a custom function in an object and say `a + b`, which becomes `a.+(b)`. It is an error if the LHS is a Vesicle or Cellular Structure and does not define the given symbol or if the LHS is a Protein which does not have a Surface of the RHS type and the RHS cannot be converted to a type the LHS takes (see below for more on type conversion).
+However, `symbol symbol` may be valid when used as a part of a larger, executed expression. These rules are applied depending on the types of the left-hand statement (LHS) and the right-hand statement (RHS):
+* If LHS is a Protein and RHS is a Vesicle or Cellular Structure, a wrapping `()` is applied to the RHS.
+* If LHS is a Protein and RHS is also a Protein which is defined as a Surface on the LHS, a `.` is added to replace the whitespace between the symbols.
+* If LHS is a Protein and RHS is also a Protein which takes at least 1 argument and is not defined on the Surface of the LHS, the LHS will be type-casted to the type of the first argument of RHS (e.g. `add(1,2) > 3`). This may result in an error if the type-casted LHS does not implement RHS on its Surface.
+* It is an error if LHS is a Protein and RHS is also a Protein which takes no arguments and is not defined on the Surface of the LHS.
+* If the LHS is a Vesicle or Cellular Structure and the RHS is a Protein, Vesicle, or Cellular Structure, a `.` is added to replace the whitespace between the symbols.
+
+Thus, consecutive symbols become expressions in a right to left manner to automatically fill in function calls and member access. This means we can define `+` as a custom function in an object and say `a + b`, which becomes `a.+(b)`. It is an error if the LHS is a Vesicle or Cellular Structure and does not define the given symbol or if the LHS is a Protein which does not have a Surface of the RHS type and the RHS cannot be converted to a type the LHS takes (see below for more on type conversion).
 
 There is no `this`, `self`, etc. all unprefaced symbols in an execution block are prefaced with the current symbol to which the execution block belongs. If no such symbol can be found, the symbol which defines the containing execution block will be searched and so on until all contexts are exhausted. It is an error if a symbol is not found in any execution block leading to the current expression.
 
@@ -187,6 +206,9 @@ Members defined within an object's `[]` will only be searched within that object
 
 It is an error if a member is declared in both a `()` and `[]`. The same symbol can be used in a `<>` as in either `()` or `[]`, since the meaning of `<>` is dependent on the object to which it applies and will never be used for member definition.
 
+Surfaces may be accessed by their name or simply by their index using the `[]` operator in an executable expression.
+
+Any symbols which begin with `__` (2 underscores) are compiler defined and may not be changed. It is illegal for your variables to begin with underscores.
 
 ## Simple Neuron Example
 An example of a Neuron could be:
@@ -544,7 +566,111 @@ InventoryNumber<>
 {}
 ```
 Now, our `InventoryNumber` can be treated directly as a `Position` and even passed in place of a `TrackPackage` function call (i.e. `InventoryNumber(someInt).result` discards the provided int and provides its own `Position` as the `result`).
+Note that `Position`, when used in the type expression defining `Package` references the `Position` Surface of `InventoryNumber` and not the `Position` type. If an object does not define a symbol and that symbol can't be found on the Surfaces of containing objects, it is an error. Thus, we cannot say `Package GetPackage(GetPackage).result` because `InventoryType` cannot be treated as a `GetPackage` Protein.
+
+## Function Arguments
+Arguments may be provided by order or by symbol specification. For example, consider:
+```
+add(first int, second int, result int)[]{result = first + second;}
+three int = add(1, 2).result;
+three int = add(1, second = 2);
+three int; add(1, 2, three);
+three int; add(1, 2, result = three);
+```
+All of these are valid ways to use the `add` Protein.
+
+Note that we can treat `add` as if it had a return value with:
+```
+add
+(
+    first int,
+    second int,
+    result int,
+    
+    //return value
+    int result
+)
+[]
+{
+    result = first + second;
+}
+```
+Now, we can say `three int = add(1, 2)`, without needing to specify `.result`.
+
+Here's another example:
+```
+sort(array <>())[index int]
+{
+    array size <= 1 ? {break;};
+    
+    //the above statement is dense.
+    //array size expands to array.size(), which gives the number of Surfaces in a Vesicle or Cellular Structure (and may be overriden).
+    //the rest of the if condition expands to: array.size().<=(int).
+    //the Native Biology Code interpreter will check array.size() for an int conversion, which exists, and thus will call: array.size().int.<=(int).
+    //the if statement then reads ...int.<=(int).bool 
+    //the if statement (i.e. condition ? {true case};) does not require the word "if" nor parenthasese and is terminated with a ";", just like every other expression.
+    //"break" ends the function, returning control to the caller.
+    
+    index = 0;
+    (true) //while loop
+    {
+        array[index] > array[index+1] ?
+        {
+            buffer array[index] = array[index];
+            array[index+1] = array[index];
+            array[index+1] = buffer;        
+        };
+        
+        index ++; // note the space after "index", making the expression expand to index.++().
+        index == array size ? {break;}; 
+    };
+}
+
+Pair <>
+(
+    name string,
+    value int,
+    
+    //Type Conversions (for predefined ">" operation)
+    int value
+)
+
+heterogeneosuMap <>
+(
+    var1 Pair = ("One", 1),
+    var3 Pair = ("Three", 3),
+    var4 int = 4,
+    var2 Pair = ("Two", 2)
+)
+
+sort(heterogeneosuMap);
+```
+This will result in `heterogeneosuMap` being rearranged as:
+```
+heterogeneosuMap <>
+(
+    var1 Pair = ("One", 1),
+    var2 Pair = ("Two", 2)
+    var3 Pair = ("Three", 3),
+    var4 int = 4,
+)
+```
+This works on `heterogeneosuMap` with a mixture of Pairs and int(s) just as it would on any data which can be represented as an array of ints. Note that the int requirement only exists because of the `int.>(int)` call, which only takes ints. If we had a map consisting of custom types which implemented `> (other CustomType)[]{}`, this would work just as well. 
 
 ## File Inclusion
 
 `&"/path/to/file.bio"` will include all the contents of the specified file in the exact location the `&` statement occurs in.
+
+This means you can do crazy things like create a file with the contents:  
+`"FunctionDefinition.bio"`
+```
+doStuff(with, internals)
+```
+And then use that file in your code:
+`"Main.bio"`
+```
+MyFunction(with int)[internals <>()]
+{
+    &"FunctionDefinitions.bio"
+}
+```
