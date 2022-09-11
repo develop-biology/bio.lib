@@ -52,13 +52,11 @@ public:
 	 */
 	Class(
 		T* object,
-		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
 		MilliSeconds interval = GetDefaultInterval()) //unused.
 		:
 		genetic::Class< T >(
 			object,
-			perspective,
 			filter
 		)
 	{
@@ -75,14 +73,12 @@ public:
 	Class(
 		T* object,
 		const Name& name,
-		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
 		MilliSeconds interval = GetDefaultInterval())
 		:
 		genetic::Class< T >(
 			object,
 			name,
-			perspective,
 			filter
 		)
 	{
@@ -99,14 +95,12 @@ public:
 	Class(
 		T* object,
 		const Id& id,
-		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
 		MilliSeconds interval = GetDefaultInterval())
 		:
 		genetic::Class< T >(
 			object,
 			id,
-			perspective,
 			filter
 		)
 	{

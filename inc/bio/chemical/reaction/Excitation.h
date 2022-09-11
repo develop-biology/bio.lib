@@ -24,7 +24,7 @@
 #include "bio/physical/common/Class.h"
 #include "bio/physical/macro/Macros.h"
 #include "bio/chemical/common/Properties.h"
-#include "bio/chemical/PeriodicTable.h"
+#include "bio/chemical/relativity/PeriodicTable.h"
 
 #if BIO_CPP_VERSION >= 17
 
@@ -139,7 +139,10 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, 		BIO_SINGLE_ARG(Excitation< WAVE, RETURN, ARGUMENTS... >))
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(
+		physical,
+		BIO_SINGLE_ARG(Excitation< WAVE, RETURN, ARGUMENTS... >)
+	)
 
 	/**
 	 *
@@ -239,7 +242,10 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, 		BIO_SINGLE_ARG(ExcitationWithoutArgument< WAVE, RETURN >))
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(
+		physical,
+		BIO_SINGLE_ARG(ExcitationWithoutArgument< WAVE, RETURN >)
+	)
 
 	/**
 	 *
@@ -312,7 +318,10 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, 		BIO_SINGLE_ARG(ExcitationWithArgument< WAVE, RETURN, ARGUMENT >))
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(
+		physical,
+		BIO_SINGLE_ARG(ExcitationWithArgument< WAVE, RETURN, ARGUMENT >)
+	)
 
 
 	/**
@@ -407,7 +416,10 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, 		BIO_SINGLE_ARG(ExcitationWithTwoArguments< WAVE, RETURN, ARGUMENT1, ARGUMENT2 >))
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(
+		physical,
+		BIO_SINGLE_ARG(ExcitationWithTwoArguments< WAVE, RETURN, ARGUMENT1, ARGUMENT2 >)
+	)
 
 
 	/**

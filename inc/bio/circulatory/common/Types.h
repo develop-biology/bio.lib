@@ -21,24 +21,9 @@
 
 #pragma once
 
-#include "bio/common/Types.h"
-#include "bio/common/NameTracker.h"
+#include "bio/cellular/common/Types.h"
 
 namespace bio {
 
-BIO_ID_WITH_TRACKER(Neuron, uint16_t)
-
-/**
-Synapses are stored in the Brain and applied to neurons.
-There can be up to 65535 different kinds of synapses.
-NOTE: that this does not prevent you from configuring a synapse after it has been created (e.g. adding a epitope from one synapse to another). However, it is better practice to configure all synapses before they are used.
-*/
-BIO_ID_WITH_TRACKER(Synapse, uint16_t)
-
-/**
-Aspects are mutable components of a Neuron.
-These are changed during operation (as opposed to other components, like Synapses)
-*/
-BIO_ID_WITH_TRACKER(Aspect, uint16_t)
 
 } //bio namespace

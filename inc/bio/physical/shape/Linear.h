@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/physical/Identifiable.h"
+#include "bio/physical/relativity/Identifiable.h"
 
 namespace bio {
 namespace physical {

@@ -25,7 +25,7 @@
 namespace bio {
 namespace transcription_factor {
 
-BIO_TRANSCRIPTION_FACONSTRUCTOR_FUNCTION_BODY(Genome)
+BIO_TRANSCRIPTION_FACTOR_FUNCTION_BODY(Genome)
 
 } //transcription_factor namespace
 } //bio namespace

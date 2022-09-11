@@ -22,7 +22,7 @@
 #pragma once
 
 #include "bio/physical/common/Class.h"
-#include "Symmetry.h"
+#include "bio/physical/symmetric/Symmetry.h"
 #include "bio/physical/common/SymmetryTypes.h"
 #include "bio/common/macro/Macros.h"
 #include "bio/common/type/TypeName.h"

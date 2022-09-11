@@ -27,11 +27,11 @@ namespace bio {
 namespace genetic {
 
 /**
- * Insertions are a type of Insertion which, instead of just finding a place, add something to a place. <br />
+ * Insertions are a type of Localization which, instead of just finding a place, add something to that place. <br />
+ * <br />
+ * Insertions use the "Insert" Affinity. <br />
+ * <br />
  * This is used to move Proteins to their correct position after Transcription. <br />
- *  <br />
- * NOTE: All Sites currently have a 1 to 1 mapping with Sites and should always be the same value. <br />
- * i.e. Cast< Site >(mySiteId) == SafelyAccess<InsertionSitePerspective>()->GetIdWithoutCreation(mySiteName) <br />
  */
 class Insertion :
 	public physical::Class< Insertion >,
@@ -47,12 +47,12 @@ public:
 
 	/**
 	 * @param whatToInsert
-	 * @param site
+	 * @param location
 	 * @param name
 	 */
 	explicit Insertion(
 		chemical::Substance* whatToInsert = NULL,
-		Site site = InsertionSitePerspective::InvalidId(),
+		Location location = InsertionLocationPerspective::InvalidId(),
 		const Name& name = NULL
 	);
 
@@ -82,10 +82,10 @@ public:
 	virtual chemical::Substance* GetWhatWillBeInserted();
 
 	/**
-	 * Set mSite. <br />
-	 * @param site
+	 * Set mLocation. <br />
+	 * @param location
 	 */
-	virtual void SetSite(Site site);
+	virtual void SetLocation(Location location);
 
 protected:
 	chemical::Substance* mToInsert;

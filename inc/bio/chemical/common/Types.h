@@ -23,7 +23,7 @@
 
 #include "bio/physical/common/Types.h"
 #include "bio/physical/macro/Macros.h"
-#include "bio/physical/Perspective.h"
+#include "bio/physical/relativity/Perspective.h"
 
 namespace bio {
 
@@ -71,21 +71,22 @@ typedef uint16_t AtomicNumber;
 /**
  * Chemical Concentrations are expressions of fractional quantity and are used by classes like Solute. <br />
  */
-typedef float Concentration;
-
-BIO_PERSPECTIVE_SINGLETON(ReactionPerspective, Id)
-
-BIO_PERSPECTIVE_SINGLETON(SolutePerspective, Id)
-
-BIO_PERSPECTIVE_SINGLETON(FluctuationPerspective, Id)
+typedef uint16_t Concentration;
 
 class Substance;
-
 typedef ::bio::Arrangement< Substance* > Substances;
 
-BIO_PERSPECTIVE_SINGLETON(SubstancePerspective, Id)
-
+/**
+ * Emissions are given off (returned) by Excitations.
+ */
 typedef ::bio::Arrangement< ByteStream > Emission;
+
+/**
+ * Miscibility is the ability of 2 Substances to mix. <br />
+ * Here, we refer to "Miscibility" as a noun meaning "the strategy by which 2 Substances are mixed"; however, in practice, we apply a set of Miscibilities to the set of chemical::Symmetries a Substances possesses and not to the Substances themselves. Thus, Miscibilities are atomic and applied to a recursive structure. <br />
+ * See Miscibilities.h for examples. <br />
+ */
+BIO_ID_WITH_PERSPECTIVE_WITH_PLURAL(Miscibility, Miscibilities, uint8_t)
 
 } //chemical namespace
 } //bio namespace

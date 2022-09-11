@@ -33,6 +33,10 @@
 #define BIO_GET_REQUIRED_CLASS_METHODS_FOR_chemical()                          \
     BIO_GET_REQUIRED_CLASS_METHODS_FOR_physical(),                             \
     (                                                                          \
+        virtual bool RegisterProperties(const ::bio::Properties& properties),  \
+        RegisterProperties(properties)                                         \
+    ),                                                                         \
+    (                                                                          \
         virtual ::bio::Properties GetProperties() const,                       \
         GetProperties()                                                        \
     ),                                                                         \
@@ -72,3 +76,12 @@ BIO_ID_FUNCTION_BODY(                                                          \
     functionName,                                                              \
     ::bio::BondTypePerspective::Instance(),                                    \
     ::bio::BondType)
+
+/**
+ * Make defining Miscibilities easier.
+ */
+#define BIO_MISCIBILITY_FUNCTION_BODY(functionName)                            \
+BIO_ID_FUNCTION_BODY(                                                          \
+    functionName,                                                              \
+    ::bio::MiscibilityPerspective::Instance(),                                 \
+    ::bio::Miscibility)

@@ -20,16 +20,21 @@
  */
 
 #include "bio/chemical/solution/Solute.h"
-#include "bio/chemical/solution/Fluctuation.h"
 
 namespace bio {
 namespace chemical {
 
+Solute::~Solute()
+{
+
+}
+
 void Solute::CommonConstructor()
 {
-	mConcentration = 0.0f;
-	mMin = 0.0f;
-	mMax = 1.0f;
+	mConcentration = 0;
+	mSolventAccessor = 0;
+	mParentSolvent = NULL;
+	mIdInParent = 0; //InvalidId().
 }
 
 Concentration Solute::GetConcentration() const
@@ -37,82 +42,59 @@ Concentration Solute::GetConcentration() const
 	return mConcentration;
 }
 
-void Solute::SetConcentration(Concentration newConcentration)
+void Solute::IncrementConcentration() const
 {
-	mConcentration = newConcentration;
-	Limit();
+	++mConcentration;
 }
 
-void Solute::Increment(Concentration add)
+void Solute::DecrementConcentration() const //const required to decrement const Solutes.
 {
-	mConcentration += add;
-	Limit();
-}
-
-void Solute::Decrement(Concentration subtract)
-{
-	mConcentration -= subtract;
-	Limit();
-}
-
-Concentration Solute::GetMin() const
-{
-	return mMin;
-}
-
-Concentration Solute::GetMax() const
-{
-	return mMax;
-}
-
-void Solute::SetMin(Concentration newMin)
-{
-	mMin = newMin;
-	Limit();
-}
-
-void Solute::SetMax(Concentration newMax)
-{
-	mMax = newMax;
-	Limit();
-}
-
-Concentration Solute::GetConcentrationAtLastPeak() const
-{
-	return mConcentrationAtLastPeak;
-}
-
-void Solute::RecordPeakConcentration()
-{
-	mConcentrationAtLastPeak = mConcentration;
-}
-
-Code Solute::Peak()
-{
-	Fluctuation* fluctuation;
-	for (
-		SmartIterator flx = GetAll< Fluctuation* >()->Begin();
-		!flx.IsAfterEnd();
-		++flx
-	)
+	--mConcentration;
+	if (!mConcentration)
 	{
-		fluctuation = flx;
-		fluctuation->Affect(this);
-		//We don't care about Affect's return value right now.
+		const_cast< Solute* >(this)->Destructor();
 	}
-	return code::Success();
 }
 
-void Solute::Limit()
+void Solute::SetConcentration(Concentration toSet) const
 {
-	if (mConcentration > mMax)
+	mConcentration = toSet;
+	if (!mConcentration)
 	{
-		mConcentration = mMax;
+		const_cast< Solute* >(this)->Destructor();
 	}
-	else if (mConcentration < mMin)
+}
+
+void Solute::Resolve() const
+{
+	if (mParentSolvent && mIdInParent)
 	{
-		mConcentration = mMin;
+		mParentSolvent->Dissolve(this, mIdInParent);
 	}
+}
+
+void Solute::SetEnvironment(Solvent* environment)
+{
+	Name myName = GetName();
+	SetPerspective(environment);
+	SetName(myName); //preserve Name, not Id.
+	EnvironmentDependent< Solvent* >::SetEnvironment(environment);
+}
+
+void Solute::Destructor()
+{
+	if (mParentSolvent && mIdInParent)
+	{
+		Resolve();
+		Solute* parentSolute = mParentSolvent->GetById(mIdInParent);
+		BIO_SANITIZE(parentSolute, parentSolute->DecrementConcentration(),)
+	}
+	Solvent* env = GetEnvironment();
+	if (env)
+	{
+		env->RemoveById< Solute* >(GetId());
+	}
+	delete this;
 }
 
 } //chemical namespace

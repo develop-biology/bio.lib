@@ -35,11 +35,14 @@ namespace api {
  * We have left Peak() as virtual here (i.e. redefined it) so that you can still use Cell as intended.
  */
 class FinalCell :
-	public Final< CellularForwarder< FinalCell, bio::cellular::Cell, bio::cellular::CellPerspective > >
+	public Final< CellularForwarder< FinalCell, bio::cellular::Cell > >
 {
 public:
 
-	BIO_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(FinalCell, BIO_SINGLE_ARG(Final< CellularForwarder< FinalCell, bio::cellular::Cell, bio::cellular::CellPerspective > >))
+	BIO_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(
+		FinalCell,
+		BIO_SINGLE_ARG(Final< CellularForwarder< FinalCell, bio::cellular::Cell > >)
+	)
 
 	virtual ~FinalCell() {}
 

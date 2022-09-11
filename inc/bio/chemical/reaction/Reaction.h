@@ -28,7 +28,7 @@
 #include "bio/chemical/common/Filters.h"
 #include "bio/chemical/common/States.h"
 #include "bio/chemical/structure/motif/LinearMotif.h"
-#include "bio/physical/Identifiable.h"
+#include "bio/physical/relativity/Identifiable.h"
 #include "bio/common/type/TypeName.h"
 
 namespace bio {
@@ -88,7 +88,6 @@ public:
 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
 		chemical,
 		Reaction,
-		&ReactionPerspective::Instance(),
 		filter::Chemical(),
 		symmetry_type::Operation()
 	)

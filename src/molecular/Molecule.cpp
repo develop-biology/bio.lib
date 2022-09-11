@@ -28,6 +28,11 @@
 namespace bio {
 namespace molecular {
 
+void Molecule::CommonConstructor()
+{
+	Horizontal< chemical::DependentMotif< Surface* > >::Object()->SetEnvironment(this);
+}
+
 Molecule::Molecule(const Molecule& toCopy)
 	:
 	molecular::Class< Molecule >(
@@ -38,7 +43,7 @@ Molecule::Molecule(const Molecule& toCopy)
 	physical::Perspective< Id >(toCopy),
 	chemical::LinearMotif< Surface* >(toCopy)
 {
-	chemical::LinearMotif< Surface* >::mStructuralPerspective = this;
+	CommonConstructor();
 }
 
 Molecule::~Molecule()

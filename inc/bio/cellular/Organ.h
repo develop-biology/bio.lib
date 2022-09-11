@@ -49,9 +49,9 @@ class OrganSystem;
  */
 class Organ :
 	public Class< Organ >,
-	public chemical::LinearMotif< genetic::Plasmid* >,
-	public chemical::LinearMotif< Tissue* >,
-	public molecular::EnvironmentDependent< OrganSystem >
+	public Horizontal< chemical::LinearMotif< genetic::Plasmid* > >,
+	public Horizontal< chemical::LinearMotif< Tissue* > >,
+	public chemical::EnvironmentDependent< OrganSystem >
 {
 public:
 
@@ -66,7 +66,6 @@ public:
 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
 		cellular,
 		Organ,
-		&OrganPerspective::Instance(),
 		filter::Cellular()
 	)
 

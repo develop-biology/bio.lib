@@ -26,17 +26,18 @@
 namespace bio {
 
 /**
- * Sites are types of places. <br />
- * The place itself should be specified by Name or Id. <br />
- * Because places can be anything, we rely on Perspective::AssociateType and chemical::Excitation in order to turn a Site into an actionable function. <br />
- * Sites are identical to Sites except they have an insertion method, rather than an extraction method. <br />
- * See Localization.h for more info. <br />
+ * Affinity is used to "recruit" various "enzymes". Effectively, these are numeric representations of functions. <br />
+ * The enzymes can be a Protein, a Reaction, or simply an Excitation. <br />
+ * The recruitment process is likely just invoking the enzyme. <br />
  */
-BIO_ID(Site, uint8_t)
+BIO_ID_WITH_PERSPECTIVE(Affinity, uint8_t)
 
-BIO_PERSPECTIVE_SINGLETON(LocalizationSitePerspective, Site)
-
-BIO_PERSPECTIVE_SINGLETON(InsertionSitePerspective, Site)
+/**
+ * Locations are places inside (or outside) of Expressors (e.g. Cells). <br />
+ * Because places can be anything, we rely on the Translocator, Affinities, and chemical::Excitations in order to turn a Location into an actionable function. <br />
+ * The Perspective for Locations is the Translocator. <br />
+ */
+BIO_ID(Location, uint8_t)
 
 /**
  * TranscriptionFactors determine which Proteins are expressed in which Cells. <br />
@@ -46,6 +47,7 @@ BIO_PERSPECTIVE_SINGLETON(InsertionSitePerspective, Site)
  * In practice, you'll likely be using other people's Plasmids, so TranscriptionFactors give you a level of control over how you want to consume external libraries in your networks. <br />
 */
 BIO_ID_WITH_PERSPECTIVE(TranscriptionFactor, uint8_t)
+
 } //bio namespace
 
 namespace bio {
@@ -55,8 +57,5 @@ class RNA;
 
 typedef ::bio::Arrangement< const RNA* > Transcriptome;
 
-BIO_PERSPECTIVE_SINGLETON(RNAPerspective, Id)
-
-BIO_PERSPECTIVE_SINGLETON(PlasmidPerspective, Id)
 } //genetic namespace
 } //bio namespace

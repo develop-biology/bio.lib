@@ -40,8 +40,8 @@ class Plasmid;
 class Expressor :
 	public genetic::Class< Expressor >,
 	public chemical::UnorderedMotif< TranscriptionFactor >,
-	public chemical::LinearMotif< Plasmid* >,
-	public chemical::LinearMotif< molecular::Protein* >,
+	public Horizontal< chemical::LinearMotif< Plasmid* > >,
+	public Horizontal< chemical::LinearMotif< molecular::Protein* > >,
 	virtual public molecular::Vesicle
 {
 public:
@@ -57,7 +57,6 @@ public:
 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
 		genetic,
 		Expressor,
-		&molecular::VesiclePerspective::Instance(),
 		filter::Genetic()
 	)
 

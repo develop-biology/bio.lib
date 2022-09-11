@@ -51,7 +51,7 @@ Surface::Surface(
 		environment,
 		filter::Molecular(),
 		symmetry_type::Variable()),
-	EnvironmentDependent< Molecule >(environment),
+	chemical::EnvironmentDependent< Molecule >(environment),
 	mBoundPosition(InvalidIndex())
 {
 
@@ -65,7 +65,7 @@ Surface::Surface(const Surface& toCopy)
 		toCopy.GetPerspective(),
 		toCopy.GetFilter(),
 		symmetry_type::Variable()),
-	EnvironmentDependent< Molecule >(toCopy),
+	chemical::EnvironmentDependent< Molecule >(toCopy),
 	mBoundPosition(toCopy.mBoundPosition)
 {
 	chemical::Bond* bond;

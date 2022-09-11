@@ -1,4 +1,4 @@
-/*
+i/*
  * This file is a part of the Biology project by eons LLC.
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
@@ -27,8 +27,8 @@
  * We also define the empty constructor for when neither name nor id are supplied. <br />
  *
  * IMPORTANT: despite using __VA_ARGS__, this will fail if nothing more than the namespace and class are provided. <br />
- * At a minimum, you MUST ALSO INCLUDE THE Perspective AFTER class! <br />
- * e.g. BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(my_namespace, MyClass, &MyClassPerspective::Instance()) <br />
+ * At a minimum, you MUST ALSO INCLUDE THE Filter AFTER class! <br />
+ * e.g. BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(my_namespace, MyClass, filter::Default()) <br />
  *
  * NOTE: if your class has multiple template args or otherwise uses commas in its name, you must enclose it in BIO_SINGLE_ARG() so as to not have it be considered part of the __VA_ARGS__. <br />
  * @param ns the namespace of the class
@@ -53,8 +53,8 @@ explicit class(const ::bio::Id& id) :                                          \
  * We also define the empty constructor for when neither name nor id are supplied. <br />
  *
  * IMPORTANT: despite using __VA_ARGS__, this will fail if nothing more than the namespace and class are provided. <br />
- * At a minimum, you MUST ALSO INCLUDE THE Perspective AFTER class! <br />
- * e.g. BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(my_namespace, MyClass, &MyClassPerspective::Instance()) <br />
+ * At a minimum, you MUST ALSO INCLUDE THE Filter AFTER class! <br />
+ * e.g. BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(my_namespace, MyClass, filter::Default()) <br />
  *
  * NOTE: if your class has multiple template args or otherwise uses commas in its name, you must enclose it in BIO_SINGLE_ARG() so as to not have it be considered part of the __VA_ARGS__. <br />
  *

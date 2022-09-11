@@ -26,15 +26,5 @@
 namespace bio {
 namespace cellular {
 
-BIO_PERSPECTIVE_SINGLETON(OrganellePerspective, Id)
-
-BIO_PERSPECTIVE_SINGLETON(CellPerspective, Id)
-
-BIO_PERSPECTIVE_SINGLETON(TissuePerspective, Id)
-
-BIO_PERSPECTIVE_SINGLETON(OrganPerspective, Id)
-
-BIO_PERSPECTIVE_SINGLETON(OrganSystemPerspective, Id)
-
 } //cellular namespace
 } //bio namespace

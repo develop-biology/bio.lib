@@ -58,7 +58,7 @@ void TransMembraneDomain::Ingress(Molecule* outer)
 {
 	BIO_SANITIZE(mInner,,return)
 	BIO_SANITIZE(outer,,return)
-	mInner->Add< Molecule* >(outer);
+	mInner->Add< chemical::Solute* >(outer);
 }
 
 	
@@ -66,14 +66,14 @@ void TransMembraneDomain::Ingress(Vesicle* outer)
 {
 	BIO_SANITIZE(mInner,,return)
 	BIO_SANITIZE(outer,,return)
-	mInner->Import< Molecule* >(outer->GetAll< Molecule* >());
+	mInner->Import< chemical::Solute* >(outer->GetAll< chemical::Solute* >());
 }
 
 	
 Molecule* TransMembraneDomain::Egress(const Name& moleculeName)
 {
 	BIO_SANITIZE(mInner,,return NULL)
-	Molecule* found = mInner->GetByName< Molecule* >(moleculeName);
+	Molecule* found = mInner->GetByName< chemical::Solute* >(moleculeName);
 	BIO_SANITIZE(found,,return NULL)
 	return CloneAndCast(found);
 }
@@ -82,7 +82,7 @@ Molecule* TransMembraneDomain::Egress(const Name& moleculeName)
 const Molecule* TransMembraneDomain::Egress(const Name& moleculeName) const
 {
 	BIO_SANITIZE(mInner,,return NULL)
-	Molecule* found = mInner->GetByName< Molecule* >(moleculeName);
+	chemical::Solute* found = mInner->GetByName< chemical::Solute* >(moleculeName);
 	BIO_SANITIZE(found,,return NULL)
 	return CloneAndCast(found);
 }
@@ -91,7 +91,7 @@ const Molecule* TransMembraneDomain::Egress(const Name& moleculeName) const
 Molecule* TransMembraneDomain::Egress(const Id& moleculeId)
 {
 	BIO_SANITIZE(mInner,,return NULL)
-	Molecule* found = mInner->GetById< Molecule* >(moleculeId);
+	chemical::Solute* found = mInner->GetById< chemical::Solute* >(moleculeId);
 	BIO_SANITIZE(found,,return NULL)
 	return CloneAndCast(found);
 }
@@ -100,7 +100,7 @@ Molecule* TransMembraneDomain::Egress(const Id& moleculeId)
 const Molecule* TransMembraneDomain::Egress(const Id& moleculeId) const
 {
 	BIO_SANITIZE(mInner,,return NULL)
-	Molecule* found = mInner->GetById< Molecule* >(moleculeId);
+	chemical::Solute* found = mInner->GetById< chemical::Solute* >(moleculeId);
 	BIO_SANITIZE(found,,return NULL)
 	return CloneAndCast(found);
 }
@@ -109,7 +109,7 @@ const Molecule* TransMembraneDomain::Egress(const Id& moleculeId) const
 Molecule* TransMembraneDomain::Secrete(const Name& moleculeName)
 {
 	BIO_SANITIZE(mInner,,return NULL)
-	physical::Line* molecules = Cast< physical::Line* >(mInner->GetAll< Molecule* >());
+	physical::Line* molecules = Cast< physical::Line* >(mInner->GetAll< chemical::Solute* >());
 	Index found = molecules->SeekToName(moleculeName);
 	BIO_SANITIZE(found,,return NULL)
 	return ChemicalCast< Molecule* >(molecules->Erase(found).As< physical::Linear >().operator physical::Identifiable< Id >*());
@@ -119,7 +119,7 @@ Molecule* TransMembraneDomain::Secrete(const Name& moleculeName)
 Molecule* TransMembraneDomain::Secrete(const Id& moleculeId)
 {
 	BIO_SANITIZE(mInner,,return NULL)
-	physical::Line* molecules = Cast< physical::Line* >(mInner->GetAll< Molecule* >());
+	physical::Line* molecules = Cast< physical::Line* >(mInner->GetAll< chemical::Solute* >());
 	Index found = molecules->SeekToId(moleculeId);
 	BIO_SANITIZE(found,,return NULL)
 	return ChemicalCast< Molecule* >(molecules->Erase(found).As< physical::Linear >().operator physical::Identifiable< Id >*());

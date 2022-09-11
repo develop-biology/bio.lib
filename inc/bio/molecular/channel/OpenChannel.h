@@ -48,12 +48,16 @@ public:
 
 	/**
 	 * @param name
+	 * @param environment
 	 */
 	OpenChannel(
 		const Name& name,
 		Vesicle* environment = NULL
 	);
 
+	/**
+	 *
+	 */
 	virtual ~OpenChannel();
 
 	/**
@@ -62,7 +66,7 @@ public:
 	 * *this will assume ownership of outer. <br />
 	 * @param outer
 	 */
-	virtual void Ingress(Molecule* outer);
+	virtual void Ingress(Solute* outer);
 
 
 	/**
@@ -79,7 +83,7 @@ public:
 	 * @param moleculeName
 	 * @return a new Molecule from that of the given Name in *this or NULL if no such Molecule could be found. <br />
 	 */
-	virtual Molecule* Egress(const Name& moleculeName);
+	virtual Solute* Egress(const Name& moleculeName);
 
 	/**
 	 * Egress copies Molecules in *this and provides them for export. <br />
@@ -87,7 +91,7 @@ public:
 	 * @param moleculeName
 	 * @return a new Molecule from that of the given Name in *this or NULL if no such Molecule could be found.
 	 */
-	virtual const Molecule* Egress(const Name& moleculeName) const;
+	virtual const Solute* Egress(const Name& moleculeName) const;
 
 
 	/**

@@ -60,7 +60,6 @@ public:
 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(
 		molecular,
 		DNA,
-		&DNAPerspective::Instance(),
 		filter::Molecular()
 	)
 

@@ -83,8 +83,8 @@ public:
 	/**
 	 * Waves, depending on their behavior, can have different Properties. <br />
 	 * GetProperties can be used for determining how to downcast *this. <br />
-	 * The Properties returned dictate what a Wave can do and / or what can be done with one. <br />
-	 * If we treat Properties as fourier components of a waveform, we could restate GetProperties as GetPeriodicComponents. In this context, "what a wave can do" and "what can be done with a wave" can be expressed as "which systems resonate with the wave in question" or "which systems have comparable periodic components", which is true here as well: when 2 Waves have the same Properties (i.e. Resonate with each other) they can be treated the same in some regard (perhaps they are "numeric" and can be "added") and when 2 waves have comparable properties, they can interact with each other. <br />
+	 * The Properties returned dictate what a Wave can do and / or what can be done to it. <br />
+	 * If we treat Properties as fourier components of a waveform, we could restate GetProperties as GetPeriodicComponents. In this context, "what a wave can do" and "what can be done with a wave" can be expressed as "which systems resonate with the wave in question" or "which systems have comparable periodic components". This is true here as well: when 2 Waves have the same Properties (i.e. Resonate with each other) they can be treated the same in some regard and can thus interact with each other (perhaps they are "numeric" and can be "added"). <br />
 	 * It is up to you and other users of this framework to determine which Properties to use where. This is your space, so make use of it when you feel it's appropriate. <br />
 	 * NOTE: Waves do not actually have mProperties. This method MUST be implemented by children in order to work. If using any chemical::Class or beyond, this method will be implemented for you. See chemical/Class.h for more info. <br />
 	 * @return the Properties of *this (empty vector unless overridden).
@@ -92,10 +92,10 @@ public:
 	virtual Properties GetProperties() const;
 
 	/**
-	 * Check how (and if) 2 Waves Resonate with each other. <br />
+	 * Get all overlapping / shared Properties among a set of Waves. <br />
 	 * Resonance is defined as a commonality between 2 or more Waves. This is a little bit more generic than real life resonance, which is strictly a measure of increased amplitude when 2 or more waves interact. Here, Waves interacting could mean an increase in aperiodic behavior, where no frequency has any single discernible change to it, or any number of other complex transformations. <br />
 	 * @param waves
-	 * @return the number of overlapping Properties between both waves given.
+	 * @return the overlapping Properties between all waves given.
 	 */
 	static Properties GetResonanceBetween(ConstWaves waves);
 
@@ -103,7 +103,7 @@ public:
 	 * Ease of use method for getting the Resonance between just 2 waves, rather than n. <br />
 	 * @param wave1
 	 * @param wave2
-	 * @return the number of overlapping Properties between both waves given.
+	 * @return the overlapping Properties between both waves given.
 	 */
 	static Properties GetResonanceBetween(
 		const Wave* wave1,
@@ -114,7 +114,7 @@ public:
 	 * Ease of use method for getting the Resonance between a Wave and a set of Properties <br />
 	 * @param wave
 	 * @param properties
-	 * @return the number of overlapping Properties between the Wave and Properties given.
+	 * @return the overlapping Properties between the wave and properties given.
 	 */
 	static Properties GetResonanceBetween(
 		const Wave* wave,

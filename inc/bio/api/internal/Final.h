@@ -151,6 +151,10 @@ public:
 	{
 		return this->mT.AsWave();
 	}
+	bool RegisterProperties(const Properties& properties)
+	{
+		return mT.RegisterProperties(properties);
+	}
 	Properties GetProperties() const 
 	{
 		return this->mT.GetProperties();

@@ -35,11 +35,11 @@ namespace api {
  * We have left Peak() as virtual here (i.e. redefined it) so that you can still use Organelles as intended.
  */
 class FinalOrganelle :
-	public Final< CellularForwarder< FinalOrganelle, bio::cellular::Organelle, bio::cellular::OrganellePerspective > >
+	public Final< CellularForwarder< FinalOrganelle, bio::cellular::Organelle > >
 {
 public:
 
-	BIO_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(FinalOrganelle, BIO_SINGLE_ARG(Final< CellularForwarder< FinalOrganelle, bio::cellular::Organelle, bio::cellular::OrganellePerspective > >))
+	BIO_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(FinalOrganelle, BIO_SINGLE_ARG(Final< CellularForwarder< FinalOrganelle, bio::cellular::Organelle > >))
 
 	virtual ~FinalOrganelle() {}
 

@@ -61,7 +61,6 @@ public:
 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(
 		genetic,
 		Gene,
-		&molecular::DNAPerspective::Instance(),
 		filter::Genetic()
 	)
 

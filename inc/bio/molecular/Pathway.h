@@ -46,7 +46,7 @@ namespace molecular {
 class Pathway :
 	public chemical::Class< Pathway >,
 	public chemical::Reaction,
-	public chemical::LinearMotif< chemical::Reaction* >
+	public Horizontal< chemical::LinearMotif< chemical::Reaction* > >
 {
 public:
 	/**
@@ -60,7 +60,6 @@ public:
 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
 		chemical,
 		Pathway,
-		&chemical::ReactionPerspective::Instance(),
 		filter::Chemical()
 	)
 

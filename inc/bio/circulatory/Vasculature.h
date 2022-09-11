@@ -21,134 +21,49 @@
 
 #pragma once
 
-/**
-Personality: Holds all the circulatory variables
-API Personality variables are created by the the circulatory file. See documentation below in the ctor. GetValue(string) Returns current value of circulatory variable "string". SetValue(string) Sets current value of circulatory variable "string". ChangeViaStimulus() Call to increment circulatory variable by a stimulus defined in the circulatory JSON file. StartChangeViaTimeRate() Call to start changing circulatory variable by   time rate defined in the circulatory JSON file.  StopChangeViaTimeRate()     Call to stop changing circulatory variable by the     time rate defined in StartChangeViaTimeRate(). Poll() is to be called by Brain or other fast clock
-*/
-#include <bio/common/PollObject.h>
-#include <bio/physical/Identified.h>
-#include <bio/log/LoggerObject.h>
-#include "Types.h"
+#include "bio/cellular/Tissue.h"
+#include "bio/circulatory/common/Types.h"
+#include "Blood.h"
 
 namespace bio{
-
-class PersonalityVar;
-
-class Personality : public PollObject, public Identified<DefaultRealm>, public log::LoggerObject {
-public:
-
-    BIO_DEFINE_MAP(PVMap, PersonalityVarId, PersonalityVar *)
+namespace circulatory {
 
 /**
- poses. However, the default ID for a Personality is not used Additionally, the NameTracker is left NULL. If you would like to manage more than one Brain, feel free to:
-*/
-    /** 1. BIO_NAME_TRACKER_SINGLETON(PersonalityTracker, PersonalityId)
-    // 2. call SetTracker(PersonalityTracker) NOTE: THIS CAN ONLY BE DONE ONCE
+ * Vasculature is a Tissue which contains all linked BloodVessels. <br />
+ * Adding 2 BloodVessels to the same Vasculature will cause changes made to one to appear in the other. <br />
+ * You may have multiple Vasculatures in the same way you may have multiple Hearts. Doing so will create distinct regions of synchronicity in your Organism. For example, if your Organism models a population of bacteria, each bacterium could have its own Vasculature and interact with its environment in a manner disparate from its neighbors. <br />
+ */
+class Vasculature :
+	public cellular::Class< Vasculature >,
+	public cellular::Tissue
+{
+public:
 
-    /**
-    The name of the circulatory can be
-    */
-    Personality(Name name = "plain");
-    virtual ~Personality();
+	/**
+	 * Ensure virtual methods point to Class implementations. <br />
+	 */
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular, Vasculature)
 
-    BIO_NAME_TRACKER_SINGLETON(PVTracker, PersonalityVarId)
-    BIO_NAME_TRACKER_SINGLETON(ChangeTracker, PersonalityChangeId)
+	/**
+	 * Standard constructors. <br />
+	 */
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
+		Vasculature,
+		&TissuePerspective::Instance(),
+		filter::Circulatory()
+	)
 
-    /**
-    Creates a circulatory variable and adds it to *this.
-    RETURNS: new PersonalityVar on success ULL otherwise
-    New circulatory variable's attributes are all set to zero.
-    */
-    PersonalityVar* CreatePV(Name name);
+	/**
+	 *
+	 */
+	virtual ~Vasculature()
+	{
 
-    /**
-    Stores a PersonalityVar in *this
-    */
-    bool AddPV(PersonalityVar* pv);
-
-    /**
-    RETURNS: a pointer to the indicated PVar; NULL if not found.
-    */
-    PersonalityVar* GetPV(PersonalityVarId id);
-    const PersonalityVar* GetPV(PersonalityVarId id) const;
-    PersonalityVar* GetPV(Name name) 
-    {
-        return GetPV(ChangeTracker::Instance().IdFromName(name));
-    }
-    const PersonalityVar* GetPV(Name name) const 
-    {
-        return GetPV(ChangeTracker::Instance().IdFromName(name));
-    }
-
-    /**
-    RETURNS: the PVar with the highest value; NULL if all PVars are 0, and the first eligible if 2 PVars are tied.
-    */
-    const PersonalityVar* GetHighestPV() const;
-
-    PersonalityValue GetValue(PersonalityVarId id) const;
-
-    bool SetValue(PersonalityVarId id, PersonalityValue newValue);
-
-    /**
-    Create a change that can be used later.
-    Changes are used to increment or decrement PersonalityVars.
-    They can be applied in bursts or over time.
-    For more info on how to use changes, see below and PersonalityVar.h
-    */
-    PersonalityChangeId CreateChange(Name name, PersonalityValue value);
-
-    /**
-    TODO: there is no way to change or delete Changes; this is mainly due to changes being copied to PVars.
-
-    /**
-    RETURNS: the value stored with CreateChange, 0 if changeId isn't found in *this.
-    */
-    PersonalityValue GetValueOfChange(PersonalityChangeId changeId) const;
-
-    /**
-    To change a circulatory variable once and not over time, use these methods. They will call PersonalityVar::ApplyChange
-    */
-    void ChangeBurst(PersonalityVar* pVar, PersonalityChangeId changeId, unsigned int multiples);
-
-    /**
-    Like the above, but uses all PersonalityVars.
-    */
-    void ChangeBurst(PersonalityChangeId changeId, unsigned int multiples);
-
-    /**
-    To change circulatory variables on the clock, use these methods.
-    See PersonalityVar.h for more information on Enabling and Disabling
-    */
-    void EnableChangeOverTime(PersonalityVar* pVar, PersonalityChangeId changeId);
-    void DisableChangeOverTime(PersonalityVar* pVar, PersonalityChangeId changeId);
-
-//START: PollObject required methods. See that class for documentation
-
-    /**
-    Poll the circulatory engine. This MUST be called on a schedule so
-    that this engine updates its state.
-    DO NOT ADD PVARS TO A CLOCK! pVars should only be polled by *this.
-    */
-    void Poll();
-
-//END: PollObject required methods.
-
-//START: LoggerObject overrides
-
-    virtual void SetLogEngine(log::Engine* logEngine);
-
-//END: LoggerObject overrides
+	}
 
 protected:
-    PVMap m_varMap;
-
-    PersonalityChangeMap m_changeMap;
-
-    /**
-    Calls ApplyAnyActiveChanges for all PVars.
-    RETURNS: true on success, false otherwise
-    */
-    void ChangeAllVarsViaTime();
-
+	Blood mBlood;
 };
+
+} //circulatory namespace
 } //bio namespace

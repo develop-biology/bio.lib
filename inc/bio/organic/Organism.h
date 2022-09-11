@@ -46,8 +46,8 @@ class Habitat;
  */
 class Organism :
 	public cellular::Class< Organism >,
-	public chemical::LinearMotif< cellular::OrganSystem* >,
-	public molecular::EnvironmentDependent< Habitat >
+	public Horizontal< chemical::LinearMotif< cellular::OrganSystem* > >,
+	public chemical::EnvironmentDependent< Habitat >
 {
 public:
 

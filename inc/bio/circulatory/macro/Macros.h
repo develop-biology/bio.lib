@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/genetic/macro/Macros.h"
+#include "bio/cellular/macro/Macros.h"
 
 /**
  * Get all virtual methods defined by circulatory::Class. <br />

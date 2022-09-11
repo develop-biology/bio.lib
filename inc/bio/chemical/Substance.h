@@ -29,6 +29,7 @@
 #include "bio/chemical/macro/Macros.h"
 #include "bio/chemical/structure/Structure.h"
 #include "bio/chemical/structure/motif/UnorderedMotif.h"
+#include "bio/chemical/atomic/Horizontal.h"
 
 namespace bio {
 namespace chemical {
@@ -40,8 +41,8 @@ namespace chemical {
  */
 class Substance :
 	public chemical::Class< Substance >,
-	public UnorderedMotif< Property >,
-	public UnorderedMotif< State >,
+	public Horizontal< UnorderedMotif< Property > >,
+	public Horizontal< UnorderedMotif< State > >,
 	virtual public Structure
 {
 public:
@@ -49,7 +50,6 @@ public:
 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(
 		chemical,
 		Substance,
-		&SubstancePerspective::Instance(),
 		filter::Chemical()
 	)
 

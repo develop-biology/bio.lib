@@ -38,7 +38,7 @@ class Reactant; //unused here but anything including Reactants will likely use R
  */
 class Reactants :
 	public chemical::Class< Reactants >,
-	public LinearMotif< Substance* >,
+	public Horizontal< LinearMotif< Substance* > >,
 	virtual public Structure
 {
 public:

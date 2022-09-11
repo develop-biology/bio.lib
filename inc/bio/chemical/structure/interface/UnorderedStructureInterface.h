@@ -22,7 +22,7 @@
 #pragma once
 
 #include "bio/common/thread/ThreadSafe.h"
-#include "bio/chemical/Atom.h"
+#include "bio/chemical/atomic/Atom.h"
 #include "bio/chemical/structure/motif/LinearMotif.h"
 
 namespace bio {

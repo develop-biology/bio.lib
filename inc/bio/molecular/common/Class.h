@@ -53,13 +53,11 @@ public:
 	 */
 	Class(
 		T* object,
-		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
 		chemical::Class< T >(
 			object,
-			perspective,
 			filter,
 			symmetryType
 		)
@@ -77,14 +75,12 @@ public:
 	Class(
 		T* object,
 		const Name& name,
-		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
 		chemical::Class< T >(
 			object,
 			name,
-			perspective,
 			filter,
 			symmetryType
 		)
@@ -102,14 +98,12 @@ public:
 	Class(
 		T* object,
 		const Id& id,
-		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
 		chemical::Class< T >(
 			object,
 			id,
-			perspective,
 			filter,
 			symmetryType
 		)

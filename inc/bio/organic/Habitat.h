@@ -37,7 +37,7 @@ namespace organic {
 
 class Habitat :
 	public cellular::Class< Habitat >,
-	public chemical::LinearMotif< Organism* >,
+	public Horizontal< chemical::LinearMotif< Organism* > >,
 	public physical::ThreadedPeriodic
 {
 public:
@@ -53,7 +53,6 @@ public:
 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
 		cellular,
 		Habitat,
-		&HabitatPerspective::Instance(),
 		filter::Organic()
 	)
 

@@ -90,7 +90,7 @@ Index Line::SeekToName(const Name& name)
 	return InvalidIndex();
 }
 
-Index Line::SeekToId(const Id& id)
+Index Line:: SeekToId(const Id& id)
 {
 	if (!mTempItt)
 	{

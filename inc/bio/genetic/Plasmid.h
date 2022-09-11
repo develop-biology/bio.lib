@@ -47,7 +47,7 @@ class Expressor;
  */
 class Plasmid :
 	public genetic::Class< Plasmid >,
-	public chemical::LinearMotif< Gene* >,
+	public Horizontal< chemical::LinearMotif< Gene* > >,
 	public molecular::DNA,
 	virtual public ThreadSafe
 {
@@ -65,7 +65,6 @@ public:
 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(
 		genetic,
 		Plasmid,
-		&PlasmidPerspective::Instance(),
 		filter::Genetic()
 	)
 

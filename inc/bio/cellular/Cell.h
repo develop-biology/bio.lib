@@ -48,8 +48,8 @@ class Organelle;
  */
 class Cell :
 	public Class< Cell >,
-	public chemical::LinearMotif< Organelle* >,
-	public molecular::EnvironmentDependent< cellular::Tissue >,
+	public Horizontal< chemical::LinearMotif< Organelle* > >,
+	public chemical::EnvironmentDependent< cellular::Tissue >,
 	virtual public genetic::Expressor
 {
 public:
@@ -65,7 +65,6 @@ public:
  	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
 		cellular,
 		Cell,
-		&CellPerspective::Instance(),
 		filter::Cellular()
 	)
 
@@ -92,9 +91,6 @@ public:
 
 		return cellular::Class< Cell >::Peak();
 	}
-
-protected:
-	Solvent mCytoplasm;
 };
 
 } //cellular namespace

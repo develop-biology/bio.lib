@@ -43,10 +43,10 @@ class Cell;
  */
 class Tissue :
 	public Class< Tissue >,
-	public chemical::LinearMotif< genetic::Plasmid* >,
-	public chemical::LinearMotif< Cell* >,
-	public chemical::LinearMotif< Tissue* >,
-	public molecular::EnvironmentDependent< Tissue > //Not Organ.
+	public Horizontal< chemical::LinearMotif< genetic::Plasmid* > >,
+	public Horizontal< chemical::LinearMotif< Cell* > >,
+	public Horizontal< chemical::LinearMotif< Tissue* > >,
+	public chemical::EnvironmentDependent< Tissue > //Not Organ.
 {
 public:
 
@@ -61,7 +61,6 @@ public:
 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
 		cellular,
 		Tissue,
-		&TissuePerspective::Instance(),
 		filter::Cellular()
 	)
 

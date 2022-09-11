@@ -188,6 +188,39 @@ public:
 		)
 	}
 
+	/**
+	 * Removes a T* by its id.
+	 * @tparam T
+	 * @param id
+	 * @return the T removed or NULL; NULL if T is invalid.
+	 */
+	template < typename T >
+	const T RemoveById(const Id& id)
+	{
+		BIO_STATIC_ASSERT(type::IsPointer< T >())
+		const LinearMotif< T >* implementer = this->As< LinearMotif< T >* >();
+		BIO_SANITIZE(implementer,
+			return implementer->RemoveByIdImplementation(name),
+			return NULL
+		)
+	}
+
+	/**
+	 * Removes a T* by its name.
+	 * @tparam T
+	 * @param name
+	 * @return the T removed or NULL; NULL if T is invalid.
+	 */
+	template < typename T >
+	T RemoveByName(const Name& name)
+	{
+		BIO_STATIC_ASSERT(type::IsPointer< T >())
+		LinearMotif< T >* implementer = this->As< LinearMotif< T >* >();
+		BIO_SANITIZE(implementer,
+			return implementer->RemoveByNameImplementation(name),
+			return NULL
+		)
+	}
 
 	/**
 	 * Performs the given Reaction on all contents. <br />

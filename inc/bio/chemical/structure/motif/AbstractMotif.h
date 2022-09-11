@@ -31,7 +31,7 @@ class AbstractMotif
 public:
 
 	/**
-	 * See physical::Wave for more info on Resonance and how to use Properties. <br />
+	 * See physical::Wave and chemical::Elementary for more info on Resonance and how to use Properties. <br />
 	 * @return {property::Structural()}
 	 */
 	static Properties GetClassProperties();

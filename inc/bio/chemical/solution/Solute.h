@@ -24,31 +24,32 @@
 #include "bio/chemical/common/Types.h"
 #include "bio/chemical/macro/Macros.h"
 #include "bio/chemical/Substance.h"
-#include "bio/physical/Periodic.h"
+#include "bio/chemical/EnvironmentDependent.h"
 
 namespace bio {
 namespace chemical {
 
-class Fluctuation;
+class Solvent;
 
 /**
- * Solutes mimic the effect of small molecules, hormones, etc. on overall behavior.
- * These are, in effect, global variables which effect system wide changes.
- * As an example, let's look at hunger. A "Hunger" Solute (e.g. "Ghrelin") may increase over time and be decreased by a "Food" or "Digestion" stimulus.
- * The term "Concentration" denotes the strength of the chemical signal, i.e. the value of the global variable.
- * We also have a min and max to describe this Organism's chemical limits and abstract away complex metabolic regulation.
- * "Fluctuations" allow a Solute's Concentration to be changed over time or in response to a stimulus.
- *
- * Solutes are Substances but are not Molecules, they only affect systems through their concentration, not their particular shape.
- *
- * IMPORTANT NOTE: THIS CLASS DOES NOT ACCOUNT FOR ROUNDING ERRORS!
- * If you start at 0.0f and then increment and decrement this class by the same value, do not expect the result to be 0.0f!
+ * Solutes are used to implement shared-pointer style garbage collection. <br />
+ * The idea is that Solutes have a "Concentration" representing their overall abundance. Once the Concentration of a Solute drops to 0, it is destroyed. <br />
+ * The Concentration of a Solute is increased when it becomes available to a novel context through Solvent::Diffuse (e.g. passed to a function). <br />
+ * Solutes are cloned when non-const Diffusing; while const access to a Solute simply increases its Concentration. <br />
+ * See Solvent.h for more info on how Diffusion works. <br />
+ * <br />
+ * When a Solute's Concentration reaches 0, before it is destroyed, it automatically lets its parent Solvent know that it is no longer needed. <br />
+ * For example, if Solvent V2 gets Solute U2 by cloning Solute U1 from Solvent V1, the originating Solute U1 will have its Concentration increased while U2 exists. Once U2 is removed from V2, the Concentration of U1 (in V1) will drop. <br />
+ * This process ensures that Solutes persist in greater contexts while in use by sub-contexts, and makes it possible for isolated sub-contexts to communicate through their common greater context. <br />
+ * For example, if function A uses Solute U1 from Solvent V1 and function B also uses U1, even if each function exists in an isolated sub-Solvent of V1, both functions will start with the same value. Furthermore, if B depends on modifications to U1 made by A, then having U1 be removed from V1 after A completes would break B. <br />
+ * Thus, by keeping Solutes around when they are not needed by the immediate context allows sub-contexts to depend on the assumption that other, isolated sub-contexts can reach the same values. <br />
+ * <br />
+ * Additionally, when a Solute's Concentration reaches 0 and before it's destroyed, it is Dissolved back into its parent Solvent according to the Miscibility of its parent Solute. This allows sub-contexts to affect greater contexts and thus cooperate with neighboring, isolated contexts. <br />
  */
 class Solute :
 	public chemical::Class< Solute >,
-	public chemical::LinearMotif< Fluctuation* >,
-	public chemical::Substance,
-	public physical::Periodic
+	public chemical::EnvironmentDependent< Solvent >,
+	virtual public Substance
 {
 public:
 
@@ -57,88 +58,62 @@ public:
 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(
 		chemical,
 		Solute,
-		&SolutePerspective::Instance(),
 		filter::Chemical
 	)
 
 	/**
-	 * Get the Concentration of *this (i.e. its "value").
+	 *
+	 */
+	virtual ~Solute();
+
+	/**
+	 * Get the Concentration of *this (i.e. its reference count). <br />
 	 * @return the mConcentration of *this.
 	 */
     virtual Concentration GetConcentration() const;
 
-	/**
-	 * Rather than activating a Fluctuation, you can just set the mConcentration of *this directly.
-	 * @param newConcentration
+    /**
+	 * Increase the mConcentration of *this by 1. <br />
+	 * Must be const to make Solute::Diffusion mechanics work. <br />
 	 */
-	virtual void SetConcentration(Concentration newConcentration);
+	virtual void IncrementConcentration() const;
 
 	/**
-	 * Increase the mConcentration of *this.
-	 * @param add
+	 * Decrease the mConcentration of *this by 1. <br />
+	 * Must be const to make Solute::Diffusion mechanics work. <br />
 	 */
-	virtual void Increment(Concentration add);
+	virtual void DecrementConcentration() const;
 
 	/**
-	 * Decrease the mConcentration of *this.
-	 * @param add
+	 * Manually set the mConcentration of *this. <br />
+	 * This should not be used except in VERY controlled cases (such as Solvent Cloning). <br />
+	 * @param toSet
 	 */
-	virtual void Decrement(Concentration subtract);
+	virtual void SetConcentration(Concentration toSet) const;
 
 	/**
-	 * Get the mMin of *this
-	 * @return the mMin of *this.
+	 * Dissolve() *this back into the parent Solvent, if it exists. <br />
 	 */
-	virtual Concentration GetMin() const;
+	virtual void Resolve() const;
 
 	/**
-	 * Get the mMax of *this.
-	 * @return the mMax of *this.
+	 * Sets the Environment and the Perspective of *this. <br />
+	 * Don't let the environment go out of scope or be deleted before *this! <br />
+	 * @param environment
 	 */
-	virtual Concentration GetMax() const;
+	virtual void SetEnvironment(Solvent* environment);
 
-	/**
-	 * Set the mMin of *this.
-	 * @param newMin
-	 */
-	virtual void SetMin(Concentration newMin);
-
-	/**
-	 * Set the mMax of *this.
-	 * @param newMax
-	 */
-	virtual void SetMax(Concentration newMax);
-
-	/**
-	 * @return the Concentration of *this last time *this Peak()ed.
-	 */
-	virtual Concentration GetConcentrationAtLastPeak() const;
-
-	/**
-	 * Sets mConcentrationAtLastPeak to mConcentration.
-	 * Should be Called during Peak().
-	 */
-	virtual void RecordPeakConcentration();
-
-   /**
-    * Applies all Fluctuations.
-    * To add a Fluctuation, simply Add< Fluctuation* >(yourFluctuation) or GetOrCreateByName("The Name of Your Fluctuation"), etc.
-    * For more info see physical::Periodic.
-    */
-	virtual Code Peak();
-	
 protected:
-    Concentration mConcentration;
-    Concentration mConcentrationAtLastPeak;
-    Concentration mMin, mMax;
+    mutable Concentration mConcentration;
+    mutable Solvent* mParentSolvent;
+	const Id mIdInParent;
 
 	/**
-	 * Make sure the Concentration of *this does not exceed mMin ~ mMax.
+	 * This is what happens when mConcentration = 0.
 	 */
-	virtual void Limit();
+	virtual void Destructor();
 
 private:
-
 	/**
 	 *
 	 */

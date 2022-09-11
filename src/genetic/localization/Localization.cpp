@@ -28,15 +28,15 @@ namespace bio {
 namespace genetic {
 
 Localization::Localization(
-	Site site,
+	Location location,
 	const Name& name
 )
 	:
 	physical::Class< Localization >(this),
 	mcMethod(NULL)
 {
-	SetNameOfSite(name);
-	SetSite(site);
+	SetNameOfLocation(name);
+	SetLocation(location);
 }
 
 Localization::~Localization()
@@ -69,7 +69,7 @@ chemical::Substance* Localization::Seek(chemical::Substance* seekIn) const
 
 	BIO_SANITIZE(seekIn, , return seekIn);
 
-	if (mSite == LocalizationSitePerspective::InvalidId())
+	if (mLocation == LocalizationLocationPerspective::InvalidId())
 	{
 		return seekIn;
 	}
@@ -90,29 +90,29 @@ chemical::Substance* Localization::Seek(chemical::Substance* seekIn) const
 	return extract;
 }
 
-void Localization::SetNameOfSite(const Name& name)
+void Localization::SetNameOfLocation(const Name& name)
 {
 	mName = name;
 }
 
-Name Localization::GetNameOfSite() const
+Name Localization::GetNameOfLocation() const
 {
 	return mName;
 }
 
-void Localization::SetSite(Site site)
+void Localization::SetLocation(Location location)
 {
-	mSite = site;
+	mLocation = location;
 	if (mcMethod)
 	{
 		delete mcMethod;
 	}
-	mcMethod = SafelyAccess<LocalizationSitePerspective>()->GetNewObjectFromIdAs< chemical::ExcitationBase* >(mSite);
+	mcMethod = SafelyAccess< Translocator >()->GetPeptidase(mLocation, "Move");
 }
 
-Site Localization::GetSite() const
+Location Localization::GetLocation() const
 {
-	return mSite;
+	return mLocation;
 }
 
 } //genetic namespace

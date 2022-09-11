@@ -43,8 +43,8 @@ class DNA;
  */
 class Protein :
 	public Class< Protein >,
-	public chemical::LinearMotif< Protein* >,
-	public EnvironmentDependent< Vesicle >,
+	public Horizontal< chemical::LinearMotif< Protein* > >,
+	public chemical::EnvironmentDependent< Vesicle >,
 	virtual public Molecule
 {
 public:
@@ -63,7 +63,6 @@ public:
 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(
 		molecular,
 		Protein,
-		&ProteinPerspective::Instance(),
 		filter::Molecular()
 	)
 

@@ -25,7 +25,7 @@
 #include "bio/physical/common/Filters.h"
 #include "bio/chemical/common/Cast.h"
 #include "bio/log/Writer.h"
-#include "bio/chemical/Atom.h"
+#include "bio/chemical/atomic/Atom.h"
 #include "SymmetryTypes.h"
 
 namespace bio {
@@ -43,17 +43,32 @@ class Substance;
 template < typename T >
 class Class :
 	public physical::Class< T >,
+	protected Elementary< T >,
 	virtual public physical::Identifiable< Id >,
 	virtual public log::Writer,
 	virtual public Atom
 {
 private:
-	void CommonConstructor(Filter filter = filter::Default())
+	void CommonConstructor(Filter filter = filter::Default(), const Id& id=0, const Name& name=NULL)
 	{
 		if (filter != filter::Default())
 		{
 			log::Writer::Initialize(filter);
 		}
+
+		if (id)
+		{
+			physical::Identifiable< Id >::Initialize(
+				id,
+				&IdPerspective::Instance());
+		}
+		else if (name)
+		{
+			physical::Identifiable< Id >::Initialize(
+				name,
+				&IdPerspective::Instance());
+		}
+		//Leave uninitialized. Maybe a child knows more and would prefer to Initialize() the Identifiable base.
 
 		//Bond the class we're given, Virtually.
 		//Cannot use mObject because it doesn't exist yet.
@@ -74,19 +89,7 @@ private:
 			bond_type::Virtual());
 		#endif
 
-		//Make sure *this is Associated in the PeriodicTable's registry.
-		//This should almost always be a nop and might be more wasteful than useful, so if there's a better way, we should explore that.
-		//Where this really comes in handy is in enabling LinearMotif::CreateImplementation(), which requires that a Perspective be set for the CONTENT_TYPE used.
-		//For example, if we want to GetOrCreateByName< Cell >("My Cell"), we have to have CellPerspective::Instance() stored in PeriodicTable::GetInstance< Cell >()->GetPerspective().
-		//So, we either do this and Associate a new T with the PeriodicTable here, somewhere externally, or provide a valid Perspective to every LinearMotif::mStructuralPerspective.
-		//Because the minimum requirements for LinearMotif's CONTENT_TYPE are only being a ChemicalClass<>, and anything else that deals with the PeriodicTable will likely be dealing with Substances or beyond, we've chosen to put this here.
-		static T* archetype = NULL;
-		if (!archetype)
-		{
-			archetype = new T(); //will be deleted by PeriodicTable.
-			AtomicNumber atomicNumber = SafelyAccess< PeriodicTable >()->template GetIdFromType< T >();
-			SafelyAccess< PeriodicTable >()->AssociateType(atomicNumber, archetype->AsWave());
-		}
+
 	}
 
 public:
@@ -104,7 +107,6 @@ public:
 	 */
 	Class(
 		T* object,
-		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
@@ -113,7 +115,8 @@ public:
 			new physical::Symmetry(
 				type::TypeName< T >(),
 				symmetryType
-			))
+			)),
+		Elementary< T >()
 	{
 		CommonConstructor(filter);
 	}
@@ -128,7 +131,6 @@ public:
 	Class(
 		T* object,
 		const Name& name,
-		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
@@ -137,21 +139,10 @@ public:
 			new physical::Symmetry(
 				type::TypeName< T >(),
 				symmetryType
-			))
+			)),
+		Elementary< T >()
 	{
-		CommonConstructor(filter);
-
-		if (perspective)
-		{
-			physical::Identifiable< Id >::Initialize(
-				name,
-				perspective
-			);
-		}
-		else
-		{
-			SetName(name);
-		}
+		CommonConstructor(filter, 0, name);
 	}
 
 	/**
@@ -163,7 +154,6 @@ public:
 	Class(
 		T* object,
 		const Id& id,
-		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
@@ -172,21 +162,10 @@ public:
 			new physical::Symmetry(
 				type::TypeName< T >(),
 				symmetryType
-			))
+			)),
+		Elementary< T >()
 	{
-		CommonConstructor(filter);
-
-		if (perspective)
-		{
-			physical::Identifiable< Id >::Initialize(
-				id,
-				perspective
-			);
-		}
-		else
-		{
-			SetId(id);
-		}
+		CommonConstructor(filter, id);
 	}
 
 	/**
@@ -195,6 +174,11 @@ public:
 	virtual ~Class()
 	{
 
+	}
+
+	virtual bool RegisterProperties(const Properties& properties)
+	{
+		return Elementary< T >::RegisterProperties(properties);
 	}
 
 	/**

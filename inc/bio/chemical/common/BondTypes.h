@@ -42,6 +42,13 @@ BondType Unknown();
 BondType Virtual();
 
 /**
+ * Covalent() Bonds form the same pseudo-vtable as Virtual and can be cross casted without RTTI; however, they are distinct objects which end the virtual overrides of their parents. <br />
+ * Use the Horizontal class to create Covalent Bonds.
+ */
+BondType Covalent();
+
+
+/**
  * AutoDelete Bonds will delete whatever they've Bonded when they are destroyed. <br />
  * This is the only kind of bond with this behavior at the Bond level (you are obviously free to call delete on the Bonded object yourself). <br />
  */

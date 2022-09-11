@@ -30,11 +30,10 @@ namespace bio {
  * The only requirements are that the given method return a bio::Code and take no arguments. <br />
  * @tparam CALLER class that implements the desired method.
  * @tparam CLOBBER a cellular::Class<> to forward from.
- * @tparam PERSPECTIVE a perspective through which to Identify the given Class.
  */
-template < class CALLER, class CLOBBER, class PERSPECTIVE >
+template < class CALLER, class CLOBBER >
 class CellularForwarder:
-	public cellular::Class< CellularForwarder< CALLER, CLOBBER, PERSPECTIVE > >,
+	public cellular::Class< CellularForwarder< CALLER, CLOBBER > >,
 	public CLOBBER
 {
 public:
@@ -48,9 +47,8 @@ public:
 	 *
 	 */
 	CellularForwarder() :
-		cellular::Class< CellularForwarder< CALLER, CLOBBER, PERSPECTIVE > >(
+		cellular::Class< CellularForwarder< CALLER, CLOBBER > >(
 			this,
-			&PERSPECTIVE::Instance(),
 			filter::Cellular()
 		),
 		mForwardedPeak(NULL),
@@ -62,10 +60,9 @@ public:
 	 * @param name
 	 */
 	explicit CellularForwarder(const Name& name) :
-		cellular::Class< CellularForwarder< CALLER, CLOBBER, PERSPECTIVE > >(
+		cellular::Class< CellularForwarder< CALLER, CLOBBER > >(
 			this,
 			name,
-			&PERSPECTIVE::Instance(),
 			filter::Cellular()
 		),
 		mForwardedPeak(NULL),
@@ -77,10 +74,9 @@ public:
 	 * @param id
 	 */
 	explicit CellularForwarder(const Id& id) :
-		cellular::Class< CellularForwarder< CALLER, CLOBBER, PERSPECTIVE > >(
+		cellular::Class< CellularForwarder< CALLER, CLOBBER > >(
 			this,
 			id,
-			&PERSPECTIVE::Instance(),
 			filter::Cellular()
 		),
 		mForwardedPeak(NULL),
@@ -117,7 +113,7 @@ public:
 		Code ret = (*mForwardedPeak)(mCaller);
 
 		//Then also do this.
-		cellular::Class< CellularForwarder< CALLER, CLOBBER, PERSPECTIVE > >::Peak();
+		cellular::Class< CellularForwarder< CALLER, CLOBBER > >::Peak();
 
 		return ret;
 	}

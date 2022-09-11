@@ -37,7 +37,7 @@ class Cell;
  */
 class Organelle :
 	public Class< Organelle >,
-	public molecular::EnvironmentDependent< Cell >
+	public chemical::EnvironmentDependent< Cell >
 {
 public:
 
@@ -52,7 +52,6 @@ public:
 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
 		cellular,
 		Organelle,
-		&OrganellePerspective::Instance(),
 		filter::Molecular()
 	)
 

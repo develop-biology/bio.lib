@@ -31,7 +31,7 @@ namespace genetic {
  */
 class RNA :
 	public Class< RNA >,
-	public chemical::LinearMotif< Gene* >
+	public Horizontal< chemical::LinearMotif< Gene* > >
 {
 public:
 	/**
@@ -46,7 +46,6 @@ public:
 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
 		genetic,
 		RNA,
-		&genetic::RNAPerspective::Instance(),
 		filter::Genetic()
 	)
 

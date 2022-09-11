@@ -39,9 +39,19 @@ class Personality;
 typedef std::vector< Synapse* > Synapses;
 
 /**
- * Neurons perform critical functions in sensory processing, learning and memory, and actuation (e.g. muscle contraction).
- * The exact function of a Neuron is left up to the user to define.
- * A Neuron becomes active when ExciteTrigger() is true. This can be determined on Poll() or whenever impulses are received.
+ * When to use a Neuron:
+ * 1. You want explicit control over who can use what data when (structure).
+ * 2. You want to process many signals in many different threads (asynchronicity).
+ * 3. If Diffusing many signals through the Solute / Solvent system is cumbersome and Neurons are more effective.
+ *
+ * To use a Neuron, you must define the following:
+ * 1. The Neuron child class; this is a Cell which holds whatever values and does whatever work you want.
+ * 2. Define an ExciteTrigger which will determine what data is sent through which Synapses when (see below for more on that).
+ * 3. Define the Neuron's Synapses, which connect it to other Neurons; this is the structure of your Organism's nervous system.
+ *
+ * In real-life biology, neurons are implemented with solutes, solvents, and proteins. These neurons (in theory) diffuse an arbitrary number of solutes (aka neurotransmitters) at once, and equalize carefully crafted imbalances in electrochemical gradients. Thus, neurons allow for fast, optimized delivery of information through structured channels which enforce requirements of how and when data may be accessed.
+ * This is the spirit which we attempt to emulate here. However, we add an extra linear state-machine only benefit as well: asynchronicity.
+ * While the Solute / Solvent system is entirely synchronous, Neurons, as defined here, may Diffuse Solutes to other threads to be processed at some time in the future.
  */
 class Neuron :
 	public neural::Class< Neuron >,

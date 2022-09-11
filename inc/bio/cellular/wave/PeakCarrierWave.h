@@ -55,7 +55,7 @@ public:
 	virtual Properties GetProperties() const;
 
 protected:
-	BIO_EXCITATION_CLASS(physical::Periodic, Code) mPeakExcitation;
+	BIO_EXCITATION_CLASS(physical::Periodic, void) mPeakExcitation;
 };
 
 } //cellular namespace

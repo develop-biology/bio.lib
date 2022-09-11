@@ -26,6 +26,7 @@
 #include "bio/molecular/common/Filters.h"
 #include "Surface.h"
 #include "bio/chemical/structure/motif/LinearMotif.h"
+#include "bio/chemical/solution/Solute.h"
 
 namespace bio {
 namespace molecular {
@@ -71,9 +72,16 @@ namespace molecular {
  */
 class Molecule :
 	public Class< Molecule >,
-	public physical::Perspective< Id >,
-	public chemical::LinearMotif< Surface* >
+	public Horizontal< chemical::DependentMotif< Surface* > >,
+	virtual public chemical::Solute,
+	virtual public physical::Perspective< Id >
 {
+private:
+	/**
+	 *
+	 */
+	void CommonConstructor();
+
 public:
 
 	/**
@@ -84,10 +92,9 @@ public:
 	/**
 	 * Standard constructors. <br />
 	 */
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(
 		molecular,
 		Molecule,
-		&MoleculePerspective::Instance(),
 		filter::Molecular()
 	)
 
@@ -353,7 +360,6 @@ public:
 	 */
 	virtual Molecule* operator>>(Molecule* target);
 };
-
 
 } //molecular namespace
 } //bio namespace
