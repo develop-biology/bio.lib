@@ -19,9 +19,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/chemical/atomic/Atom.h"
+#include "bio/chemical/bonding/Atom.h"
 #include "bio/chemical/relativity/PeriodicTable.h"
-#include "bio/chemical/symmetric/Symmetry.h"
+#include "bio/chemical/symmetry/Symmetry.h"
 
 namespace bio {
 namespace chemical {

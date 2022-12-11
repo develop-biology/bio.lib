@@ -29,7 +29,7 @@
 #include "bio/chemical/macro/Macros.h"
 #include "bio/chemical/structure/Structure.h"
 #include "bio/chemical/structure/motif/UnorderedMotif.h"
-#include "bio/chemical/atomic/Horizontal.h"
+#include "bio/chemical/bonding/Horizontal.h"
 
 namespace bio {
 namespace chemical {

@@ -25,7 +25,7 @@
 #include "bio/physical/common/Filters.h"
 #include "bio/chemical/common/Cast.h"
 #include "bio/log/Writer.h"
-#include "bio/chemical/atomic/Atom.h"
+#include "bio/chemical/bonding/Atom.h"
 #include "SymmetryTypes.h"
 
 namespace bio {

@@ -36,6 +36,7 @@ class Solute;
  * Solvents contain Solutes and embody the idea of context. <br />
  * Solvents and Structural Motifs define 2 points in a continuum of organization: Structural Motifs are highly ordered and predictable while Solvents are dynamic and "chaotic". The remainder of this continuum is populated by the usages of these 2 classes. <br />
  * The main difference between Solvents and Structural Motifs is that multiple Solvents cannot exist in the same context. Because Solvents represent context, combining 2 Solvents simply yields a novel context, i.e. a singular Solvent. On the other hand, multiple Structures can be easily separated after being combined. <br />
+ * Another notable difference between Solvents and Structural Motifs is that Structures can be formed of many different components, while Solvents are only comprised of Solutes; if you would like to add something to a Solvent, it must be a Solute.
  * <br />
  * Solutes are essentially shared pointers which track their reference count via their Concentration. <br />
  * Diffusing Solutes to other Solvents allows the variables in *this to be accessed from other "contexts". <br />

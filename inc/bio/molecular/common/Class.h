@@ -22,7 +22,7 @@
 #pragma once
 
 #include "bio/chemical/common/Class.h"
-#include "bio/chemical/Substance.h"
+#include "bio/chemical/solution/Solute.h"
 
 namespace bio {
 namespace molecular {
@@ -36,7 +36,7 @@ namespace molecular {
 template < typename T >
 class Class :
 	public chemical::Class< T >,
-	virtual public chemical::Substance,
+	virtual public chemical::Solute,
 	virtual public ThreadSafe
 {
 public:

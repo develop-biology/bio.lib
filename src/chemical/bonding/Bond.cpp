@@ -19,7 +19,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/chemical/atomic/Bond.h"
+#include "bio/chemical/bonding/Bond.h"
 #include "bio/chemical/relativity/PeriodicTable.h"
 #include "bio/physical/Wave.h"
 #include "bio/common/macro/Macros.h"
