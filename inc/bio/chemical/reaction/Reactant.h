@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "bio/chemical/common/Class.h"
 #include "bio/chemical/Substance.h"
 
 namespace bio {

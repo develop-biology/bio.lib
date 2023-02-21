@@ -27,7 +27,7 @@ namespace chemical {
 
 Reactant::Reactant(const Name& typeName)
 	:
-	Class< Reactant >(this),
+	chemical::Class< Reactant >(this),
 	Substance(),
 	mTypeName(typeName)
 {
@@ -40,7 +40,7 @@ Reactant::Reactant(
 	const typename UnorderedMotif< State >::Contents* states
 )
 	:
-	Class< Reactant >(this),
+	chemical::Class< Reactant >(this),
 	Substance(
 		properties,
 		states
@@ -55,7 +55,7 @@ Reactant::Reactant(
 	const Substance* substance
 )
 	:
-	Class< Reactant >(this),
+	chemical::Class< Reactant >(this),
 	Substance(*substance),
 	mTypeName(typeName)
 {
