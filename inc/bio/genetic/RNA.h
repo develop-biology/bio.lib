@@ -31,7 +31,7 @@ namespace genetic {
  */
 class RNA :
 	public Class< RNA >,
-	public Horizontal< chemical::LinearMotif< Gene* > >
+	public Covalent< chemical::LinearMotif< Gene* > >
 {
 public:
 	/**

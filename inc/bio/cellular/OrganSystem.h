@@ -41,7 +41,7 @@ class Organ;
  */
 class OrganSystem :
 	Class< OrganSystem >,
-	public Horizontal< chemical::LinearMotif< Organ* > >
+	public Covalent< chemical::LinearMotif< Organ* > >
 {
 public:
 

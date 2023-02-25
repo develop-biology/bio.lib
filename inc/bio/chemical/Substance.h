@@ -29,7 +29,7 @@
 #include "bio/chemical/macro/Macros.h"
 #include "bio/chemical/structure/Structure.h"
 #include "bio/chemical/structure/motif/UnorderedMotif.h"
-#include "bio/chemical/bonding/Horizontal.h"
+#include "bio/chemical/bonding/Covalent.h"
 
 namespace bio {
 namespace chemical {
@@ -41,8 +41,8 @@ namespace chemical {
  */
 class Substance :
 	public chemical::Class< Substance >,
-	public Horizontal< UnorderedMotif< Property > >,
-	public Horizontal< UnorderedMotif< State > >,
+	public Covalent< UnorderedMotif< Property > >,
+	public Covalent< UnorderedMotif< State > >,
 	virtual public Structure
 {
 public:

@@ -30,7 +30,7 @@ namespace molecular {
 
 void Molecule::CommonConstructor()
 {
-	Horizontal< chemical::DependentMotif< Surface* > >::Object()->SetEnvironment(this);
+	Covalent< chemical::DependentMotif< Surface* > >::Object()->SetEnvironment(this);
 }
 
 Molecule::Molecule(const Molecule& toCopy)

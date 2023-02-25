@@ -43,7 +43,7 @@ class DNA;
  */
 class Protein :
 	public Class< Protein >,
-	public Horizontal< chemical::LinearMotif< Protein* > >,
+	public Covalent< chemical::LinearMotif< Protein* > >,
 	public chemical::EnvironmentDependent< Vesicle >,
 	virtual public Molecule
 {

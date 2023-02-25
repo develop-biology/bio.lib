@@ -37,7 +37,7 @@ namespace chemical {
  * <br />
  * We call the system created by Properties "inverted inheritance", since we can safely downcast to our interfaces without knowing what else the Wave* is. <br />
  * <br />
- * NOTE: when using multiple Elementary classes which implement the same interface in different ways, it is best to Horizontal<>ly inherit them, which will cause the GetProperties method of each to resolve to the respective interface and will not cause conflicts in implementation. <br />
+ * NOTE: when using multiple Elementary classes which implement the same interface in different ways, it is best to Covalent<>ly inherit them, which will cause the GetProperties method of each to resolve to the respective interface and will not cause conflicts in implementation. <br />
  * <br />
  * When to use: <br />
  * You have an upstream class (e.g. AbstractMotif) that which defines some (possibly abstract) methods and which will be non-virtually inherited by downstream classes (e.g. LinearMotif). You want to be able to call the downstream implementation of the upstream methods from a naive parent of the upstream class (e.g. Wave*). You want to do this in a way which does not force each downstream class to disambiguate (override) each upstream method (e.g. not putting AbstractMotif methods in Wave). <br />

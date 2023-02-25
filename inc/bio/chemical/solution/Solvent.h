@@ -52,7 +52,7 @@ class Solute;
  */
 class Solvent :
 	public chemical::Class< Solvent >,
-	public Horizontal< chemical::DependentMotif< Solute* > >,
+	public Covalent< chemical::DependentMotif< Solute* > >,
 	virtual public physical::Perspective< Id >,
 	virtual public chemical::Substance
 {

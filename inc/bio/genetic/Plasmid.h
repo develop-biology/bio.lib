@@ -47,7 +47,7 @@ class Expressor;
  */
 class Plasmid :
 	public genetic::Class< Plasmid >,
-	public Horizontal< chemical::LinearMotif< Gene* > >,
+	public Covalent< chemical::LinearMotif< Gene* > >,
 	public molecular::DNA,
 	virtual public ThreadSafe
 {

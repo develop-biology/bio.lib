@@ -40,8 +40,8 @@ class Plasmid;
 class Expressor :
 	public genetic::Class< Expressor >,
 	public chemical::UnorderedMotif< TranscriptionFactor >,
-	public Horizontal< chemical::LinearMotif< Plasmid* > >,
-	public Horizontal< chemical::LinearMotif< molecular::Protein* > >,
+	public Covalent< chemical::LinearMotif< Plasmid* > >,
+	public Covalent< chemical::LinearMotif< molecular::Protein* > >,
 	virtual public molecular::Vesicle
 {
 public:

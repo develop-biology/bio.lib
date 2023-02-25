@@ -28,21 +28,21 @@ namespace bio {
 //not chemical.
 
 /**
- * Horizontal classes can be used to create "horizontal inheritance". <br />
- * When instantiating a Horizontal class, a new T will be created and Covalently bonded to the child class of *this (through the shared Atom). <br />
+ * Covalent classes can be used to create "horizontal inheritance". <br />
+ * When instantiating a Covalent class, a new T will be created and Covalently bonded to the child class of *this (through the shared Atom). <br />
  * NOTE: atm, there is no way to provide arguments to the new Ts. <br />
- * Horizontal inheritance allows distinct objects to be treated as a one. See Atom.h for more on Bonds.<br />
+ * Covalent inheritance allows distinct objects to be treated as a one. See Atom.h for more on Bonds.<br />
  * @tparam T
  */
 template < class T >
-class Horizontal :
+class Covalent :
 	virtual public Atom
 {
 public:
 	/**
 	 *
 	 */
-	Horizontal() :
+	Covalent() :
 		mT(new T())
 	{
 		FormBond(mT, bond_type::Covalent());
@@ -51,7 +51,7 @@ public:
 	/**
 	 *
 	 */
-	virtual ~Horizontal()
+	virtual ~Covalent()
 	{
 		delete mT;
 	}

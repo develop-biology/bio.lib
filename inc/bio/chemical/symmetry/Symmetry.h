@@ -37,7 +37,7 @@ namespace chemical {
 class Symmetry :
 	public chemical::Class< Symmetry >,
 	public physical::Symmetry,
-	public Horizontal< LinearMotif< Symmetry* > >,
+	public Covalent< LinearMotif< Symmetry* > >,
 	virtual public Structure
 {
 public:

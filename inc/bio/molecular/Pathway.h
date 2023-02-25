@@ -46,7 +46,7 @@ namespace molecular {
 class Pathway :
 	public chemical::Class< Pathway >,
 	public chemical::Reaction,
-	public Horizontal< chemical::LinearMotif< chemical::Reaction* > >
+	public Covalent< chemical::LinearMotif< chemical::Reaction* > >
 {
 public:
 	/**

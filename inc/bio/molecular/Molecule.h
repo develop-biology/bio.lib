@@ -72,7 +72,7 @@ namespace molecular {
  */
 class Molecule :
 	public Class< Molecule >,
-	public Horizontal< chemical::DependentMotif< Surface* > >,
+	public Covalent< chemical::DependentMotif< Surface* > >,
 	virtual public chemical::Solute,
 	virtual public physical::Perspective< Id >
 {

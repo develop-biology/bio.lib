@@ -37,7 +37,7 @@ namespace organic {
 
 class Habitat :
 	public cellular::Class< Habitat >,
-	public Horizontal< chemical::LinearMotif< Organism* > >,
+	public Covalent< chemical::LinearMotif< Organism* > >,
 	public physical::ThreadedPeriodic
 {
 public:

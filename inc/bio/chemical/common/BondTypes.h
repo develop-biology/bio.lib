@@ -43,7 +43,7 @@ BondType Virtual();
 
 /**
  * Covalent() Bonds form the same pseudo-vtable as Virtual and can be cross casted without RTTI; however, they are distinct objects which end the virtual overrides of their parents. <br />
- * Use the Horizontal class to create Covalent Bonds.
+ * Use the Covalent class to create Covalent Bonds.
  */
 BondType Covalent();
 
