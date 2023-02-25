@@ -26,6 +26,13 @@
 namespace bio {
 namespace chemical {
 
+/**
+ * AbstractMotifs are the base of any other Motif. <br />
+ * Motifs are different from Containers in that they implement a standard interface while allowing the actual storage system to vary. <br />
+ * By using composition, rather than inheritance, Motifs provide more rigidity & specialization and are thus easier to use than general Containers. <br />
+ * For example, with a container like physical::Line, you could Cast< MyType* >(line->SeekToId(someId)). However, by using a LinearMotif through the LinearStructureInterface, you can just GetById< MyType >(someId). <br />
+ * Motifs are used in combination with ____StructureInterfaces (e.g. LinearStructuralInterface). See Structure.h for more info. <br />
+ */
 class AbstractMotif
 {
 public:

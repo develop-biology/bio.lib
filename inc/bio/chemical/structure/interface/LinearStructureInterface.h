@@ -200,7 +200,7 @@ public:
 		BIO_STATIC_ASSERT(type::IsPointer< T >())
 		const LinearMotif< T >* implementer = this->As< LinearMotif< T >* >();
 		BIO_SANITIZE(implementer,
-			return implementer->RemoveByIdImplementation(name),
+			return implementer->RemoveByIdImplementation(id),
 			return NULL
 		)
 	}

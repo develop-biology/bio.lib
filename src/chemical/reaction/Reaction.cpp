@@ -35,7 +35,6 @@ Reaction::Reaction(
 	chemical::Class< Reaction >(
 		this,
 		name,
-		&ReactionPerspective::Instance(),
 		filter::Chemical(),
 		symmetry_type::Operation()),
 	mRequiredReactants(*reactants)
@@ -61,8 +60,8 @@ void Reaction::Require(
 
 void Reaction::Require(
 	const Name& typeName,
-	const UnorderedMotif< Property >::Contents* properties,
-	const UnorderedMotif< State >::Contents* states
+	const UnorderedMotif< Property >& properties,
+	const UnorderedMotif< State >& states
 )
 {
 	Require(
@@ -79,9 +78,9 @@ bool Reaction::ReactantsMeetRequirements(const Reactants* toCheck) const
 	return toCheck->HasAll< Substance* >(mRequiredReactants.GetAll< Substance* >());
 }
 
-/*static*/ const Reaction* Reaction::Initiate(const Id& id)
+/*static*/ const Reaction* Reaction::Initiate(const AtomicNumber& id)
 {
-	BIO_SANITIZE_WITH_CACHE(SafelyAccess<ReactionPerspective>()->GetTypeFromIdAs< Reaction* >(id),
+	BIO_SANITIZE_WITH_CACHE(SafelyAccess< PeriodicTable >()->GetTypeFromIdAs< Reaction* >(id),
 		return Cast< Reaction* >(RESULT),
 		return NULL);
 }

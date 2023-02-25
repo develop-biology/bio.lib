@@ -96,7 +96,7 @@ public:
 	Elementary(const Properties properties)
 	{
 		RegisterProperties(properties);
-		RegisterType(force);
+		RegisterType();
 	}
 
 	/**

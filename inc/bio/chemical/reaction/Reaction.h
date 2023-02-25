@@ -40,12 +40,12 @@ namespace chemical {
  * This is basically a fancy functor that takes advantage of Atom::Bonds and Substance Properties and States to do argument validation. <br />
  *
  * Reactions, like those in real life, will often deal with the changing of chemical Bonds and Properties. <br />
+ * Both Excitation and Reaction are functors but the behavior and minimum requirements for using each are different. <br />
  * Reactions are for turning iron into gold. All lesser magicks can be performed with Excitation! <br />
  * In a more real sense, Excitations should not make or break Bonds (except in rare circumstances) whereas Reactions, when fully Processed, should change the Reactants in some significant way, hence their return as Products. <br />
  * Another difference between Reactants and Excitations is that Excitations act ON a Wave (i.e. wave->someMethod()) while Reactions act WITH Substances. <br />
  * Additionally, Excitations store their arguments as members, requiring each kind of Excitation function call to be a new object (e.g. to call firstObject->method(firstArg) and secondObject->method(firstArg) is 1 Excitation while firstObject->method(secondArg) would require a new Excitation). <br />
  * Reactions, on the other hand, are more traditional functors and do not (by default) maintain any state between calls, meaning the same Reaction object can be used for all invokations. <br />
- * Both Excitation and Reaction are functors but the behavior and minimum requirements for using each are different. <br />
  *
  * A real life corollary: <br />
  * Imagine a sound wave hitting a wall. This could be modeled as an Excitation: the energy from the air molecules excite those in the wall, passing energy between them. We might write this as `soundEnergyTransferExcitation = EnergyTransferExcitation(sound); soundEnergyTransferExcitation(wall)`, which could produce code like `wall->ExchangeEnergy(sound)` and could be used on anything the sound wave hit (e.g. `soundEnergyTransferExcitation(floor)`). <br />
@@ -129,8 +129,8 @@ public:
 	 */
 	void Require(
 		const Name& typeName,
-		const typename UnorderedMotif< Property >::Contents* properties,
-		const typename UnorderedMotif< State >::Contents* states
+		const UnorderedMotif< Property >& properties,
+		const UnorderedMotif< State >& states
 	);
 
 	/**
@@ -223,7 +223,7 @@ public:
 	 * @param id
 	 * @return a Reaction* with the given id or NULL.
 	 */
-	static const Reaction* Initiate(const Id& id);
+	static const Reaction* Initiate(const AtomicNumber& id);
 
 	/**
 	 * Get a Reaction! <br />
@@ -235,7 +235,7 @@ public:
 	template < typename T >
 	static const T* Initiate()
 	{
-		const T* ret = SafelyAccess<ReactionPerspective>()->template GetTypeFromNameAs< T >(type::TypeName< T >());
+		const T* ret = SafelyAccess< PeriodicTable >()->template GetTypeFromNameAs< T >(type::TypeName< T >());
 		BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret,
 			return ret,
 			return NULL);

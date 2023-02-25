@@ -36,7 +36,7 @@ namespace bio {
  */
 template < class T >
 class Covalent :
-	virtual public Atom
+	virtual public chemical::Atom
 {
 public:
 	/**

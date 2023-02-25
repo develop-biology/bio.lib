@@ -20,7 +20,7 @@
  */
 #pragma once
 
-#include "bio/circulatory/common/Types.h"
+#include "Types.h"
 
 namespace bio {
 namespace miscibility {

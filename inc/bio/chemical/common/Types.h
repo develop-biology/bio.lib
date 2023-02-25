@@ -37,6 +37,13 @@ BIO_STRONG_TYPEDEF(uint8_t,	BondType, 0)
 BIO_PERSPECTIVE_SINGLETON(BondTypePerspective, BondType)
 
 /**
+ * Miscibility is the ability of 2 Substances to mix. <br />
+ * Here, we refer to "Miscibility" as a noun meaning "the strategy by which 2 Substances are mixed"; however, in practice, we apply a set of Miscibilities to the set of chemical::Symmetries a Substances possesses and not to the Substances themselves. Thus, Miscibilities are atomic and applied to a recursive structure. <br />
+ * See Miscibilities.h for examples. <br />
+ */
+BIO_ID_WITH_PERSPECTIVE_WITH_PLURAL(Miscibility, Miscibilities, uint8_t)
+
+/**
  * Mainly used for inserting children into Nested classes. <br />
  */
 typedef enum
@@ -80,13 +87,6 @@ typedef ::bio::Arrangement< Substance* > Substances;
  * Emissions are given off (returned) by Excitations.
  */
 typedef ::bio::Arrangement< ByteStream > Emission;
-
-/**
- * Miscibility is the ability of 2 Substances to mix. <br />
- * Here, we refer to "Miscibility" as a noun meaning "the strategy by which 2 Substances are mixed"; however, in practice, we apply a set of Miscibilities to the set of chemical::Symmetries a Substances possesses and not to the Substances themselves. Thus, Miscibilities are atomic and applied to a recursive structure. <br />
- * See Miscibilities.h for examples. <br />
- */
-BIO_ID_WITH_PERSPECTIVE_WITH_PLURAL(Miscibility, Miscibilities, uint8_t)
 
 } //chemical namespace
 } //bio namespace

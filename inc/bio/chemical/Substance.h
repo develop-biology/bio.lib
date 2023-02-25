@@ -63,8 +63,8 @@ public:
 	 * @param states
 	 */
 	Substance(
-		const typename UnorderedMotif< Property >::Contents* properties,
-		const typename UnorderedMotif< State >::Contents* states
+		const UnorderedMotif< Property >& properties,
+		const UnorderedMotif< State >& states
 	);
 
 	/**

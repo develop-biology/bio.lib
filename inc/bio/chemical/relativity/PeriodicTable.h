@@ -201,9 +201,9 @@ public:
 	 * @return true if the association completed successfully else false
 	 */
 	template < typename T >
-	bool AssociateType(Wave* type)
+	bool AssociateType(physical::Wave* type)
 	{
-		AssociateType(GetIdFromType< T >(), type)
+		return this->TypedPerspective< AtomicNumber >::AssociateType(GetIdFromType< T >(), type);
 	}
 
 	/**
@@ -214,7 +214,7 @@ public:
 	template < typename T >
 	bool DisassociateType()
 	{
-		DisassociateType(GetIdFromType< T >())
+		return this->TypedPerspective< AtomicNumber >::DisassociateType(GetIdFromType< T >());
 	}
 
 	/**
@@ -225,14 +225,14 @@ public:
 	 * @return a new T* from that stored in *this or NULL.
 	 */
 	template < typename T >
-	const T* GetInstance() const
+	T* GetInstance() const
 	{
 		BIO_STATIC_ASSERT(type::IsWave< T >())
 		const physical::Wave* storedInstance = GetTypeFromId(GetIdWithoutCreation(GetNameFromType< T >()));
 		BIO_SANITIZE(storedInstance, , return NULL)
 
 		const physical::Class< T >* type = ForceCast< const physical::Class< T >* >(storedInstance);
-		return type->GetWaveObject()->Clone();
+		return ForceCast< T* >(type->GetWaveObject()->Clone());
 	}
 
 protected:
@@ -242,7 +242,7 @@ protected:
 	 * @param name
 	 * @return a new Element.
 	 */
-	virtual Brane* CreateBrane(AtomicNumber id, const Name& name)
+	virtual physical::TypedBrane< AtomicNumber >* CreateBrane(AtomicNumber id, const Name& name)
 	{
 		return new Element(id, name);
 	}

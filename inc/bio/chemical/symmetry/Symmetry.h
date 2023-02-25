@@ -26,6 +26,8 @@
 #include "bio/chemical/structure/motif/LinearMotif.h"
 #include "bio/chemical/structure/Structure.h"
 #include "bio/chemical/common/Class.h"
+#include "bio/chemical/common/Filters.h"
+#include "bio/chemical/bonding/Covalent.h"
 
 namespace bio {
 namespace chemical {
@@ -50,7 +52,7 @@ public:
 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
 		chemical,
 		Symmetry,
-		&physical::SymmetryPerspective::Instance()
+		filter::Chemical()
 	)
 
 	/**

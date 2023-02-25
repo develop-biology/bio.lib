@@ -27,6 +27,7 @@
 #include "bio/chemical/common/Properties.h"
 #include "bio/chemical/reaction/Excitation.h"
 #include "bio/physical/shape/Line.h"
+#include "bio/common/type/RemovePointer.h"
 
 #if BIO_CPP_VERSION >= 11
 
@@ -375,19 +376,39 @@ public:
 	}
 
 	/**
-	 * Create a CONTENT_TYPE from a given Id and adds it to *this. <br />
-	 * Clones the Wave associated with the given Id. <br />
-	 * This requires a valid Perspective in *this and for that Perspective to have an Wave registered with the given Id. <br />
-	 * @param id
+	 * Create a CONTENT_TYPE by leveraging the PeriodicTable. <br />
+	 * This requires that the CONTENT_TYPE be registered with the PeriodicTable (true if chemical::Class or above (via Elementary base)). <br />
+	 * This method does NOT add the newly created object to *this; use CreateWith... for that.
 	 * @return a newly created CONTENT_TYPE else NULL.
 	 */
-	virtual CONTENT_TYPE CreateImplementation(const Id& id)
+	virtual CONTENT_TYPE CreateImplementation()
 	{
-		BIO_SANITIZE(this->GetStructuralPerspective(), , return NULL)
-		CONTENT_TYPE* created = SafelyAccess< PeriodicTable >()->template GetInstance< CONTENT_TYPE >();
+		CONTENT_TYPE created = SafelyAccess< PeriodicTable >()->template GetInstance< typename type::RemovePointer< CONTENT_TYPE >::Type >();
 		BIO_SANITIZE(created, , return NULL)
-		created->SetPerspective(IdPerspective::Instance());
+		return created;
+	}
+
+	/**
+	 * Create a CONTENT_TYPE with the given Id and adds it to *this. <br />
+	 * @param id
+	 * @return
+	 */
+	virtual CONTENT_TYPE CreateWithIdImplementation(const Id& id)
+	{
+		CONTENT_TYPE created = this->CreateImplementation();
 		created->SetId(id);
+		return this->AddImplementation(created);
+	}
+
+	/**
+	 * Create a CONTENT_TYPE with the given Name and adds it to *this. <br />
+	 * @param name
+	 * @return
+	 */
+	virtual CONTENT_TYPE CreateWithNameImplementation(const Name& name)
+	{
+		CONTENT_TYPE created = this->CreateImplementation();
+		created->SetName(name);
 		return this->AddImplementation(created);
 	}
 
@@ -399,14 +420,12 @@ public:
 	 */
 	virtual CONTENT_TYPE GetOrCreateByIdImplementation(const Id& id)
 	{
-		CONTENT_TYPE ret = this->GetByIdImplementation(
-			id
-		);
+		CONTENT_TYPE ret = this->GetByIdImplementation(id);
 		if (ret)
 		{
 			return ret;
 		}
-		return this->CreateImplementation(id);
+		return this->CreateWithIdImplementation(id);
 	}
 
 	/**
@@ -417,15 +436,12 @@ public:
 	 */
 	virtual CONTENT_TYPE GetOrCreateByNameImplementation(const Name& name)
 	{
-		BIO_SANITIZE(this->GetStructuralPerspective(), , return NULL);
-		//We convert to Id in case the Name is not already registered in the desired Perspective.
-		Id id = this->GetStructuralPerspective()->GetIdFromName(name);
-		CONTENT_TYPE ret = this->GetByIdImplementation(id);
+		CONTENT_TYPE ret = this->GetByNameImplementation(name);
 		if (ret)
 		{
 			return ret;
 		}
-		return this->CreateImplementation(id);
+		return this->CreateWithNameImplementation(name);
 	}
 
 	/**

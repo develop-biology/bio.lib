@@ -35,29 +35,6 @@ PeriodicTableImplementation::~PeriodicTableImplementation()
 
 }
 
-AtomicNumber PeriodicTableImplementation::GetIdFromName(const Name& name)
-{
-	if (name == InvalidName())
-	{
-		return InvalidId();
-	}
-
-	AtomicNumber ret = GetIdWithoutCreation(name);
-	if (ret)
-	{
-		return ret;
-	}
-
-	ret = mNextId++;
-	mBranes.Add(
-		new Element(
-			ret,
-			name
-		));
-
-	return ret;
-}
-
 const Properties& PeriodicTableImplementation::GetPropertiesOf(AtomicNumber id) const
 {
 	Properties* ret;
@@ -111,7 +88,7 @@ AtomicNumber PeriodicTableImplementation::RecordPropertiesOf(
 	{
 		return InvalidId();
 	}
-	element->mProperties->Import(properties);
+	element->mProperties.Import(properties);
 	return id;
 }
 

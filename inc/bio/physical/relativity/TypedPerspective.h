@@ -22,6 +22,7 @@
 #pragma once
 
 #include "Perspective.h"
+#include "bio/physical/common/Class.h"
 #include "bio/physical/string/TypedBrane.h"
 #include "bio/physical/Wave.h"
 #include "bio/physical/type/IsWave.h"
@@ -75,7 +76,7 @@ public:
 	)
 	{
 		BIO_SANITIZE(type, , return false)
-		TypedBrane* brane = GetBraneAs< TypedBrane* >(id);
+		TypedBrane< DIMENSION >* brane = GetBraneAs< TypedBrane< DIMENSION >* >(id);
 		BIO_SANITIZE(brane, , return false)
 		BIO_SANITIZE_AT_SAFETY_LEVEL_1(brane->mType, , return false) //it's okay if mType is NULL
 		brane->mType = type;
@@ -90,7 +91,7 @@ public:
 	 */
 	virtual bool DisassociateType(DIMENSION id)
 	{
-		TypedBrane* brane = GetBraneAs< TypedBrane* >(id);
+		TypedBrane< DIMENSION >* brane = GetBraneAs< TypedBrane< DIMENSION >* >(id);
 		BIO_SANITIZE(brane, , return false)
 		if (brane->mType)
 		{
@@ -107,7 +108,7 @@ public:
 	 */
 	virtual const Wave* GetTypeFromId(DIMENSION id) const
 	{
-		TypedBrane* brane = GetBraneAs< TypedBrane* >(id);
+		TypedBrane< DIMENSION >* brane = GetBraneAs< TypedBrane< DIMENSION >* >(id);
 		BIO_SANITIZE(brane, , return NULL)
 		return brane->mType;
 	}
@@ -119,7 +120,7 @@ public:
 	 */
 	virtual const Wave* GetTypeFromName(const Name& name) const
 	{
-		return GetTypeFromId(GetIdWithoutCreation(name));
+		return GetTypeFromId(this->GetIdWithoutCreation(name));
 	}
 
 	/**
@@ -161,7 +162,7 @@ public:
 	 */
 	virtual Wave* GetNewObjectFromId(const DIMENSION& id) const
 	{
-		Wave* type = GetTypeFromId(id);
+		const Wave* type = GetTypeFromId(id);
 		BIO_SANITIZE(type, , return NULL)
 		return type->Clone();
 	}
@@ -173,7 +174,7 @@ public:
 	 */
 	virtual Wave* GetNewObjectFromName(const Name& name)
 	{
-		Wave* type = GetTypeFromName(name);
+		const Wave* type = GetTypeFromName(name);
 		BIO_SANITIZE(type, , return NULL)
 		return type->Clone();
 	}
@@ -191,7 +192,7 @@ public:
 		BIO_STATIC_ASSERT(type::IsWave< T >())
 		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromId(id),
 			BIO_SINGLE_ARG(
-				return ForceCast< Class< T >*, Wave* >(RESULT)->GetWaveObject()
+				return ForceCast< physical::Class< T >*, Wave* >(RESULT)->GetWaveObject()
 			),
 			return NULL
 		)
@@ -206,7 +207,7 @@ public:
 	template < typename T >
 	T GetNewObjectFromNameAs(const Name& name)
 	{
-		return GetNewObjectFromIdAs< T >(GetIdWithoutCreation(name));
+		return GetNewObjectFromIdAs< T >(this->GetIdWithoutCreation(name));
 	}
 
 
@@ -218,7 +219,7 @@ protected:
 	 * @param name 
 	 * @return a TypedBrane.
 	 */
-	virtual Brane* CreateBrane(DIMENSION id, const Name& name)
+	virtual TypedBrane< DIMENSION >* CreateBrane(DIMENSION id, const Name& name)
 	{
 		return new TypedBrane(id, name, NULL);
 	}

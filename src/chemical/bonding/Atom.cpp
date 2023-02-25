@@ -65,7 +65,7 @@ Code Atom::Attenuate(const physical::Wave* other)
 	BIO_SANITIZE(other, , return code::BadArgument1())
 	BIO_SANITIZE(mBackflowPreventer.Has(other), , return code::NoErrorNoSucces())
 
-	toPop = mBackflowPreventer.Add(other); //lock to prevent this from being called again.
+	Index toPop = mBackflowPreventer.Add(other); //lock to prevent this from being called again.
 
 	const physical::Wave* demodulated = other->Demodulate();
 	Code ret = code::Success();
@@ -100,9 +100,9 @@ Code Atom::Attenuate(const physical::Wave* other)
 Code Atom::Disattenuate(const physical::Wave* other)
 {
 	BIO_SANITIZE(other, , return code::BadArgument1())
-	BIO_SANITIZE(other == mBackflowPreventer, , return code::NoErrorNoSucces())
+	BIO_SANITIZE(mBackflowPreventer.Has(other), , return code::NoErrorNoSucces())
 
-	toPop = mBackflowPreventer.Add(other); //lock to prevent this from being called again.
+	Index toPop = mBackflowPreventer.Add(other); //lock to prevent this from being called again.
 
 	const physical::Wave* demodulated = other->Demodulate();
 	Code ret = code::Success();
