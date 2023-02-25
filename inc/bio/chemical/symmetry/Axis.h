@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/physical/symmetric/Axis.h"
+#include "bio/physical/symmetry/Axis.h"
 
 namespace bio {
 namespace chemical {

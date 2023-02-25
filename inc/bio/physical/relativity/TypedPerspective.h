@@ -22,7 +22,7 @@
 #pragma once
 
 #include "Perspective.h"
-#include "TypedBrane.h"
+#include "bio/physical/string/TypedBrane.h"
 #include "bio/physical/Wave.h"
 #include "bio/physical/type/IsWave.h"
 

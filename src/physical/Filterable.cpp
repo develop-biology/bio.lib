@@ -22,7 +22,7 @@
 #include "bio/physical/Filterable.h"
 #include "bio/physical/common/Filters.h"
 #include "bio/physical/macro/Macros.h"
-#include "bio/physical/symmetric/Symmetry.h"
+#include "bio/physical/symmetry/Symmetry.h"
 #include "bio/physical/common/SymmetryTypes.h"
 
 namespace bio {

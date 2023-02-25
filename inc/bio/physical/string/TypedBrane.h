@@ -19,54 +19,45 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/physical/symmetry/Axis.h"
-#include "bio/physical/symmetry/Symmetry.h"
-#include "bio/physical/Wave.h"
+#pragma once
+
+#include "Brane.h"
 
 namespace bio {
 namespace physical {
 
-Axis::Axis()
+class Wave;
+
+/**
+ * Adds a Wave* type to Perspective< DIMENSION >::Brane. <br />
+ * @tparam DIMENSION
+ */
+template< typename DIMENSION >
+class TypedBrane : public Brane< DIMENSION >
 {
+public:
+	TypedBrane(
+		const DIMENSION& id,
+		const Name& name,
+		Wave* type = NULL
+	)
+		:
+		Brane< DIMENSION >(id, name),
+		mType(type)
+	{
+	}
 
-}
+	virtual ~TypedBrane()
+	{
+		if (mType)
+		{
+			delete mType;
+			mType = NULL;
+		}
+	}
 
-Axis::~Axis()
-{
-
-}
-
-/*static*/ ::std::string Axis::Failed()
-{
-	return "FAILED";
-}
-
-std::string Axis::Rotate(Symmetry* symmetry) const
-{
-	return Encode(symmetry);
-}
-
-Symmetry* Axis::Rotate(std::string) const
-{
-	return NULL;
-}
-
-std::string Axis::operator|(Wave* particle) const
-{
-	BIO_SANITIZE(particle, ,
-		return Failed());
-	return Rotate(particle->Spin());
-}
-
-Symmetry* Axis::operator()(std::string encoded) const
-{
-	return Rotate(encoded);
-}
-
-std::string Axis::Encode(Symmetry* symmetry) const
-{
-	return Failed();
-}
+	Wave* mType;
+};
 
 } //physical namespace
 } //bio namespace

@@ -19,7 +19,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/physical/symmetric/Symmetry.h"
+#include "bio/physical/symmetry/Symmetry.h"
 #include "bio/common/string/String.h"
 
 namespace bio {

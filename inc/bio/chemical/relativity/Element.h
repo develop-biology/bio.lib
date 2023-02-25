@@ -23,7 +23,7 @@
 
 #include "bio/common/container/Arrangement.h"
 #include "bio/physical/common/Types.h"
-#include "bio/physical/relativity/TypedBrane.h"
+#include "bio/physical/string/TypedBrane.h"
 
 namespace bio {
 namespace chemical {

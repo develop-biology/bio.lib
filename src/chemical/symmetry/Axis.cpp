@@ -19,8 +19,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/chemical/symmetric/Axis.h"
-#include "bio/chemical/symmetric/Symmetry.h"
+#include "bio/chemical/symmetry/Axis.h"
+#include "bio/chemical/symmetry/Symmetry.h"
 #include "bio/chemical/structure/motif/UnorderedMotif.h"
 
 namespace bio {

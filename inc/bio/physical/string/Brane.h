@@ -21,13 +21,15 @@
 
 #pragma once
 
+#include "Particle.h"
+
 namespace bio {
 namespace physical {
 
 /**
  * What a single "point" in space contains. <br />
  * Branes are taken from super string theory and are the multi-dimensional abstraction of membranes. <br />
- * Because multiple types can share names (e.g. int myVar vs float myVar), each Brane must only contain data common to all "points" in the DIMENSION they inhabit (see perspective.h for DIMENSION definition). <br />
+ * Because multiple types can share names (e.g. int myVar vs float myVar), each Brane must only contain data common to all "points" in the DIMENSION they inhabit (see relativity/Perspective.h for DIMENSION definition). <br />
  * Children of Perspective<> may extend Brane to fill more "complex" DIMENSIONS (all DIMENSIONS are simple numbers but that says nothing about what each number means). <br />
  * <br />
  * For something to exist within a Dimension, as we define it, the thing must: <br />
@@ -39,7 +41,7 @@ namespace physical {
  * @tparam DIMENSION
  */
 template< typename DIMENSION >
-class Brane
+class Brane : public Particle
 {
 public:
 	Brane(
@@ -48,7 +50,7 @@ public:
 	)
 		:
 		mId(id),
-		mName(name)
+		Particle(name)
 	{
 	}
 
@@ -57,7 +59,6 @@ public:
 	}
 
 	DIMENSION mId;
-	Name mName;
 };
 
 } //physical namespace

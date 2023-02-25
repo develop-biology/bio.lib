@@ -19,7 +19,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/chemical/symmetric/Symmetry.h"
+#include "bio/chemical/symmetry/Symmetry.h"
 
 namespace bio {
 namespace chemical {

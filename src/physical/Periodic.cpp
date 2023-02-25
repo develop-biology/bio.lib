@@ -21,7 +21,7 @@
 
 #include "bio/physical/Periodic.h"
 #include "bio/physical/Properties.h"
-#include "bio/physical/symmetric/Symmetry.h"
+#include "bio/physical/symmetry/Symmetry.h"
 #include "bio/physical/common/SymmetryTypes.h"
 #include "bio/physical/Time.h"
 

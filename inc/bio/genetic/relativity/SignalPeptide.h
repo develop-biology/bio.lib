@@ -22,7 +22,7 @@
 #pragma once
 
 #include "bio/common/container/Arrangement.h"
-#include "bio/physical/relativity/TypedBrane.h"
+#include "bio/physical/string/TypedBrane.h"
 #include "bio/genetic/common/Types.h"
 
 namespace bio {

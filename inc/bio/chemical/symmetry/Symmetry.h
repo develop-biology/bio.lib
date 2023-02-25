@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/physical/symmetric/Symmetry.h"
+#include "bio/physical/symmetry/Symmetry.h"
 #include "bio/physical/common/Class.h"
 #include "bio/chemical/structure/motif/LinearMotif.h"
 #include "bio/chemical/structure/Structure.h"

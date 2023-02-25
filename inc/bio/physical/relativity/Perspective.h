@@ -26,6 +26,7 @@
 #include "bio/common/string/String.h"
 #include "bio/common/thread/ThreadSafe.h"
 #include "bio/common/Cast.h"
+#include "bio/physical/string/Brane.h"
 #include <sstream>
 #include <cstring>
 
@@ -68,7 +69,7 @@ public:
 		:
 		mNextId(1)
 	{
-		mBranes = new Arrangement< Brane* >();
+		mBranes = new Arrangement< Brane< DIMENSION >* >();
 	}
 
 	/**
@@ -76,7 +77,7 @@ public:
 	 */
 	virtual ~Perspective()
 	{
-		Brane* brane;
+		Brane< DIMENSION >* brane;
 		for (
 			SmartIterator brn = mBranes->Begin();
 			!brn.IsAfterEnd();
@@ -125,7 +126,7 @@ public:
 			++brn
 			)
 		{
-			if (brn.As< Brane* >()->mId == id)
+			if (brn.As< Brane< DIMENSION >* >()->mId == id)
 			{
 				return brn;
 			}
@@ -147,7 +148,7 @@ public:
 			++brn
 			)
 		{
-			if (brn.As< Brane* >()->mId == id)
+			if (brn.As< Brane< DIMENSION >* >()->mId == id)
 			{
 				return brn;
 			}
@@ -199,7 +200,7 @@ public:
 		{
 			return InvalidName();
 		}
-		return result.As< Brane* >()->mName;
+		return result.As< Brane< DIMENSION >* >()->mName;
 	}
 
 
@@ -248,7 +249,7 @@ public:
 			return InvalidId();
 		}
 
-		Brane* brane;
+		Brane< DIMENSION >* brane;
 		SmartIterator brn = mBranes->Begin();
 		for (
 			; !brn.IsAfterEnd();
@@ -282,7 +283,7 @@ protected:
 	 * @param name
 	 * @return a new Brane.
 	 */
-	virtual Brane* CreateBrane(DIMENSION id, const Name& name)
+	virtual Brane< DIMENSION >* CreateBrane(DIMENSION id, const Name& name)
 	{
 		return new Brane(id, name);
 	}
@@ -292,7 +293,7 @@ protected:
 	 * Use this to get the children of Brane created by overrides of CreateBrane. <br />
 	 * @tparam T
 	 * @param id
-	 * @return a Brane* of the given id as a T* or NULL.
+	 * @return a typename Brane< DIMENSION >* of the given id as a T* or NULL.
 	 */
 	template< class T >
 	T GetBraneAs(DIMENSION id)
@@ -301,7 +302,7 @@ protected:
 		BIO_SANITIZE(id,,return NULL)
 		SmartIterator brn = Find(id);
 		BIO_SANITIZE(brn.IsValid(),,return NULL)
-		return Cast< T >(brn.As< Brane* >());
+		return Cast< T >(brn.As< Brane< DIMENSION >* >());
 	}
 
 	/**
@@ -309,7 +310,7 @@ protected:
 	 * Use this to get the children of Brane created by overrides of CreateBrane. <br />
 	 * @tparam T
 	 * @param id
-	 * @return a Brane* of the given id as a T* or NULL.
+	 * @return a typename Brane< DIMENSION >* of the given id as a T* or NULL.
 	 */
 	template< class T >
 	const T GetBraneAs(DIMENSION id) const
@@ -318,7 +319,7 @@ protected:
 		BIO_SANITIZE(id,,return NULL)
 		SmartIterator brn = Find(id);
 		BIO_SANITIZE(brn.IsValid(),,return NULL)
-		return Cast< T >(brn.As< Brane* >());
+		return Cast< T >(brn.As< Brane< DIMENSION >* >());
 	}
 
 	mutable Container* mBranes;

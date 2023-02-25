@@ -98,7 +98,6 @@ public:
 		{
 			this->Observer< Perspective< DIMENSION > >::SetPerspective(perspective);
 			this->mId = this->GetPerspective()->GetIdFromName(mName);
-			this->MakeWave();
 		}
 		else
 		{
@@ -124,7 +123,6 @@ public:
 			#if BIO_MEMORY_OPTIMIZE_LEVEL < 1
 			this->mName = perspective->GetNameFromId(id);
 			#endif
-			this->MakeWave();
 		}
 		else
 		{

@@ -21,43 +21,30 @@
 
 #pragma once
 
-#include "Brane.h"
+#include "bio/common/Types.h"
 
 namespace bio {
 namespace physical {
 
-class Wave;
-
 /**
- * Adds a Wave* type to Perspective< DIMENSION >::Brane. <br />
- * @tparam DIMENSION
+ * Particles are 0-dimensional, abstract concepts which form the basis of n-dimensional Branes. <br />
+ * The only thing which strings offer is a Name. However, any Particle should be castable to a Brane of higher dimension. <br />
+ * See Brane.h for more info. <br />
  */
-template< typename DIMENSION >
-class Brane :
-	Brane
+class Particle
 {
 public:
-	Brane(
-		const DIMENSION& id,
-		const Name& name,
-		Wave* type = NULL
-	)
+	Particle(const Name& name)
 		:
-		Perspective< DIMENSION >::Brane(id, name),
-		mType(type)
+		mName(name)
 	{
 	}
 
-	virtual ~Brane()
+	virtual ~Particle()
 	{
-		if (mType)
-		{
-			delete mType;
-			mType = NULL;
-		}
 	}
 
-	Wave* mType;
+	Name mName;
 };
 
 } //physical namespace

@@ -21,7 +21,7 @@
 
 #include "bio/physical/Wave.h"
 #include "bio/physical/common/Types.h"
-#include "bio/physical/symmetric/Symmetry.h"
+#include "bio/physical/symmetry/Symmetry.h"
 #include "bio/physical/common/Codes.h"
 #include "bio/common/macro/Macros.h"
 #include <algorithm>
