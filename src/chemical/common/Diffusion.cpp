@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2022 Séon O'Shannon & eons LLC
+ * Copyright (C) 2023 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -24,11 +24,25 @@
 #include "Types.h"
 
 namespace bio {
-namespace state {
+namespace diffusion {
 
-State Enabled();
+namespace time {
 
-State Recursive();
+BIO_DIFFUSION_TIME_FUNCTION_BODY(Never)
 
-} //state namespace
+BIO_DIFFUSION_TIME_FUNCTION_BODY(Destruction)
+
+BIO_DIFFUSION_TIME_FUNCTION_BODY(Interval)
+
+} //time namespace
+
+namespace effort {
+
+BIO_DIFFUSION_EFFORT_FUNCTION_BODY(Active)
+
+BIO_DIFFUSION_EFFORT_FUNCTION_BODY(Passive)
+
+} //effort namespace
+
+} //diffusion namespace
 } //bio namespace

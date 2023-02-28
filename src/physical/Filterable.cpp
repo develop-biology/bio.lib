@@ -34,7 +34,7 @@ Filterable::Filterable()
 		this,
 		new Symmetry(
 			"mFilter",
-			symmetry_type::DefineVariable())),
+			symmetry_type::Variable())),
 	mFilter(filter::Default())
 {
 }
@@ -45,7 +45,7 @@ Filterable::Filterable(Filter filter)
 		this,
 		new Symmetry(
 			"mFilter",
-			symmetry_type::DefineVariable())),
+			symmetry_type::Variable())),
 	mFilter(filter)
 {
 
@@ -71,7 +71,7 @@ Symmetry* Filterable::Spin() const
 	return Wave::Spin();
 }
 
-Code Filterable::Reify(Symmetry* symmetry)
+Code Filterable::Refiy(const Symmetry* symmetry)
 {
 	BIO_SANITIZE(symmetry, ,
 		return code::BadArgument1());

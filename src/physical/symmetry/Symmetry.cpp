@@ -20,6 +20,7 @@
  */
 
 #include "bio/physical/symmetry/Symmetry.h"
+#include "bio/physical/Time.h"
 #include "bio/common/string/String.h"
 
 namespace bio {
@@ -29,20 +30,27 @@ Symmetry::Symmetry()
 	:
 	Class< Symmetry >(this),
 	Identifiable< Id >(&SymmetryPerspective::Instance()),
-	mType(&SymmetryTypePerspective::Instance())
+	mType(&SymmetryTypePerspective::Instance()),
+	mTimeCreated(GetCurrentTimestamp()),
+	mTimeUpdated(0),
+	mRealization(NULL)
 {
 
 }
 
 Symmetry::Symmetry(
 	const Name& name,
-	const Name& type
+	const Name& type,
 )
 	:
 	Class< Symmetry >(this),
 	mType(
 		type,
-		&SymmetryTypePerspective::Instance())
+		&SymmetryTypePerspective::Instance()
+	),
+	mTimeCreated(GetCurrentTimestamp()),
+	mTimeUpdated(0),
+	mRealization(NULL)
 {
 	Identifiable< Id >::Initialize(
 		name,
@@ -57,7 +65,11 @@ Symmetry::Symmetry(
 	Class< Symmetry >(this),
 	mType(
 		type,
-		&SymmetryTypePerspective::Instance())
+		&SymmetryTypePerspective::Instance()
+	),
+	mTimeCreated(GetCurrentTimestamp()),
+	mTimeUpdated(0),
+	mRealization(NULL)
 {
 	Identifiable< Id >::Initialize(
 		name,
@@ -72,7 +84,11 @@ Symmetry::Symmetry(
 	Class< Symmetry >(this),
 	mType(
 		type,
-		&SymmetryTypePerspective::Instance())
+		&SymmetryTypePerspective::Instance()
+	),
+	mTimeCreated(GetCurrentTimestamp()),
+	mTimeUpdated(0),
+	mRealization(NULL)
 {
 	Identifiable< Id >::Initialize(
 		id,
@@ -87,7 +103,11 @@ Symmetry::Symmetry(
 	Class< Symmetry >(this),
 	mType(
 		type,
-		&SymmetryTypePerspective::Instance())
+		&SymmetryTypePerspective::Instance()
+	),
+	mTimeCreated(GetCurrentTimestamp()),
+	mTimeUpdated(0),
+	mRealization(NULL)
 {
 	Identifiable< Id >::Initialize(
 		id,
@@ -115,6 +135,7 @@ void Symmetry::SetType(const Name& type)
 
 void Symmetry::SetValue(const ByteStream& bytes)
 {
+	mTimeUpdated = GetCurrentTimestamp();
 	mValue = bytes;
 }
 
@@ -125,7 +146,29 @@ const ByteStream& Symmetry::GetValue() const
 
 ByteStream* Symmetry::AccessValue()
 {
+	mTimeUpdated = GetCurrentTimestamp();
 	return &mValue;
+}
+
+const Timestamp& Symmetry::GetTimeCreated() const
+{
+	return mTimeCreated;
+}
+
+const Timestamp& Symmetry::GetTimeUpdated() const
+{
+	return mTimeUpdated;
+}
+
+void Symmetry::SetRealization(Wave* realization)
+{
+	mRealization = realization;
+}
+
+void Symmetry::Realize()
+{
+	BIO_SANITIZE(mRealization,,return)
+	mRealization->Reify(this);
 }
 
 } //physical namespace

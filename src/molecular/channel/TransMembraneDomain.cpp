@@ -54,7 +54,7 @@ const Vesicle* TransMembraneDomain::GetVesicle() const
 }
 
 	
-void TransMembraneDomain::Ingress(Molecule* outer)
+void TransMembraneDomain::Influx(Molecule* outer)
 {
 	BIO_SANITIZE(mInner,,return)
 	BIO_SANITIZE(outer,,return)
@@ -62,7 +62,7 @@ void TransMembraneDomain::Ingress(Molecule* outer)
 }
 
 	
-void TransMembraneDomain::Ingress(Vesicle* outer)
+void TransMembraneDomain::Influx(Vesicle* outer)
 {
 	BIO_SANITIZE(mInner,,return)
 	BIO_SANITIZE(outer,,return)
@@ -70,7 +70,7 @@ void TransMembraneDomain::Ingress(Vesicle* outer)
 }
 
 	
-Molecule* TransMembraneDomain::Egress(const Name& moleculeName)
+Molecule* TransMembraneDomain::Efflux(const Name& moleculeName)
 {
 	BIO_SANITIZE(mInner,,return NULL)
 	Molecule* found = mInner->GetByName< chemical::Solute* >(moleculeName);
@@ -79,7 +79,7 @@ Molecule* TransMembraneDomain::Egress(const Name& moleculeName)
 }
 
 
-const Molecule* TransMembraneDomain::Egress(const Name& moleculeName) const
+const Molecule* TransMembraneDomain::Efflux(const Name& moleculeName) const
 {
 	BIO_SANITIZE(mInner,,return NULL)
 	chemical::Solute* found = mInner->GetByName< chemical::Solute* >(moleculeName);
@@ -88,7 +88,7 @@ const Molecule* TransMembraneDomain::Egress(const Name& moleculeName) const
 }
 
 	
-Molecule* TransMembraneDomain::Egress(const Id& moleculeId)
+Molecule* TransMembraneDomain::Efflux(const Id& moleculeId)
 {
 	BIO_SANITIZE(mInner,,return NULL)
 	chemical::Solute* found = mInner->GetById< chemical::Solute* >(moleculeId);
@@ -97,7 +97,7 @@ Molecule* TransMembraneDomain::Egress(const Id& moleculeId)
 }
 
 	
-const Molecule* TransMembraneDomain::Egress(const Id& moleculeId) const
+const Molecule* TransMembraneDomain::Efflux(const Id& moleculeId) const
 {
 	BIO_SANITIZE(mInner,,return NULL)
 	chemical::Solute* found = mInner->GetById< chemical::Solute* >(moleculeId);

@@ -46,7 +46,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, 		Quantum< T >)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, Quantum< T >)
 
 	/**
 	 *
@@ -57,7 +57,7 @@ public:
 			this,
 			new Symmetry(
 				type::TypeName< T >(),
-				symmetry_type::DefineVariable())),
+				symmetry_type::Variable())),
 		mQuantized(new T()),
 		mControlling(true)
 	{
@@ -73,7 +73,7 @@ public:
 			this,
 			new Symmetry(
 				type::TypeName< T >(),
-				symmetry_type::DefineVariable())),
+				symmetry_type::Variable())),
 		mQuantized(new T(assignment)),
 		mControlling(true)
 	{
@@ -85,7 +85,7 @@ public:
 			this,
 			new Symmetry(
 				type::TypeName< T >(),
-				symmetry_type::DefineVariable())),
+				symmetry_type::Variable())),
 		mQuantized(directControl),
 		mControlling(false)
 	{
@@ -100,7 +100,7 @@ public:
 			this,
 			new Symmetry(
 				type::TypeName< T >(),
-				symmetry_type::DefineVariable())),
+				symmetry_type::Variable())),
 		mQuantized(new T(other)),
 		mControlling(true)
 	{
@@ -178,13 +178,40 @@ public:
 	 * Reconstruct *this from the given Symmetry. <br />
 	 * @param symmetry
 	 */
-	virtual Code Reify(Symmetry* symmetry)
+	virtual Code Refiy(const Symmetry* symmetry)
 	{
 		BIO_SANITIZE(symmetry, ,
 			return code::BadArgument1());
 		//Wave::Reify(symmetry); //this does nothing useful.
 		*this->mQuantized = symmetry->GetValue().As< T >();
 		return code::Success();
+	}
+
+	/**
+	 * Override of Wave method. <br />
+	 * Here, we enable Superposing all Quantum Variables. <br />
+	 * NOTE: The value of our mInterference does not matter; the mInterference of the interfere shall prevail. <br />
+	 * @param interferer
+	 * @return whether or not there is more work to do; see Wave.h for more info.
+	 */
+	virtual bool Superpose(const Wave* interferer)
+	{
+		//First, make sure our parent can't take care of this for us.
+		BIO_SANITIZE_AT_SAFETY_LEVEL_1(this->Wave::Superpose(interferer),return true,)
+
+		//Make sure everything is Spinning & our Symmetries are valid.
+		BIO_SANITIZE(Spin(),,return true)
+		const Symmetry* interferenceSymmetry = interferer->Spin();
+		BIO_SANITIZE(interferenceSymmetry,,return true)
+
+		//Symmetry is Identifiable, so this will compare their Ids to see if they have the same Name.
+		//The name of the Symmetry is the TypeName of mQuantized.
+		BIO_SANITIZE(mSymmetry == interferenceSymmetry,,return true)
+
+		switch(interferer->GetInterference())
+		{
+
+		}
 	}
 
 protected:

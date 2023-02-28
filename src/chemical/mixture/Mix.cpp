@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2022 Séon O'Shannon & eons LLC
+ * Copyright (C) 2023 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,16 +19,47 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include "Types.h"
+#include "bio/chemical/mixture/Mix.h"
 
 namespace bio {
-namespace state {
+namespace chemical {
 
-State Enabled();
+Mix::Mix() :
+	chemical::Class< Mix >(
+		this,
+		"Mix",
+		filter::Chemical(),
+		symmetry_type::Operation()
+		),
+	Reaction("Mix")
+{
 
-State Recursive();
+}
 
-} //state namespace
+Mix::~Mix()
+{
+
+}
+
+Products Mix::Process(Reactants* reactants) const
+{
+	SmartIterator sub = reactants->Covalent< LinearMotif< Substance* > >::Object()->GetAllImplementation()->Begin();
+	Substance* primeSubstance = sub.As< Substance* >()
+	for (
+		++sub;
+		!sub.IsAfterEnd();
+		++sub
+		)
+	{
+		
+	}
+}
+
+bool Mix::ReactantsMeetRequirements(const Reactants* toCheck) const
+{
+	//Lengthy call to be a bit more optimized than the easier GetCount< Substance* >() method.
+	toCheck->Covalent< LinearMotif< Substance* > >::Object()->GetCountImplementation() > 1;
+}
+
+} //chemical namespace
 } //bio namespace

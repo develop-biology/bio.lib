@@ -340,7 +340,7 @@ public:
 	 * Because Symmetry is Identifiable, it cannot be #included here. We rely on children of Identifiable (primarily chemical:: objects to implement Spin()). <br />
 	 * @return a Symmetrical image of *this
 	 */
-	virtual Symmetry* Spin() const 
+	virtual Symmetry* Spin() const
 	{
 		return NULL;
 	}
@@ -351,7 +351,7 @@ public:
 	 * Because Symmetry is Identifiable, it cannot be #included here. We rely on children of Identifiable (primarily chemical:: objects to implement Reify()). <br />
 	 * @param symmetry
 	 */
-	virtual Code Reify(Symmetry* symmetry) 
+	virtual Code Refiy(const Symmetry* symmetry)
 	{
 		//nop
 	}

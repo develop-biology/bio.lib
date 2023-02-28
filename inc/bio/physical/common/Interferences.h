@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2022 Séon O'Shannon & eons LLC
+ * Copyright (C) 2023 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -18,19 +18,47 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 #pragma once
 
 #include "Types.h"
 
 namespace bio {
-namespace miscibility {
+namespace interference {
 
 /**
- * Don't Mix *this (Symmetry), just Mix all sub-Symmetries.
+ * When combined with another Wave, don't change anything, including the other Wave.
+ * This is default.
  */
-Miscibility Passthrough();
+Interference Noninterfering();
 
+/**
+ * Ignore all but the last written Wave, according to it's Symmetry. <br />
+ * This is currently not implemented, since Spin() should both update and return a Wave's Symmetry simultaneously. <br />
+ */
+Interference LastToWrite();
 
+/**
+ * Ignore all but the first written Wave. <br />
+ * This is winner-take-all. <br />
+ * This is currently not implemented, since Spin() should both update and return a Wave's Symmetry simultaneously. <br />
+ */
+Interference FirstToWrite();
 
-} //miscibility namespace
+/**
+ * Average all Waves. <br />
+ */
+Interference Average();
+
+/**
+ * Take only the highest of all Waves. <br />
+ */
+Interference Highest();
+
+/**
+ * Take only the lowest of all Waves. <br />
+ */
+Interference Lowest();
+
+} //interference namespace
 } //bio namespace

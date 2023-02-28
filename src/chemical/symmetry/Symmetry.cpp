@@ -85,5 +85,30 @@ Symmetry::~Symmetry()
 
 }
 
+const Miscibility& Symmetry::GetMiscibility() const
+{
+	return mMiscibility;
+}
+
+void Symmetry::SetMiscibility(const Miscibility& miscibility)
+{
+	mMiscibility = miscibility;
+}
+
+void Symmetry::Recurse()
+{
+	Add< State >(state::Recursive());
+}
+
+void Symmetry::DoNotRecurse()
+{
+	Remove< State >(state::Recursive());
+}
+
+bool Symmetry::IsRecursive() const
+{
+	return Has< State >(state::Recursive());
+}
+
 } //chemical namespace
 } //bio namespace

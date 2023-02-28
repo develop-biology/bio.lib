@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2022 Séon O'Shannon & eons LLC
+ * Copyright (C) 2023 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,67 +19,40 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/chemical/reaction/Reactant.h"
-#include "bio/common/string/String.h"
+#pragma once
+
+#include "bio/chemical/reaction/Reaction.h"
 
 namespace bio {
 namespace chemical {
 
-Reactant::Reactant() :
-	chemical::Class< Reactant >(this),
-	Substance(),
-	mTypeName(NULL)
+/**
+ * Mix is used by Solutes to combine within Solvents. However, you are welcome to mix un-Dissolved Substances as well. <br />
+ */
+class Mix :
+	public chemical::Class< Mix >,
+	public Reaction
 {
+public:
 
-}
+	Mix();
 
-Reactant::Reactant(const Name& typeName)
-	:
-	chemical::Class< Reactant >(this),
-	Substance(),
-	mTypeName(typeName)
-{
+	virtual ~Mix();
 
-}
+	/**
+	 * Mixing 2 (or more) Reactants will recursively invoke all available miscible Reactions according to the Miscibilities of the first Reactant. <br />
+	 * @param reactants
+	 * @return All given Reactants after the first has been modified; all other Reactants should be left untouched (but this is not guaranteed).
+	 */
+	virtual Products Process(Reactants* reactants) const;
 
-Reactant::Reactant(
-	const Name& typeName,
-	const UnorderedMotif< Property >& properties,
-	const UnorderedMotif< State >& states
-)
-	:
-	chemical::Class< Reactant >(this),
-	Substance(
-		properties,
-		states
-	),
-	mTypeName(typeName)
-{
-
-}
-
-Reactant::Reactant(
-	const Name& typeName,
-	const Substance* substance
-)
-	:
-	chemical::Class< Reactant >(this),
-	Substance(*substance),
-	mTypeName(typeName)
-{
-
-}
-
-
-Reactant::~Reactant()
-{
-
-}
-
-bool Reactant::operator==(const Substance& other) const
-{
-	return Substance::operator==(other) && other.GetBondPosition(mTypeName) != 0;
-}
+	/**
+	 * All Reactants can be mixed.
+	 * @param toCheck
+	 * @return true iff there are 2 or more Reactants.
+	 */
+	virtual bool ReactantsMeetRequirements(const Reactants* toCheck) const;
+};
 
 } //chemical namespace
 } //bio namespace

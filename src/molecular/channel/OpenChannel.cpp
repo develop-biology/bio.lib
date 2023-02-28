@@ -56,39 +56,39 @@ OpenChannel::~OpenChannel()
 
 }
 
-void OpenChannel::Ingress(Molecule* outer)
+void OpenChannel::Influx(Molecule* outer)
 {
-	mTransMembraneDomain.Ingress(outer);
+	mTransMembraneDomain.Influx(outer);
 }
 
 
-void OpenChannel::Ingress(Vesicle* outer)
+void OpenChannel::Influx(Vesicle* outer)
 {
-	mTransMembraneDomain.Ingress(outer);
+	mTransMembraneDomain.Influx(outer);
 }
 
 
-Molecule* OpenChannel::Egress(const Name& moleculeName)
+Molecule* OpenChannel::Efflux(const Name& moleculeName)
 {
-	return mTransMembraneDomain.Egress(moleculeName);
+	return mTransMembraneDomain.Efflux(moleculeName);
 }
 
 
-const Molecule* OpenChannel::Egress(const Name& moleculeName) const
+const Molecule* OpenChannel::Efflux(const Name& moleculeName) const
 {
-	return mTransMembraneDomain.Egress(moleculeName);
+	return mTransMembraneDomain.Efflux(moleculeName);
 }
 
 
-Molecule* OpenChannel::Egress(const Id& moleculeId)
+Molecule* OpenChannel::Efflux(const Id& moleculeId)
 {
-	return mTransMembraneDomain.Egress(moleculeId);
+	return mTransMembraneDomain.Efflux(moleculeId);
 }
 
 
-const Molecule* OpenChannel::Egress(const Id& moleculeId) const
+const Molecule* OpenChannel::Efflux(const Id& moleculeId) const
 {
-	return mTransMembraneDomain.Egress(moleculeId);
+	return mTransMembraneDomain.Efflux(moleculeId);
 }
 
 

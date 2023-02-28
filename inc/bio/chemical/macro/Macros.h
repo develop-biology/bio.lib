@@ -85,3 +85,21 @@ BIO_ID_FUNCTION_BODY(                                                          \
     functionName,                                                              \
     ::bio::MiscibilityPerspective::Instance(),                                 \
     ::bio::Miscibility)
+
+/**
+ * Make defining DiffusionTimes easier.
+ */
+#define BIO_DIFFUSION_TIME_FUNCTION_BODY(functionName)                         \
+BIO_ID_FUNCTION_BODY(                                                          \
+    functionName,                                                              \
+    ::bio::DiffusionTimePerspective::Instance(),                               \
+    ::bio::DiffusionTime)
+
+/**
+ * Make defining DiffusionEfforts easier.
+ */
+#define BIO_DIFFUSION_EFFORT_FUNCTION_BODY(functionName)                       \
+BIO_ID_FUNCTION_BODY(                                                          \
+    functionName,                                                              \
+    ::bio::DiffusionEffortPerspective::Instance(),                             \
+    ::bio::DiffusionEffort)

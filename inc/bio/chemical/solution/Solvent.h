@@ -34,26 +34,27 @@ class Solute;
 
 /**
  * Solvents contain Solutes and embody the idea of context. <br />
- * Solvents and Structural Motifs define 2 points in a continuum of organization: Structural Motifs are highly ordered and predictable while Solvents are dynamic and "chaotic". The remainder of this continuum is populated by the usages of these 2 classes. <br />
- * The main difference between Solvents and Structural Motifs is that multiple Solvents cannot exist in the same context. Because Solvents represent context, combining 2 Solvents simply yields a novel context, i.e. a singular Solvent. On the other hand, multiple Structures can be easily separated after being combined. <br />
- * Another notable difference between Solvents and Structural Motifs is that Structures can be formed of many different components, while Solvents are only comprised of Solutes; if you would like to add something to a Solvent, it must be a Solute.
+ * This system provides traditional member access while simultaneously ensuring multiple conflicting writes from external sources never produce a conflict. <br />
  * <br />
- * Solutes are essentially shared pointers which track their reference count via their Concentration. <br />
- * Diffusing Solutes to other Solvents allows the variables in *this to be accessed from other "contexts". <br />
- * When const Diffusing (i.e. read-only), only the Concentration of the Solute is increased. <br />
- * When non-const Diffusing (i.e. read-write) to a Solvent other than *this, the Solute is Cloned and passed to the writer. <br />
- * This system provides traditional member access while simultaneously ensuring multiple conflicting writes from external sources never produce a conflict. The entire point of the Circulatory system is to merge these multiple Solutes back into one. <br />
- * NOTE that this style of "Concentration goes up on access" is the inverse of real life. In the real world, "access", as quantified by binding affinity and reaction rate, is limited by a solute's concentration. We find this inversion to be more in line with state machine linear access semantics but may enforce a ConcentrationLimit or similar mechanism in a future release. <br />
+ * Solvents closely model physical::Lines & structural Motifs, but are intended to be more user facing and have a slightly different features.
+ * The main difference between Solvents and structural Motifs is that multiple Solvents cannot exist in the same context. Because Solvents represent context, combining 2 Solvents simply yields a novel context, i.e. a singular Solvent. On the other hand, multiple Structures can be easily separated after being combined. With that said, Solvents can be nested (e.g. through Vesicles). <br />
+ * Another notable difference between Solvents and structural Motifs is that Structures can be formed of many different components, while Solvents are only comprised of Solutes; if you would like to add something to a Solvent, it must be a Solute (i.e. a Dissolved Substance).
  * <br />
- * In real-world chemistry, the notation "[chemical]" is used to indicate the concentration of "chemical" in some solvent. We imitate that here with the [] operator, the only difference is that the caller must specify which Solvent they are talking about and the return is not the Concentration but the Solute itself. <br />
- * For example, Cytoplasm["Glucose"] would give the Glucose Solute within the Cytoplasm Solvent (its Concentration is irrelevant for our purposes). <br />
+ * Solvents and structural Motifs define 2 points in a continuum of organization: Structural Motifs are highly ordered and predictable (i.e. they have a preset type) while Solvents are dynamic and more "chaotic" (i.e. any Substance can be Dissolved in them). The remainder of this continuum is populated by the usages of these 2 classes. <br />
  * <br />
- * Solvents are their own Perspectives to allow for easy identification of their contents: "VariableA" in "Solvent1" can have Id 3, while "VariableA" in "Solvent2" can have Id 234687. Because Solutes are not identified through a global Perspective, we can use Diffuse(Name ...) calls, etc. (consider if they were identified globally and we store a child of Solute which is Identifiable through a different Perspective than that of the other Solutes we store). <br />
+ * Solutes themselves are essentially shared pointers which track their reference count via their Concentration. <br />
+ * Egressing a Solute to other Solvents increases the Concentration of the Solute and allows its Substance to be accessed from other "contexts". <br />
+ * Solutes can be Egressed as const for read-only access or as non-const for read-write access. <br />
+ * <br />
+ * This style of "Concentration goes up on access" is the inverse of real life. In the real world, "access", as quantified by binding affinity and reaction rate, is limited by a solute's concentration. We find this inversion to be more in line with state machine linear access semantics but may enforce a ConcentrationLimit or similar mechanism in a future release. <br />
+ * <br />
+ * In real-world chemistry, the notation "[chemical]" is used to indicate the concentration of "chemical" in some solvent. However, Concentration is mostly irrelevant for access purposes and is thus ignored. You may access the ByteStream representation of a Solute with [Index || SmartIterator] or the Solute itself with [Id || Name].<br />
+ * <br />
+ * Solvents rely on the IdPerspective to map their contents (all Solutes are Identifiable<Id>). <br />
  */
 class Solvent :
 	public chemical::Class< Solvent >,
-	public Covalent< chemical::DependentMotif< Solute* > >,
-	virtual public physical::Perspective< Id >,
+	public Arrangement< Solute >,
 	virtual public chemical::Substance
 {
 public:
@@ -67,188 +68,102 @@ public:
 	)
 
 	/**
-	 * Dissolving a Solute in a Solvent does either one of 2 things: <br />
-	 * 1. Clones toDissolve and assigns it a new Id; after being Dissolved, the original Solute can be deleted; this is likely what you want. <br />
-	 * 2. "mixes" an existing Solute with toDissolve according to the Miscibility of the existing Solute; this should be done automatically by Solutes which Diffused out of *this. <br />
-	 * @param toDissolve the Solute you want to add to *this.
+	 * Dissolving a Substance in a Solvent creates a Solute that represents the Substance. <br />
+	 * The Solute will take ownership of the Substance and delete it when the Solute's Concentration drops to 0. <br />
+	 * @param toDissolve
+	 * @return the Id of the created Solute in *this or INVALID_ID.
+	 */
+	virtual Id Dissolve(Substance* toDissolve);
+
+	/**
+	 * Separating a Substance from a Solvent removes the associated Solute from the Solvent (*this). <br />
+	 * Use this method if you would like to take control of a previously Dissolved Substance. <br />
+	 * @param id
+	 * @return a previously Dissolved Substance of the given Id or NULL.
+	 */
+	virtual Substance* Separate(const Id& id);
+
+	/**
+	 * Ingressing a Solute into a Solvent does either one of 2 things: <br />
+	 * 1. If the Solute does not already exist in *this, Clones toIngress (including the associated Substance) and adds the clone to *this. After being Ingressed, the original Solute can be safely deleted. <br />
+	 * 2. If the Solute already exists in *this, the existing Solute "mixes" with toIngress according to the Miscibility of the existing Solute. <br />
+	 * @param toIngress the Solute you want to add or combine within *this.
 	 * @param existing ignore this.
 	 * @return the Id of the Solute created or mixed in *this.
 	 */
-	virtual Id Dissolve(const Solute* toDissolve, const Id& existing=InvalidId());
+	virtual Id Ingress(const Solute& toIngress);
 
 	/**
-	 * Access a Solute in *this from any Solvent, including *this. <br />
-	 * IMPORTANT: Remember to Solute::DecrementConcentration() when you are done using the returned Solute!!! <br />
-	 * @param soluteId the Id of the desired Solute
-	 * @param targetSolvent the Id of the calling Solvent; if 0, this->GetId() is used instead.
-	 * @return a Solute from this with the given targetSolvent.
+	 * Egress a Solute to access it. <br />
+	 * Egressing a Solute will create a new Solute that has the relevant parent Solute information set. Thus, Egressing that (already Egressed) Solute will maintain the appropriate parent relationship and automatically handle Concentration changes. <br />
+	 * <br />
+	 * This should be done for all non-native Solvent access, e.g. sub-Solvents or external Solvents. <br />
+	 * You don't have to use Egress to access Solutes within *this iff "you" own it. <br />
+	 * @param soluteId the Id of the desired Solute.
+	 * @return a Solute from within *this.
 	 */
-	virtual Solute* Diffuse(const Id& soluteId) const;
+	virtual Solute& Egress(const Id& soluteId);
 
 	/**
-	 * Access a Solute in *this from any Solvent, including *this. <br />
-	 * When targetSolvent does not match this->GetId(), either a new or previously Cloned Solute is returned. <br />
-	 * Cloned Solutes are stored in *this and have an AccessorId equal to targetSolvent. <br />
-	 * @param soluteName the Name of the desired Solute
-	 * @param targetSolvent the Id of the calling Solvent; if 0, this->GetId() is used instead.
-	 * @return a Solute from this; a Cloned Solute if targetSolvent != this->GetId().
+	 * Egress a Solute to access it. <br />
+	 * Egressing a Solute will create a new Solute that has the relevant parent Solute information set. Thus, Egressing that (already Egressed) Solute will maintain the appropriate parent relationship and automatically handle Concentration changes. <br />
+	 * <br />
+	 * This should be done for all non-native Solvent access, e.g. sub-Solvents or external Solvents. <br />
+	 * You don't have to use Egress to access Solutes within *this iff "you" own it. <br />
+	 * @param soluteId the Id of the desired Solute.
+	 * @return a Solute from within *this.
 	 */
-	virtual Solute* Diffuse(const Name& soluteName, const Id& targetSolvent=0);
+	virtual const Solute& Egress(const Id& soluteId) const;
 
 	/**
-	 * Access a Solute in *this from any Solvent, including *this. <br />
-	 * IMPORTANT: Remember to Solute::DecrementConcentration() when you are done using the returned Solute!!! <br />
-	 * @param soluteName the Name of the desired Solute
-	 * @param targetSolvent the Id of the calling Solvent; if 0, this->GetId() is used instead.
-	 * @return a Solute from this; a Cloned Solute if targetSolvent != this->GetId().
+	 * Egress a Solute to access it. <br />
+	 * Egressing a Solute will create a new Solute that has the relevant parent Solute information set. Thus, Egressing that (already Egressed) Solute will maintain the appropriate parent relationship and automatically handle Concentration changes. <br />
+	 * <br />
+	 * This should be done for all non-native Solvent access, e.g. sub-Solvents or external Solvents. <br />
+	 * You don't have to use Egress to access Solutes within *this iff "you" own it. <br />
+	 * @param substanceName the Name of the Substance associated with the desired Solute.
+	 * @return a Solute from within *this.
 	 */
-	virtual const Solute* Diffuse(const Name& soluteName, const Id& targetSolvent=0) const;
+	virtual Solute& Egress(const Name& substanceName);
 
 	/**
-	 * operator wrappers around Diffuse(). <br />
-	 * Uses this->GetId() and SHOULD NOT BE CALLED FROM AN EXTERNAL SOLVENT! <br />
+	 * Egress a Solute to access it. <br />
+	 * Egressing a Solute will create a new Solute that has the relevant parent Solute information set. Thus, Egressing that (already Egressed) Solute will maintain the appropriate parent relationship and automatically handle Concentration changes. <br />
+	 * <br />
+	 * This should be done for all non-native Solvent access, e.g. sub-Solvents or external Solvents. <br />
+	 * You don't have to use Egress to access Solutes within *this iff "you" own it. <br />
+	 * @param substanceName the Name of the Substance associated with the desired Solute.
+	 * @return a Solute from within *this.
+	 */
+	virtual const Solute& Egress(const Name& substanceName) const;
+
+	/**
+	 * operator wrappers around Egress(). <br />
 	 * @param soluteId
-	 * @return Diffuse(..., this->GetId())
+	 * @return Egress(...)
 	 */
-	virtual Solute* operator[](const Id& soluteId);
+	virtual Solute& operator[](const Id& soluteId);
 
 	/**
-	 * operator wrappers around Diffuse(). <br />
-	 * Uses this->GetId() and SHOULD NOT BE CALLED FROM AN EXTERNAL SOLVENT! <br />
+	 * operator wrappers around Egress(). <br />
 	 * @param soluteId
-	 * @return Diffuse(..., this->GetId())
+	 * @return Egress(...)
 	 */
-	virtual const Solute* operator[](const Id& soluteId) const;
+	virtual const Solute& operator[](const Id& soluteId) const;
 
 	/**
-	 * operator wrappers around Diffuse(). <br />
-	 * Uses this->GetId() and SHOULD NOT BE CALLED FROM AN EXTERNAL SOLVENT! <br />
-	 * @tparam T
-	 * @param soluteId
-	 * @return Diffuse(..., this->GetId())
+	 * operator wrappers around Egress(). <br />
+	 * @param substanceName
+	 * @return Egress(...)
 	 */
-	template < typename T >
-	T operator[](const Id& soluteId)
-	{
-		return ChemicalCast< T >(Diffuse(soluteId, GetId()));
-	}
+	virtual Solute& operator[](const Name& substanceName);
 
 	/**
-	 * operator wrappers around Diffuse(). <br />
-	 * Uses this->GetId() and SHOULD NOT BE CALLED FROM AN EXTERNAL SOLVENT! <br />
-	 * @param soluteName
-	 * @return Diffuse(..., this->GetId())
+	 * operator wrappers around Egress(). <br />
+	 * @param substanceName
+	 * @return Egress(...)
 	 */
-	virtual Solute* operator[](const Name& soluteName);
-
-	/**
-	 * operator wrappers around Diffuse(). <br />
-	 * Uses this->GetId() and SHOULD NOT BE CALLED FROM AN EXTERNAL SOLVENT! <br />
-	 * @param soluteName
-	 * @return Diffuse(..., this->GetId())
-	 */
-	virtual const Solute* operator[](const Name& soluteName) const;
-
-	/**
-	 * operator wrappers around Diffuse(). <br />
-	 * Uses this->GetId() and SHOULD NOT BE CALLED FROM AN EXTERNAL SOLVENT! <br />
-	 * @tparam T
-	 * @param soluteName
-	 * @return Diffuse(..., this->GetId())
-	 */
-	template < typename T >
-	T operator[](const Name& soluteName)
-	{
-		return ChemicalCast< T >(Diffuse(soluteName, GetId()));
-	}
-	
-	/**
-	 * operator wrappers around Diffuse(). <br />
-	 * May be called from anywhere. <br />
-	 * @param soluteId
-	 * @param targetSolvent
-	 * @return Diffuse(..., targetSolvent)
-	 */
-	virtual Solute* operator[](const Id& soluteId, const Id& targetSolvent);
-
-	/**
-	 * operator wrappers around Diffuse(). <br />
-	 * May be called from anywhere. <br />
-	 * @param soluteId
-	 * @param targetSolvent
-	 * @return Diffuse(..., targetSolvent)
-	 */
-	virtual const Solute* operator[](const Id& soluteId, const Id& targetSolvent) const;
-
-	/**
-	 * operator wrappers around Diffuse(). <br />
-	 * May be called from anywhere. <br />
-	 * @tparam T
-	 * @param soluteId
-	 * @param targetSolvent
-	 * @return Diffuse(..., targetSolvent)
-	 */
-	template < typename T >
-	T operator[](const Id& soluteId, const Id& targetSolvent)
-	{
-		return ChemicalCast< T >(Diffuse(soluteId, GetId()));
-	}
-
-	/**
-	 * operator wrappers around Diffuse(). <br />
-	 * May be called from anywhere. <br />
-	 * @param soluteName
-	 * @param targetSolvent
-	 * @return Diffuse(..., targetSolvent)
-	 */
-	virtual Solute* operator[](const Name& soluteName, const Id& targetSolvent);
-
-	/**
-	 * operator wrappers around Diffuse(). <br />
-	 * May be called from anywhere. <br />
-	 * @param soluteName
-	 * @param targetSolvent
-	 * @return Diffuse(..., targetSolvent)Diffuse(..., this->GetId())
-	 */
-	virtual const Solute* operator[](const Name& soluteName, const Id& targetSolvent) const;
-
-	/**
-	 * operator wrappers around Diffuse(). <br />
-	 * May be called from anywhere. <br />
-	 * @tparam T
-	 * @param soluteName
-	 * @param targetSolvent
-	 * @return Diffuse(..., targetSolvent)
-	 */
-	template < typename T >
-	T operator[](const Name& soluteName, const Id& targetSolvent)
-	{
-		return ChemicalCast< T >(Diffuse(soluteName, GetId()));
-	}
-
-	/**
-	 * Adds a Solute* to *this and takes ownership of it. <br />
-	 * For more information see LinearMotif::AddImplementation(). <br />
-	 * @param content
-	 * @return the modified content or NULL.
-	 */
-	virtual Solute* AddImplementation(Solute* content);
-
-	/**
-	 * Takes ownership of a Solute and adds it to *this at the indicated position. <br />
-	 * See LinearMotif::InsertImplementation() for more info. <br />
-	 * @param toAdd what to add. IMPORTANT: This must not already be in a LinearMotif (i.e. create a clone() before adding it to another destination).
-	 * @param position determines where in *this the Content is added.
-	 * @param optionalPositionArg If a position is specified, the optionalPositionArg is the id of the Content referenced (e.g. BEFORE, MyContentId()).
-	 * @param transferSubContents allows all of the Contents within a conflicting Content to be copied into the new Content, before the conflicting Content is deleted (similar to renaming an upper directory while preserving it's contents).
-	 * @return Status of addition (e.g. success or failure).
-	 */
-	virtual Code InsertImplementation(
-		Solute* toAdd,
-		const Position position = BOTTOM,
-		const Id optionalPositionArg = 0, //i.e. invalid.
-		const bool transferSubContents = false
-	);
+	virtual const Solute& operator[](const Name& substanceName) const;
 };
 
 } //chemical namespace

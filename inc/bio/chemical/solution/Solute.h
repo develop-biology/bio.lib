@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "bio/physical/Periodic.h"
 #include "bio/chemical/common/Types.h"
 #include "bio/chemical/macro/Macros.h"
 #include "bio/chemical/Substance.h"
@@ -34,21 +35,29 @@ class Solvent;
 /**
  * Solutes are used to implement shared-pointer style garbage collection. <br />
  * The idea is that Solutes have a "Concentration" representing their overall abundance. Once the Concentration of a Solute drops to 0, it is destroyed. <br />
- * The Concentration of a Solute is increased when it becomes available to a novel context through Solvent::Diffuse (e.g. passed to a function). <br />
- * Solutes are cloned when non-const Diffusing; while const access to a Solute simply increases its Concentration. <br />
- * See Solvent.h for more info on how Diffusion works. <br />
+ * The Concentration of a Solute is increased when it becomes available to a novel context (i.e. Solvent) through Solvent::Egress (e.g. passed to a function). <br />
  * <br />
- * When a Solute's Concentration reaches 0, before it is destroyed, it automatically lets its parent Solvent know that it is no longer needed. <br />
- * For example, if Solvent V2 gets Solute U2 by cloning Solute U1 from Solvent V1, the originating Solute U1 will have its Concentration increased while U2 exists. Once U2 is removed from V2, the Concentration of U1 (in V1) will drop. <br />
- * This process ensures that Solutes persist in greater contexts while in use by sub-contexts, and makes it possible for isolated sub-contexts to communicate through their common greater context. <br />
- * For example, if function A uses Solute U1 from Solvent V1 and function B also uses U1, even if each function exists in an isolated sub-Solvent of V1, both functions will start with the same value. Furthermore, if B depends on modifications to U1 made by A, then having U1 be removed from V1 after A completes would break B. <br />
+ * Solute is very similar to physical::Linear. However, it is intended to be more user-facing and feature-rich. Where Linear is used to implement shared pointers for Structures, Solute implements shared pointer logic for Solvents.
+ * See Solvent.h for more info, including the definition of Egress and Ingress. <br />
+ * <br />
+ * Solutes can be accessed (Egressed) in 2 distinct manners. Both manners of Egressing increase the Concentration of the desired Solute.<br />
+ * 1. When const (read-only) Egressing, Solutes use a parent-child relationship: only the parent will contain a valid pointer to the Dissolved Substance, each child then points to the parent. This is slower across threads, as each read operation requires a lock, but is faster overall, since the Dissolved Substance doesn't need to be duplicated.<br />
+ * 2. When non-const (read-write & mutable) Egressing, the Dissolved Substance is Cloned and a parent-child relationship is only used to indicate the source Substance. This style of Egressing can be chained, and the Concentration will increase all the way up to the original Source. You should prefer mutable access across threads, as the Cloned Substance can be modified more freely, without the need for mutex locks. When you would like to merge the new Solute back into the original Solvent, you can Diffuse it, which will call Ingress on the parent's Solvent.<br />
+ * <br />
+ * For mutable Solutes, Diffusion happens automatically when the Solute is destroyed, unless you set SetDiffusionTime(diffusion::time::Never()). You may also set SetDiffusionTime(diffusion::time::Interval()) and SetInterval(...) to regularly Diffuse (this implies diffusion::time::Destruction() too). <br />
+ * The default diffusion::effort is Active(), whereby changes are pushed up the Concentration gradient, toward the source of the Dissolved Substance. However, parents of mutable Solutes can push changes to children using SetDiffusionEffort(diffusion::effort::Passive()) (or ActiveAndPassive()). Passive() Diffusion is only applicable to Solutes which have a diffusion::time::Interval(). <br />
+ * You should prefer Active() Diffusion for Solutes with short lifetimes, as it is more efficient and requires less work. Inversely, you should prefer Passive() Diffusion for Solutes that you intend to keep around; this will help keep the system in sync. <br />
+ * <br />
+ * When Solutes are Mixed, either through Diffusion or Ingression, they are combined according to their Miscibilities. <br />
+ * See Types.h & Miscibilities.h for more info on Mixing strategies. <br />
+ * <br />
+ * To illustrate why parent Concentrations are increased when mutable Solutes are Egressed:, if function A uses Solute U1 from Solvent V1 and function B also uses U1, even if each function exists in an isolated sub-Solvent of V1, both functions will start with the same value. Furthermore, if B depends on modifications to U1 made by A, then having U1 be removed from V1 after A completes would break B. <br />
  * Thus, by keeping Solutes around when they are not needed by the immediate context allows sub-contexts to depend on the assumption that other, isolated sub-contexts can reach the same values. <br />
- * <br />
- * Additionally, when a Solute's Concentration reaches 0 and before it's destroyed, it is Dissolved back into its parent Solvent according to the Miscibility of its parent Solute. This allows sub-contexts to affect greater contexts and thus cooperate with neighboring, isolated contexts. <br />
  */
 class Solute :
 	public chemical::Class< Solute >,
 	public chemical::EnvironmentDependent< Solvent >,
+	public physical::Periodic,
 	virtual public Substance
 {
 public:
@@ -92,7 +101,7 @@ public:
 	virtual void SetConcentration(Concentration toSet) const;
 
 	/**
-	 * Dissolve() *this back into the parent Solvent, if it exists. <br />
+	 * Ingress() *this back into the parent Solvent, if it exists. <br />
 	 */
 	virtual void Resolve() const;
 

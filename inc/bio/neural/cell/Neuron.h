@@ -51,7 +51,7 @@ typedef std::vector< Synapse* > Synapses;
  *
  * In real-life biology, neurons are implemented with solutes, solvents, and proteins. These neurons (in theory) diffuse an arbitrary number of solutes (aka neurotransmitters) at once, and equalize carefully crafted imbalances in electrochemical gradients. Thus, neurons allow for fast, optimized delivery of information through structured channels which enforce requirements of how and when data may be accessed.
  * This is the spirit which we attempt to emulate here. However, we add an extra linear state-machine only benefit as well: asynchronicity.
- * While the Solute / Solvent system is entirely synchronous, Neurons, as defined here, may Diffuse Solutes to other threads to be processed at some time in the future.
+ * While the Solute / Solvent system is entirely synchronous, Neurons, as defined here, may Egress Solutes to other threads to be processed at some time in the future.
  */
 class Neuron :
 	public neural::Class< Neuron >,

@@ -47,7 +47,7 @@ Periodic::Periodic(MilliSeconds interval)
 		this,
 		new Symmetry(
 			"mInterval",
-			symmetry_type::DefineVariable())),
+			symmetry_type::Variable())),
 	mInterval(interval),
 	mLastPeakTimestamp(0)
 {
@@ -88,7 +88,7 @@ Symmetry* Periodic::Spin() const
 	return Wave::Spin();
 }
 
-Code Periodic::Reify(Symmetry* symmetry)
+Code Periodic::Refiy(const Symmetry* symmetry)
 {
 	BIO_SANITIZE(symmetry, , return code::BadArgument1());
 	mInterval = symmetry->GetValue();

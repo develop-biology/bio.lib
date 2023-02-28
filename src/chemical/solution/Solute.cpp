@@ -69,7 +69,7 @@ void Solute::Resolve() const
 {
 	if (mParentSolvent && mIdInParent)
 	{
-		mParentSolvent->Dissolve(this, mIdInParent);
+		mParentSolvent->Ingress(this, mIdInParent);
 	}
 }
 

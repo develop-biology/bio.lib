@@ -62,7 +62,16 @@ BIO_ID_WITH_PERSPECTIVE_WITH_PLURAL(Property, Properties, uint8_t)
  */
 BIO_ID_WITH_PERSPECTIVE(SymmetryType, uint8_t)
 
+/**
+ * Filters are used for logging and taking subsets of data. <br />
+ */
 BIO_ID_WITH_PERSPECTIVE(Filter,	uint8_t)
+
+/**
+ * Interference determines how multiple Waves combine. <br />
+ */
+BIO_ID_WITH_PERSPECTIVE(Interference, uint8_t)
+
 } //bio namespace
 
 namespace bio {

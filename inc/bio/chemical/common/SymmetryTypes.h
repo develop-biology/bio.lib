@@ -28,23 +28,11 @@ namespace symmetry_type {
 
 SymmetryType Object();
 
-SymmetryType StartObject();
+SymmetryType Container();
 
-SymmetryType EndObject();
+SymmetryType Namespace();
 
-SymmetryType StartList();
-
-SymmetryType EndList();
-
-SymmetryType StartGroup();
-
-SymmetryType EndGroup();
-
-SymmetryType StartScope();
-
-SymmetryType EndScope();
-
-SymmetryType ReferenceVariable();
+SymmetryType Reference();
 
 SymmetryType Operation();
 

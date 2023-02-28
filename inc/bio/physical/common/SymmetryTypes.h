@@ -26,15 +26,9 @@
 namespace bio {
 namespace symmetry_type {
 
-SymmetryType StartComment();
+SymmetryType Comment();
 
-SymmetryType CommentString();
-
-SymmetryType EndComment();
-
-SymmetryType DefineVariable();
-
-SymmetryType QualifyVariable();
+SymmetryType Variable();
 
 } //symmetry_type namespace
 } //bio namespace

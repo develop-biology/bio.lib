@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2022 Séon O'Shannon & eons LLC
+ * Copyright (C) 2023 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -24,11 +24,44 @@
 #include "Types.h"
 
 namespace bio {
-namespace state {
+namespace diffusion {
 
-State Enabled();
+namespace time {
 
-State Recursive();
+/**
+ * Do not Diffuse.
+ */
+DiffusionTime Never();
 
-} //state namespace
+/**
+ * Diffuse only upon Solute Destruction.
+ * Useful for short-lived Solutes. <br />
+ */
+DiffusionTime Destruction();
+
+/**
+ * Diffuse regularly. <br />
+ * Useful for long-lived Solutes. <br />
+ */
+DiffusionTime Interval();
+
+} //time namespace
+
+namespace effort {
+
+/**
+ * Diffuse against the Concentration gradient, toward the source of the originally Dissolved Substance. <br />
+ * This syncs changes in downstream, Egressed Solutes back upstream. <br />
+ */
+DiffusionEffort Active();
+
+/**
+ * Diffuse with the Concentration gradient, toward Egressed Solutes. <br />
+ * This syncs changes in the upstream Dissolved Substance toward downstream copies. <br />
+ */
+DiffusionEffort Passive();
+
+} //effort namespace
+
+} //diffusion namespace
 } //bio namespace

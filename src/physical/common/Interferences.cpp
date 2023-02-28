@@ -19,16 +19,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include "Types.h"
+#include "bio/physical/common/Interferences.h"
+#include "bio/physical/macro/Macros.h"
 
 namespace bio {
-namespace state {
+namespace interference {
 
-State Enabled();
+BIO_INTERFERENCE_FUNCTION_BODY(Noninterfering)
 
-State Recursive();
+BIO_INTERFERENCE_FUNCTION_BODY(LastToWrite)
 
-} //state namespace
+BIO_INTERFERENCE_FUNCTION_BODY(FirstToWrite)
+
+BIO_INTERFERENCE_FUNCTION_BODY(Average)
+
+BIO_INTERFERENCE_FUNCTION_BODY(Highest)
+
+BIO_INTERFERENCE_FUNCTION_BODY(Lowest)
+
+} //interference namespace
 } //bio namespace

@@ -125,3 +125,13 @@ BIO_ID_FUNCTION_BODY(                                                          \
     ::bio::FilterPerspective::Instance(),                                      \
     ::bio::Filter)
 
+/**
+ * To make defining Interferences easier, use this macro to define the function body of your Interference Function(). <br />
+ * This will assign a value to a string that is identical to your FunctionName e.g. SafelyAccess<InterferencePerspective>()->GetNameFromId(Value()) would give "Value". <br />
+ * REMINDER: Your Interference Function()s should be in the ::bio::interference namespace. <br />
+ */
+#define BIO_INTERFERENCE_FUNCTION_BODY(functionName)                           \
+BIO_ID_FUNCTION_BODY(                                                          \
+    functionName,                                                              \
+    ::bio::InterferencePerspective::Instance(),                                \
+    ::bio::Interference)

@@ -20,10 +20,12 @@
  */
 
 #include "bio/chemical/common/Miscibilities.h"
-#include "bio/circulatory/macro/Macros.h"
+#include "bio/chemical/macro/Macros.h"
 
 namespace bio {
 namespace miscibility {
+
+BIO_MISCIBILITY_FUNCTION_BODY(Passthrough)
 
 BIO_MISCIBILITY_FUNCTION_BODY(LastToWrite)
 

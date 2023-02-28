@@ -29,7 +29,8 @@ namespace bio {
 namespace physical {
 
 /**
- * physical::Symmetry only contains a Name, a type, and a value. <br />
+ * physical::Symmetry contains a Name, a type, and a value. It also contains some meta information, like when it was created, last updated, and the Wave it represents. <br />
+ * You can think of Symmetry as the meta-information of Biology. It's used for serialization and other quality-of-life features. <br />
  * See SymmetryTypes.h for what types of Symmetry are available on a physical level. <br />
  * Both Symmetry and SymmetryTypes are intended to grow with each namespace, as the complexity of what is being Rotated grows. <br />
  */
@@ -110,6 +111,7 @@ public:
 
 	/**
 	 * Set the mValue of *this. <br />
+	 * Also sets the TimeUpdated. <br />
 	 * @param bytes
 	 */
 	virtual void SetValue(const ByteStream& bytes);
@@ -122,13 +124,40 @@ public:
 
 	/**
 	 * Get the mValue of *this for direct editing. <br />
+	 * Also sets the TimeUpdated. <br />
 	 * @return mValue for writing.
 	 */
 	virtual ByteStream* AccessValue();
 
+	/**
+	 * @return the time *this was first instantiated. <br />
+	 */
+	virtual const Timestamp& GetTimeCreated() const;
+
+	/**
+	 * @return the time *this was last written to. <br />
+	 */
+	virtual const Timestamp& GetTimeUpdated() const;
+
+	/**
+	 * Set the "owner" of *this. <br />
+	 * Having a Realization allows a Symmetry to be Realized(). <br />
+	 * @param realization
+	 */
+	virtual void SetRealization(Wave* realization);
+
+	/**
+	 * Realizing a Symmetry copies its mValue into its mRealization. <br />
+	 * This allows Waves to be updated with values outside the Biology framework, creating a basic Object Relational Mapping (ORM) system. <br />
+	 */
+	virtual void Realize();
+
 protected:
 	ByteStream mValue;
 	Identifiable< SymmetryType > mType;
+	Timestamp mTimeCreated;
+	Timestamp mTimeUpdated;
+	Wave* mRealization;
 };
 
 } //physical namespace

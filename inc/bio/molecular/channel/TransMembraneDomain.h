@@ -68,56 +68,56 @@ public:
 
 	
 	/**
-	 * Ingress (like "ingestion") moves the outer into *this. <br />
+	 * Influx (like "ingestion") moves the outer into *this. <br />
 	 * *this will assume ownership of outer. <br />
 	 * @param outer
 	 */
-	void Ingress(Molecule* outer);
+	void Influx(Molecule* outer);
 
 	
 	/**
-	 * If you would like to Ingress multiple molecules at once, you may package them into a Vesicle and use this method. <br />
+	 * If you would like to Influx multiple molecules at once, you may package them into a Vesicle and use this method. <br />
 	 * This is essentially endocytosis; however the "cyto" bit isn't applicable at the molecular level. <br />
 	 * @param outer
 	 */
-	void Ingress(Vesicle* outer);
+	void Influx(Vesicle* outer);
 
 	
 	/**
-	 * Egress copies Molecules in *this and provides them for export. <br />
+	 * Efflux copies Molecules in *this and provides them for export. <br />
 	 * If the returned Molecule is not added to another Vesicle, you must delete it to avoid memory leaks. <br />
 	 * @param moleculeName 
 	 * @return a new Molecule from that of the given Name in *this or NULL if no such Molecule could be found. <br />
 	 */
-	Molecule* Egress(const Name& moleculeName);
+	Molecule* Efflux(const Name& moleculeName);
 
 	/**
-	 * Egress copies Molecules in *this and provides them for export. <br />
+	 * Efflux copies Molecules in *this and provides them for export. <br />
 	 * If the returned Molecule is not added to another Vesicle, you must delete it to avoid memory leaks. <br />
 	 * @param moleculeName 
 	 * @return a new Molecule from that of the given Name in *this or NULL if no such Molecule could be found.
 	 */
-	const Molecule* Egress(const Name& moleculeName) const;
+	const Molecule* Efflux(const Name& moleculeName) const;
 
 	
 	/**
-	 * Egress copies Molecules in *this and provides them for export. <br />
+	 * Efflux copies Molecules in *this and provides them for export. <br />
 	 * If the returned Molecule is not added to another Vesicle, you must delete it to avoid memory leaks. <br />
 	 * NOTE: The Id here is given by the Vesicle's own Perspective (not a global singleton), and must be retrieved before hand through something like: MyVesicle.GetIdFromName("NameOfMyMolecule"). <br />
 	 * @param moleculeId
 	 * @return a new Molecule from that of the given Id in *this or NULL if no such Molecule could be found.
 	 */
-	Molecule* Egress(const Id& moleculeId);
+	Molecule* Efflux(const Id& moleculeId);
 
 	
 	/**
-	 * Egress copies Molecules in *this and provides them for export. <br />
+	 * Efflux copies Molecules in *this and provides them for export. <br />
 	 * If the returned Molecule is not added to another Vesicle, you must delete it to avoid memory leaks. <br />
 	 * NOTE: The Id here is given by the Vesicle's own Perspective (not a global singleton), and must be retrieved before hand through something like: MyVesicle.GetIdFromName("NameOfMyMolecule"). <br />
 	 * @param moleculeId
 	 * @return a new Molecule from that of the given Id in *this or NULL if no such Molecule could be found.
 	 */
-	const Molecule* Egress(const Id& moleculeId) const;
+	const Molecule* Efflux(const Id& moleculeId) const;
 
 
 	/**

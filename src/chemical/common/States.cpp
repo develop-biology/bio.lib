@@ -27,5 +27,7 @@ namespace state {
 
 BIO_STATE_FUNCTION_BODY(Enabled)
 
+BIO_STATE_FUNCTION_BODY(Recursive)
+
 } //state namespace
 } //bio namespace

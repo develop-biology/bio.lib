@@ -91,7 +91,7 @@ public:
 	 * Reconstruct *this from the given Symmetry. <br />
 	 * @param symmetry
 	 */
-	virtual Code Reify(Symmetry* symmetry);
+	virtual Code Refiy(const Symmetry* symmetry);
 
 protected:
 	Filter mFilter;

@@ -52,14 +52,18 @@ typedef ::bio::Arrangement< const Wave* > ConstWaves;
 
 /**
  * A Wave is a base class for all Biology objects. <br />
- * Waves can be Periodic but do not have to be. By default, we assume Waves have no discernible frequency, amplitude, or any other Property. This is similar to a chaotic pattern or a wave modulated with enough signals that it becomes indiscernible from white noise / randomness. <br />
- * We do not / cannot make any assumptions about the ordering / pattern of a Wave at this level. Such Properties will only manifest in derived classes. <br />
- *
+ * Waves can be Periodic but do not have to be. By default, we assume Waves have no discernible frequency, amplitude, or any other Property. This is similar to a chaotic pattern or a wave modulated and/or superposed with enough signals that it becomes indiscernible from white noise / randomness. <br />
+ * We cannot make any assumptions about the ordering nor pattern of a Wave at this level. Such Properties will only manifest in derived classes. <br />
+ * <br />
  * You should be able to upcast to Wave from any other class. <br />
  * Cloning a Wave should produce a functional fully derived class. This means that all diamond inheritance should be resolved by all children when calling Clone <br />
  * For downcasting to a derived class, you will need to use the chemical::Atom::Bond(...) methodology. See chemical/Atom.h for more info. <br />
- *
+ * <br />
+ * Waves may be Superposed upon one another. Doing so allows them to affect each other according to their Interference pattern. <br />
+ * <br />
  * Waves may be Modulated to store additional signals and subsequently Demodulated in order to retrieve that original signal. In this way, any Wave can carry any other. <br />
+ * <br />
+ * Waves may be Attenuated and Disattenuated by other Waves as they move through them. Treating Waves as media in this manner is highly implementation dependent. See Atom.h for an example of Attenuation & Disattenuation.<br />
  */
 class Wave
 {
@@ -131,7 +135,7 @@ public:
 	 * See Quantum.h for an example interface. <br />
 	 * @return mSymmetry.
 	 */
-	virtual Symmetry* Spin() const;
+	virtual const Symmetry* Spin() const;
 
 	/**
 	 * Reifying a Wave takes a Symmetry and realizes it by copying the values supplied into *this. <br />
@@ -140,7 +144,41 @@ public:
 	 * See Quantum.h for an example interface. <br />
 	 * @param symmetry
 	 */
-	virtual Code Reify(Symmetry* symmetry);
+	virtual Code Refiy(const Symmetry* symmetry);
+
+	/**
+	 * When 2 Waves interfere, they create a Superposition which describes the interaction of both Waves at every point meet. <br />
+	 * To conserve memory, we do not consider Superposing to generate a new Wave. Instead, only the Wave to be Superposed on (i.e. *this) will be changed. <br />
+	 * Superposing requires that each Wave (both *this and the interferer) have valid and compatible Interferences. If either Wave is Noninterfering (the default), Superposing should do nothing. <br />
+	 * As your Wave grows in complexity, we recommend you override this in order to Superpose or otherwise propagate Interference to your Wave's components. <br />
+	 * Superpose is designed to be a parent-first method whereby you can call your parent Wave's Superpose() method, see if it worked via the return value, then either do more work or just return. <br />
+	 * NOTE: Calculating Superpositions will often require analysis of the Waves' Symmetries. <br />
+	 * <br />
+	 * IMPORTANT: THERE IS NO WAY TO UNDO SUPERPOSING! <br />
+	 *
+	 * @param interferer that which should change *this.
+	 * @return whether or not the interference has been applied (e.g. if *this was changed or if the interferer was NULL, etc.) (i.e. whether or not all expected work has been done).
+	 */
+	virtual bool Superpose(const Wave* interferer);
+
+	/**
+	 * Create a Superposition of multiple Waves by Superposing them one at a time, in FIFO order (from first to last). <br />
+	 * Only *this may be modified. <br />
+	 * @param interferers
+	 */
+	virtual void Superpose(ConstWaves& interferers);
+
+	/**
+	 * How should this change other Waves? <br />
+	 * @param interference
+	 */
+	virtual void SetInterference(const Interference& interference);
+
+	/**
+	 * How will this change other Waves? <br />
+	 * @return the mInterference of this.
+	 */
+	virtual const Interference& GetInterference() const;
 
 	/**
 	 * This will overwrite any signal currently carried by *this. <br />
@@ -252,14 +290,14 @@ public:
 	virtual const Wave* operator*() const;
 
 	/**
-	 * Makes other interfere with *this. <br />
+	 * Makes other pass through with *this. <br />
 	 * Attenuates other. <br />
 	 * @param other
 	 */
 	virtual void operator+(const Wave* other);
 
 	/**
-	 * Removes the interference of other from *this. <br />
+	 * Removes the passage of other from *this. <br />
 	 * Disattenuates other. <br />
 	 * @param other
 	 */
@@ -269,12 +307,17 @@ protected:
 	/**
 	 * We cache our Symmetry here to avoid excessive new & deletes when Spinning & Reifying *this. <br />
 	 */
-	Symmetry* mSymmetry;
+	mutable Symmetry* mSymmetry;
 
 	/**
 	 * for Modulation. <br />
 	 */
 	Wave* mSignal;
+
+	/**
+	 * Determines how *this changes other Waves when being Superposed on them. <br />
+	 */
+	Interference mInterference;
 };
 
 } //physical namespace
