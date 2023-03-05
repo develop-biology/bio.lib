@@ -172,13 +172,13 @@ public:
 	 * How should this change other Waves? <br />
 	 * @param interference
 	 */
-	virtual void SetInterference(const Interference& interference);
+	virtual void SetInterference(const Superposition& interference);
 
 	/**
 	 * How will this change other Waves? <br />
 	 * @return the mInterference of this.
 	 */
-	virtual const Interference& GetInterference() const;
+	virtual const Superposition& GetInterference() const;
 
 	/**
 	 * This will overwrite any signal currently carried by *this. <br />
@@ -313,11 +313,6 @@ protected:
 	 * for Modulation. <br />
 	 */
 	Wave* mSignal;
-
-	/**
-	 * Determines how *this changes other Waves when being Superposed on them. <br />
-	 */
-	Interference mInterference;
 };
 
 } //physical namespace

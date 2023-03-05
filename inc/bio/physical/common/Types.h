@@ -68,9 +68,11 @@ BIO_ID_WITH_PERSPECTIVE(SymmetryType, uint8_t)
 BIO_ID_WITH_PERSPECTIVE(Filter,	uint8_t)
 
 /**
- * Interference determines how multiple Waves combine. <br />
+ * Superpositions determine how multiple Waves combine. <br />
+ * For example, a Superposition could act typically and sum the 2 waves, or it could defy the principle of superposition and establish at least one wave as a soliton. <br />
+ * See Wave::Superpose() for more info. <br />
  */
-BIO_ID_WITH_PERSPECTIVE(Interference, uint8_t)
+BIO_ID_WITH_PERSPECTIVE(Superposition, uint8_t)
 
 } //bio namespace
 

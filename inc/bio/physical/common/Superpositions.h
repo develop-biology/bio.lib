@@ -21,44 +21,45 @@
 
 #pragma once
 
-#include "Types.h"
+#include "Tyjetbrains codespaces
+pes.h"
 
 namespace bio {
 namespace interference {
 
 /**
- * When combined with another Wave, don't change anything, including the other Wave.
- * This is default.
+ * When combined with another Wave, don't change anything, including the other Wave (i.e. make the Wave a soliton). <br />
+ * This is default. <br />
  */
-Interference Noninterfering();
+Superposition Noninterfering();
 
 /**
  * Ignore all but the last written Wave, according to it's Symmetry. <br />
  * This is currently not implemented, since Spin() should both update and return a Wave's Symmetry simultaneously. <br />
  */
-Interference LastToWrite();
+Superposition LastToWrite();
 
 /**
  * Ignore all but the first written Wave. <br />
  * This is winner-take-all. <br />
  * This is currently not implemented, since Spin() should both update and return a Wave's Symmetry simultaneously. <br />
  */
-Interference FirstToWrite();
+Superposition FirstToWrite();
 
 /**
  * Average all Waves. <br />
  */
-Interference Average();
+Superposition Average();
 
 /**
  * Take only the highest of all Waves. <br />
  */
-Interference Highest();
+Superposition Highest();
 
 /**
  * Take only the lowest of all Waves. <br />
  */
-Interference Lowest();
+Superposition Lowest();
 
 } //interference namespace
 } //bio namespace

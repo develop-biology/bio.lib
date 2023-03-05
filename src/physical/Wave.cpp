@@ -21,7 +21,7 @@
 
 #include "bio/physical/Wave.h"
 #include "bio/physical/common/Types.h"
-#include "bio/physical/common/Interferences.h"
+#include "bio/physical/common/Superpositions.h"
 #include "bio/physical/symmetry/Symmetry.h"
 #include "bio/physical/common/Codes.h"
 #include "bio/common/macro/Macros.h"
@@ -246,12 +246,12 @@ void Wave::Superpose(ConstWaves& interferers)
 	}
 }
 
-void Wave::SetInterference(const Interference& interference)
+void Wave::SetInterference(const Superposition& interference)
 {
 	mInterference = interference;
 }
 
-const Interference& Wave::GetInterference() const
+const Superposition& Wave::GetInterference() const
 {
 	return mInterference;
 }
