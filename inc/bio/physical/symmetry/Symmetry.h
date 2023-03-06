@@ -35,7 +35,7 @@ namespace physical {
  * Both Symmetry and SymmetryTypes are intended to grow with each namespace, as the complexity of what is being Rotated grows. <br />
  */
 class Symmetry :
-	Class< Symmetry >,
+	physical::Class< Symmetry >,
 	virtual public Identifiable< Id >
 {
 public:
@@ -93,7 +93,7 @@ public:
 
 	/**
 	 * With Symmetry, we make "Type" what is Identifiable and Name ancillary. <br />
-	 * @return The Type of *this, akan Identifiable<SymmetryType>::GetName().
+	 * @return The Type of *this, aka an Identifiable<SymmetryType>.
 	 */
 	const Identifiable< SymmetryType >& GetType() const;
 

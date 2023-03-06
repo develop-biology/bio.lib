@@ -23,19 +23,21 @@
 #include "bio/physical/macro/Macros.h"
 
 namespace bio {
-namespace interference {
+namespace superposition {
 
-BIO_INTERFERENCE_FUNCTION_BODY(Noninterfering)
+BIO_SUPERPOSITION_FUNCTION_BODY(Noninterfering)
 
-BIO_INTERFERENCE_FUNCTION_BODY(LastToWrite)
+BIO_SUPERPOSITION_FUNCTION_BODY(Complex)
 
-BIO_INTERFERENCE_FUNCTION_BODY(FirstToWrite)
+BIO_SUPERPOSITION_FUNCTION_BODY(LastToWrite)
 
-BIO_INTERFERENCE_FUNCTION_BODY(Average)
+BIO_SUPERPOSITION_FUNCTION_BODY(FirstToWrite)
 
-BIO_INTERFERENCE_FUNCTION_BODY(Highest)
+BIO_SUPERPOSITION_FUNCTION_BODY(Average)
 
-BIO_INTERFERENCE_FUNCTION_BODY(Lowest)
+BIO_SUPERPOSITION_FUNCTION_BODY(Highest)
 
-} //interference namespace
+BIO_SUPERPOSITION_FUNCTION_BODY(Lowest)
+
+} //superposition namespace
 } //bio namespace

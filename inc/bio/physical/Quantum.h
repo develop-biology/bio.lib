@@ -210,7 +210,7 @@ public:
 
 		switch(interferer->GetInterference())
 		{
-
+			
 		}
 	}
 

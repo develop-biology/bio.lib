@@ -21,17 +21,21 @@
 
 #pragma once
 
-#include "Tyjetbrains codespaces
-pes.h"
+#include "Types.h"
 
 namespace bio {
-namespace interference {
+namespace superposition {
 
 /**
  * When combined with another Wave, don't change anything, including the other Wave (i.e. make the Wave a soliton). <br />
  * This is default. <br />
  */
 Superposition Noninterfering();
+
+/**
+ * Refer to sub-interference. <br />
+ */
+Superposition Complex();
 
 /**
  * Ignore all but the last written Wave, according to it's Symmetry. <br />
@@ -61,5 +65,5 @@ Superposition Highest();
  */
 Superposition Lowest();
 
-} //interference namespace
+} //superposition namespace
 } //bio namespace

@@ -38,15 +38,15 @@
 		Clone()                                                                \
 	),                                                                         \
     (                                                                          \
-		::bio::physical::Wave* AsWave(),                               \
+		::bio::physical::Wave* AsWave(),                                       \
 		AsWave()                                                               \
 	),                                                                         \
     (                                                                          \
-		const ::bio::physical::Wave* AsWave() const,                   \
+		const ::bio::physical::Wave* AsWave() const,                           \
 		AsWave()                                                               \
 	),                                                                         \
 	(                                                                          \
-		operator ::bio::physical::Wave*(),                             \
+		operator ::bio::physical::Wave*(),                                     \
 		operator ::bio::physical::Wave*()                                      \
 	)
 
@@ -130,8 +130,8 @@ BIO_ID_FUNCTION_BODY(                                                          \
  * This will assign a value to a string that is identical to your FunctionName e.g. SafelyAccess<InterferencePerspective>()->GetNameFromId(Value()) would give "Value". <br />
  * REMINDER: Your Interference Function()s should be in the ::bio::interference namespace. <br />
  */
-#define BIO_INTERFERENCE_FUNCTION_BODY(functionName)                           \
+#define BIO_SUPERPOSITION_FUNCTION_BODY(functionName)                          \
 BIO_ID_FUNCTION_BODY(                                                          \
     functionName,                                                              \
-    ::bio::InterferencePerspective::Instance(),                                \
-    ::bio::Interference)
+    ::bio::SuperpositionPerspective::Instance(),                               \
+    ::bio::Superposition)

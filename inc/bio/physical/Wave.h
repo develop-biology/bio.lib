@@ -43,6 +43,8 @@ namespace physical {
 
 class Symmetry;
 
+class Interference;
+
 typedef ::bio::Arrangement< Symmetry* > Symmetries;
 
 class Wave;
@@ -138,6 +140,12 @@ public:
 	virtual const Symmetry* Spin() const;
 
 	/**
+	 * Ease of use method for getting the Symmetry of *this without Spinning it. <br />
+	 * @return mSymmetry.
+	 */
+	const Symmetry* GetSymmetry() const;
+
+	/**
 	 * Reifying a Wave takes a Symmetry and realizes it by copying the values supplied into *this. <br />
 	 * Will update mSymmetry to the Symmetry provided but do nothing else. <br />
 	 * You should override Reify to update the contents of *this from the given Symmetry. Calling the parent method after is optional. <br />
@@ -157,28 +165,19 @@ public:
 	 * IMPORTANT: THERE IS NO WAY TO UNDO SUPERPOSING! <br />
 	 *
 	 * @param interferer that which should change *this.
+	 * @param pattern how *this should be changed.
 	 * @return whether or not the interference has been applied (e.g. if *this was changed or if the interferer was NULL, etc.) (i.e. whether or not all expected work has been done).
 	 */
-	virtual bool Superpose(const Wave* interferer);
+	virtual bool Superpose(const Wave* interferer, Interference pattern);
+
 
 	/**
 	 * Create a Superposition of multiple Waves by Superposing them one at a time, in FIFO order (from first to last). <br />
 	 * Only *this may be modified. <br />
 	 * @param interferers
+	 * @param pattern
 	 */
-	virtual void Superpose(ConstWaves& interferers);
-
-	/**
-	 * How should this change other Waves? <br />
-	 * @param interference
-	 */
-	virtual void SetInterference(const Superposition& interference);
-
-	/**
-	 * How will this change other Waves? <br />
-	 * @return the mInterference of this.
-	 */
-	virtual const Superposition& GetInterference() const;
+	virtual void Superpose(ConstWaves& interferers, Interference* pattern);
 
 	/**
 	 * This will overwrite any signal currently carried by *this. <br />

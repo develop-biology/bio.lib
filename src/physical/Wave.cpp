@@ -20,12 +20,14 @@
  */
 
 #include "bio/physical/Wave.h"
+#include "bio/physical/Interference.h"
+#include "bio/physical/symmetry/Symmetry.h"
 #include "bio/physical/common/Types.h"
 #include "bio/physical/common/Superpositions.h"
-#include "bio/physical/symmetry/Symmetry.h"
 #include "bio/physical/common/Codes.h"
 #include "bio/common/macro/Macros.h"
 #include <algorithm>
+#include "Wave.h"
 
 namespace bio {
 namespace physical {
@@ -61,7 +63,12 @@ const Symmetry* Wave::Spin() const
 	return mSymmetry;
 }
 
-Code Wave::Refiy(const Symmetry* symmetry)
+const Symmetry *Wave::GetSymmetry() const
+{
+    return mSymmetry;
+}
+
+Code Wave::Refiy(const Symmetry *symmetry)
 {
 	(*mSymmetry) = *symmetry;
 	return code::Success();
@@ -225,16 +232,21 @@ Properties Wave::GetProperties() const
 	return overlap;
 }
 
-bool Wave::Superpose(const Wave* interferer)
+bool Wave::Superpose(const Wave* interferer, Interference* pattern)
 {
 	BIO_SANITIZE(interferer,,return true)
-	if (GetIntreference() == interference::Noninterfering() || interfere->GetInterference() == interference::Noninterfering()) {
+	BIO_SANITIZE(pattern,,return true)
+	BIO_SANITIZE(mSymmetry,,return true)
+	if (pattern->GetSuperpositionFor(mSymmetry->GetId()) == superposition::Noninterfering()) {
+		return true;
+	}
+	if (pattern->GetSuperpositionFor(interferer->GetSymmetry()->GetId()) == superposition::Noninterfering()) {
 		return true;
 	}
 	return false;
 }
 
-void Wave::Superpose(ConstWaves& interferers)
+void Wave::Superpose(ConstWaves& interferers, Interference* pattern)
 {
 	for (
 		SmartIterator wav = interferers.Begin()++;
@@ -242,18 +254,8 @@ void Wave::Superpose(ConstWaves& interferers)
 		++wav
 		)
 	{
-		Superpose(wav.As< const Wave* >());
+		Superpose(wav.As< const Wave* >(), pattern);
 	}
-}
-
-void Wave::SetInterference(const Superposition& interference)
-{
-	mInterference = interference;
-}
-
-const Superposition& Wave::GetInterference() const
-{
-	return mInterference;
 }
 
 } //physical namespace
