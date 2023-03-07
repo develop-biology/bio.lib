@@ -28,6 +28,12 @@
 BIO_SINGLETON(className, ::bio::physical::Perspective<dimension>)
 
 /**
+ * For ease of use for defining Singleton TypedPerspectives. <br />
+ */
+#define BIO_TYPED_PERSPECTIVE_SINGLETON(className, dimension)                  \
+BIO_SINGLETON(className, ::bio::physical::TypedPerspective<dimension>)
+
+/**
  * Ease of use for defining Ids. <br />
  * For more on DIMENSIONs, Ids, etc., see Perspective.h and Identifiable.h <br />
  * NOTE: this method MUST be called from the ::bio namespace (see BIO_STRONG_TYPEDEF for why). <br />
@@ -71,3 +77,20 @@ BIO_PERSPECTIVE_SINGLETON(className##Perspective, className);
 #define BIO_ID_WITH_PERSPECTIVE_WITH_PLURAL(className, pluralName, dimension)  \
 BIO_ID_WITH_PLURAL(className, pluralName, dimension)                           \
 BIO_PERSPECTIVE_SINGLETON(className##Perspective, className);
+
+/**
+ * For when you'd like to define a BIO_ID with a TypedPerspective. <br />
+ */
+#define BIO_ID_WITH_TYPED_PERSPECTIVE(className, dimension)                    \
+BIO_ID(className, dimension)                                                   \
+BIO_TYPED_PERSPECTIVE_SINGLETON(className##Perspective, className);
+
+/**
+ * For when you'd like to define a BIO_ID with a TypedPerspective and a custom plural. <br />
+ */
+#define BIO_ID_WITH_TYPED_PERSPECTIVE_WITH_PLURAL(                             \
+	className,                                                                 \
+	pluralName,                                                                \
+	dimension)                                                                 \
+BIO_ID_WITH_PLURAL(className, pluralName, dimension)                           \
+BIO_TYPED_PERSPECTIVE_SINGLETON(className##Perspective, className);

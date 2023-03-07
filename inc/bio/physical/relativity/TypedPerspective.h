@@ -24,7 +24,7 @@
 #include "Perspective.h"
 #include "bio/physical/common/Class.h"
 #include "bio/physical/string/TypedBrane.h"
-#include "bio/physical/Wave.h"
+#include "bio/physical/wave/Wave.h"
 #include "bio/physical/type/IsWave.h"
 
 namespace bio {

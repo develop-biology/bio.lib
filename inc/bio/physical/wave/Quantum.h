@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2022 Séon O'Shannon & eons LLC
+ * Copyright (C) 2023 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -191,27 +191,26 @@ public:
 	 * Override of Wave method. <br />
 	 * Here, we enable Superposing all Quantum Variables. <br />
 	 * NOTE: The value of our mInterference does not matter; the mInterference of the interfere shall prevail. <br />
-	 * @param interferer
+	 * @param displacement
+	 * @param pattern
 	 * @return whether or not there is more work to do; see Wave.h for more info.
 	 */
-	virtual bool Superpose(const Wave* interferer)
+	virtual bool Superpose(const ConstWaves& displacement, const Interference* pattern)
 	{
 		//First, make sure our parent can't take care of this for us.
 		BIO_SANITIZE_AT_SAFETY_LEVEL_1(this->Wave::Superpose(interferer),return true,)
 
-		//Make sure everything is Spinning & our Symmetries are valid.
-		BIO_SANITIZE(Spin(),,return true)
-		const Symmetry* interferenceSymmetry = interferer->Spin();
-		BIO_SANITIZE(interferenceSymmetry,,return true)
+		//Assume all Waves, including *this, are Spinning appropriately.
 
-		//Symmetry is Identifiable, so this will compare their Ids to see if they have the same Name.
-		//The name of the Symmetry is the TypeName of mQuantized.
-		BIO_SANITIZE(mSymmetry == interferenceSymmetry,,return true)
+		const Superposition superposition = pattern->GetSuperpositionFor(mSymmetry);
 
-		switch(interferer->GetInterference())
+		if (superposition == superposition::Complex())
 		{
-			
+			return true;
 		}
+
+		(*mQuantized) = Collapse::Measure(superposition, displacement);
+		return false;
 	}
 
 protected:

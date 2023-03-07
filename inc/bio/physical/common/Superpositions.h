@@ -65,5 +65,45 @@ Superposition Highest();
  */
 Superposition Lowest();
 
+/**
+ * Sum all Waves. <br />
+ */
+Superposition Sum();
+
+/**
+ * Boolean AND. <br />
+ */
+Superposition And();
+
+/**
+ * Boolean OR. <br />
+ */
+Superposition Or();
+
+/**
+ * Boolean XOR. <br />
+ */
+Superposition Xor();
+
+/**
+ * Boolean NOT. <br />
+ */
+Superposition Not();
+
+/**
+ * Boolean NAND. <br />
+ */
+Superposition Nand();
+
+/**
+ * Boolean NOR. <br />
+ */
+Superposition Nor();
+
+/**
+ * Boolean XNOR. <br />
+ */
+Superposition Xnor();
+
 } //superposition namespace
 } //bio namespace

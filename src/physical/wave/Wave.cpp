@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2022 Séon O'Shannon & eons LLC
+ * Copyright (C) 2023 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,8 +19,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/physical/Wave.h"
-#include "bio/physical/Interference.h"
+#include "bio/physical/wave/Wave.h"
+#include "bio/physical/wave/Interference.h"
 #include "bio/physical/symmetry/Symmetry.h"
 #include "bio/physical/common/Types.h"
 #include "bio/physical/common/Superpositions.h"
@@ -232,7 +232,7 @@ Properties Wave::GetProperties() const
 	return overlap;
 }
 
-bool Wave::Superpose(const Wave* interferer, Interference* pattern)
+bool Wave::Superpose(const Wave* displacement, Interference* pattern)
 {
 	BIO_SANITIZE(interferer,,return true)
 	BIO_SANITIZE(pattern,,return true)
@@ -246,7 +246,7 @@ bool Wave::Superpose(const Wave* interferer, Interference* pattern)
 	return false;
 }
 
-void Wave::Superpose(ConstWaves& interferers, Interference* pattern)
+void Wave::Superpose(const ConstWaves& displacement, Interference* pattern)
 {
 	for (
 		SmartIterator wav = interferers.Begin()++;

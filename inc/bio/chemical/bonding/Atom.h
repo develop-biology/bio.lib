@@ -30,7 +30,7 @@
 #include "bio/common/type/RemoveReference.h"
 #include "bio/common/type/RemoveConst.h"
 #include "bio/physical/type/IsWave.h"
-#include "bio/physical/Quantum.h"
+#include "bio/physical/wave/Quantum.h"
 #include "bio/physical/common/Class.h"
 #include "bio/chemical/common/BondTypes.h"
 #include "bio/chemical/relativity/PeriodicTable.h"

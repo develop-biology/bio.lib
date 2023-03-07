@@ -24,7 +24,7 @@
 #include "bio/cellular/common/Types.h"
 #include "bio/cellular/macro/Macros.h"
 #include "bio/chemical/reaction/Excitation.h"
-#include "bio/physical/Wave.h"
+#include "bio/physical/wave/Wave.h"
 #include "bio/physical/Periodic.h"
 
 namespace bio {

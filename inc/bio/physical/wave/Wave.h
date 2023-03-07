@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2022 Séon O'Shannon & eons LLC
+ * Copyright (C) 2023 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -155,12 +155,14 @@ public:
 	virtual Code Refiy(const Symmetry* symmetry);
 
 	/**
-	 * When 2 Waves interfere, they create a Superposition which describes the interaction of both Waves at every point meet. <br />
+	 * When 2+ Waves interfere, they create a Superposition which describes the interaction of all Waves at every point meet. <br />
 	 * To conserve memory, we do not consider Superposing to generate a new Wave. Instead, only the Wave to be Superposed on (i.e. *this) will be changed. <br />
-	 * Superposing requires that each Wave (both *this and the interferer) have valid and compatible Interferences. If either Wave is Noninterfering (the default), Superposing should do nothing. <br />
+	 * Superposing requires an Interference pattern that properly describes how to mix the Waves.
+	 * If any Wave is Noninterfering (the default), Superposing should do nothing for that Wave. This can happen when many Waves are automatically Superposed, e.g. in the case of Superposing large, complex Waves <br />
 	 * As your Wave grows in complexity, we recommend you override this in order to Superpose or otherwise propagate Interference to your Wave's components. <br />
 	 * Superpose is designed to be a parent-first method whereby you can call your parent Wave's Superpose() method, see if it worked via the return value, then either do more work or just return. <br />
 	 * NOTE: Calculating Superpositions will often require analysis of the Waves' Symmetries. <br />
+	 * See Interference.h for more info. <br />
 	 * <br />
 	 * IMPORTANT: THERE IS NO WAY TO UNDO SUPERPOSING! <br />
 	 *
@@ -168,16 +170,17 @@ public:
 	 * @param pattern how *this should be changed.
 	 * @return whether or not the interference has been applied (e.g. if *this was changed or if the interferer was NULL, etc.) (i.e. whether or not all expected work has been done).
 	 */
-	virtual bool Superpose(const Wave* interferer, Interference pattern);
+	virtual void Superpose(const ConstWaves& displacement, Interference* pattern);
 
 
 	/**
-	 * Create a Superposition of multiple Waves by Superposing them one at a time, in FIFO order (from first to last). <br />
+	 * Ease of use method to create a Superposition of a single Wave. <br />
 	 * Only *this may be modified. <br />
 	 * @param interferers
 	 * @param pattern
 	 */
-	virtual void Superpose(ConstWaves& interferers, Interference* pattern);
+	virtual bool Superpose(const Wave* displacement, Interference pattern);
+
 
 	/**
 	 * This will overwrite any signal currently carried by *this. <br />

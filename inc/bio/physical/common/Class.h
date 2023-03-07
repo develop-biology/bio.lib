@@ -22,7 +22,7 @@
 #pragma once
 
 #include "Codes.h"
-#include "bio/physical/Wave.h"
+#include "bio/physical/wave/Wave.h"
 
 namespace bio {
 namespace physical {

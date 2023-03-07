@@ -21,7 +21,7 @@
 
 #include "bio/chemical/bonding/Bond.h"
 #include "bio/chemical/relativity/PeriodicTable.h"
-#include "bio/physical/Wave.h"
+#include "bio/physical/wave/Wave.h"
 #include "bio/common/macro/Macros.h"
 
 namespace bio {

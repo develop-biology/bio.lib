@@ -26,7 +26,7 @@
 #include "bio/common/macro/OSMacros.h"
 #include "Perspective.h"
 #include "Observer.h"
-#include "bio/physical/Wave.h"
+#include "bio/physical/wave/Wave.h"
 #include "bio/physical/common/Class.h"
 #include <cstring>
 

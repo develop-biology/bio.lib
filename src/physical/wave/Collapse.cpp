@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2022 Séon O'Shannon & eons LLC
+ * Copyright (C) 2023 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,54 +19,36 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/physical/symmetry/Axis.h"
-#include "bio/physical/symmetry/Symmetry.h"
-#include "bio/physical/wave/Wave.h"
+#include "bio/physical/wave/Collapse.h"
 
 namespace bio {
 namespace physical {
 
-Axis::Axis()
+Collapse::Collapse(const Superposition& applyTo)
+{
+	SuperpositionPerspective::AssociateType(applyTo, this);
+}
+
+Collapse::~Collapse()
 {
 
 }
 
-Axis::~Axis()
+ByteStream& Collapse::operator()(ConstWaves& waves) const
 {
-
+	return 0;
 }
 
-/*static*/ ::std::string Axis::Failed()
+/*static*/ ByteStream& Collapse::Measure(
+	const Superposition& superposition,
+	ConstWaves& waves
+)
 {
-	return "FAILED";
+	Collapse* collapse = SuperpositionPerspective::GetTypeFromIdAs<Collapse*>(superposition);
+	BIO_SANITIZE(collapse, , return 0);
+	return (*collapse)(waves);
 }
 
-std::string Axis::Rotate(Symmetry* symmetry) const
-{
-	return Encode(symmetry);
-}
 
-Symmetry* Axis::Rotate(std::string) const
-{
-	return NULL;
-}
-
-std::string Axis::operator|(Wave* particle) const
-{
-	BIO_SANITIZE(particle, ,
-		return Failed());
-	return Rotate(particle->Spin());
-}
-
-Symmetry* Axis::operator()(std::string encoded) const
-{
-	return Rotate(encoded);
-}
-
-std::string Axis::Encode(Symmetry* symmetry) const
-{
-	return Failed();
-}
-
-} //physical namespace
-} //bio namespace
+} // namespace physical
+} // namespace bio

@@ -19,32 +19,53 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/physical/Interference.h"
-#include "Interference.h"
+#pragma once
+
+#include "bio/physical/symmetry/SuperSymmetry.h"
 
 namespace bio {
 namespace physical {
 
-Interference::Interference()
+SuperSymmetry::SuperSymmetry(
+	const Id& symmetry,
+	const Superposition& superposition = 0,
+	Interference* interference = NULL
+)
+	:
+	Symmetry(symmetry),
+	mSuperposition(superposition),
+	mInterference(interference)
 {
 }
 
-Interference::~Interference()
+SuperSymmetry::~SuperSymmetry()
 {
+	if (mInterference != NULL)
+	{
+		delete mInterference;
+	}
+	mInterference = NULL;
 }
 
-Superposition Interference::GetSuperpositionFor(const Id &symmetry) const
+const Superposition& SuperSymmetry::GetSuperposition() const
 {
-    
+	return mSuperposition;
 }
 
-void Interference::SetSuperpositionFor(const Id &symmetry, const Superposition &superposition)
+void SuperSymmetry::SetSuperposition(const Superposition& superposition)
 {
+	mSuperposition = superposition;
 }
 
-void Interference::SetInterferenceFor(const Id &symmetry, Interference *interference)
+const Interference* SuperSymmetry::GetInterference() const
 {
+	return mInterference;
 }
 
-} //physical namespace
-} //bio namespace
+void SuperSymmetry::SetInterference(Interference* interference)
+{
+	mInterference = interference;
+}
+
+} // namespace physical
+} // namespace bio
