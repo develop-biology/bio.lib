@@ -26,7 +26,6 @@
 #include "bio/physical/cache/CachedId.h"
 #include "bio/physical/macro/Macros.h"
 #include "bio/physical/relativity/Perspective.h"
-#include "bio/physical/relativity/TypedPerspective.h"
 
 namespace bio {
 
@@ -67,13 +66,6 @@ BIO_ID_WITH_PERSPECTIVE(SymmetryType, uint8_t)
  * Filters are used for logging and taking subsets of data. <br />
  */
 BIO_ID_WITH_PERSPECTIVE(Filter,	uint8_t)
-
-/**
- * Superpositions determine how multiple Waves combine. <br />
- * For example, a Superposition could act typically and sum the 2 waves, or it could defy the principle of superposition and establish at least one wave as a soliton. <br />
- * See Wave::Superpose() for more info. <br />
- */
-BIO_ID_WITH_TYPED_PERSPECTIVE(Superposition, uint8_t)
 
 } //bio namespace
 

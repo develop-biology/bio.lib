@@ -166,7 +166,7 @@ Molecule* Molecule::operator>>(Molecule* target)
 	return target;
 }
 
-physical::Symmetry* Molecule::Spin() const
+const Symmetry* Molecule::Spin() const
 {
 	//TODO...
 	return NULL;

@@ -22,6 +22,7 @@
 #pragma once
 
 #include "Symmetry.h"
+#include "bio/physical/common/Superpositions.h"
 
 namespace bio {
 namespace physical {
@@ -33,7 +34,7 @@ namespace physical {
  * See Interference.h for more information. <br />
  */
 class SuperSymmetry :
-	Symmetry
+	public Symmetry
 {
 public:
 	/**

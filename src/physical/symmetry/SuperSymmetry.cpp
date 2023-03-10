@@ -19,20 +19,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
 #include "bio/physical/symmetry/SuperSymmetry.h"
+#include "bio/physical/wave/Interference.h"
+#include "bio/physical/common/SymmetryTypes.h"
 
 namespace bio {
 namespace physical {
 
 SuperSymmetry::SuperSymmetry(
 	const Id& symmetry,
-	const Superposition& superposition = 0,
-	Interference* interference = NULL
+	const Superposition& superposition,
+	Interference* interference
 )
 	:
-	Symmetry(symmetry),
+	Symmetry(symmetry, symmetry_type::Super()),
 	mSuperposition(superposition),
 	mInterference(interference)
 {

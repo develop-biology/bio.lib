@@ -24,9 +24,10 @@
 namespace bio {
 namespace physical {
 
-Collapse::Collapse(const Superposition& applyTo)
+Collapse::Collapse(const Superposition& applyTo) :
+	physical::Class< Collapse >(this)
 {
-	SuperpositionPerspective::AssociateType(applyTo, this);
+	SuperpositionPerspective::Instance().AssociateType(applyTo, this);
 }
 
 Collapse::~Collapse()
@@ -34,17 +35,17 @@ Collapse::~Collapse()
 
 }
 
-ByteStream& Collapse::operator()(ConstWaves& waves) const
+ByteStream Collapse::operator()(ConstWaves& waves) const
 {
 	return 0;
 }
 
-/*static*/ ByteStream& Collapse::Measure(
+/*static*/ ByteStream Collapse::Measure(
 	const Superposition& superposition,
 	ConstWaves& waves
 )
 {
-	Collapse* collapse = SuperpositionPerspective::GetTypeFromIdAs<Collapse*>(superposition);
+	Collapse* collapse = SuperpositionPerspective::Instance().GetTypeFromIdAs<Collapse*>(superposition);
 	BIO_SANITIZE(collapse, , return 0);
 	return (*collapse)(waves);
 }

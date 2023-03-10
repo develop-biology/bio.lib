@@ -22,10 +22,13 @@
 #pragma once
 
 #include "bio/physical/common/Types.h"
+#include "bio/physical/common/Superpositions.h"
 #include "bio/physical/shape/Line.h"
 
 namespace bio {
 namespace physical {
+
+class SuperSymmetry;
 
 /**
  * Interference represents the strategy for combining 2 (or more) Waves. <br />
@@ -53,7 +56,7 @@ public:
      * @param symmetry The Symmetry to get the Interference for.
      * @return The Interference for the given Symmetry.
      */
-    virtual Interference* GetInterferenceFor(const Id& symmetry) const;
+    virtual const Interference* GetInterferenceFor(const Id& symmetry) const;
 
     /**
      * Set the Superposition for the given Symmetry. <br />
@@ -78,7 +81,7 @@ protected:
     /**
      * Internal map of Symmetry Id to Superposition pairs, plus whatever else SuperSymmetry provides. <br />
      */
-    Line mSuperSymmetries;
+    mutable Line mSuperSymmetries;
 };
 
 } // namespace physical

@@ -65,7 +65,7 @@ Filter Filterable::GetFilter() const
 	return mFilter;
 }
 
-Symmetry* Filterable::Spin() const
+const Symmetry* Filterable::Spin() const
 {
 	mSymmetry->AccessValue()->Set(mFilter);
 	return Wave::Spin();

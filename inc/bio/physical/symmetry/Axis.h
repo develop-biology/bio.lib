@@ -54,7 +54,7 @@ public:
 	 * @param symmetry
 	 * @return text, possibly a command (like mysql), structured values (like json), an entire program (like python), etc. or Failed().
 	 */
-	virtual ::std::string Rotate(Symmetry* symmetry) const;
+	virtual ::std::string Rotate(const Symmetry* symmetry) const;
 
 	/**
 	 * Express the given text into something intelligible by this system. <br />
@@ -85,7 +85,7 @@ protected:
 	 * @param symmetry
 	 * @return the text corresponding to the given, singular Symmetry or Failed().
 	 */
-	virtual ::std::string Encode(Symmetry* symmetry) const;
+	virtual ::std::string Encode(const Symmetry* symmetry) const;
 
 };
 

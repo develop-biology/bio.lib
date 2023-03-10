@@ -27,7 +27,6 @@
 #include "bio/physical/common/Codes.h"
 #include "bio/common/macro/Macros.h"
 #include <algorithm>
-#include "Wave.h"
 
 namespace bio {
 namespace physical {
@@ -68,7 +67,7 @@ const Symmetry *Wave::GetSymmetry() const
     return mSymmetry;
 }
 
-Code Wave::Refiy(const Symmetry *symmetry)
+Code Wave::Reify(const Symmetry *symmetry)
 {
 	(*mSymmetry) = *symmetry;
 	return code::Success();
@@ -234,13 +233,13 @@ Properties Wave::GetProperties() const
 
 bool Wave::Superpose(const Wave* displacement, Interference* pattern)
 {
-	BIO_SANITIZE(interferer,,return true)
+	BIO_SANITIZE(displacement,,return true)
 	BIO_SANITIZE(pattern,,return true)
 	BIO_SANITIZE(mSymmetry,,return true)
 	if (pattern->GetSuperpositionFor(mSymmetry->GetId()) == superposition::Noninterfering()) {
 		return true;
 	}
-	if (pattern->GetSuperpositionFor(interferer->GetSymmetry()->GetId()) == superposition::Noninterfering()) {
+	if (pattern->GetSuperpositionFor(displacement->GetSymmetry()->GetId()) == superposition::Noninterfering()) {
 		return true;
 	}
 	return false;
@@ -249,7 +248,7 @@ bool Wave::Superpose(const Wave* displacement, Interference* pattern)
 void Wave::Superpose(const ConstWaves& displacement, Interference* pattern)
 {
 	for (
-		SmartIterator wav = interferers.Begin()++;
+		SmartIterator wav = displacement.Begin()++;
 		!wav.IsAfterEnd();
 		++wav
 		)

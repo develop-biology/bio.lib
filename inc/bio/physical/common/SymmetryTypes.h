@@ -30,5 +30,7 @@ SymmetryType Comment();
 
 SymmetryType Variable();
 
+SymmetryType Super();
+
 } //symmetry_type namespace
 } //bio namespace

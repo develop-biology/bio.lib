@@ -40,7 +40,7 @@ Symmetry::Symmetry()
 
 Symmetry::Symmetry(
 	const Name& name,
-	const Name& type,
+	const Name& type
 )
 	:
 	Class< Symmetry >(this),

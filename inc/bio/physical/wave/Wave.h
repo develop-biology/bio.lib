@@ -152,7 +152,7 @@ public:
 	 * See Quantum.h for an example interface. <br />
 	 * @param symmetry
 	 */
-	virtual Code Refiy(const Symmetry* symmetry);
+	virtual Code Reify(const Symmetry* symmetry);
 
 	/**
 	 * When 2+ Waves interfere, they create a Superposition which describes the interaction of all Waves at every point meet. <br />
@@ -179,7 +179,7 @@ public:
 	 * @param interferers
 	 * @param pattern
 	 */
-	virtual bool Superpose(const Wave* displacement, Interference pattern);
+	virtual bool Superpose(const Wave* displacement, Interference* pattern);
 
 
 	/**

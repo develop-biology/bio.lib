@@ -21,7 +21,8 @@
 
 #pragma once
 
-#include "Wave.h"
+#include "bio/physical/common/Class.h"
+#include "bio/physical/common/Superpositions.h"
 
 namespace bio {
 namespace physical {
@@ -31,7 +32,8 @@ namespace physical {
  * Thus, instead of implementing the behavior each Superposition has on your complex Wave, you can simply call Collapse::Measure(Superposition, ...) .<br />
  * Collapses automatically register themselves with the SuperpositionPerspective. <br />
  */
-class Collapse {
+class Collapse : public physical::Class< Collapse >
+{
 public:
 	/**
 	 * @param applyTo
@@ -50,7 +52,7 @@ public:
 	 * @param waves
 	 * @return like, whatever. man.
 	 */
-	virtual ByteStream& operator()(ConstWaves& waves) const;
+	virtual ByteStream operator()(ConstWaves& waves) const;
 
 	/**
 	 * This is a convenience function which calls the operator() function of the appropriate Collapse object. <br />
@@ -58,7 +60,7 @@ public:
 	 * @param waves
 	 * @return
 	 */
-	static ByteStream& Measure(const Superposition& superposition, ConstWaves& waves);
+	static ByteStream Measure(const Superposition& superposition, ConstWaves& waves);
 };
 
 } // namespace physical

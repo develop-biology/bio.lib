@@ -221,7 +221,7 @@ BondType Atom::GetBondType(Valence position) const
 	return mBonds.OptimizedAccess(position)->GetId();
 }
 
-physical::Symmetry* Atom::Spin() const
+const Symmetry* Atom::Spin() const
 {
 	//TODO...
 	return Wave::Spin();

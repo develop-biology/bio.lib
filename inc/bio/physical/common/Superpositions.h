@@ -22,8 +22,19 @@
 #pragma once
 
 #include "Types.h"
+#include "bio/physical/relativity/TypedPerspective.h"
 
 namespace bio {
+
+//Superposition type declaration needs to be here to avoid circular dependencies with Waves in Types.
+
+/**
+ * Superpositions determine how multiple Waves combine. <br />
+ * For example, a Superposition could act typically and sum the 2 waves, or it could defy the principle of superposition and establish at least one wave as a soliton. <br />
+ * See Wave::Superpose() for more info. <br />
+ */
+BIO_ID_WITH_TYPED_PERSPECTIVE(Superposition, uint8_t)
+
 namespace superposition {
 
 /**

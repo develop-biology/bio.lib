@@ -82,7 +82,7 @@ void Periodic::SetLastPeakTimestamp(Timestamp lastPeak)
 	mLastPeakTimestamp = lastPeak;
 }
 
-Symmetry* Periodic::Spin() const
+const Symmetry* Periodic::Spin() const
 {
 	mSymmetry->AccessValue()->Set(mInterval);
 	return Wave::Spin();

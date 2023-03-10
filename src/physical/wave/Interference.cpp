@@ -21,6 +21,7 @@
 
 #include "bio/physical/wave/Interference.h"
 #include "bio/physical/common/Superpositions.h"
+#include "bio/physical/symmetry/SuperSymmetry.h"
 
 namespace bio {
 namespace physical {
@@ -35,36 +36,36 @@ Interference::~Interference()
 
 Superposition Interference::GetSuperpositionFor(const Id &symmetry) const
 {
-    SuperSymmetry* superSymmetry = GetSuperSymmetryFor(symmetry);
+    const SuperSymmetry* superSymmetry = GetSuperSymmetryFor(symmetry);
 	BIO_SANITIZE(superSymmetry, , return SuperpositionPerspective::InvalidId())
 	return superSymmetry->GetSuperposition();
 }
 
 void Interference::SetSuperpositionFor(const Id &symmetry, const Superposition &superposition)
 {
-	Index index = mLine.SeekToId(symmetry);
+	Index index = mSuperSymmetries.SeekToId(symmetry);
 	if (!index)
 	{
-		mLine.Add(Linear(new SuperSymmetry(symmetry, superposition)));
+		mSuperSymmetries.Add(Linear(new SuperSymmetry(symmetry, superposition)));
 	}
 	SuperSymmetry* superSymmetry = GetSuperSymmetryFor(symmetry);
 	BIO_SANITIZE(superSymmetry, , return NULL)
 	superSymmetry->SetSuperposition(superposition);
 }
 
-Interference* Interference::GetInterferenceFor(const Id& symmetry) const
+const Interference* Interference::GetInterferenceFor(const Id& symmetry) const
 {
-	SuperSymmetry* superSymmetry = GetSuperSymmetryFor(symmetry);
+	const SuperSymmetry* superSymmetry = GetSuperSymmetryFor(symmetry);
 	BIO_SANITIZE(superSymmetry, , return NULL)
 	return superSymmetry->GetInterference();
 }
 
 void Interference::SetInterferenceFor(const Id &symmetry, Interference *interference)
 {
-	Index index = mLine.SeekToId(symmetry);
+	Index index = mSuperSymmetries.SeekToId(symmetry);
 	if (!index)
 	{
-		mLine.Add(Linear(new SuperSymmetry(symmetry, superposition::Complex(), interference)));
+		mSuperSymmetries.Add(Linear(new SuperSymmetry(symmetry, superposition::Complex(), interference)));
 	}
 	SuperSymmetry* superSymmetry = GetSuperSymmetryFor(symmetry);
 	BIO_SANITIZE(superSymmetry, , return NULL)
@@ -73,16 +74,16 @@ void Interference::SetInterferenceFor(const Id &symmetry, Interference *interfer
 
 const SuperSymmetry* Interference::GetSuperSymmetryFor(const Id& symmetry) const
 {
-	Index index = mLine.SeekToId(symmetry);
+	Index index = mSuperSymmetries.SeekToId(symmetry);
 	BIO_SANITIZE(index, , return NULL)
-	return Cast< const SuperSymmetry* > mLine.LinearAccess(index);
+	return ForceCast< const SuperSymmetry* >(mSuperSymmetries.LinearAccess(index));
 }
 
 SuperSymmetry* Interference::GetSuperSymmetryFor(const Id& symmetry)
 {
-	Index index = mLine.SeekToId(symmetry);
+	Index index = mSuperSymmetries.SeekToId(symmetry);
 	BIO_SANITIZE(index, , return NULL)
-	return Cast< SuperSymmetry* > mLine.LinearAccess(index);
+	return ForceCast< SuperSymmetry* >(mSuperSymmetries.LinearAccess(index));
 }
 
 } //physical namespace

@@ -36,5 +36,7 @@ BIO_SYMMETRY_TYPE_FUNCTION_BODY(Variable);
 
 BIO_SYMMETRY_TYPE_FUNCTION_BODY(QualifyVariable);
 
+BIO_SYMMETRY_TYPE_FUNCTION_BODY(Super);
+
 } //symmetry_type namespace
 } //bio namespace
