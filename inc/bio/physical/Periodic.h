@@ -55,7 +55,7 @@ public:
 	static Properties GetClassProperties();
 
 	/**
-	 * @param interval the period that Peak() wants to be called in milliseconds.
+	 * @param interval the period that Crest() wants to be called in milliseconds.
 	 */
 	Periodic(MilliSeconds interval = GetDefaultInterval());
 
@@ -71,15 +71,15 @@ public:
 	virtual void InitializeImplementation(ByteStreams& args);
 
 	/**
-	 * Peak()s occur at Periodic::mIntervals. <br />
+	 * Crest()s occur at Periodic::mIntervals. <br />
 	 * Define your main Periodic logic here. <br />
 	 * This method must be fast: <br />
 	 *	* do not read slow hardware here <br />
 	 *	* do not block for a long time <br />
 	 *	* do not sleep <br />
-	 * If derived classes must do slow work, that slow logic MUST BE placed in a separate thread. This method would then get the data stored by that thread and return the data *quickly*. MAKE SURE that the thread never causes a long mutex wait as a side-effect in this Peak method. <br />
+	 * If derived classes must do slow work, that slow logic MUST BE placed in a separate thread. This method would then get the data stored by that thread and return the data *quickly*. MAKE SURE that the thread never causes a long mutex wait as a side-effect in this Crest method. <br />
 	 */
-	virtual Code Peak()
+	virtual Code Crest()
 	{
 
 		//     YOU CODE GOES HERE!
@@ -88,38 +88,38 @@ public:
 	}
 
 	/**
-	 * Checks the current time & calls Peak, if a long enough interval has passed. <br />
+	 * Checks the current time & calls Crest, if a long enough interval has passed. <br />
 	 * Call this method regularly (i.e. on a clock). <br />
 	 */
 	virtual void CheckIn();
 
 	/**
-	 * Set how quickly *this should Peak() <br />
+	 * Set how quickly *this should Crest() <br />
 	 * @param interval
 	 */
 	virtual void SetInterval(MilliSeconds interval);
 
 	/**
-	 * @return the time interval between Peaks of *this, in milliseconds.
+	 * @return the time interval between Crests of *this, in milliseconds.
 	 */
 	MilliSeconds GetInterval() const;
 
 	/**
-	 * @return the last time *this Peaked.
+	 * @return the last time *this Crested.
 	 */
-	Timestamp GetTimeLastPeaked() const;
+	Timestamp GetTimeLastCrested() const;
 
 	/**
-	 * @return the time interval between Peaks of *this, in seconds.
+	 * @return the time interval between Crests of *this, in seconds.
 	 */
 	float GetIntervalInSeconds() const;
 
 	/**
-	 * Sets the timestamp of the last time *this Peaked. <br />
+	 * Sets the timestamp of the last time *this Crested. <br />
 	 * USE WITH CAUTION! <br />
-	 * @param lastPeak
+	 * @param lastCrest
 	 */
-	virtual void SetLastPeakTimestamp(Timestamp lastPeak);
+	virtual void SetLastCrestTimestamp(Timestamp lastCrest);
 
 	/**
 	 * Required method from Wave. See that class for details. <br />
@@ -142,7 +142,7 @@ public:
 
 protected:
 	MilliSeconds mInterval;
-	Timestamp mLastPeakTimestamp;
+	Timestamp mLastCrestTimestamp;
 };
 
 } //physical namespace

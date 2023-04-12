@@ -19,24 +19,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/cellular/wave/PeakCarrierWave.h"
+#include "bio/cellular/wave/CrestCarrierWave.h"
 #include "bio/chemical/structure/motif/AbstractMotif.h"
 
 namespace bio {
 namespace cellular {
 
-PeakCarrierWave::PeakCarrierWave()
+CrestCarrierWave::CrestCarrierWave()
 	:
-	mPeakExcitation(&physical::Periodic::CheckIn)
+	mCrestExcitation(&physical::Periodic::CheckIn)
 {
-	Modulate(mPeakExcitation);
+	Modulate(mCrestExcitation);
 }
 
-PeakCarrierWave::~PeakCarrierWave()
+CrestCarrierWave::~CrestCarrierWave()
 {
 }
 
-Properties PeakCarrierWave::GetProperties() const
+Properties CrestCarrierWave::GetProperties() const
 {
 	Properties ret = chemical::AbstractMotif::GetClassProperties();
 	ret.Add(property::Linear());

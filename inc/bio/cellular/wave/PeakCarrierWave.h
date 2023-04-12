@@ -31,9 +31,9 @@ namespace bio {
 namespace cellular {
 
 /**
- * The PeakCarrierWave will propagate Peak Excitations to all LinearMotifs <br />
+ * The CrestCarrierWave will propagate Crest Excitations to all LinearMotifs <br />
  */
-class PeakCarrierWave :
+class CrestCarrierWave :
 	public physical::Wave
 {
 public:
@@ -41,12 +41,12 @@ public:
 	/**
 	 *
 	 */
-	PeakCarrierWave();
+	CrestCarrierWave();
 
 	/**
 	 *
 	 */
-	virtual ~PeakCarrierWave();
+	virtual ~CrestCarrierWave();
 
 	/**
 	 * Makes *this compatible with Motifs by copying the Properties of AbstractMotif. <br />
@@ -55,7 +55,7 @@ public:
 	virtual Properties GetProperties() const;
 
 protected:
-	BIO_EXCITATION_CLASS(physical::Periodic, void) mPeakExcitation;
+	BIO_EXCITATION_CLASS(physical::Periodic, void) mCrestExcitation;
 };
 
 } //cellular namespace

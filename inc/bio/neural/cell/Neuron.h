@@ -108,20 +108,20 @@ public:
 	*/
 
 	/**
-	Peak carries out time-based requirements of the specific neuron.
-	For example, a sensor Neuron might use Peak() to check the status of whatever hardware it is reading.
-	Peak will often contain neuron-specific code and handle the propagation of data through the neural framework. The reason data propagation is handled here is that incoming impulse expiration is handled directly before this is called. Thus, this method will have the most accurate view of the state of the Neuron (unless another method is implemented to handle incoming data).
+	Crest carries out time-based requirements of the specific neuron.
+	For example, a sensor Neuron might use Crest() to check the status of whatever hardware it is reading.
+	Crest will often contain neuron-specific code and handle the propagation of data through the neural framework. The reason data propagation is handled here is that incoming impulse expiration is handled directly before this is called. Thus, this method will have the most accurate view of the state of the Neuron (unless another method is implemented to handle incoming data).
 	Poll order is: 1. Confirm *this should be Polled, based on GetPollPeriod()
-	 2. PrePeak
+	 2. PreCrest
 	 3. Internal Neuron update (including checking all incoming synapses)
-	 4. Peak
+	 4. Crest
 	*/
-	virtual void Peak();
+	virtual void Crest();
 
 	/**
-	Activated at the top of Poll(), before internal stuffs and before Peak().
+	Activated at the top of Poll(), before internal stuffs and before Crest().
 	*/
-	virtual void PrePeak();
+	virtual void PreCrest();
 
 	//END: Recommended overrides
 
@@ -594,8 +594,8 @@ public:
 
 	/**
 	Poll is meant to be called on a clock.
-	Poll will perform all neuron related upkeep and then call Peak() to handle any clock related neural protein.
-	See Peak more info.
+	Poll will perform all neuron related upkeep and then call Crest() to handle any clock related neural protein.
+	See Crest more info.
 	*/
 	void Poll();
 

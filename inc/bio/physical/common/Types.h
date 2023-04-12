@@ -49,7 +49,7 @@ BIO_ID_WITH_PERSPECTIVE(State, uint8_t)
 
 /**
  * Properties are feature flags that give some hint of what a Wave can do (i.e. be cast as). <br />
- * For example, having the Periodic() Property means the class derives from Periodic and thus implements the Peak() method. <br />
+ * For example, having the Periodic() Property means the class derives from Periodic and thus implements the Crest() method. <br />
  * You might not know that the derived Wave included inheritance of Periodic without being able to GetResonanceBetween() the Wave* and the Periodic() Property. See Wave.h for more info on Resonance. <br />
  * <br />
  * While the State of an object might change often, the Properties should remain constant. However, that is not enforced. The properties of water change when its chemical state changes from liquid to solid, so the Properties of your objects could change in whatever way you'd like, though doing so is generally not recommended. <br />

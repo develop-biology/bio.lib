@@ -45,7 +45,7 @@ class OrganSystem;
  * Organs contain all of the DNA (Plasmids) they need to create all of their Cells. <br />
  * This means you should new the Plasmids necessary for your Organ within the BuildMobilome method. <br />
  *
- * Once your Organ is prepared, you can initialize it with SpecializeTissues() and run it with Peak. However, these will be done for you through the parent OrganSystem. <br />
+ * Once your Organ is prepared, you can initialize it with SpecializeTissues() and run it with Crest. However, these will be done for you through the parent OrganSystem. <br />
  */
 class Organ :
 	public Class< Organ >,

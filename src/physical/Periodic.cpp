@@ -49,7 +49,7 @@ Periodic::Periodic(MilliSeconds interval)
 			"mInterval",
 			symmetry_type::Variable())),
 	mInterval(interval),
-	mLastPeakTimestamp(0)
+	mLastCrestTimestamp(0)
 {
 }
 
@@ -67,9 +67,9 @@ MilliSeconds Periodic::GetInterval() const
 	return mInterval;
 }
 
-Timestamp Periodic::GetTimeLastPeaked() const
+Timestamp Periodic::GetTimeLastCrested() const
 {
-	return mLastPeakTimestamp;
+	return mLastCrestTimestamp;
 }
 
 float Periodic::GetIntervalInSeconds() const
@@ -77,9 +77,9 @@ float Periodic::GetIntervalInSeconds() const
 	return (static_cast<float>(mInterval)) / 1000.0f;
 }
 
-void Periodic::SetLastPeakTimestamp(Timestamp lastPeak)
+void Periodic::SetLastCrestTimestamp(Timestamp lastCrest)
 {
-	mLastPeakTimestamp = lastPeak;
+	mLastCrestTimestamp = lastCrest;
 }
 
 const Symmetry* Periodic::Spin() const
@@ -109,12 +109,12 @@ Properties Periodic::GetProperties() const
 void Periodic::CheckIn()
 {
 	Timestamp now = GetCurrentTimestamp();
-	if (now - GetTimeLastPeaked() < GetInterval())
+	if (now - GetTimeLastCrested() < GetInterval())
 	{
 		return;
 	}
-	Peak();
-	SetLastPeakTimestamp(now);
+	Crest();
+	SetLastCrestTimestamp(now);
 }
 
 } //physical namespace

@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/cellular/wave/PeakCarrierWave.h"
+#include "bio/cellular/wave/CrestCarrierWave.h"
 #include "bio/genetic/common/Class.h"
 #include "bio/molecular/Vesicle.h"
 #include "bio/physical/Periodic.h"
@@ -116,10 +116,10 @@ public:
 
 	}
 
-	virtual Code Peak()
+	virtual Code Crest()
 	{
-		static PeakCarrierWave sPeakCarrierWave;
-		return Attenuate(&sPeakCarrierWave);
+		static CrestCarrierWave sCrestCarrierWave;
+		return Attenuate(&sCrestCarrierWave);
 	}
 
 };

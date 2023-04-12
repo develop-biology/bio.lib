@@ -26,7 +26,7 @@
 namespace bio {
 
 /**
- * Forward Peak() to some other method in some other class. <br />
+ * Forward Crest() to some other method in some other class. <br />
  * The only requirements are that the given method return a bio::Code and take no arguments. <br />
  * @tparam CALLER class that implements the desired method.
  * @tparam CLOBBER a cellular::Class<> to forward from.
@@ -51,7 +51,7 @@ public:
 			this,
 			filter::Cellular()
 		),
-		mForwardedPeak(NULL),
+		mForwardedCrest(NULL),
 		mCaller(NULL)
 	{
 	}
@@ -65,7 +65,7 @@ public:
 			name,
 			filter::Cellular()
 		),
-		mForwardedPeak(NULL),
+		mForwardedCrest(NULL),
 		mCaller(NULL)
 	{
 	}
@@ -79,7 +79,7 @@ public:
 			id,
 			filter::Cellular()
 		),
-		mForwardedPeak(NULL),
+		mForwardedCrest(NULL),
 		mCaller(NULL)
 	{
 	}
@@ -89,37 +89,37 @@ public:
 	 */
 	virtual ~CellularForwarder()
 	{
-		BIO_ASSERT(mForwardedPeak);
-		delete mForwardedPeak;
+		BIO_ASSERT(mForwardedCrest);
+		delete mForwardedCrest;
 	}
 
 	/**
-	 * Set what Peak() should become. <br />
+	 * Set what Crest() should become. <br />
 	 * @param forwardTo
 	 */
-	void SetPeakFunction(
+	void SetCrestFunction(
 		bio::Code (CALLER::*forwardTo)(),
 		CALLER* caller)
 	{
-		mForwardedPeak = new BIO_EXCITATION_CLASS(CALLER, Code)(forwardTo);
+		mForwardedCrest = new BIO_EXCITATION_CLASS(CALLER, Code)(forwardTo);
 		mCaller = caller;
 	}
 
 	/**
-	 * Make Peak call something else. <br />
+	 * Make Crest call something else. <br />
 	 */
-	virtual Code Peak() BIO_FINAL
+	virtual Code Crest() BIO_FINAL
 	{
-		Code ret = (*mForwardedPeak)(mCaller);
+		Code ret = (*mForwardedCrest)(mCaller);
 
 		//Then also do this.
-		cellular::Class< CellularForwarder< CALLER, CLOBBER > >::Peak();
+		cellular::Class< CellularForwarder< CALLER, CLOBBER > >::Crest();
 
 		return ret;
 	}
 
 private:
-	BIO_EXCITATION_CLASS(CALLER, Code)* mForwardedPeak;
+	BIO_EXCITATION_CLASS(CALLER, Code)* mForwardedCrest;
 	CALLER* mCaller;
 };
 
