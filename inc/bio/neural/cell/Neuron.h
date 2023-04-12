@@ -21,16 +21,14 @@
 
 #pragma once
 
-#include <bio.h>
-#include "common/Class.h"
-#include "Aspect.h"
-#include "common/Types.h" //neural types
+#include "bio/neural/common/Class.h"
+#include "bio/neural/common/Types.h"
+#include "bio/neural/Aspect.h"
 
 namespace bio {
 namespace neural {
 
 class Synapse;
-
 class Personality;
 
 /**
@@ -39,19 +37,19 @@ class Personality;
 typedef std::vector< Synapse* > Synapses;
 
 /**
- * When to use a Neuron:
- * 1. You want explicit control over who can use what data when (structure).
- * 2. You want to process many signals in many different threads (asynchronicity).
- * 3. If Diffusing many signals through the Solute / Solvent system is cumbersome and Neurons are more effective.
- *
- * To use a Neuron, you must define the following:
- * 1. The Neuron child class; this is a Cell which holds whatever values and does whatever work you want.
- * 2. Define an ExciteTrigger which will determine what data is sent through which Synapses when (see below for more on that).
- * 3. Define the Neuron's Synapses, which connect it to other Neurons; this is the structure of your Organism's nervous system.
- *
- * In real-life biology, neurons are implemented with solutes, solvents, and proteins. These neurons (in theory) diffuse an arbitrary number of solutes (aka neurotransmitters) at once, and equalize carefully crafted imbalances in electrochemical gradients. Thus, neurons allow for fast, optimized delivery of information through structured channels which enforce requirements of how and when data may be accessed.
- * This is the spirit which we attempt to emulate here. However, we add an extra linear state-machine only benefit as well: asynchronicity.
- * While the Solute / Solvent system is entirely synchronous, Neurons, as defined here, may Egress Solutes to other threads to be processed at some time in the future.
+ * When to use a Neuron: <br />
+ * 1. You want explicit control over who can use what data when (structure). <br />
+ * 2. You want to process many signals in many different threads (asynchronicity). <br />
+ * 3. If Diffusing many signals through the Solute / Solvent system is cumbersome and Neurons are more effective. <br />
+ * <br />
+ * To use a Neuron, you must define the following: <br />
+ * 1. The Neuron child class; this is a Cell which holds whatever values and does whatever work you want. <br />
+ * 2. Define an ExciteTrigger which will determine what data is sent through which Synapses when (see below for more on that). <br />
+ * 3. Define the Neuron's Synapses, which connect it to other Neurons; this is the structure of your Organism's nervous system. <br />
+ * <br />
+ * In real-life biology, neurons are implemented with solutes, solvents, and proteins. These neurons (in theory) diffuse an arbitrary number of solutes (aka neurotransmitters) at once, and equalize carefully crafted imbalances in electrochemical gradients. Thus, neurons allow for fast, optimized delivery of information through structured channels which enforce requirements of how and when data may be accessed. <br />
+ * This is the spirit which we attempt to emulate here. However, we add an extra linear state-machine only benefit as well: asynchronicity. <br />
+ * While the Solute / Solvent system is entirely synchronous, Neurons, as defined here, may Egress Solutes to other threads to be processed at some time in the future. <br />
  */
 class Neuron :
 	public neural::Class< Neuron >,
@@ -59,8 +57,7 @@ class Neuron :
 {
 public:
 
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(neural, Neuron
-	)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(neural, Neuron)
 
 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
 		neural,
@@ -70,8 +67,8 @@ public:
 	)
 
 	/**
-	 * Copies all values in *this.
-	 * Synapses are NOT copied.
+	 * Copies all values in *this. <br />
+	 * Synapses are NOT copied. <br />
 	 * @param other
 	 */
 	Neuron(const Neuron& other);
@@ -79,14 +76,14 @@ public:
 	//START: Recommended overrides
 
 	/**
-	These are the most important methods for every Neuron.
-	However, they may not all be required for your Neuron.
-	*/
+	 * These are the most important methods for every Neuron.
+	 * However, they may not all be required for your Neuron.
+	 */
 
 	/**
-	RETURNS: whether or not *this should be active.
-	It is up to each individual neuron to determine what is appropriate here.
-	*/
+	 * It is up to each individual neuron to determine what is appropriate here. <br />
+	 * @return whether or not *this should be active
+	 */
 	virtual bool ExciteTrigger() const
 	{
 		return false;
@@ -111,20 +108,20 @@ public:
 	*/
 
 	/**
-	OnPoll carries out time-based requirements of the specific neuron.
-	For example, a sensor Neuron might use OnPoll() to check the status of whatever hardware it is reading.
-	OnPoll will often contain neuron-specific code and handle the propagation of data through the neural framework. The reason data propagation is handled here is that incoming impulse expiration is handled directly before this is called. Thus, this method will have the most accurate view of the state of the Neuron (unless another method is implemented to handle incoming data).
+	Peak carries out time-based requirements of the specific neuron.
+	For example, a sensor Neuron might use Peak() to check the status of whatever hardware it is reading.
+	Peak will often contain neuron-specific code and handle the propagation of data through the neural framework. The reason data propagation is handled here is that incoming impulse expiration is handled directly before this is called. Thus, this method will have the most accurate view of the state of the Neuron (unless another method is implemented to handle incoming data).
 	Poll order is: 1. Confirm *this should be Polled, based on GetPollPeriod()
-	 2. PrePoll
+	 2. PrePeak
 	 3. Internal Neuron update (including checking all incoming synapses)
-	 4. OnPoll
+	 4. Peak
 	*/
-	virtual void OnPoll();
+	virtual void Peak();
 
 	/**
-	Activated at the top of Poll(), before internal stuffs and before OnPoll().
+	Activated at the top of Poll(), before internal stuffs and before Peak().
 	*/
-	virtual void PrePoll();
+	virtual void PrePeak();
 
 	//END: Recommended overrides
 
@@ -597,8 +594,8 @@ public:
 
 	/**
 	Poll is meant to be called on a clock.
-	Poll will perform all neuron related upkeep and then call OnPoll() to handle any clock related neural protein.
-	See OnPoll more info.
+	Poll will perform all neuron related upkeep and then call Peak() to handle any clock related neural protein.
+	See Peak more info.
 	*/
 	void Poll();
 

@@ -28,11 +28,11 @@
  * @return function signatures for use in BIO_DISAMBIGUATE_REQUIRED_CLASS_METHODS
  */
 #define BIO_GET_REQUIRED_CLASS_METHODS_FOR_circulatory()                       \
-    BIO_GET_REQUIRED_CLASS_METHODS_FOR_genetic()
+    BIO_GET_REQUIRED_CLASS_METHODS_FOR_cellular()
 
 /**
  * Get all virtual methods defined by circulatory::Class. <br />
  * @return function signatures for use in BIO_DISAMBIGUATE_OPTIONAL_CLASS_METHODS
  */
 #define BIO_GET_OPTIONAL_CLASS_METHODS_FOR_circulatory()                       \
-    BIO_GET_OPTIONAL_CLASS_METHODS_FOR_genetic()
+    BIO_GET_OPTIONAL_CLASS_METHODS_FOR_cellular()

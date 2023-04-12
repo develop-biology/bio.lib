@@ -26,11 +26,6 @@
 namespace bio {
 namespace transcription_factor {
 
-TranscriptionFactor Neuron();
-
-TranscriptionFactor Synapse();
-
-TranscriptionFactor Brain();
 
 } //transcription_factor namespace
 } //bio namespace

@@ -35,8 +35,14 @@ class Mix :
 {
 public:
 
+	/**
+	 *
+	 */
 	Mix();
 
+	/**
+	 *
+	 */
 	virtual ~Mix();
 
 	/**

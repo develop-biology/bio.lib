@@ -42,7 +42,7 @@ Neuron::Neuron(Name name) : Named(name, &NeuronTracker::Instance()), m_prePoll(N
 
     AddTrait("Neuron");
 
-    CreateTopLevelProtein("PrePoll");
+    CreateTopLevelProtein("PrePeak");
     CreateTopLevelProtein("Poll");
     CreateTopLevelProtein("PreSend");
     CreateTopLevelProtein("PostSend");
@@ -125,7 +125,7 @@ NeuropilIds::const_iterator Neuron::FindContainer(NeuropilId neuropilId) const
 
 void Neuron::TranscribeTopLevelProteins()
 {
-    m_prePoll = GetProtein("PrePoll");
+    m_prePoll = GetProtein("PrePeak");
     m_poll = GetProtein("Poll");
     m_preSend = GetProtein("PreSend");
     m_postSend = GetProtein("PostSend");
@@ -164,7 +164,7 @@ std::string Neuron::PrettyID() const
     }
 }
 
-void Neuron::PrePoll()
+void Neuron::PrePeak()
 {
     StandardActivate(m_prePoll);
 }
@@ -179,12 +179,12 @@ void Neuron::Poll()
     }
     m_lastPollTimestamp = now;
 
-    PrePoll();
+    PrePeak();
     ProcessAllSynapses();
-    OnPoll();
+    Peak();
 }
 
-void Neuron::OnPoll()
+void Neuron::Peak()
 {
     StandardActivate(m_poll);
 }

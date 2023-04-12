@@ -25,7 +25,8 @@ namespace bio {
 namespace physical {
 
 Collapse::Collapse(const Superposition& applyTo) :
-	physical::Class< Collapse >(this)
+	physical::Class< Collapse >(this),
+	physical::Identifiable< Superposition >(applyTo)
 {
 	SuperpositionPerspective::Instance().AssociateType(applyTo, this);
 }

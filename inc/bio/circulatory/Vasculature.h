@@ -34,7 +34,8 @@ namespace circulatory {
  * You may have multiple Vasculatures in the same way you may have multiple Hearts. Doing so will create distinct regions of synchronicity in your Organism. For example, if your Organism models a population of bacteria, each bacterium could have its own Vasculature and interact with its environment in a manner disparate from its neighbors. <br />
  */
 class Vasculature :
-	public cellular::Class< Vasculature >,
+	public circulatory::Class< Vasculature >,
+	public cellular::DependentMotif< BloodVessel, Vasculature>,
 	public cellular::Tissue
 {
 public:
@@ -42,12 +43,12 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular, Vasculature)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(circulatory, Vasculature)
 
 	/**
 	 * Standard constructors. <br />
 	 */
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(circulatory,
 		Vasculature,
 		&TissuePerspective::Instance(),
 		filter::Circulatory()

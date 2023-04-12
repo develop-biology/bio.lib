@@ -30,7 +30,7 @@ Mix::Mix() :
 		"Mix",
 		filter::Chemical(),
 		symmetry_type::Operation()
-		),
+	),
 	Reaction("Mix")
 {
 
@@ -44,14 +44,34 @@ Mix::~Mix()
 Products Mix::Process(Reactants* reactants) const
 {
 	SmartIterator sub = reactants->Covalent< LinearMotif< Substance* > >::Object()->GetAllImplementation()->Begin();
-	Substance* primeSubstance = sub.As< Substance* >()
+	Substance* primeSubstance = sub.As< Substance* >();
+	const Miscibility* miscibility = NULL
 	for (
 		++sub;
 		!sub.IsAfterEnd();
 		++sub
-		)
+	)
 	{
-		
+		const Wave* substanceWave = sub.As< Substance* >()->AsWave();
+
+		//Each Property has its own Miscibility and is Superposed separately.
+		const Properties properties = physical::Wave::GetResonnanceBetween(primeSubstance->AsWave(), substanceWave);
+		for (
+			SmartIterator prp = properties.Begin();
+			!prp.IsAfterEnd();
+			++prp
+			)
+		{
+			miscibility = MiscibilityPerspective::Instance()->GetTypeFromIdAs< Miscibility* >(Cast< PropertyDimension >(prp.As< Property >()));
+			BIO_SANITIZE(miscibility,,continue)
+			
+			//The miscibility must perform the appropriate cast of sub.
+			//Superpose should now be able to ForceCast the displacement to what it expects.
+			const Wave* displacement = miscibility->GetDisplacement(substanceWave);
+	
+			//Interference gives us the Superposition for the primeSubstance's Symmetry, and thus determines how the Superposed Wave will Collapse.
+			primeSubstance->Superpose(displacement, miscibility->GetInterference());
+		}
 	}
 }
 

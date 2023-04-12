@@ -24,7 +24,7 @@
 #include "bio/cellular/common/Class.h"
 
 namespace bio {
-namespace neural {
+namespace circulatory {
 
 /**
  * A circulatory::Class extends cellular::Class <br />
@@ -122,5 +122,5 @@ public:
 
 };
 
-} //neural namespace
+} //cellular namespace
 } //bio namespace

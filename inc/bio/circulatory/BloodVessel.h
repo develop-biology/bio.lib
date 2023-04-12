@@ -32,16 +32,16 @@ namespace circulatory {
  * BloodVessels use Blood as their Solvent and are thread safe. <br />
  */
 class BloodVessel :
-	public cellular::Class< BloodVessel >,
-	public cellular::Cell
+	public circulatory::Class< BloodVessel >,
+	public circulatory::Cell
 {
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular, BloodVessel)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(circulatory, BloodVessel)
 
 	/**
 	 * Standard constructors. <br />
 	 */
 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
-		cellular,
+		circulatory,
 		BloodVessel,
 		&BloodVesselPerspective::Instance(),
 		filter::Circulatory()

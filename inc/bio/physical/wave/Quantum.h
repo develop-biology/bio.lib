@@ -24,8 +24,10 @@
 #include "bio/physical/common/Class.h"
 #include "bio/physical/symmetry/Symmetry.h"
 #include "bio/physical/common/SymmetryTypes.h"
+#include "bio/physical/common/Superpositions.h"
 #include "bio/common/macro/Macros.h"
 #include "bio/common/type/TypeName.h"
+#include "Collapse.h"
 
 namespace bio {
 namespace physical {
@@ -198,11 +200,11 @@ public:
 	virtual bool Superpose(const ConstWaves& displacement, const Interference* pattern)
 	{
 		//First, make sure our parent can't take care of this for us.
-		BIO_SANITIZE_AT_SAFETY_LEVEL_1(this->Wave::Superpose(interferer),return true,)
+		BIO_SANITIZE_AT_SAFETY_LEVEL_1(this->Wave::Superpose(displacement),return true,)
 
 		//Assume all Waves, including *this, are Spinning appropriately.
 
-		const Superposition superposition = pattern->GetSuperpositionFor(mSymmetry);
+		const Superposition superposition = pattern->GetSuperpositionFor(this->mSymmetry);
 
 		if (superposition == superposition::Complex())
 		{

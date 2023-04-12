@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2022 Séon O'Shannon & eons LLC
+ * Copyright (C) 2023 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,36 +19,39 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include "bio/cellular/Organ.h"
-#include "bio/circulatory/common/Types.h"
+#include "bio/chemical/mixture/Miscibility.h"
 
 namespace bio {
-namespace circulatory {
+namespace chemical {
 
-class Heart :
-	public circulatory::Class< Heart >,
-	public cellular::Organ
+Miscibility::Miscibility(const Property& property)
 {
-public:
-	/**
-	 * Ensure virtual methods point to Class implementations. <br />
-	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(circulatory, Heart)
 
-	/**
-	 * Standard constructors. <br />
-	 */
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
-		circulatory,
-		Heart,
-		filter::Circulatory()
-	)
+}
 
-	virtual ~Heart();
+Miscibility::~Miscibility()
+{
+	if (mInterference)
+	{
+		delete mInterference;
+		mInterference = NULL;
+	}
+}
 
-};
+const physical::Wave* Miscibility::GetDisplacement(const Substance* substance) const
+{
 
-} // circulatory
+}
+
+const physical::Interference* Miscibility::GetInterference() const
+{
+
+}
+
+void Miscibility::SetInterference(physical::Interference* interference)
+{
+
+}
+
+} //chemical namespace
 } //bio namespace

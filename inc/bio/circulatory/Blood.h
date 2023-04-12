@@ -23,6 +23,7 @@
 
 #include "bio/chemical/solution/Solvent.h"
 #include "bio/circulatory/common/Types.h"
+#include "bio/circulatory/macro/Macros.h"
 
 namespace bio {
 namespace circulatory {
@@ -34,11 +35,12 @@ namespace circulatory {
  * This class may be expanded later as specific Circulatory requirements are expanded. <br />
  */
 class Blood :
+	public chemical::Class< Blood >,
 	public chemical::Solvent,
 	public ThreadSafe
 {
 public:
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS_FOR(chemical, Blood)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical, Blood)
 
 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(
 		chemical,

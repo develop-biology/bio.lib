@@ -28,7 +28,7 @@ namespace bio {
 namespace chemical {
 
 /**
- * DependentMotifs extend DependentMotifs by adding support for EnvironmentDependent objects. <br />
+ * DependentMotifs extend LinearMotifs by adding support for EnvironmentDependent objects. <br />
  * When an object is added to a DependentMotif, the object's Environment is Set as that stored in *this. <br />
  */
 template < typename CONTENT_TYPE, typename ENVIRONMENT >

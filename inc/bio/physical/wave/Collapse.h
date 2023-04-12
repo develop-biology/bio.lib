@@ -32,7 +32,9 @@ namespace physical {
  * Thus, instead of implementing the behavior each Superposition has on your complex Wave, you can simply call Collapse::Measure(Superposition, ...) .<br />
  * Collapses automatically register themselves with the SuperpositionPerspective. <br />
  */
-class Collapse : public physical::Class< Collapse >
+class Collapse :
+	public physical::Class< Collapse >,
+	public physical::Identifiable< Superposition >
 {
 public:
 	/**
@@ -58,7 +60,7 @@ public:
 	 * This is a convenience function which calls the operator() function of the appropriate Collapse object. <br />
 	 * @param superposition
 	 * @param waves
-	 * @return
+	 * @return the result of Collapsing the given superposition.
 	 */
 	static ByteStream Measure(const Superposition& superposition, ConstWaves& waves);
 };
