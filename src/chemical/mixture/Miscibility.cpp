@@ -20,11 +20,22 @@
  */
 
 #include "bio/chemical/mixture/Miscibility.h"
+#include "bio/physical/wave/Interference.h"
 
 namespace bio {
 namespace chemical {
 
+Miscibility::Miscibility()
+{
+
+}
+
 Miscibility::Miscibility(const Property& property)
+{
+
+}
+
+Miscibility::Miscibility(const Name& name)
 {
 
 }
@@ -43,9 +54,9 @@ const physical::Wave* Miscibility::GetDisplacement(const Substance* substance) c
 
 }
 
-const physical::Interference* Miscibility::GetInterference() const
+physical::Interference* Miscibility::GetInterference() const
 {
-
+	return mInterference->Clone();
 }
 
 void Miscibility::SetInterference(physical::Interference* interference)

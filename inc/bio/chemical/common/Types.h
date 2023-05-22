@@ -24,6 +24,7 @@
 #include "bio/physical/common/Types.h"
 #include "bio/physical/macro/Macros.h"
 #include "bio/physical/relativity/Perspective.h"
+#include "bio/physical/relativity/TypedPerspective.h"
 
 namespace bio {
 
@@ -39,9 +40,9 @@ BIO_PERSPECTIVE_SINGLETON(BondTypePerspective, BondType)
 /**
  * Miscibility is the ability of 2 Substances (usually Solutes) to Mix. <br />
  * Here, we refer to "Miscibility" as a noun meaning "the strategy by which 2 Substances are mixed"; however, in practice, we apply a set of Miscibilities to the set of chemical::Symmetries the Substance possesses and not to the Substances themselves. Thus, Miscibilities are atomic and applied to a recursive structure. <br />
- * See Miscibilities.h for examples. <br />
+ * See Miscibility.h for more info. <br />
  */
-BIO_ID_WITH_PERSPECTIVE_WITH_PLURAL(Miscibility, Miscibilities, uint8_t)
+BIO_TYPED_PERSPECTIVE_SINGLETON(MiscibilityPerspective, Property)
 
 /**
  * Diffusion Time and Effort determine when and which Solutes are Mixed. <br />

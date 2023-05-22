@@ -245,7 +245,7 @@ bool Wave::Superpose(const Wave* displacement, Interference* pattern)
 	return false;
 }
 
-void Wave::Superpose(const ConstWaves& displacement, Interference* pattern)
+Wave* Wave::Superpose(const ConstWaves& displacement, Interference* pattern)
 {
 	for (
 		SmartIterator wav = displacement.Begin()++;
@@ -255,6 +255,7 @@ void Wave::Superpose(const ConstWaves& displacement, Interference* pattern)
 	{
 		Superpose(wav.As< const Wave* >(), pattern);
 	}
+	return this;
 }
 
 } //physical namespace

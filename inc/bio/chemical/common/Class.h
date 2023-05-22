@@ -96,8 +96,57 @@ private:
 public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
+	 * We take manual control of this to hack around the AsAtom method being shimmed into Wave. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, T)
+	//	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, T)
+	virtual ::bio::physical::Wave* Clone() const
+	{
+		return this->::bio::physical::Class< T >::Clone();
+	}
+	::bio::physical::Wave* AsWave()
+	{
+		return this->::bio::physical::Class< T >::AsWave();
+	}
+	const ::bio::physical::Wave* AsWave() const
+	{
+		return this->::bio::physical::Class< T >::AsWave();
+	}
+	operator ::bio::physical::Wave*()
+	{
+		return this->::bio::physical::Class< T >::operator ::bio::physical::Wave*();
+	}
+	virtual ::bio::physical::Wave* Modulate(::bio::physical::Wave* signal)
+	{
+		return this->::bio::physical::Class< T >::Modulate(signal);
+	}
+	virtual ::bio::physical::Wave* Demodulate()
+	{
+		return this->::bio::physical::Class< T >::Demodulate();
+	}
+	virtual const ::bio::physical::Wave* Demodulate() const
+	{
+		return this->::bio::physical::Class< T >::Demodulate();
+	}
+	virtual ::bio::physical::Wave* Superpose(
+		const ::bio::physical::ConstWaves& displacement,
+		::bio::physical::Interference* pattern
+	)
+	{
+		return this->::bio::physical::Class< T >::Superpose(
+			displacement,
+			pattern
+		);
+	}
+	virtual bool Superpose(
+		const ::bio::physical::Wave* displacement,
+		::bio::physical::Interference* pattern
+	)
+	{
+		return this->::bio::physical::Class< T >::Superpose(
+			displacement,
+			pattern
+		);
+	}
 
 	/**
 	 * For when we know the Perspective but not ourselves. <br />

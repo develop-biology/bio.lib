@@ -23,6 +23,7 @@
 
 #include "bio/physical/common/Class.h"
 #include "bio/physical/common/Superpositions.h"
+#include "bio/physical/relativity//Identifiable.h"
 
 namespace bio {
 namespace physical {
@@ -37,6 +38,12 @@ class Collapse :
 	public physical::Identifiable< Superposition >
 {
 public:
+
+	/**
+	 * Ensure virtual methods point to Class implementations. <br />
+	 */
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, Collapse)
+
 	/**
 	 * @param applyTo
 	 */
@@ -54,7 +61,7 @@ public:
 	 * @param waves
 	 * @return like, whatever. man.
 	 */
-	virtual ByteStream operator()(ConstWaves& waves) const;
+	virtual ByteStream operator()(const ConstWaves& waves) const;
 
 	/**
 	 * This is a convenience function which calls the operator() function of the appropriate Collapse object. <br />
@@ -62,7 +69,7 @@ public:
 	 * @param waves
 	 * @return the result of Collapsing the given superposition.
 	 */
-	static ByteStream Measure(const Superposition& superposition, ConstWaves& waves);
+	static ByteStream Measure(const Superposition& superposition, const ConstWaves& waves);
 };
 
 } // namespace physical

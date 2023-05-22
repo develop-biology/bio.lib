@@ -28,7 +28,7 @@ Collapse::Collapse(const Superposition& applyTo) :
 	physical::Class< Collapse >(this),
 	physical::Identifiable< Superposition >(applyTo)
 {
-	SuperpositionPerspective::Instance().AssociateType(applyTo, this);
+	SuperpositionPerspective::Instance().AssociateType(applyTo, this->AsWave());
 }
 
 Collapse::~Collapse()
@@ -36,14 +36,14 @@ Collapse::~Collapse()
 
 }
 
-ByteStream Collapse::operator()(ConstWaves& waves) const
+ByteStream Collapse::operator()(const ConstWaves& waves) const
 {
 	return 0;
 }
 
 /*static*/ ByteStream Collapse::Measure(
 	const Superposition& superposition,
-	ConstWaves& waves
+	const ConstWaves& waves
 )
 {
 	Collapse* collapse = SuperpositionPerspective::Instance().GetTypeFromIdAs<Collapse*>(superposition);

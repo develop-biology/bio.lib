@@ -22,10 +22,11 @@
 #pragma once
 
 #include "bio/chemical/common/Types.h"
+#include "bio/chemical/common/Filters.h"
+#include "bio/chemical/common/Class.h"
 #include "bio/chemical/macro/Macros.h"
 #include "bio/chemical/structure/motif/DependentMotif.h"
 #include "bio/chemical/Substance.h"
-
 
 namespace bio {
 namespace chemical {
@@ -59,9 +60,12 @@ class Solvent :
 {
 public:
 
+	/**
+	 * Ensure virtual methods point to Class implementations. <br />
+	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical, Solvent)
 
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
 		chemical,
 		Solvent,
 		filter::Chemical()
@@ -92,6 +96,14 @@ public:
 	 * @return the Id of the Solute created or mixed in *this.
 	 */
 	virtual Id Ingress(const Solute& toIngress);
+
+	/**
+	 * When a Solute is removed from a child Solvent, it should decrease the Concentration in the parent Solvent. <br />
+	 * While Solutes should always be Ingressed before their Concentration is decreased, their Concentration should not always be decreased when they are Ingressed. Hence, we provide DecreaseConcentration as a separate method from Ingress. <br />
+	 * This method should only be called from Solute. <br />
+	 * @param soluteIndex the Index of the desired Solute in *this; must be known ahead of time (e.g. by the Solute being modified).
+	 */
+	virtual void DecrementConcentration(const Index soluteIndex);
 
 	/**
 	 * Egress a Solute to access it. <br />

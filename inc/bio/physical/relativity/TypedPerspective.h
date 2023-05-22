@@ -71,14 +71,14 @@ public:
 	 * @return true if the association completed successfully else false
 	 */
 	virtual bool AssociateType(
-		DIMENSION id,
+		const DIMENSION& id,
 		physical::Wave* type
 	)
 	{
 		BIO_SANITIZE(type, , return false)
-		TypedBrane< DIMENSION >* brane = GetBraneAs< TypedBrane< DIMENSION >* >(id);
+		TypedBrane< DIMENSION >* brane = this->template GetBraneAs< TypedBrane< DIMENSION >* >(id);
 		BIO_SANITIZE(brane, , return false)
-		BIO_SANITIZE_AT_SAFETY_LEVEL_1(brane->mType, , return false) //it's okay if mType is NULL
+		// BIO_SANITIZE_AT_SAFETY_LEVEL_1(brane->mType, , return false) //it's okay if mType is NULL
 		brane->mType = type;
 		return true;
 	}
@@ -89,9 +89,9 @@ public:
 	 * @param id
 	 * @return true if the association was removed else false.
 	 */
-	virtual bool DisassociateType(DIMENSION id)
+	virtual bool DisassociateType(const DIMENSION& id)
 	{
-		TypedBrane< DIMENSION >* brane = GetBraneAs< TypedBrane< DIMENSION >* >(id);
+		TypedBrane< DIMENSION >* brane = this->template GetBraneAs< TypedBrane< DIMENSION >* >(id);
 		BIO_SANITIZE(brane, , return false)
 		if (brane->mType)
 		{
@@ -106,9 +106,9 @@ public:
 	 * @param id
 	 * @return the pointer to the Wave type associated with the given id else NULL.
 	 */
-	virtual const Wave* GetTypeFromId(DIMENSION id) const
+	virtual const Wave* GetTypeFromId(const DIMENSION& id) const
 	{
-		TypedBrane< DIMENSION >* brane = GetBraneAs< TypedBrane< DIMENSION >* >(id);
+		TypedBrane< DIMENSION >* brane = this->template GetBraneAs< TypedBrane< DIMENSION >* >(id);
 		BIO_SANITIZE(brane, , return NULL)
 		return brane->mType;
 	}
@@ -120,7 +120,7 @@ public:
 	 */
 	virtual const Wave* GetTypeFromName(const Name& name) const
 	{
-		return GetTypeFromId(this->GetIdWithoutCreation(name));
+		return this->GetTypeFromId(this->GetIdWithoutCreation(name));
 	}
 
 	/**
@@ -133,7 +133,7 @@ public:
 	const T GetTypeFromIdAs(const DIMENSION& id) const
 	{
 		BIO_STATIC_ASSERT(type::IsPointer< T >())
-		BIO_SANITIZE_WITH_CACHE(GetTypeFromId(id),
+		BIO_SANITIZE_WITH_CACHE(this->GetTypeFromId(id),
 			BIO_SINGLE_ARG(return ForceCast< T, const Wave* >(RESULT)),
 			return NULL
 		)
@@ -149,7 +149,7 @@ public:
 	const T GetTypeFromNameAs(const Name& name) const
 	{
 		BIO_STATIC_ASSERT(type::IsPointer< T >())
-		BIO_SANITIZE_WITH_CACHE(GetTypeFromName(name),
+		BIO_SANITIZE_WITH_CACHE(this->GetTypeFromName(name),
 			BIO_SINGLE_ARG(return ForceCast< T, const Wave* >(RESULT)),
 			return NULL
 		)
@@ -162,7 +162,7 @@ public:
 	 */
 	virtual Wave* GetNewObjectFromId(const DIMENSION& id) const
 	{
-		const Wave* type = GetTypeFromId(id);
+		const Wave* type = this->GetTypeFromId(id);
 		BIO_SANITIZE(type, , return NULL)
 		return type->Clone();
 	}
@@ -174,7 +174,7 @@ public:
 	 */
 	virtual Wave* GetNewObjectFromName(const Name& name)
 	{
-		const Wave* type = GetTypeFromName(name);
+		const Wave* type = this->GetTypeFromName(name);
 		BIO_SANITIZE(type, , return NULL)
 		return type->Clone();
 	}
@@ -190,7 +190,7 @@ public:
 	{
 		BIO_STATIC_ASSERT(type::IsPointer< T >())
 		BIO_STATIC_ASSERT(type::IsWave< T >())
-		BIO_SANITIZE_WITH_CACHE(GetNewObjectFromId(id),
+		BIO_SANITIZE_WITH_CACHE(this->GetNewObjectFromId(id),
 			BIO_SINGLE_ARG(
 				return ForceCast< physical::Class< T >*, Wave* >(RESULT)->GetWaveObject()
 			),
@@ -207,7 +207,7 @@ public:
 	template < typename T >
 	T GetNewObjectFromNameAs(const Name& name)
 	{
-		return GetNewObjectFromIdAs< T >(this->GetIdWithoutCreation(name));
+		return this->GetNewObjectFromIdAs< T >(this->GetIdWithoutCreation(name));
 	}
 
 

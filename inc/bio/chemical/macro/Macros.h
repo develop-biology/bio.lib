@@ -41,17 +41,11 @@
         GetProperties()                                                        \
     ),                                                                         \
     (                                                                          \
-        virtual ::bio::chemical::Atom* AsAtom(),                               \
-        AsAtom()                                                               \
-    ),                                                                         \
-    (                                                                          \
         template< typename AS > operator AS(),                                 \
         template As< AS >()                                                    \
-    ),                                                                         \
-    (                                                                          \
-        virtual const ::bio::chemical::Atom* AsAtom() const,                   \
-        AsAtom()                                                               \
     )
+
+
 /**
  * Get all virtual methods defined by chemical::Class. <br />
  * @return function signatures for use in BIO_DISAMBIGUATE_ALL_CLASS_METHODS

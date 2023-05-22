@@ -28,6 +28,7 @@
 #include "bio/chemical/common/Class.h"
 #include "bio/chemical/common/Filters.h"
 #include "bio/chemical/bonding/Covalent.h"
+#include "bio/chemical/mixture/Miscibility.h"
 #include "bio/chemical/Substance.h"
 
 namespace bio {

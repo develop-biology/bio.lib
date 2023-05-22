@@ -19,8 +19,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
 #include "bio/chemical/solution/Solvent.h"
 #include "bio/chemical/solution/Solute.h"
 
@@ -40,6 +38,16 @@ Substance* Solvent::Separate(const Id& id)
 Id Solvent::Ingress(const Solute& toIngress)
 {
 
+}
+
+void Solvent::DecrementConcentration(const Index soluteIndex)
+{
+	BIO_SANITIZE(this->IsAllocated(soluteIndex), , return)
+
+	//We need to access the Solute we want to change directly, rather than make a copy as OptimizedAccess would do.
+	Solute* solute = ForceCast< Solute* >(&this->mStore[soluteIndex * sizeof(Solute)]);
+	BIO_SANITIZE(solute, , return)
+	solute->DecrementConcentration();
 }
 
 Solute& Solvent::Egress(const Id& soluteId)

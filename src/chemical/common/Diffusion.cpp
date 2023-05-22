@@ -19,9 +19,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include "Types.h"
+#include "bio/chemical/common/Types.h"
+#include "bio/chemical/macro/Macros.h"
 
 namespace bio {
 namespace diffusion {

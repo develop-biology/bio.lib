@@ -42,8 +42,8 @@ public:
 	 * Ensure virtual methods point to Class implementations. <br />
 	 * We want to define our own Attenuate & Disattenuate, so we have to ignore the optional class methods for the chemical class. <br />
 	 */
-	BIO_DISAMBIGUATE_REQUIRED_CLASS_METHODS(chemical, DependentMotif< CONTENT_TYPE, ENVIRONMENT >)
-	BIO_DISAMBIGUATE_OPTIONAL_CLASS_METHODS(physical, DependentMotif< CONTENT_TYPE, ENVIRONMENT >)
+	BIO_DISAMBIGUATE_REQUIRED_CLASS_METHODS(chemical, BIO_SINGLE_ARG(DependentMotif< CONTENT_TYPE, ENVIRONMENT >))
+	BIO_DISAMBIGUATE_OPTIONAL_CLASS_METHODS(physical, BIO_SINGLE_ARG(DependentMotif< CONTENT_TYPE, ENVIRONMENT >))
 
 	/**
 	 * @param environment
@@ -67,7 +67,7 @@ public:
 	 * @param perspective
 	 */
 	explicit DependentMotif(
-		const Contents* contents,
+		const LinearMotif< CONTENT_TYPE >::Contents* contents,
 		ENVIRONMENT* environment = NULL,
 		physical::Perspective< Id >* perspective = NULL
 	)
@@ -84,7 +84,7 @@ public:
 	 * Keep in mind that dtor will delete the contents of *this. <br />
 	 * @param toCopy
 	 */
-	DependentMotif(const DependentMotif< CONTENT_TYPE >& toCopy)
+	DependentMotif(const DependentMotif< CONTENT_TYPE, ENVIRONMENT >& toCopy)
 		:
 		chemical::Class< DependentMotif< CONTENT_TYPE, ENVIRONMENT > >(this),
 		EnvironmentDependent< ENVIRONMENT >(toCopy),
@@ -108,7 +108,7 @@ public:
 	 */
 	virtual void SetEnvironment(ENVIRONMENT* environment)
 	{
-		EnvironmentDependent::SetEnvironment(environment);
+		this->EnvironmentDependent< ENVIRONMENT >::SetEnvironment(environment);
 		for (
 			SmartIterator cnt = this->mContents->End();
 			!cnt.IsBeforeBeginning();
@@ -154,7 +154,7 @@ public:
 	)
 	{
 		BIO_SANITIZE(toAdd, , return code::MissingArgument1())
-		toAdd->SetEnvironment(GetEnvironment());
+		toAdd->SetEnvironment(this->GetEnvironment());
 		return chemical::LinearMotif< CONTENT_TYPE >::InsertImplementation(
 			toAdd,
 			position,

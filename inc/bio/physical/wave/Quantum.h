@@ -28,6 +28,7 @@
 #include "bio/common/macro/Macros.h"
 #include "bio/common/type/TypeName.h"
 #include "Collapse.h"
+#include "Interference.h"
 
 namespace bio {
 namespace physical {

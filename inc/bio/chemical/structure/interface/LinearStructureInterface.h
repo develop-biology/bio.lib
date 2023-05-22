@@ -195,10 +195,10 @@ public:
 	 * @return the T removed or NULL; NULL if T is invalid.
 	 */
 	template < typename T >
-	const T RemoveById(const Id& id)
+	T RemoveById(const Id& id)
 	{
 		BIO_STATIC_ASSERT(type::IsPointer< T >())
-		const LinearMotif< T >* implementer = this->As< LinearMotif< T >* >();
+		LinearMotif< T >* implementer = this->As< LinearMotif< T >* >();
 		BIO_SANITIZE(implementer,
 			return implementer->RemoveByIdImplementation(id),
 			return NULL

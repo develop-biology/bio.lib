@@ -166,20 +166,21 @@ public:
 	 * <br />
 	 * IMPORTANT: THERE IS NO WAY TO UNDO SUPERPOSING! <br />
 	 *
-	 * @param interferer that which should change *this.
+	 * @param displacement that which should change *this.
 	 * @param pattern how *this should be changed.
 	 * @return whether or not the interference has been applied (e.g. if *this was changed or if the interferer was NULL, etc.) (i.e. whether or not all expected work has been done).
 	 */
-	virtual void Superpose(const ConstWaves& displacement, Interference* pattern);
+	virtual bool Superpose(const Wave* displacement, Interference* pattern);
 
 
 	/**
-	 * Ease of use method to create a Superposition of a single Wave. <br />
+	 * Ease of use method to create a Superposition of many Waves. <br />
 	 * Only *this may be modified. <br />
-	 * @param interferers
+	 * @param displacement
 	 * @param pattern
+	 * @return *this.
 	 */
-	virtual bool Superpose(const Wave* displacement, Interference* pattern);
+	virtual Wave* Superpose(const ConstWaves& displacement, Interference* pattern);
 
 
 	/**

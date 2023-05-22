@@ -42,6 +42,14 @@
 		AsWave()                                                               \
 	),                                                                         \
     (                                                                          \
+		const ::bio::chemical::Atom* AsAtom() const,                           \
+		AsAtom()                                                               \
+	),                                                                         \
+	 (                                                                         \
+		::bio::chemical::Atom* AsAtom(),                                       \
+		AsAtom()                                                               \
+	),                                                                         \
+    (                                                                          \
 		const ::bio::physical::Wave* AsWave() const,                           \
 		AsWave()                                                               \
 	),                                                                         \
@@ -66,6 +74,18 @@
 	(                                                                          \
 		virtual const ::bio::physical::Wave* Demodulate() const,               \
 		Demodulate()                                                           \
+	),                                                                         \
+	(                                                                          \
+		BIO_SINGLE_ARG(virtual ::bio::physical::Wave* Superpose(               \
+			const ::bio::physical::ConstWaves& displacement,                   \
+			::bio::physical::Interference* pattern)),                          \
+		BIO_SINGLE_ARG(Superpose(displacement, pattern))                       \
+	),                                                                         \
+	(                                                                          \
+		BIO_SINGLE_ARG(virtual bool Superpose(                                 \
+			const ::bio::physical::Wave* displacement,                         \
+			::bio::physical::Interference* pattern)),                          \
+		BIO_SINGLE_ARG(Superpose(displacement, pattern))                       \
 	)
 
 

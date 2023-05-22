@@ -55,6 +55,7 @@ public:
 	TransparentWrapper(T t) : mT(t) {}
     virtual ~TransparentWrapper() {}
     operator T() {return mT;}
+//	operator const T() const {return mT;} // Breaks everything....
     bool operator==(const T& t) const  {return mT == t;}
     bool operator!=(const T& t) const  {return mT != t;}
     bool operator<=(const T& t) const  {return mT <= t;}

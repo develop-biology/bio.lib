@@ -22,6 +22,8 @@
 #pragma once
 
 #include "bio/physical/common/Class.h"
+#include "bio/physical/common/Filters.h"
+#include "bio/physical/macro/Macros.h"
 #include "bio/physical/relativity/Identifiable.h"
 
 namespace bio {
@@ -34,13 +36,29 @@ namespace chemical {
  */
 class Miscibility :
 	public physical::Class< Miscibility >,
-	public physical::Identifiable< PropertyDimension >
+	public physical::Identifiable< Property >
 {
 public:
+
+	/**
+	 * Ensure virtual methods point to Class implementations. <br />
+	 */
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, Miscibility)
+
+	/**
+	 * Id should be set later. <br />
+	 */
+	Miscibility();
+
 	/**
 	 * @param property what *this applies to.
 	 */
 	Miscibility(const Property& property);
+
+	/**
+	 * @param name the name of the Property that *this applies to.
+	 */
+	Miscibility(const Name& name);
 
 	/**
 	 * Will delete mInterference if it is not NULL. <br />
@@ -58,18 +76,18 @@ public:
 
 	/**
 	 * Get the Interference pattern that can be used to Superpose one Substance on another. <br />
-	 * @return mInterference
+	 * @return a Clone() of mInterference
 	 */
-	const Interference* GetInterference() const;
+	physical::Interference* GetInterference() const;
 
 	/**
 	 * Set the Interference pattern that can be used to Superpose one Substance on another. <br />
 	 * @param interference
 	 */
-	void SetInterference(Interference* interference);
+	void SetInterference(physical::Interference* interference);
 
 protected:
-	Interference* mInterference;
+	physical::Interference* mInterference;
 };
 
 } //chemical namespace

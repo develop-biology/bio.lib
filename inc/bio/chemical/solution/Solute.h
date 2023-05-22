@@ -23,6 +23,7 @@
 
 #include "bio/physical/Periodic.h"
 #include "bio/chemical/common/Types.h"
+#include "bio/chemical/common/Filters.h"
 #include "bio/chemical/macro/Macros.h"
 #include "bio/chemical/Substance.h"
 #include "bio/chemical/EnvironmentDependent.h"
@@ -49,7 +50,7 @@ class Solvent;
  * You should prefer Active() Diffusion for Solutes with short lifetimes, as it is more efficient and requires less work. Inversely, you should prefer Passive() Diffusion for Solutes that you intend to keep around; this will help keep the system in sync. <br />
  * <br />
  * When Solutes are Mixed, either through Diffusion or Ingression, they are combined according to their Miscibilities. <br />
- * See Types.h & Miscibilities.h for more info on Mixing strategies. <br />
+ * See Types.h & Miscibility.h for more info on Mixing strategies. <br />
  * <br />
  * To illustrate why parent Concentrations are increased when mutable Solutes are Egressed:, if function A uses Solute U1 from Solvent V1 and function B also uses U1, even if each function exists in an isolated sub-Solvent of V1, both functions will start with the same value. Furthermore, if B depends on modifications to U1 made by A, then having U1 be removed from V1 after A completes would break B. <br />
  * Thus, by keeping Solutes around when they are not needed by the immediate context allows sub-contexts to depend on the assumption that other, isolated sub-contexts can reach the same values. <br />
@@ -62,12 +63,15 @@ class Solute :
 {
 public:
 
+	/**
+	 * Ensure virtual methods point to Class implementations. <br />
+	 */
 	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical, Solute)
 
 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(
 		chemical,
 		Solute,
-		filter::Chemical
+		filter::Chemical()
 	)
 
 	/**
@@ -113,12 +117,14 @@ public:
 	virtual void SetEnvironment(Solvent* environment);
 
 protected:
+	//Mutable for use in Increment & Decrement
     mutable Concentration mConcentration;
     mutable Solvent* mParentSolvent;
-	const Id mIdInParent;
+	mutable Index mIndexInParentSolvent;
 
 	/**
-	 * This is what happens when mConcentration = 0.
+	 * This is what happens when mConcentration = 0. <br />
+	 * We use this instead of the proper destructor method to allow resolution of virtual methods. <br />
 	 */
 	virtual void Destructor();
 
