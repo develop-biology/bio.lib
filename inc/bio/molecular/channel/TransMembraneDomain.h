@@ -27,7 +27,7 @@ namespace bio {
 namespace molecular {
 
 /**
- * TransMembraneDomains define the API for accessing and modifying the inner, protected Molecules of Vesicles. <br />
+ * TransMembraneDomains define the API for accessing and modifying the interior, protected Molecules of Vesicles. <br />
  * The real-world term, "trans-membrane domain", is a little more specific than how we use it here. <br />
  * In the simplest case, a TransMembraneDomain is just an "open hole" in a Vesicle's "membrane". <br />
  * In the most complex case, a single TransMembraneDomain may do the work of many different proteins: similar to how we might refer to a complex quaternary structure as a single protein.<br />
@@ -39,9 +39,9 @@ class TransMembraneDomain
 {
 public:
 	/**
-	 * @param inner
+	 * @param interior
 	 */
-	TransMembraneDomain(Vesicle* inner = NULL);
+	TransMembraneDomain(Vesicle* interior = NULL);
 
 	
 	/**
@@ -51,97 +51,79 @@ public:
 
 	/**
 	 * In case the Surface *this is a part of is moved, etc.
-	 * @param inner
+	 * @param interior
 	 */
-	void SetVesicle(Vesicle* inner);
+	void SetVesicle(Vesicle* interior);
 
 
 	/**
-	 * @return mInner
+	 * @return mInterior
 	 */
 	Vesicle* GetVesicle();
 
 	/**
-	 * @return mInner
+	 * @return mInterior
 	 */
 	const Vesicle* GetVesicle() const;
 
 	
 	/**
-	 * Influx (like "ingestion") moves the outer into *this. <br />
-	 * *this will assume ownership of outer. <br />
-	 * @param outer
+	 * Ingress (like "ingestion") moves the external into *this. <br />
+	 * If the external Molecule is already Dissolved in another Solution, *this will cause that Solution to Efflux the given Molecule so that it may be Influxed into *this. <br />
+	 * Otherwise, the external Molecule will be Dissolved in *this. <br />
+	 * @param external
 	 */
-	void Influx(Molecule* outer);
+	void IngressMolecule(Molecule* external);
 
 	
 	/**
-	 * If you would like to Influx multiple molecules at once, you may package them into a Vesicle and use this method. <br />
+	 * If you would like to Ingress multiple Molecules at once, you may provide the Solution those Molecules are Dissolved in. <br />
 	 * This is essentially endocytosis; however the "cyto" bit isn't applicable at the molecular level. <br />
-	 * @param outer
+	 * @param external
 	 */
-	void Influx(Vesicle* outer);
+	void IngressSolution(chemical::Solution* external);
 
 	
 	/**
-	 * Efflux copies Molecules in *this and provides them for export. <br />
+	 * Egress copies Molecules in *this and provides them for export. <br />
 	 * If the returned Molecule is not added to another Vesicle, you must delete it to avoid memory leaks. <br />
-	 * @param moleculeName 
-	 * @return a new Molecule from that of the given Name in *this or NULL if no such Molecule could be found. <br />
+	 * NOTE: Egress is non-const. You must have write access to a Vesicle in order to read it's protected members. Also, any modifications made to the returned Solute will likely be Mixed back into *this. <br />
+	 * @param soluteName 
+	 * @return a Solute containing a Dissolved Substance with the given Id Effluxed out of the mInterior Vesicle.
 	 */
-	Molecule* Efflux(const Name& moleculeName);
-
-	/**
-	 * Efflux copies Molecules in *this and provides them for export. <br />
-	 * If the returned Molecule is not added to another Vesicle, you must delete it to avoid memory leaks. <br />
-	 * @param moleculeName 
-	 * @return a new Molecule from that of the given Name in *this or NULL if no such Molecule could be found.
-	 */
-	const Molecule* Efflux(const Name& moleculeName) const;
-
+	chemical::Solute& Egress(const Name& soluteName);
 	
 	/**
-	 * Efflux copies Molecules in *this and provides them for export. <br />
+	 * Egress copies Molecules in *this and provides them for export. <br />
 	 * If the returned Molecule is not added to another Vesicle, you must delete it to avoid memory leaks. <br />
-	 * NOTE: The Id here is given by the Vesicle's own Perspective (not a global singleton), and must be retrieved before hand through something like: MyVesicle.GetIdFromName("NameOfMyMolecule"). <br />
-	 * @param moleculeId
-	 * @return a new Molecule from that of the given Id in *this or NULL if no such Molecule could be found.
+	 * NOTE: Egress is non-const. You must have write access to a Vesicle in order to read it's protected members. Also, any modifications made to the returned Solute will likely be Mixed back into *this. <br />
+	 * @param soluteId
+	 * @return a Solute containing a Dissolved Substance with the given Id Effluxed out of the mInterior Vesicle.
 	 */
-	Molecule* Efflux(const Id& moleculeId);
-
-	
-	/**
-	 * Efflux copies Molecules in *this and provides them for export. <br />
-	 * If the returned Molecule is not added to another Vesicle, you must delete it to avoid memory leaks. <br />
-	 * NOTE: The Id here is given by the Vesicle's own Perspective (not a global singleton), and must be retrieved before hand through something like: MyVesicle.GetIdFromName("NameOfMyMolecule"). <br />
-	 * @param moleculeId
-	 * @return a new Molecule from that of the given Id in *this or NULL if no such Molecule could be found.
-	 */
-	const Molecule* Efflux(const Id& moleculeId) const;
-
+	chemical::Solute& Egress(const Id& soluteId);
 
 	/**
-	 * Secrete moves Molecules in *this out, making them unavailable to the mInner Vesicle. <br />
+	 * Secrete moves Molecules in *this out, making them unavailable to the mInterior Vesicle. <br />
 	 * If the returned Molecule is not added to another Vesicle, you must delete it to avoid memory leaks. <br />
-	 * NOTE: The Id here is given by the Vesicle's own Perspective (not a global singleton), and must be retrieved before hand through something like: MyVesicle.GetIdFromName("NameOfMyMolecule"). <br />
-	 * @param moleculeName
-	 * @return an existing Molecule with the given Id in *this or NULL if no such Molecule could be found.
+	 * NOTE: you cannot Secrete a Molecule which has a Concentration > 1 (or 0). Removing a Molecule which is referenced by other Solutions is not currently supported. <br /> 
+	 * @param soluteName
+	 * @return the Clone of the Solute with the matching Id & which has been Erased from *this.
 	 */
-	Molecule* Secrete(const Name& moleculeName);
+	chemical::Solute* Secrete(const Name& soluteName);
 
 
 	/**
-	 * Secrete moves Molecules in *this out, making them unavailable to the mInner Vesicle. <br />
+	 * Secrete moves Molecules in *this out, making them unavailable to the mInterior Vesicle. <br />
 	 * If the returned Molecule is not added to another Vesicle, you must delete it to avoid memory leaks. <br />
-	 * NOTE: The Id here is given by the Vesicle's own Perspective (not a global singleton), and must be retrieved before hand through something like: MyVesicle.GetIdFromName("NameOfMyMolecule"). <br />
-	 * @param moleculeId
-	 * @return an existing Molecule with the given Id in *this or NULL if no such Molecule could be found.
+	 * NOTE: you cannot Secrete a Molecule which has a Concentration > 1 (or 0). Removing a Molecule which is referenced by other Solutions is not currently supported. <br />
+	 * @param soluteId
+	 * @return the Clone of the Solute with the matching Id & which has been Erased from *this.
 	 */
-	Molecule* Secrete(const Id& moleculeId);
+	chemical::Solute* Secrete(const Id& soluteId);
 
 
 private:
-	Vesicle* mInner;
+	Vesicle* mInterior;
 };
 
 } //molecular namespace

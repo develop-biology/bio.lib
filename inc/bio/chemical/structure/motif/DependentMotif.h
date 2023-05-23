@@ -44,19 +44,25 @@ public:
 	 */
 	BIO_DISAMBIGUATE_REQUIRED_CLASS_METHODS(chemical, BIO_SINGLE_ARG(DependentMotif< CONTENT_TYPE, ENVIRONMENT >))
 	BIO_DISAMBIGUATE_OPTIONAL_CLASS_METHODS(physical, BIO_SINGLE_ARG(DependentMotif< CONTENT_TYPE, ENVIRONMENT >))
+	virtual Code Attenuate(const physical::Wave* other)
+	{
+		return this->LinearMotif< CONTENT_TYPE >::Attenuate(other);
+	}
+	virtual Code Disattenuate(const physical::Wave* other)
+	{
+		return this->LinearMotif< CONTENT_TYPE >::Disattenuate(other);
+	}
 
 	/**
 	 * @param environment
-	 * @param perspective
 	 */
 	explicit DependentMotif(
-		ENVIRONMENT* environment = NULL,
-		physical::Perspective< Id >* perspective = NULL
+		ENVIRONMENT environment = NULL
 	)
 		:
 		chemical::Class< DependentMotif< CONTENT_TYPE, ENVIRONMENT > >(this),
 		EnvironmentDependent< ENVIRONMENT >(environment),
-		LinearMotif< CONTENT_TYPE >(perspective)
+		LinearMotif< CONTENT_TYPE >()
 	{
 
 	}
@@ -64,17 +70,15 @@ public:
 	/**
 	 * @param contents
 	 * @param environment
-	 * @param perspective
 	 */
 	explicit DependentMotif(
 		const LinearMotif< CONTENT_TYPE >::Contents* contents,
-		ENVIRONMENT* environment = NULL,
-		physical::Perspective< Id >* perspective = NULL
+		ENVIRONMENT environment = NULL
 	)
 		:
 		chemical::Class< DependentMotif< CONTENT_TYPE, ENVIRONMENT > >(this),
 		EnvironmentDependent< ENVIRONMENT >(environment),
-		LinearMotif< CONTENT_TYPE >(contents, perspective)
+		LinearMotif< CONTENT_TYPE >(contents)
 	{
 
 	}
@@ -106,7 +110,7 @@ public:
 	 * Don't let the environment go out of scope or be deleted before *this! <br />
 	 * @param environment
 	 */
-	virtual void SetEnvironment(ENVIRONMENT* environment)
+	virtual void SetEnvironment(ENVIRONMENT environment)
 	{
 		this->EnvironmentDependent< ENVIRONMENT >::SetEnvironment(environment);
 		for (
@@ -129,7 +133,7 @@ public:
 	virtual CONTENT_TYPE AddImplementation(CONTENT_TYPE content)
 	{
 		BIO_SANITIZE(content,,return NULL)
-		content->SetEnvironment(this);
+		content->SetEnvironment(this->template As< ENVIRONMENT >());
 		return LinearMotif< CONTENT_TYPE >::AddImplementation(content);
 	}
 

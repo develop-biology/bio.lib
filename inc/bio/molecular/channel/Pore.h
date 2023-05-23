@@ -63,7 +63,7 @@ public:
 	virtual ~Pore();
 
 	/**
-	 * Sets mEnvironment & mTransMembaneDomain.mInner. <br />
+	 * Sets mEnvironment & mTransMembaneDomain.mInterior. <br />
 	 * Don't let the environment go out of scope or be deleted before *this! <br />
 	 * @param environment
 	 */

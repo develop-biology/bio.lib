@@ -27,7 +27,7 @@ namespace bio {
 namespace chemical {
 
 /**
- * Mix is used by Solutes to combine within Solvents. However, you are welcome to mix un-Dissolved Substances as well. <br />
+ * Mix is used by Solutes to combine within Solutions. However, you are welcome to mix un-Dissolved Substances as well. <br />
  */
 class Mix :
 	public chemical::Class< Mix >,

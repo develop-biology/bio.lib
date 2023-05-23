@@ -24,8 +24,8 @@
 namespace bio {
 namespace molecular {
 
-TransMembraneDomain::TransMembraneDomain(Vesicle* inner) :
-	mInner(inner)
+TransMembraneDomain::TransMembraneDomain(Vesicle* interior) :
+	mInterior(interior)
 {
 	
 }
@@ -36,95 +36,78 @@ TransMembraneDomain::~TransMembraneDomain()
 	
 }
 
-void TransMembraneDomain::SetVesicle(Vesicle* inner)
+void TransMembraneDomain::SetVesicle(Vesicle* interior)
 {
-	mInner = inner;
+	mInterior = interior;
 }
 
 
 Vesicle* TransMembraneDomain::GetVesicle()
 {
-	return mInner;
+	return mInterior;
 }
 
 
 const Vesicle* TransMembraneDomain::GetVesicle() const
 {
-	return mInner;
+	return mInterior;
 }
 
 	
-void TransMembraneDomain::Influx(Molecule* outer)
+void TransMembraneDomain::IngressMolecule(Molecule* external)
 {
-	BIO_SANITIZE(mInner,,return)
-	BIO_SANITIZE(outer,,return)
-	mInner->Add< chemical::Solute* >(outer);
+	BIO_SANITIZE(mInterior,,return)
+	BIO_SANITIZE(external,,return)
+	chemical::Solution* externalSolution = external->chemical::EnvironmentDependent< chemical::Solution* >::GetEnvironment();
+	if (externalSolution) {
+		mInterior->Influx(externalSolution->Efflux(external->GetId()));
+	} else {
+		mInterior->Dissolve(external);
+	}
 }
 
 	
-void TransMembraneDomain::Influx(Vesicle* outer)
+void TransMembraneDomain::IngressSolution(chemical::Solution* external)
 {
-	BIO_SANITIZE(mInner,,return)
-	BIO_SANITIZE(outer,,return)
-	mInner->Import< chemical::Solute* >(outer->GetAll< chemical::Solute* >());
+	BIO_SANITIZE(mInterior,,return)
+	BIO_SANITIZE(external,,return)
+	for (
+		SmartIterator slt = external->Begin();
+		!slt.IsAfterEnd();
+		++slt
+	) {
+		mInterior->Influx(external->Efflux(slt.As< chemical::Solute >().GetId()));
+	}
 }
 
 	
-Molecule* TransMembraneDomain::Efflux(const Name& moleculeName)
+chemical::Solute& TransMembraneDomain::Egress(const Name& soluteName)
 {
-	BIO_SANITIZE(mInner,,return NULL)
-	Molecule* found = mInner->GetByName< chemical::Solute* >(moleculeName);
-	BIO_SANITIZE(found,,return NULL)
-	return CloneAndCast(found);
+	BIO_SANITIZE(mInterior,,return NULL)
+	return mInterior->Efflux(soluteName);
 }
 
-
-const Molecule* TransMembraneDomain::Efflux(const Name& moleculeName) const
+chemical::Solute& TransMembraneDomain::Egress(const Id& soluteId)
 {
-	BIO_SANITIZE(mInner,,return NULL)
-	chemical::Solute* found = mInner->GetByName< chemical::Solute* >(moleculeName);
-	BIO_SANITIZE(found,,return NULL)
-	return CloneAndCast(found);
+	BIO_SANITIZE(mInterior,,return NULL)
+	return mInterior->Efflux(soluteId);
 }
 
-	
-Molecule* TransMembraneDomain::Efflux(const Id& moleculeId)
+chemical::Solute* TransMembraneDomain::Secrete(const Name& soluteName)
 {
-	BIO_SANITIZE(mInner,,return NULL)
-	chemical::Solute* found = mInner->GetById< chemical::Solute* >(moleculeId);
-	BIO_SANITIZE(found,,return NULL)
-	return CloneAndCast(found);
+	return Secrete(IdPerspective::Instance().GetIdFromName(soluteName));
 }
 
-	
-const Molecule* TransMembraneDomain::Efflux(const Id& moleculeId) const
+chemical::Solute* TransMembraneDomain::Secrete(const Id& soluteId)
 {
-	BIO_SANITIZE(mInner,,return NULL)
-	chemical::Solute* found = mInner->GetById< chemical::Solute* >(moleculeId);
-	BIO_SANITIZE(found,,return NULL)
-	return CloneAndCast(found);
+	BIO_SANITIZE(mInterior,,return NULL)
+	chemical::Solute toClone = mInterior->Efflux(soluteId);
+	BIO_SANITIZE(toClone.GetConcentration() == 2,,return NULL) //very likely user error.
+	toClone.SetEnvironment(NULL);
+	chemical::Solute* toSecrete = ChemicalCast< chemical::Solute* >(toClone.Clone());
+	mInterior->chemical::Solution::Erase(toClone.GetIndexInParentSolution());
+	return toSecrete;
 }
-
-
-Molecule* TransMembraneDomain::Secrete(const Name& moleculeName)
-{
-	BIO_SANITIZE(mInner,,return NULL)
-	physical::Line* molecules = Cast< physical::Line* >(mInner->GetAll< chemical::Solute* >());
-	Index found = molecules->SeekToName(moleculeName);
-	BIO_SANITIZE(found,,return NULL)
-	return ChemicalCast< Molecule* >(molecules->Erase(found).As< physical::Linear >().operator physical::Identifiable< Id >*());
-}
-
-
-Molecule* TransMembraneDomain::Secrete(const Id& moleculeId)
-{
-	BIO_SANITIZE(mInner,,return NULL)
-	physical::Line* molecules = Cast< physical::Line* >(mInner->GetAll< chemical::Solute* >());
-	Index found = molecules->SeekToId(moleculeId);
-	BIO_SANITIZE(found,,return NULL)
-	return ChemicalCast< Molecule* >(molecules->Erase(found).As< physical::Linear >().operator physical::Identifiable< Id >*());
-}
-
 
 } //molecular namespace
 } //bio namespace

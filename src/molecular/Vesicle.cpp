@@ -30,35 +30,13 @@ Vesicle::Vesicle(const Vesicle& toCopy)
 	molecular::Class< Vesicle >(
 		this,
 		toCopy.GetId(),
-		toCopy.GetPerspective(),
 		toCopy.GetFilter()),
-	LinearMotif< Molecule* >(toCopy)
+	chemical::Solution(toCopy)
 {
-	LinearMotif< Molecule* >::mStructuralPerspective = this;
 }
 
 Vesicle::~Vesicle()
 {
-}
-
-Molecule* Vesicle::operator[](const Id& moleculeId)
-{
-	return GetById< Molecule* >(moleculeId);
-}
-
-const Molecule* Vesicle::operator[](const Id& moleculeId) const
-{
-	return GetById< Molecule* >(moleculeId);
-}
-
-Molecule* Vesicle::operator[](const Name& moleculeName)
-{
-	return GetByName< Molecule* >(moleculeName);
-}
-
-const Molecule* Vesicle::operator[](const Name& moleculeName) const
-{
-	return GetByName< Molecule* >(moleculeName);
 }
 
 } //molecular namespace

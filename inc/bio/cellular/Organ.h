@@ -51,7 +51,7 @@ class Organ :
 	public Class< Organ >,
 	public Covalent< chemical::LinearMotif< genetic::Plasmid* > >,
 	public Covalent< chemical::LinearMotif< Tissue* > >,
-	public chemical::EnvironmentDependent< OrganSystem >
+	public chemical::EnvironmentDependent< OrganSystem* >
 {
 public:
 

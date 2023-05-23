@@ -82,6 +82,11 @@ Superposition Lowest();
 Superposition Sum();
 
 /**
+ * Subtract all Waves. <br />
+ */
+Superposition Difference();
+
+/**
  * Boolean AND. <br />
  */
 Superposition And();

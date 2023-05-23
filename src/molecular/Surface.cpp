@@ -30,10 +30,9 @@ namespace molecular {
 Surface::Surface() :
 	molecular::Class< Surface >(
 		this,
-		NULL,
 		filter::Molecular(),
 		symmetry_type::Variable()),
-	EnvironmentDependent< Molecule >(NULL),
+	EnvironmentDependent< Molecule* >(NULL),
 	mBoundPosition(InvalidIndex())
 {
 
@@ -48,10 +47,9 @@ Surface::Surface(
 	molecular::Class< Surface >(
 		this,
 		name,
-		environment,
 		filter::Molecular(),
 		symmetry_type::Variable()),
-	chemical::EnvironmentDependent< Molecule >(environment),
+	chemical::EnvironmentDependent< Molecule* >(environment),
 	mBoundPosition(InvalidIndex())
 {
 
@@ -62,10 +60,9 @@ Surface::Surface(const Surface& toCopy)
 	molecular::Class< Surface >(
 		this,
 		toCopy.GetName(),
-		toCopy.GetPerspective(),
 		toCopy.GetFilter(),
 		symmetry_type::Variable()),
-	chemical::EnvironmentDependent< Molecule >(toCopy),
+	chemical::EnvironmentDependent< Molecule* >(toCopy),
 	mBoundPosition(toCopy.mBoundPosition)
 {
 	chemical::Bond* bond;
@@ -108,14 +105,7 @@ Surface::~Surface()
 
 void Surface::SetEnvironment(Molecule* environment)
 {
-	mEnvironment = environment;
-	SetId(0); //0 should always be invalid.
-	Identifiable< Id >::SetPerspective(environment);
-}
-
-void Surface::SetPerspective(Molecule* perspective)
-{
-	SetEnvironment(perspective);
+	this->chemical::EnvironmentDependent< Molecule* >::SetEnvironment(environment);
 }
 
 Code Surface::Reify(physical::Symmetry* symmetry)

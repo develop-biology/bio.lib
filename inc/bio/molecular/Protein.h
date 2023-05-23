@@ -40,11 +40,15 @@ class DNA;
  * Proteins are Molecules and can be stored inside Surfaces. This means they will work with Define<Protein>("MyFunction", *myProtein). <br />
  * Proteins can thus be Transferred, reflected, and treated as any other Molecule, chemical::Substance, physical::Wave, etc. <br />
  * NOTE: Because Proteins are Molecules, they are more than just simple functors; they can store variables, facilitate in Transferring variables, and act as any other data structure. <br />
+ *
+ * Proteins can have other Proteins within them. This is comparable to a quaternary structure in real proteins. <br />
+ *
+ * Proteins must be Folded on or within a Vesicle. While this restriction is unrealistic, the structure it imposes is useful for programming. <br />
  */
 class Protein :
 	public Class< Protein >,
 	public Covalent< chemical::LinearMotif< Protein* > >,
-	public chemical::EnvironmentDependent< Vesicle >,
+	public chemical::EnvironmentDependent< Vesicle* >,
 	virtual public Molecule
 {
 public:

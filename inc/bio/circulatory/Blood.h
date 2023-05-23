@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/chemical/solution/Solvent.h"
+#include "bio/chemical/solution/Solution.h"
 #include "bio/circulatory/common/Types.h"
 #include "bio/circulatory/macro/Macros.h"
 
@@ -30,13 +30,13 @@ namespace circulatory {
 
 /**
  * Blood holds all Solutes which need to be moved through the Circulatory system. This includes both imports and exports to local Blood Vessels. <br />
- * All Blood Solvents are different until they are homogenized by the Heart. <br />
- * Currently, Blood is simply a ThreadSafe Solvent. <br />
+ * All Blood Solutions are different until they are homogenized by the Heart. <br />
+ * Currently, Blood is simply a ThreadSafe Solution. <br />
  * This class may be expanded later as specific Circulatory requirements are expanded. <br />
  */
 class Blood :
 	public chemical::Class< Blood >,
-	public chemical::Solvent,
+	public chemical::Solution,
 	public ThreadSafe
 {
 public:

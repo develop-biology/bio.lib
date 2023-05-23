@@ -40,16 +40,16 @@ typedef std::vector< Synapse* > Synapses;
  * When to use a Neuron: <br />
  * 1. You want explicit control over who can use what data when (structure). <br />
  * 2. You want to process many signals in many different threads (asynchronicity). <br />
- * 3. If Diffusing many signals through the Solute / Solvent system is cumbersome and Neurons are more effective. <br />
+ * 3. If Diffusing many signals through the Solute / Solution system is cumbersome and Neurons are more effective. <br />
  * <br />
  * To use a Neuron, you must define the following: <br />
  * 1. The Neuron child class; this is a Cell which holds whatever values and does whatever work you want. <br />
  * 2. Define an ExciteTrigger which will determine what data is sent through which Synapses when (see below for more on that). <br />
  * 3. Define the Neuron's Synapses, which connect it to other Neurons; this is the structure of your Organism's nervous system. <br />
  * <br />
- * In real-life biology, neurons are implemented with solutes, solvents, and proteins. These neurons (in theory) diffuse an arbitrary number of solutes (aka neurotransmitters) at once, and equalize carefully crafted imbalances in electrochemical gradients. Thus, neurons allow for fast, optimized delivery of information through structured channels which enforce requirements of how and when data may be accessed. <br />
+ * In real-life biology, neurons are implemented with solutes, Solutions, and proteins. These neurons (in theory) diffuse an arbitrary number of solutes (aka neurotransmitters) at once, and equalize carefully crafted imbalances in electrochemical gradients. Thus, neurons allow for fast, optimized delivery of information through structured channels which enforce requirements of how and when data may be accessed. <br />
  * This is the spirit which we attempt to emulate here. However, we add an extra linear state-machine only benefit as well: asynchronicity. <br />
- * While the Solute / Solvent system is entirely synchronous, Neurons, as defined here, may Egress Solutes to other threads to be processed at some time in the future. <br />
+ * While the Solute / Solution system is entirely synchronous, Neurons, as defined here, may Efflux Solutes to other threads to be processed at some time in the future. <br />
  */
 class Neuron :
 	public neural::Class< Neuron >,

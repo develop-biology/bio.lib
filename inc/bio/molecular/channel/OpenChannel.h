@@ -61,77 +61,47 @@ public:
 	virtual ~OpenChannel();
 
 	/**
-	 * Per TransMembraneDomain. <br />
-	 * Influx (like "ingestion") moves the outer into *this. <br />
-	 * *this will assume ownership of outer. <br />
-	 * @param outer
+	 * Per TransMembraneDomain; see that class for details. <br />
+	 * @param external
 	 */
-	virtual void Influx(Solute* outer);
+	virtual void IngressMolecule(Molecule* external);
 
 
 	/**
-	 * If you would like to Influx multiple molecules at once, you may package them into a Vesicle and use this method. <br />
-	 * This is essentially endocytosis; however the "cyto" bit isn't applicable at the molecular level. <br />
-	 * @param outer
+	 * Per TransMembraneDomain; see that class for details. <br />e
+	 * @param external
 	 */
-	virtual void Influx(Vesicle* outer);
+	virtual void IngressSolution(chemical::Solution* external);
 
 
 	/**
-	 * Efflux copies Molecules in *this and provides them for export. <br />
-	 * If the returned Molecule is not added to another Vesicle, you must delete it to avoid memory leaks. <br />
-	 * @param moleculeName
-	 * @return a new Molecule from that of the given Name in *this or NULL if no such Molecule could be found. <br />
+	 * Per TransMembraneDomain; see that class for details. <br />
+	 * @param soluteName
+	 * @return a Solute containing a Dissolved Substance with the given Id Effluxed out of the mInterior Vesicle.
 	 */
-	virtual Solute* Efflux(const Name& moleculeName);
+	virtual chemical::Solute& Egress(const Name& soluteName);
 
 	/**
-	 * Efflux copies Molecules in *this and provides them for export. <br />
-	 * If the returned Molecule is not added to another Vesicle, you must delete it to avoid memory leaks. <br />
-	 * @param moleculeName
-	 * @return a new Molecule from that of the given Name in *this or NULL if no such Molecule could be found.
+	 * Per TransMembraneDomain; see that class for details. <br />r
+	 * @param soluteId
+	 * @return a Solute containing a Dissolved Substance with the given Id Effluxed out of the mInterior Vesicle.
 	 */
-	virtual const Solute* Efflux(const Name& moleculeName) const;
-
+	virtual chemical::Solute& Egress(const Id& soluteId);
 
 	/**
-	 * Efflux copies Molecules in *this and provides them for export. <br />
-	 * If the returned Molecule is not added to another Vesicle, you must delete it to avoid memory leaks. <br />
-	 * NOTE: The Id here is given by the Vesicle's own Perspective (not a global singleton), and must be retrieved before hand through something like: MyVesicle.GetIdFromName("NameOfMyMolecule"). <br />
-	 * @param moleculeId
-	 * @return a new Molecule from that of the given Id in *this or NULL if no such Molecule could be found.
+	 * Per TransMembraneDomain; see that class for details. <br />
+	 * @param soluteName
+	 * @return the Clone of the Solute with the matching Id & which has been Erased from *this.
 	 */
-	virtual Molecule* Efflux(const Id& moleculeId);
+	virtual chemical::Solute* Secrete(const Name& soluteName);
 
 
 	/**
-	 * Efflux copies Molecules in *this and provides them for export. <br />
-	 * If the returned Molecule is not added to another Vesicle, you must delete it to avoid memory leaks. <br />
-	 * NOTE: The Id here is given by the Vesicle's own Perspective (not a global singleton), and must be retrieved before hand through something like: MyVesicle.GetIdFromName("NameOfMyMolecule"). <br />
-	 * @param moleculeId
-	 * @return a new Molecule from that of the given Id in *this or NULL if no such Molecule could be found.
+	 * Per TransMembraneDomain; see that class for details. <br />
+	 * @param soluteId
+	 * @return the Clone of the Solute with the matching Id & which has been Erased from *this.
 	 */
-	virtual const Molecule* Efflux(const Id& moleculeId) const;
-
-
-	/**
-	 * Secrete moves Molecules in *this out, making them unavailable to the mInner Vesicle. <br />
-	 * If the returned Molecule is not added to another Vesicle, you must delete it to avoid memory leaks. <br />
-	 * NOTE: The Id here is given by the Vesicle's own Perspective (not a global singleton), and must be retrieved before hand through something like: MyVesicle.GetIdFromName("NameOfMyMolecule"). <br />
-	 * @param moleculeName
-	 * @return an existing Molecule with the given Id in *this or NULL if no such Molecule could be found.
-	 */
-	virtual Molecule* Secrete(const Name& moleculeName);
-
-
-	/**
-	 * Secrete moves Molecules in *this out, making them unavailable to the mInner Vesicle. <br />
-	 * If the returned Molecule is not added to another Vesicle, you must delete it to avoid memory leaks. <br />
-	 * NOTE: The Id here is given by the Vesicle's own Perspective (not a global singleton), and must be retrieved before hand through something like: MyVesicle.GetIdFromName("NameOfMyMolecule"). <br />
-	 * @param moleculeId
-	 * @return an existing Molecule with the given Id in *this or NULL if no such Molecule could be found.
-	 */
-	virtual Molecule* Secrete(const Id& moleculeId);
+	virtual chemical::Solute* Secrete(const Id& soluteId);
 };
 } //molecular namespace
 } //bio namespace

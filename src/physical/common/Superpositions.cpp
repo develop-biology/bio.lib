@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2022 Séon O'Shannon & eons LLC
+ * Copyright (C) 2023 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -38,6 +38,24 @@ BIO_SUPERPOSITION_FUNCTION_BODY(Average)
 BIO_SUPERPOSITION_FUNCTION_BODY(Highest)
 
 BIO_SUPERPOSITION_FUNCTION_BODY(Lowest)
+
+BIO_SUPERPOSITION_FUNCTION_BODY(Sum)
+
+BIO_SUPERPOSITION_FUNCTION_BODY(Difference)
+
+BIO_SUPERPOSITION_FUNCTION_BODY(And)
+
+BIO_SUPERPOSITION_FUNCTION_BODY(Or)
+
+BIO_SUPERPOSITION_FUNCTION_BODY(Xor)
+
+BIO_SUPERPOSITION_FUNCTION_BODY(Not)
+
+BIO_SUPERPOSITION_FUNCTION_BODY(Nand)
+
+BIO_SUPERPOSITION_FUNCTION_BODY(Nor)
+
+BIO_SUPERPOSITION_FUNCTION_BODY(Xnor)
 
 } //superposition namespace
 } //bio namespace

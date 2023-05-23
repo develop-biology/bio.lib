@@ -28,7 +28,6 @@ namespace molecular {
 OpenChannel::OpenChannel() :
 	molecular::Class< OpenChannel >(
 		this,
-		NULL,
 		filter::Molecular(),
 		symmetry_type::Variable())
 {
@@ -44,7 +43,6 @@ OpenChannel::OpenChannel(
 	molecular::Class< OpenChannel >(
 		this,
 		name,
-		environment,
 		filter::Molecular(),
 		symmetry_type::Variable())
 {
@@ -56,51 +54,35 @@ OpenChannel::~OpenChannel()
 
 }
 
-void OpenChannel::Influx(Molecule* outer)
+void OpenChannel::IngressMolecule(Molecule* external)
 {
-	mTransMembraneDomain.Influx(outer);
+	mTransMembraneDomain.IngressMolecule(external);
+}
+
+void OpenChannel::IngressSolution(chemical::Solution* external)
+{
+	mTransMembraneDomain.IngressSolution(external);
+}
+
+chemical::Solute& OpenChannel::Egress(const Name& soluteName)
+{
+	return mTransMembraneDomain.Egress(soluteName);
+}
+
+chemical::Solute& OpenChannel::Egress(const Id& soluteId)
+{
+	return mTransMembraneDomain.Egress(soluteId);
+}
+
+chemical::Solute* OpenChannel::Secrete(const Name& soluteName)
+{
+	return mTransMembraneDomain.Secrete(soluteName);
 }
 
 
-void OpenChannel::Influx(Vesicle* outer)
+chemical::Solute* OpenChannel::Secrete(const Id& soluteId)
 {
-	mTransMembraneDomain.Influx(outer);
-}
-
-
-Molecule* OpenChannel::Efflux(const Name& moleculeName)
-{
-	return mTransMembraneDomain.Efflux(moleculeName);
-}
-
-
-const Molecule* OpenChannel::Efflux(const Name& moleculeName) const
-{
-	return mTransMembraneDomain.Efflux(moleculeName);
-}
-
-
-Molecule* OpenChannel::Efflux(const Id& moleculeId)
-{
-	return mTransMembraneDomain.Efflux(moleculeId);
-}
-
-
-const Molecule* OpenChannel::Efflux(const Id& moleculeId) const
-{
-	return mTransMembraneDomain.Efflux(moleculeId);
-}
-
-
-Molecule* OpenChannel::Secrete(const Name& moleculeName)
-{
-	return mTransMembraneDomain.Secrete(moleculeName);
-}
-
-
-Molecule* OpenChannel::Secrete(const Id& moleculeId)
-{
-	return mTransMembraneDomain.Secrete(moleculeId);
+	return mTransMembraneDomain.Secrete(soluteId);
 }
 
 } //molecular namespace

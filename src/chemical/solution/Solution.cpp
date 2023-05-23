@@ -19,28 +19,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/chemical/solution/Solvent.h"
+#include "bio/chemical/solution/Solution.h"
 #include "bio/chemical/solution/Solute.h"
 
 namespace bio {
 namespace chemical {
 
-Id Solvent::Dissolve(Substance* toDissolve)
+Id Solution::Dissolve(Substance* toDissolve)
 {
 
 }
 
-Substance* Solvent::Separate(const Id& id)
+Substance* Solution::Separate(const Id& id)
 {
 
 }
 
-Id Solvent::Ingress(const Solute& toIngress)
+Id Solution::Influx(const Solute& toInflux)
 {
 
 }
 
-void Solvent::DecrementConcentration(const Index soluteIndex)
+void Solution::DecrementConcentration(const Index soluteIndex)
 {
 	BIO_SANITIZE(this->IsAllocated(soluteIndex), , return)
 
@@ -50,44 +50,44 @@ void Solvent::DecrementConcentration(const Index soluteIndex)
 	solute->DecrementConcentration();
 }
 
-Solute& Solvent::Egress(const Id& soluteId)
+Solute& Solution::Efflux(const Id& soluteId)
 {
 
 }
 
-const Solute& Solvent::Egress(const Id& soluteId) const
+const Solute& Solution::Efflux(const Id& soluteId) const
 {
-	return const_cast< Solvent* >(this)->Egress(soluteId);
+	return const_cast< Solution* >(this)->Efflux(soluteId);
 }
 
-Solute& Solvent::Egress(const Name& substanceName)
+Solute& Solution::Efflux(const Name& substanceName)
 {
 	
 }
 
-const Solute& Solvent::Egress(const Name& substanceName) const
+const Solute& Solution::Efflux(const Name& substanceName) const
 {
-	return const_cast< Solvent* >(this)->Egress(substanceName);
+	return const_cast< Solution* >(this)->Efflux(substanceName);
 }
 
-Solute& Solvent::operator[](const Id& soluteId)
+Solute& Solution::operator[](const Id& soluteId)
 {
-	return Egress(soluteId);
+	return Efflux(soluteId);
 }
 
-const Solute& Solvent::operator[](const Id& soluteId) const
+const Solute& Solution::operator[](const Id& soluteId) const
 {
-	return Egress(soluteId);
+	return Efflux(soluteId);
 }
 
-Solute& Solvent::operator[](const Name& substanceName)
+Solute& Solution::operator[](const Name& substanceName)
 {
-	return Egress(substanceName);
+	return Efflux(substanceName);
 }
 
-const Solute& Solvent::operator[](const Name& substanceName) const
+const Solute& Solution::operator[](const Name& substanceName) const
 {
-	return Egress(substanceName);
+	return Efflux(substanceName);
 }
 
 } //chemical namespace

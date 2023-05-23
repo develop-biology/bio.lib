@@ -37,7 +37,7 @@ class Cell;
  */
 class Organelle :
 	public Class< Organelle >,
-	public chemical::EnvironmentDependent< Cell >
+	public chemical::EnvironmentDependent< Cell* >
 {
 public:
 

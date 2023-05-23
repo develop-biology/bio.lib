@@ -20,7 +20,7 @@
  */
 
 #include "bio/chemical/solution/Solute.h"
-#include "bio/chemical/solution/Solvent.h"
+#include "bio/chemical/solution/Solution.h"
 
 namespace bio {
 namespace chemical {
@@ -33,8 +33,8 @@ Solute::~Solute()
 void Solute::CommonConstructor()
 {
 	mConcentration = 0;
-	mParentSolvent = NULL;
-	mIndexInParentSolvent = InvalidIndex();
+	mParentSolution = NULL;
+	mIndexInParentSolution = InvalidIndex();
 }
 
 Concentration Solute::GetConcentration() const
@@ -67,30 +67,35 @@ void Solute::SetConcentration(Concentration toSet) const
 
 void Solute::Resolve() const
 {
-	if (mParentSolvent && mIndexInParentSolvent)
+	if (mParentSolution && mIndexInParentSolution)
 	{
-		mParentSolvent->Ingress(*this);
+		mParentSolution->Influx(*this);
 	}
 }
 
-void Solute::SetEnvironment(Solvent* environment)
+void Solute::SetEnvironment(Solution* environment)
 {
 	//Nothing need be done here.
-	//In the past, we considered allmutableowing each Solvent to maintain its own Id <-> Name mapping (i.e. be a Perspective).
+	//In the past, we considered allowing each Solution to maintain its own Id <-> Name mapping (i.e. be a Perspective).
 	//For that to be possible, we must set the Id of *this to match the name mapping of the environment.
 	//However, this pattern was foregone in favor of Mix, Collapse, & Interference, which all allow Substances to be intelligently combined.
-	//Now, if you would like to combine a Solute in one Solvent with a Solute of a different Name in another Solvent, you may engage the Mix machinary manually (i.e. just invoke Mix with both Solutes).
-	this->EnvironmentDependent< Solvent >::SetEnvironment(environment);
+	//Now, if you would like to combine a Solute in one Solution with a Solute of a different Name in another Solution, you may engage the Mix machinery manually (i.e. just invoke Mix with both Solutes).
+	this->EnvironmentDependent< Solution* >::SetEnvironment(environment);
+}
+
+Index Solute::GetIndexInParentSolution() const
+{
+	return mIndexInParentSolution;
 }
 
 void Solute::Destructor()
 {
-	if (mParentSolvent && mIndexInParentSolvent)
+	if (mParentSolution && mIndexInParentSolution)
 	{
 		Resolve();
-		mParentSolvent->DecrementConcentration(mIndexInParentSolvent);
+		mParentSolution->DecrementConcentration(mIndexInParentSolution);
 	}
-	Solvent* env = GetEnvironment();
+	Solution* env = GetEnvironment();
 	if (env)
 	{
 		env->RemoveById< Solute* >(GetId());

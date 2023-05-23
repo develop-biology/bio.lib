@@ -51,12 +51,12 @@ namespace effort {
 
 /**
  * Diffuse against the Concentration gradient, toward the source of the originally Dissolved Substance. <br />
- * This syncs changes in downstream, Egressed Solutes back upstream. <br />
+ * This syncs changes in downstream, Effluxed Solutes back upstream. <br />
  */
 DiffusionEffort Active();
 
 /**
- * Diffuse with the Concentration gradient, toward Egressed Solutes. <br />
+ * Diffuse with the Concentration gradient, toward Effluxed Solutes. <br />
  * This syncs changes in the upstream Dissolved Substance toward downstream copies. <br />
  */
 DiffusionEffort Passive();

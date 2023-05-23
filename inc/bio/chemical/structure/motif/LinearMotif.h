@@ -106,7 +106,7 @@ public:
 	}
 
 	/**
-	 * @param perspective
+	 *
 	 */
 	explicit LinearMotif() :
 		chemical::Class< LinearMotif< CONTENT_TYPE > >(this)
@@ -116,7 +116,6 @@ public:
 
 	/**
 	 * @param contents
-	 * @param perspective
 	 */
 	explicit LinearMotif(const Contents* contents) :
 		chemical::Class< LinearMotif< CONTENT_TYPE > >(this)
@@ -149,9 +148,7 @@ public:
 	}
 
 	/**
-	 * Each LinearMotif may use a different Perspective for identifying its contents. <br />
-	 * This Perspective will be used for Name <-> Id matching, Wave->Clone()ing, etc. <br />
-	 * See bio/physical/Perspective.h for more details. <br />
+	 * For ease of use, the AtomicNumber of the CONTENT_TYPE is stored in *this as the mContentId. <br />
 	 */
 	mutable AtomicNumber mContentId;
 

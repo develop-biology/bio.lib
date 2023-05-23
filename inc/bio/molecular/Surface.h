@@ -39,7 +39,7 @@ class Molecule;
  */
 class Surface :
 	public Class< Surface >,
-	public chemical::EnvironmentDependent< Molecule >
+	public chemical::EnvironmentDependent< Molecule* >
 {
 public:
 
@@ -237,16 +237,14 @@ public:
 	virtual physical::Waves Release(BondType bondType = bond_type::Temporary());
 
 	/**
-	 * Sets both the mEnvironment and mPerspective and updates mId. <br />
-	 * @param environment
-	 */
-	virtual void SetEnvironment(Molecule* environment);
-
-	/**
-	 * Sets both the mEnvironment and mPerspective and updates mId. <br />
+	 * Passes straight to EnvironmentDependent< Molecule* >. <br />
+	 * In the past, we considered allowing each Molecule to maintain its own Id <-> Name mapping (i.e. be a Perspective). <br />
+	 * For that to be possible, we must set the Id of *this to match the name mapping of the environment. <br />
+	 * However, this pattern was foregone in favor of Mix, Collapse, & Interference, which all allow Substances to be intelligently combined. <br />
+	 * Now, if you would like to combine a Surface on one Molecule  with a Surface of a different Name on another Molecule, you may engage the Mix machinery manually (i.e. just invoke Mix with both Surfaces). <br />
 	 * @param perspective a Molecule.
 	 */
-	virtual void SetPerspective(Molecule* perspective);
+	virtual void SetEnvironment(Molecule* environment);
 
 	/**
 	 * Wrapper around Bind <br />

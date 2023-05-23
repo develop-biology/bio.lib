@@ -29,7 +29,7 @@ namespace circulatory {
 /**
  * BloodVessels form the interface between a Tissue (or any other collection of Vesicles) and the Circulatory system. <br />
  * Solutes may be moved into and out of a BloodVessel, which allows them to be homogenized with all other BloodVessels which share a Vasculature. <br />
- * BloodVessels use Blood as their Solvent and are thread safe. <br />
+ * BloodVessels use Blood as their Solution and are thread safe. <br />
  */
 class BloodVessel :
 	public circulatory::Class< BloodVessel >,

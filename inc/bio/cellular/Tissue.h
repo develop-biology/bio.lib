@@ -46,7 +46,7 @@ class Tissue :
 	public Covalent< chemical::LinearMotif< genetic::Plasmid* > >,
 	public Covalent< chemical::LinearMotif< Cell* > >,
 	public Covalent< chemical::LinearMotif< Tissue* > >,
-	public chemical::EnvironmentDependent< Tissue > //Not Organ.
+	public chemical::EnvironmentDependent< Tissue* > //Not Organ.
 {
 public:
 

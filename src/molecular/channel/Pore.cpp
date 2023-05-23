@@ -28,7 +28,6 @@ namespace molecular {
 Pore::Pore() :
 	molecular::Class< Pore >(
 	this,
-	NULL,
 	filter::Molecular(),
 	symmetry_type::Variable())
 {
@@ -43,7 +42,6 @@ Pore::Pore(
 	molecular::Class< Pore >(
 		this,
 		name,
-		environment,
 		filter::Molecular(),
 		symmetry_type::Variable())
 {

@@ -25,7 +25,7 @@
 #include "bio/molecular/common/Class.h"
 #include "bio/molecular/common/Filters.h"
 #include "Surface.h"
-#include "bio/chemical/structure/motif/LinearMotif.h"
+#include "bio/chemical/structure/motif/DependentMotif.h"
 #include "bio/chemical/solution/Solute.h"
 
 namespace bio {
@@ -47,8 +47,11 @@ namespace molecular {
  * This same concept has been modeled here (see Transfer..., etc., below); though we can still do whatever the **** we want cause computers. 
  *
  * You can create Surfaces in 1 Molecule and then Transfer them to another. However, doing so may change (or break) the Molecules' interactions with other Molecules and systems. This would be like transferring variables between objects at runtime. <br />
- * This Transfer system is why Molecules are Perspectives. The Id of Surfaces in 1 Molecule may not hold within another Molecule and we don't want to enforce a global Surface labeling at this time. <br />
- * You can think of Surface::Ids as numbered variables. When a class (Molecule) is instantiated, we go through and number its member variables. Members can then be added or removed throughout the life of the object and each one will have a number that is unique to that Molecule. In other words, there is no absolutely right type for "MyVar"; instead, "MyVar" can be an int in one Molecule and a bool in another. <br />
+ * We've chosen to rely on global Id <-> Name mappings for all Identifiable< Id > classes including Molecule & Surface. Ids are provided by the IdPerspective for object Names and the PeriodicTable for type names. Relying on globally consistent Ids allows us to inherit from other objects in the same dimension while not losing track of the children's names (e.g. if all Vesicles were to be tracked by a different Perspective than Molecules & we upcast a Vesicle* to a Molecule*, we wouldn't be able to get the Molecule*'s name from the MoleculePerspective because the name would only be stored in the VesivlePerspective). <br />
+ * This is nice but comes with a major downside: there is no guarantee that 2 Surfaces of the same Name share have the same structure nor type. <br />
+ * You can think of Surface::Ids as numbered variables. When a class (Molecule) is instantiated, we go through and number its member variables. Members can then be added or removed throughout the life of the object, and each one will have a number that is unique to its Name, but not unique to the Molecule it belongs to. In other words, there is no absolutely right type for "MyVar"; instead, "MyVar" can be an int in one Molecule and a bool in another. <br />
+ * If you would like to Transfer a Surface to another Molecule, please check that the destination does not already have a Surface with the same Id (or Name). <br />
+ * If you would like to combine 2 Surfaces on 2 different Molucules, you can Mix them. See Solute & Solution for examples. <br />
  *
  * The ability to Transfer Surfaces between Molecules is just one advantage that comes from this member abstraction. Another advantage is Symmetry (i.e. reflection into other languages, like json). Beyond this point, Spin() and Reify(), which are native to physical::Waves, should no longer require definition, as we will be able to use the Biology structures we've created to determine those implementations dynamically. <br />
  *
@@ -72,7 +75,7 @@ namespace molecular {
  */
 class Molecule :
 	public Class< Molecule >,
-	public Covalent< chemical::DependentMotif< Surface* > >,
+	public Covalent< chemical::DependentMotif< Surface*, Molecule* > >,
 	virtual public chemical::Solute,
 	virtual public physical::Perspective< Id >
 {
@@ -266,7 +269,7 @@ public:
 	 * Required method from Wave. See that class for details. <br />
 	 * @return a Symmetrical image of *this
 	 */
-	virtual const Symmetry* Spin() const;
+	virtual const physical::Symmetry* Spin() const;
 
 	/**
 	 * Required method from Wave. See that class for details. <br />

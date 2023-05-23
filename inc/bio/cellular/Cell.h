@@ -49,7 +49,7 @@ class Organelle;
 class Cell :
 	public Class< Cell >,
 	public Covalent< chemical::LinearMotif< Organelle* > >,
-	public chemical::EnvironmentDependent< cellular::Tissue >,
+	public chemical::EnvironmentDependent< cellular::Tissue* >,
 	virtual public genetic::Expressor
 {
 public:
