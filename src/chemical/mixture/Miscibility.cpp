@@ -25,17 +25,20 @@
 namespace bio {
 namespace chemical {
 
-Miscibility::Miscibility()
+Miscibility::Miscibility() :
+	physical::Class< Miscibility >(this, NULL)
 {
 
 }
 
-Miscibility::Miscibility(const Property& property)
+Miscibility::Miscibility(const Property& property):
+	physical::Class< Miscibility >(this, NULL)
 {
 
 }
 
-Miscibility::Miscibility(const Name& name)
+Miscibility::Miscibility(const Name& name):
+	physical::Class< Miscibility >(this, NULL)
 {
 
 }
@@ -56,7 +59,7 @@ const physical::Wave* Miscibility::GetDisplacement(const Substance* substance) c
 
 physical::Interference* Miscibility::GetInterference() const
 {
-	return mInterference->Clone();
+	return ForceCast< physical::Class< physical::Interference >* >(mInterference->Clone()->AsWave())->GetWaveObject();
 }
 
 void Miscibility::SetInterference(physical::Interference* interference)

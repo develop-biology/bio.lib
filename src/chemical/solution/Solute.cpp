@@ -21,6 +21,9 @@
 
 #include "bio/chemical/solution/Solute.h"
 #include "bio/chemical/solution/Solution.h"
+#include "bio/chemical/common/Diffusion.h"
+#include "bio/chemical/reaction/Reaction.h"
+#include "bio/chemical/mixture/Mix.h"
 
 namespace bio {
 namespace chemical {
@@ -32,45 +35,97 @@ Solute::~Solute()
 
 void Solute::CommonConstructor()
 {
-	mConcentration = 0;
-	mParentSolution = NULL;
-	mIndexInParentSolution = InvalidIndex();
+	mDissolvedSubstance = NULL;
+	mParentSolute = NULL;
+	mIndexInParent = InvalidIndex();
+	mDiffusionTime = diffusion::time::Destruction();
+	mDiffusionEffort = diffusion::effort::Active();
+}
+
+Solute::Solute(Solute& other) :
+	chemical::Class< Solute >(
+		this,
+		other.GetFilter()
+	),
+	mDissolvedSubstance(other.mDissolvedSubstance),
+	mParentSolute(&other),
+	mDiffusionTime(other.mDiffusionTime),
+	mDiffusionEffort(other.mDiffusionEffort)
+{
+	mIndexInParent = other.Add(this);
+	//environment is not copied.
+}
+
+Substance* Solute::GetDissolvedSubstance()
+{
+	return mDissolvedSubstance;
+}
+
+const Substance* Solute::GetDissolvedSubstance() const
+{
+	if (!mDissolvedSubstance)
+	{
+		if (mParentSolute)
+		{
+			return mParentSolute->GetDissolvedSubstance();
+		}
+		return NULL;
+	}
+	return mDissolvedSubstance;
 }
 
 Concentration Solute::GetConcentration() const
 {
-	return mConcentration;
+	return Size() + 1; //+1 to account for the Solute itself.
 }
 
-void Solute::IncrementConcentration() const
-{
-	++mConcentration;
-}
 
-void Solute::DecrementConcentration() const //const required to decrement const Solutes.
+void Solute::Diffuse() const
 {
-	--mConcentration;
-	if (!mConcentration)
+	BIO_SANITIZE(mDissolvedSubstance,,return)
+	if (GetEnvironment() &&
+		(mDiffusionEffort == diffusion::effort::Active() || mDiffusionEffort == diffusion::effort::ActiveAndPassive())
+	)
 	{
-		const_cast< Solute* >(this)->Destructor();
+		GetEnvironment()->Influx(*this);
+	}
+	else if (GetConcentration() > 1 &&
+		(mDiffusionEffort == diffusion::effort::Passive() || mDiffusionEffort == diffusion::effort::ActiveAndPassive())
+	)
+	{
+		for (
+			SmartIterator cld = Begin();
+			!cld.IsAfterEnd();
+			++cld
+		) {
+			cld.As< Solute* >()->MixWith(*this);
+		}
 	}
 }
 
-void Solute::SetConcentration(Concentration toSet) const
+Code Solute::Crest()
 {
-	mConcentration = toSet;
-	if (!mConcentration)
+	if (mDiffusionTime != diffusion::time::Interval())
 	{
-		const_cast< Solute* >(this)->Destructor();
+		return code::NoErrorNoSuccess();
 	}
+	Diffuse();
+	return code::Success();
 }
 
-void Solute::Resolve() const
+Code Solute::MixWith(const bio::chemical::Solute& other)
 {
-	if (mParentSolution && mIndexInParentSolution)
-	{
-		mParentSolution->Influx(*this);
-	}
+	return MixWith(other.GetDissolvedSubstance());
+}
+
+Code Solute::MixWith(const bio::chemical::Substance* other)
+{
+	BIO_SANITIZE(other,,return code::BadArgument1())
+	Reactants reactants;
+	reactants.Add< Substance* >(mDissolvedSubstance);
+	reactants.Add< Substance* >(const_cast< Substance* >(other)); //other won't be modified, but we need to cast away the const to add it to the reactants.
+	Reaction::Attempt< Mix >(&reactants);
+	return code::Success();
 }
 
 void Solute::SetEnvironment(Solution* environment)
@@ -85,22 +140,59 @@ void Solute::SetEnvironment(Solution* environment)
 
 Index Solute::GetIndexInParentSolution() const
 {
-	return mIndexInParentSolution;
+	return mIndexInParent;
 }
 
 void Solute::Destructor()
 {
-	if (mParentSolution && mIndexInParentSolution)
+	if (mDiffusionTime == diffusion::time::Destruction() || mDiffusionTime == diffusion::time::Interval())
 	{
-		Resolve();
-		mParentSolution->DecrementConcentration(mIndexInParentSolution);
+		Diffuse();
 	}
+
+	if (mParentSolute && mIndexInParent)
+	{
+		mParentSolute->Erase(mIndexInParent);
+	}
+
+	if (mDissolvedSubstance)
+	{
+		delete mDissolvedSubstance;
+		mDissolvedSubstance = NULL;
+	}
+
 	Solution* env = GetEnvironment();
 	if (env)
 	{
 		env->RemoveById< Solute* >(GetId());
 	}
+
 	delete this;
+}
+
+void Solute::SetIndexInParentSolution(Index index)
+{
+	mIndexInParent = index;
+}
+
+void Solute::SetDiffusionTime(const bio::DiffusionTime& diffusionTime)
+{
+	mDiffusionTime = diffusionTime;
+}
+
+DiffusionTime Solute::GetDiffusionTime() const
+{
+	return mDiffusionTime;
+}
+
+void Solute::SetDiffusionEffort(const DiffusionEffort& diffusionEffort)
+{
+	mDiffusionEffort = diffusionEffort;
+}
+
+DiffusionEffort Solute::GetDiffusionEffort() const
+{
+	return mDiffusionEffort;
 }
 
 } //chemical namespace

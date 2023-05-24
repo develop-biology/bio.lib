@@ -73,7 +73,7 @@ public:
 	 * Otherwise, the external Molecule will be Dissolved in *this. <br />
 	 * @param external
 	 */
-	void IngressMolecule(Molecule* external);
+	void IngressSolute(chemical::Solute* external);
 
 	
 	/**
@@ -91,7 +91,7 @@ public:
 	 * @param soluteName 
 	 * @return a Solute containing a Dissolved Substance with the given Id Effluxed out of the mInterior Vesicle.
 	 */
-	chemical::Solute& Egress(const Name& soluteName);
+	chemical::Solute Egress(const Name& soluteName);
 	
 	/**
 	 * Egress copies Molecules in *this and provides them for export. <br />
@@ -100,7 +100,7 @@ public:
 	 * @param soluteId
 	 * @return a Solute containing a Dissolved Substance with the given Id Effluxed out of the mInterior Vesicle.
 	 */
-	chemical::Solute& Egress(const Id& soluteId);
+	chemical::Solute Egress(const Id& soluteId);
 
 	/**
 	 * Secrete moves Molecules in *this out, making them unavailable to the mInterior Vesicle. <br />

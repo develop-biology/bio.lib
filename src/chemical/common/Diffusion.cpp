@@ -41,6 +41,8 @@ BIO_DIFFUSION_EFFORT_FUNCTION_BODY(Active)
 
 BIO_DIFFUSION_EFFORT_FUNCTION_BODY(Passive)
 
+BIO_DIFFUSION_EFFORT_FUNCTION_BODY(ActiveAndPassive)
+
 } //effort namespace
 
 } //diffusion namespace

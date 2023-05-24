@@ -23,6 +23,7 @@
 
 #include "SignalPeptide.h"
 #include "bio/physical/relativity/Perspective.h"
+#include "bio/chemical/reaction/Excitation.h"
 #include "bio/genetic/common/Types.h"
 
 namespace bio {
@@ -104,7 +105,7 @@ protected:
 	 * @param name
 	 * @return a new SignalPeptide.
 	 */
-	virtual Brane* CreateBrane(Location id, const Name& name);
+	virtual physical::Brane< Location >* CreateBrane(Location id, const Name& name);
 };
 
 BIO_SINGLETON(Translocator, TranslocatorImplementation)

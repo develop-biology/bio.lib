@@ -48,6 +48,12 @@ BIO_ID(Location, uint8_t)
 */
 BIO_ID_WITH_PERSPECTIVE(TranscriptionFactor, uint8_t)
 
+/**
+ * The PlasmidPerspective is an additional Perspective that allows Plasmid objects to be retrieved by human-readable, non-unique, and/or short Names. <br />
+ * The PeriodicTable is incapable of associating common names (e.g. "MyPlasmid") with globally unique objects (e.g. MyPlasmid*). <br />
+ */
+BIO_TYPED_PERSPECTIVE_SINGLETON(PlasmidPerspective, Id)
+
 } //bio namespace
 
 namespace bio {

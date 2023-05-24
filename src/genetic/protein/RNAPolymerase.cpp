@@ -30,6 +30,7 @@ namespace genetic {
 
 RNAPolymerase::RNAPolymerase(Plasmid* toTranscribe)
 	:
+	genetic::Class< RNAPolymerase >(this, "RNA Polymerase", filter::Genetic()),
 	molecular::Protein(SafelyAccess< chemical::PeriodicTable >()->GetNameFromType(*this))
 {
 	SetSource(toTranscribe);
@@ -43,7 +44,7 @@ RNAPolymerase::~RNAPolymerase()
 
 Code RNAPolymerase::Activate()
 {
-	Expressor* expressor = ChemicalCast< Expressor* >(GetEnvironment());
+	Expressor* expressor = ChemicalCast< Expressor* >(this->template GetEnvironment< molecular::Vesicle* >());
 
 	BIO_SANITIZE(expressor, , return code::BadArgument1());
 

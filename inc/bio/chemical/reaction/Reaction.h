@@ -235,7 +235,7 @@ public:
 	template < typename T >
 	static const T* Initiate()
 	{
-		const T* ret = SafelyAccess< PeriodicTable >()->template GetTypeFromNameAs< T >(type::TypeName< T >());
+		const T* ret = Cast< const T* >(SafelyAccess< PeriodicTable >()->template GetTypeFromNameAs< T* >(type::TypeName< T >()));
 		BIO_SANITIZE_AT_SAFETY_LEVEL_1(ret,
 			return ret,
 			return NULL);
@@ -251,7 +251,7 @@ public:
 	static Products Attempt(Reactants* reactants)
 	{
 		BIO_SANITIZE_WITH_CACHE(Initiate< T >(),
-			return (*Cast< const T* >(RESULT))(reactants),
+			return (*RESULT)(reactants),
 			return Products(
 				code::NotImplemented(),
 				reactants

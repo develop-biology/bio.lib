@@ -38,9 +38,16 @@ class SuperSymmetry;
  * When accessing the Superposition of a given Symmetry, the Wave Superposing others may choose to also access the sub-interference for that Symmetry. This is done on a case-by-case basis, according to the implementation of Superpose. <br />
  * Here, Symmetries can be thought of as Wave components. <br />
  */
-class Interference
+class Interference:
+	public physical::Class< Interference >
 {
-public: 
+public:
+
+	/**
+	 * Disambiguate all Class methods. <br />
+	 */
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, Interference)
+
     Interference();
     virtual ~Interference();
 

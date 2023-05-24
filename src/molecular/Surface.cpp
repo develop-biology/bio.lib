@@ -114,7 +114,7 @@ Code Surface::Reify(physical::Symmetry* symmetry)
 	return code::NotImplemented();
 }
 
-physical::Symmetry* Surface::Spin() const
+const physical::Symmetry* Surface::Spin() const
 {
 	//TODO...
 	return NULL;

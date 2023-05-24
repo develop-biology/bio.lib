@@ -25,67 +25,106 @@
 namespace bio {
 namespace chemical {
 
-Id Solution::Dissolve(Substance* toDissolve)
+Id Solution::Dissolve(
+	Substance* toDissolve,
+	const DiffusionTime& diffusionTime,
+	const DiffusionEffort& diffusionEffort
+)
 {
-
+	BIO_SANITIZE(toDissolve,,return IdPerspective::InvalidId())
+	Index existingSolute = this->SeekToId(toDissolve->GetId());
+	if (existingSolute)
+	{
+		LinearAccess(existingSolute)->AsAtom()->As< Solute* >()->MixWith(toDissolve);
+		return toDissolve->GetId();
+	}
+	else
+	{
+		Solute* solute = new Solute(toDissolve->GetId());
+		solute->mDissolvedSubstance = toDissolve;
+		solute->SetDiffusionEffort(diffusionEffort);
+		solute->SetDiffusionTime(diffusionTime);
+		solute->SetEnvironment(this);
+		this->physical::Line::Add(physical::Linear(solute, false)); //not shared.
+		return solute->GetId();
+	}
 }
 
 Substance* Solution::Separate(const Id& id)
 {
-
+	Index existingSolute = this->SeekToId(id);
+	BIO_SANITIZE(existingSolute,,return NULL)
+	Solute* solute = LinearAccess(existingSolute)->AsAtom()->As< Solute* >();
+	BIO_SANITIZE(solute && solute->GetConcentration() == 1,,return NULL) //likely user error.
+	Substance* substance = solute->mDissolvedSubstance;
+	solute->mDissolvedSubstance = NULL;
+	solute->SetEnvironment(NULL);
+	this->physical::Line::Erase(existingSolute);
+	return substance;
 }
 
 Id Solution::Influx(const Solute& toInflux)
 {
-
+	Index existingSolute = this->SeekToId(toInflux.GetId());
+	if (existingSolute)
+	{
+		Solute* solute = LinearAccess(existingSolute)->AsAtom()->As< Solute* >();
+		solute->MixWith(toInflux);
+		return solute->GetId();
+	}
+	Solute* toAdd = new Solute(toInflux);
+	toAdd->SetEnvironment(this);
+	this->physical::Line::Add(physical::Linear(toAdd, false)); //not shared.
+	return toAdd->GetId();
 }
 
-void Solution::DecrementConcentration(const Index soluteIndex)
+Solute Solution::Efflux(const Id& soluteId)
 {
-	BIO_SANITIZE(this->IsAllocated(soluteIndex), , return)
-
-	//We need to access the Solute we want to change directly, rather than make a copy as OptimizedAccess would do.
-	Solute* solute = ForceCast< Solute* >(&this->mStore[soluteIndex * sizeof(Solute)]);
-	BIO_SANITIZE(solute, , return)
-	solute->DecrementConcentration();
+	Index existingSolute = this->SeekToId(soluteId);
+	BIO_SANITIZE(existingSolute,, return *new Solute())
+	Solute* solute = LinearAccess(existingSolute)->AsAtom()->As< Solute* >();
+	Solute ret = Solute(*solute);
+	ret.SetEnvironment(NULL);
+	return ret;
 }
 
-Solute& Solution::Efflux(const Id& soluteId)
+const Solute Solution::Efflux(const Id& soluteId) const
 {
-
+	Index existingSolute = this->SeekToId(soluteId);
+	BIO_SANITIZE(existingSolute,, return *new Solute())
+	const Solute* solute = LinearAccess(existingSolute)->AsAtom()->As< Solute* >();
+	Solute ret = Solute(*solute);
+	ret.mDissolvedSubstance = NULL; //read only; remove write access.
+	ret.SetEnvironment(NULL);
+	return ret;
 }
 
-const Solute& Solution::Efflux(const Id& soluteId) const
+Solute Solution::Efflux(const Name& substanceName)
 {
-	return const_cast< Solution* >(this)->Efflux(soluteId);
+	return Efflux(IdPerspective::Instance().GetIdFromName(substanceName));
 }
 
-Solute& Solution::Efflux(const Name& substanceName)
+const Solute Solution::Efflux(const Name& substanceName) const
 {
-	
+	return Efflux(IdPerspective::Instance().GetIdFromName(substanceName));
 }
 
-const Solute& Solution::Efflux(const Name& substanceName) const
-{
-	return const_cast< Solution* >(this)->Efflux(substanceName);
-}
-
-Solute& Solution::operator[](const Id& soluteId)
+Solute Solution::operator[](const Id& soluteId)
 {
 	return Efflux(soluteId);
 }
 
-const Solute& Solution::operator[](const Id& soluteId) const
+const Solute Solution::operator[](const Id& soluteId) const
 {
 	return Efflux(soluteId);
 }
 
-Solute& Solution::operator[](const Name& substanceName)
+Solute Solution::operator[](const Name& substanceName)
 {
 	return Efflux(substanceName);
 }
 
-const Solute& Solution::operator[](const Name& substanceName) const
+const Solute Solution::operator[](const Name& substanceName) const
 {
 	return Efflux(substanceName);
 }

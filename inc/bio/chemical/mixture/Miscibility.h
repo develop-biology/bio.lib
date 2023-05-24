@@ -25,6 +25,7 @@
 #include "bio/physical/common/Filters.h"
 #include "bio/physical/macro/Macros.h"
 #include "bio/physical/relativity/Identifiable.h"
+#include "bio/chemical/Substance.h"
 
 namespace bio {
 namespace chemical {

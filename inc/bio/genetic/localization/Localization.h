@@ -22,6 +22,7 @@
 #pragma once
 
 #include "bio/genetic/common/Types.h"
+#include "bio/genetic/relativity/Translocator.h"
 #include "bio/physical/common/Class.h"
 #include "bio/physical/macro/Macros.h"
 #include "bio/chemical/reaction/Excitation.h"
@@ -71,7 +72,7 @@ public:
 	 * @param name
 	 */
 	explicit Localization(
-		Location location = LocalizationLocationPerspective::InvalidId(),
+		Location location = Translocator::InvalidId(),
 		const Name& name = NULL
 	);
 

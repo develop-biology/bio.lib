@@ -35,4 +35,14 @@
  * @return function signatures for use in BIO_DISAMBIGUATE_OPTIONAL_CLASS_METHODS
  */
 #define BIO_GET_OPTIONAL_CLASS_METHODS_FOR_molecular()                         \
-    BIO_GET_OPTIONAL_CLASS_METHODS_FOR_chemical()
+    BIO_GET_OPTIONAL_CLASS_METHODS_FOR_chemical(),                             \
+    (                                                                          \
+        template< typename ENVIRONMENT >                                       \
+		ENVIRONMENT GetEnvironment(),                                          \
+        template GetEnvironment< ENVIRONMENT >()                               \
+    ),                                                                         \
+    (                                                                          \
+        template< typename ENVIRONMENT >                                       \
+		const ENVIRONMENT GetEnvironment() const,                              \
+        template GetEnvironment< ENVIRONMENT >()                               \
+    )

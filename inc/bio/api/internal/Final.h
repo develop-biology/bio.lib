@@ -509,7 +509,7 @@ public:
 
 	//START: physical::Wave methods (some of these defined above).
 
-	physical::Symmetry* Spin() const 
+	const physical::Symmetry* Spin() const
 	{
 		return this->mT.Spin();
 	}

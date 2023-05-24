@@ -170,7 +170,7 @@ public:
 	 * Required method from Wave. See that class for details. <br />
 	 * @return a Symmetrical image of *this
 	 */
-	virtual Symmetry* Spin() const
+	virtual const Symmetry* Spin() const
 	{
 		this->mSymmetry->AccessValue()->Set(*this->mQuantized);
 		return this->Wave::Spin();
@@ -201,18 +201,20 @@ public:
 	virtual bool Superpose(const ConstWaves& displacement, const Interference* pattern)
 	{
 		//First, make sure our parent can't take care of this for us.
-		BIO_SANITIZE_AT_SAFETY_LEVEL_1(this->Wave::Superpose(displacement),return true,)
+		BIO_SANITIZE_AT_SAFETY_LEVEL_1(this->Superpose(displacement, pattern), return true,)
 
 		//Assume all Waves, including *this, are Spinning appropriately.
 
-		const Superposition superposition = pattern->GetSuperpositionFor(this->mSymmetry);
+		const Superposition superposition = pattern->GetSuperpositionFor(this->mSymmetry->GetId());
 
 		if (superposition == superposition::Complex())
 		{
 			return true;
 		}
 
-		(*mQuantized) = Collapse::Measure(superposition, displacement);
+		ByteStream collapse = Collapse::Measure(superposition, displacement);
+		BIO_SANITIZE(collapse.Is< T >(), , return false)
+		(*this->mQuantized) = collapse.As< T >();
 		return false;
 	}
 

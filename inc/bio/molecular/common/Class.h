@@ -36,7 +36,7 @@ namespace molecular {
 template < typename T >
 class Class :
 	public chemical::Class< T >,
-	virtual public chemical::Solute,
+	virtual public chemical::Substance,
 	virtual public ThreadSafe
 {
 public:
@@ -114,6 +114,28 @@ public:
 	virtual ~Class()
 	{
 
+	}
+
+	/**
+	 * When inheriting from multiple EnvironmentDependent classes, this method can be used to easily specify which Environment to use. <br />
+	 * @tparam ENVIRONMENT
+	 * @return GetEnvironment from an EnvironmentDependent base.
+	 */
+	template < typename ENVIRONMENT >
+	ENVIRONMENT GetEnvironment()
+	{
+		return this->physical::Class< T >::GetWaveObject()->chemical::template EnvironmentDependent< ENVIRONMENT >::GetEnvironment();
+	}
+
+	/**
+	 * When inheriting from multiple EnvironmentDependent classes, this method can be used to easily specify which Environment to use. <br />
+	 * @tparam ENVIRONMENT
+	 * @return GetEnvironment from an EnvironmentDependent base.
+	 */
+	template < typename ENVIRONMENT >
+	const ENVIRONMENT GetEnvironment() const
+	{
+		return this->physical::Class< T >::GetWaveObject()->chemical::template EnvironmentDependent< ENVIRONMENT >::GetEnvironment();
 	}
 };
 

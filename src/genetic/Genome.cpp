@@ -31,7 +31,6 @@ GenomeImplementation::GenomeImplementation()
 	genetic::Class< GenomeImplementation >(
 		this,
 		"Genome",
-		NULL,
 		filter::Genetic())
 {
 	Add< TranscriptionFactor >(transcription_factor::Genome());

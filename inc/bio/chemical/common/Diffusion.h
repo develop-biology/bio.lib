@@ -61,6 +61,12 @@ DiffusionEffort Active();
  */
 DiffusionEffort Passive();
 
+/**
+ * Diffuse both with and against the Concentration gradient. <br />
+ * This syncs changes in the upstream Dissolved Substance toward downstream copies, and vice versa. <br />
+ */
+DiffusionEffort ActiveAndPassive();
+
 } //effort namespace
 
 } //diffusion namespace

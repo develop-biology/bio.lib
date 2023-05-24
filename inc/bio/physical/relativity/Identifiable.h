@@ -12,8 +12,6 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
@@ -171,7 +169,7 @@ public:
 		{
 			return false;
 		}
-		if (!this->GetId() == id.mT)
+		if (this->GetId() != id.mT)
 		{
 			return false;
 		}
@@ -340,7 +338,7 @@ public:
 	 * Because Symmetry is Identifiable, it cannot be #included here. We rely on children of Identifiable (primarily chemical:: objects to implement Spin()). <br />
 	 * @return a Symmetrical image of *this
 	 */
-	virtual Symmetry* Spin() const
+	virtual const Symmetry* Spin() const
 	{
 		return NULL;
 	}

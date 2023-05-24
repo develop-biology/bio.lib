@@ -21,6 +21,7 @@
 
 #include "bio/genetic/common/Locations.h"
 #include "bio/genetic/macro/Macros.h"
+#include "bio/genetic/relativity/Translocator.h"
 #include "bio/molecular/Surface.h"
 #include "bio/molecular/Molecule.h"
 #include "bio/molecular/Vesicle.h"

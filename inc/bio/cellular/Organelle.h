@@ -36,7 +36,7 @@ class Cell;
  * Create an Organelle for your Cells if you have complex behavior that you would like to isolate, conserve, and/or transport across your system. <br />
  */
 class Organelle :
-	public Class< Organelle >,
+	public cellular::Class< Organelle >,
 	public chemical::EnvironmentDependent< Cell* >
 {
 public:

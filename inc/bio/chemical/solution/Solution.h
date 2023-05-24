@@ -24,9 +24,11 @@
 #include "bio/chemical/common/Types.h"
 #include "bio/chemical/common/Filters.h"
 #include "bio/chemical/common/Class.h"
+#include "bio/chemical/common/Diffusion.h"
 #include "bio/chemical/macro/Macros.h"
 #include "bio/chemical/structure/motif/DependentMotif.h"
 #include "bio/chemical/Substance.h"
+#include "bio/physical/shape/Line.h"
 
 namespace bio {
 namespace chemical {
@@ -55,7 +57,7 @@ class Solute;
  */
 class Solution :
 	public chemical::Class< Solution >,
-	public Arrangement< Solute >,
+	public physical::Line,
 	virtual public chemical::Substance
 {
 public:
@@ -74,10 +76,15 @@ public:
 	/**
 	 * Dissolving a Substance in a Solution creates a Solute that represents the Substance. <br />
 	 * The Solute will take ownership of the Substance and delete it when the Solute's Concentration drops to 0. <br />
+	 * Dissolving a Substance which has already been Dissolved will result in the 2 Substances Mixing together. <br />
 	 * @param toDissolve
 	 * @return the Id of the created Solute in *this or INVALID_ID.
 	 */
-	virtual Id Dissolve(Substance* toDissolve);
+	virtual Id Dissolve(
+		Substance* toDissolve,
+		const DiffusionTime& diffusionTime = diffusion::time::Destruction(),
+		const DiffusionEffort& diffusionEffort = diffusion::effort::Active()
+	);
 
 	/**
 	 * Separating a Substance from a Solution removes the associated Solute from the Solution (*this). <br />
@@ -98,12 +105,15 @@ public:
 	virtual Id Influx(const Solute& toInflux);
 
 	/**
-	 * When a Solute is removed from a child Solution, it should decrease the Concentration in the parent Solution. <br />
-	 * While Solutes should always be Influxed before their Concentration is decreased, their Concentration should not always be decreased when they are Influxed. Hence, we provide DecreaseConcentration as a separate method from Influx. <br />
-	 * This method should only be called from Solute. <br />
-	 * @param soluteIndex the Index of the desired Solute in *this; must be known ahead of time (e.g. by the Solute being modified).
+	 * Efflux a Solute to access it. <br />
+	 * Effluxing a Solute will create a new Solute that has the relevant parent Solute information set. Thus, Effluxing that (already Effluxed) Solute will maintain the appropriate parent relationship and automatically handle Concentration changes. <br />
+	 * <br />
+	 * This should be done for all non-native Solution access, e.g. sub-Solutions or external Solutions. <br />
+	 * You don't have to use Efflux to access Solutes within *this iff "you" own it. <br />
+	 * @param soluteId the Id of the desired Solute.
+	 * @return a Solute from within *this.
 	 */
-	virtual void DecrementConcentration(const Index soluteIndex);
+	virtual Solute Efflux(const Id& soluteId);
 
 	/**
 	 * Efflux a Solute to access it. <br />
@@ -114,18 +124,7 @@ public:
 	 * @param soluteId the Id of the desired Solute.
 	 * @return a Solute from within *this.
 	 */
-	virtual Solute& Efflux(const Id& soluteId);
-
-	/**
-	 * Efflux a Solute to access it. <br />
-	 * Effluxing a Solute will create a new Solute that has the relevant parent Solute information set. Thus, Effluxing that (already Effluxed) Solute will maintain the appropriate parent relationship and automatically handle Concentration changes. <br />
-	 * <br />
-	 * This should be done for all non-native Solution access, e.g. sub-Solutions or external Solutions. <br />
-	 * You don't have to use Efflux to access Solutes within *this iff "you" own it. <br />
-	 * @param soluteId the Id of the desired Solute.
-	 * @return a Solute from within *this.
-	 */
-	virtual const Solute& Efflux(const Id& soluteId) const;
+	virtual const Solute Efflux(const Id& soluteId) const;
 
 	/**
 	 * Efflux a Solute to access it. <br />
@@ -136,7 +135,7 @@ public:
 	 * @param substanceName the Name of the Substance associated with the desired Solute.
 	 * @return a Solute from within *this.
 	 */
-	virtual Solute& Efflux(const Name& substanceName);
+	virtual Solute Efflux(const Name& substanceName);
 
 	/**
 	 * Efflux a Solute to access it. <br />
@@ -147,35 +146,35 @@ public:
 	 * @param substanceName the Name of the Substance associated with the desired Solute.
 	 * @return a Solute from within *this.
 	 */
-	virtual const Solute& Efflux(const Name& substanceName) const;
+	virtual const Solute Efflux(const Name& substanceName) const;
 
 	/**
 	 * operator wrappers around Efflux(). <br />
 	 * @param soluteId
 	 * @return Efflux(...)
 	 */
-	virtual Solute& operator[](const Id& soluteId);
+	virtual Solute operator[](const Id& soluteId);
 
 	/**
 	 * operator wrappers around Efflux(). <br />
 	 * @param soluteId
 	 * @return Efflux(...)
 	 */
-	virtual const Solute& operator[](const Id& soluteId) const;
+	virtual const Solute operator[](const Id& soluteId) const;
 
 	/**
 	 * operator wrappers around Efflux(). <br />
 	 * @param substanceName
 	 * @return Efflux(...)
 	 */
-	virtual Solute& operator[](const Name& substanceName);
+	virtual Solute operator[](const Name& substanceName);
 
 	/**
 	 * operator wrappers around Efflux(). <br />
 	 * @param substanceName
 	 * @return Efflux(...)
 	 */
-	virtual const Solute& operator[](const Name& substanceName) const;
+	virtual const Solute operator[](const Name& substanceName) const;
 };
 
 } //chemical namespace

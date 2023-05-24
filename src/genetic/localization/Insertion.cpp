@@ -54,7 +54,7 @@ chemical::Substance* Insertion::Seek(chemical::Substance* insertIn) const
 
 	BIO_SANITIZE(insertIn && mToInsert, , return insertIn);
 
-	if (mLocation == InsertionLocationPerspective::InvalidId())
+	if (mLocation == Translocator::InvalidId())
 	{
 		return insertIn;
 	}

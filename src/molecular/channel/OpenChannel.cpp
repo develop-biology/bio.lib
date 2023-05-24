@@ -54,9 +54,9 @@ OpenChannel::~OpenChannel()
 
 }
 
-void OpenChannel::IngressMolecule(Molecule* external)
+void OpenChannel::IngressSolute(chemical::Solute* external)
 {
-	mTransMembraneDomain.IngressMolecule(external);
+	mTransMembraneDomain.IngressSolute(external);
 }
 
 void OpenChannel::IngressSolution(chemical::Solution* external)
@@ -64,12 +64,12 @@ void OpenChannel::IngressSolution(chemical::Solution* external)
 	mTransMembraneDomain.IngressSolution(external);
 }
 
-chemical::Solute& OpenChannel::Egress(const Name& soluteName)
+chemical::Solute OpenChannel::Egress(const Name& soluteName)
 {
 	return mTransMembraneDomain.Egress(soluteName);
 }
 
-chemical::Solute& OpenChannel::Egress(const Id& soluteId)
+chemical::Solute OpenChannel::Egress(const Id& soluteId)
 {
 	return mTransMembraneDomain.Egress(soluteId);
 }

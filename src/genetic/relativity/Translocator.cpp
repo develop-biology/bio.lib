@@ -52,26 +52,28 @@ bool TranslocatorImplementation::DisassociateSignalPeptidase(
 {
 	SignalPeptide* signal = GetBraneAs< SignalPeptide* >(location);
 	BIO_SANITIZE(signal,,return false)
-	return signal->mPeptidases.DissassociateType(affinity);
+	return signal->mPeptidases.DisassociateType(affinity);
 }
 
 chemical::ExcitationBase* TranslocatorImplementation::GetPeptidase(
 	Location location,
-	Affinity affinity)
+	Affinity affinity
+)
 {
     SignalPeptide* signal = GetBraneAs< SignalPeptide* >(location);
 	BIO_SANITIZE(signal,,return NULL)
-	return signal->mPeptidases.GetNewObjectFromIdAs< chemical::ExcitationBase* >(affinity);
+	return signal->mPeptidases.template GetNewObjectFromIdAs< chemical::ExcitationBase* >(affinity);
 }
 
 chemical::ExcitationBase* TranslocatorImplementation::GetPeptidase(
 	Location location,
-	const Name& affinity)
+	const Name& affinity
+)
 {
 	return GetPeptidase(location, AffinityPerspective::Instance().GetIdFromName(affinity));
 }
 
-Brane* TranslocatorImplementation::CreateBrane(Location id, const Name& name)
+physical::Brane< Location >* TranslocatorImplementation::CreateBrane(Location id, const Name& name)
 {
     return new SignalPeptide(id, name);
 }

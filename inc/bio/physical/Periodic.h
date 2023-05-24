@@ -90,8 +90,9 @@ public:
 	/**
 	 * Checks the current time & calls Crest, if a long enough interval has passed. <br />
 	 * Call this method regularly (i.e. on a clock). <br />
+	 * @return true if Crest() was called, false otherwise.
 	 */
-	virtual void CheckIn();
+	virtual bool CheckIn();
 
 	/**
 	 * Set how quickly *this should Crest() <br />

@@ -52,7 +52,7 @@ public:
 	 */
 	explicit Insertion(
 		chemical::Substance* whatToInsert = NULL,
-		Location location = InsertionLocationPerspective::InvalidId(),
+		Location location = Translocator::InvalidId(),
 		const Name& name = NULL
 	);
 

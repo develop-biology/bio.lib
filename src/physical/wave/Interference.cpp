@@ -26,7 +26,8 @@
 namespace bio {
 namespace physical {
 
-Interference::Interference()
+Interference::Interference():
+	physical::Class< Interference >(this, NULL)
 {
 }
 

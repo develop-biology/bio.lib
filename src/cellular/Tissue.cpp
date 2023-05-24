@@ -45,7 +45,7 @@ Code Tissue::DifferentiateCells()
 	{
 		cell = cel;
 		cell->SetEnvironment(this);
-		cell->Import< genetic::Plasmid* >(this);
+		cell->Import< genetic::Plasmid* >(As< chemical::LinearMotif< genetic::Plasmid* >* >());
 		if (cell->ExpressGenes() != code::Success() && ret == code::Success())
 		{
 			ret = code::UnknownError();

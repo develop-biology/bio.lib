@@ -192,7 +192,7 @@ public:
 		BIO_STATIC_ASSERT(type::IsWave< T >())
 		BIO_SANITIZE_WITH_CACHE(this->GetNewObjectFromId(id),
 			BIO_SINGLE_ARG(
-				return ForceCast< physical::Class< T >*, Wave* >(RESULT)->GetWaveObject()
+				return *(ForceCast< physical::Class< T >*, Wave* >(RESULT)->GetWaveObject()) //GetWaveObject gives T*, which, if T is a pointer (as it must be), is T**.
 			),
 			return NULL
 		)

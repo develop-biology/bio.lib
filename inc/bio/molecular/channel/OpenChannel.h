@@ -64,7 +64,7 @@ public:
 	 * Per TransMembraneDomain; see that class for details. <br />
 	 * @param external
 	 */
-	virtual void IngressMolecule(Molecule* external);
+	virtual void IngressSolute(chemical::Solute* external);
 
 
 	/**
@@ -79,14 +79,14 @@ public:
 	 * @param soluteName
 	 * @return a Solute containing a Dissolved Substance with the given Id Effluxed out of the mInterior Vesicle.
 	 */
-	virtual chemical::Solute& Egress(const Name& soluteName);
+	virtual chemical::Solute Egress(const Name& soluteName);
 
 	/**
 	 * Per TransMembraneDomain; see that class for details. <br />r
 	 * @param soluteId
 	 * @return a Solute containing a Dissolved Substance with the given Id Effluxed out of the mInterior Vesicle.
 	 */
-	virtual chemical::Solute& Egress(const Id& soluteId);
+	virtual chemical::Solute Egress(const Id& soluteId);
 
 	/**
 	 * Per TransMembraneDomain; see that class for details. <br />

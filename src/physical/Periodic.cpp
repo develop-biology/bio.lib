@@ -106,15 +106,16 @@ Properties Periodic::GetProperties() const
 	return GetClassProperties();
 }
 
-void Periodic::CheckIn()
+bool Periodic::CheckIn()
 {
 	Timestamp now = GetCurrentTimestamp();
 	if (now - GetTimeLastCrested() < GetInterval())
 	{
-		return;
+		return false;
 	}
 	Crest();
 	SetLastCrestTimestamp(now);
+	return true;
 }
 
 } //physical namespace

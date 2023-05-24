@@ -179,6 +179,7 @@ public:
 	{
 		Release();
 		mStream = ::std::malloc(sizeof(T));
+		//TODO: Investigate warning: source of this 'memcpy' call is a pointer to dynamic class; vtable pointer will be copied.
 		std::memcpy(
 			mStream,
 			&in,

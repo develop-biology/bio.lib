@@ -76,7 +76,6 @@ namespace molecular {
 class Molecule :
 	public Class< Molecule >,
 	public Covalent< chemical::DependentMotif< Surface*, Molecule* > >,
-	virtual public chemical::Solute,
 	virtual public physical::Perspective< Id >
 {
 private:
@@ -126,10 +125,7 @@ public:
 		T* varPtr
 	)
 	{
-		BIO_SANITIZE(!RotateTo(varName),
-			,
-			return InvalidId()
-		)
+		BIO_SANITIZE(!RotateTo(varName), , return InvalidId())
 		Surface* toAdd = new Surface(
 			varName,
 			this

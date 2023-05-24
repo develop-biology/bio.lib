@@ -70,7 +70,7 @@ const Identifiable< Id >* Line::LinearAccess(Index index) const
 	return OptimizedAccess(index).operator const Identifiable< Id >*();
 }
 
-Index Line::SeekToName(const Name& name)
+Index Line::SeekToName(const Name& name) const
 {
 	if (!mTempItt)
 	{
@@ -90,7 +90,7 @@ Index Line::SeekToName(const Name& name)
 	return InvalidIndex();
 }
 
-Index Line::SeekToId(const Id& id)
+Index Line::SeekToId(const Id& id) const
 {
 	if (!mTempItt)
 	{

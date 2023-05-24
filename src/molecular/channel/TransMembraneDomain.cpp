@@ -52,21 +52,14 @@ const Vesicle* TransMembraneDomain::GetVesicle() const
 {
 	return mInterior;
 }
-
 	
-void TransMembraneDomain::IngressMolecule(Molecule* external)
+void TransMembraneDomain::IngressSolute(chemical::Solute* external)
 {
 	BIO_SANITIZE(mInterior,,return)
 	BIO_SANITIZE(external,,return)
-	chemical::Solution* externalSolution = external->chemical::EnvironmentDependent< chemical::Solution* >::GetEnvironment();
-	if (externalSolution) {
-		mInterior->Influx(externalSolution->Efflux(external->GetId()));
-	} else {
-		mInterior->Dissolve(external);
-	}
+	mInterior->Influx(*external);
 }
 
-	
 void TransMembraneDomain::IngressSolution(chemical::Solution* external)
 {
 	BIO_SANITIZE(mInterior,,return)
@@ -79,15 +72,14 @@ void TransMembraneDomain::IngressSolution(chemical::Solution* external)
 		mInterior->Influx(external->Efflux(slt.As< chemical::Solute >().GetId()));
 	}
 }
-
 	
-chemical::Solute& TransMembraneDomain::Egress(const Name& soluteName)
+chemical::Solute TransMembraneDomain::Egress(const Name& soluteName)
 {
 	BIO_SANITIZE(mInterior,,return NULL)
 	return mInterior->Efflux(soluteName);
 }
 
-chemical::Solute& TransMembraneDomain::Egress(const Id& soluteId)
+chemical::Solute TransMembraneDomain::Egress(const Id& soluteId)
 {
 	BIO_SANITIZE(mInterior,,return NULL)
 	return mInterior->Efflux(soluteId);

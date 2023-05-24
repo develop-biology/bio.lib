@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "bio/genetic/common/Class.h"
 #include "bio/molecular/Protein.h"
 
 namespace bio {
@@ -30,9 +31,16 @@ namespace genetic {
  * Takes a Plasmid* in the "Plasmid Binding Site" and stores it in the PlasmidPerspective. 
  */
 class RegisterPlasmid :
+	public genetic::Class< RegisterPlasmid >,
 	public molecular::Protein
 {
 public:
+
+	/**
+	 * Disambiguate all Class methods. <br />
+	 */
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(genetic, RegisterPlasmid)
+
 	/**
 	 *
 	 */

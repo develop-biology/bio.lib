@@ -69,7 +69,7 @@ chemical::Substance* Localization::Seek(chemical::Substance* seekIn) const
 
 	BIO_SANITIZE(seekIn, , return seekIn);
 
-	if (mLocation == LocalizationLocationPerspective::InvalidId())
+	if (mLocation == Translocator::InvalidId())
 	{
 		return seekIn;
 	}

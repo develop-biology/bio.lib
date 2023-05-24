@@ -43,23 +43,23 @@ class Solution;
  * <br />
  * Solutes can be accessed (Effluxed) in 2 distinct manners. Both manners of Effluxing increase the Concentration of the desired Solute.<br />
  * 1. When const (read-only) Effluxing, Solutes use a parent-child relationship: only the parent will contain a valid pointer to the Dissolved Substance, each child then points to the parent. This is slower across threads, as each read operation requires a lock, but is faster overall, since the Dissolved Substance doesn't need to be duplicated.<br />
- * 2. When non-const (read-write & mutable) Effluxing, the Dissolved Substance is Cloned and a parent-child relationship is only used to indicate the source Substance. This style of Effluxing can be chained, and the Concentration will increase all the way up to the original Source. You should prefer mutable access across threads, as the Cloned Substance can be modified more freely, without the need for mutex locks. When you would like to merge the new Solute back into the original Solution, you can Diffuse it, which will call Influx on the parent's Solution.<br />
+ * 2. When non-const (read-write & mutable) Effluxing, the Dissolved Substance is Cloned and a parent-child relationship is only used to indicate the source Substance. This style of Effluxing can be chained, effectively increasing the lifetime of the Solutes all the way up to the original Source. You should prefer mutable access across threads, as the Cloned Substance can be modified more freely, without the need for mutex locks. When you would like to merge the new Solute back into the original Solution, you can Diffuse it, which will call Influx on the parent's Solution, Mixing the Solute with its parent.<br />
  * <br />
  * For mutable Solutes, Diffusion happens automatically when the Solute is destroyed, unless you set SetDiffusionTime(diffusion::time::Never()). You may also set SetDiffusionTime(diffusion::time::Interval()) and SetInterval(...) to regularly Diffuse (this implies diffusion::time::Destruction() too). <br />
  * The default diffusion::effort is Active(), whereby changes are pushed up the Concentration gradient, toward the source of the Dissolved Substance. However, parents of mutable Solutes can push changes to children using SetDiffusionEffort(diffusion::effort::Passive()) (or ActiveAndPassive()). Passive() Diffusion is only applicable to Solutes which have a diffusion::time::Interval(). <br />
  * You should prefer Active() Diffusion for Solutes with short lifetimes, as it is more efficient and requires less work. Inversely, you should prefer Passive() Diffusion for Solutes that you intend to keep around; this will help keep the system in sync. <br />
  * <br />
- * When Solutes are Mixed, either through Diffusion or Influxion, they are combined according to their Miscibilities. <br />
+ * When Solutes are Mixed, either through Diffusion or Solution::Influx, they are combined according to their Miscibilities. <br />
  * See Types.h & Miscibility.h for more info on Mixing strategies. <br />
  * <br />
- * To illustrate why parent Concentrations are increased when mutable Solutes are Effluxed:, if function A uses Solute U1 from Solution V1 and function B also uses U1, even if each function exists in an isolated sub-Solution of V1, both functions will start with the same value. Furthermore, if B depends on modifications to U1 made by A, then having U1 be removed from V1 after A completes would break B. <br />
+ * To illustrate why parent Concentrations are increased when mutable Solutes are Effluxed, if function A uses Solute U1 from Solution V1 and function B also uses U1, even if each function exists in an isolated sub-Solution of V1, both functions will start with the same value. Furthermore, if B depends on modifications to U1 made by A, then having U1 be removed from V1 after A completes would break B. <br />
  * Thus, by keeping Solutes around when they are not needed by the immediate context allows sub-contexts to depend on the assumption that other, isolated sub-contexts can reach the same values. <br />
  */
 class Solute :
 	public chemical::Class< Solute >,
 	public chemical::EnvironmentDependent< Solution* >,
-	public physical::Periodic,
-	virtual public Substance
+	public Arrangement< Solute* >,
+	virtual public physical::Periodic
 {
 public:
 
@@ -75,11 +75,27 @@ public:
 	)
 
 	/**
+	 * Copy constructor. <br />
+	 * Adds the newly created Solute to the parent's Solution. <br />
+	 * @param other
+	 */
+	Solute(Solute& other);
+
+	/**
 	 *
 	 */
 	virtual ~Solute();
 
-	//TODO: Increment concentration on copy ctor.
+	/**
+	 * Only applicable if *this is mutable. <br />
+	 * @return the Substance that was Dissolved to form *this. <br />
+	 */
+	Substance* GetDissolvedSubstance();
+
+	/**
+	 * @return the Substance that was Dissolved to form *this. <br />
+	 */
+	const Substance* GetDissolvedSubstance() const;
 
 	/**
 	 * Get the Concentration of *this (i.e. its reference count). <br />
@@ -87,29 +103,35 @@ public:
 	 */
     virtual Concentration GetConcentration() const;
 
-    /**
-	 * Increase the mConcentration of *this by 1. <br />
-	 * Must be const to make Solute::Diffusion mechanics work. <br />
-	 */
-	virtual void IncrementConcentration() const;
-
-	/**
-	 * Decrease the mConcentration of *this by 1. <br />
-	 * Must be const to make Solute::Diffusion mechanics work. <br />
-	 */
-	virtual void DecrementConcentration() const;
-
-	/**
-	 * Manually set the mConcentration of *this. <br />
-	 * This should not be used except in VERY controlled cases (such as Solution Cloning). <br />
-	 * @param toSet
-	 */
-	virtual void SetConcentration(Concentration toSet) const;
-
 	/**
 	 * Influx() *this back into the parent Solution, if it exists. <br />
 	 */
-	virtual void Resolve() const;
+	virtual void Diffuse() const;
+
+	/**
+	 * physical::Periodic method. <br />
+	 * Only does work if the DiffusionTime is Interval(). <br />
+	 * @return the result of diffusion
+	 */
+	virtual Code Crest();
+
+	/**
+	 * Combine *this with another Solute. <br />
+	 * Uses the Mix Reaction to implement; see Mix.h for more info. <br />
+	 * Only *this will be modified. <br />
+	 * @param other
+	 * @return the result of Mixing *this with other.
+	 */
+	virtual Code MixWith(const Solute& other);
+
+	/**
+	 * Combine *this with another Substance. <br />
+	 * Uses the Mix Reaction to implement; see Mix.h for more info. <br />
+	 * Only *this will be modified. <br />
+	 * @param other
+	 * @return the result of Mixing *this with other.
+	 */
+	virtual Code MixWith(const Substance* other);
 
 	/**
 	 * Sets the Environment and the Perspective of *this. <br />
@@ -123,11 +145,51 @@ public:
 	 */
 	virtual Index GetIndexInParentSolution() const;
 
+	/**
+	 * Set the Index of *this in its parent Solution. <br />
+	 * @param indexInParentSolution
+	 */
+	virtual void SetIndexInParentSolution(Index indexInParentSolution);
+
+	/**
+	 * Set the diffusion time of *this. <br />
+	 * Setting the DiffusionTime will control when *this is Diffused. <br />
+	 * See Diffusion.h for some example values. <br />
+	 * @param diffusionTime
+	 */
+	virtual void SetDiffusionTime(const DiffusionTime& diffusionTime);
+
+	/**
+	 * @return the diffusion time of *this.
+	 */
+	virtual DiffusionTime GetDiffusionTime() const;
+
+	/**
+	 * Set the diffusion effort of *this. <br />
+	 * Setting the DiffusionEffort will control how *this is Diffused. <br />
+	 * See Diffusion.h for some example values. <br />
+	 * @param diffusionEffort
+	 */
+	virtual void SetDiffusionEffort(const DiffusionEffort& diffusionEffort);
+
+	/**
+	 * @return the diffusion effort of *this.
+	 */
+	virtual DiffusionEffort GetDiffusionEffort() const;
+
 protected:
+
+	/**
+	 * The actual pointer to be shared. <br />
+	 */
+	Substance* mDissolvedSubstance;
+
 	//Mutable for use in Increment & Decrement
-    mutable Concentration mConcentration;
-    mutable Solution* mParentSolution;
-	mutable Index mIndexInParentSolution;
+    mutable Solute* mParentSolute;
+	mutable Index mIndexInParent;
+
+	DiffusionTime mDiffusionTime;
+	DiffusionEffort mDiffusionEffort;
 
 	/**
 	 * This is what happens when mConcentration = 0. <br />
@@ -140,6 +202,9 @@ private:
 	 *
 	 */
 	void CommonConstructor();
+
+	//For creation & deletion.
+	friend class Solution;
 };
 
 } //chemical namespace

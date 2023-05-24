@@ -55,7 +55,7 @@ public:
 	virtual Properties GetProperties() const;
 
 protected:
-	BIO_EXCITATION_CLASS(physical::Periodic, void) mCrestExcitation;
+	BIO_EXCITATION_CLASS(physical::Periodic, bool) mCrestExcitation;
 };
 
 } //cellular namespace

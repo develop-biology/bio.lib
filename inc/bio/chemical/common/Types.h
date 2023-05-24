@@ -48,8 +48,9 @@ BIO_TYPED_PERSPECTIVE_SINGLETON(MiscibilityPerspective, Property)
  * Diffusion Time and Effort determine when and which Solutes are Mixed. <br />
  * See Solute.h for more info. <br />
  */
-BIO_ID_WITH_PERSPECTIVE(DiffusionTime, uint8_t)
-BIO_ID_WITH_PERSPECTIVE(DiffusionEffort, uint8_t)
+typedef uint8_t DiffusionDimension;
+BIO_ID_WITH_PERSPECTIVE(DiffusionTime, DiffusionDimension)
+BIO_ID_WITH_PERSPECTIVE(DiffusionEffort, DiffusionDimension)
 
 /**
  * Mainly used for inserting children into Nested classes. <br />
