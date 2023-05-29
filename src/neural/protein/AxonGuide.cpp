@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2022 Séon O'Shannon & eons LLC
+ * Copyright (C) 2023 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,29 +19,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/cellular/wave/CrestCarrierWave.h"
-#include "bio/chemical/structure/motif/AbstractMotif.h"
+#include "bio/neural/protein/AxonGuide.h"
 
 namespace bio {
-namespace cellular {
+namespace neural {
 
-CrestCarrierWave::CrestCarrierWave()
-	:
-	mCrestExcitation(&physical::Periodic::CheckIn)
+AxonGuide::~AxonGuide()
 {
-	Modulate(mCrestExcitation);
+	
 }
 
-CrestCarrierWave::~CrestCarrierWave()
+Code AxonGuide::Activate()
 {
+	return molecular::Protein::Activate();
 }
 
-Properties CrestCarrierWave::GetProperties() const
-{
-	Properties ret = chemical::AbstractMotif::GetClassProperties();
-	ret.Add(property::Linear());
-	return ret;
-}
-
-} //cellular namespace
-} //bio namespace
+} // namespace neural
+} // namespace bio

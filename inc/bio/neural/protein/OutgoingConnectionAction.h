@@ -30,44 +30,44 @@ This class is a base for all outgoing NeuronInterface methods.
 These include ProcessOutgoing. For more information on Neuron interface methods, see Synapse.h
 */
 template <class CONNECTION_TYPE, class NEURON_TYPE>
-class OutgoingSynapseProtein : public SynapseProtein<CONNECTION_TYPE>
+class AxonProtein : public SynapseProtein<CONNECTION_TYPE>
 {
 public:
     /**
     TODO: Build test to make sure BAD NAME appears no where in running app.
     */
-    OutgoingSynapseProtein(Name name = "BAD NAME") : SynapseProtein<CONNECTION_TYPE>(name), m_sourceNeuron(NULL)
+    AxonProtein(Name name = "BAD NAME") : SynapseProtein<CONNECTION_TYPE>(name), mPresynapticNeuron(NULL)
     {
         // this->SetLogFilter(log::Filt::NEURON);
     }
-    virtual ~OutgoingSynapseProtein() {}
+    virtual ~AxonProtein() {}
 
-//START: cellular::Protein overrides
+//START: molecular::Protein overrides
 
     /**
     Requires a Synapse* as caller and a Neuron* as arg
     */
-    virtual ReturnCode ValidateArgs(cellular::Cell* caller, void* arg)
+    virtual Code ValidateArgs(cellular::Cell* caller, void* arg)
     {
-        ReturnCode ret = SynapseProtein<CONNECTION_TYPE>::ValidateArgs(caller, arg);
-        if (ret != ret::Success())
+        Code ret = SynapseProtein<CONNECTION_TYPE>::ValidateArgs(caller, arg);
+        if (ret != code::Success())
         {
             return ret;
         }
 
-        if (!m_sourceNeuron)
+        if (!mPresynapticNeuron)
         {
-            m_sourceNeuron = Cast<const NEURON_TYPE, const Neuron>(this->m_synapse->GetSourceNeuron());
-            if (!m_sourceNeuron)
+            mPresynapticNeuron = Cast<const NEURON_TYPE, const Neuron>(this->mSynapse->GetPresynapticNeuron());
+            if (!mPresynapticNeuron)
             {
-                return ret::BadArgument2();
+                return code::BadArgument2();
             }
         }
-        return ret::Success();
+        return code::Success();
     }
 
-//END: cellular::Protein overrides
+//END: molecular::Protein overrides
 
 protected:
-    const NEURON_TYPE* m_sourceNeuron;
+    const NEURON_TYPE* mPresynapticNeuron;
 };

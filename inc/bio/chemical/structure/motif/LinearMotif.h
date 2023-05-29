@@ -26,8 +26,10 @@
 #include "bio/chemical/common/Class.h"
 #include "bio/chemical/common/Properties.h"
 #include "bio/chemical/reaction/Excitation.h"
+#include "bio/physical/affinity/Affinity.h"
 #include "bio/physical/shape/Line.h"
 #include "bio/common/type/RemovePointer.h"
+
 
 #if BIO_CPP_VERSION >= 11
 
@@ -160,7 +162,8 @@ public:
 	 */
 	virtual CONTENT_TYPE AddImplementation(CONTENT_TYPE content)
 	{
-		Index addedPosition = this->mContents->Add(physical::Linear(content)); //stored as shared...
+		physical::Linear toAdd = physical::Linear(Cast< physical::Identifiable< Id >* >(content));
+		Index addedPosition = this->mContents->Add(toAdd); //stored as shared...
 		BIO_SANITIZE(addedPosition, , return NULL)
 		physical::Linear& added = Cast< physical::Line* >(this->mContents)->OptimizedAccess(addedPosition);
 		added.SetShared(false); //...but added contents are not shared.
@@ -495,6 +498,31 @@ public:
 		BIO_SANITIZE(other, , return);
 
 		this->mContents->Import(other->mContents);
+	}
+
+	/**
+	 * This can be used to filter any arbitrary subset from *this. <br />
+	 * This is only ever read-only (though you may affect the pointers returned). <br />
+	 * @param affinity
+	 * @return all the Contents in *this that have Attraction to the given Affinity.
+	 */
+	virtual Contents GetAllLikeImplementation(const Affinity* affinity) const
+	{
+		Contents ret;
+		BIO_SANITIZE(affinity, , return ret)
+		for (
+			SmartIterator cnt = this->mContents;
+			!cnt.IsBeforeBeginning();
+			--cnt
+			)
+		{
+			CONTENT_TYPE content = cnt.template As< CONTENT_TYPE >();
+			if (affinity->AttractionExists(content->AsWave()))
+			{
+				ret.Add(content);
+			}
+		}
+		return ret;
 	}
 
 	/**

@@ -46,7 +46,7 @@ public:
 	/**
 	 *
 	 */
-	ThreadedPeriodic(MilliSeconds interval = GetDefaultInterval());
+	ThreadedPeriodic(Milliseconds interval = GetDefaultInterval());
 
 	/**
 	 *

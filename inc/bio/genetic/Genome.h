@@ -51,7 +51,7 @@ public:
 	 * Adds caching for Protein-backed methods. <br />
 	 * See Expressor for docs. <br />
 	 */
-	virtual void CacheProteins();
+	virtual Code CacheProteins();
 
 	/**
 	 * Adds a Plasmid to the PlasmidPerspective. <br />

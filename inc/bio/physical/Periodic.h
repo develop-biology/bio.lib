@@ -46,7 +46,7 @@ public:
 	 * Currently default is set to 200 milliseconds. <br />
 	 * @return a default value for Periodic constructors.
 	 */
-	static MilliSeconds GetDefaultInterval();
+	static Milliseconds GetDefaultInterval();
 
 	/**
 	 * All Periodic objects share the "Periodic" Property. <br />
@@ -57,7 +57,7 @@ public:
 	/**
 	 * @param interval the period that Crest() wants to be called in milliseconds.
 	 */
-	Periodic(MilliSeconds interval = GetDefaultInterval());
+	Periodic(Milliseconds interval = GetDefaultInterval());
 
 	/**
 	 *
@@ -98,12 +98,12 @@ public:
 	 * Set how quickly *this should Crest() <br />
 	 * @param interval
 	 */
-	virtual void SetInterval(MilliSeconds interval);
+	virtual Code SetInterval(Milliseconds interval);
 
 	/**
 	 * @return the time interval between Crests of *this, in milliseconds.
 	 */
-	MilliSeconds GetInterval() const;
+	Milliseconds GetInterval() const;
 
 	/**
 	 * @return the last time *this Crested.
@@ -142,7 +142,7 @@ public:
 	virtual Properties GetProperties() const;
 
 protected:
-	MilliSeconds mInterval;
+	Milliseconds mInterval;
 	Timestamp mLastCrestTimestamp;
 };
 

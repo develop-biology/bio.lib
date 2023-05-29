@@ -35,7 +35,7 @@ Id Solution::Dissolve(
 	Index existingSolute = this->SeekToId(toDissolve->GetId());
 	if (existingSolute)
 	{
-		LinearAccess(existingSolute)->AsAtom()->As< Solute* >()->MixWith(toDissolve);
+		mSolutes.LinearAccess(existingSolute)->AsAtom()->As< Solute* >()->MixWith(toDissolve);
 		return toDissolve->GetId();
 	}
 	else
@@ -52,14 +52,14 @@ Id Solution::Dissolve(
 
 Substance* Solution::Separate(const Id& id)
 {
-	Index existingSolute = this->SeekToId(id);
+	Index existingSolute = As< physical::Line* >()->SeekToId(id);
 	BIO_SANITIZE(existingSolute,,return NULL)
-	Solute* solute = LinearAccess(existingSolute)->AsAtom()->As< Solute* >();
+	Solute* solute = mSolutes.LinearAccess(existingSolute)->AsAtom()->As< Solute* >();
 	BIO_SANITIZE(solute && solute->GetConcentration() == 1,,return NULL) //likely user error.
 	Substance* substance = solute->mDissolvedSubstance;
 	solute->mDissolvedSubstance = NULL;
 	solute->SetEnvironment(NULL);
-	this->physical::Line::Erase(existingSolute);
+	mSolutes.Erase(existingSolute);
 	return substance;
 }
 
@@ -68,21 +68,21 @@ Id Solution::Influx(const Solute& toInflux)
 	Index existingSolute = this->SeekToId(toInflux.GetId());
 	if (existingSolute)
 	{
-		Solute* solute = LinearAccess(existingSolute)->AsAtom()->As< Solute* >();
+		Solute* solute = mSolutes.LinearAccess(existingSolute)->AsAtom()->As< Solute* >();
 		solute->MixWith(toInflux);
 		return solute->GetId();
 	}
 	Solute* toAdd = new Solute(toInflux);
 	toAdd->SetEnvironment(this);
-	this->physical::Line::Add(physical::Linear(toAdd, false)); //not shared.
+	mSolutes.Add(physical::Linear(toAdd, false)); //not shared.
 	return toAdd->GetId();
 }
 
 Solute Solution::Efflux(const Id& soluteId)
 {
-	Index existingSolute = this->SeekToId(soluteId);
+	Index existingSolute = mSolutes.SeekToId(soluteId);
 	BIO_SANITIZE(existingSolute,, return *new Solute())
-	Solute* solute = LinearAccess(existingSolute)->AsAtom()->As< Solute* >();
+	Solute* solute = mSolutes.LinearAccess(existingSolute)->AsAtom()->As< Solute* >();
 	Solute ret = Solute(*solute);
 	ret.SetEnvironment(NULL);
 	return ret;
@@ -90,9 +90,9 @@ Solute Solution::Efflux(const Id& soluteId)
 
 const Solute Solution::Efflux(const Id& soluteId) const
 {
-	Index existingSolute = this->SeekToId(soluteId);
+	Index existingSolute = mSolutes.SeekToId(soluteId);
 	BIO_SANITIZE(existingSolute,, return *new Solute())
-	const Solute* solute = LinearAccess(existingSolute)->AsAtom()->As< Solute* >();
+	const Solute* solute = mSolutes.LinearAccess(existingSolute)->AsAtom()->As< Solute* >();
 	Solute ret = Solute(*solute);
 	ret.mDissolvedSubstance = NULL; //read only; remove write access.
 	ret.SetEnvironment(NULL);

@@ -32,41 +32,41 @@ There will be none or few children of *this that do not need these.
 using namespace bio;
 
 template <class SynapseType>
-class SynapseProtein : public cellular::Protein {
+class SynapseProtein : public molecular::Protein {
 public:
       /**
     TODO: Build test to make sure BAD NAME appears no where in running app.
     */
-    SynapseProtein(Name name = "BAD NAME") : cellular::Protein(name), m_synapse(NULL)
+    SynapseProtein(Name name = "BAD NAME") : molecular::Protein(name), mSynapse(NULL)
     {
         SetLogFilter(log::Filt::CONNECTION);
     }
     virtual ~SynapseProtein() {}
 
-//START: cellular::Protein overrides
+//START: molecular::Protein overrides
 
-    virtual ReturnCode ValidateArgs(cellular::Cell* caller,void* arg)
+    virtual Code ValidateArgs(cellular::Cell* caller,void* arg)
     {
-        ReturnCode ret = cellular::Protein::ValidateArgs(caller, arg);
-        if (ret != ret::Success())
+        Code ret = molecular::Protein::ValidateArgs(caller, arg);
+        if (ret != code::Success())
         {
             return ret;
         }
 
-        if (!m_synapse)
+        if (!mSynapse)
         {
-            m_synapse = Cast<SynapseType, cellular::Cell>(caller);
-            if (!m_synapse)
+            mSynapse = Cast<SynapseType, cellular::Cell>(caller);
+            if (!mSynapse)
             {
-                return ret::BadArgument1();
+                return code::BadArgument1();
             }
         }
 
-        return ret::Success();
+        return code::Success();
     }
 
-//END: cellular::Protein overrides
+//END: molecular::Protein overrides
 
 protected:
-      SynapseType* m_synapse;
+      SynapseType* mSynapse;
 };

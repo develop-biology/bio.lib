@@ -77,68 +77,7 @@ public:
 	 */
 	virtual ~Vesicle();
 
-	//Additionally disambiguate Solution vs Structure methods
-
-	template < typename T >
-	bool Has(T content) const
-	{
-		return this->chemical::UnorderedStructureInterface::Has< T >(content);
-	}
-
-	template < typename T >
-	bool HasAll(const Container* contents) const
-	{
-		return this->chemical::UnorderedStructureInterface::HasAll< T >(contents);
-	}
-
-	template < typename T >
-	T Add(const T t)
-	{
-		return this->chemical::UnorderedStructureInterface::Add< T >(t);
-	}
-
-	template < typename T >
-	T Remove(const T t)
-	{
-		return this->chemical::UnorderedStructureInterface::Remove< T >(t);
-	}
-
-	template < typename T >
-	void Import(const chemical::UnorderedMotif< T >* other)
-	{
-		this->chemical::UnorderedStructureInterface::Import< T >(other);
-	}
-
-	template < typename T >
-	Index GetCount() const
-	{
-		return this->chemical::UnorderedStructureInterface::GetCount< T >();
-	}
-
-	template < typename T >
-	Container* GetAll()
-	{
-		return this->chemical::UnorderedStructureInterface::GetAll< T >();
-	}
-
-	template < typename T >
-	const Container* GetAll() const
-	{
-		return this->chemical::UnorderedStructureInterface::GetAll< T >();
-	}
-
-	template < typename T >
-	unsigned int GetNumMatching(const Container* other) const
-	{
-		return this->chemical::UnorderedStructureInterface::GetNumMatching< T >(other);
-	}
-
-	template < typename T >
-	void Clear()
-	{
-		this->chemical::UnorderedStructureInterface::Clear< T >();
-	}
-
+	//Additionally disambiguate Solution vs Structure methodsr
 };
 
 } //molecular namespace

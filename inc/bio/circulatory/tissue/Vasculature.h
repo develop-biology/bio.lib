@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2022 Séon O'Shannon & eons LLC
+ * Copyright (C) 2023 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -21,9 +21,14 @@
 
 #pragma once
 
+#include "bio/chemical/structure/motif/DependentMotif.h"
 #include "bio/cellular/Tissue.h"
+#include "bio/circulatory/common/Class.h"
 #include "bio/circulatory/common/Types.h"
-#include "Blood.h"
+#include "bio/circulatory/macro/Macros.h"
+#include "bio/circulatory/common/Filters.h"
+#include "bio/circulatory/solution/Blood.h"
+#include "bio/circulatory/cell/BloodVessel.h"
 
 namespace bio{
 namespace circulatory {
@@ -35,7 +40,7 @@ namespace circulatory {
  */
 class Vasculature :
 	public circulatory::Class< Vasculature >,
-	public cellular::DependentMotif< BloodVessel, Vasculature>,
+	public chemical::DependentMotif< BloodVessel*, Vasculature*>,
 	public cellular::Tissue
 {
 public:
@@ -48,19 +53,21 @@ public:
 	/**
 	 * Standard constructors. <br />
 	 */
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(circulatory,
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
+		circulatory,
 		Vasculature,
-		&TissuePerspective::Instance(),
 		filter::Circulatory()
 	)
 
 	/**
 	 *
 	 */
-	virtual ~Vasculature()
-	{
+	virtual ~Vasculature();
 
-	}
+	/**
+	 * @return
+	 */
+	virtual Code Crest();
 
 protected:
 	Blood mBlood;

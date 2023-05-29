@@ -26,6 +26,8 @@
 #include "bio/genetic/common/Types.h"
 #include "bio/genetic/common/Filters.h"
 #include "bio/genetic/macro/Macros.h"
+#include "Gene.h"
+#include "Plasmid.h"
 #include "RNA.h"
 
 namespace bio {
@@ -33,9 +35,14 @@ namespace genetic {
 
 class Plasmid;
 
-/**
+/**c
  * genetic::Expressors contain the logic for storing and querying TranscriptionFactors. <br />
- * NOTE: While TranscriptionFactors are used to control the translation of Plasmid dna into Proteins, Proteins themselves can only be Folded within a Cell, and thus are not included here. <br />
+ * <br />
+ * PROTEIN BASED methods create a hybrid Biology / native C++ interface. <br />
+ * Methods labeled as "PROTEIN BASED" should: <br />
+ * 1. Have a corresponding Protein* member variable, which is cached in CacheProteins. <br />
+ * 2. Activate that Protein when calling the method. <br />
+ * 3. Be virtual & allow users to bypass or add to the Protein driven implementation. <br />
  */
 class Expressor :
 	public genetic::Class< Expressor >,
@@ -66,15 +73,33 @@ public:
 	virtual ~Expressor();
 
 	/**
-	 * Use this method to populate any member variable Protein* or Id Ids.
-	 * You'll want to do this to speed up your code by bypassing the dynamic execution provided by Molecule. <br />
-	 * Use Id Ids when the Protein* might change (e.g. the Protein may be Transferred in or out of *this).
-	 * Use a Protein* if you know & will enforce a static set of Proteins which will not be Transferred. 
+	 * Use this method to populate any member variable Protein*s. <br />
+	 * You'll want to do this to speed up your code by bypassing the dynamic execution provided by genetic::Expressor. <br />
 	 */
-	virtual void CacheProteins()
+	virtual Code CacheProteins()
 	{
 		//   YOUR CODE HERE
+
+		return code::NotImplemented();
 	}
+
+	/**
+	 * If you use CacheProteins, you'll likely want to create your default Proteins here. <br />
+	 * This will prevent dereferencing null or garbage pointers when using your cached Proteins. <br />
+	 */
+	virtual Code CreateDefaultProteins()
+	{
+		//   YOUR CODE HERE
+
+		return code::NotImplemented();
+	}
+
+	/**
+	 * Apoptosis is "programmed cell death". <br />
+	 * This provides an easy, virtual destruction process, which is something most Expressors will find useful. <br />
+	 * Does NOT delete *this (saves trouble with shared pointers, especially those stored in Motifs or other Containers). <br />
+	 */
+	virtual Code Apoptose();
 
 	/**
 	 * Calls molecular::Protein::Activate() for a molecular::Protein of the given id. <br />
@@ -105,7 +130,6 @@ public:
 	{
 		return Activate(type::TypeName< T >);
 	}
-
 
 	/**
 	 * Inserts the molecular::Protein encoded by the mRNA into *this at the correct location. <br />

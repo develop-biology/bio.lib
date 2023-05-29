@@ -57,7 +57,6 @@ class Solute;
  */
 class Solution :
 	public chemical::Class< Solution >,
-	public physical::Line,
 	virtual public chemical::Substance
 {
 public:
@@ -175,6 +174,9 @@ public:
 	 * @return Efflux(...)
 	 */
 	virtual const Solute operator[](const Name& substanceName) const;
+
+protected:
+	physical::Line mSolutes;
 };
 
 } //chemical namespace

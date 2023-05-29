@@ -59,25 +59,6 @@ public:
 	 *
 	 */
 	virtual ~Organelle();
-
-	/**
-	 * Crest()s occur at Periodic::mIntervals. <br />
-	 * Define your main Periodic logic here. <br />
-	 * This method must be fast: <br />
-	 *	* do not read slow hardware here <br />
-	 *	* do not block for a long time <br />
-	 *	* do not sleep <br />
-	 * If derived classes must do slow work to oscillate, that slow logic MUST BE placed in a separate thread. <br />
-	 * This method would then get the data stored by that thread and returns the data *quickly*. MAKE SURE that the thread never causes a long mutex wait as a side-effect in this Crest method. <br />
-	 * Please call this method when you're done :) <br />
-	 */
-	virtual Code Crest()
-	{
-
-		//     YOU CODE GOES HERE!
-
-		return cellular::Class< Organelle >::Crest();
-	}
 };
 
 } //cellular namespace

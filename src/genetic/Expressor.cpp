@@ -31,6 +31,11 @@ Expressor::~Expressor()
 
 }
 
+Code Expressor::Apoptose()
+{
+	return code::NotImplemented();
+}
+
 Code Expressor::Activate(const Id& proteinId)
 {
 	Code ret = code::Success();

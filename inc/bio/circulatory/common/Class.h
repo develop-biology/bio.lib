@@ -47,13 +47,11 @@ public:
 	 */
 	Class(
 		T* object,
-		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
-		MilliSeconds interval = GetDefaultInterval())
+		Milliseconds interval = physical::Periodic::GetDefaultInterval())
 		:
 		cellular::Class< T >(
 			object,
-			perspective,
 			filter,
 			interval
 		)
@@ -64,21 +62,18 @@ public:
 	/**
 	 * @param object
 	 * @param name
-	 * @param perspective
 	 * @param filter
 	 * @param interval
 	 */
 	Class(
 		T* object,
 		const Name& name,
-		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
-		MilliSeconds interval = GetDefaultInterval())
+		Milliseconds interval = physical::Periodic::GetDefaultInterval())
 		:
 		cellular::Class< T >(
 			object,
 			name,
-			perspective,
 			filter,
 			interval
 		)
@@ -96,14 +91,12 @@ public:
 	Class(
 		T* object,
 		const Id& id,
-		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
-		MilliSeconds interval = GetDefaultInterval())
+		Milliseconds interval = physical::Periodic::GetDefaultInterval())
 		:
 		cellular::Class< T >(
 			object,
 			id,
-			perspective,
 			filter,
 			interval
 		)

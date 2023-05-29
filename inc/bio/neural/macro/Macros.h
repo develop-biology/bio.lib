@@ -24,23 +24,48 @@
 #include "bio/genetic/macro/Macros.h"
 
 /**
- * Get all virtual methods defined by cellular::Class. <br />
+ * Get all virtual methods defined by neural::Class. <br />
  * @return function signatures for use in BIO_DISAMBIGUATE_REQUIRED_CLASS_METHODS
  */
-#define BIO_GET_REQUIRED_CLASS_METHODS_FOR_cellular()                          \
-    BIO_GET_REQUIRED_CLASS_METHODS_FOR_genetic()
+#define BIO_GET_REQUIRED_CLASS_METHODS_FOR_neural()                            \
+    BIO_GET_REQUIRED_CLASS_METHODS_FOR_cellular()
 
 /**
- * Get all virtual methods defined by cellular::Class. <br />
+ * Get all virtual methods defined by neural::Class. <br />
  * @return function signatures for use in BIO_DISAMBIGUATE_OPTIONAL_CLASS_METHODS
  */
-#define BIO_GET_OPTIONAL_CLASS_METHODS_FOR_cellular()                          \
-    BIO_GET_OPTIONAL_CLASS_METHODS_FOR_genetic()
+#define BIO_GET_OPTIONAL_CLASS_METHODS_FOR_neural()                            \
+    BIO_GET_OPTIONAL_CLASS_METHODS_FOR_cellular()
 
-
-#define BIO_NEURON_TRACK_FIRING_CONDITION(functionName)                        \
-BIO_TRACK_FUNCTION(                                                            \
-    bio::Neuron::fc,                                                           \
+/**
+ * To make defining Neuron::FiringConditions easier, use this macro to define the function body of your Neuron::FiringCondition Function(). <br />
+ * This will assign a value to a string that is identical to your FunctionName e.g. SafelyAccess<Neuron::FiringConditionPerspective>()->GetNameFromId(Value()) would give "Value". <br />
+ * REMINDER: Your Neuron::FiringCondition Function()s should be in the ::bio::neural::Neuron namespace. <br />
+ */
+#define BIO_FIRING_CONDITION_FUNCTION_BODY(functionName)                       \
+BIO_ID_FUNCTION_BODY(                                                          \
     functionName,                                                              \
-    bio::Neuron::FiringConditionTracker::Instance(),                           \
-    bio::Neuron::FiringConditionId)
+    ::bio::neural::FiringConditionPerspective::Instance(),                     \
+    ::bio::neural::FiringCondition)
+
+/**
+ * To make defining Potentials easier, use this macro to define the function body of your Potential Function().
+ * This will assign a value to a string that is identical to your FunctionName e.g. PotentialPerspective::Instance().NameFromId(Value()) would give "Value"
+ * Necessitates that functionName be a part of the "potential" namespace and that any other namespaces are already specified (e.g. using namespace)
+ */
+#define BIO_POTENTIAL_FUNCTION_BODY(functionName)                              \
+BIO_ID_FUNCTION_BODY(                                                          \
+    functionName,                                                              \
+    bio::PotentialPerspective::Instance(),                                     \
+    bio::Potential)
+
+/**
+ * To make defining Features easier, use this macro to define the function body of your Feature Function().
+ * This will assign a value to a string that is identical to your FunctionName e.g. FeaturePerspective::Instance().NameFromId(Value()) would give "Value"
+ * Necessitates that functionName be a part of the "potential" namespace and that any other namespaces are already specified (e.g. using namespace)
+ */
+#define BIO_FEATURE_FUNCTION_BODY(functionName)                                \
+BIO_ID_FUNCTION_BODY(                                                          \
+    functionName,                                                              \
+    bio::FeaturePerspective::Instance(),                                       \
+    bio::Feature)

@@ -54,8 +54,7 @@ BIO_ID_WITH_PERSPECTIVE(State, uint8_t)
  * <br />
  * While the State of an object might change often, the Properties should remain constant. However, that is not enforced. The properties of water change when its chemical state changes from liquid to solid, so the Properties of your objects could change in whatever way you'd like, though doing so is generally not recommended. <br />
  */
-typedef uint16_t PropertyDimension;
-BIO_ID_WITH_PERSPECTIVE_WITH_PLURAL(Property, Properties, PropertyDimension)
+BIO_ID_WITH_PERSPECTIVE_WITH_PLURAL(Property, Properties, uint16_t)
 
 /**
  * SymmetryTypes determine what to do with a particular Symmetry. <br />

@@ -43,7 +43,7 @@ void SetFakeTime(const Timestamp newTime);
 #endif
 
 /**
- * Uses ::std::chrono to return the time since epoch in MilliSeconds. <br />
+ * Uses ::std::chrono to return the time since epoch in Milliseconds. <br />
  * @return the current time as a Timestamp.
  */
 Timestamp GetCurrentTimestamp();

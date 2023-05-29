@@ -22,7 +22,10 @@
 #pragma once
 
 #include "bio/cellular/Organ.h"
+#include "bio/circulatory/common/Class.h"
 #include "bio/circulatory/common/Types.h"
+#include "bio/circulatory/macro/Macros.h"
+#include "bio/circulatory/common/Filters.h"
 
 namespace bio {
 namespace circulatory {
@@ -46,7 +49,15 @@ public:
 		filter::Circulatory()
 	)
 
+	/**
+	 *
+	 */
 	virtual ~Heart();
+
+	/**
+	 *
+	 */
+	 virtual Code Crest();
 
 };
 

@@ -119,7 +119,7 @@ public:
 			--cnt
 			)
 		{
-			cnt.template As< CONTENT_TYPE >()->SetEnvironment(environment);
+			cnt.template As< CONTENT_TYPE >()->chemical::template EnvironmentDependent< ENVIRONMENT >::SetEnvironment(environment);
 		}
 	}
 
@@ -133,7 +133,7 @@ public:
 	virtual CONTENT_TYPE AddImplementation(CONTENT_TYPE content)
 	{
 		BIO_SANITIZE(content,,return NULL)
-		content->SetEnvironment(this->template As< ENVIRONMENT >());
+		content->chemical::template EnvironmentDependent< ENVIRONMENT >::SetEnvironment(this->template As< ENVIRONMENT >());
 		return LinearMotif< CONTENT_TYPE >::AddImplementation(content);
 	}
 
@@ -158,7 +158,7 @@ public:
 	)
 	{
 		BIO_SANITIZE(toAdd, , return code::MissingArgument1())
-		toAdd->SetEnvironment(this->GetEnvironment());
+		toAdd->chemical::template EnvironmentDependent< ENVIRONMENT >::SetEnvironment(this->GetEnvironment());
 		return chemical::LinearMotif< CONTENT_TYPE >::InsertImplementation(
 			toAdd,
 			position,

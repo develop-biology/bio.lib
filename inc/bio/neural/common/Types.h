@@ -21,34 +21,49 @@
 
 #pragma once
 
-#include "bio/common/Types.h"
-#include "bio/common/NameTracker.h"
+#include "bio/cellular/common//Types.h"
+#include "bio/chemical/structure/motif/LinearMotif.h"
 
 namespace bio {
 
-BIO_PERSPECTIVE_SINGLETON(NeuronPerspective, Id)
+/**
+ * Potentials are mutable components of neural::Cells. <br />
+ * These are changed during operation. <br />
+  */
+BIO_ID_WITH_PERSPECTIVE(Potential, Id::Type)
 
 /**
-Synapses are stored in the Brain and applied to neurons.
-There can be up to 65535 different kinds of synapses.
-NOTE: that this does not prevent you from configuring a synapse after it has been created (e.g. adding a epitope from one synapse to another). However, it is better practice to configure all synapses before they are used.
-*/
-BIO_PERSPECTIVE_SINGLETON(SynapsePerspective, Id)
+ * Feature flags. <br />
+ * These are not TranscriptionFactors and should only deal with configuration, rather than purpose. <br />
+ */
+BIO_ID_WITH_PERSPECTIVE(Feature, Id::Type)
+
+namespace neural {
+
+BIO_ID_WITH_PERSPECTIVE(FiringCondition, uint8_t)
 
 /**
-Aspects are mutable components of a Neuron.
-These are changed during operation (as opposed to other components, like Synapses)
-*/
-BIO_PERSPECTIVE_SINGLETON(AspectPerspective, Id)
-
-/**
-Forward declarations to share across classes
-*/
+ * Forward declarations to share across classes
+ */
 class Brain;
-class Neuron;
-typedef std::vector<Neuron*> Neurons;
-typedef std::vector<const Neuron*> ConstNeurons;
-class Synapse;
-typedef std::vector<Synapse*> Synapses;
 
+class Neuron;
+typedef chemical::LinearMotif< Neuron* >::Contents Neurons;
+
+class Neuropil;
+typedef chemical::LinearMotif< Neuropil* >::Contents Neuropils;
+
+class Dendrite;
+typedef chemical::LinearMotif< Dendrite* >::Contents Dendrites;
+
+class Axon;
+typedef chemical::LinearMotif< Axon* >::Contents Axons;
+
+class Synapse;
+typedef chemical::LinearMotif< Synapse* >::Contents Synapses;
+
+class MembranePotential;
+typedef chemical::LinearMotif< MembranePotential* >::Contents MembranePotentials;
+
+} //neural namespace
 } //bio namespace

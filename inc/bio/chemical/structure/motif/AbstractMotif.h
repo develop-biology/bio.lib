@@ -22,6 +22,7 @@
 
 #include "bio/chemical/common/Types.h"
 #include "bio/common/container/Container.h"
+#include "bio/log/GlobalLogger.h"
 
 namespace bio {
 namespace chemical {
@@ -100,6 +101,11 @@ public:
 	virtual ::std::string GetStringFromImplementation(std::string separator = ", ")
 	{
 		return "";
+	}
+
+	virtual void LogImplementation(const LogLevel& level = log_level::Info(), const Filter& filter = FilterPerspective::InvalidId())
+	{
+		log::GlobalLogger::Instance().Log(filter, level, this->GetStringFromImplementation().c_str());
 	}
 
 protected:

@@ -60,8 +60,8 @@ typedef MicroSeconds US;
 /**
  * milliseconds (ms for short). <br />
  */
-typedef uint64_t MilliSeconds;
-typedef MilliSeconds MS;
+typedef uint64_t Milliseconds;
+typedef Milliseconds MS;
 
 /**
  * seconds (s or sec for short). <br />

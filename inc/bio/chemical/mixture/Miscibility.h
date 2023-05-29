@@ -32,7 +32,7 @@ namespace chemical {
 
 /**
  * Miscibilities map the Properties of a Substance to an Interference pattern that can be used to Superpose one Substance on another. <br />
- * This is accomplished by the Id of a Miscibility mapping directly to a Property. To get the Miscibility for a given Property, you can call MiscibilityPerspective::Instance()->GetTypeFromIdAs< Miscibility* >(Cast< PropertyDimension >(PROPERTY));<br />
+ * This is accomplished by the Id of a Miscibility mapping directly to a Property. To get the Miscibility for a given Property, you can call MiscibilityPerspective::Instance()->GetTypeFromIdAs< Miscibility* >(Cast< Protperty::Type >(PROPERTY));<br />
  * The Superposing of Substances is handled by the Mix() Reaction. <br />
  */
 class Miscibility :

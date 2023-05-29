@@ -30,6 +30,23 @@ Organ::~Organ()
 
 }
 
+Code Organ::CacheProteins()
+{
+	mcGrowTissues = GetByName< molecular::Protein* >("GrowTissues");
+	return cellular::Class< Organ >::CacheProteins();
+}
+
+Code Organ::CreateDefaultProteins()
+{
+	Add< molecular::Protein* >(new molecular::Protein("GrowTissues"));
+	return cellular::Class< Organ >::CreateDefaultProteins();
+}
+
+Code Organ::GrowTissues()
+{
+	(*mcGrowTissues)();
+}
+
 Code Organ::SpecializeTissues()
 {
 	Code ret = code::Success();
@@ -44,6 +61,11 @@ Code Organ::SpecializeTissues()
 		)
 	{
 		tissue = tis;
+		tissue->Import< genetic::Plasmid* >(As< chemical::LinearMotif< genetic::Plasmid* >* >());
+		if (tissue->ExpressGenes() != code::Success() && ret == code::Success())
+		{
+			ret = code::UnknownError();
+		}
 		if (tissue->DifferentiateCells() != code::Success() && ret == code::Success())
 		{
 			ret = code::UnknownError();

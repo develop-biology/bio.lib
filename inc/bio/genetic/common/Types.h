@@ -42,7 +42,7 @@ BIO_ID(Location, uint8_t)
 /**
  * TranscriptionFactors determine which Proteins are expressed in which Cells. <br />
  * They exist as unique numbers only, which are added to Expressors in order to direct Plasmid expression on startup. <br />
- * For example, if you want to add functionality to a Cell, you would start by defining YourFavoritePlasmid (genetic::Plasmid), which contains YourFavoriteProtein (cellular::Protein). You would then specify which TranscriptionFactors are required for YourFavoriteProtein in YourFavoriteGene. Once that is done, you can add the previous TranscriptionFactor to any number of Cells, all of which will begin expressing YourFavoriteProtein on startup. <br />
+ * For example, if you want to add functionality to a Cell, you would start by defining YourFavoritePlasmid (genetic::Plasmid), which contains YourFavoriteProtein (molecular::Protein). You would then specify which TranscriptionFactors are required for YourFavoriteProtein in YourFavoriteGene. Once that is done, you can add the previous TranscriptionFactor to any number of Cells, all of which will begin expressing YourFavoriteProtein on startup. <br />
  * TranscriptionFactors thus allow you to pick and choose which features of your loaded modules you would like in your Cells. <br />
  * In practice, you'll likely be using other people's Plasmids, so TranscriptionFactors give you a level of control over how you want to consume external libraries in your networks. <br />
 */

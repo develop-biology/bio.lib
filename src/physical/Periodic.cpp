@@ -28,7 +28,7 @@
 namespace bio {
 namespace physical {
 
-/*static*/ MilliSeconds Periodic::GetDefaultInterval()
+/*static*/ Milliseconds Periodic::GetDefaultInterval()
 {
 	return 200;
 }
@@ -41,7 +41,7 @@ Properties Periodic::GetClassProperties()
 	return ret;
 }
 
-Periodic::Periodic(MilliSeconds interval)
+Periodic::Periodic(Milliseconds interval)
 	:
 	Class(
 		this,
@@ -57,12 +57,13 @@ Periodic::~Periodic()
 {
 }
 
-void Periodic::SetInterval(MilliSeconds interval)
+Code Periodic::SetInterval(Milliseconds interval)
 {
 	mInterval = interval;
+	return code::Success();
 }
 
-MilliSeconds Periodic::GetInterval() const
+Milliseconds Periodic::GetInterval() const
 {
 	return mInterval;
 }

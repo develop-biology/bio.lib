@@ -21,20 +21,20 @@
 
 #pragma once
 
-#include "IncomingSynapseProtein.h"
-#include "OutgoingSynapseProtein.h"
+#include "DendriteProtein.h"
+#include "AxonProtein.h"
 
 using namespace bio;
 
 /**
-Bridged Synapse Proteins have access to both the Incoming and Outgoing SynapseProtein members.
-These types of synapses are useful for implementing new synapse types that utilize the API of your custom neuron type, but should also be flexible enough to accommodate any configuration of neurons you would like.
+Bridged Synapse Proteins have access to both the Incoming and AxonProtein members.
+These types of synapses are useful for implementing new synapse types that utilize the API of your custom Neuron type, but should also be flexible enough to accommodate any configuration of neurons you would like.
 DO NOT USE THESE LIGHTLY!
 Because you can pass data straight from the source to the target, it may be tempting to bypass the synapse system altogether. Don't do that. Meaning to say, be careful that the use of these proteins doesn't add in extra points of failure or bugs to your system.
 
-NOTE: This class could be implemented by deriving from Incoming and Outgoing SynapseProteins. However, those classes would have to virtually inherit SynapseProtein, which causes c-style upcasts of classes that inherit from I/O SynapseProteins to fail when RTTI is disabled.
+NOTE: This class could be implemented by deriving from Incoming and AxonProteins. However, those classes would have to virtually inherit SynapseProtein, which causes c-style upcasts of classes that inherit from I/O SynapseProteins to fail when RTTI is disabled.
 */
-template <class SynapseType, class SourceNeuronType, class TargetNeuronType>
+template <class SynapseType, class PresynapticNeuronType, class PostsynapticNeuronType>
 class BridgedSynapseProtein: SynapseProtein<SynapseType>
 {
 public:
@@ -51,43 +51,43 @@ public:
 
     }
 
-//START: cellular::Protein overrides
+//START: molecular::Protein overrides
 
     /**
     Requires a Synapse* as caller
     */
-    virtual ReturnCode ValidateArgs(cellular::Cell* caller, void* arg)
+    virtual Code ValidateArgs(cellular::Cell* caller, void* arg)
     {
-        ReturnCode ret = SynapseProtein::ValidateArgs(caller, arg);
-        if (ret != ret::Success())
+        Code ret = SynapseProtein::ValidateArgs(caller, arg);
+        if (ret != code::Success())
         {
             return ret;
         }
 
-        if (!m_sourceNeuron) 
+        if (!mPresynapticNeuron)
         {
-            m_sourceNeuron = static_cast<const SourceNeuronType*>(m_synapse->GetSourceNeuron());
-            if (!m_sourceNeuron)
+            mPresynapticNeuron = static_cast<const PresynapticNeuronType*>(mSynapse->GetPresynapticNeuron());
+            if (!mPresynapticNeuron)
             {
-                return ret::BadArgument2();
+                return code::BadArgument2();
             }
         }
 
-        if (!m_targetNeuron) 
+        if (!mPostsynapticNeuron)
         {
-            m_targetNeuron = static_cast<TargetNeuronType*>(m_synapse->GetTargetNeuron());
-            if (!m_targetNeuron)
+            mPostsynapticNeuron = static_cast<PostsynapticNeuronType*>(mSynapse->GetPostsynapticNeuron());
+            if (!mPostsynapticNeuron)
             {
-                return ret::BadArgument2();
+                return code::BadArgument2();
             }
         }
 
-        return ret::Success();
+        return code::Success();
     }
 
-//END: cellular::Protein overrides
+//END: molecular::Protein overrides
 
 protected:
-    const SourceNeuronType* m_sourceNeuron;
-    TargetNeuronType* m_targetNeuron;
+    const PresynapticNeuronType* mPresynapticNeuron;
+    PostsynapticNeuronType* mPostsynapticNeuron;
 };

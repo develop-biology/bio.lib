@@ -32,42 +32,42 @@ There will be none or few children of *this that do not need this.
 using namespace bio;
 
 template <class BrainType>
-class BrainProtein : public cellular::Protein
+class BrainProtein : public molecular::Protein
 {
 public:
 
     /**
     TODO: Build test to make sure BAD NAME appears no where in running app.
     */
-    BrainProtein(Name name = "BAD NAME") : cellular::Protein(name), m_brain(NULL)
+    BrainProtein(Name name = "BAD NAME") : molecular::Protein(name), mBrain(NULL)
     {
         SetLogFilter(log::Filt::BRAIN);
     }
     virtual ~BrainProtein() {}
 
-//START: cellular::Protein overrides
+//START: molecular::Protein overrides
 
-    virtual ReturnCode ValidateArgs(cellular::Cell* caller,void* arg)
+    virtual Code ValidateArgs(cellular::Cell* caller,void* arg)
     {
-        ReturnCode ret = cellular::Protein::ValidateArgs(caller, arg);
-        if (ret != ret::Success())
+        Code ret = molecular::Protein::ValidateArgs(caller, arg);
+        if (ret != code::Success())
         {
             return ret;
         }
 
-        if (!m_brain)
+        if (!mBrain)
         {
-            m_brain = Cast<BrainType, cellular::Cell>(caller);
-            if (!m_brain)
+            mBrain = Cast<BrainType, cellular::Cell>(caller);
+            if (!mBrain)
             {
-                return ret::BadArgument1();
+                return code::BadArgument1();
             }
         }
-        return ret::Success();
+        return code::Success();
     }
 
-//END: cellular::Protein overrides
+//END: molecular::Protein overrides
 
 protected:
-      BrainType* m_brain;
+      BrainType* mBrain;
 };

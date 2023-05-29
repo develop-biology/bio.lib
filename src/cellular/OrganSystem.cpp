@@ -35,8 +35,7 @@ Code OrganSystem::Organogenesis()
 {
 	Code ret = code::Success();
 	Container* organs = GetAll< Organ* >();
-	BIO_SANITIZE(organs, ,
-		return code::CouldNotFindValue1())
+	BIO_SANITIZE(organs, , return code::CouldNotFindValue1())
 	Organ* organ;
 	for (
 		SmartIterator org = organs->Begin();
@@ -46,7 +45,13 @@ Code OrganSystem::Organogenesis()
 	{
 		organ = org;
 		organ->SetEnvironment(this);
+		organ->Import< genetic::Plasmid* >(As< chemical::LinearMotif< genetic::Plasmid* >* >());
+
 		if (organ->BuildMobilome() != code::Success() && ret == code::Success())
+		{
+			ret = code::UnknownError();
+		}
+		if (organ->ExpressGenes() != code::Success() && ret == code::Success())
 		{
 			ret = code::UnknownError();
 		}

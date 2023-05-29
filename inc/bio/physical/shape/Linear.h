@@ -31,7 +31,7 @@ namespace physical {
  *
  * This class is used by Line and chemical::LinearMotifs, see those classes for more info. <br />
  *
- * Lines contain logic for handling their CONTENT_TYPE by Id, Name, and other aspects innate to the Identifiable<Id>. The term "linear" comes from the idea that instead of a 0 dimensional pile of objects, as are Arrangements, *this can be ordered along at least 1 dimension (i.e. the Id). <br />
+ * Lines contain logic for handling their CONTENT_TYPE by Id, Name, and other potentials innate to the Identifiable<Id>. The term "linear" comes from the idea that instead of a 0 dimensional pile of objects, as are Arrangements, *this can be ordered along at least 1 dimension (i.e. the Id). <br />
  *
  * Current features: <br />
  * 1. Shared: determines whether or not mComponent will be deleted with *this. <br />

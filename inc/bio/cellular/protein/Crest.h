@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2022 Séon O'Shannon & eons LLC
+ * Copyright (C) 2023 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,16 +19,34 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "bio/neural/Aspect.h"
+#pragma once
+
+#include "bio/molecular/Protein.h"
+#include "bio/cellular/macro/Macros.h"
+#include "bio/cellular/common/Filters.h"
 
 namespace bio {
+namespace cellular {
 
-Aspect::Aspect(Name name) : Named(name, &AspectTracker::Instance())
+class Crest:
+	public molecular::Class< Crest >,
+	virtual public molecular::Protein
 {
-    
-}
+public:
 
-BIO_TRACK_ASPECT(Value)
-BIO_TRACK_ASPECT(Threshold)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular, Crest)
 
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
+		molecular,
+		Crest,
+		filter::Cellular()
+	)
+	
+	/**
+	 * 
+	 */
+	virtual ~Crest();
+};
+
+} //cellular namespace
 } //bio namespace

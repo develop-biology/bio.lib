@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2022 Séon O'Shannon & eons LLC
+ * Copyright (C) 2023 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -21,34 +21,38 @@
 
 #pragma once
 
-#include "bio/chemical/solution/Solution.h"
-#include "bio/circulatory/common/Types.h"
-#include "bio/circulatory/macro/Macros.h"
+#include "bio/neural//common/Types.h"
 
 namespace bio {
-namespace circulatory {
+namespace neural {
+namespace firing_condition {
 
 /**
- * Blood holds all Solutes which need to be moved through the Circulatory system. This includes both imports and exports to local Blood Vessels. <br />
- * All Blood Solutions are different until they are homogenized by the Heart. <br />
- * Currently, Blood is simply a ThreadSafe Solution. <br />
- * This class may be expanded later as specific Circulatory requirements are expanded. <br />
+ * When a Neuron should not fire. <br />
  */
-class Blood :
-	public chemical::Class< Blood >,
-	public chemical::Solution,
-	public ThreadSafe
-{
-public:
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical, Blood)
+ FiringCondition None();
 
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(
-		chemical,
-		Blood,
-		&BloodPerspective::Instance(),
-		filter::Circulatory
-	)
-};
+/**
+ * When a Neuron should fire on all triggers. <br />
+ */
+ FiringCondition Any();
 
-} //circulatory namespace
+/**
+ * When a Neuron should fire only at the start of activity. <br />
+ */
+ FiringCondition RisingEdge();
+
+/**
+ * When a Neuron should fire only while active. <br />
+ */
+ FiringCondition Continuing();
+
+/**
+ * When a Neuron should fire only at the end of activity. <br />
+ */
+ FiringCondition FallingEdge();
+
+
+} //firing_condition namespace
+} //neural namespace
 } //bio namespace

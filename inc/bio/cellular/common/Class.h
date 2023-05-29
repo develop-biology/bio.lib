@@ -21,8 +21,13 @@
 
 #pragma once
 
-#include "bio/cellular/wave/CrestCarrierWave.h"
+#include "bio/cellular/wave/CheckInCarrierWave.h"
+#include "bio/cellular/wave/SetIntervalCarrierWave.h"
+#include "bio/cellular/protein/Apoptosis.h"
+#include "bio/cellular/protein/Crest.h"
 #include "bio/genetic/common/Class.h"
+#include "bio/genetic/affinity/Affinity.h"
+#include "bio/genetic/Expressor.h"
 #include "bio/molecular/Vesicle.h"
 #include "bio/physical/Periodic.h"
 
@@ -38,6 +43,7 @@ namespace cellular {
 template < typename T >
 class Class :
 	public genetic::Class< T >,
+	virtual public genetic::Expressor,
 	virtual public physical::Periodic,
 	virtual public molecular::Vesicle
 {
@@ -53,7 +59,7 @@ public:
 	Class(
 		T* object,
 		Filter filter = filter::Default(),
-		MilliSeconds interval = GetDefaultInterval()) //unused.
+		Milliseconds interval = GetDefaultInterval()) //unused.
 		:
 		genetic::Class< T >(
 			object,
@@ -74,7 +80,7 @@ public:
 		T* object,
 		const Name& name,
 		Filter filter = filter::Default(),
-		MilliSeconds interval = GetDefaultInterval())
+		Milliseconds interval = GetDefaultInterval())
 		:
 		genetic::Class< T >(
 			object,
@@ -96,7 +102,7 @@ public:
 		T* object,
 		const Id& id,
 		Filter filter = filter::Default(),
-		MilliSeconds interval = GetDefaultInterval())
+		Milliseconds interval = GetDefaultInterval())
 		:
 		genetic::Class< T >(
 			object,
@@ -116,12 +122,78 @@ public:
 
 	}
 
-	virtual Code Crest()
+	virtual Code CreateDefaultProteins()
 	{
-		static CrestCarrierWave sCrestCarrierWave;
-		return Attenuate(&sCrestCarrierWave);
+		Add< molecular::Protein* >(new Apoptosis("Apoptosis"));
+		Add< molecular::Protein* >(new class Crest("Crest"));
+
+		physical::Wave createDefaultProteinsCarrierWave;
+		createDefaultProteinsCarrierWave.Modulate(BIO_EXCITATION_CLASS(genetic::Expressor, Code)(&genetic::Expressor::CreateDefaultProteins));
+		return Attenuate(&createDefaultProteinsCarrierWave);
 	}
 
+	virtual Code CacheProteins()
+	{
+		mcApoptosis = GetByName< molecular::Protein* >("Apoptosis");
+		mcCrest = GetByName< molecular::Protein* >("Crest");
+
+		physical::Wave cacheProteinsCarrierWave;
+		cacheProteinsCarrierWave.Modulate(BIO_EXCITATION_CLASS(genetic::Expressor, Code)(&genetic::Expressor::CacheProteins));
+		return Attenuate(&cacheProteinsCarrierWave);
+	}
+
+	virtual Code Apoptose()
+	{
+		(*mcApoptosis)();
+
+		physical::Wave apoptosisCarrierWave;
+		apoptosisCarrierWave.Modulate(BIO_EXCITATION_CLASS(genetic::Expressor, Code)(&genetic::Expressor::Apoptose));
+		return Attenuate(&apoptosisCarrierWave);
+	}
+
+	/**
+	 * Crest()s occur at Periodic::mIntervals. <br />
+	 * Define your main Periodic logic here. <br />
+	 * This method must be fast: <br />
+	 *	* do not read slow hardware here <br />
+	 *	* do not block for a long time <br />
+	 *	* do not sleep <br />
+	 * If derived classes must do slow work to Crest, that slow logic MUST BE placed in a separate thread. <br />
+	 * This method would then get the data stored by that thread and returns the data *quickly*. MAKE SURE that the thread never causes a long mutex wait as a side-effect in this Crest method. <br />
+	 * Please call this method when you're done :) <br />
+	 */
+	virtual Code Crest()
+	{
+		return (*mcCrest)();
+	}
+
+	/**
+	 * physical::Periodic method; see that class for details. <br />
+	 * @return physical::Periodic::CheckIn()
+	 */
+	virtual bool CheckIn()
+	{
+		//static class for speed.
+		static CheckInCarrierWave sCrestCarrierWave;
+		Attenuate(&sCrestCarrierWave);
+
+		return physical::Periodic::CheckIn();
+	}
+
+	/**
+	 * Calls SetInterval on all Periodic components of *this.
+	 * Override of physical::Periodic method; see that class for more information.
+	 */
+	virtual Code SetInterval(Milliseconds period)
+	{
+		//nonstatic class for simplicity, I guess...?
+		SetIntervalCarrierWave setInterval(period);
+		return Attenuate(&setInterval);
+	}
+
+protected:
+	molecular::Protein* mcApoptosis;
+	molecular::Protein* mcCrest;
 };
 
 } //cellular namespace

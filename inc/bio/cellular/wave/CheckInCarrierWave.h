@@ -18,43 +18,45 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 #pragma once
 
-#include "bio/cellular/Cell.h"
-#include "bio/circulatory/common/Types.h"
+#include "bio/cellular/common/Types.h"
+#include "bio/cellular/macro/Macros.h"
+#include "bio/chemical/reaction/Excitation.h"
+#include "bio/physical/wave/Wave.h"
+#include "bio/physical/Periodic.h"
 
 namespace bio {
-namespace circulatory {
+namespace cellular {
 
 /**
- * BloodVessels form the interface between a Tissue (or any other collection of Vesicles) and the Circulatory system. <br />
- * Solutes may be moved into and out of a BloodVessel, which allows them to be homogenized with all other BloodVessels which share a Vasculature. <br />
- * BloodVessels use Blood as their Solution and are thread safe. <br />
+ * The CrestCarrierWave will propagate Crest Excitations to all LinearMotifs <br />
  */
-class BloodVessel :
-	public circulatory::Class< BloodVessel >,
-	public circulatory::Cell
+class CheckInCarrierWave :
+	public physical::Wave
 {
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(circulatory, BloodVessel)
-
-	/**
-	 * Standard constructors. <br />
-	 */
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
-		circulatory,
-		BloodVessel,
-		&BloodVesselPerspective::Instance(),
-		filter::Circulatory()
-	)
+public:
 
 	/**
 	 *
 	 */
-	virtual ~BloodVessel()
-	{
+	CheckInCarrierWave();
 
-	}
+	/**
+	 *
+	 */
+	virtual ~CheckInCarrierWave();
+
+	/**
+	 * Makes *this compatible with Motifs by copying the Properties of AbstractMotif. <br />
+	 * @return { Linear(), AbstractMotif::GetClassProperties() }
+	 */
+	virtual Properties GetProperties() const;
+
+protected:
+	BIO_EXCITATION_CLASS(physical::Periodic, bool) mCheckInExcitation;
 };
 
-} //circulatory namespace
+} //cellular namespace
 } //bio namespace

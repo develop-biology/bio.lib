@@ -68,7 +68,7 @@ Products Mix::Process(Reactants* reactants) const
 			miscibility = MiscibilityPerspective::Instance().GetTypeFromIdAs< Miscibility* >(prp.As< Property >());
 			BIO_SANITIZE(miscibility,,continue)
 			
-			//The miscibility must perform the appropriate cast of sub.PropertyDimension
+			//The miscibility must perform the appropriate cast of sub.Protperty::Type
 			//Superpose should now be able to ForceCast the displacement to what it expects.
 			const Wave* displacement = miscibility->GetDisplacement(substance);
 	

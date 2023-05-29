@@ -207,6 +207,18 @@ public:
 		}
 		return ret;
 	}
+
+	virtual void LogImplementation(const LogLevel& level = log_level::Info(), const Filter& filter = FilterPerspective::InvalidId())
+	{
+		if (filter == FilterPerspective::InvalidId())
+		{
+			this->AbstractMotif::LogImplementation(level, this->GetFilter());
+		}
+		else
+		{
+			this->AbstractMotif::LogImplementation(level, filter);
+		}
+	}
 };
 
 } //chemical namespace

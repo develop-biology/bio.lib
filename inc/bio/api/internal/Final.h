@@ -418,39 +418,6 @@ public:
 		va_end(args);
 	}
 
-	void ExternalLog(
-		Filter logFilter,
-		LogLevel level,
-		const char* format,
-		...
-	) const
-	{
-		va_list args;
-		va_start(args, format);
-		this->mT.ExternalLog(logFilter, level, format, args);
-		va_end(args);
-	}
-
-	void SetLogEngine(::bio::log::Engine* logEngine)
-	{
-		this->mT.SetLogEngine(logEngine);
-	}
-
-	::bio::log::Engine* GetLogEngine()
-	{
-		return this->mT.GetLogEngine();
-	}
-
-	const ::bio::log::Engine* GetLogEngine() const
-	{
-		return this->mT.GetLogEngine();
-	}
-
-	bool HasLogEngine() const
-	{
-		return this->mT.HasLogEngine();
-	}
-
 	//END: log::Writer methods
 
 	//START: physical::Identifiable< Id > methods

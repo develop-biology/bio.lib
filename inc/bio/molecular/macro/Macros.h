@@ -38,6 +38,11 @@
     BIO_GET_OPTIONAL_CLASS_METHODS_FOR_chemical(),                             \
     (                                                                          \
         template< typename ENVIRONMENT >                                       \
+		void SetEnvironment(ENVIRONMENT environment),                          \
+        template SetEnvironment< ENVIRONMENT >(environment)                    \
+    ),                                                                         \
+    (                                                                          \
+        template< typename ENVIRONMENT >                                       \
 		ENVIRONMENT GetEnvironment(),                                          \
         template GetEnvironment< ENVIRONMENT >()                               \
     ),                                                                         \

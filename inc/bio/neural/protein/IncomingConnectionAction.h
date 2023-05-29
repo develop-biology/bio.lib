@@ -30,44 +30,44 @@ This class is a base for all incoming NeuronInterface methods.
 These include ProcessAddition and ProcessRemoval. For more information on Neuron interface methods, see Synapse.h
 */
 template <class CONNECTION_TYPE, class NEURON_TYPE>
-class IncomingSynapseProtein : public SynapseProtein<CONNECTION_TYPE>
+class DendriteProtein : public SynapseProtein<CONNECTION_TYPE>
 {
 public:
     /**
     TODO: Build test to make sure BAD NAME appears no where in running app.
     */
-    IncomingSynapseProtein(Name name = "BAD NAME") : SynapseProtein<CONNECTION_TYPE>(name), m_targetNeuron(NULL)
+    DendriteProtein(Name name = "BAD NAME") : SynapseProtein<CONNECTION_TYPE>(name), mPostsynapticNeuron(NULL)
     {
         // this->SetLogFilter(log::Filt::NEURON);
     }
-    virtual ~IncomingSynapseProtein() {}
+    virtual ~DendriteProtein() {}
 
-//START: cellular::Protein overrides
+//START: molecular::Protein overrides
 
     /**
     Requires a Synapse* as caller and a Neuron* as arg
     */
-    virtual ReturnCode ValidateArgs(cellular::Cell* caller, void* arg)
+    virtual Code ValidateArgs(cellular::Cell* caller, void* arg)
     {
-        ReturnCode ret = SynapseProtein<CONNECTION_TYPE>::ValidateArgs(caller, arg);
-        if (ret != ret::Success())
+        Code ret = SynapseProtein<CONNECTION_TYPE>::ValidateArgs(caller, arg);
+        if (ret != code::Success())
         {
             return ret;
         }
 
-        if (!m_targetNeuron)
+        if (!mPostsynapticNeuron)
         {
-            m_targetNeuron = Cast<NEURON_TYPE, Neuron>(this->m_synapse->GetTargetNeuron());
-            if (!m_targetNeuron)
+            mPostsynapticNeuron = Cast<NEURON_TYPE, Neuron>(this->mSynapse->GetPostsynapticNeuron());
+            if (!mPostsynapticNeuron)
             {
-                return ret::BadArgument2();
+                return code::BadArgument2();
             }
         }
-        return ret::Success();
+        return code::Success();
     }
 
-//END: cellular::Protein overrides
+//END: molecular::Protein overrides
 
 protected:
-      NEURON_TYPE* m_targetNeuron;
+      NEURON_TYPE* mPostsynapticNeuron;
 };

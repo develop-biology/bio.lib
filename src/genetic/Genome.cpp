@@ -41,7 +41,7 @@ GenomeImplementation::~GenomeImplementation()
 
 }
 
-void GenomeImplementation::CacheProteins()
+Code GenomeImplementation::CacheProteins()
 {
 	mcRegisterPlasmid = RotateTo("RegisterPlasmid")->As< molecular::Protein* >();
 	mcFetchPlasmid = RotateTo("FetchPlasmid")->As< molecular::Protein* >();

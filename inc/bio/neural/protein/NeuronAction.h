@@ -32,42 +32,42 @@ There will be none or few children of *this that do not need this.
 using namespace bio;
 
 template <class NEURON_TYPE>
-class NeuronProtein : public cellular::Protein
+class NeuronProtein : public molecular::Protein
 {
 public:
     /**
     TODO: Build test to make sure BAD NAME appears no where in running app.
     */
-    NeuronProtein(Name name = "BAD NAME") : cellular::Protein(name), m_neuron(NULL)
+    NeuronProtein(Name name = "BAD NAME") : molecular::Protein(name), mNeuron(NULL)
     {
         SetLogFilter(log::Filt::NEURON);
     }
     virtual ~NeuronProtein() {}
 
-//START: cellular::Protein overrides
+//START: molecular::Protein overrides
 
-    virtual ReturnCode ValidateArgs(cellular::Cell* caller, void* arg)
+    virtual Code ValidateArgs(cellular::Cell* caller, void* arg)
     {
-        ReturnCode ret = cellular::Protein::ValidateArgs(caller, arg);
-        if (ret != ret::Success())
+        Code ret = molecular::Protein::ValidateArgs(caller, arg);
+        if (ret != code::Success())
         {
             return ret;
         }
 
-        if (!m_neuron)
+        if (!mNeuron)
         {
-            m_neuron = Cast<NEURON_TYPE, cellular::Cell>(caller);
-            if (!m_neuron)
+            mNeuron = Cast<NEURON_TYPE, cellular::Cell>(caller);
+            if (!mNeuron)
             {
-                return ret::BadArgument1();
+                return code::BadArgument1();
             }
         }
 
-        return ret::Success();
+        return code::Success();
     }
 
-//END: cellular::Protein overrides
+//END: molecular::Protein overrides
 
 protected:
-    NEURON_TYPE* m_neuron;
+    NEURON_TYPE* mNeuron;
 };

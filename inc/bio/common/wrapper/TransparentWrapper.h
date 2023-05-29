@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2022 Séon O'Shannon & eons LLC
+ * Copyright (C) 2023 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -22,6 +22,7 @@
 #pragma once
 
 #include <ostream>
+#include "bio/common/type/IsPointer.h"
 
 namespace bio {
 
@@ -52,10 +53,27 @@ template < typename T >
 class TransparentWrapper
 {
 public:
+	typedef T Type;
+
 	TransparentWrapper(T t) : mT(t) {}
-    virtual ~TransparentWrapper() {}
+	TransparentWrapper(const TransparentWrapper<T>& other) : mT(other.mT) {}
+    virtual ~TransparentWrapper()
+	{
+		#if BIO_CPP_VERSION >= 17
+		if BIO_CONSTEXPR(type::IsPointer<T>())
+		{
+			delete mT;
+		}
+		#endif
+		//FIXME: memory leaks when wrapping pointers on cpp < 17
+	}
     operator T() {return mT;}
-//	operator const T() const {return mT;} // Breaks everything....
+	explicit operator const T() const {return mT;} // Breaks everything....
+
+	//START: Support for basic types
+	//TODO: Add pointer support for basic methods
+	TransparentWrapper<T>& operator=(const T& t) {mT = t;}
+	TransparentWrapper<T>& operator=(const TransparentWrapper<T>& other) {mT = other.mT;}
     bool operator==(const T& t) const  {return mT == t;}
     bool operator!=(const T& t) const  {return mT != t;}
     bool operator<=(const T& t) const  {return mT <= t;}
@@ -93,6 +111,26 @@ public:
         out << t.mT;
         return out;
     }
+	//END: Support for basic types
+
+	//START: Support for pointers
+	T* operator->() {
+		if BIO_CONSTEXPR(type::IsPointer<T>())
+		{
+			return mT;
+		}
+		return &mT;
+	}
+	const T* operator->() const
+	{
+		if BIO_CONSTEXPR(type::IsPointer<T>())
+		{
+			return mT;
+		}
+		return &mT;
+	}
+	//END: Support for pointers
+
     //that's all we're doing for now. Please add to this list as necessary
 
 	//public because we need to treat this as T when we don't know the T.

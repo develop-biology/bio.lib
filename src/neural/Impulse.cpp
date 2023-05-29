@@ -19,14 +19,58 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-//
-// Created by eons on 8/21/22.
-//
-
-#include "bio/circulatory/BloodVessel.h"
+#include "bio/neural/Impulse.h"
+#include "bio/neural/cell/Neuron.h"
+#include "bio/neural/common/Filters.h"
 
 namespace bio {
-namespace circulatory {
+namespace neural {
 
-} // circulatory
-} // bio
+Impulse::Impulse(
+	FiringCondition trigger,
+	Name impulseName,
+	Neuron* caller,
+	bool shouldBeActive
+)
+	:
+	chemical::Class< Impulse >(this, impulseName, filter::Neural()),
+	mTrigger(trigger),
+	mImpulse(NULL),
+	mCaller(caller),
+	mShouldBeActive(shouldBeActive)
+{
+}
+
+Impulse::~Impulse()
+{
+}
+
+FiringCondition Impulse::GetTrigger() const
+{
+	return mTrigger;
+}
+
+molecular::Protein* Impulse::GetImpulseProtein()
+{
+	return mImpulse;
+}
+
+void Impulse::SetCaller(Neuron* caller)
+{
+	BIO_SANITIZE(caller, , return)
+	mCaller = caller;
+	mImpulse = caller->GetById< molecular::Protein* >(GetId());
+}
+
+bool Impulse::Send()
+{
+	BIO_SANITIZE(mImpulse && mCaller, , return false)
+	if (mImpulse->IsEnabled())
+	{
+		(*mImpulse)()
+	}
+	return mShouldBeActive;
+}
+
+} //neural namespace
+} //bio namespace

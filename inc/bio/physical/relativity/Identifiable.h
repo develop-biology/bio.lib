@@ -27,6 +27,7 @@
 #include "bio/physical/wave/Wave.h"
 #include "bio/physical/common/Class.h"
 #include <cstring>
+#include <ostream>
 
 namespace bio {
 namespace physical {
@@ -400,6 +401,12 @@ protected:
 			#endif
 		}
 	}
+
+	friend ::std::ostream& operator <<(std::ostream& out, const Identifiable< DIMENSION >& t)
+    {
+        out << t.GetName();
+        return out;
+    }
 
 private:
 	#if BIO_MEMORY_OPTIMIZE_LEVEL < 1

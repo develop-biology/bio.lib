@@ -284,6 +284,19 @@ public:
 	}
 
 	/**
+	 * Send the Contents of *this as a string to the log engine. <br />
+	 * @tparam T
+	 * @param level
+	 * @param filter
+	 */
+	template < typename T >
+	void Log(const LogLevel& level = log_level::Info(), const Filter& filter = FilterPerspective::InvalidId())
+	{
+		UnorderedMotif< T >* implementer = this->As< UnorderedMotif< T >* >();
+		BIO_SANITIZE(implementer, implementer->LogImplementation(level, filter), )
+	}
+
+	/**
 	 * Ease of use wrapper around casting the contents of *this as a ::bio::Arrangement. <br />
 	 * @tparam T
 	 * @return the contents of *this casted to an ::bio::Arrangement.

@@ -28,7 +28,7 @@
 #include "bio/cellular/Tissue.h"
 #include "bio/genetic/Plasmid.h"
 #include "bio/molecular/EnvironmentDependent.h"
-#include "bio/chemical/structure/motif/LinearMotif.h"
+#include "bio/chemical/structure/motif/DependentMotif.h"
 
 namespace bio {
 namespace cellular {
@@ -48,9 +48,8 @@ class OrganSystem;
  * Once your Organ is prepared, you can initialize it with SpecializeTissues() and run it with Crest. However, these will be done for you through the parent OrganSystem. <br />
  */
 class Organ :
-	public Class< Organ >,
-	public Covalent< chemical::LinearMotif< genetic::Plasmid* > >,
-	public Covalent< chemical::LinearMotif< Tissue* > >,
+	public cellular::Class< Organ >,
+	public Covalent< chemical::DependentMotif< Tissue*, Organ* > >,
 	public chemical::EnvironmentDependent< OrganSystem* >
 {
 public:
@@ -72,6 +71,18 @@ public:
 	virtual ~Organ();
 
 	/**
+	 * Use this method to populate any member variable Protein*s. <br />
+	 * You'll want to do this to speed up your code by bypassing the dynamic execution provided by genetic::Expressor. <br />
+	 */
+	virtual Code CacheProteins();
+
+	/**
+	 * If you use CacheProteins, you'll likely want to create your default Proteins here. <br />
+	 * This will prevent dereferencing null or garbage pointers when using your cached Proteins. <br />
+	 */
+	virtual Code CreateDefaultProteins();
+
+	/**
 	 * new all necessary Plasmids. <br />
 	 * Does NOT distribute them. See SpecializeTissues for that. <br />
 	 * NOTE: we pronounce "mobilome" as "mobile-lee-ome" because it's more fun. <br />
@@ -85,19 +96,18 @@ public:
 
 	/**
 	 * new all Tissues. <br />
+	 * PROTEIN BASED. <br />
 	 * Does NOT Differentiate them. See SpecializeTissues for that. <br />
 	 */
-	virtual Code GrowTissues()
-	{
-		//     CREATE YOUR TISSUES HERE!
-
-		return code::NotImplemented();
-	}
+	virtual Code GrowTissues();
 
 	/**
 	 * Differentiate all Cells in all Tissues. <br />
 	 */
 	virtual Code SpecializeTissues();
+
+protected:
+	molecular::Protein* mcGrowTissues;
 };
 
 

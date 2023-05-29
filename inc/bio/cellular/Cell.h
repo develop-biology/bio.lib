@@ -27,6 +27,7 @@
 #include "bio/cellular/macro/Macros.h"
 #include "bio/genetic/Expressor.h"
 #include "bio/genetic/Plasmid.h"
+#include "Organelle.h"
 
 namespace bio {
 
@@ -35,8 +36,6 @@ class Tissue;
 }
 
 namespace cellular {
-
-class Organelle;
 
 /**
  * A Cell is the basic unit of function-driven organization within Biology. <br />
@@ -47,10 +46,9 @@ class Organelle;
  * Of course, you are allowed to modify this behavior in any way you'd like ;) <br />
  */
 class Cell :
-	public Class< Cell >,
-	public Covalent< chemical::LinearMotif< Organelle* > >,
-	public chemical::EnvironmentDependent< cellular::Tissue* >,
-	virtual public genetic::Expressor
+	public cellular::Class< Cell >,
+	public Covalent< chemical::DependentMotif< Organelle*, Cell* > >,
+	public chemical::EnvironmentDependent< cellular::Tissue* >
 {
 public:
 
@@ -74,23 +72,27 @@ public:
 	virtual ~Cell();
 
 	/**
-	 * Crest()s occur at Periodic::mIntervals. <br />
-	 * Define your main Periodic logic here. <br />
-	 * This method must be fast: <br />
-	 *	* do not read slow hardware here <br />
-	 *	* do not block for a long time <br />
-	 *	* do not sleep <br />
-	 * If derived classes must do slow work to oscillate, that slow logic MUST BE placed in a separate thread. <br />
-	 * This method would then get the data stored by that thread and returns the data *quickly*. MAKE SURE that the thread never causes a long mutex wait as a side-effect in this Crest method. <br />
-	 * Please call this method when you're done :) <br />
+	 * First, injects all Plasmids in *this into each Organelle in *this. <br />
+	 * Then calls ExpressGenes() on each Organelle in *this. <br />
+	 * Then Transcribes all Genes from all Plasmids in *this, iff *this has the necessary TranscriptionFactors for each Gene, populating mTranscriptome. <br />
+	 * Then, Translates all mRNA from the mTranscriptome into Proteins. <br />
+	 * @return whether or not *this should be functional.
 	 */
-	virtual Code Crest()
-	{
+	virtual Code ExpressGenes();
 
-		//     YOUR CODE GOES HERE!
+	/**
+	 * Traverse up the Environment hierarchy to see if the given Tissue is anywhere above *this. <br />
+	 * @param tissueId
+	 * @return whether or not the given Tissue contains *this or another Tissue which does. <br />
+	 */
+	virtual bool IsWithinTissue(const Id& tissueId) const;
 
-		return cellular::Class< Cell >::Crest();
-	}
+	/**
+	 * Traverse up the Environment hierarchy to see if the given Tissue is anywhere above *this. <br />
+	 * @param name
+	 * @return whether or not the given Tissue contains *this or another Tissue which does. <br />
+	 */
+	virtual bool IsWithinTissue(const Name& name) const;
 };
 
 } //cellular namespace

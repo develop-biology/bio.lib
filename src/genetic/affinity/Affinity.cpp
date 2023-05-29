@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2022 Séon O'Shannon & eons LLC
+ * Copyright (C) 2023 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,44 +19,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include "bio/cellular/common/Types.h"
-#include "bio/cellular/macro/Macros.h"
-#include "bio/chemical/reaction/Excitation.h"
-#include "bio/physical/wave/Wave.h"
-#include "bio/physical/Periodic.h"
+#include "bio/genetic/affinity/Affinity.h"
+#include "bio/genetic/Expressor.h"
 
 namespace bio {
-namespace cellular {
+namespace genetic {
 
-/**
- * The CrestCarrierWave will propagate Crest Excitations to all LinearMotifs <br />
- */
-class CrestCarrierWave :
-	public physical::Wave
+Affinity::~Affinity()
 {
-public:
 
-	/**
-	 *
-	 */
-	CrestCarrierWave();
+}
 
-	/**
-	 *
-	 */
-	virtual ~CrestCarrierWave();
+Affinity::Strength Affinity::GetStrengthOfAttractionTo(const physical::Wave* wave) const
+{
+	Strength ret = chemical::Affinity::GetStrengthOfAttractionTo(wave);
+	const Expressor* expressor = ChemicalCast< const Expressor* >(wave);
+	BIO_SANITIZE(expressor,,return ret)
+	ret += MeasureAttractionAlong< TranscriptionFactor >(expressor);
+	return ret;
+}
 
-	/**
-	 * Makes *this compatible with Motifs by copying the Properties of AbstractMotif. <br />
-	 * @return { Linear(), AbstractMotif::GetClassProperties() }
-	 */
-	virtual Properties GetProperties() const;
-
-protected:
-	BIO_EXCITATION_CLASS(physical::Periodic, bool) mCrestExcitation;
-};
-
-} //cellular namespace
+} //genetic namespace
 } //bio namespace

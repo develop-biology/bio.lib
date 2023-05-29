@@ -21,10 +21,11 @@
 
 #pragma once
 
-#include "bio/cellular/wave/CrestCarrierWave.h"
-#include "bio/genetic/common/Class.h"
+#include "bio/cellular/wave/CheckInCarrierWave.h"
+#include "bio/cellular/common/Class.h"
 #include "bio/molecular/Vesicle.h"
 #include "bio/physical/Periodic.h"
+#include "bio/physical/Time.h"
 
 namespace bio {
 namespace neural {
@@ -50,13 +51,14 @@ public:
 	 */
 	Class(
 		T* object,
-		physical::Perspective< Id >* perspective = NULL,
-		Filter filter = filter::Default())
+		Filter filter = filter::Default(),
+		Milliseconds interval = physical::Periodic::GetDefaultInterval()
+	)
 		:
 		cellular::Class< T >(
 			object,
-			perspective,
-			filter
+			filter,
+			interval
 		)
 	{
 
@@ -65,21 +67,19 @@ public:
 	/**
 	 * @param object
 	 * @param name
-	 * @param perspective
 	 * @param filter
 	 * @param interval
 	 */
 	Class(
 		T* object,
 		const Name& name,
-		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
-		MilliSeconds interval = GetDefaultInterval())
+		Milliseconds interval = physical::Periodic::GetDefaultInterval()
+	)
 		:
 		cellular::Class< T >(
 			object,
 			name,
-			perspective,
 			filter,
 			interval
 		)
@@ -90,21 +90,19 @@ public:
 	/**
 	 * @param object
 	 * @param id
-	 * @param perspective
 	 * @param filter
 	 * @param interval
 	 */
 	Class(
 		T* object,
 		const Id& id,
-		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
-		MilliSeconds interval = GetDefaultInterval())
+		Milliseconds interval = physical::Periodic::GetDefaultInterval()
+	)
 		:
 		cellular::Class< T >(
 			object,
 			id,
-			perspective,
 			filter,
 			interval
 		)

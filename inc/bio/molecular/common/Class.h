@@ -119,6 +119,17 @@ public:
 	/**
 	 * When inheriting from multiple EnvironmentDependent classes, this method can be used to easily specify which Environment to use. <br />
 	 * @tparam ENVIRONMENT
+	 * @param environment
+	 */
+	template < typename ENVIRONMENT >
+	void SetEnvironment(ENVIRONMENT environment)
+	{
+		return this->physical::Class< T >::GetWaveObject()->chemical::template EnvironmentDependent< ENVIRONMENT >::SetEnvironment(environment);
+	}
+
+	/**
+	 * When inheriting from multiple EnvironmentDependent classes, this method can be used to easily specify which Environment to use. <br />
+	 * @tparam ENVIRONMENT
 	 * @return GetEnvironment from an EnvironmentDependent base.
 	 */
 	template < typename ENVIRONMENT >

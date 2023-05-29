@@ -20,7 +20,7 @@
  */
 
 #include "bio/log/Writer.h"
-#include "bio/log/Engine.h"
+#include "bio/log/GlobalLogger.h"
 #include "bio/common/macro/Macros.h"
 
 #include <stdarg.h>
@@ -31,20 +31,17 @@ namespace log {
 Writer::Writer()
 	:
 	physical::Class< Writer >(this),
-	physical::Filterable(filter::Default()),
-	mLogEngine(NULL)
+	physical::Filterable(filter::Default())
 {
 
 }
 
 Writer::Writer(
-	Engine* logEngine,
 	Filter filter
 )
 	:
 	physical::Class< Writer >(this),
-	physical::Filterable(filter::Default()),
-	mLogEngine(logEngine)
+	physical::Filterable(filter),
 {
 
 }
@@ -54,120 +51,21 @@ Writer::~Writer()
 
 }
 
-void Writer::SetLogEngine(Engine* logEngine)
-{
-	mLogEngine = logEngine;
-}
-
-Engine* Writer::GetLogEngine()
-{
-	return mLogEngine;
-}
-
-const Engine* Writer::GetLogEngine() const
-{
-	return mLogEngine;
-}
-
-bool Writer::HasLogEngine() const
-{
-	return mLogEngine != NULL;
-}
-
 void Writer::Log(
 	LogLevel level,
 	const char* format,
 	...
 ) const
 {
-
-	BIO_SANITIZE(mLogEngine,
-		,
-		return);
-
 	va_list args;
 	va_start(args, format);
-	mLogEngine->Log(
+	SafelyAccess< GlobalLogger >()->Log(
 		mFilter,
 		level,
 		format,
 		args
 	);
 	va_end(args);
-}
-
-void Writer::Log(
-	LogLevel level,
-	const char* format,
-	va_list args
-) const
-{
-	BIO_SANITIZE(mLogEngine,
-		,
-		return);
-
-	mLogEngine->Log(
-		mFilter,
-		level,
-		format,
-		args);
-}
-
-void Writer::ExternalLog(
-	Filter filter,
-	LogLevel level,
-	const char* format,
-	...
-) const
-{
-	BIO_SANITIZE(mLogEngine,
-		,
-		return);
-
-	va_list args;
-	va_start(args, format);
-	mLogEngine->Log(
-		filter,
-		level,
-		format,
-		args
-	);
-	va_end(args);
-}
-
-void Writer::ExternalLog(
-	Filter filter,
-	LogLevel level,
-	const char* format,
-	va_list args
-) const
-{
-	BIO_SANITIZE(mLogEngine,
-		,
-		return);
-
-	mLogEngine->Log(
-		filter,
-		level,
-		format,
-		args
-	);
-}
-
-void Writer::InitializeImplementation(ByteStreams& args)
-{
-	if (args.Size() == 2)
-	{
-		if (args[args.GetEndIndex()].Is(mLogEngine))
-		{
-			mLogEngine = args[args.GetEndIndex()];
-		}
-		args.Erase(args.GetEndIndex());
-	}
-	if (args.Size() == 1 && args[args.GetEndIndex()].Is< Filter >())
-	{
-		Filterable::InitializeImplementation(args);
-	}
 }
 
 } //log namespace
