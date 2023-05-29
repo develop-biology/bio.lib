@@ -67,7 +67,7 @@ bool Impulse::Send()
 	BIO_SANITIZE(mImpulse && mCaller, , return false)
 	if (mImpulse->IsEnabled())
 	{
-		(*mImpulse)()
+		(*mImpulse)();
 	}
 	return mShouldBeActive;
 }

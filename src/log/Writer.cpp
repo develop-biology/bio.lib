@@ -41,7 +41,7 @@ Writer::Writer(
 )
 	:
 	physical::Class< Writer >(this),
-	physical::Filterable(filter),
+	physical::Filterable(filter)
 {
 
 }
@@ -51,20 +51,31 @@ Writer::~Writer()
 
 }
 
-void Writer::Log(
-	LogLevel level,
-	const char* format,
-	...
-) const
+const Writer* Writer::AsLogWriter() const
 {
-	va_list args;
-	va_start(args, format);
+	return this;
+}
+
+void Writer::Log(bio::LogLevel level, const char *format, va_list args) const {
 	SafelyAccess< GlobalLogger >()->Log(
 		mFilter,
 		level,
 		format,
 		args
 	);
+}
+
+/*static*/ void Writer::Log(
+	const Writer* writer,
+	LogLevel level,
+	const char* format,
+	...
+)
+{
+	BIO_SANITIZE(writer,,return)
+	va_list args;
+	va_start(args, format);
+	writer->Log(level, format, args);
 	va_end(args);
 }
 

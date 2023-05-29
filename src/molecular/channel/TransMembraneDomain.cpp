@@ -65,11 +65,11 @@ void TransMembraneDomain::IngressSolution(chemical::Solution* external)
 	BIO_SANITIZE(mInterior,,return)
 	BIO_SANITIZE(external,,return)
 	for (
-		SmartIterator slt = external->Begin();
+		SmartIterator slt = external->GetAllSolutes()->Begin();
 		!slt.IsAfterEnd();
 		++slt
 	) {
-		mInterior->Influx(external->Efflux(slt.As< chemical::Solute >().GetId()));
+		mInterior->Influx(external->Efflux(slt.As< physical::Identifiable< Id >* >()->GetId()));
 	}
 }
 	
@@ -97,7 +97,7 @@ chemical::Solute* TransMembraneDomain::Secrete(const Id& soluteId)
 	BIO_SANITIZE(toClone.GetConcentration() == 2,,return NULL) //very likely user error.
 	toClone.SetEnvironment(NULL);
 	chemical::Solute* toSecrete = ChemicalCast< chemical::Solute* >(toClone.Clone());
-	mInterior->chemical::Solution::Erase(toClone.GetIndexInParentSolution());
+	mInterior->chemical::Solution::GetAllSolutes()->Erase(toClone.GetIndexInParentSolution());
 	return toSecrete;
 }
 

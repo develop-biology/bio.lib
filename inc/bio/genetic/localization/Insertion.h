@@ -29,7 +29,7 @@ namespace genetic {
 /**
  * Insertions are a type of Localization which, instead of just finding a place, add something to that place. <br />
  * <br />
- * Insertions use the "Insert" Affinity. <br />
+ * Insertions use the "Insert" Epitope. <br />
  * <br />
  * This is used to move Proteins to their correct position after Transcription. <br />
  */

@@ -76,7 +76,7 @@ void Axon::SetTimeout(Milliseconds lastFor)
 
 void Axon::ExtendTimeoutUntil(Timestamp timeToDepotentiate)
 {
-	SetTimeout(timeToDepotentiate - mPotentiateAt);
+	//nop. Implemented in Synapse.
 }
 
 Timestamp Axon::GetTimeLastUpdated() const

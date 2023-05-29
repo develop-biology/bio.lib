@@ -34,7 +34,7 @@ Filterable::Filterable()
 		this,
 		new Symmetry(
 			"mFilter",
-			symmetry_type::Variable())),
+			symmetry_type::Value())),
 	mFilter(filter::Default())
 {
 }
@@ -45,7 +45,7 @@ Filterable::Filterable(Filter filter)
 		this,
 		new Symmetry(
 			"mFilter",
-			symmetry_type::Variable())),
+			symmetry_type::Value())),
 	mFilter(filter)
 {
 

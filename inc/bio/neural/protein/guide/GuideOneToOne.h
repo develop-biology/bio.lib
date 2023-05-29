@@ -19,11 +19,42 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-//
-// Created by eons on 5/26/23.
-//
+#pragma once
 
-#ifndef INC_A8345C2B5E1745859D0B558A88292281
-#define INC_A8345C2B5E1745859D0B558A88292281
+#include "bio/neural/protein/AxonGuide.h"
 
-#endif //INC_A8345C2B5E1745859D0B558A88292281
+namespace bio {
+namespace neural {
+
+class GuideOneToOne:
+	public molecular::Class< GuideOneToOne >,
+	public AxonGuide
+{
+public:
+
+	/**
+	 * Disambiguates all class methods. <br />
+	 */
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular, GuideOneToOne)
+
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
+		molecular,
+		GuideOneToOne,
+		filter::Neural()
+	)
+
+	/**
+	 *
+	 */
+	virtual ~GuideOneToOne();
+
+	/**
+	 * This should be overwritten to add whatever functionality is desired. <br />
+	 * It is likely desirable, though not enforced to call Protein::Activate() at the end of any overwritten functions. This will cause all sub-Proteins to be Activated. <br />
+	 * @return result of Activation.
+	 */
+	virtual Code Activate();
+};
+
+} // namespace neural
+} // namespace bio

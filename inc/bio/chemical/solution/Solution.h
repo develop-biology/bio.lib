@@ -175,6 +175,11 @@ public:
 	 */
 	virtual const Solute operator[](const Name& substanceName) const;
 
+	/**
+	 * @return the mSolutes from *this.
+	 */
+	virtual physical::Line* GetAllSolutes();
+
 protected:
 	physical::Line mSolutes;
 };

@@ -51,51 +51,51 @@ public:
 
 
 	/**
-	 * Store an Excitation as a Peptidase with the given affinity at the given location. <br />
+	 * Store an Excitation as a Peptidase with the given epitope at the given location. <br />
 	 * If an Excitation was previously Associated, it must be Disassociated before it can be changed <br />
 	 * @param location
-	 * @param affinity
+	 * @param epitope
 	 * @param peptidase
 	 * @return true if the association completed successfully else false
 	 */
 	bool AssociateSignalPeptidase(
 		Location location,
-		Affinity affinity,
+		Epitope epitope,
 		chemical::ExcitationBase* peptidase
 	);
 
 	/**
-	 * Removes the Associated Excitation for the given affinity at the given location. <br />
+	 * Removes the Associated Excitation for the given epitope at the given location. <br />
 	 * @param location
-	 * @param affinity
+	 * @param epitope
 	 * @return true if the association was removed else false.
 	 */
 	bool DisassociateSignalPeptidase(
 		Location location,
-		Affinity affinity
+		Epitope epitope
 	);
 
 	/**
-	 * Get a previously Associated Excitation for the given affinity at the given location. <br />
+	 * Get a previously Associated Excitation for the given epitope at the given location. <br />
 	 * Make sure to delete the returned Excitation! <br />
 	 * @param location
-	 * @param affinity
+	 * @param epitope
 	 * @return a new chemical::Excitation* or NULL
 	 */
 	chemical::ExcitationBase* GetPeptidase(
 		Location location,
-		Affinity affinity);
+		Epitope epitope);
 
 	/**
-	 * Get a previously Associated Excitation for the given affinity at the given location. <br />
+	 * Get a previously Associated Excitation for the given epitope at the given location. <br />
 	 * Make sure to delete the returned Excitation! <br />
 	 * @param location
-	 * @param affinity
+	 * @param epitope
 	 * @return a new chemical::Excitation* or NULL
 	 */
 	chemical::ExcitationBase* GetPeptidase(
 		Location location,
-		const Name& affinity);
+		const Name& epitope);
 
 
 protected:

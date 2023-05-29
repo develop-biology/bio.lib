@@ -40,7 +40,7 @@ class Organ;
  * Because the modification of existing Organs can lead to more errors and make debugging more difficult, it is not recommended that you take advantage of OrganSystem machinery unless you absolutely need to. However, if you do need to make system-wide modifications, these methods are available to you. <br />
  */
 class OrganSystem :
-	cellular::Class< OrganSystem >,
+	public cellular::Class< OrganSystem >,
 	public Covalent< chemical::DependentMotif< Organ*, OrganSystem* > >
 {
 public:

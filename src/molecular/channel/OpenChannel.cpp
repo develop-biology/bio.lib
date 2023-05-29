@@ -29,7 +29,7 @@ OpenChannel::OpenChannel() :
 	molecular::Class< OpenChannel >(
 		this,
 		filter::Molecular(),
-		symmetry_type::Variable())
+		symmetry_type::Value())
 {
 
 }
@@ -44,7 +44,7 @@ OpenChannel::OpenChannel(
 		this,
 		name,
 		filter::Molecular(),
-		symmetry_type::Variable())
+		symmetry_type::Value())
 {
 
 }

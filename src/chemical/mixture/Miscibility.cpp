@@ -54,7 +54,7 @@ Miscibility::~Miscibility()
 
 const physical::Wave* Miscibility::GetDisplacement(const Substance* substance) const
 {
-
+	return NULL;
 }
 
 physical::Interference* Miscibility::GetInterference() const

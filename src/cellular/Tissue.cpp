@@ -88,7 +88,7 @@ bool Tissue::IsWithinTissue(const Id& tissueId) const
 
 bool Tissue::IsWithinTissue(const Name& name) const
 {
-	return IsWithinTissue(IdPerspective::Instance().GetIdFromName(name)));
+	return IsWithinTissue(IdPerspective::Instance().GetIdFromName(name));
 }
 
 void Tissue::SetEnvironment(Tissue* environment)

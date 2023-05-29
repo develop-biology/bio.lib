@@ -134,5 +134,10 @@ bool Synapse::ShouldBeDepotentiated() const
 	return false;
 }
 
+void Synapse::ExtendTimeoutUntil(Timestamp timeToDepotentiate)
+{
+	SetTimeout(timeToDepotentiate - mPotentiateAt);
+}
+
 } //namespace neural
 } //namespace bio

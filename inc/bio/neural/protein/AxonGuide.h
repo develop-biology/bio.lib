@@ -36,7 +36,7 @@ namespace neural {
  * You can create AxonGuide Proteins to connect Neurons in novel ways. For examples, check out the guide folder. <br />
  */
 class AxonGuide:
-	public neural::Class< AxonGuide >,
+	public molecular::Class< AxonGuide >,
 	public molecular::Protein
 {
 public:
@@ -44,10 +44,10 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(neural, AxonGuide)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular, AxonGuide)
 
 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
-		neural,
+		molecular,
 		AxonGuide,
 		filter::Neural()
 	)

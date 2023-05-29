@@ -32,7 +32,7 @@ Id Solution::Dissolve(
 )
 {
 	BIO_SANITIZE(toDissolve,,return IdPerspective::InvalidId())
-	Index existingSolute = this->SeekToId(toDissolve->GetId());
+	Index existingSolute = mSolutes.SeekToId(toDissolve->GetId());
 	if (existingSolute)
 	{
 		mSolutes.LinearAccess(existingSolute)->AsAtom()->As< Solute* >()->MixWith(toDissolve);
@@ -45,7 +45,7 @@ Id Solution::Dissolve(
 		solute->SetDiffusionEffort(diffusionEffort);
 		solute->SetDiffusionTime(diffusionTime);
 		solute->SetEnvironment(this);
-		this->physical::Line::Add(physical::Linear(solute, false)); //not shared.
+		mSolutes.Add(physical::Linear(solute, false)); //not shared.
 		return solute->GetId();
 	}
 }
@@ -65,7 +65,7 @@ Substance* Solution::Separate(const Id& id)
 
 Id Solution::Influx(const Solute& toInflux)
 {
-	Index existingSolute = this->SeekToId(toInflux.GetId());
+	Index existingSolute = mSolutes.SeekToId(toInflux.GetId());
 	if (existingSolute)
 	{
 		Solute* solute = mSolutes.LinearAccess(existingSolute)->AsAtom()->As< Solute* >();
@@ -127,6 +127,11 @@ Solute Solution::operator[](const Name& substanceName)
 const Solute Solution::operator[](const Name& substanceName) const
 {
 	return Efflux(substanceName);
+}
+
+physical::Line* Solution::GetAllSolutes()
+{
+	return &mSolutes;
 }
 
 } //chemical namespace

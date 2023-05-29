@@ -24,6 +24,7 @@
 #include "bio/physical/common/Types.h"
 #include "bio/physical/common/Class.h"
 #include "bio/physical/macro/Macros.h"
+#include "bio/physical/relativity/Identifiable.h"
 
 namespace bio {
 namespace physical {
@@ -37,7 +38,8 @@ namespace physical {
  */
 template < typename DIMENSION >
 class Attraction:
-	public physical::Class< Attraction< DIMENSION > >
+	public physical::Class< Attraction< DIMENSION > >,
+	virtual public Identifiable< DIMENSION >
 {
 public:
 	
@@ -45,12 +47,14 @@ public:
 	
 	Attraction(
 		const DIMENSION& dimension = 0, //Invalid Id across DIMENSIONS
-		const Force strength = 0.0
+		const Force strength = 0.0,
+		Perspective< DIMENSION >* perspective = NULL
 	):
 		physical::Class< Attraction< DIMENSION>>(
 			this,
 			NULL
 		),
+		Identifiable< DIMENSION >(dimension, perspective),
 		m_dimension(dimension),
 		m_strength(strength)
 	{}
@@ -70,23 +74,6 @@ public:
 	Force GetForce() const
 	{
 		return m_strength;
-	}
-	
-	/**
-	 * Set the DIMENSION of *this. <br />
-	 * @param dimension 
-	 */
-	void SetDimension(const DIMENSION& dimension)
-	{
-		m_dimension = dimension;
-	}
-	
-	/**
-	 * @return the DIMENSION of *this. <br /> 
-	 */
-	DIMENSION GetDimension() const
-	{
-		return m_dimension;
 	}
 
 	/**

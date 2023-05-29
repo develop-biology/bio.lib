@@ -35,42 +35,42 @@ TranslocatorImplementation::~TranslocatorImplementation()
 }
 bool TranslocatorImplementation::AssociateSignalPeptidase(
 	Location location,
-	Affinity affinity,
+	Epitope Epitope,
 	chemical::ExcitationBase* peptidase
 )
 {
 	BIO_SANITIZE(peptidase,,return false)
 	SignalPeptide* signal = GetBraneAs< SignalPeptide* >(location);
 	BIO_SANITIZE(signal,,return false)
-	return signal->mPeptidases.AssociateType(affinity, peptidase->AsWave());
+	return signal->mPeptidases.AssociateType(Epitope, peptidase->AsWave());
 }
 
 bool TranslocatorImplementation::DisassociateSignalPeptidase(
 	Location location,
-	Affinity affinity
+	Epitope Epitope
 )
 {
 	SignalPeptide* signal = GetBraneAs< SignalPeptide* >(location);
 	BIO_SANITIZE(signal,,return false)
-	return signal->mPeptidases.DisassociateType(affinity);
+	return signal->mPeptidases.DisassociateType(Epitope);
 }
 
 chemical::ExcitationBase* TranslocatorImplementation::GetPeptidase(
 	Location location,
-	Affinity affinity
+	Epitope Epitope
 )
 {
     SignalPeptide* signal = GetBraneAs< SignalPeptide* >(location);
 	BIO_SANITIZE(signal,,return NULL)
-	return signal->mPeptidases.template GetNewObjectFromIdAs< chemical::ExcitationBase* >(affinity);
+	return signal->mPeptidases.template GetNewObjectFromIdAs< chemical::ExcitationBase* >(Epitope);
 }
 
 chemical::ExcitationBase* TranslocatorImplementation::GetPeptidase(
 	Location location,
-	const Name& affinity
+	const Name& Epitope
 )
 {
-	return GetPeptidase(location, AffinityPerspective::Instance().GetIdFromName(affinity));
+	return GetPeptidase(location, EpitopePerspective::Instance().GetIdFromName(Epitope));
 }
 
 physical::Brane< Location >* TranslocatorImplementation::CreateBrane(Location id, const Name& name)

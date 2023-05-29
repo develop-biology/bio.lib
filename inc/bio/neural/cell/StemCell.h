@@ -55,7 +55,7 @@ public:
 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
 		neural,
 		StemCell,
-		filter::Neural(),
+		filter::Neural()
 	)
 
 	/**
@@ -87,8 +87,8 @@ public:
 	{
 		if (potential == PotentialPerspective::InvalidId())
 			return code::BadArgument1();
+		return code::NotImplemented();
 	} //just to avoid compiler warnings.
-
 
 	/**
 	 * Calls CheckForReset on all Potentials. <br />

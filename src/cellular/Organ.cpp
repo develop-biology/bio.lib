@@ -44,7 +44,7 @@ Code Organ::CreateDefaultProteins()
 
 Code Organ::GrowTissues()
 {
-	(*mcGrowTissues)();
+	return (*mcGrowTissues)();
 }
 
 Code Organ::SpecializeTissues()

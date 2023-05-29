@@ -29,5 +29,15 @@ Vasculature::~Vasculature()
 
 }
 
+Code Vasculature::CacheProteins()
+{
+	return Tissue::CacheProteins();
+}
+
+Code Vasculature::CreateDefaultProteins()
+{
+	return Tissue::CreateDefaultProteins();
+}
+
 } // circulatory
 } //bio namespace

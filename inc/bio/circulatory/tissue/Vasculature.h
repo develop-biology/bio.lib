@@ -65,9 +65,16 @@ public:
 	virtual ~Vasculature();
 
 	/**
-	 * @return
+	 * Use this method to populate any member variable Protein*s. <br />
+	 * You'll want to do this to speed up your code by bypassing the dynamic execution provided by genetic::Expressor. <br />
 	 */
-	virtual Code Crest();
+	virtual Code CacheProteins();
+
+	/**
+	 * If you use CacheProteins, you'll likely want to create your default Proteins here. <br />
+	 * This will prevent dereferencing null or garbage pointers when using your cached Proteins. <br />
+	 */
+	virtual Code CreateDefaultProteins();
 
 protected:
 	Blood mBlood;

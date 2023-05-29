@@ -47,7 +47,7 @@ Periodic::Periodic(Milliseconds interval)
 		this,
 		new Symmetry(
 			"mInterval",
-			symmetry_type::Variable())),
+			symmetry_type::Value())),
 	mInterval(interval),
 	mLastCrestTimestamp(0)
 {

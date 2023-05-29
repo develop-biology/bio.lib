@@ -29,7 +29,7 @@ namespace bio {
 namespace neural {
 
 /**
- * neural::Affinities are stored sets of Features, Potentials, TranscriptionFactors, Properties, and States. <br />
+ * neural::Affinities are stored sets of Features, Potentials, TranscriptionFactors, Filters, Properties, and States. <br />
  * They allow you to build a selector that can be compared against neural::StemCells later. <br />
  */
 class Affinity :

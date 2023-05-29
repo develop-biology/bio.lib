@@ -29,7 +29,7 @@ namespace bio {
 namespace genetic {
 
 /**
- * genetic::Affinities are stored sets of TranscriptionFactors, Properties, and States. <br />
+ * genetic::Affinities are stored sets of TranscriptionFactors, Filters, Properties, and States. <br />
  * They allow you to build a selector that can be compared against Expressors later. <br />
  */
 class Affinity :

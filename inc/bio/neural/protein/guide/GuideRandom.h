@@ -21,28 +21,24 @@
 
 #pragma once
 
-#include "bio/neural/common/Types.h"
-#include "bio/neural/common/Filters.h"
-#include "bio/neural/common/Class.h"
-#include "bio/neural/macro/Macros.h"
-#include "bio/molecular/Protein.h"
+#include "bio/neural/protein/AxonGuide.h"
 
 namespace bio {
 namespace neural {
 
 class GuideRandom:
-	public neural::Class< GuideRandom >,
-	public molecular::Protein
+	public molecular::Class< GuideRandom >,
+	public AxonGuide
 {
 public:
 
 	/**
 	 * Disambiguates all class methods. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(neural, GuideRandom)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular, GuideRandom)
 
 	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
-		neural,
+		molecular,
 		GuideRandom,
 		filter::Neural()
 	)

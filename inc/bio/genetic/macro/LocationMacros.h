@@ -24,11 +24,11 @@
 /**
  * This is not for you. <br />
  */
-#define BIO_TRANSLOCATION_FUNCTION(location, affinity, type, function, argTypeTuple, argTuple) \
-    bool g##location##affinity##Registered =                                   \
+#define BIO_TRANSLOCATION_FUNCTION(location, epitope, type, function, argTypeTuple, argTuple) \
+    bool g##location##epitope##Registered =                                   \
         SafelyAccess<::bio::genetic::Translocator>()->AssociateSignalPeptidase(\
             ::bio::genetic::Translocator::Instance().GetIdFromName(#location), \
-            ::bio::AffinityPerspective::Instance().GetIdFromName(#affinity),   \
+            ::bio::EpitopePerspective::Instance().GetIdFromName(#epitope),   \
             (                                                                  \
                 new BIO_EXCITATION_CLASS(                                      \
                     ::bio::chemical::LinearMotif< type >,                      \

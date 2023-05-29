@@ -26,11 +26,11 @@
 namespace bio {
 
 /**
- * Affinity is used to "recruit" various "enzymes". Effectively, these are numeric representations of functions. <br />
+ * Epitope is used to "recruit" various "enzymes". Effectively, these are numeric representations of functions. <br />
  * The enzymes can be a Protein, a Reaction, or simply an Excitation. <br />
  * The recruitment process is likely just invoking the enzyme. <br />
  */
-BIO_ID_WITH_PERSPECTIVE(Affinity, uint8_t)
+BIO_ID_WITH_PERSPECTIVE(Epitope, uint8_t)
 
 /**
  * Locations are places inside (or outside) of Expressors (e.g. Cells). <br />

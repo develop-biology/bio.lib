@@ -29,5 +29,15 @@ BloodVessel::~BloodVessel()
 
 }
 
+Code BloodVessel::CacheProteins()
+{
+	return Cell::CacheProteins();
+}
+
+Code BloodVessel::CreateDefaultProteins()
+{
+	return Cell::CreateDefaultProteins();
+}
+
 } // circulatory
 } // bio

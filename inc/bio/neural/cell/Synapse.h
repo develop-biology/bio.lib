@@ -50,7 +50,7 @@ class Neuron;
 class Synapse :
 	public neural::Class< Synapse >,
 	public Dendrite,
-	public Axon,
+	public Axon
 {
 public:
 	/**
@@ -130,6 +130,13 @@ public:
 	 * @return true if *this has expired.
 	 */
 	virtual bool ShouldBeDepotentiated() const;
+
+	/**
+	 * Sets the expiration time such that *this will expire at the given time. <br />
+	 * Has no effect if the given time is later than the current time. <br />
+	 * @param timeToDepotentiate the time that *this should expire at.
+	 */
+	virtual void ExtendTimeoutUntil(Timestamp timeToDepotentiate);
 
 protected:
 	molecular::Protein* mcAdditionalConfiguration;

@@ -37,6 +37,7 @@ Code Brain::CreateDefaultProteins()
 	Add< molecular::Protein* >(new molecular::Protein("CreateNeurons"));
 	Add< molecular::Protein* >(new molecular::Protein("CreateNeuralFramework"));
 	Add< molecular::Protein* >(new molecular::Protein("PostSetup"));
+	return Organ::CreateDefaultProteins();
 }
 
 Code Brain::CacheProteins()

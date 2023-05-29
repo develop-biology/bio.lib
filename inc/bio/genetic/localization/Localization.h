@@ -42,9 +42,9 @@ class Localization;
  * Each place is a different Localization, which has more places (Localizations) around it. <br />
  * This system allows us to traverse arbitrarily complex spaces with ease. <br />
  * <br />
- * Localizations use the "Move" Affinity. You don't need to know anything about this, its all taken care of for you. If you want to use a different Affinity, create a child of *this and customize it as you'd like; see Insertion for an example. <br />
+ * Localizations use the "Move" Epitope. You don't need to know anything about this, its all taken care of for you. If you want to use a different Epitope, create a child of *this and customize it as you'd like; see Insertion for an example. <br />
  * <br />
- * In order to use a standard interface with arbitrarily complex containers, we rely on the Translocator's Location + Affinity + peptidase system to provide us with a means of translating a Location into a class method (peptidase / Excitation) that is used to query a container by Name. <br />
+ * In order to use a standard interface with arbitrarily complex containers, we rely on the Translocator's Location + Epitope + peptidase system to provide us with a means of translating a Location into a class method (peptidase / Excitation) that is used to query a container by Name. <br />
  * See genetic/Macros.h for an easy way to define all that (its not nearly as hard to use as it is to implement). <br />
  * <br />
  * For specifying a series of places, we use the already existing physical::Wave Modulation system in reverse order; meaning the Modulated signal is what should be evaluated BEFORE *this. Evaluation here means Localization::Seek() (past tense as Sought). <br />

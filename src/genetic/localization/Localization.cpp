@@ -106,6 +106,7 @@ void Localization::SetLocation(Location location)
 	if (mcMethod)
 	{
 		delete mcMethod;
+		mcMethod = NULL;
 	}
 	mcMethod = SafelyAccess< Translocator >()->GetPeptidase(mLocation, "Move");
 }

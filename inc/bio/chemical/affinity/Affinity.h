@@ -30,12 +30,13 @@ namespace chemical {
 class Substance;
 
 /**
- * Affinities are stored sets of Properties and States. <br />
+ * Affinities are stored sets of Filters, Properties, States. <br />
  * They allow you to build a selector that can be compared against Substances later. <br />
  */
 class Affinity :
 	public chemical::Class< Affinity >,
 	public ::bio::Affinity,
+	public Covalent< UnorderedMotif< physical::Attraction< Filter > > >,
 	public Covalent< UnorderedMotif< physical::Attraction< Property > > >,
 	public Covalent< UnorderedMotif< physical::Attraction< State > > >,
 	virtual public Structure

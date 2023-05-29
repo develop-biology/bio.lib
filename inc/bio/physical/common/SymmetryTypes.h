@@ -28,7 +28,7 @@ namespace symmetry_type {
 
 SymmetryType Comment();
 
-SymmetryType Variable();
+SymmetryType Value();
 
 SymmetryType Super();
 

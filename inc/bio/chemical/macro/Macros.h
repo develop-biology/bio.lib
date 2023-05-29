@@ -43,7 +43,19 @@
     (                                                                          \
         template< typename AS > operator AS(),                                 \
         template As< AS >()                                                    \
-    )
+    ),                                                                         \
+	(                                                                          \
+		virtual const log::Writer* AsLogWriter() const,                        \
+		AsLogWriter()                                                          \
+	),                                                                         \
+    (                                                                          \
+        BIO_SINGLE_ARG(virtual void Log(                                       \
+		::bio::LogLevel level,                                                 \
+		const char *format,                                                    \
+		va_list args                                                           \
+		) const),                                                              \
+		Log(level, format, args)                                               \
+	)
 
 
 /**

@@ -34,6 +34,7 @@ Affinity::Strength Affinity::GetStrengthOfAttractionTo(const physical::Wave* wav
 	Strength ret = Affinity::GetStrengthOfAttractionTo(wave);
 	const Substance* substance = ChemicalCast< const Substance* >(wave);
 	BIO_SANITIZE(substance,,return ret)
+	ret += MeasureAttractionAlong< Filter >(substance);
 	ret += MeasureAttractionAlong< Property >(substance);
 	ret += MeasureAttractionAlong< State >(substance);
 	return ret;

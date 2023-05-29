@@ -31,7 +31,7 @@ Surface::Surface() :
 	molecular::Class< Surface >(
 		this,
 		filter::Molecular(),
-		symmetry_type::Variable()),
+		symmetry_type::Value()),
 	EnvironmentDependent< Molecule* >(NULL),
 	mBoundPosition(InvalidIndex())
 {
@@ -48,7 +48,7 @@ Surface::Surface(
 		this,
 		name,
 		filter::Molecular(),
-		symmetry_type::Variable()),
+		symmetry_type::Value()),
 	chemical::EnvironmentDependent< Molecule* >(environment),
 	mBoundPosition(InvalidIndex())
 {
@@ -61,7 +61,7 @@ Surface::Surface(const Surface& toCopy)
 		this,
 		toCopy.GetName(),
 		toCopy.GetFilter(),
-		symmetry_type::Variable()),
+		symmetry_type::Value()),
 	chemical::EnvironmentDependent< Molecule* >(toCopy),
 	mBoundPosition(toCopy.mBoundPosition)
 {

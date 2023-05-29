@@ -22,6 +22,7 @@
 
 #include "bio/chemical/common/Types.h"
 #include "bio/common/container/Container.h"
+#include "bio/log/common/LogLevels.h"
 #include "bio/log/GlobalLogger.h"
 
 namespace bio {

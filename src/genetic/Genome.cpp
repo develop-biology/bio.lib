@@ -49,6 +49,7 @@ Code GenomeImplementation::CacheProteins()
 	mcNameSite = mcFetchPlasmid->GetIdWithoutCreation("Name Binding Site");
 	mcIdSite = mcFetchPlasmid->GetIdWithoutCreation("Id Binding Site");
 	mcFetchSite = mcFetchPlasmid->GetIdWithoutCreation("Return Site");
+	return code::Success();
 }
 
 Id GenomeImplementation::RegisterPlasmid(Plasmid* toRegister)

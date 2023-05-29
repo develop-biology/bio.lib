@@ -60,7 +60,7 @@ public:
 			this,
 			new Symmetry(
 				type::TypeName< T >(),
-				symmetry_type::Variable())),
+				symmetry_type::Value())),
 		mQuantized(new T()),
 		mControlling(true)
 	{
@@ -76,7 +76,7 @@ public:
 			this,
 			new Symmetry(
 				type::TypeName< T >(),
-				symmetry_type::Variable())),
+				symmetry_type::Value())),
 		mQuantized(new T(assignment)),
 		mControlling(true)
 	{
@@ -88,7 +88,7 @@ public:
 			this,
 			new Symmetry(
 				type::TypeName< T >(),
-				symmetry_type::Variable())),
+				symmetry_type::Value())),
 		mQuantized(directControl),
 		mControlling(false)
 	{
@@ -103,7 +103,7 @@ public:
 			this,
 			new Symmetry(
 				type::TypeName< T >(),
-				symmetry_type::Variable())),
+				symmetry_type::Value())),
 		mQuantized(new T(other)),
 		mControlling(true)
 	{

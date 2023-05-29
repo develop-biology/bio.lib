@@ -434,6 +434,7 @@ Code Neuron::DepotentiateSentData(Affinity* selection)
 	) {
 		axn.As< Axon* >()->DepotentiateSignal();
 	}
+	return code::Success();
 }
 
 bool Neuron::DetermineImpulseTriggers(bool trigger)
@@ -488,6 +489,7 @@ Code Neuron::ProcessDendrite(Dendrite* dendrite)
 		)
 		PotentiateDendrite(dendrite);
 	}
+	return code::Success();
 }
 
 void Neuron::ProcessDendrites(Affinity* selection)

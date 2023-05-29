@@ -72,8 +72,8 @@ public:
 
 	//START: Support for basic types
 	//TODO: Add pointer support for basic methods
-	TransparentWrapper<T>& operator=(const T& t) {mT = t;}
-	TransparentWrapper<T>& operator=(const TransparentWrapper<T>& other) {mT = other.mT;}
+	TransparentWrapper<T>& operator=(const T& t) {mT = t; return *this;}
+	TransparentWrapper<T>& operator=(const TransparentWrapper<T>& other) {mT = other.mT; return *this;}
     bool operator==(const T& t) const  {return mT == t;}
     bool operator!=(const T& t) const  {return mT != t;}
     bool operator<=(const T& t) const  {return mT <= t;}

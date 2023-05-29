@@ -64,9 +64,9 @@ public:
 
 	/**
 	 * A real-world peptidase is responsible for removing a signal peptide when it reaches the appropriate location. <br /> 
-	 * Here, we treat Peptidases as the means by which a SignalPeptide effects the placement of a Gene. The type associated with each Affinity is a different Excitation which may be performed in order to move the associated Gene into the next (and eventually final) Location. <br />
+	 * Here, we treat Peptidases as the means by which a SignalPeptide effects the placement of a Gene. The type associated with each Epitope is a different Excitation which may be performed in order to move the associated Gene into the next (and eventually final) Location. <br />
 	 */
-	physical::TypedPerspective< Affinity > mPeptidases;
+	physical::TypedPerspective< Epitope > mPeptidases;
 };
 
 } //genetic namespace

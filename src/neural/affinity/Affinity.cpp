@@ -47,10 +47,11 @@ Affinity::Strength Affinity::GetStrengthOfAttractionTo(const physical::Wave* wav
 		--pot
 	) {
 		const physical::Attraction< Potential > attraction = pot.As< physical::Attraction< Potential > >();
-		if(stemCell->GetById< MembranePotential* >(Id(attraction.GetDimension()))) {
+		if(stemCell->GetById< MembranePotential* >(Id(attraction.GetId()))) {
 			ret += attraction.GetForce();
 		}
 	}
+	return ret;
 }
 
 } //neural namespace

@@ -29,5 +29,15 @@ Heart::~Heart()
 
 }
 
+Code Heart::CacheProteins()
+{
+	return Organ::CacheProteins();
+}
+
+Code Heart::CreateDefaultProteins()
+{
+	return Organ::CreateDefaultProteins();
+}
+
 } // circulatory
 } //bio namespace

@@ -27,7 +27,7 @@
 #include "bio/log/common/Types.h"
 #include "bio/log/common/LogLevels.h"
 #include "bio/log/macro/Macros.h"
-#include <stdarg.h>
+#include <cstdarg>
 
 namespace bio {
 namespace log {
@@ -59,14 +59,30 @@ public:
 	/**
 	 * @param logFilter
 	 */
-	Writer(
-		Filter logFilter
-	);
+	Writer(Filter logFilter);
 
 	/**
 	 *
 	 */
 	virtual ~Writer();
+
+	/**
+	 * @return this
+	 */
+	virtual const Writer* AsLogWriter() const;
+
+	/**
+	 * Easy log method. <br />
+	 * Uses the mFilter stored in *this. <br />
+	 * @param level
+	 * @param format
+	 * @param args
+	 */
+	virtual void Log(
+		LogLevel level,
+		const char* format,
+		va_list args
+	) const;
 
 	/**
 	 * Easy log method. <br />
@@ -75,11 +91,12 @@ public:
 	 * @param format
 	 * @param ...
 	 */
-	void Log(
+	static void Log(
+		const Writer* writer,
 		LogLevel level,
 		const char* format,
 		...
-	) const;
+	);
 
 };
 } //log namespace

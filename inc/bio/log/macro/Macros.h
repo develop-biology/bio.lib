@@ -39,20 +39,20 @@ BIO_ID_FUNCTION_BODY(                                                          \
 #ifdef BIO_LOG_DISABLE_DEBUG
 	#define BIO_LOG_DEBUG(...)
 #else
-	#define BIO_LOG_DEBUG(...)	this->Log(::bio::log_level::Debug(), __VA_ARGS__);
+	#define BIO_LOG_DEBUG(...)	::bio::log::Writer::Log(this->AsLogWriter(), ::bio::log_level::Debug(), __VA_ARGS__);
 #endif
 #ifdef BIO_LOG_DISABLE_INFO
 	#define BIO_LOG_INFO(...)
 #else
-	#define BIO_LOG_INFO(...)	this->Log(::bio::log_level::Info(), __VA_ARGS__);
+	#define BIO_LOG_INFO(...)	::bio::log::Writer::Log(this->AsLogWriter(), ::bio::log_level::Info(), __VA_ARGS__);
 #endif
 #ifdef BIO_LOG_DISABLE_WARN
 	#define BIO_LOG_WARN(...)
 #else
-	#define BIO_LOG_WARN(...)	this->Log(::bio::log_level::Warn(), __VA_ARGS__);
+	#define BIO_LOG_WARN(...)	::bio::log::Writer::Log(this->AsLogWriter(), ::bio::log_level::Warn(), __VA_ARGS__);
 #endif
 #ifdef BIO_LOG_DISABLE_ERROR
 	#define BIO_LOG_ERROR(...)
 #else
-	#define BIO_LOG_ERROR(...)	this->Log(::bio::log_level::Error(), __VA_ARGS__);
+	#define BIO_LOG_ERROR(...)	::bio::log::Writer::Log(this->AsLogWriter(), ::bio::log_level::Error(), __VA_ARGS__);
 #endif
