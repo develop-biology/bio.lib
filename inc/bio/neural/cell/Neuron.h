@@ -62,13 +62,6 @@ public:
 		filter::Neural()
 	)
 
-	/**
-	 * Copies all values in *this. <br />
-	 * Neurites are NOT copied. <br />
-	 * @param other
-	 */
-	Neuron(const Neuron& other);
-
 	virtual ~Neuron();
 
 	//START: Recommended overrides
@@ -367,15 +360,6 @@ protected:
 	 * @param dendrite
 	 */
 	virtual Code ProcessDendrite(Dendrite* dendrite);
-
-
-	//START: More Potential stuff
-
-	void IncrementPotentialFor(Potential potential); //by 1
-	void DecrementPotentialFor(Potential potential); //by 1
-	void CheckForReset(const Potential potential); //will reset if it should.
-
-	//END: More Potential stuff
 
 private:
 	Timestamp mLastActive;

@@ -20,6 +20,7 @@
  */
 
 #include "bio/neural/protein/AxonGuide.h"
+#include "bio/neural/tissue/Neuropil.h"
 
 namespace bio {
 namespace neural {
@@ -32,6 +33,22 @@ AxonGuide::~AxonGuide()
 Code AxonGuide::Activate()
 {
 	return molecular::Protein::Activate();
+}
+
+Code AxonGuide::RecruitChaperones(molecular::Vesicle* environment)
+{
+	return Protein::RecruitChaperones(environment);
+}
+
+Code AxonGuide::Fold()
+{
+	static Id presynapticNeuropilBindingSite = IdPerspective::Instance().GetIdFromName("PresynapticNeuropil");
+	static Id postsynapticNeuropilBindingSite = IdPerspective::Instance().GetIdFromName("PostsynapticNeuropil");
+
+	mPresynapticNeuropil = &(RotateTo(presynapticNeuropilBindingSite)->Probe< Neuropil >());
+	mPostsynapticNeuropil = &(RotateTo(postsynapticNeuropilBindingSite)->Probe< Neuropil >());
+
+	return Protein::Fold();
 }
 
 } // namespace neural

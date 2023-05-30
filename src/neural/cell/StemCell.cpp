@@ -39,5 +39,19 @@ Code StemCell::CreateDefaultProteins()
 	return cellular::Cell::CreateDefaultProteins();
 }
 
+Code StemCell::ResetAllPossiblePotentials()
+{
+	Code code;
+	for(
+		SmartIterator pot = GetAll< MembranePotential* >()->Begin();
+		!pot.IsAfterEnd();
+		++pot
+	) {
+		code = pot.As< MembranePotential* >()->Reset();
+		BIO_SANITIZE(code == code::Success() || code == code::NoErrorNoSuccess(), , return code)
+	}
+	return code::Success();
+}
+
 } //neural namespace
 } //bio namespace

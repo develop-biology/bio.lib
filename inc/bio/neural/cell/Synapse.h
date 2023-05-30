@@ -65,11 +65,6 @@ public:
 	)
 
 	/**
-	 * @param rhs
-	 */
-	Synapse(const Synapse& rhs);
-
-	/**
 	 *
 	 */
 	virtual ~Synapse();

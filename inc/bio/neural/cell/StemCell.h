@@ -92,8 +92,10 @@ public:
 
 	/**
 	 * Calls CheckForReset on all Potentials. <br />
+	 * Override this for each potential you create. <br />
+	 * @return code::Success() if successful. <br />
 	 */
-	void ResetAllPossiblePotentials();
+	virtual Code ResetAllPossiblePotentials();
 
 };
 

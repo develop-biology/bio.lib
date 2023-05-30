@@ -30,6 +30,8 @@
 namespace bio {
 namespace neural {
 
+class Neuropil;
+
 /**
  * AxonGuide Proteins assist Neuropils in creating Synapses. <br />
  * NOTE: This is a HUGE over simplification of the actual process. AxonGuide Proteins here are perhaps most representative of the receptors for the various axon guidance molecules & their concentration gradients. Its as if we assume the molecules to guide axon growth are always present & the Proteins we create are very selectively sensitive. <br />
@@ -55,12 +57,28 @@ public:
 	virtual ~AxonGuide();
 
 	/**
+	 * Protein method; see that class for details. <br />
+	 * @param environment Vesicle to Recruit Chaperones from.
+	 * @return Success() if *this is ready to Fold()
+	 */
+	 virtual Code RecruitChaperones(molecular::Vesicle* environment);
+
+	 /**
+	  * Protein method; see that class for details. <br />
+	  * @return Success if *this is ready to Activate()
+	  */
+	 virtual Code Fold();
+
+	/**
 	 * This should be overwritten to add whatever functionality is desired. <br />
 	 * It is likely desirable, though not enforced to call Protein::Activate() at the end of any overwritten functions. This will cause all sub-Proteins to be Activated. <br />
 	 * @return result of Activation.
 	 */
 	virtual Code Activate();
 
+protected:
+	Neuropil* mPresynapticNeuropil;
+	Neuropil* mPostsynapticNeuropil;
 };
 
 } //neural namespace

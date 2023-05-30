@@ -165,13 +165,15 @@ Synapses Neuropil::Connect(
 ) const
 {
 	BIO_SANITIZE(presynapticNeuropil && postsynapticNeuropil && synapse && guide, , return NULL)
-	
+
 	static Id presynapticNeuropilBindingSite = IdPerspective::Instance().GetIdFromName("PresynapticNeuropil");
 	static Id postsynapticNeuropilBindingSite = IdPerspective::Instance().GetIdFromName("PostsynapticNeuropil");
 	static Id synapseBindingSite = IdPerspective::Instance().GetIdFromName("Synapse");
 	static Id presynapticNeuronAfiinityBindingSite = IdPerspective::Instance().GetIdFromName("PresynapticNeuronAffinity");
 	static Id postsynapticNeuronAffinityBindingSite = IdPerspective::Instance().GetIdFromName("PostsynapticNeuronAffinity");
 	static Id synapsesBindingSite = IdPerspective::Instance().GetIdFromName("Synapses");
+
+	guide->RecruitChaperones(this->As< molecular::Vesicle* >());
 	
 	guide->RotateTo(presynapticNeuropilBindingSite)->Bind(*presynapticNeuropil);
 	guide->RotateTo(postsynapticNeuropilBindingSite)->Bind(*postsynapticNeuropil);
@@ -182,6 +184,7 @@ Synapses Neuropil::Connect(
 	if (postsynapticNeuronAffinity)
 		guide->RotateTo(postsynapticNeuronAffinityBindingSite)->Bind(*postsynapticNeuronAffinity);
 
+	guide->Fold();
 	(*guide)();
 	
 	Synapses ret = guide->RotateTo(synapsesBindingSite)->Probe< Synapses >();

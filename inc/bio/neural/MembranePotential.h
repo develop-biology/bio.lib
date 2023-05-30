@@ -24,19 +24,24 @@
 #include "bio/neural/common/Types.h"
 #include "bio/neural/common/Filters.h"
 #include "bio/neural/macro/Macros.h"
+#include "bio/molecular/Protein.h"
 #include "bio/chemical/common/Class.h"
 
 namespace bio {
 namespace neural {
 
+class StemCell;
+
 /**
- * Potentials are simple classes which track how much of a given feature a Neuron is currently using. <br>
- * When a Neuron's use of a particular feature drops to 0, it can be safely reset. <br>
+ * Potentials are simple classes which track how much of a given feature a StemCell is currently using. <br>
+ * When a StemCell's use of a particular feature drops to 0, it can be safely reset. <br>
  * This system prevents rounding errors from accumulating over time. <br>
- * See Neuron.h for more information. <br>
+ * Each MembranePotential comes with a Protein which will be Activated in order to reset the Potential. <br>
+ * See StemCell.h for more information. <br>
  */
 class MembranePotential:
-	public chemical::Class< MembranePotential >
+	public chemical::Class< MembranePotential >,
+	public chemical::EnvironmentDependent< StemCell* >
 {
 public:
 	/**
@@ -85,9 +90,33 @@ public:
 	 */
 	void SetReset(bool should);
 
+	/**
+	 * @return the Protein that implements *this Reset.
+	 */
+	molecular::Protein* GetResetProtein();
+
+	/**
+	 * Set the Protein that implements *this Reset.
+	 * @param protein the Protein that implements *this Reset.
+	 */
+	void SetResetProtein(molecular::Protein* protein);
+
+	/**
+	 * Will RecruitChaperones for & Fold the Protein that implements *this Reset. <br />
+	 * @param environment the StemCell* that *this is dependent on.
+	 */
+	void SetEnvironment(StemCell* environment);
+
+	/**
+	 * PROTEIN BASED. <br />
+	 * @return Success() if *this was reset.
+	 */
+	virtual Code Reset();
+
 protected:
 	unsigned int mPotential;
 	bool mShouldReset;
+	molecular::Protein* mResetProtein;
 };
 
 } //neural namespace

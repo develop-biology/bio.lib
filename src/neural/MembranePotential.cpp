@@ -20,6 +20,7 @@
  */
 
 #include "bio/neural/MembranePotential.h"
+#include "bio/neural/cell/StemCell.h"
 
 namespace bio {
 namespace neural {
@@ -57,6 +58,40 @@ bool MembranePotential::ShouldReset() const
 void MembranePotential::SetReset(bool should)
 {
 	mShouldReset = should;
+}
+
+molecular::Protein* MembranePotential::GetResetProtein()
+{
+	return mResetProtein;
+}
+
+void MembranePotential::SetResetProtein(molecular::Protein* protein)
+{
+	if (GetEnvironment())
+	{
+		mResetProtein->RecruitChaperones(GetEnvironment()->As< molecular::Vesicle* >());
+		mResetProtein->Fold();
+	}
+	mResetProtein = protein;
+}
+
+void MembranePotential::SetEnvironment(bio::neural::StemCell* environment)
+{
+	if (mResetProtein)
+	{
+		mResetProtein->RecruitChaperones(environment->As< molecular::Vesicle* >());
+		mResetProtein->Fold();
+	}
+	chemical::EnvironmentDependent< StemCell* >::SetEnvironment(environment);
+}
+
+Code MembranePotential::Reset()
+{
+	if (!ShouldReset() || mPotential != 0)
+	{
+		return code::NoErrorNoSuccess();
+	}
+	return (*mResetProtein)();
 }
 
 } //neural namespace

@@ -19,6 +19,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#pragma once
+
 #include "bio/log/common/Types.h"
 #include "bio/log/macro/Macros.h"
 #include "bio/physical/common/Class.h"

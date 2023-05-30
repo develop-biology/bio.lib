@@ -39,11 +39,6 @@ class CellularForwarder:
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations. <br />
-	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular, CellularForwarder)
-
-	/**
 	 *
 	 */
 	CellularForwarder() :
@@ -116,6 +111,136 @@ public:
 		cellular::Class< CellularForwarder< CALLER, CLOBBER > >::Crest();
 
 		return ret;
+	}
+
+	virtual Code CacheProteins() BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::CacheProteins();
+	}
+
+	virtual Code CreateDefaultProteins() BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::CreateDefaultProteins();
+	}
+	virtual ::bio::physical::Wave* Clone() const
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::Clone();
+	}
+	::bio::physical::Wave* AsWave()
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::AsWave();
+	}
+	const ::bio::chemical::Atom* AsAtom() const
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::AsAtom();
+	}
+	::bio::chemical::Atom* AsAtom()
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::AsAtom();
+	}
+	const ::bio::physical::Wave* AsWave() const
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::AsWave();
+	}
+	operator ::bio::physical::Wave*()
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::operator ::bio::physical::Wave*();
+	}
+	virtual bool RegisterProperties(const ::bio::Properties& properties) BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::RegisterProperties(properties);
+	}
+	virtual ::bio::Properties GetProperties() const BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::GetProperties();
+	}
+	template < typename AS >
+	operator AS()
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::template As< AS >();
+	}
+	virtual const log::Writer* AsLogWriter() const BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::AsLogWriter();
+	}
+	virtual void Log(
+		::bio::LogLevel level,
+		const char* format,
+		va_list args
+	) const BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::Log(
+			level,
+			format,
+			args
+		);
+	}
+	virtual ::bio::Code SetInterval(::bio::Milliseconds interval) BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::SetInterval(interval);
+	}
+	virtual ::bio::physical::Wave* Modulate(::bio::physical::Wave* signal) BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::Modulate(signal);
+	}
+	virtual ::bio::physical::Wave* Demodulate() BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::Demodulate();
+	}
+	virtual const ::bio::physical::Wave* Demodulate() const BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::Demodulate();
+	}
+	virtual ::bio::physical::Wave* Superpose(
+		const ::bio::physical::ConstWaves& displacement,
+		::bio::physical::Interference* pattern
+	) BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::Superpose(
+			displacement,
+			pattern
+		);
+	}
+	virtual bool Superpose(
+		const ::bio::physical::Wave* displacement,
+		::bio::physical::Interference* pattern
+	) BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::Superpose(
+			displacement,
+			pattern
+		);
+	}
+	virtual ::bio::Code Attenuate(const ::bio::physical::Wave* other) BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::Attenuate(other);
+	}
+	virtual ::bio::Code Disattenuate(const ::bio::physical::Wave* other) BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::Disattenuate(other);
+	}
+	template < typename ENVIRONMENT >
+	void SetEnvironment(ENVIRONMENT environment)
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::template SetEnvironment< ENVIRONMENT >(environment);
+	}
+	template < typename ENVIRONMENT >
+	ENVIRONMENT GetEnvironment()
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::template GetEnvironment< ENVIRONMENT >();
+	}
+	template < typename ENVIRONMENT >
+	const ENVIRONMENT GetEnvironment() const
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::template GetEnvironment< ENVIRONMENT >();
+	}
+	virtual ::bio::Code Apoptose() BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::Apoptose();
+	}
+	virtual bool CheckIn() BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::CheckIn();
 	}
 
 private:

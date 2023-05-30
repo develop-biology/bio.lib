@@ -19,6 +19,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-//
-// Created by eons on 5/24/23.
-//
+#include "bio/neural/common/Filters.h"
+
+namespace bio {
+namespace filter {
+
+BIO_FILTER_FUNCTION_BODY(Neural)
+
+} // filter namespace
+} // bio namespace

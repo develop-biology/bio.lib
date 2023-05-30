@@ -194,6 +194,10 @@ void Dendrite::NoLongerReady()
 	mPotentiateAt = 0; //FIXME: this could be incrementing the timestamp.
 }
 
+Neuron* Dendrite::GetPostsynapticNeuron()
+{
+	return mPostsynapticNeuron;
+}
 
 const Neuron* Dendrite::GetPostsynapticNeuron() const
 {
