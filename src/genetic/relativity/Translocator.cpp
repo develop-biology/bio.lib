@@ -35,42 +35,45 @@ TranslocatorImplementation::~TranslocatorImplementation()
 }
 bool TranslocatorImplementation::AssociateSignalPeptidase(
 	Location location,
-	Epitope Epitope,
+	Epitope epitope,
 	chemical::ExcitationBase* peptidase
 )
 {
 	BIO_SANITIZE(peptidase,,return false)
 	SignalPeptide* signal = GetBraneAs< SignalPeptide* >(location);
 	BIO_SANITIZE(signal,,return false)
-	return signal->mPeptidases.AssociateType(Epitope, peptidase->AsWave());
+	Epitope peptidaseId = signal->mPeptidases.GetIdFromName(SafelyAccess< EpitopePerspective >()->GetNameFromId(epitope));
+	return signal->mPeptidases.AssociateType(peptidaseId, peptidase->AsWave());
 }
 
 bool TranslocatorImplementation::DisassociateSignalPeptidase(
 	Location location,
-	Epitope Epitope
+	Epitope epitope
 )
 {
 	SignalPeptide* signal = GetBraneAs< SignalPeptide* >(location);
 	BIO_SANITIZE(signal,,return false)
-	return signal->mPeptidases.DisassociateType(Epitope);
+	Epitope peptidaseId = signal->mPeptidases.GetIdFromName(SafelyAccess< EpitopePerspective >()->GetNameFromId(epitope));
+	return signal->mPeptidases.DisassociateType(peptidaseId);
 }
 
 chemical::ExcitationBase* TranslocatorImplementation::GetPeptidase(
 	Location location,
-	Epitope Epitope
+	Epitope epitope
 )
 {
     SignalPeptide* signal = GetBraneAs< SignalPeptide* >(location);
 	BIO_SANITIZE(signal,,return NULL)
-	return signal->mPeptidases.template GetNewObjectFromIdAs< chemical::ExcitationBase* >(Epitope);
+	Epitope peptidaseId = signal->mPeptidases.GetIdFromName(SafelyAccess< EpitopePerspective >()->GetNameFromId(epitope));
+	return signal->mPeptidases.template GetNewObjectFromIdAs< chemical::ExcitationBase* >(peptidaseId);
 }
 
 chemical::ExcitationBase* TranslocatorImplementation::GetPeptidase(
 	Location location,
-	const Name& Epitope
+	const Name& epitope
 )
 {
-	return GetPeptidase(location, EpitopePerspective::Instance().GetIdFromName(Epitope));
+	return GetPeptidase(location, EpitopePerspective::Instance().GetIdFromName(epitope));
 }
 
 physical::Brane< Location >* TranslocatorImplementation::CreateBrane(Location id, const Name& name)

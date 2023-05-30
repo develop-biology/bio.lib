@@ -77,14 +77,23 @@ public:
 	/**
 	 * Copy constructor. <br />
 	 * Adds the newly created Solute to the parent's Solution. <br />
+	 * NOTE: const is a lie! <br />
 	 * @param other
 	 */
-	Solute(Solute& other);
+	Solute(const Solute& other);
 
 	/**
 	 *
 	 */
 	virtual ~Solute();
+
+	/**
+	 * Same as copy ctor. <br />
+	 * const is a lie! <br />
+	 * @param other
+	 * @return *this.
+	 */
+	Solute& operator=(const Solute& other);
 
 	/**
 	 * Only applicable if *this is mutable. <br />

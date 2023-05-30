@@ -221,7 +221,7 @@ protected:
 	 */
 	virtual TypedBrane< DIMENSION >* CreateBrane(DIMENSION id, const Name& name)
 	{
-		return new TypedBrane(id, name, NULL);
+		return new TypedBrane< DIMENSION >(id, name, NULL);
 	}
 };
 

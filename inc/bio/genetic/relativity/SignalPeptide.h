@@ -29,7 +29,7 @@ namespace bio {
 namespace genetic {
 
 /**
- * SignalPeptides correlate Location names with their numeric ids. They also store any number of Affinities representing what action to be taken at the Location. <br />
+ * SignalPeptides correlate Location names with their numeric ids. They also store any number of Epitopes representing what action to be taken at the Location. <br />
  */
 class SignalPeptide :
 	public physical::TypedBrane< Location >

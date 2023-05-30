@@ -42,18 +42,34 @@ void Solute::CommonConstructor()
 	mDiffusionEffort = diffusion::effort::Active();
 }
 
-Solute::Solute(Solute& other) :
+Solute::Solute(const Solute& other) :
 	chemical::Class< Solute >(
 		this,
 		other.GetFilter()
 	),
 	mDissolvedSubstance(other.mDissolvedSubstance),
-	mParentSolute(&other),
+	mParentSolute(const_cast< Solute* >(&other)),
 	mDiffusionTime(other.mDiffusionTime),
 	mDiffusionEffort(other.mDiffusionEffort)
 {
-	mIndexInParent = other.Add(this);
+	mIndexInParent = const_cast< Solute* >(&other)->Add(this);
 	//environment is not copied.
+}
+
+Solute& Solute::operator=(const Solute& other)
+{
+	if (this == &other)
+	{
+		return *this;
+	}
+	chemical::Class< Solute >::operator=(other);
+	mDissolvedSubstance = other.mDissolvedSubstance;
+	mParentSolute = const_cast< Solute* >(&other);
+	mIndexInParent = const_cast< Solute* >(&other)->Add(this);
+	mDiffusionTime = other.mDiffusionTime;
+	mDiffusionEffort = other.mDiffusionEffort;
+	//environment is not copied.
+	return *this;
 }
 
 Substance* Solute::GetDissolvedSubstance()

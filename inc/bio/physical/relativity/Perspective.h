@@ -285,7 +285,7 @@ protected:
 	 */
 	virtual Brane< DIMENSION >* CreateBrane(DIMENSION id, const Name& name)
 	{
-		return new Brane(id, name);
+		return new Brane< DIMENSION >(id, name);
 	}
 
 	/**

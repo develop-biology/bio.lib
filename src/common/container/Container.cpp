@@ -141,11 +141,15 @@ bool Container::IsFree(Index index) const
 		return true;
 	}
 
-	return ::std::find(
-		mDeallocated.begin(),
-		mDeallocated.end(),
-		index
-	) != mDeallocated.end();
+	if (!mDeallocated.empty())
+	{
+		return ::std::find(
+			mDeallocated.begin(),
+			mDeallocated.end(),
+			index
+		) != mDeallocated.end();
+	}
+	return false;
 }
 
 bool Container::IsAllocated(const Index index) const

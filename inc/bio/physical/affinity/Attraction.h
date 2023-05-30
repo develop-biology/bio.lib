@@ -50,7 +50,7 @@ public:
 		const Force strength = 0.0,
 		Perspective< DIMENSION >* perspective = NULL
 	):
-		physical::Class< Attraction< DIMENSION>>(
+		physical::Class< Attraction< DIMENSION > >(
 			this,
 			NULL
 		),

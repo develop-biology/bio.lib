@@ -74,7 +74,7 @@ public:
 	 * @return the Attraction::Force *this has for the given t.
 	 */
 	template < typename T >
-	physical::Attraction< T >::Force GetAttractionFor(T t) const
+	typename physical::Attraction< T >::Force GetAttractionFor(T t) const
 	{
 		const Container* container = GetAll< physical::Attraction< T > >();
 		BIO_SANITIZE(container,,return 0.0f;)
@@ -94,7 +94,7 @@ public:
 			!itt.IsBeforeBeginning();
 			--itt
 		) {
-			ret += GetAttractionFor< T >(itt.template As< T >());
+			ret += this->GetAttractionFor< T >(itt.template As< T >());
 		}
 		return ret;
 	}

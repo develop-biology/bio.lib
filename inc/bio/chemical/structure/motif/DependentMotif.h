@@ -72,7 +72,7 @@ public:
 	 * @param environment
 	 */
 	explicit DependentMotif(
-		const LinearMotif< CONTENT_TYPE >::Contents* contents,
+		const typename LinearMotif< CONTENT_TYPE >::Contents* contents,
 		ENVIRONMENT environment = NULL
 	)
 		:

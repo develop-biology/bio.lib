@@ -34,7 +34,7 @@ BIO_ID_WITH_PERSPECTIVE(Epitope, uint8_t)
 
 /**
  * Locations are places inside (or outside) of Expressors (e.g. Cells). <br />
- * Because places can be anything, we rely on the Translocator, Affinities, and chemical::Excitations in order to turn a Location into an actionable function. <br />
+ * Because places can be anything, we rely on the Translocator, Epitopes, and chemical::Excitations in order to turn a Location into an actionable function. <br />
  * The Perspective for Locations is the Translocator. <br />
  */
 BIO_ID(Location, uint8_t)

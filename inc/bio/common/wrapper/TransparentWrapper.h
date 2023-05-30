@@ -68,7 +68,7 @@ public:
 		//FIXME: memory leaks when wrapping pointers on cpp < 17
 	}
     operator T() {return mT;}
-	explicit operator const T() const {return mT;} // Breaks everything....
+//	explicit operator const T() const {return mT;} // Breaks everything....
 
 	//START: Support for basic types
 	//TODO: Add pointer support for basic methods

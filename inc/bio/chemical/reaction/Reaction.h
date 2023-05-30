@@ -250,8 +250,9 @@ public:
 	template < typename T >
 	static Products Attempt(Reactants* reactants)
 	{
-		BIO_SANITIZE_WITH_CACHE(Initiate< T >(),
-			return (*RESULT)(reactants),
+		const T* reaction = Initiate< T >();
+		BIO_SANITIZE(reaction,
+			return (*reaction)(reactants),
 			return Products(
 				code::NotImplemented(),
 				reactants
@@ -262,8 +263,9 @@ public:
 	static Products Attempt(Substances& substances)
 	{
 		Reactants reactants(substances);
-		BIO_SANITIZE_WITH_CACHE(Initiate< T >(),
-			return (*Cast< const T* >(RESULT))(&reactants),
+		const T* reaction = Initiate< T >();
+		BIO_SANITIZE(reaction,
+			return (*reaction)(&reactants),
 			return Products(
 				code::NotImplemented(),
 				reactants
