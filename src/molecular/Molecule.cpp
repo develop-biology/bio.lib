@@ -28,7 +28,7 @@ namespace molecular {
 
 void Molecule::CommonConstructor()
 {
-	Covalent< chemical::DependentMotif< Surface*, Molecule* > >::Object()->SetEnvironment(this);
+	Metallic< chemical::DependentMotif< Surface*, Molecule* > >::Object()->SetEnvironment(this);
 }
 
 Molecule::Molecule(const Molecule& toCopy)
@@ -38,7 +38,7 @@ Molecule::Molecule(const Molecule& toCopy)
 		toCopy.GetId(),
 		toCopy.GetFilter()),
 	physical::Perspective< Id >(toCopy),
-	Covalent< chemical::DependentMotif< Surface *, Molecule* > >(toCopy)
+	Metallic< chemical::DependentMotif< Surface *, Molecule* > >(toCopy)
 {
 	CommonConstructor();
 }
@@ -141,14 +141,14 @@ Surface* Molecule::operator>>(Surface* target)
 Molecule* Molecule::operator<<(Molecule* source)
 {
 	BIO_SANITIZE(source, , return this);
-	Covalent< chemical::DependentMotif< Surface*, Molecule* > >::Object()->ImportImplementation(source->Covalent< chemical::DependentMotif< Surface*, Molecule* > >::Object());
+	Metallic< chemical::DependentMotif< Surface*, Molecule* > >::Object()->ImportImplementation(source->Metallic< chemical::DependentMotif< Surface*, Molecule* > >::Object());
 	return this;
 }
 
 Molecule* Molecule::operator>>(Molecule* target)
 {
 	BIO_SANITIZE(target, , return target);
-	target->Covalent< chemical::DependentMotif< Surface*, Molecule* > >::Object()->ImportImplementation(Covalent< chemical::DependentMotif< Surface*, Molecule* > >::Object());
+	target->Metallic< chemical::DependentMotif< Surface*, Molecule* > >::Object()->ImportImplementation(Metallic< chemical::DependentMotif< Surface*, Molecule* > >::Object());
 	Clear< Surface* >();
 	return target;
 }

@@ -44,8 +44,8 @@ class Organ;
  */
 class Tissue :
 	public cellular::Class< Tissue >,
-	public Covalent< chemical::DependentMotif< Cell*, Tissue* > >,
-	public Covalent< chemical::DependentMotif< Tissue*, Tissue* > >,
+	public Metallic< chemical::DependentMotif< Cell*, Tissue* > >,
+	public Metallic< chemical::DependentMotif< Tissue*, Tissue* > >,
 	public chemical::EnvironmentDependent< Tissue* >,
 	public chemical::EnvironmentDependent< Organ* >
 {

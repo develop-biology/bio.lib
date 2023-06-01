@@ -31,6 +31,7 @@ namespace bio {
  * Covalent classes can be used to create "horizontal inheritance". <br />
  * When instantiating a Covalent class, a new T will be created and Covalently bonded to the child class of *this (through the shared Atom). <br />
  * NOTE: atm, there is no way to provide arguments to the new Ts. <br />
+ * NOTE: Bonding a child class will not bond that class's parents. Virtually inherited Atoms are still distinct objects. If you would like access to a Bonded object's parents, use a Metallic Bond. <br />
  * Covalent inheritance allows distinct objects to be treated as a one. See Atom.h for more on Bonds.<br />
  * @tparam T
  */

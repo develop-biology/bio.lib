@@ -82,12 +82,11 @@ public:
 	 */
 	void RegisterType()
 	{
-		static T* archetype = NULL;
-		if (!archetype)
-		{
-			archetype = new T(); //will be deleted by PeriodicTable.
-			SafelyAccess< PeriodicTable >()->template AssociateType< T >(archetype->AsWave());
-		}
+		static bool canRegister = true;
+		BIO_SANITIZE_AT_SAFETY_LEVEL_1(canRegister,,return)
+		canRegister = false;
+		T* archetype = new T();
+		SafelyAccess< PeriodicTable >()->template AssociateType< T >(archetype->AsWave());
 	}
 
 	/**

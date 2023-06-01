@@ -41,7 +41,7 @@ class Organ;
  */
 class OrganSystem :
 	public cellular::Class< OrganSystem >,
-	public Covalent< chemical::DependentMotif< Organ*, OrganSystem* > >
+	public Metallic< chemical::DependentMotif< Organ*, OrganSystem* > >
 {
 public:
 

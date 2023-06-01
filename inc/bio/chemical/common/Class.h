@@ -89,8 +89,6 @@ private:
 			bondedId,
 			bond_type::Virtual());
 		#endif
-
-
 	}
 
 public:

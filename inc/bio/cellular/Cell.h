@@ -47,7 +47,7 @@ namespace cellular {
  */
 class Cell :
 	public cellular::Class< Cell >,
-	public Covalent< chemical::DependentMotif< Organelle*, Cell* > >,
+	public Metallic< chemical::DependentMotif< Organelle*, Cell* > >,
 	public chemical::EnvironmentDependent< cellular::Tissue* >
 {
 public:

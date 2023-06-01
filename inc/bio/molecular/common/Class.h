@@ -22,6 +22,7 @@
 #pragma once
 
 #include "bio/chemical/common/Class.h"
+#include "bio/chemical/bonding/Metallic.h"
 #include "bio/chemical/solution/Solute.h"
 
 namespace bio {

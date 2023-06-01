@@ -9,7 +9,7 @@
 			"build" : "cpp",
 			"build_in": "local",
 			"config" : {
-				"cpp_version" : 98
+				"cpp_version" : 17
 			}
     	}
   	]
