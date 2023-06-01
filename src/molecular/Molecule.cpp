@@ -20,25 +20,27 @@
  */
 
 #include "bio/molecular/Molecule.h"
-#include "bio/molecular/Protein.h"
-#include "bio/molecular/common/BondTypes.h"
 #include "bio/molecular/common/Filters.h"
 #include "bio/chemical/common/BondTypes.h"
 
 namespace bio {
 namespace molecular {
 
+void Molecule::CommonConstructor()
+{
+	Metallic< chemical::DependentMotif< Surface*, Molecule* > >::Object()->SetEnvironment(this);
+}
+
 Molecule::Molecule(const Molecule& toCopy)
 	:
 	molecular::Class< Molecule >(
 		this,
 		toCopy.GetId(),
-		toCopy.GetPerspective(),
 		toCopy.GetFilter()),
 	physical::Perspective< Id >(toCopy),
-	chemical::LinearMotif< Surface* >(toCopy)
+	Metallic< chemical::DependentMotif< Surface *, Molecule* > >(toCopy)
 {
-	chemical::LinearMotif< Surface* >::mPerspective = this;
+	CommonConstructor();
 }
 
 Molecule::~Molecule()
@@ -70,11 +72,8 @@ bool Molecule::DuplicateFrom(
 	const Name& surface
 )
 {
-	BIO_SANITIZE(source, ,
-		return false);
-
-	BIO_SANITIZE(!RotateTo(surface), ,
-		return false);
+	BIO_SANITIZE(source, , return false);
+	BIO_SANITIZE(!RotateTo(surface), , return false);
 
 	Surface* toTransfer = NULL;
 
@@ -91,11 +90,8 @@ bool Molecule::TransferFrom(
 	const Name& surface
 )
 {
-	BIO_SANITIZE(source, ,
-		return false);
-
-	BIO_SANITIZE(!RotateTo(surface), ,
-		return false);
+	BIO_SANITIZE(source, , return false);
+	BIO_SANITIZE(!RotateTo(surface), , return false);
 
 	Surface* toTransfer = NULL;
 
@@ -130,38 +126,34 @@ const Surface* Molecule::operator()(const Name& name) const
 
 Molecule* Molecule::operator<<(Surface* source)
 {
-	BIO_SANITIZE(source, ,
-		return this);
+	BIO_SANITIZE(source, , return this);
 	Add< Surface* >(source)->SetEnvironment(this);
 	return this;
 }
 
 Surface* Molecule::operator>>(Surface* target)
 {
-	BIO_SANITIZE(target, ,
-		return target);
+	BIO_SANITIZE(target, , return target);
 	target->Add< Molecule* >(this);
 	return target;
 }
 
 Molecule* Molecule::operator<<(Molecule* source)
 {
-	BIO_SANITIZE(source, ,
-		return this);
-	Import< Surface* >(source);
+	BIO_SANITIZE(source, , return this);
+	Metallic< chemical::DependentMotif< Surface*, Molecule* > >::Object()->ImportImplementation(source->Metallic< chemical::DependentMotif< Surface*, Molecule* > >::Object());
 	return this;
 }
 
 Molecule* Molecule::operator>>(Molecule* target)
 {
-	BIO_SANITIZE(target, ,
-		return target);
-	target->Import< Surface* >(this);
+	BIO_SANITIZE(target, , return target);
+	target->Metallic< chemical::DependentMotif< Surface*, Molecule* > >::Object()->ImportImplementation(Metallic< chemical::DependentMotif< Surface*, Molecule* > >::Object());
 	Clear< Surface* >();
 	return target;
 }
 
-physical::Symmetry* Molecule::Spin() const
+const physical::Symmetry* Molecule::Spin() const
 {
 	//TODO...
 	return NULL;

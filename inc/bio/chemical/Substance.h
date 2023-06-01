@@ -29,6 +29,7 @@
 #include "bio/chemical/macro/Macros.h"
 #include "bio/chemical/structure/Structure.h"
 #include "bio/chemical/structure/motif/UnorderedMotif.h"
+#include "bio/chemical/bonding/Covalent.h"
 
 namespace bio {
 namespace chemical {
@@ -40,30 +41,30 @@ namespace chemical {
  */
 class Substance :
 	public chemical::Class< Substance >,
-	public UnorderedMotif< Property >,
-	public UnorderedMotif< State >,
+	public Covalent< UnorderedMotif< Property > >,
+	public Covalent< UnorderedMotif< State > >,
 	virtual public Structure
 {
 public:
 
-	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(chemical,
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(
+		chemical,
 		Substance,
-		&SubstancePerspective::Instance(),
-		filter::Chemical())
+		filter::Chemical()
+	)
 
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical,
-		Substance)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical, Substance)
 
 	/**
 	 * @param properties
 	 * @param states
 	 */
 	Substance(
-		const typename UnorderedMotif< Property >::Contents* properties,
-		const typename UnorderedMotif< State >::Contents* states
+		const UnorderedMotif< Property >& properties,
+		const UnorderedMotif< State >& states
 	);
 
 	/**

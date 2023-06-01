@@ -41,13 +41,12 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
-		ThreadedPeriodic)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, ThreadedPeriodic)
 
 	/**
 	 *
 	 */
-	ThreadedPeriodic(MicroSeconds interval = GetDefaultInterval());
+	ThreadedPeriodic(Milliseconds interval = GetDefaultInterval());
 
 	/**
 	 *
@@ -55,7 +54,7 @@ public:
 	virtual ~ThreadedPeriodic();
 
 	/**
-	 * Calls Peak() then sleeps. <br />
+	 * Calls Periodic::CheckIn() then sleeps. <br />
 	 */
 	virtual bool Work();
 };

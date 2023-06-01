@@ -23,7 +23,8 @@
 
 #include "bio/physical/common/Types.h"
 #include "bio/physical/macro/Macros.h"
-#include "bio/physical/Perspective.h"
+#include "bio/physical/relativity/Perspective.h"
+#include "bio/physical/relativity/TypedPerspective.h"
 
 namespace bio {
 
@@ -32,12 +33,23 @@ namespace bio {
  * This can be used to inform other systems (e.g. molecular) of how to treat the Bonded Wave. <br />
  * NOTE: Atoms can Bond things that are not Atoms. The only requirement is that they are Wave. <br />
  */
-BIO_STRONG_TYPEDEF(uint8_t,
-	BondType,
-	0)
+BIO_STRONG_TYPEDEF(uint8_t,	BondType, 0)
 
-BIO_PERSPECTIVE_SINGLETON(BondTypePerspective,
-	BondType)
+BIO_PERSPECTIVE_SINGLETON(BondTypePerspective, BondType)
+
+/**
+ * Miscibility is the ability of 2 Substances (usually Solutes) to Mix. <br />
+ * Here, we refer to "Miscibility" as a noun meaning "the strategy by which 2 Substances are mixed"; however, in practice, we apply a set of Miscibilities to the set of chemical::Symmetries the Substance possesses and not to the Substances themselves. Thus, Miscibilities are atomic and applied to a recursive structure. <br />
+ * See Miscibility.h for more info. <br />
+ */
+BIO_TYPED_PERSPECTIVE_SINGLETON(MiscibilityPerspective, Property)
+
+/**
+ * Diffusion Time and Effort determine when and which Solutes are Mixed. <br />
+ * See Solute.h for more info. <br />
+ */
+BIO_ID_WITH_PERSPECTIVE(DiffusionTime, uint8_t)
+BIO_ID_WITH_PERSPECTIVE(DiffusionEffort, uint8_t)
 
 /**
  * Mainly used for inserting children into Nested classes. <br />
@@ -71,16 +83,17 @@ typedef Index Valence;
  */
 typedef uint16_t AtomicNumber;
 
-BIO_PERSPECTIVE_SINGLETON(ReactionPerspective,
-	Id)
+/**
+ * Chemical Concentrations are expressions of fractional quantity and are used by classes like Solute. <br />
+ */
+typedef uint16_t Concentration;
 
 class Substance;
-
 typedef ::bio::Arrangement< Substance* > Substances;
 
-BIO_PERSPECTIVE_SINGLETON(SubstancePerspective,
-	Id)
-
+/**
+ * Emissions are given off (returned) by Excitations.
+ */
 typedef ::bio::Arrangement< ByteStream > Emission;
 
 } //chemical namespace

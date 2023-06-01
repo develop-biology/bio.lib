@@ -31,7 +31,6 @@ GenomeImplementation::GenomeImplementation()
 	genetic::Class< GenomeImplementation >(
 		this,
 		"Genome",
-		NULL,
 		filter::Genetic())
 {
 	Add< TranscriptionFactor >(transcription_factor::Genome());
@@ -42,7 +41,7 @@ GenomeImplementation::~GenomeImplementation()
 
 }
 
-void GenomeImplementation::CacheProteins()
+Code GenomeImplementation::CacheProteins()
 {
 	mcRegisterPlasmid = RotateTo("RegisterPlasmid")->As< molecular::Protein* >();
 	mcFetchPlasmid = RotateTo("FetchPlasmid")->As< molecular::Protein* >();
@@ -50,6 +49,7 @@ void GenomeImplementation::CacheProteins()
 	mcNameSite = mcFetchPlasmid->GetIdWithoutCreation("Name Binding Site");
 	mcIdSite = mcFetchPlasmid->GetIdWithoutCreation("Id Binding Site");
 	mcFetchSite = mcFetchPlasmid->GetIdWithoutCreation("Return Site");
+	return code::Success();
 }
 
 Id GenomeImplementation::RegisterPlasmid(Plasmid* toRegister)

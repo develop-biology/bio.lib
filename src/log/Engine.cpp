@@ -96,8 +96,7 @@ void Engine::Log(
 	}
 
 	va_list args;
-	va_start(args,
-		format);
+	va_start(args, format);
 	Log(
 		filter,
 		level,
@@ -127,8 +126,7 @@ bool Engine::SetFilter(
 	if (filter == filter::All())
 	{
 		mLevelFilter.assign(
-			SafelyAccess<FilterPerspective>()->GetNumUsedIds(),
-			level);
+			SafelyAccess<FilterPerspective>()->GetNumUsedIds(), level);
 	}
 	else
 	{

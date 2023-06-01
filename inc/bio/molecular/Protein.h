@@ -40,11 +40,15 @@ class DNA;
  * Proteins are Molecules and can be stored inside Surfaces. This means they will work with Define<Protein>("MyFunction", *myProtein). <br />
  * Proteins can thus be Transferred, reflected, and treated as any other Molecule, chemical::Substance, physical::Wave, etc. <br />
  * NOTE: Because Proteins are Molecules, they are more than just simple functors; they can store variables, facilitate in Transferring variables, and act as any other data structure. <br />
+ *
+ * Proteins can have other Proteins within them. This is comparable to a quaternary structure in real proteins. <br />
+ *
+ * Proteins must be Folded on or within a Vesicle. While this restriction is unrealistic, the structure it imposes is useful for programming. <br />
  */
 class Protein :
 	public Class< Protein >,
-	public chemical::LinearMotif< Protein* >,
-	public EnvironmentDependent< Vesicle >,
+	public Covalent< chemical::LinearMotif< Protein* > >,
+	public chemical::EnvironmentDependent< Vesicle* >,
 	virtual public Molecule
 {
 public:
@@ -52,18 +56,19 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular,
-		Protein)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular, Protein)
 
 	/**
 	 * These are easy to use but require setting the Source after instantiation. <br />
 	 * For example: <br />
 	 * 		Protein myProtein = Protein("MyProtein"); <br />
 	 * 		myProtein.SetSource(myDNA); //myDNA created sometime earlier. <br />
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(molecular,
+	 */
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(
+		molecular,
 		Protein,
-		&ProteinPerspective::Instance(),
-		filter::Molecular())
+		filter::Molecular()
+	)
 
 
 	/**

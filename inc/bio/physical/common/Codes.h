@@ -22,7 +22,7 @@
 #pragma once
 
 #include "Types.h"
-#include "bio/physical/Perspective.h"
+#include "bio/physical/relativity/Perspective.h"
 
 namespace bio {
 namespace code {

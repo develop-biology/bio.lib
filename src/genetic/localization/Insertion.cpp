@@ -29,7 +29,7 @@ namespace genetic {
 
 Insertion::Insertion(
 	chemical::Substance* toInsert,
-	Site site,
+	Location location,
 	const Name& name
 )
 	:
@@ -40,7 +40,7 @@ Insertion::Insertion(
 	),
 	mToInsert(toInsert)
 {
-	SetSite(site); //virtual means nothing to ctors; do it again.
+	SetLocation(location); //virtual means nothing to ctors; do it again.
 }
 
 Insertion::~Insertion()
@@ -54,7 +54,7 @@ chemical::Substance* Insertion::Seek(chemical::Substance* insertIn) const
 
 	BIO_SANITIZE(insertIn && mToInsert, , return insertIn);
 
-	if (mSite == InsertionSitePerspective::InvalidId())
+	if (mLocation == Translocator::InvalidId())
 	{
 		return insertIn;
 	}
@@ -76,15 +76,15 @@ chemical::Substance* Insertion::Seek(chemical::Substance* insertIn) const
 	return insert;
 }
 
-void Insertion::SetSite(Site site)
+void Insertion::SetLocation(Location location)
 {
-	//Assume Sites & Sites always match exactly.
-	mSite = site;
+	//Assume Locations & Locations always match exactly.
+	mLocation = location;
 	if (mcMethod)
 	{
 		delete mcMethod;
 	}
-	mcMethod = SafelyAccess<InsertionSitePerspective>()->GetNewObjectFromIdAs< chemical::ExcitationBase* >(mSite);
+	mcMethod = SafelyAccess< Translocator >()->GetPeptidase(mLocation, "Insert");
 }
 
 void Insertion::InsertThis(chemical::Substance* toInsert)

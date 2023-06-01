@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "bio/genetic/common/Class.h"
 #include "bio/molecular/Protein.h"
 
 namespace bio {
@@ -35,13 +36,20 @@ class RNA;
  * RNA Polymerase must be fed an RNA molecule to add Gene*s to prior to each Activation(). See FeedRNA(), below. <br />
  */
 class RNAPolymerase :
+	public genetic::Class< RNAPolymerase >,
 	public molecular::Protein
 {
 public:
+
+	/**
+	 * Disambiguate all Class methods. <br />
+	 */
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(genetic, RNAPolymerase)
+
 	/**
 	 * @param toTranscribe
 	 */
-	RNAPolymerase(Plasmid* toTranscribe);
+	RNAPolymerase(Plasmid* toTranscribe = NULL);
 
 	/**
 	 *

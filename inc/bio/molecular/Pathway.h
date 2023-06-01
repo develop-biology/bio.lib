@@ -46,21 +46,22 @@ namespace molecular {
 class Pathway :
 	public chemical::Class< Pathway >,
 	public chemical::Reaction,
-	public chemical::LinearMotif< chemical::Reaction* >
+	public Covalent< chemical::LinearMotif< chemical::Reaction* > >
 {
 public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical,
-		Pathway)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical, Pathway)
 
 	/**
-	 * Standard ctors. <br />
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(chemical,
+	 * Standard constructors. <br />
+	 */
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
+		chemical,
 		Pathway,
-		&chemical::ReactionPerspective::Instance(),
-		filter::Chemical())
+		filter::Chemical()
+	)
 
 	/**
 	 *

@@ -28,5 +28,7 @@ namespace state {
 
 State Enabled();
 
+State Recursive();
+
 } //state namespace
 } //bio namespace

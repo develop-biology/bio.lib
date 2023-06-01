@@ -22,7 +22,7 @@
 #pragma once
 
 #include "AbstractCached.h"
-#include "bio/common/TransparentWrapper.h"
+#include "bio/common/wrapper/TransparentWrapper.h"
 
 namespace bio {
 

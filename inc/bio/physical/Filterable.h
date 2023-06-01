@@ -44,8 +44,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
-		Filterable)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, Filterable)
 
 
 	/**
@@ -85,14 +84,14 @@ public:
 	 * Required method from Wave. See that class for details. <br />
 	 * @return a Symmetrical image of *this
 	 */
-	virtual Symmetry* Spin() const;
+	virtual const Symmetry* Spin() const;
 
 	/**
 	 * Required method from Wave. See that class for details. <br />
 	 * Reconstruct *this from the given Symmetry. <br />
 	 * @param symmetry
 	 */
-	virtual Code Reify(Symmetry* symmetry);
+	virtual Code Refiy(const Symmetry* symmetry);
 
 protected:
 	Filter mFilter;

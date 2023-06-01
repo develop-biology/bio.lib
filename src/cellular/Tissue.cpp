@@ -34,8 +34,7 @@ Code Tissue::DifferentiateCells()
 {
 	Code ret = code::Success();
 	Container* cells = GetAll< Cell* >();
-	BIO_SANITIZE(cells, ,
-		return code::CouldNotFindValue1())
+	BIO_SANITIZE(cells, , return code::CouldNotFindValue1())
 	Cell* cell;
 	for (
 		SmartIterator cel = cells->Begin();
@@ -44,8 +43,7 @@ Code Tissue::DifferentiateCells()
 		)
 	{
 		cell = cel;
-		cell->SetEnvironment(this);
-		cell->Import< genetic::Plasmid* >(this);
+		cell->Import< genetic::Plasmid* >(As< chemical::LinearMotif< genetic::Plasmid* >* >());
 		if (cell->ExpressGenes() != code::Success() && ret == code::Success())
 		{
 			ret = code::UnknownError();
@@ -53,8 +51,7 @@ Code Tissue::DifferentiateCells()
 	}
 
 	Container* tissues = GetAll< Tissue* >();
-	BIO_SANITIZE(tissues, ,
-		return code::CouldNotFindValue1())
+	BIO_SANITIZE(tissues, , return code::CouldNotFindValue1())
 	Tissue* tissue;
 	for (
 		SmartIterator tis = tissues->Begin();
@@ -63,13 +60,41 @@ Code Tissue::DifferentiateCells()
 		)
 	{
 		tissue = tis;
-		tissue->SetEnvironment(this);
+		tissue->Import< genetic::Plasmid* >(As< chemical::LinearMotif< genetic::Plasmid* >* >());
+		if (tissue->ExpressGenes() != code::Success() && ret == code::Success())
+		{
+			ret = code::UnknownError();
+		}
 		if (tissue->DifferentiateCells() != code::Success() && ret == code::Success())
 		{
 			ret = code::UnknownError();
 		}
 	}
 	return ret;
+}
+
+bool Tissue::IsWithinTissue(const Id& tissueId) const
+{
+	if (!GetEnvironment< Tissue* >())
+	{
+		return false;
+	}
+	if (GetEnvironment< Tissue* >()->GetId() == tissueId)
+	{
+		return true;
+	}
+	return GetEnvironment< Tissue* >()->IsWithinTissue(tissueId);
+}
+
+bool Tissue::IsWithinTissue(const Name& name) const
+{
+	return IsWithinTissue(IdPerspective::Instance().GetIdFromName(name));
+}
+
+void Tissue::SetEnvironment(Tissue* environment)
+{
+	BIO_SANITIZE(environment != this, , return)
+	EnvironmentDependent< Tissue* >::SetEnvironment(environment);
 }
 
 } //cellular namespace

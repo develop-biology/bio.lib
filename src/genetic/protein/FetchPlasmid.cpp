@@ -28,6 +28,11 @@ namespace genetic {
 
 FetchPlasmid::FetchPlasmid()
 	:
+	genetic::Class< FetchPlasmid >(
+		this,
+		"FetchPlasmid",
+		filter::Genetic()
+	),
 	molecular::Protein(SafelyAccess<chemical::PeriodicTable>()->GetNameFromType(*this))
 {
 	mcNameSite = Define("Name Binding Site");
@@ -49,14 +54,19 @@ Code FetchPlasmid::Activate()
 	Name& boundName = RotateTo(mcNameSite)->Probe< Name >();
 	Id& boundId = RotateTo(mcIdSite)->Probe< Id >();
 
+	Plasmid* boundPlasmid = NULL;
 	if (boundName)
 	{
-		RotateTo(mcReturnSite)->Bind(*(SafelyAccess<PlasmidPerspective>()->GetTypeFromIdAs< Plasmid* >(boundId)));
-		ret = code::Success();
+		boundPlasmid = SafelyAccess<PlasmidPerspective>()->GetTypeFromNameAs< Plasmid* >(boundName);
 	}
 	else if (boundId)
 	{
-		RotateTo(mcReturnSite)->Bind(*(SafelyAccess<PlasmidPerspective>()->GetTypeFromIdAs< Plasmid* >(boundId)));
+		boundPlasmid = SafelyAccess<PlasmidPerspective>()->GetTypeFromIdAs< Plasmid* >(boundId);
+	}
+
+	if (boundPlasmid)
+	{
+		RotateTo(mcReturnSite)->Bind(*boundPlasmid);
 		ret = code::Success();
 	}
 

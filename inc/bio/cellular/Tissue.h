@@ -29,12 +29,13 @@
 #include "bio/cellular/Cell.h"
 #include "bio/genetic/Plasmid.h"
 #include "bio/molecular/EnvironmentDependent.h"
-#include "bio/chemical/structure/motif/LinearMotif.h"
+#include "bio/chemical/structure/motif/DependentMotif.h"
 
 namespace bio {
 namespace cellular {
 
 class Cell;
+class Organ;
 
 /**
  * Tissues are a container for storing and manipulating many cells at once <br />
@@ -42,27 +43,27 @@ class Cell;
  * Once a group of Tissues is functioning as desired, it is recommended that you package them into an Organ. <br />
  */
 class Tissue :
-	public Class< Tissue >,
-	public chemical::LinearMotif< genetic::Plasmid* >,
-	public chemical::LinearMotif< Cell* >,
-	public chemical::LinearMotif< Tissue* >,
-	public molecular::EnvironmentDependent< Tissue > //Not Organ.
+	public cellular::Class< Tissue >,
+	public Metallic< chemical::DependentMotif< Cell*, Tissue* > >,
+	public Metallic< chemical::DependentMotif< Tissue*, Tissue* > >,
+	public chemical::EnvironmentDependent< Tissue* >,
+	public chemical::EnvironmentDependent< Organ* >
 {
 public:
 
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular,
-		Tissue)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular, Tissue)
 
 	/**
-	 * Standard ctors. <br />
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
+	 * Standard constructors. <br />
+	 */
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
+		cellular,
 		Tissue,
-		&TissuePerspective::Instance(),
-		filter::Cellular())
-
+		filter::Cellular()
+	)
 
 	/**
 	 *
@@ -71,11 +72,31 @@ public:
 
 	/**
 	 * For all Cells & sub-Tissues in *this: <br />
-	 *     1. Injects all Plasmid*s from *this <br />
+	 *     1. Injects all Plasmids from *this <br />
 	 *     2. Transcribes & Translates all Genes <br />
 	 *     3. Folds all Proteins. <br />
 	 */
 	virtual Code DifferentiateCells();
+
+	/**
+	 * Will fail if the given Tissue is *this. <br />
+	 * @param environment
+	 */
+	virtual void SetEnvironment(Tissue *environment);
+
+	/**
+	 * Traverse up the Environment hierarchy to see if the given Tissue is anywhere above *this. <br />
+	 * @param tissueId
+	 * @return whether or not the given Tissue contains *this or another Tissue which does. <br />
+	 */
+	virtual bool IsWithinTissue(const Id& tissueId) const;
+
+	/**
+	 * Traverse up the Environment hierarchy to see if the given Tissue is anywhere above *this. <br />
+	 * @param name
+	 * @return whether or not the given Tissue contains *this or another Tissue which does. <br />
+	 */
+	virtual bool IsWithinTissue(const Name& name) const;
 
 };
 

@@ -26,35 +26,27 @@
 namespace bio {
 
 /**
- * Forward Peak() to some other method in some other class. <br />
+ * Forward Crest() to some other method in some other class. <br />
  * The only requirements are that the given method return a bio::Code and take no arguments. <br />
  * @tparam CALLER class that implements the desired method.
  * @tparam CLOBBER a cellular::Class<> to forward from.
- * @tparam PERSPECTIVE a perspective through which to Identify the given Class.
  */
-template < class CALLER, class CLOBBER, class PERSPECTIVE >
+template < class CALLER, class CLOBBER >
 class CellularForwarder:
-	public cellular::Class< CellularForwarder< CALLER, CLOBBER, PERSPECTIVE > >,
+	public cellular::Class< CellularForwarder< CALLER, CLOBBER > >,
 	public CLOBBER
 {
 public:
 
 	/**
-	 * Ensure virtual methods point to Class implementations. <br />
-	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular,
-		CellularForwarder)
-
-	/**
 	 *
 	 */
 	CellularForwarder() :
-		cellular::Class< CellularForwarder< CALLER, CLOBBER, PERSPECTIVE > >(
+		cellular::Class< CellularForwarder< CALLER, CLOBBER > >(
 			this,
-			&PERSPECTIVE::Instance(),
 			filter::Cellular()
 		),
-		mForwardedPeak(NULL),
+		mForwardedCrest(NULL),
 		mCaller(NULL)
 	{
 	}
@@ -63,13 +55,12 @@ public:
 	 * @param name
 	 */
 	explicit CellularForwarder(const Name& name) :
-		cellular::Class< CellularForwarder< CALLER, CLOBBER, PERSPECTIVE > >(
+		cellular::Class< CellularForwarder< CALLER, CLOBBER > >(
 			this,
 			name,
-			&PERSPECTIVE::Instance(),
 			filter::Cellular()
 		),
-		mForwardedPeak(NULL),
+		mForwardedCrest(NULL),
 		mCaller(NULL)
 	{
 	}
@@ -78,13 +69,12 @@ public:
 	 * @param id
 	 */
 	explicit CellularForwarder(const Id& id) :
-		cellular::Class< CellularForwarder< CALLER, CLOBBER, PERSPECTIVE > >(
+		cellular::Class< CellularForwarder< CALLER, CLOBBER > >(
 			this,
 			id,
-			&PERSPECTIVE::Instance(),
 			filter::Cellular()
 		),
-		mForwardedPeak(NULL),
+		mForwardedCrest(NULL),
 		mCaller(NULL)
 	{
 	}
@@ -94,37 +84,167 @@ public:
 	 */
 	virtual ~CellularForwarder()
 	{
-		BIO_ASSERT(mForwardedPeak);
-		delete mForwardedPeak;
+		BIO_ASSERT(mForwardedCrest);
+		delete mForwardedCrest;
 	}
 
 	/**
-	 * Set what Peak() should become. <br />
+	 * Set what Crest() should become. <br />
 	 * @param forwardTo
 	 */
-	void SetPeakFunction(
+	void SetCrestFunction(
 		bio::Code (CALLER::*forwardTo)(),
 		CALLER* caller)
 	{
-		mForwardedPeak = new BIO_EXCITATION_CLASS(CALLER, Code)(forwardTo);
+		mForwardedCrest = new BIO_EXCITATION_CLASS(CALLER, Code)(forwardTo);
 		mCaller = caller;
 	}
 
 	/**
-	 * Make Peak call something else. <br />
+	 * Make Crest call something else. <br />
 	 */
-	virtual Code Peak() BIO_FINAL
+	virtual Code Crest() BIO_FINAL
 	{
-		Code ret = (*mForwardedPeak)(mCaller);
+		Code ret = (*mForwardedCrest)(mCaller);
 
 		//Then also do this.
-		cellular::Class< CellularForwarder< CALLER, CLOBBER, PERSPECTIVE > >::Peak();
+		cellular::Class< CellularForwarder< CALLER, CLOBBER > >::Crest();
 
 		return ret;
 	}
 
+	virtual Code CacheProteins() BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::CacheProteins();
+	}
+
+	virtual Code CreateDefaultProteins() BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::CreateDefaultProteins();
+	}
+	virtual ::bio::physical::Wave* Clone() const
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::Clone();
+	}
+	::bio::physical::Wave* AsWave()
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::AsWave();
+	}
+	const ::bio::chemical::Atom* AsAtom() const
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::AsAtom();
+	}
+	::bio::chemical::Atom* AsAtom()
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::AsAtom();
+	}
+	const ::bio::physical::Wave* AsWave() const
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::AsWave();
+	}
+	operator ::bio::physical::Wave*()
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::operator ::bio::physical::Wave*();
+	}
+	virtual bool RegisterProperties(const ::bio::Properties& properties) BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::RegisterProperties(properties);
+	}
+	virtual ::bio::Properties GetProperties() const BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::GetProperties();
+	}
+	template < typename AS >
+	operator AS()
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::template As< AS >();
+	}
+	virtual const log::Writer* AsLogWriter() const BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::AsLogWriter();
+	}
+	virtual void Log(
+		::bio::LogLevel level,
+		const char* format,
+		va_list args
+	) const BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::Log(
+			level,
+			format,
+			args
+		);
+	}
+	virtual ::bio::Code SetInterval(::bio::Milliseconds interval) BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::SetInterval(interval);
+	}
+	virtual ::bio::physical::Wave* Modulate(::bio::physical::Wave* signal) BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::Modulate(signal);
+	}
+	virtual ::bio::physical::Wave* Demodulate() BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::Demodulate();
+	}
+	virtual const ::bio::physical::Wave* Demodulate() const BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::Demodulate();
+	}
+	virtual ::bio::physical::Wave* Superpose(
+		const ::bio::physical::ConstWaves& displacement,
+		::bio::physical::Interference* pattern
+	) BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::Superpose(
+			displacement,
+			pattern
+		);
+	}
+	virtual bool Superpose(
+		const ::bio::physical::Wave* displacement,
+		::bio::physical::Interference* pattern
+	) BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::Superpose(
+			displacement,
+			pattern
+		);
+	}
+	virtual ::bio::Code Attenuate(const ::bio::physical::Wave* other) BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::Attenuate(other);
+	}
+	virtual ::bio::Code Disattenuate(const ::bio::physical::Wave* other) BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::Disattenuate(other);
+	}
+	template < typename ENVIRONMENT >
+	void SetEnvironment(ENVIRONMENT environment)
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::template SetEnvironment< ENVIRONMENT >(environment);
+	}
+	template < typename ENVIRONMENT >
+	ENVIRONMENT GetEnvironment()
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::template GetEnvironment< ENVIRONMENT >();
+	}
+	template < typename ENVIRONMENT >
+	const ENVIRONMENT GetEnvironment() const
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::template GetEnvironment< ENVIRONMENT >();
+	}
+	virtual ::bio::Code Apoptose() BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::Apoptose();
+	}
+	virtual bool CheckIn() BIO_FINAL
+	{
+		return this->::bio::cellular::Class< CellularForwarder >::CheckIn();
+	}
+
 private:
-	BIO_EXCITATION_CLASS(CALLER, Code)* mForwardedPeak;
+	BIO_EXCITATION_CLASS(CALLER, Code)* mForwardedCrest;
 	CALLER* mCaller;
 };
 

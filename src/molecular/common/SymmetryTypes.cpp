@@ -26,21 +26,9 @@
 namespace bio {
 namespace symmetry_type {
 
+BIO_SYMMETRY_TYPE_FUNCTION_BODY(Comment);
+
 BIO_SYMMETRY_TYPE_FUNCTION_BODY(Variable);
-
-BIO_SYMMETRY_TYPE_FUNCTION_BODY(StartFunction);
-
-BIO_SYMMETRY_TYPE_FUNCTION_BODY(QualifyFunction);
-
-BIO_SYMMETRY_TYPE_FUNCTION_BODY(DefineFunctionArgument);
-
-BIO_SYMMETRY_TYPE_FUNCTION_BODY(EndFunction);
-
-BIO_SYMMETRY_TYPE_FUNCTION_BODY(StartFunctionCall);
-
-BIO_SYMMETRY_TYPE_FUNCTION_BODY(AddArgument);
-
-BIO_SYMMETRY_TYPE_FUNCTION_BODY(EndFunctionCall);
 
 } //symmetry_type namespace
 } //bio namespace

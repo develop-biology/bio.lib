@@ -141,11 +141,15 @@ bool Container::IsFree(Index index) const
 		return true;
 	}
 
-	return ::std::find(
-		mDeallocated.begin(),
-		mDeallocated.end(),
-		index
-	) != mDeallocated.end();
+	if (!mDeallocated.empty())
+	{
+		return ::std::find(
+			mDeallocated.begin(),
+			mDeallocated.end(),
+			index
+		) != mDeallocated.end();
+	}
+	return false;
 }
 
 bool Container::IsAllocated(const Index index) const
@@ -156,8 +160,7 @@ bool Container::IsAllocated(const Index index) const
 void Container::Expand()
 {
 	//IMPORTANT: ASSUME 
-	BIO_SANITIZE(mSize != ::std::numeric_limits< Index >::max(), ,
-		return)
+	BIO_SANITIZE(mSize != ::std::numeric_limits< Index >::max(), , return)
 	Index targetSize = mSize * mSize; //squared. 
 	if (targetSize < mSize)
 	{

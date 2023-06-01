@@ -27,12 +27,12 @@ namespace bio {
 
 /**
  * Final classes strip away inheritance, removing the need to disambiguate virtual methods in every derivation. <br />
- * Derive from a Final<> class if you don't want you downstream clients to necessarily override Biology functions. <br /> BIO_FINAL
- * In other words, this is where methods come to an end. From here on out (i.e. where you chose to use this), you will no longer be able to combine Biology classes. <br /> BIO_FINAL
+ * Derive from a Final<> class if you don't want you downstream clients to necessarily override Biology functions. <br />
+ * In other words, this is where methods come to an end. From here on out (i.e. where you chose to use this), you will no longer be able to combine Biology classes. <br />
  * This inhibition of extensibility is done to remove unnecessary impositions on downstream consumers of your code (i.e. it makes your code cleaner). <br />
  * Thus, only use Final<> if and only if you are USING rather than EXTENDING this library. <br />
  * <br />
- * NOTE: CLASS MUST be a child of chemical::Substance. This will be true for all classes users (and not developers) are likely to want.
+ * NOTE: CLASS MUST be a child of chemical::Substance. This will be all classes users (and not developers) are likely to want.
  */
 template < class CLASS>
 class Final :
@@ -151,6 +151,10 @@ public:
 	{
 		return this->mT.AsWave();
 	}
+	bool RegisterProperties(const Properties& properties)
+	{
+		return this->mT.RegisterProperties(properties);
+	}
 	Properties GetProperties() const 
 	{
 		return this->mT.GetProperties();
@@ -182,6 +186,37 @@ public:
 	Code Disattenuate(const physical::Wave* other) 
 	{
 		return this->mT.Disattenuate(other);
+	}
+	const log::Writer* AsLogWriter() const
+	{
+		return this->mT.AsLogWriter();
+	}
+	void Log(
+		::bio::LogLevel level,
+		const char* format,
+		va_list args
+	) const
+	{
+		return this->mT.Log(
+			level,
+			format,
+			args
+		);
+}
+	template < typename ENVIRONMENT >
+	void SetEnvironment(ENVIRONMENT environment)
+	{
+		return this->mT.template SetEnvironment< ENVIRONMENT >(environment);
+	}
+	template < typename ENVIRONMENT >
+	ENVIRONMENT GetEnvironment()
+	{
+		return this->mT.template GetEnvironment< ENVIRONMENT >();
+	}
+	template < typename ENVIRONMENT >
+	const ENVIRONMENT GetEnvironment() const
+	{
+		return this->mT.template GetEnvironment< ENVIRONMENT >();
 	}
 
 	//END: ...::Class<> methods
@@ -263,6 +298,12 @@ public:
 	std::string GetStringFrom(std::string separator = ", ")
 	{
 		return this->mT.template GetStringFrom< T >(separator);
+	}
+
+	template < typename T >
+	void Log()
+	{
+		return this->mT.template Log< T >();
 	}
 
 	template < typename T >
@@ -414,39 +455,6 @@ public:
 		va_end(args);
 	}
 
-	void ExternalLog(
-		Filter logFilter,
-		LogLevel level,
-		const char* format,
-		...
-	) const
-	{
-		va_list args;
-		va_start(args, format);
-		this->mT.ExternalLog(logFilter, level, format, args);
-		va_end(args);
-	}
-
-	void SetLogEngine(::bio::log::Engine* logEngine)
-	{
-		this->mT.SetLogEngine(logEngine);
-	}
-
-	::bio::log::Engine* GetLogEngine()
-	{
-		return this->mT.GetLogEngine();
-	}
-
-	const ::bio::log::Engine* GetLogEngine() const
-	{
-		return this->mT.GetLogEngine();
-	}
-
-	bool HasLogEngine() const
-	{
-		return this->mT.HasLogEngine();
-	}
-
 	//END: log::Writer methods
 
 	//START: physical::Identifiable< Id > methods
@@ -505,7 +513,7 @@ public:
 
 	//START: physical::Wave methods (some of these defined above).
 
-	physical::Symmetry* Spin() const 
+	const physical::Symmetry* Spin() const
 	{
 		return this->mT.Spin();
 	}

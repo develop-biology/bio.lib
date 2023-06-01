@@ -40,14 +40,13 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
-		Periodic)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, Periodic)
 
 	/**
-	 * Currently default is set to 200 milliseconds (200000 microseconds). <br />
+	 * Currently default is set to 200 milliseconds. <br />
 	 * @return a default value for Periodic constructors.
 	 */
-	static MicroSeconds GetDefaultInterval();
+	static Milliseconds GetDefaultInterval();
 
 	/**
 	 * All Periodic objects share the "Periodic" Property. <br />
@@ -56,9 +55,9 @@ public:
 	static Properties GetClassProperties();
 
 	/**
-	 * @param interval the period that Peak() wants to be called in microseconds.
+	 * @param interval the period that Crest() wants to be called in milliseconds.
 	 */
-	Periodic(MicroSeconds interval = GetDefaultInterval());
+	Periodic(Milliseconds interval = GetDefaultInterval());
 
 	/**
 	 *
@@ -72,16 +71,15 @@ public:
 	virtual void InitializeImplementation(ByteStreams& args);
 
 	/**
-	 * Peak()s occur at Periodic::mIntervals. <br />
+	 * Crest()s occur at Periodic::mIntervals. <br />
 	 * Define your main Periodic logic here. <br />
 	 * This method must be fast: <br />
 	 *	* do not read slow hardware here <br />
 	 *	* do not block for a long time <br />
 	 *	* do not sleep <br />
-	 * If derived classes must do slow work to oscillate, that slow logic MUST BE placed in a separate thread. <br />
-	 * This method would then get the data stored by that thread and returns the data *quickly*. MAKE SURE that the thread never causes a long mutex wait as a side-effect in this Peak method. <br />
+	 * If derived classes must do slow work, that slow logic MUST BE placed in a separate thread. This method would then get the data stored by that thread and return the data *quickly*. MAKE SURE that the thread never causes a long mutex wait as a side-effect in this Crest method. <br />
 	 */
-	virtual Code Peak()
+	virtual Code Crest()
 	{
 
 		//     YOU CODE GOES HERE!
@@ -90,51 +88,52 @@ public:
 	}
 
 	/**
-	 * Checks the current time & calls Peak, if a long enough interval has passed. <br />
+	 * Checks the current time & calls Crest, if a long enough interval has passed. <br />
 	 * Call this method regularly (i.e. on a clock). <br />
+	 * @return true if Crest() was called, false otherwise.
 	 */
-	virtual void CheckIn();
+	virtual bool CheckIn();
 
 	/**
-	 * Set how quickly *this should Peak() <br />
+	 * Set how quickly *this should Crest() <br />
 	 * @param interval
 	 */
-	virtual void SetInterval(MicroSeconds interval);
+	virtual Code SetInterval(Milliseconds interval);
 
 	/**
-	 * @return the time interval between Peaks of *this, in microseconds.
+	 * @return the time interval between Crests of *this, in milliseconds.
 	 */
-	MicroSeconds GetInterval() const;
+	Milliseconds GetInterval() const;
 
 	/**
-	 * @return the last time *this Peaked.
+	 * @return the last time *this Crested.
 	 */
-	Timestamp GetTimeLastPeaked() const;
+	Timestamp GetTimeLastCrested() const;
 
 	/**
-	 * @return the time interval between Peaks of *this, in seconds.
+	 * @return the time interval between Crests of *this, in seconds.
 	 */
 	float GetIntervalInSeconds() const;
 
 	/**
-	 * Sets the timestamp of the last time *this Peaked. <br />
+	 * Sets the timestamp of the last time *this Crested. <br />
 	 * USE WITH CAUTION! <br />
-	 * @param lastPeak
+	 * @param lastCrest
 	 */
-	virtual void SetLastPeakTimestamp(Timestamp lastPeak);
+	virtual void SetLastCrestTimestamp(Timestamp lastCrest);
 
 	/**
 	 * Required method from Wave. See that class for details. <br />
 	 * @return a Symmetrical image of *this
 	 */
-	virtual Symmetry* Spin() const;
+	virtual const Symmetry* Spin() const;
 
 	/**
 	 * Required method from Wave. See that class for details. <br />
 	 * Reconstruct *this from the given Symmetry. <br />
 	 * @param symmetry
 	 */
-	virtual Code Reify(Symmetry* symmetry);
+	virtual Code Refiy(const Symmetry* symmetry);
 
 	/**
 	 * Wave method. See that class for details. <br />
@@ -143,8 +142,8 @@ public:
 	virtual Properties GetProperties() const;
 
 protected:
-	MicroSeconds mInterval;
-	Timestamp mLastPeakTimestamp;
+	Milliseconds mInterval;
+	Timestamp mLastCrestTimestamp;
 };
 
 } //physical namespace

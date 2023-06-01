@@ -37,16 +37,14 @@ AbstractCached::~AbstractCached()
 
 void AbstractCached::Register()
 {
-	BIO_SANITIZE(!SafelyAccess<GlobalCache>()->Has(this), ,
-		return)
+	BIO_SANITIZE(!SafelyAccess<GlobalCache>()->Has(this), , return)
 	SafelyAccess<GlobalCache>()->Add(this);
 }
 
 void AbstractCached::Deregister()
 {
 	Index indexOfThis = SafelyAccess<GlobalCache>()->SeekTo(this);
-	BIO_SANITIZE(indexOfThis, ,
-		return)
+	BIO_SANITIZE(indexOfThis, , return)
 	SafelyAccess<GlobalCache>()->Erase(indexOfThis);
 }
 

@@ -25,9 +25,11 @@
 #include "bio/chemical/common/Cast.h"
 #include "bio/chemical/common/Class.h"
 #include "bio/chemical/common/Properties.h"
-#include "bio/chemical/Elementary.h"
 #include "bio/chemical/reaction/Excitation.h"
+#include "bio/physical/affinity/Affinity.h"
 #include "bio/physical/shape/Line.h"
+#include "bio/common/type/RemovePointer.h"
+
 
 #if BIO_CPP_VERSION >= 11
 
@@ -55,9 +57,31 @@ namespace chemical {
 template < typename CONTENT_TYPE >
 class LinearMotif :
 	public chemical::Class< LinearMotif< CONTENT_TYPE > >,
-	public Elementary< LinearMotif< CONTENT_TYPE > >,
 	public UnorderedMotif< CONTENT_TYPE >
 {
+private:
+
+	/**
+	 * Common constructor code. <br />
+	 */
+	void CommonConstructor()
+	{
+		//TODO: check if T is a child of Substance.
+		//This will do for now.
+		BIO_STATIC_ASSERT(type::IsPointer< CONTENT_TYPE >())
+
+		RegisterProperties(GetClassProperties());
+
+		mContentId = SafelyAccess< PeriodicTable >()->template GetIdFromType< CONTENT_TYPE >();
+
+		if (this->mContents)
+		{
+			delete this->mContents;
+		}
+		this->mContents = new physical::Line(4);
+	}
+
+
 public:
 
 	/**
@@ -69,11 +93,8 @@ public:
 	 * Ensure virtual methods point to Class implementations. <br />
 	 * We want to define our own Attenuate & Disattenuate, so we have to ignore the optional class methods for the chemical class. <br />
 	 */
-	BIO_DISAMBIGUATE_REQUIRED_CLASS_METHODS(chemical,
-		LinearMotif< CONTENT_TYPE >)
-
-	BIO_DISAMBIGUATE_OPTIONAL_CLASS_METHODS(physical,
-		LinearMotif< CONTENT_TYPE >)
+	BIO_DISAMBIGUATE_REQUIRED_CLASS_METHODS(chemical, LinearMotif< CONTENT_TYPE >)
+	BIO_DISAMBIGUATE_OPTIONAL_CLASS_METHODS(physical, LinearMotif< CONTENT_TYPE >)
 
 	/**
 	 * Add property::Linear() to what is given by AbstractMotif. <br />
@@ -87,30 +108,19 @@ public:
 	}
 
 	/**
-	 * @param perspective
+	 *
 	 */
-	explicit LinearMotif(physical::Perspective< Id >* perspective = NULL)
-		:
-		Elementary< LinearMotif< CONTENT_TYPE > >(GetClassProperties()),
-		chemical::Class< LinearMotif< CONTENT_TYPE > >(this),
-		mPerspective(perspective)
+	explicit LinearMotif() :
+		chemical::Class< LinearMotif< CONTENT_TYPE > >(this)
 	{
 		CommonConstructor();
 	}
 
 	/**
 	 * @param contents
-	 * @param name
-	 * @param perspective
 	 */
-	explicit LinearMotif(
-		const Contents* contents,
-		physical::Perspective< Id >* perspective = NULL
-	)
-		:
-		Elementary< LinearMotif< CONTENT_TYPE > >(GetClassProperties()),
-		chemical::Class< LinearMotif< CONTENT_TYPE > >(this),
-		mPerspective(perspective)
+	explicit LinearMotif(const Contents* contents) :
+		chemical::Class< LinearMotif< CONTENT_TYPE > >(this)
 	{
 		CommonConstructor();
 		this->mContents->Import(contents);
@@ -123,9 +133,7 @@ public:
 	 */
 	LinearMotif(const LinearMotif< CONTENT_TYPE >& toCopy)
 		:
-		Elementary< LinearMotif< CONTENT_TYPE > >(toCopy.GetClassProperties()),
-		chemical::Class< LinearMotif< CONTENT_TYPE > >(this),
-		mPerspective(toCopy.mPerspective)
+		chemical::Class< LinearMotif< CONTENT_TYPE > >(this)
 	{
 		CommonConstructor();
 		this->mContents->Import(toCopy.GetAllImplementation());
@@ -142,27 +150,9 @@ public:
 	}
 
 	/**
-	 * Each LinearMotif may use a different Perspective for identifying its contents. <br />
-	 * This Perspective will be used for Name <-> Id matching, Wave->Clone()ing, etc. <br />
-	 * See bio/physical/Perspective.h for more details. <br />
+	 * For ease of use, the AtomicNumber of the CONTENT_TYPE is stored in *this as the mContentId. <br />
 	 */
-	physical::Perspective< Id >* mPerspective;
-
-	/**
-	 * @return the mPerspective used by *this.
-	 */
-	physical::Perspective< Id >* GetStructuralPerspective()
-	{
-		return mPerspective;
-	}
-
-	/**
-	 * @return the mPerspective used by *this.
-	 */
-	const physical::Perspective< Id >* GetStructuralPerspective() const
-	{
-		return mPerspective;
-	}
+	mutable AtomicNumber mContentId;
 
 	/**
 	 * Adds content to *this. <br />
@@ -172,8 +162,9 @@ public:
 	 */
 	virtual CONTENT_TYPE AddImplementation(CONTENT_TYPE content)
 	{
-		Index addedPosition = this->mContents->Add(physical::Linear(content)); //stored as shared...
-		BIO_SANITIZE(addedPosition,,return NULL)
+		physical::Linear toAdd = physical::Linear(Cast< physical::Identifiable< Id >* >(content));
+		Index addedPosition = this->mContents->Add(toAdd); //stored as shared...
+		BIO_SANITIZE(addedPosition, , return NULL)
 		physical::Linear& added = Cast< physical::Line* >(this->mContents)->OptimizedAccess(addedPosition);
 		added.SetShared(false); //...but added contents are not shared.
 		CONTENT_TYPE ret = ChemicalCast< CONTENT_TYPE >(added.operator physical::Identifiable< Id >*());
@@ -201,8 +192,7 @@ public:
 		const bool transferSubContents = false
 	)
 	{
-		BIO_SANITIZE(toAdd, ,
-			return code::MissingArgument1())
+		BIO_SANITIZE(toAdd, , return code::MissingArgument1())
 
 		Code ret = code::Success();
 
@@ -386,19 +376,40 @@ public:
 	}
 
 	/**
-	 * Create a CONTENT_TYPE from a given Id and adds it to *this. <br />
-	 * Clones the Wave associated with the given Id. <br />
-	 * This requires a valid Perspective in *this and for that Perspective to have an Wave registered with the given Id. <br />
-	 * @param id
+	 * Create a CONTENT_TYPE by leveraging the PeriodicTable. <br />
+	 * This requires that the CONTENT_TYPE be registered with the PeriodicTable (true if chemical::Class or above (via Elementary base)). <br />
+	 * This method does NOT add the newly created object to *this; use CreateWith... for that.
 	 * @return a newly created CONTENT_TYPE else NULL.
 	 */
-	virtual CONTENT_TYPE CreateImplementation(const Id& id)
+	virtual CONTENT_TYPE CreateImplementation()
 	{
-		BIO_SANITIZE(this->GetStructuralPerspective(), , return NULL)
-		physical::Wave* created = this->GetStructuralPerspective()->template GetNewObjectFromId(id);
+		CONTENT_TYPE created = SafelyAccess< PeriodicTable >()->template GetInstance< typename type::RemovePointer< CONTENT_TYPE >::Type >();
 		BIO_SANITIZE(created, , return NULL)
-		CONTENT_TYPE toAdd = ChemicalCast< CONTENT_TYPE >(toAdd);
-		return this->AddImplementation(toAdd);
+		return created;
+	}
+
+	/**
+	 * Create a CONTENT_TYPE with the given Id and adds it to *this. <br />
+	 * @param id
+	 * @return
+	 */
+	virtual CONTENT_TYPE CreateWithIdImplementation(const Id& id)
+	{
+		CONTENT_TYPE created = this->CreateImplementation();
+		created->SetId(id);
+		return this->AddImplementation(created);
+	}
+
+	/**
+	 * Create a CONTENT_TYPE with the given Name and adds it to *this. <br />
+	 * @param name
+	 * @return
+	 */
+	virtual CONTENT_TYPE CreateWithNameImplementation(const Name& name)
+	{
+		CONTENT_TYPE created = this->CreateImplementation();
+		created->SetName(name);
+		return this->AddImplementation(created);
 	}
 
 	/**
@@ -409,14 +420,12 @@ public:
 	 */
 	virtual CONTENT_TYPE GetOrCreateByIdImplementation(const Id& id)
 	{
-		CONTENT_TYPE ret = this->GetByIdImplementation(
-			id
-		);
+		CONTENT_TYPE ret = this->GetByIdImplementation(id);
 		if (ret)
 		{
 			return ret;
 		}
-		return this->CreateImplementation(id);
+		return this->CreateWithIdImplementation(id);
 	}
 
 	/**
@@ -427,15 +436,45 @@ public:
 	 */
 	virtual CONTENT_TYPE GetOrCreateByNameImplementation(const Name& name)
 	{
-		BIO_SANITIZE(this->GetStructuralPerspective(), , return NULL);
-		//We convert to Id in case the Name is not already registered in the desired Perspective.
-		Id id = this->GetStructuralPerspective()->GetIdFromName(name);
-		CONTENT_TYPE ret = this->GetByIdImplementation(id);
+		CONTENT_TYPE ret = this->GetByNameImplementation(name);
 		if (ret)
 		{
 			return ret;
 		}
-		return this->CreateImplementation(id);
+		return this->CreateWithNameImplementation(name);
+	}
+
+	/**
+	 * const interface for removal by id. <br />
+	 * @param id
+	 * @return the CONTENT_TYPE removed or NULL.
+	 */
+	virtual CONTENT_TYPE RemoveByIdImplementation(const Id& id)
+	{
+		Index found = Cast< physical::Line* >(this->mContents)->SeekToId(id);
+		BIO_SANITIZE(found, , return NULL)
+
+		physical::Identifiable< Id >* got = Cast< physical::Line* >(this->mContents)->LinearAccess(found);
+		CONTENT_TYPE ret = ChemicalCast< CONTENT_TYPE >(got);
+		this->mContents->Erase(found); //Erases the pointer but the pointed-to object should still exist.
+		return ret;
+	}
+
+
+	/**
+	 * Implementation for removal by name. <br />
+	 * @param name
+	 * @return the CONTENT_TYPE removed or NULL.
+	 */
+	virtual CONTENT_TYPE RemoveByNameImplementation(const Name& name)
+	{
+		Index found = Cast< physical::Line* >(this->mContents)->SeekToName(name);
+		BIO_SANITIZE(found, , return NULL)
+
+		physical::Identifiable< Id >* got = Cast< physical::Line* >(this->mContents)->LinearAccess(found);
+		CONTENT_TYPE ret = ChemicalCast< CONTENT_TYPE >(got);
+		this->mContents->Erase(found); //Erases the pointer but the pointed-to object should still exist.
+		return ret;
 	}
 
 	/**
@@ -462,6 +501,31 @@ public:
 	}
 
 	/**
+	 * This can be used to filter any arbitrary subset from *this. <br />
+	 * This is only ever read-only (though you may affect the pointers returned). <br />
+	 * @param affinity
+	 * @return all the Contents in *this that have Attraction to the given Affinity.
+	 */
+	virtual Contents GetAllLikeImplementation(const Affinity* affinity) const
+	{
+		Contents ret;
+		BIO_SANITIZE(affinity, , return ret)
+		for (
+			SmartIterator cnt = this->mContents;
+			!cnt.IsBeforeBeginning();
+			--cnt
+			)
+		{
+			CONTENT_TYPE content = cnt.template As< CONTENT_TYPE >();
+			if (affinity->AttractionExists(content->AsWave()))
+			{
+				ret.Add(content);
+			}
+		}
+		return ret;
+	}
+
+	/**
 	 * Override of Wave method. See that class for details. <br />
 	 * If other is an Excitation, call ForEach instead. <br />
 	 * @param other
@@ -469,6 +533,7 @@ public:
 	 */
 	virtual Code Attenuate(const physical::Wave* other)
 	{
+		//if other is an Excitation...
 		if (physical::Wave::GetResonanceBetween(
 			other,
 			ExcitationBase::GetClassProperties()).Size())
@@ -573,25 +638,6 @@ public:
 		//No need to delete anything, since our Linear wrapper handles that for us.
 		this->mContents->Clear();
 	}
-
-private:
-
-	/**
-	 * Common constructor code. <br />
-	 */
-	void CommonConstructor()
-	{
-		//TODO: check if T is a child of Substance.
-		//This will do for now.
-		BIO_STATIC_ASSERT(type::IsPointer< CONTENT_TYPE >())
-
-		if (this->mContents)
-		{
-			delete this->mContents;
-		}
-		this->mContents = new physical::Line(4);
-	}
-
 };
 } //chemical namespace
 } //bio namespace

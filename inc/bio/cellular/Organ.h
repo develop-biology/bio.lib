@@ -28,7 +28,7 @@
 #include "bio/cellular/Tissue.h"
 #include "bio/genetic/Plasmid.h"
 #include "bio/molecular/EnvironmentDependent.h"
-#include "bio/chemical/structure/motif/LinearMotif.h"
+#include "bio/chemical/structure/motif/DependentMotif.h"
 
 namespace bio {
 namespace cellular {
@@ -45,30 +45,42 @@ class OrganSystem;
  * Organs contain all of the DNA (Plasmids) they need to create all of their Cells. <br />
  * This means you should new the Plasmids necessary for your Organ within the BuildMobilome method. <br />
  *
- * Once your Organ is prepared, you can initialize it with SpecializeTissues() and run it with Peak. However, these will be done for you through the parent OrganSystem. <br />
+ * Once your Organ is prepared, you can initialize it with SpecializeTissues() and run it with Crest. However, these will be done for you through the parent OrganSystem. <br />
  */
 class Organ :
-	public Class< Organ >,
-	public chemical::LinearMotif< genetic::Plasmid* >,
-	public chemical::LinearMotif< Tissue* >,
-	public molecular::EnvironmentDependent< OrganSystem >
+	public cellular::Class< Organ >,
+	public Metallic< chemical::DependentMotif< Tissue*, Organ* > >,
+	public chemical::EnvironmentDependent< OrganSystem* >
 {
 public:
 
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular,
-		Organ)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular, Organ)
 
 	/**
-	 * Standard ctors. <br />
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
+	 * Standard constructors. <br />
+	 */
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
+		cellular,
 		Organ,
-		&OrganPerspective::Instance(),
-		filter::Cellular())
+		filter::Cellular()
+	)
 
 	virtual ~Organ();
+
+	/**
+	 * Use this method to populate any member variable Protein*s. <br />
+	 * You'll want to do this to speed up your code by bypassing the dynamic execution provided by genetic::Expressor. <br />
+	 */
+	virtual Code CacheProteins();
+
+	/**
+	 * If you use CacheProteins, you'll likely want to create your default Proteins here. <br />
+	 * This will prevent dereferencing null or garbage pointers when using your cached Proteins. <br />
+	 */
+	virtual Code CreateDefaultProteins();
 
 	/**
 	 * new all necessary Plasmids. <br />
@@ -84,19 +96,18 @@ public:
 
 	/**
 	 * new all Tissues. <br />
+	 * PROTEIN BASED. <br />
 	 * Does NOT Differentiate them. See SpecializeTissues for that. <br />
 	 */
-	virtual Code GrowTissues()
-	{
-		//     CREATE YOUR TISSUES HERE!
-
-		return code::NotImplemented();
-	}
+	virtual Code GrowTissues();
 
 	/**
 	 * Differentiate all Cells in all Tissues. <br />
 	 */
 	virtual Code SpecializeTissues();
+
+protected:
+	molecular::Protein* mcGrowTissues;
 };
 
 

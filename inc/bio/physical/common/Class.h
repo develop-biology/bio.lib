@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2022 Séon O'Shannon & eons LLC
+ * Copyright (C) 2023 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -22,7 +22,7 @@
 #pragma once
 
 #include "Codes.h"
-#include "bio/physical/Wave.h"
+#include "bio/physical/wave/Wave.h"
 
 namespace bio {
 namespace physical {
@@ -152,7 +152,7 @@ public:
 	}
 
 protected:
-	T* mObject;
+	mutable T* mObject;
 };
 
 } //physical namespace

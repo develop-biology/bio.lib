@@ -188,6 +188,59 @@ public:
 		)
 	}
 
+	/**
+	 * Removes a T* by its id.
+	 * @tparam T
+	 * @param id
+	 * @return the T removed or NULL; NULL if T is invalid.
+	 */
+	template < typename T >
+	T RemoveById(const Id& id)
+	{
+		BIO_STATIC_ASSERT(type::IsPointer< T >())
+		LinearMotif< T >* implementer = this->As< LinearMotif< T >* >();
+		BIO_SANITIZE(implementer,
+			return implementer->RemoveByIdImplementation(id),
+			return NULL
+		)
+	}
+
+	/**
+	 * Removes a T* by its name.
+	 * @tparam T
+	 * @param name
+	 * @return the T removed or NULL; NULL if T is invalid.
+	 */
+	template < typename T >
+	T RemoveByName(const Name& name)
+	{
+		BIO_STATIC_ASSERT(type::IsPointer< T >())
+		LinearMotif< T >* implementer = this->As< LinearMotif< T >* >();
+		BIO_SANITIZE(implementer,
+			return implementer->RemoveByNameImplementation(name),
+			return NULL
+		)
+	}
+
+	/**
+	 * This can be used to filter any arbitrary subset from *this. <br />
+	 * If you're using chemical::Substances (as you should be), you may pass a chemical::Affinity here to check the Properties & States. <br />
+	 * If you're using genetic::Expressors, you may pass a genetic::Affinity here to check the TranscriptionFactors. <br />
+	 * NOTE: This is read-only / const in that you cannot use the returned Container to affect this. However, you are free to modify the contents within. <br />
+	 * @tparam T
+	 * @param affinity
+	 * @return all the Contents in *this that have Attraction to the given Affinity.
+	 */
+	template < typename T >
+	typename LinearMotif< T >::Contents GetAllLike(const Affinity* affinity) const
+	{
+		BIO_STATIC_ASSERT(type::IsPointer< T >())
+		typename LinearMotif< T >::Contents ret;
+		const LinearMotif< T >* implementer = this->As< LinearMotif< T >* >();
+		BIO_SANITIZE(implementer, , return ret)
+		ret = implementer->GetAllLikeImplementation(affinity);
+		return ret;
+	}
 
 	/**
 	 * Performs the given Reaction on all contents. <br />

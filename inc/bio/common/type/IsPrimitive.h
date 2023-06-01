@@ -22,7 +22,7 @@
 #pragma once
 
 #include "bio/common/macro/Macros.h"
-#include "bio/common/TransparentWrapper.h"
+#include "bio/common/wrapper/TransparentWrapper.h"
 #include "IsPointer.h"
 
 //@formatter:off

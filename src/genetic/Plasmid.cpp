@@ -52,7 +52,7 @@ RNA* Plasmid::TranscribeFor(Expressor* expressor) const
 	rnaName += GetName().AsStdString();
 	RNA* ret = new RNA(rnaName.c_str());
 	molecular::Protein* polymerase = ForceCast< molecular::Protein* >(GetRNAPolymerase()->Clone());
-	Id bindingSite = polymerase->GetIdFromName("RNA Binding Site");
+	static Id bindingSite = IdPerspective::Instance().GetIdFromName("RNA Binding Site");
 	polymerase->RecruitChaperones(expressor);
 	polymerase->Fold();
 	polymerase->RotateTo(bindingSite)->Bind(*ret);

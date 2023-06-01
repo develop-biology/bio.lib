@@ -23,7 +23,7 @@
 
 #include "bio/molecular/macro/Macros.h"
 #include "bio/genetic/common/Types.h"
-#include "bio/genetic/macro/SiteMacros.h"
+#include "bio/genetic/macro/LocationMacros.h"
 
 /**
  * Get all virtual methods defined by genetic::Class. <br />
@@ -43,7 +43,7 @@
 /**
 Macro for defining TranscriptionFactors.
 */
-#define BIO_TRANSCRIPTION_FACONSTRUCTOR_FUNCTION_BODY(functionName)                   \
+#define BIO_TRANSCRIPTION_FACTOR_FUNCTION_BODY(functionName)                   \
 BIO_ID_FUNCTION_BODY(                                                          \
     functionName,                                                              \
     ::bio::TranscriptionFactorPerspective::Instance(),                         \

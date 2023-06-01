@@ -25,7 +25,7 @@
 #include "bio/molecular/common/Types.h"
 #include "bio/molecular/common/Class.h"
 #include "bio/molecular/macro/Macros.h"
-#include "EnvironmentDependent.h"
+#include "bio/chemical/EnvironmentDependent.h"
 
 namespace bio {
 namespace molecular {
@@ -39,15 +39,19 @@ class Molecule;
  */
 class Surface :
 	public Class< Surface >,
-	public EnvironmentDependent< Molecule >
+	public chemical::EnvironmentDependent< Molecule* >
 {
 public:
 
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular,
-		Surface)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular, Surface)
+
+	/**
+	 * Don't use this.
+	 */
+	Surface();
 
 	/**
 	 * @param name
@@ -74,7 +78,7 @@ public:
 	 * Required method from Wave. See that class for details. <br />
 	 * @return a Symmetrical image of *this
 	 */
-	virtual physical::Symmetry* Spin() const;
+	virtual const physical::Symmetry* Spin() const;
 
 	/**
 	 * Required method from Wave. See that class for details. <br />
@@ -95,11 +99,14 @@ public:
 	T& Manage(T* varPtr)
 	{
 		BIO_STATIC_ASSERT(!type::IsPointer< T >())
-		//TODO: cpp < 17 cannot bond pointers?
-		FormBond(
-			varPtr,
-			bond_type::Manage());
-		mBoundPosition = GetBondPosition< T >();
+
+		chemical::AtomicNumber bondedId = GetBondId< T >();
+		mBoundPosition = FormBondImplementation(
+			(new physical::Quantum< T >(varPtr))->AsWave(),
+			bondedId,
+			bond_type::Manage()
+		);
+
 		return Probe< T >();
 	}
 
@@ -115,11 +122,14 @@ public:
 	T& Use(T* varPtr)
 	{
 		BIO_STATIC_ASSERT(!type::IsPointer< T >())
-		//TODO: cpp < 17 cannot bond pointers?
-		FormBond(
-			varPtr,
-			bond_type::Use());
-		mBoundPosition = GetBondPosition< T >();
+
+		chemical::AtomicNumber bondedId = GetBondId< T >();
+		mBoundPosition = FormBondImplementation(
+			(new physical::Quantum< T >(varPtr))->AsWave(),
+			bondedId,
+			bond_type::Use()
+		);
+
 		return Probe< T >();
 	}
 
@@ -227,16 +237,14 @@ public:
 	virtual physical::Waves Release(BondType bondType = bond_type::Temporary());
 
 	/**
-	 * Sets both the mEnvironment and mPerspective and updates mId. <br />
-	 * @param environment
-	 */
-	virtual void SetEnvironment(Molecule* environment);
-
-	/**
-	 * Sets both the mEnvironment and mPerspective and updates mId. <br />
+	 * Passes straight to EnvironmentDependent< Molecule* >. <br />
+	 * In the past, we considered allowing each Molecule to maintain its own Id <-> Name mapping (i.e. be a Perspective). <br />
+	 * For that to be possible, we must set the Id of *this to match the name mapping of the environment. <br />
+	 * However, this pattern was foregone in favor of Mix, Collapse, & Interference, which all allow Substances to be intelligently combined. <br />
+	 * Now, if you would like to combine a Surface on one Molecule  with a Surface of a different Name on another Molecule, you may engage the Mix machinery manually (i.e. just invoke Mix with both Surfaces). <br />
 	 * @param perspective a Molecule.
 	 */
-	virtual void SetPerspective(Molecule* perspective);
+	virtual void SetEnvironment(Molecule* environment);
 
 	/**
 	 * Wrapper around Bind <br />

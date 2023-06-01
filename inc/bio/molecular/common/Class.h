@@ -3,7 +3,7 @@
  * Biology (aka Develop Biology) is a framework for approaching software
  * development from a natural sciences perspective.
  *
- * Copyright (C) 2022 Séon O'Shannon & eons LLC
+ * Copyright (C) 2023 Séon O'Shannon & eons LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -22,7 +22,8 @@
 #pragma once
 
 #include "bio/chemical/common/Class.h"
-#include "bio/chemical/Substance.h"
+#include "bio/chemical/bonding/Metallic.h"
+#include "bio/chemical/solution/Solute.h"
 
 namespace bio {
 namespace molecular {
@@ -41,26 +42,22 @@ class Class :
 {
 public:
 
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical,
-		T)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical, T)
 
 	/**
 	 * Providing just the object should not Initialize anything. <br />
 	 * For default constructors of virtually inherited classes. <br />
 	 * @param object
-	 * @param perspective
 	 * @param filter
 	 * @param symmetryType
 	 */
 	Class(
 		T* object,
-		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
 		chemical::Class< T >(
 			object,
-			perspective,
 			filter,
 			symmetryType
 		)
@@ -71,21 +68,18 @@ public:
 	/**
 	 * @param object
 	 * @param name
-	 * @param perspective
 	 * @param filter
 	 * @param symmetryType
 	 */
 	Class(
 		T* object,
 		const Name& name,
-		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
 		chemical::Class< T >(
 			object,
 			name,
-			perspective,
 			filter,
 			symmetryType
 		)
@@ -96,21 +90,18 @@ public:
 	/**
 	 * @param object
 	 * @param id
-	 * @param perspective
 	 * @param filter
 	 * @param symmetryType
 	 */
 	Class(
 		T* object,
 		const Id& id,
-		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
 		chemical::Class< T >(
 			object,
 			id,
-			perspective,
 			filter,
 			symmetryType
 		)
@@ -124,6 +115,39 @@ public:
 	virtual ~Class()
 	{
 
+	}
+
+	/**
+	 * When inheriting from multiple EnvironmentDependent classes, this method can be used to easily specify which Environment to use. <br />
+	 * @tparam ENVIRONMENT
+	 * @param environment
+	 */
+	template < typename ENVIRONMENT >
+	void SetEnvironment(ENVIRONMENT environment)
+	{
+		return this->physical::Class< T >::GetWaveObject()->chemical::template EnvironmentDependent< ENVIRONMENT >::SetEnvironment(environment);
+	}
+
+	/**
+	 * When inheriting from multiple EnvironmentDependent classes, this method can be used to easily specify which Environment to use. <br />
+	 * @tparam ENVIRONMENT
+	 * @return GetEnvironment from an EnvironmentDependent base.
+	 */
+	template < typename ENVIRONMENT >
+	ENVIRONMENT GetEnvironment()
+	{
+		return this->physical::Class< T >::GetWaveObject()->chemical::template EnvironmentDependent< ENVIRONMENT >::GetEnvironment();
+	}
+
+	/**
+	 * When inheriting from multiple EnvironmentDependent classes, this method can be used to easily specify which Environment to use. <br />
+	 * @tparam ENVIRONMENT
+	 * @return GetEnvironment from an EnvironmentDependent base.
+	 */
+	template < typename ENVIRONMENT >
+	const ENVIRONMENT GetEnvironment() const
+	{
+		return this->physical::Class< T >::GetWaveObject()->chemical::template EnvironmentDependent< ENVIRONMENT >::GetEnvironment();
 	}
 };
 

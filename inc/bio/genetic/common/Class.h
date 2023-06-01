@@ -41,8 +41,7 @@ class Class :
 {
 public:
 
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular,
-		T)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(molecular, T)
 
 	/**
 	 * Providing just the object should not Initialize anything. <br />
@@ -51,12 +50,10 @@ public:
 	 */
 	Class(
 		T* object,
-		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default())
 		:
 		molecular::Class< T >(
 			object,
-			perspective,
 			filter
 		)
 	{
@@ -64,21 +61,19 @@ public:
 	}
 
 	/**
-		 * @param object
-		 * @param name
-		 * @param perspective
-		 * @param filter
-		 */
+	 * @param object
+	 * @param name
+	 * @param perspective
+	 * @param filter
+	 */
 	Class(
 		T* object,
 		const Name& name,
-		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default())
 		:
 		molecular::Class< T >(
 			object,
 			name,
-			perspective,
 			filter
 		)
 	{
@@ -94,13 +89,11 @@ public:
 	Class(
 		T* object,
 		const Id& id,
-		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default())
 		:
 		molecular::Class< T >(
 			object,
 			id,
-			perspective,
 			filter
 		)
 	{

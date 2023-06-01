@@ -62,14 +62,14 @@ public:
 	 * @param name
 	 * @return an Index matching the given name or InvalidIndex().
 	 */
-	virtual Index SeekToName(const Name& name);
+	virtual Index SeekToName(const Name& name) const;
 
 	/**
 	 * Get the position of an Identifiable< Id >* with the given id in *this.
 	 * @param id
 	 * @return an Index matching the given id or InvalidIndex().
 	 */
-	virtual Index SeekToId(const Id& id);
+	virtual Index SeekToId(const Id& id) const;
 
 	/**
 	 * Since we operate on Identifiable< Id >*, not Linears, we want to treat the external datum as Identifiable< Id >*. <br />
@@ -97,7 +97,7 @@ public:
 	virtual const Identifiable< Id >* LinearAccess(Index index) const;
 
 protected:
-	Iterator* mTempItt;
+	mutable Iterator* mTempItt;
 };
 
 } //physical namespace

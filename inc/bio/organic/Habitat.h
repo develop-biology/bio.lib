@@ -37,7 +37,7 @@ namespace organic {
 
 class Habitat :
 	public cellular::Class< Habitat >,
-	public chemical::LinearMotif< Organism* >,
+	public Covalent< chemical::LinearMotif< Organism* > >,
 	public physical::ThreadedPeriodic
 {
 public:
@@ -45,15 +45,16 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular,
-		Habitat)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular, Habitat)
 
 	/**
-	 * Standard ctors. <br />
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
+	 * Standard constructors. <br />
+	 */
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
+		cellular,
 		Habitat,
-		&HabitatPerspective::Instance(),
-		filter::Organic())
+		filter::Organic()
+	)
 
 	/**
 	 *

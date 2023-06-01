@@ -88,13 +88,13 @@ public:
 	ByteStream Access(const Index index)
 	{
 		BIO_SANITIZE(this->IsAllocated(index), , return NULL)
-		return *ForceCast< TYPE* >(&this->mStore[index * sizeof(TYPE)]);
+		return ByteStream(*ForceCast< TYPE* >(&this->mStore[index * sizeof(TYPE)]));
 	}
 
 	const ByteStream Access(const Index index) const
 	{
 		BIO_SANITIZE(this->IsAllocated(index), , return NULL)
-		return *ForceCast< TYPE* >(&this->mStore[index * sizeof(TYPE)]);
+		return ByteStream(*ForceCast< TYPE* >(&this->mStore[index * sizeof(TYPE)]));
 	}
 
 	virtual bool AreEqual(

@@ -33,21 +33,31 @@
 #define BIO_GET_REQUIRED_CLASS_METHODS_FOR_chemical()                          \
     BIO_GET_REQUIRED_CLASS_METHODS_FOR_physical(),                             \
     (                                                                          \
-        virtual ::bio::Properties GetProperties() const,                       \
-        GetProperties()                                                        \
+        virtual bool RegisterProperties(const ::bio::Properties& properties),  \
+        RegisterProperties(properties)                                         \
     ),                                                                         \
     (                                                                          \
-        virtual ::bio::chemical::Atom* AsAtom(),                               \
-        AsAtom()                                                               \
+        virtual ::bio::Properties GetProperties() const,                       \
+        GetProperties()                                                        \
     ),                                                                         \
     (                                                                          \
         template< typename AS > operator AS(),                                 \
         template As< AS >()                                                    \
     ),                                                                         \
+	(                                                                          \
+		virtual const log::Writer* AsLogWriter() const,                        \
+		AsLogWriter()                                                          \
+	),                                                                         \
     (                                                                          \
-        virtual const ::bio::chemical::Atom* AsAtom() const,                   \
-        AsAtom()                                                               \
-    )
+        BIO_SINGLE_ARG(virtual void Log(                                       \
+		::bio::LogLevel level,                                                 \
+		const char *format,                                                    \
+		va_list args                                                           \
+		) const),                                                              \
+		Log(level, format, args)                                               \
+	)
+
+
 /**
  * Get all virtual methods defined by chemical::Class. <br />
  * @return function signatures for use in BIO_DISAMBIGUATE_ALL_CLASS_METHODS
@@ -72,3 +82,21 @@ BIO_ID_FUNCTION_BODY(                                                          \
     functionName,                                                              \
     ::bio::BondTypePerspective::Instance(),                                    \
     ::bio::BondType)
+
+/**
+ * Make defining DiffusionTimes easier.
+ */
+#define BIO_DIFFUSION_TIME_FUNCTION_BODY(functionName)                         \
+BIO_ID_FUNCTION_BODY(                                                          \
+    functionName,                                                              \
+    ::bio::DiffusionTimePerspective::Instance(),                               \
+    ::bio::DiffusionTime)
+
+/**
+ * Make defining DiffusionEfforts easier.
+ */
+#define BIO_DIFFUSION_EFFORT_FUNCTION_BODY(functionName)                       \
+BIO_ID_FUNCTION_BODY(                                                          \
+    functionName,                                                              \
+    ::bio::DiffusionEffortPerspective::Instance(),                             \
+    ::bio::DiffusionEffort)

@@ -39,15 +39,15 @@ class Expressor;
  * Another benefit of modularizing code with through systems like this is that it allows updates, patches, and features to be rolled out incrementally, without disrupting service. <br />
  * For example, if your friend creates their MyFavoritePlasmid, which contains your friend's MyFavoriteProtein and you would like the same behavior but done in a different way (e.g. a security patch or extra api call), you can create a stand-in replacement for your friend's MyFavoriteProtein and override just that one function while still using the rest of friend's MyFavoritePlasmid. You can then share your Plasmid with your friend and they can upgrade their systems by including it! <br />
  *
- * A brief bit of history: this whole framework was originally built when the sales lead wanted features to show investors that were in direct conflict with what the technical lead requested. Instead of forcing management to reconcile, Seon just developed a system to meet both needs simultaneously. <br />
+ * A brief bit of history: this whole framework was originally built when the sales lead wanted features to show investors that were in direct conflict with what the technical lead requested. Instead of forcing management to reconcile, Séon just developed a system to meet both needs simultaneously. <br />
  *
  * A lot happens on Plasmid creation. The first Protein *this will produce is RNATranscriptase, which is used for Transcribing the rest of the Genes in *this. This process will produce all Proteins used by the full system. If the log::Engine is supplied in the Plasmid constructor, any messages produced during the Protein creation process will be logged; otherwise, these messages will be ignored and the logEngine will be specified when the Proteins are Folded in their Cell. <br />
- * Regarding Writer SetLogEngine, Plasmids do not forward any such calls onto their Genes, as they assume the Proteins will not use logs in their constructors and that the log engine will be set by the cellular::Protein or cellular::Cell they are added to (prior to initialization). This will be addressed in a future release. <br />
+ * Regarding Writer SetLogEngine, Plasmids do not forward any such calls onto their Genes, as they assume the Proteins will not use logs in their constructors and that the log engine will be set by the molecular::Protein or cellular::Cell they are added to (prior to initialization). This will be addressed in a future release. <br />
  *
  */
 class Plasmid :
 	public genetic::Class< Plasmid >,
-	public chemical::LinearMotif< Gene* >,
+	public Covalent< chemical::LinearMotif< Gene* > >,
 	public molecular::DNA,
 	virtual public ThreadSafe
 {
@@ -56,16 +56,17 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(genetic,
-		Plasmid)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(genetic, Plasmid)
 
 	/**
-	 * Standard ctors. <br />
+	 * Standard constructors. <br />
 	 * These are easy to use but require setting member variables manually. <br />
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(genetic,
+	 */
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(
+		genetic,
 		Plasmid,
-		&PlasmidPerspective::Instance(),
-		filter::Genetic())
+		filter::Genetic()
+	)
 
 	/**
 	 *

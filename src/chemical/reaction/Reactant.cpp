@@ -25,6 +25,14 @@
 namespace bio {
 namespace chemical {
 
+Reactant::Reactant() :
+	chemical::Class< Reactant >(this),
+	Substance(),
+	mTypeName(NULL)
+{
+
+}
+
 Reactant::Reactant(const Name& typeName)
 	:
 	chemical::Class< Reactant >(this),
@@ -36,8 +44,8 @@ Reactant::Reactant(const Name& typeName)
 
 Reactant::Reactant(
 	const Name& typeName,
-	const typename UnorderedMotif< Property >::Contents* properties,
-	const typename UnorderedMotif< State >::Contents* states
+	const UnorderedMotif< Property >& properties,
+	const UnorderedMotif< State >& states
 )
 	:
 	chemical::Class< Reactant >(this),

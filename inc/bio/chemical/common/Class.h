@@ -23,9 +23,10 @@
 
 #include "bio/physical/common/Class.h"
 #include "bio/physical/common/Filters.h"
-#include "bio/chemical/common/Cast.h"
 #include "bio/log/Writer.h"
-#include "bio/chemical/Atom.h"
+#include "bio/chemical/common/Cast.h"
+#include "bio/chemical/relativity/Elementary.h"
+#include "bio/chemical/bonding/Atom.h"
 #include "SymmetryTypes.h"
 
 namespace bio {
@@ -43,17 +44,32 @@ class Substance;
 template < typename T >
 class Class :
 	public physical::Class< T >,
+	protected Elementary< T >,
 	virtual public physical::Identifiable< Id >,
 	virtual public log::Writer,
 	virtual public Atom
 {
 private:
-	void CommonConstructor(Filter filter = filter::Default())
+	void CommonConstructor(Filter filter = filter::Default(), const Id& id=0, const Name& name=NULL)
 	{
 		if (filter != filter::Default())
 		{
 			log::Writer::Initialize(filter);
 		}
+
+		if (id > 0)
+		{
+			physical::Identifiable< Id >::Initialize(
+				id,
+				&IdPerspective::Instance());
+		}
+		else if (name)
+		{
+			physical::Identifiable< Id >::Initialize(
+				name,
+				&IdPerspective::Instance());
+		}
+		//Leave uninitialized. Maybe a child knows more and would prefer to Initialize() the Identifiable base.
 
 		//Bond the class we're given, Virtually.
 		//Cannot use mObject because it doesn't exist yet.
@@ -78,9 +94,57 @@ private:
 public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
+	 * We take manual control of this to hack around the AsAtom method being shimmed into Wave. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
-		T)
+	//	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, T)
+	virtual ::bio::physical::Wave* Clone() const
+	{
+		return this->::bio::physical::Class< T >::Clone();
+	}
+	::bio::physical::Wave* AsWave()
+	{
+		return this->::bio::physical::Class< T >::AsWave();
+	}
+	const ::bio::physical::Wave* AsWave() const
+	{
+		return this->::bio::physical::Class< T >::AsWave();
+	}
+	operator ::bio::physical::Wave*()
+	{
+		return this->::bio::physical::Class< T >::operator ::bio::physical::Wave*();
+	}
+	virtual ::bio::physical::Wave* Modulate(::bio::physical::Wave* signal)
+	{
+		return this->::bio::physical::Class< T >::Modulate(signal);
+	}
+	virtual ::bio::physical::Wave* Demodulate()
+	{
+		return this->::bio::physical::Class< T >::Demodulate();
+	}
+	virtual const ::bio::physical::Wave* Demodulate() const
+	{
+		return this->::bio::physical::Class< T >::Demodulate();
+	}
+	virtual ::bio::physical::Wave* Superpose(
+		const ::bio::physical::ConstWaves& displacement,
+		::bio::physical::Interference* pattern
+	)
+	{
+		return this->::bio::physical::Class< T >::Superpose(
+			displacement,
+			pattern
+		);
+	}
+	virtual bool Superpose(
+		const ::bio::physical::Wave* displacement,
+		::bio::physical::Interference* pattern
+	)
+	{
+		return this->::bio::physical::Class< T >::Superpose(
+			displacement,
+			pattern
+		);
+	}
 
 	/**
 	 * For when we know the Perspective but not ourselves. <br />
@@ -91,7 +155,6 @@ public:
 	 */
 	Class(
 		T* object,
-		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
@@ -100,7 +163,8 @@ public:
 			new physical::Symmetry(
 				type::TypeName< T >(),
 				symmetryType
-			))
+			)),
+		Elementary< T >()
 	{
 		CommonConstructor(filter);
 	}
@@ -115,7 +179,6 @@ public:
 	Class(
 		T* object,
 		const Name& name,
-		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
@@ -124,21 +187,10 @@ public:
 			new physical::Symmetry(
 				type::TypeName< T >(),
 				symmetryType
-			))
+			)),
+		Elementary< T >()
 	{
-		CommonConstructor(filter);
-
-		if (perspective)
-		{
-			physical::Identifiable< Id >::Initialize(
-				name,
-				perspective
-			);
-		}
-		else
-		{
-			SetName(name);
-		}
+		CommonConstructor(filter, 0, name);
 	}
 
 	/**
@@ -150,7 +202,6 @@ public:
 	Class(
 		T* object,
 		const Id& id,
-		physical::Perspective< Id >* perspective = NULL,
 		Filter filter = filter::Default(),
 		SymmetryType symmetryType = symmetry_type::Object())
 		:
@@ -159,21 +210,10 @@ public:
 			new physical::Symmetry(
 				type::TypeName< T >(),
 				symmetryType
-			))
+			)),
+		Elementary< T >()
 	{
-		CommonConstructor(filter);
-
-		if (perspective)
-		{
-			physical::Identifiable< Id >::Initialize(
-				id,
-				perspective
-			);
-		}
-		else
-		{
-			SetId(id);
-		}
+		CommonConstructor(filter, id);
 	}
 
 	/**
@@ -182,6 +222,11 @@ public:
 	virtual ~Class()
 	{
 
+	}
+
+	virtual bool RegisterProperties(const Properties& properties)
+	{
+		return Elementary< T >::RegisterProperties(properties);
 	}
 
 	/**

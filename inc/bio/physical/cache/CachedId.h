@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "bio/physical/Perspective.h"
+#include "bio/physical/relativity/Perspective.h"
 #include "bio/common/cache/Cached.h"
 
 namespace bio {

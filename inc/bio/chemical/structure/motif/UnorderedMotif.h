@@ -48,8 +48,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical,
-		UnorderedMotif< CONTENT_TYPE >)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical, UnorderedMotif< CONTENT_TYPE >)
 
 	/**
 	 *
@@ -145,8 +144,7 @@ public:
 	 */
 	virtual void ImportImplementation(const UnorderedMotif< CONTENT_TYPE >* other)
 	{
-		BIO_SANITIZE(other, ,
-			return);
+		BIO_SANITIZE(other, , return);
 
 		this->mContents->Import(other->GetAllImplementation());
 	}
@@ -208,6 +206,18 @@ public:
 			ret += separator.AsStdString();
 		}
 		return ret;
+	}
+
+	virtual void LogImplementation(const LogLevel& level = log_level::Info(), const Filter& filter = FilterPerspective::InvalidId())
+	{
+		if (filter == FilterPerspective::InvalidId())
+		{
+			this->AbstractMotif::LogImplementation(level, this->GetFilter());
+		}
+		else
+		{
+			this->AbstractMotif::LogImplementation(level, filter);
+		}
 	}
 };
 

@@ -46,23 +46,24 @@ class Habitat;
  */
 class Organism :
 	public cellular::Class< Organism >,
-	public chemical::LinearMotif< cellular::OrganSystem* >,
-	public molecular::EnvironmentDependent< Habitat >
+	public Covalent< chemical::LinearMotif< cellular::OrganSystem* > >,
+	public chemical::EnvironmentDependent< Habitat* >
 {
 public:
 
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular,
-		Organism)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular, Organism)
 
 	/**
-	 * Standard ctors. <br />
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
+	 * Standard constructors. <br />
+	 */
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
+		cellular,
 		Organism,
-		&OrganismPerspective::Instance(),
-		filter::Organic())
+		filter::Organic()
+	)
 
 	/**
 	 *

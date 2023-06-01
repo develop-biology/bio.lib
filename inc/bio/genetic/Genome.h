@@ -29,8 +29,6 @@ namespace genetic {
 /**
  * The Genome is a system for managing Plasmids. <br />
  * This is the Biology package manager. <br />
- * While not implemented here, there is an official Plasmid that adds online repository integration to the Genome, which allows you to specify Plasmids by Name and at run time. <br />
- * See: [TODO: TO BE DETERMINED] <br />
  *
  * The Genome is a singleton to match the PlasmidPerspective it manages. <br />
  */
@@ -43,8 +41,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(genetic,
-		GenomeImplementation)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(genetic, GenomeImplementation)
 
 	GenomeImplementation();
 
@@ -54,7 +51,7 @@ public:
 	 * Adds caching for Protein-backed methods. <br />
 	 * See Expressor for docs. <br />
 	 */
-	virtual void CacheProteins();
+	virtual Code CacheProteins();
 
 	/**
 	 * Adds a Plasmid to the PlasmidPerspective. <br />
@@ -65,14 +62,14 @@ public:
 
 	/**
 	 * Get a Plasmid! <br />
-	 * @param plasmidId
+	 * @param plasmidId not const for ease of use with Bind.
 	 * @return a shared Plasmid*. Should become const in a future release.
 	 */
 	virtual Plasmid* FetchPlasmid(Id plasmidId);
 
 	/**
 	 * Get a Plasmid! <br />
-	 * @param plasmidName
+	 * @param plasmidName not const for ease of use with Bind.
 	 * @return a shared Plasmid*. Should become const in a future release.
 	 */
 	virtual Plasmid* FetchPlasmid(Name plasmidName);
@@ -86,8 +83,7 @@ protected:
 	Id mcFetchSite;
 };
 
-BIO_SINGLETON(Genome,
-	GenomeImplementation)
+BIO_SINGLETON(Genome, GenomeImplementation)
 
 } //genetic namespace
 } //bio namespace

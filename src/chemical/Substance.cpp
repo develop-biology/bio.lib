@@ -25,15 +25,15 @@ namespace bio {
 namespace chemical {
 
 Substance::Substance(
-	const typename UnorderedMotif< Property >::Contents* properties,
-	const typename UnorderedMotif< State >::Contents* states
+	const UnorderedMotif< Property >& properties,
+	const UnorderedMotif< State >& states
 )
 	:
-	chemical::Class< Substance >(this),
-	UnorderedMotif< Property >(properties),
-	UnorderedMotif< State >(states)
+	chemical::Class< Substance >(this)
 {
 	CommonConstructor();
+	this->Covalent< UnorderedMotif< Property > >::Object()->ImportImplementation(&properties);
+	this->Covalent< UnorderedMotif< State > >::Object()->ImportImplementation(&states);
 }
 
 Substance::~Substance()

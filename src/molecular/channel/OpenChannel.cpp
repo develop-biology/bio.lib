@@ -25,6 +25,16 @@
 namespace bio {
 namespace molecular {
 
+OpenChannel::OpenChannel() :
+	molecular::Class< OpenChannel >(
+		this,
+		filter::Molecular(),
+		symmetry_type::Value())
+{
+
+}
+
+
 OpenChannel::OpenChannel(
 	const Name& name,
 	Vesicle* environment
@@ -33,9 +43,8 @@ OpenChannel::OpenChannel(
 	molecular::Class< OpenChannel >(
 		this,
 		name,
-		environment,
 		filter::Molecular(),
-		symmetry_type::Variable())
+		symmetry_type::Value())
 {
 
 }
@@ -45,51 +54,35 @@ OpenChannel::~OpenChannel()
 
 }
 
-void OpenChannel::Ingress(Molecule* outer)
+void OpenChannel::IngressSolute(chemical::Solute* external)
 {
-	mTransMembraneDomain.Ingress(outer);
+	mTransMembraneDomain.IngressSolute(external);
+}
+
+void OpenChannel::IngressSolution(chemical::Solution* external)
+{
+	mTransMembraneDomain.IngressSolution(external);
+}
+
+chemical::Solute OpenChannel::Egress(const Name& soluteName)
+{
+	return mTransMembraneDomain.Egress(soluteName);
+}
+
+chemical::Solute OpenChannel::Egress(const Id& soluteId)
+{
+	return mTransMembraneDomain.Egress(soluteId);
+}
+
+chemical::Solute* OpenChannel::Secrete(const Name& soluteName)
+{
+	return mTransMembraneDomain.Secrete(soluteName);
 }
 
 
-void OpenChannel::Ingress(Vesicle* outer)
+chemical::Solute* OpenChannel::Secrete(const Id& soluteId)
 {
-	mTransMembraneDomain.Ingress(outer);
-}
-
-
-Molecule* OpenChannel::Egress(const Name& moleculeName)
-{
-	return mTransMembraneDomain.Egress(moleculeName);
-}
-
-
-const Molecule* OpenChannel::Egress(const Name& moleculeName) const
-{
-	return mTransMembraneDomain.Egress(moleculeName);
-}
-
-
-Molecule* OpenChannel::Egress(const Id& moleculeId)
-{
-	return mTransMembraneDomain.Egress(moleculeId);
-}
-
-
-const Molecule* OpenChannel::Egress(const Id& moleculeId) const
-{
-	return mTransMembraneDomain.Egress(moleculeId);
-}
-
-
-Molecule* OpenChannel::Secrete(const Name& moleculeName)
-{
-	return mTransMembraneDomain.Secrete(moleculeName);
-}
-
-
-Molecule* OpenChannel::Secrete(const Id& moleculeId)
-{
-	return mTransMembraneDomain.Secrete(moleculeId);
+	return mTransMembraneDomain.Secrete(soluteId);
 }
 
 } //molecular namespace

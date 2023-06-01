@@ -52,7 +52,7 @@ class Iterator;
  * We maintain ByteStreams as our data conversion type, as they are flexible but safer than a void*. <br />
  *
  * When using Containers, we make no guarantees regarding the type of data stored. <br />
- * All we provide is a consistent means of accessing those data. To this end, we ensure that a Index's validity follows the lifecycle of the datum at that Index. This is identical to pointers: a Index represents the memory address of what is stored in *this. This means that as data are erased from *this, the memory is not moved, consolidated, or manipulated in any way that destroys the old references. <br />
+ * All we provide is a consistent means of accessing those data. To this end, we ensure that an Index's validity follows the lifecycle of the datum at that Index. This is identical to pointers: a Index represents the memory address of what is stored in *this. This means that as data are erased from *this, the memory is not moved, consolidated, or manipulated in any way that destroys the old references. <br />
  * This rule does have some exceptions and you are allowed to break it yourself. However, we try to stick by this as much as possible (e.g. see Insert(), below). <br />
  *
  * When using an Iterator, you will be given a SmartIterator which dynamically determines its implementation. Thus, we allow for full inheritance of *this base class. <br />

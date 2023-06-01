@@ -22,7 +22,7 @@
 #pragma once
 
 #include "bio/common/thread/ThreadSafe.h"
-#include "bio/chemical/Atom.h"
+#include "bio/chemical/bonding/Atom.h"
 #include "bio/chemical/structure/motif/LinearMotif.h"
 
 namespace bio {
@@ -281,6 +281,19 @@ public:
 		BIO_SANITIZE(implementer,
 			return implementer->GetStringFromImplementation(separator),
 			return "");
+	}
+
+	/**
+	 * Send the Contents of *this as a string to the log engine. <br />
+	 * @tparam T
+	 * @param level
+	 * @param filter
+	 */
+	template < typename T >
+	void Log(const LogLevel& level = log_level::Info(), const Filter& filter = FilterPerspective::InvalidId())
+	{
+		UnorderedMotif< T >* implementer = this->As< UnorderedMotif< T >* >();
+		BIO_SANITIZE(implementer, implementer->LogImplementation(level, filter), )
 	}
 
 	/**

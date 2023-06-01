@@ -22,6 +22,7 @@
 #pragma once
 
 #include "bio/genetic/common/Types.h"
+#include "bio/genetic/relativity/Translocator.h"
 #include "bio/physical/common/Class.h"
 #include "bio/physical/macro/Macros.h"
 #include "bio/chemical/reaction/Excitation.h"
@@ -40,18 +41,20 @@ class Localization;
  * Localizations are a chain of named places. <br />
  * Each place is a different Localization, which has more places (Localizations) around it. <br />
  * This system allows us to traverse arbitrarily complex spaces with ease. <br />
- *
- * In order to use a standard interface with arbitrarily complex containers, we rely on physical::Perspective::AssociateType(), chemical::Excitation, and the chemical/structure system to provide us with a means of translating a Site (AssociateType) into a class method (Excitation) that is used to query a container by Name (structure). <br />
+ * <br />
+ * Localizations use the "Move" Epitope. You don't need to know anything about this, its all taken care of for you. If you want to use a different Epitope, create a child of *this and customize it as you'd like; see Insertion for an example. <br />
+ * <br />
+ * In order to use a standard interface with arbitrarily complex containers, we rely on the Translocator's Location + Epitope + peptidase system to provide us with a means of translating a Location into a class method (peptidase / Excitation) that is used to query a container by Name. <br />
  * See genetic/Macros.h for an easy way to define all that (its not nearly as hard to use as it is to implement). <br />
- *
+ * <br />
  * For specifying a series of places, we use the already existing physical::Wave Modulation system in reverse order; meaning the Modulated signal is what should be evaluated BEFORE *this. Evaluation here means Localization::Seek() (past tense as Sought). <br />
  * If you can imagine a real-life wave being modulated, that is, having smaller waves that it carries, then visualizing this system should be easy: the largest wave is what we really want to do, which can only happen once the smaller waves have been resolved; so, we take a large wave of interest and look deeper and deeper into its more subtle fluctuations as we search larger and larger contexts, until we find what we are seeking. <br />
- *
- * To create a localization, first select the kind of place you want from the available LocalizationTypes (in the localization_type namespace). <br />
+ * <br />
+ * To create a localization, first select the kind of place you want from the available Locations (in the location namespace). <br />
  * Next, note the Name of the desired place. <br />
  * And, lastly, instantiate a Localization. <br />
  * If you would like to identify a place within another place, simple repeat and Modulate the first Localization with the second. <br />
- * For example, if you want to identify where the bathroom is within a restaurant, we would start with a Localization like {localization_site::Room(), "Bathroom"}, which might cause us to ask the nearest person for the "Bathroom". Next, we would create another Localization along the lines of {localization_site::StreetAddress(), "MyFavoriteRestaurant"}. In this case, StreetAddress would tell us to use a navigation app and maybe a car or taxi service to "extract" the restaurant form the world. Then, we say bathroomLocalization % restaurantLocalization. Thus, we end up with all the information necessary to "extract" the "Bathroom" from "MyFavoriteRestaurant". <br />
+ * For example, if you want to identify where the bathroom is within a restaurant, we would start with a Localization like {location::Room(), "Bathroom"}, which might cause us to ask the nearest person for the "Bathroom". Next, we would create another Localization along the lines of {location::StreetAddress(), "MyFavoriteRestaurant"}. In this case, StreetAddress would tell us to use a navigation app and maybe a car or taxi service to "extract" the restaurant form the world. Then, we say bathroomLocalization % restaurantLocalization. Thus, we end up with all the information necessary to "extract" the "Bathroom" from "MyFavoriteRestaurant". <br />
  */
 class Localization :
 	physical::Class< Localization >
@@ -61,16 +64,15 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical,
-		Localization)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(physical, Localization)
 
 
 	/**
-	 * @param site
+	 * @param location
 	 * @param name
 	 */
 	explicit Localization(
-		Site site = LocalizationSitePerspective::InvalidId(),
+		Location location = Translocator::InvalidId(),
 		const Name& name = NULL
 	);
 
@@ -88,28 +90,28 @@ public:
 	virtual chemical::Substance* Seek(chemical::Substance* seekIn) const;
 
 	/**
-	 * Get mSite. <br />
-	 * @return mSite.
+	 * Get mLocation. <br />
+	 * @return mLocation.
 	 */
-	virtual Site GetSite() const;
+	virtual Location GetLocation() const;
 
 	/**
-	 * Set mSite. <br />
-	 * @param site
+	 * Set mLocation. <br />
+	 * @param location
 	 */
-	virtual void SetSite(Site site);
+	virtual void SetLocation(Location location);
 
 	/**
-	 * Get the Name to use with mSite. <br />
+	 * Get the Name to use with mLocation. <br />
 	 * @return mName.
 	 */
-	virtual Name GetNameOfSite() const;
+	virtual Name GetNameOfLocation() const;
 
 	/**
 	 * Set mName. <br />
 	 * @param name
 	 */
-	virtual void SetNameOfSite(const Name& name);
+	virtual void SetNameOfLocation(const Name& name);
 
 protected:
 	/**
@@ -119,10 +121,10 @@ protected:
 	 */
 	chemical::Substance* ResolvePrevious(chemical::Substance* seekIn) const;
 
-	Site mSite;
+	Location mLocation;
 	Name mName;
 	Localization* mPrevious;
-	chemical::ExcitationBase* mcMethod; //cached pointer to site-associated function pointer.
+	chemical::ExcitationBase* mcMethod; //cached pointer to location-associated function pointer.
 };
 
 } //genetic namespace

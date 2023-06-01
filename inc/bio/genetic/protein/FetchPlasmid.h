@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "bio/genetic/common/Class.h"
 #include "bio/molecular/Protein.h"
 
 namespace bio {
@@ -31,9 +32,16 @@ namespace genetic {
  * Takes a Plasmid's Name in "Name Binding Site" or a Id Id in the "Id Binding Site" and gives the result in "Return Site". <br />
  */
 class FetchPlasmid :
+	public genetic::Class< FetchPlasmid >,
 	public molecular::Protein
 {
 public:
+
+	/**
+	 * Disambiguate all Class methods. <br />
+	 */
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(genetic, FetchPlasmid)
+
 	/**
 	 *
 	 */

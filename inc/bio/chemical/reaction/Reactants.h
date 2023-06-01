@@ -38,7 +38,7 @@ class Reactant; //unused here but anything including Reactants will likely use R
  */
 class Reactants :
 	public chemical::Class< Reactants >,
-	public LinearMotif< Substance* >,
+	public Covalent< LinearMotif< Substance* > >,
 	virtual public Structure
 {
 public:
@@ -46,8 +46,7 @@ public:
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical,
-		Reactants)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(chemical, Reactants)
 
 	/**
 	 *

@@ -32,19 +32,22 @@ namespace api {
 /**
  * A FinalCell removes all the inheritance machinery from Cell. <br />
  * Use this when you want to create your own Cells but not allow anyone else to override Biology methods when inheriting from them. <br />
- * We have left Peak() as virtual here (i.e. redefined it) so that you can still use Cell as intended.
+ * We have left Crest() as virtual here (i.e. redefined it) so that you can still use Cell as intended.
  */
 class FinalCell :
-	public Final< CellularForwarder< FinalCell, bio::cellular::Cell, bio::cellular::CellPerspective > >
+	public Final< CellularForwarder< FinalCell, bio::cellular::Cell > >
 {
 public:
 
-	BIO_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(FinalCell, BIO_SINGLE_ARG(Final< CellularForwarder< FinalCell, bio::cellular::Cell, bio::cellular::CellPerspective > >))
+	BIO_CONSTRUCTORS_WITH_COMMON_CONSTRUCTOR(
+		FinalCell,
+		BIO_SINGLE_ARG(Final< CellularForwarder< FinalCell, bio::cellular::Cell > >)
+	)
 
 	virtual ~FinalCell() {}
 
 	/**
-	 * Peak()s occur at Periodic::mIntervals. <br />
+	 * Crest()s occur at Periodic::mIntervals. <br />
 	 * Define your main Periodic logic here. <br />
 	 * This method must be fast: <br />
 	 *	* do not read slow hardware here <br />
@@ -52,12 +55,12 @@ public:
 	 *	* do not sleep <br />
 	 * If derived classes must do slow work to oscillate, that slow logic MUST BE placed in a separate thread. <br />
 	 * This method would then get the data stored by that thread and returns the data *quickly*. <br />
-	 * MAKE SURE that the thread never causes a long mutex wait as a side-effect in this Peak method. <br />
+	 * MAKE SURE that the thread never causes a long mutex wait as a side-effect in this Crest method. <br />
 	 * <br />
 	 * This method is forwarded here from the CellularForwarder. <br />
-	 * All sub-cellular objects in *this will Peak after *this, automatically. <br />
+	 * All sub-cellular objects in *this will Crest after *this, automatically. <br />
 	 */
-	virtual Code Peak()
+	virtual Code Crest()
 	{
 
 		//     YOUR CODE GOES HERE!
@@ -70,7 +73,7 @@ public:
 private:
 	void CommonConstructor()
 	{
-		this->mT.SetPeakFunction(&FinalCell::Peak, this);
+		this->mT.SetCrestFunction(&FinalCell::Crest, this);
 	}
 };
 

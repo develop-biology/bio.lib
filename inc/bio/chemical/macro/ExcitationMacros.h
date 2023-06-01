@@ -21,6 +21,10 @@
 
 #pragma once
 
+#include "bio/physical/macro/Macros.h"
+
+//@formatter:off
+#if BIO_CPP_VERSION < 17
 #define BIO_EXCITATION_CLASS_0(wave, ret, ...)                                 \
     ::bio::chemical::ExcitationWithoutArgument< wave, ret >
 
@@ -51,9 +55,7 @@
         BIO_GET_NUM_ARGS(__VA_ARGS__),                                         \
         __VA_ARGS__                                                            \
     )
-
-//@formatter:off
-#if BIO_CPP_VERSION >= 17
+#else
 	#undef BIO_EXCITATION_CLASS
 	#define BIO_EXCITATION_CLASS(wave, ...)                                    \
 			::bio::chemical::Excitation< wave, __VA_ARGS__ >

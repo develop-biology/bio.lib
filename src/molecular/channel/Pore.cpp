@@ -25,6 +25,15 @@
 namespace bio {
 namespace molecular {
 
+Pore::Pore() :
+	molecular::Class< Pore >(
+	this,
+	filter::Molecular(),
+	symmetry_type::Value())
+{
+
+}
+
 Pore::Pore(
 	const Name& name,
 	Vesicle* environment
@@ -33,9 +42,8 @@ Pore::Pore(
 	molecular::Class< Pore >(
 		this,
 		name,
-		environment,
 		filter::Molecular(),
-		symmetry_type::Variable())
+		symmetry_type::Value())
 {
 
 }
@@ -48,7 +56,7 @@ Pore::~Pore()
 void Pore::SetEnvironment(Vesicle* environment)
 {
 	mTransMembraneDomain.SetVesicle(environment);
-	Surface::SetEnvironment(environment);
+	Surface::SetEnvironment< Molecule* >(environment);
 }
 
 

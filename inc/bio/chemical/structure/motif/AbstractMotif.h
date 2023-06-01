@@ -22,16 +22,25 @@
 
 #include "bio/chemical/common/Types.h"
 #include "bio/common/container/Container.h"
+#include "bio/log/common/LogLevels.h"
+#include "bio/log/GlobalLogger.h"
 
 namespace bio {
 namespace chemical {
 
+/**
+ * AbstractMotifs are the base of any other Motif. <br />
+ * Motifs are different from Containers in that they implement a standard interface while allowing the actual storage system to vary. <br />
+ * By using composition, rather than inheritance, Motifs provide more rigidity & specialization and are thus easier to use than general Containers. <br />
+ * For example, with a container like physical::Line, you could Cast< MyType* >(line->SeekToId(someId)). However, by using a LinearMotif through the LinearStructureInterface, you can just GetById< MyType >(someId). <br />
+ * Motifs are used in combination with ____StructureInterfaces (e.g. LinearStructuralInterface). See Structure.h for more info. <br />
+ */
 class AbstractMotif
 {
 public:
 
 	/**
-	 * See physical::Wave for more info on Resonance and how to use Properties. <br />
+	 * See physical::Wave and chemical::Elementary for more info on Resonance and how to use Properties. <br />
 	 * @return {property::Structural()}
 	 */
 	static Properties GetClassProperties();
@@ -93,6 +102,11 @@ public:
 	virtual ::std::string GetStringFromImplementation(std::string separator = ", ")
 	{
 		return "";
+	}
+
+	virtual void LogImplementation(const LogLevel& level = log_level::Info(), const Filter& filter = FilterPerspective::InvalidId())
+	{
+		log::GlobalLogger::Instance().Log(filter, level, this->GetStringFromImplementation().c_str());
 	}
 
 protected:

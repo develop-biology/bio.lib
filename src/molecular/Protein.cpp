@@ -47,7 +47,7 @@ Code Protein::Fold()
 
 Code Protein::RecruitChaperones(Vesicle* environment)
 {
-	SetEnvironment(environment);
+	this->chemical::EnvironmentDependent< Vesicle* >::SetEnvironment(environment);
 	BIO_EXCITATION_CLASS(Protein, Code, Vesicle*) recruitChaperones(
 		&Protein::RecruitChaperones,
 		environment

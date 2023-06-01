@@ -9,6 +9,15 @@ We'll be releasing the alpha version as soon as we can!
 
 As a part of eons, we follow all [eons conventions](https://eons.llc/convention/).
 
+## Spirit
+
+The goal of Develop Biology is, as the name implies, to improve our understanding of biological systems through approximating behavior in state-based, linear, and usually binary computers. Likewise, we seek to improve computer science by catering algorithm development to systems closely resembling their biological counterparts.
+
+In human language, we often differentiate "to be", "to do", and "to have". This has carried over into computer science and can be seen in "functional" vs "object-oriented" programming as well as "composition" vs "inheritance". However, when studying biology, organic chemistry, physical chemistry, etc., we count ourselves lucky when systems can be modeled so precisely. Biology is messy. Thus, this project seeks to build a language that takes the easily comprehensible structure of computer science and blend it with the terminology and concepts of the natural sciences in the hopes of spurring creativity and advancement across all disciplines.
+
+To be succinct, we accomplish this by mangling the concepts of "to be", "to do", and "to have" until they become one:
+Chemical bonds define the structure of substances. Those bonds can change at any time. By changing the atoms a substance "has", we change what a substance "is". When water loses a hydrogen, it becomes hydrogen peroxide, which has different behavior than water. Thus, by changing what a substance has, we change what it does. Read on for more on how this is done!
+
 ## Style
 
 The purpose of our coding style is to make wrong code look wrong. If something seems out of place, then it probably is. We treat style as another tool to help us write better code faster.
@@ -136,9 +145,9 @@ Documentation is available [on the Develop Biology website](https://develop.bio/
 ## Branding
 
 ### Colors
-* Dark Blue: #5ca3ff rgb(92, 163, 255) <br />
-* Cyan: #13f4ef rgb(19, 244, 239) <br />
-* Green: #68ff00 rgb(104, 255, 0) <br />
-* Yellow: #faff00 rgb(250, 255, 0) <br />
-* Orange: #ffbf00 rgb(255, 191, 0) <br />
-* Magenta: #ff5794 rgb(255, 87, 148) <br />
+* Dark Blue: #5ca3ff rgb(92, 163, 255)
+* Cyan: #13f4ef rgb(19, 244, 239)
+* Green: #68ff00 rgb(104, 255, 0)
+* Yellow: #faff00 rgb(250, 255, 0)
+* Orange: #ffbf00 rgb(255, 191, 0)
+* Magenta: #ff5794 rgb(255, 87, 148)

@@ -21,16 +21,16 @@
 
 #include "bio/physical/Periodic.h"
 #include "bio/physical/Properties.h"
-#include "bio/physical/Symmetry.h"
+#include "bio/physical/symmetry/Symmetry.h"
 #include "bio/physical/common/SymmetryTypes.h"
 #include "bio/physical/Time.h"
 
 namespace bio {
 namespace physical {
 
-/*static*/ MicroSeconds Periodic::GetDefaultInterval()
+/*static*/ Milliseconds Periodic::GetDefaultInterval()
 {
-	return 200000;
+	return 200;
 }
 
 Properties Periodic::GetClassProperties()
@@ -41,19 +41,15 @@ Properties Periodic::GetClassProperties()
 	return ret;
 }
 
-Periodic::Periodic(MicroSeconds interval)
+Periodic::Periodic(Milliseconds interval)
 	:
 	Class(
 		this,
 		new Symmetry(
 			"mInterval",
-			symmetry_type::DefineVariable())),
-	mInterval(
-		interval
-	),
-	mLastPeakTimestamp(
-		0
-	)
+			symmetry_type::Value())),
+	mInterval(interval),
+	mLastCrestTimestamp(0)
 {
 }
 
@@ -61,40 +57,39 @@ Periodic::~Periodic()
 {
 }
 
-void Periodic::SetInterval(MicroSeconds interval)
+Code Periodic::SetInterval(Milliseconds interval)
 {
 	mInterval = interval;
+	return code::Success();
 }
 
-MicroSeconds Periodic::GetInterval() const
+Milliseconds Periodic::GetInterval() const
 {
 	return mInterval;
 }
 
-Timestamp Periodic::GetTimeLastPeaked() const
+Timestamp Periodic::GetTimeLastCrested() const
 {
-	return mLastPeakTimestamp;
+	return mLastCrestTimestamp;
 }
 
 float Periodic::GetIntervalInSeconds() const
 {
-	return (static_cast<float>(mInterval)) / 1000000.0f;
+	return (static_cast<float>(mInterval)) / 1000.0f;
 }
 
-void Periodic::SetLastPeakTimestamp(Timestamp lastPeak)
+void Periodic::SetLastCrestTimestamp(Timestamp lastCrest)
 {
-	mLastPeakTimestamp = lastPeak;
+	mLastCrestTimestamp = lastCrest;
 }
 
-Symmetry* Periodic::Spin() const
+const Symmetry* Periodic::Spin() const
 {
-	mSymmetry->AccessValue()->Set(
-		mInterval
-	);
+	mSymmetry->AccessValue()->Set(mInterval);
 	return Wave::Spin();
 }
 
-Code Periodic::Reify(Symmetry* symmetry)
+Code Periodic::Refiy(const Symmetry* symmetry)
 {
 	BIO_SANITIZE(symmetry, , return code::BadArgument1());
 	mInterval = symmetry->GetValue();
@@ -112,17 +107,16 @@ Properties Periodic::GetProperties() const
 	return GetClassProperties();
 }
 
-void Periodic::CheckIn()
+bool Periodic::CheckIn()
 {
 	Timestamp now = GetCurrentTimestamp();
-	if (now - GetTimeLastPeaked() < GetInterval())
+	if (now - GetTimeLastCrested() < GetInterval())
 	{
-		return;
+		return false;
 	}
-	Peak();
-	SetLastPeakTimestamp(
-		now
-	);
+	Crest();
+	SetLastCrestTimestamp(now);
+	return true;
 }
 
 } //physical namespace

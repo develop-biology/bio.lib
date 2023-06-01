@@ -27,7 +27,7 @@
 #include "bio/cellular/macro/Macros.h"
 #include "bio/cellular/Organ.h"
 #include "bio/genetic/Plasmid.h"
-#include "bio/chemical/structure/motif/LinearMotif.h"
+#include "bio/chemical/structure/motif/DependentMotif.h"
 
 namespace bio {
 namespace cellular {
@@ -40,24 +40,24 @@ class Organ;
  * Because the modification of existing Organs can lead to more errors and make debugging more difficult, it is not recommended that you take advantage of OrganSystem machinery unless you absolutely need to. However, if you do need to make system-wide modifications, these methods are available to you. <br />
  */
 class OrganSystem :
-	Class< OrganSystem >,
-	public chemical::LinearMotif< Organ* >
+	public cellular::Class< OrganSystem >,
+	public Metallic< chemical::DependentMotif< Organ*, OrganSystem* > >
 {
 public:
 
 	/**
 	 * Ensure virtual methods point to Class implementations. <br />
 	 */
-	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular,
-		OrganSystem)
+	BIO_DISAMBIGUATE_ALL_CLASS_METHODS(cellular, OrganSystem)
 
 	/**
-	 * Standard ctors. <br />
-	 */ BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(cellular,
+	 * Standard constructors. <br />
+	 */
+	BIO_DEFAULT_IDENTIFIABLE_CONSTRUCTORS(
+		cellular,
 		OrganSystem,
-		&OrganSystemPerspective::Instance(),
-		filter::Cellular())
-
+		filter::Cellular()
+	)
 
 	/**
 	 *

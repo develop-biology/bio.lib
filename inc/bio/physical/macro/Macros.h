@@ -38,15 +38,23 @@
 		Clone()                                                                \
 	),                                                                         \
     (                                                                          \
-		::bio::physical::Wave* AsWave(),                               \
+		::bio::physical::Wave* AsWave(),                                       \
 		AsWave()                                                               \
 	),                                                                         \
     (                                                                          \
-		const ::bio::physical::Wave* AsWave() const,                   \
+		const ::bio::chemical::Atom* AsAtom() const,                           \
+		AsAtom()                                                               \
+	),                                                                         \
+	 (                                                                         \
+		::bio::chemical::Atom* AsAtom(),                                       \
+		AsAtom()                                                               \
+	),                                                                         \
+    (                                                                          \
+		const ::bio::physical::Wave* AsWave() const,                           \
 		AsWave()                                                               \
 	),                                                                         \
 	(                                                                          \
-		operator ::bio::physical::Wave*(),                             \
+		operator ::bio::physical::Wave*(),                                     \
 		operator ::bio::physical::Wave*()                                      \
 	)
 
@@ -66,6 +74,18 @@
 	(                                                                          \
 		virtual const ::bio::physical::Wave* Demodulate() const,               \
 		Demodulate()                                                           \
+	),                                                                         \
+	(                                                                          \
+		BIO_SINGLE_ARG(virtual ::bio::physical::Wave* Superpose(               \
+			const ::bio::physical::ConstWaves& displacement,                   \
+			::bio::physical::Interference* pattern)),                          \
+		BIO_SINGLE_ARG(Superpose(displacement, pattern))                       \
+	),                                                                         \
+	(                                                                          \
+		BIO_SINGLE_ARG(virtual bool Superpose(                                 \
+			const ::bio::physical::Wave* displacement,                         \
+			::bio::physical::Interference* pattern)),                          \
+		BIO_SINGLE_ARG(Superpose(displacement, pattern))                       \
 	)
 
 
@@ -125,3 +145,13 @@ BIO_ID_FUNCTION_BODY(                                                          \
     ::bio::FilterPerspective::Instance(),                                      \
     ::bio::Filter)
 
+/**
+ * To make defining Interferences easier, use this macro to define the function body of your Interference Function(). <br />
+ * This will assign a value to a string that is identical to your FunctionName e.g. SafelyAccess<InterferencePerspective>()->GetNameFromId(Value()) would give "Value". <br />
+ * REMINDER: Your Interference Function()s should be in the ::bio::interference namespace. <br />
+ */
+#define BIO_SUPERPOSITION_FUNCTION_BODY(functionName)                          \
+BIO_ID_FUNCTION_BODY(                                                          \
+    functionName,                                                              \
+    ::bio::SuperpositionPerspective::Instance(),                               \
+    ::bio::Superposition)
