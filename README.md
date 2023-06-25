@@ -39,7 +39,7 @@ Here are some of the rules we follow:
 
 
 A few notable implications of this:
-1. Any &UpperSnakeCase will always be the address of a function because you cannot take the address of a class.
+1. Any &UpperCamelCase will always be the address of a function because you cannot take the address of a class.
 2. Classes:: and namespaces:: will always be visually distinct.
 
 ### Namespaces
