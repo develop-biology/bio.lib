@@ -27,7 +27,7 @@
 #include "bio/cellular/macro/Macros.h"
 #include "bio/cellular/Tissue.h"
 #include "bio/genetic/Plasmid.h"
-#include "bio/molecular/EnvironmentDependent.h"
+#include "bio/chemical/EnvironmentDependent.h"
 #include "bio/chemical/structure/motif/DependentMotif.h"
 
 namespace bio {
