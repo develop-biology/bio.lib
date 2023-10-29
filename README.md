@@ -35,11 +35,11 @@ Here are some of the rules we follow:
 10. Macros will never have a lowercase letter.
 11. Namespaces are all_lowercase_with_underscores.
 12. Namespaces will never contain a capital letter.
-13. Classes, Structs, Enums, etc. all follow UpperSnakeCase. This means a Function() and a ClassInstantiation() will look the same but both will operate the same (i.e. returning an object of the indicated type).
+13. Classes, Structs, Enums, etc. all follow UpperCamelCase. This means a Function() and a ClassInstantiation() will look the same but both will operate the same (i.e. returning an object of the indicated type).
 
 
 A few notable implications of this:
-1. Any &UpperSnakeCase will always be the address of a function because you cannot take the address of a class.
+1. Any &UpperCamelCase will always be the address of a function because you cannot take the address of a class.
 2. Classes:: and namespaces:: will always be visually distinct.
 
 ### Namespaces
