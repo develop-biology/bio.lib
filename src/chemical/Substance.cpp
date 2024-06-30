@@ -58,7 +58,7 @@ bool Substance::IsEnabled() const
 void Substance::CommonConstructor()
 {
 	//We can't use Enable() yet, since *this is not fully formed and the implicit casts will fail.
-	Cast< UnorderedMotif< State >* >(this)->AddImplementation(state::Enabled());
+	this->Covalent< UnorderedMotif< State > >::Object()->AddImplementation(state::Enabled());
 }
 
 } //chemical namespace
