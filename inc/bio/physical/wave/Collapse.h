@@ -23,7 +23,7 @@
 
 #include "bio/physical/common/Class.h"
 #include "bio/physical/common/Superpositions.h"
-#include "bio/physical/relativity//Identifiable.h"
+#include "bio/physical/relativity/Identifiable.h"
 
 namespace bio {
 namespace physical {

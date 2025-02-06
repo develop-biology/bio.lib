@@ -76,7 +76,7 @@ namespace molecular {
 class Molecule :
 	public Class< Molecule >,
 	public Metallic< chemical::DependentMotif< Surface*, Molecule* > >,
-	virtual public physical::Perspective< Id >
+	virtual public physical::Perspective< Id > // TODO: Remove this???
 {
 private:
 	/**
